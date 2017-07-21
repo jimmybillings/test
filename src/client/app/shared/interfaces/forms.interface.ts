@@ -10,6 +10,8 @@ export interface FormFields {
   tags?: Array<string>;
   min?: string;
   max?: string;
+  addressType?: 'long_name' | 'short_name' | '';
+  googleFields?: Array<String>;
   // Use the following to control an input from a select.
   // The number of options should equal the number
   // of slaveFieldValues.  When an option is
@@ -18,6 +20,12 @@ export interface FormFields {
   slaveFieldName?: string;
   slaveFieldValues?: string[];
 }
+
+export interface FormRow {
+  fields: Array<FormFields>;
+}
+
+export type RowFormFields = Array<FormRow>;
 
 export interface ServerErrors {
   code: string;

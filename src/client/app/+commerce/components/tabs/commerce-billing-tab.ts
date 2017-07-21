@@ -1,9 +1,10 @@
-import { Component, Output, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Output, Input, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { UserService } from '../../../shared/services/user.service';
 import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { Address, User, ViewAddress, AddressKeys } from '../../../shared/interfaces/user.interface';
+import { RowFormFields } from '../../../shared/interfaces/forms.interface';
 import { CheckoutState } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
@@ -15,10 +16,11 @@ import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.d
 
 export class CommerceBillingTab extends Tab implements OnInit {
   public orderInProgress: Observable<CheckoutState>;
-  public items: Array<any>;
+  public formItems: RowFormFields;
   public addressErrors: any = {};
   public showAddAddressForm: boolean;
   public showEditAddressForm: boolean;
+  @Input() loaded: boolean;
   @Output() tabNotify: EventEmitter<Object> = this.notify;
 
   constructor(
@@ -33,8 +35,41 @@ export class CommerceBillingTab extends Tab implements OnInit {
 
   ngOnInit() {
     this.orderInProgress = this.commerceService.checkoutData;
-    this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
+    // this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
+    this.formItems = this.items;
     this.fetchAddresses().subscribe();
+  }
+
+  public typeFor(address: ViewAddress): string {
+    return address.type ? address.type : '';
+  }
+
+  public nameFor(address: ViewAddress): string {
+    return address.name ? address.name : '';
+  }
+
+  public lineOneFor(address: ViewAddress): string {
+    return this.addressJoinSegment(address, 'address', 'address2');
+  }
+
+  public cityFor(address: ViewAddress): string {
+    return this.addressSegmentWithComma(address, 'city');
+  }
+
+  public stateFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'state');
+  }
+
+  public zipcodeFor(address: ViewAddress): string {
+    return this.addressSegmentWithComma(address, 'zipcode');
+  }
+
+  public countryFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'country');
+  }
+
+  public phoneFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'phone');
   }
 
   public addUserAddress(form: Address): void {
@@ -68,19 +103,29 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   public openFormFor(resourceType: 'account' | 'user', mode: 'edit' | 'create', address?: ViewAddress): void {
-    let items: Array<any> = mode === 'edit' ? this.prePopulateFormWith(address) : this.items;
     let title: string = mode === 'edit' ? this.editFormTitle(resourceType) : this.createFormTitle(resourceType);
-
-    this.dialog.openFormDialog(
-      items,
-      { title },
-      (form: any) => {
-        if (typeof form === 'undefined') return;
-        if (resourceType === 'user') {
-          this.addUserAddress(form);
-        } else {
-          this.addAccountAddress(form, address);
-        }
+    this.dialog.openComponentInDialog(
+      {
+        componentType: AddressFormComponent,
+        dialogConfig: { position: { top: '6%' } },
+        inputOptions: {
+          loaded: this.loaded,
+          formItems: this.formItems,
+          title: title,
+          address: mode === 'edit' ? address : null
+        },
+        outputOptions: [{
+          event: 'onSaveAddress',
+          callback: (form: any) => {
+            if (typeof form === 'undefined') return;
+            if (resourceType === 'user') {
+              this.addUserAddress(form);
+            } else {
+              this.addAccountAddress(form, address);
+            }
+          },
+          closeOnEvent: true
+        }]
       }
     );
   }
@@ -104,20 +149,25 @@ export class CommerceBillingTab extends Tab implements OnInit {
       (this.addressErrors[address.addressEntityId] && this.addressErrors[address.addressEntityId].length > 0);
   }
 
+  private addressSegment(address: ViewAddress, segment: string): string | null {
+    return address.address && address.address[segment] ? address.address[segment] : null;
+  }
+
+  private addressSegmentWithComma(address: ViewAddress, segment: string): string {
+    return this.addressSegment(address, segment) ? this.addressSegment(address, segment) + ',' : '';
+  }
+
+  private addressJoinSegment(address: ViewAddress, segmentOne: string, segmentTwo: string): string {
+    return (address.address[segmentOne] ? address.address[segmentOne] : '') +
+      (address.address[segmentTwo] ? ', ' + address.address[segmentTwo] : '');
+  }
+
   private editFormTitle(resourceType: 'user' | 'account'): string {
     return `CART.BILLING.EDIT_${resourceType.toUpperCase()}_ADDRESS_TITLE`;
   }
 
   private createFormTitle(resourceType: 'user' | 'account'): string {
     return `CART.BILLING.ADD_${resourceType.toUpperCase()}_ADDRESS_TITLE`;
-  }
-
-  private prePopulateFormWith(address: ViewAddress): Array<any> {
-    return this.items.map((item: any) => {
-      let newItem: any = JSON.parse(JSON.stringify(item));
-      newItem.value = address.address[newItem.name];
-      return newItem;
-    });
   }
 
   private fetchAddresses(): Observable<Array<ViewAddress>> {
@@ -167,14 +217,105 @@ export class CommerceBillingTab extends Tab implements OnInit {
   private validate(addresses: Array<ViewAddress>): void {
     this.addressErrors = {};
     addresses.forEach((address: ViewAddress) => {
+      this.addressErrors[address.addressEntityId] = [];
       if (!address.address) return;
       let actualAddressKeys: Array<String> = Object.keys(address.address);
-      this.addressErrors[address.addressEntityId] = [];
       AddressKeys.forEach((key: string) => {
         if (actualAddressKeys.indexOf(key) < 0 || address.address[key] === '') {
           this.addressErrors[address.addressEntityId].push(key);
         }
       });
     });
+  }
+
+  // ------------------------------------------------------- //
+  // UI Config to support rows in wz-form - to be removed
+  // ------------------------------------------------------- //
+  private get items(): RowFormFields {
+    return [
+      {
+        fields: [
+          {
+            name: 'address',
+            label: 'Address Line 1',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED',
+            googleFields: ['street_number', 'route'],
+            addressType: 'long_name'
+          }
+        ]
+      },
+      {
+        fields: [
+          {
+            name: 'address2',
+            label: 'Address Line 2',
+            type: 'text',
+            value: '',
+            validation: 'OPTIONAL',
+            googleFields: [],
+            addressType: ''
+          }
+        ]
+      },
+      {
+        fields: [
+          {
+            name: 'city',
+            label: 'City',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED',
+            googleFields: ['locality'],
+            addressType: 'long_name'
+          },
+          {
+            name: 'state',
+            label: 'State',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED',
+            googleFields: ['administrative_area_level_1'],
+            addressType: 'short_name'
+          }
+        ]
+      },
+      {
+        fields: [
+          {
+            name: 'zipcode',
+            label: 'Zipcode/Postal Code',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED',
+            googleFields: ['postal_code'],
+            addressType: 'short_name'
+          },
+          {
+            name: 'country',
+            label: 'Country',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED',
+            googleFields: ['country'],
+            addressType: 'long_name'
+          }
+        ]
+      },
+      {
+        fields: [
+          {
+            name: 'phone',
+            label: 'Phone Number',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED',
+            googleFields: [],
+            addressType: ''
+          }
+        ]
+      }
+    ];
   }
 }
