@@ -3,7 +3,7 @@ import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSe
 import { Observable } from 'rxjs/Observable';
 import { ErrorStore } from '../stores/error.store';
 import { ApiConfig } from './api.config';
-import { Api, ApiOptions, ApiParameters, ApiBody, ApiResponse } from '../interfaces/api.interface';
+import { Api, ApiOptions, ApiParameters, ApiBody } from '../interfaces/api.interface';
 import { UiState } from './ui.state';
 
 @Injectable()
@@ -16,25 +16,25 @@ export class ApiService {
   ) {
   }
 
-  public get(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public get(api: Api, endpoint: string, options: ApiOptions = {}): Observable<any> {
     return this.call(RequestMethod.Get, api, endpoint, options);
   }
 
-  public post(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public post(api: Api, endpoint: string, options: ApiOptions = {}): Observable<any> {
     return this.call(RequestMethod.Post, api, endpoint, options);
   }
 
-  public put(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public put(api: Api, endpoint: string, options: ApiOptions = {}): Observable<any> {
     return this.call(RequestMethod.Put, api, endpoint, options);
   }
 
-  public delete(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public delete(api: Api, endpoint: string, options: ApiOptions = {}): Observable<any> {
     return this.call(RequestMethod.Delete, api, endpoint, options);
   }
 
   // //// END OF PUBLIC INTERFACE
 
-  private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<ApiResponse> {
+  private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<any> {
     options = this.combineDefaultOptionsWith(options);
 
     this.showLoadingIf(options.loading);
