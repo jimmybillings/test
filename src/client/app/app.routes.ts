@@ -24,6 +24,7 @@ export const APP_ROUTES: Routes = [
   { path: 'collections', component: CollectionsComponent },
   { path: 'commerce', component: CommerceComponent },
   { path: 'gallery-view', component: GalleryViewComponent, resolve: { gallery: GalleryViewResolver } },
+  { path: '404', component: WzNotFoundComponent },
   { path: '**', component: WzNotFoundComponent }
 
 ];
