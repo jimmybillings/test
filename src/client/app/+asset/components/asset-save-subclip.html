@@ -7,7 +7,7 @@
       <h1 class="wz-dialog-title">
         {{ 'ASSET.SAVE_SUBCLIP.DIALOG_HEADER_TITLE' | translate }}
       </h1>
-      <p class="collection-name md-caption">{{ collectionName }}</p>
+      <p class="collection-name md-caption">{{ activeCollectionName }}</p>
       <p class="in-out-markers md-caption">
         <strong>In:</strong><span>{{ subclipMarkers.in | timecode }}</span>
         <strong>Out:</strong><span>{{ subclipMarkers.out | timecode }}</span>
@@ -21,7 +21,7 @@
           cancelLabel="ASSET.SAVE_SUBCLIP.FORM.CANCEL_BTN_LABEL"
           submitLabel="ASSET.SAVE_SUBCLIP.FORM.SUBMIT_BTN_LABEL"
           (formCancel)="clearAndClose()"
-          (formSubmit)="addSubclipToCollection($event)">
+          (formSubmit)="addSubclipToActiveCollection($event)">
         </wz-form>
       </md-card-content>
     </div>

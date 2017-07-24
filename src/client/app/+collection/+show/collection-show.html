@@ -9,28 +9,28 @@
 								<div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding>
 									<div class="asset">
 										<div class="asset-thb">
-											<span class="asset-id"><span class="id">{{collection.id}}</span></span>
-											<img *ngIf="(collection.collectionThumbnail | json) != '{}'" src="{{collection?.collectionThumbnail?.urls?.https}}" />
-											<img *ngIf="(collection.collectionThumbnail | json) == '{}'" src="/assets/img/tbn_missing.jpg" />
+											<span class="asset-id"><span class="id">{{activeCollection.id}}</span></span>
+											<img *ngIf="(activeCollection.collectionThumbnail | json) != '{}'" src="{{activeCollection?.collectionThumbnail?.urls?.https}}" />
+											<img *ngIf="(activeCollection.collectionThumbnail | json) == '{}'" src="/assets/img/tbn_missing.jpg" />
 										</div>
 									</div>
 								</div>
 								<div flex-gt-xs="60" flex-lg="70" flex="100" layout-padding>
-									<h3 class="md-headline">{{collection.name}}
+									<h3 class="md-headline">{{activeCollection.name}}
 										<span class="asset-count">
-                      <span class="count">{{collection.assetsCount}}</span>
+                      <span class="count">{{activeCollection.assetsCount}}</span>
 										</span>
 									</h3>
 									<div class="md-caption collection-info">
-										<span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ collection.email }}</span>
-										<span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ collection.userRole }}</span>
-										<span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ collection.createdOn | date:'short' }}</span>
-										<span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ collection.lastUpdated | date:'short' }}</span>
+										<span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ activeCollection.email }}</span>
+										<span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ activeCollection.userRole }}</span>
+										<span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ activeCollection.createdOn | date:'short' }}</span>
+										<span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ activeCollection.lastUpdated | date:'short' }}</span>
 									</div>
 									<div class="md-caption collection-tags">
 										<strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
 										<ul class="meta-data-tags">
-											<li class="tag mat-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
+											<li class="tag mat-elevation-z0" *ngFor="let tag of activeCollection.tags">{{tag}}</li>
 										</ul>
 									</div>
 								</div>
@@ -50,7 +50,7 @@
 								<button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
 								<button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
 								<button md-menu-item (click)="getAssetsForLink()"><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
-								<div *ngIf="!!collection.owner">
+								<div *ngIf="!!activeCollection.owner">
 									<div class="divider"></div>
 									<button md-menu-item class="delete" (click)="setCollectionForDelete()">
 										<md-icon>delete</md-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
@@ -68,10 +68,10 @@
 <section class="asset-results-header" layout="row" layout-align="center center">
 	<header flex-lg="90" flex-gt-lg="90" flex-gt-md="95" flex="100">
 		<div layout="row" layout-align="space-between end">
-			<h2 *ngIf="collection.assetsCount == 0" flex="100" class="md-display-1 alert">
+			<h2 *ngIf="activeCollection.assetsCount == 0" flex="100" class="md-display-1 alert">
 				{{ 'COLLECTION.SHOW.EMPTY_PG_HEADING' | translate }}
 			</h2>
-			<div *ngIf="collection.assetsCount > 0" class="asset-sort-by tools" flex="auto" layout-align="center end">
+			<div *ngIf="activeCollection.assetsCount > 0" class="asset-sort-by tools" flex="auto" layout-align="center end">
 				<button md-icon-button color="primary" title="{{ ((userPreference.data | async).assetView == 'grid' ? 
 					'SEARCH.ASSET_VIEW_LIST_BTN_TITLE' : 'SEARCH.ASSET_VIEW_GRID_BTN_TITLE') | translate }}" 
 					(click)="onChangeAssetView(userPreference.state.assetView == 'grid' ? 'list' : 'grid')">
@@ -85,15 +85,14 @@
 	<div layout="row" md-scroll-y="" layout-align="center start">
 		<div flex-lg="90" flex-gt-lg="90" flex-gt-md="95" flex="100">
 			<div layout-gt-md="row" layout="column" layout-align="space-between" layout-align-gt-md="space-between end">
-				<wz-pagination flex="noshrink" *ngIf="collection.assets.pagination.totalCount > 0" [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
+				<wz-pagination flex="noshrink" *ngIf="activeCollection.assets.pagination.totalCount > 0" [pagination]="activeCollection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
 			</div>
 
 			<wz-asset-grid *ngIf="(userPreference.data | async).assetView =='grid'" class="grid" 
-				[assets]="collection.assets.items" 
+				[assets]="activeCollection.assets.items" 
 				[userCan]="userCan" 
 				[assetType]="'collection'"
-				[collection]="activeCollection.data | async"
-				(onRemoveFromCollection)="removeFromCollection($event)"
+				[activeCollection]="activeCollection"
 				(onAddToCart)="addAssetToCart($event)" 
 				(onDownloadComp)="downloadComp($event)" 
 				(onShowSpeedview)="showSpeedview($event)" 
@@ -102,11 +101,10 @@
 			</wz-asset-grid>
 
 			<wz-asset-list *ngIf="(userPreference.data | async).assetView =='list'" class="list" 
-				[assets]="collection.assets.items" 
+				[assets]="activeCollection.assets.items" 
 				[userCan]="userCan" 
 				[assetType]="'collection'"
-				[collection]="activeCollection.data | async"
-				(onRemoveFromCollection)="removeFromCollection($event)"
+				[activeCollection]="activeCollection"
 				(onAddToCart)="addAssetToCart($event)" 
 				(onDownloadComp)="downloadComp($event)" 
 				(onShowSpeedview)="showSpeedview($event)" 
@@ -114,7 +112,7 @@
 				(onEditAsset)="editAsset($event)">
 			</wz-asset-list>
 
-			<wz-pagination *ngIf="collection.assets.pagination.totalCount > 0" [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
+			<wz-pagination *ngIf="activeCollection.assets.pagination.totalCount > 0" [pagination]="activeCollection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
 		</div>
 	</div>
 </section>

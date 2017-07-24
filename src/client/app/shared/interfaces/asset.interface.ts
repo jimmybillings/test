@@ -1,4 +1,3 @@
-import { Frame } from 'wazee-frame-formatter';
 import { Asset, Pagination, Pojo, Coords } from './common.interface';
 
 export interface AssetState {
@@ -9,11 +8,6 @@ export interface AssetState {
 
 export interface SearchResult extends Pagination {
   items?: Array<Asset>;
-}
-
-export interface SubclipMarkers {
-  in?: Frame;
-  out?: Frame;
 }
 
 export interface SpeedviewEvent {

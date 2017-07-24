@@ -52,14 +52,21 @@ export interface Asset extends Common {
   timeStart?: number;
   timeEnd?: number;
   speedviewData?: SpeedviewData;
+
+  // These were all used in asset-detail.html before its
+  // "asset" input was typed.  Unsure if this is the right
+  // "Asset" to put these in...  Further analysis is warranted.
+  price?: number;
+  common?: Array<{ value: string }>;
+  clipThumbnailUrl?: string;
 }
 
 export interface AssetLoadParameters {
-  id: string;
-  share_key?: string;
-  uuid?: string;
-  timeStart?: string;
-  timeEnd?: string;
+  readonly id: string;
+  readonly share_key?: string;
+  readonly uuid?: string;
+  readonly timeStart?: string;
+  readonly timeEnd?: string;
 }
 
 export interface AssetUrls {

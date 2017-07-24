@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { Store } from '@ngrx/store';
 
-import * as AssetActions from '../../shared/actions/asset.actions';
-import { State } from '../../app.store';
+import { AppStore } from '../../app.store';
 import { AssetLoadParameters } from '../../shared/interfaces/common.interface';
 
 @Injectable()
 export class AssetResolver implements Resolve<boolean> {
-  constructor(private store: Store<State>) { }
+  constructor(private store: AppStore) { }
 
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-    this.store.dispatch(new AssetActions.Load(this.convertToLoadParameters(route.params)));
+    this.store.dispatch(factory => factory.asset.load(this.convertToLoadParameters(route.params)));
 
-    return this.store.select(state => state.asset.loaded).filter(loaded => loaded).take(1);
+    return this.store.blockUntil(state => state.asset.loaded);
   }
 
   private convertToLoadParameters(routeParameters: { [key: string]: any }): AssetLoadParameters {

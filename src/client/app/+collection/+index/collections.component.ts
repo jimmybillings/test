@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
-import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { WzEvent } from '../../shared/interfaces/common.interface';
@@ -15,6 +16,7 @@ import { CollectionLinkComponent } from '../components/collection-link.component
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -41,13 +43,13 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public router: Router,
     public collections: CollectionsService,
     public collectionContext: CollectionContextService,
-    public activeCollection: ActiveCollectionService,
     public currentUser: CurrentUserService,
     public uiConfig: UiConfig,
     public uiState: UiState,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
-    private dialogService: WzDialogService) {
+    private dialogService: WzDialogService,
+    private store: AppStore) {
 
     this.filterOptions = [
       {
@@ -144,6 +146,10 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.optionsSubscription.unsubscribe();
   }
 
+  public get activeCollection(): Observable<Collection> {
+    return this.store.select(state => state.activeCollection.collection);
+  }
+
   public showSnackBar(message: any) {
     this.translate.get(message.key, message.value)
       .subscribe((res: string) => {
@@ -156,7 +162,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public selectActiveCollection(id: number): void {
-    this.activeCollection.load(id).subscribe();
+    this.store.dispatch(factory => factory.activeCollection.set(id));
   }
 
   public setCollectionForDelete(collection: any): void {
@@ -196,15 +202,11 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public isActiveCollection(collectionId: number): boolean {
-    let isMatch: boolean;
-    this.activeCollection.data.take(1)
-      .map(activeCollection => activeCollection.id)
-      .subscribe(id => isMatch = id === collectionId);
-    return isMatch;
+    return this.store.match(collectionId, state => state.activeCollection.collection.id);
   }
 
   public getAssetsForLink(collectionId: number): void {
-    this.activeCollection.getItems(collectionId, { n: 100 }, false).subscribe(data => {
+    this.collections.getItems(collectionId).subscribe(data => {
       this.assetsForLink = data.items;
       this.dialogService.openComponentInDialog(
         {

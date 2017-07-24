@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../shared/services/asset.service';
-import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
 import { WzEvent } from '../shared/interfaces/common.interface';
 import { UiConfig } from '../shared/services/ui.config';
@@ -20,10 +19,10 @@ import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { PricingStore } from '../shared/stores/pricing.store';
-import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { Asset } from '../shared/interfaces/common.interface';
-import { State } from '../app.store';
+import { AppStore } from '../app.store';
+import { Collection } from '../shared/interfaces/collection.interface';
 
 @Component({
   moduleId: module.id,
@@ -42,12 +41,11 @@ export class AssetComponent implements OnInit, OnDestroy {
   constructor(
     public currentUser: CurrentUserService,
     public userCan: Capabilities,
-    public activeCollection: ActiveCollectionService,
     public uiState: UiState,
     public assetService: AssetService,
     public uiConfig: UiConfig,
     public window: WindowRef,
-    private store: Store<State>,
+    private store: AppStore,
     private userPreference: UserPreferenceService,
     private error: ErrorStore,
     private cart: CartService,
@@ -76,6 +74,10 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.window.nativeWindow.history.back();
   }
 
+  public get activeCollection(): Observable<Collection> {
+    return this.store.select(state => state.activeCollection.collection);
+  }
+
   public get userEmail(): Observable<any> {
     return this.currentUser.data.map(user => user.emailAddress);
   }
@@ -89,24 +91,6 @@ export class AssetComponent implements OnInit, OnDestroy {
       .subscribe((res: string) => {
         this.snackBar.open(res, '', { duration: 2000 });
       });
-  }
-
-  public addToCollection(params: any): void {
-    this.userPreference.openCollectionTray();
-    this.activeCollection.addAsset(params.collection.id, params.asset, params.markers).subscribe();
-    this.showSnackBar({
-      key: 'COLLECTION.ADD_TO_COLLECTION_TOAST',
-      value: { collectionName: params.collection.name }
-    });
-  }
-
-  public removeFromCollection(params: any): void {
-    this.userPreference.openCollectionTray();
-    this.activeCollection.removeAsset(params).subscribe();
-    this.showSnackBar({
-      key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
-      value: { collectionName: params.collection.name }
-    });
   }
 
   public downloadComp(params: any): void {
