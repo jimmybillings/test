@@ -18,7 +18,7 @@ export class ProjectsComponent {
   @Input() config: any;
   @Input() projects: Array<Project>;
   @Input() userCan: Capabilities;
-  @Input() includeFees: boolean = false;
+  @Input() allowQuoteAdministration: boolean = false;
   @Input() quoteType: QuoteType;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
@@ -103,6 +103,10 @@ export class ProjectsComponent {
       });
     }
     return validAssets.indexOf(true) !== -1;
+  }
+
+  public onClickBulkImportButton(project: Project): void {
+    this.projectsNotify.emit({ type: 'OPEN_BULK_IMPORT_DIALOG', payload: project.id });
   }
 
   private initializeQuoteFeeFieldsFrom(feeConfig: FeeConfig): FormFields[] {

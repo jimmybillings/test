@@ -22,24 +22,32 @@ import { AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.in
       <md-icon>more_vert</md-icon>
     </button>
     <md-menu x-position="before" #projectOptionsMenu="mdMenu">
-      <button disabled md-menu-item><md-icon>attachment</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
-      <button [disabled]="!includeFees" md-menu-item (click)="onAddFeeButtonClick()">
-        <md-icon>note_add</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}
-      </button>
-      <div class="divider"></div>
-      <button md-menu-item (click)="onRemoveButtonClick()"> <md-icon>delete</md-icon>{{ 'CART.PROJECTS.DELETE_PROJECT_BTN' | translate }}
+      <ng-container *ngIf="allowQuoteAdministration">
+        <button md-menu-item (click)="onAddFeeButtonClick()">
+          <md-icon>note_add</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}
+        </button>
+        <button md-menu-item (click)="onBulkImportClick()">
+          <md-icon>library_add</md-icon>{{ 'QUOTE.BULK_IMPORT.TITLE' | translate }}
+        </button>
+        <div class="divider"></div>
+      </ng-container>
+      <button
+        md-menu-item
+        (click)="onRemoveButtonClick()">
+        <md-icon>delete</md-icon>{{ 'CART.PROJECTS.DELETE_PROJECT_BTN' | translate }}
       </button>
     </md-menu>
   `
 })
 export class ProjectActionsComponent {
   @Input() quoteType: QuoteType;
-  @Input() includeFees: boolean = false;
+  @Input() allowQuoteAdministration: boolean = false;
   @Input() projectHasRmAssets: boolean = false;
   @Input() rmAssetsHaveAttributes: boolean = false;
   @Output() remove: EventEmitter<null> = new EventEmitter();
   @Output() edit: EventEmitter<null> = new EventEmitter();
   @Output() addFee: EventEmitter<null> = new EventEmitter();
+  @Output() bulkImport: EventEmitter<null> = new EventEmitter();
   @Output() projectActionsNotify: EventEmitter<Object> = new EventEmitter<Object>();
 
   public onEditButtonClick(): void {
@@ -60,5 +68,9 @@ export class ProjectActionsComponent {
 
   public get showRightsPricingBtn(): boolean {
     return this.quoteType !== 'ProvisionalOrder' && this.projectHasRmAssets;
+  }
+
+  public onBulkImportClick(): void {
+    this.bulkImport.emit();
   }
 }

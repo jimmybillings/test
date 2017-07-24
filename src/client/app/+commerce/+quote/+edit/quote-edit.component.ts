@@ -74,6 +74,10 @@ export class QuoteEditComponent extends CommerceEditTab {
         this.removeCostMultiplierFrom(message.payload);
         break;
 
+      case 'OPEN_BULK_IMPORT_DIALOG':
+        this.onOpenBulkImportDialog(message.payload);
+        break;
+
       default:
         super.onNotification(message);
     };
@@ -164,6 +168,21 @@ export class QuoteEditComponent extends CommerceEditTab {
         });
       })
       .subscribe();
+  }
+
+  public onOpenBulkImportDialog(projectId: string): void {
+    this.dialogService.openFormDialog(
+      this.config.bulkImport.items,
+      { title: 'QUOTE.BULK_IMPORT.TITLE', submitLabel: 'QUOTE.BULK_IMPORT.SUBMIT_BTN', autocomplete: 'off' },
+      (form: { assets: string }) => {
+        this.quoteEditService.bulkImport(form, projectId).do(() => {
+          this.showSnackBar({
+            key: 'QUOTE.BULK_IMPORT.CONFIRMATION',
+            value: { numOfAssets: form.assets.split('\n').length }
+          });
+        }).subscribe();
+      }
+    );
   }
 
   private updateQuoteField = (options: any): void => {
