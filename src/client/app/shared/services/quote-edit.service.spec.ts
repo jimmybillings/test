@@ -3,6 +3,7 @@ import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api } from '../interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
+import { Common } from '../utilities/common.functions';
 
 export function main() {
   describe('Quote Edit Service', () => {
@@ -138,6 +139,38 @@ export function main() {
 
       it('replaces the quote store with the response of the newly created quote', () => {
         serviceUnderTest.createQuote().subscribe(() => {
+          expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.postResponse);
+        });
+      });
+    });
+
+    describe('cloneQuote()', () => {
+      it(`Should call the deletePropertiesFromObject() method with a seperate cloned version
+      of the current quote`, () => {
+          spyOn(Common, 'deletePropertiesFromObject');
+          serviceUnderTest.cloneQuote(mockState);
+          expect(Common.deletePropertiesFromObject).toHaveBeenCalledWith(
+            mockState,
+            ['id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus']
+          );
+        });
+      it('calls the API service correctly', () => {
+        serviceUnderTest.cloneQuote(mockState).subscribe(() => {
+          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
+          expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+          expect(mockApi.post).toHaveBeenCalledWithBody({
+            data: {
+              total: 90,
+              subTotal: 100,
+              projects: [{ name: 'Project A' }]
+            }
+          });
+        });
+      });
+
+      it('replaces the quote store with the response of the newly created quote', () => {
+        serviceUnderTest.cloneQuote(mockState).subscribe(() => {
           expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.postResponse);
         });
       });
