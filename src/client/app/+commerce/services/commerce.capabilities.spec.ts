@@ -216,7 +216,7 @@ export function main() {
         }
       };
 
-      const onFeeItem = {
+      const oneFeeItem = {
         'data': {
           'lastUpdated': '2017-07-23T18:48:15Z',
           'createdOn': '2017-07-23T18:20:00Z',
@@ -308,7 +308,7 @@ export function main() {
 
       it('Should return true if a user has at least one fee item', () => {
         new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature)
-          .cloneQuote(Observable.of(onFeeItem) as any)
+          .cloneQuote(Observable.of(oneFeeItem) as any)
           .subscribe((result: boolean) => {
             expect(result).toBe(true);
           });

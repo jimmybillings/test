@@ -10,7 +10,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
           md-button
           [disabled]="!shouldShowCloneButton"
           class="large-text is-outlined"
-          (click)="onCloneQuote()">
+          (click)="onClickCloneQuoteButton()">
           {{ 'QUOTE.CLONE_QUOTE' | translate }}
         </button>
         <button
@@ -61,7 +61,7 @@ export class AdministerQuoteComponent {
     this.openQuoteDialog.emit();
   }
 
-  public onCloneQuote() {
+  public onClickCloneQuoteButton() {
     this.cloneQuote.emit();
   }
 

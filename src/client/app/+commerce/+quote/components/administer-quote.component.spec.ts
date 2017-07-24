@@ -58,7 +58,7 @@ export function main() {
     describe('onCloneQuote()', () => {
       it('Should emit the saveAsDraft event', () => {
         spyOn(componentUnderTest.cloneQuote, 'emit');
-        componentUnderTest.onCloneQuote();
+        componentUnderTest.onClickCloneQuoteButton();
 
         expect(componentUnderTest.cloneQuote.emit).toHaveBeenCalled();
 
