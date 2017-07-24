@@ -1,0 +1,34 @@
+<div class="wz-dialog">
+  <div layout="column" layout-align="center center">
+    <h1 md-dialog-title>{{ title | translate }}</h1>
+  </div>
+  <div layout="column" layout-align="center center">
+    <md-input-container class="autocomplete">
+      <input mdInput id="autocomplete" placeholder="Enter your full address" (focus)="geolocate()" type="text" />
+    </md-input-container>
+    <form [formGroup]="addressForm" (ngSubmit)="saveAddress()">
+      <div class="address-form" layout="column" layout-align="center center">
+        <div flex="100">
+          <div *ngFor="let row of formItems" layout="row" layout-align="center center">
+            <md-input-container flex="100" *ngFor="let field of row.fields" id={{field.name}}>
+              <input
+                mdInput
+                type={{field.type}}
+                formControlName={{field.name}}
+                placeholder={{field.label}}
+              />
+            </md-input-container>
+          </div>
+        </div>
+        <button
+          class="submit-btn"
+          md-raised-button
+          [disabled]="!addressForm.valid"
+          color="primary"
+          type="submit">
+            Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

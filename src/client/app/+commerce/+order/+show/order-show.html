@@ -128,7 +128,17 @@
 								</div>
 								<div flex-gt-xs="40" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
 									<div class="tools" flex="100" layout-padding>
-										<button [disabled]="!lineItem.asset.masterDownloadUrl" (click)="downloadMaster(lineItem.asset.masterDownloadUrl)" md-button color="primary" class="is-outlined">{{ 'ORDER.SHOW.DOWNLOAD_BTN_TITLE' | translate }}</button>
+										<button
+											[disabled]="!lineItem.asset.masterDownloadUrl"
+											(click)="downloadMaster(lineItem.asset.masterDownloadUrl)"
+											md-button
+											color="primary"
+											class="is-outlined download">
+											<md-icon class="transcode-icon" [ngClass]="{'spinner': lineItem.transcodeStatus === 'Submitted'}">
+												{{ 'ORDER.SHOW.TRANSCODE_ICON.' + lineItem.transcodeStatus | translate }}
+											</md-icon>
+											<span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.' +  lineItem.transcodeStatus | translate }}</span>
+										</button>
 										<button 
 											title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
 											wzAsperaDownload 
@@ -139,7 +149,6 @@
 											{{ 'ORDER.SHOW.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}
 										</button>
 									</div>
-									<!--<div flex="100" layout="row" layout-xs="column" class="divider"></div>-->
 									<div *ngIf="isRefundedLineItem(lineItem)" class="price indicate-refund" >
 										{{ lineItem.price | currency:'USD':true:'1.2-2' | slice:1 }}
 									</div>

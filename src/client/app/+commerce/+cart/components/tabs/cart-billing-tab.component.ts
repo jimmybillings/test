@@ -15,7 +15,6 @@ import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/w
 })
 
 export class CartBillingTabComponent extends CommerceBillingTab {
-
   constructor(
     userCan: CommerceCapabilities,
     cartService: CartService,
@@ -26,5 +25,4 @@ export class CartBillingTabComponent extends CommerceBillingTab {
   ) {
     super(userCan, cartService, uiConfig, user, currentUser, dialog);
   }
-
 }

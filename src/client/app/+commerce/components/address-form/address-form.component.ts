@@ -1,50 +1,91 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { Address } from '../../../shared/interfaces/user.interface';
+import {
+  Component, Input, ChangeDetectionStrategy,
+  Output, EventEmitter, SimpleChanges, ChangeDetectorRef
+} from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { ViewAddress, Address, FormattedGoogleAddress } from '../../../shared/interfaces/user.interface';
+import { RowFormFields, FormRow, FormFields } from '../../../shared/interfaces/forms.interface';
+import { GooglePlacesService } from '../../services/google-places.service';
 
 @Component({
   moduleId: module.id,
   selector: 'address-form-component',
-  template: `
-    <div class="wz-dialog">
-      <div layout="row" layout-align="center center">
-        <h1 md-dialog-title>
-          {{ title | translate }}
-        </h1>
-      </div>
-      <md-dialog-content>
-        <wz-form
-          [items]="items"
-          [submitLabel]="'CART.BILLING.SAVE_ADDRESS_BTN_LABEL' | translate"
-          (formSubmit)="saveAddress($event)">
-        </wz-form>
-      </md-dialog-content>
-    </div>
-  `,
+  templateUrl: './address-form.html',
+  styles: [`
+    .autocomplete{width: 100%; margin-bottom: 20px;}
+    .submit-btn{width: 40%; margin-top: 20px;}
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddressFormComponent implements OnInit {
+export class AddressFormComponent {
+  @Input() formItems: RowFormFields;
   @Input() title: string;
-  @Input() items: any[];
-  @Input() address: Address;
+  @Input()
+  public set address(address: ViewAddress) {
+    this.buildForm(address);
+  }
+  @Input()
+  public set loaded(loaded: boolean) {
+    if (loaded) this.loadGooglePlaces();
+  }
   @Output() onSaveAddress = new EventEmitter();
+  public addressForm: FormGroup;
 
-  ngOnInit() {
-    if (this.address) {
-      this.prepopulateForm(this.address);
-    } else {
-      this.clearForm();
+  constructor(
+    private fb: FormBuilder,
+    private google: GooglePlacesService,
+    private ref: ChangeDetectorRef
+  ) { }
+
+  public saveAddress() {
+    this.onSaveAddress.emit(this.addressForm.value);
+  }
+
+  public geolocate(): void {
+    if (navigator.geolocation) {
+      this.google.geolocate();
     }
   }
 
-  public saveAddress(form: any) {
-    this.onSaveAddress.emit(form);
+  private fillInAddress = (): void => {
+    let googleAddress: FormattedGoogleAddress = this.google.getPlace();
+
+    this.forEachFormItem((item: FormFields) => {
+      this.setControlValue(item, googleAddress);
+    });
+
+    this.ref.detectChanges();
   }
 
-  private clearForm(): void {
-    this.items.map((item: any) => item.value = '');
+  private setControlValue(item: FormFields, googleAddress: FormattedGoogleAddress): void {
+    let value: string = item.googleFields.reduce((prev: Array<string>, field: string) => {
+      prev.push(googleAddress[field] ? googleAddress[field][item.addressType] : '');
+      return prev;
+    }, []).join(' ').trim();
+    if (value.length) this.addressForm.controls[item.name].setValue(value);
   }
 
-  private prepopulateForm(address: Address): void {
-    this.items.map((item: any) => item.value = address[item.name]);
+  private buildForm(address: ViewAddress): void {
+    let newForm: any = {};
+
+    this.forEachFormItem((item: FormFields) => {
+      newForm[item.name] = this.buildFormControl(item, address);
+    });
+
+    this.addressForm = this.fb.group(newForm);
+  }
+
+  private buildFormControl(item: FormFields, address: ViewAddress): FormControl {
+    let validator = item.validation === 'REQUIRED' ? Validators.required : null;
+    let value: string = address && address.address ? address.address[item.name] : '';
+    return new FormControl(value, validator);
+  }
+
+  private forEachFormItem(processor: (item: FormFields) => void): void {
+    this.formItems.forEach((row: FormRow) => row.fields.forEach(processor));
+  }
+
+  private loadGooglePlaces(): void {
+    this.google.loadPlacesLibrary(this.fillInAddress);
   }
 }

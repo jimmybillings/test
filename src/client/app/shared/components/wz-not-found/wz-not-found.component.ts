@@ -1,31 +1,59 @@
 import { Component } from '@angular/core';
-import { CurrentUserService } from '../../services/current-user.service';
+import { Capabilities } from '../../services/capabilities.service';
 
 @Component({
   moduleId: module.id,
   selector: 'not-found-component',
-  template: `<div layout-align="center center">
-              <div layout="column" layout-align="center center">
-                <div flex-xs="85" flex-gt-xs="90" flex-gt-lg="95">
-                  <div class="warn-message" layout="column" layout-align="center center">
-                    <h3 class="md-display">The page you're looking for doesn't exist</h3>
-                  </div>
-                  <div layout="row" layout-align="center center">
-                    <button class="link" md-button [routerLink]="['/']">HOME</button>
-                    <button *ngIf="currentUser.loggedIn()" class="link" md-button [routerLink]="['/commerce']">CART</button>
-                    <button *ngIf="currentUser.loggedIn()" class="link" md-button [routerLink]="['/collections']">COLLECTIONS</button>
-                  </div>
+  template: `<div layout="column" layout-align="center center">
+              <div flex="85">
+                <div layout="column" layout-align="center center">
+                  <h3 class="md-display not-found-header">{{ 'NOT_FOUND.HEADER' | translate }}</h3>
+                </div>
+                <div layout="row" layout-align="center center">
+                  <button
+                    color="primary"
+                    md-icon-button
+                    [routerLink]="['/']">
+                      <md-icon>home</md-icon>
+                  </button>
+                  <button
+                    color="primary"
+                    *ngIf="showCartLink"
+                    md-icon-button
+                    [routerLink]="['/commerce']">
+                      <md-icon>shopping_cart</md-icon>
+                  </button>
+                  <button
+                    color="primary"
+                    *ngIf="showCollectionsLink"
+                    md-icon-button
+                    [routerLink]="['/collections']">
+                      <md-icon>folder_open</md-icon>  
+                  </button>
+                  <button
+                    color="primary"
+                    *ngIf="showQuotesLink"
+                    md-icon-button
+                    [routerLink]="['/commerce/quotes']">
+                      <md-icon>inbox</md-icon>
+                  </button>
                 </div>
               </div>
-            </div>`,
-  styles: [`
-            button.link {
-              margin-right: 10px;
-              border: 1px solid #ccc; 
-            }
-          `]
+            </div>`
 })
 
 export class WzNotFoundComponent {
-  constructor(public currentUser: CurrentUserService) { }
+  constructor(public userCan: Capabilities) { }
+
+  public get showCartLink(): boolean {
+    return this.userCan.addToCart() && !this.userCan.administerQuotes();
+  }
+
+  public get showCollectionsLink(): boolean {
+    return this.userCan.viewCollections();
+  }
+
+  public get showQuotesLink(): boolean {
+    return this.userCan.administerQuotes();
+  }
 }

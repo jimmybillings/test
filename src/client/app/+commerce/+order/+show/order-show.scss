@@ -46,6 +46,16 @@ order-show-component .project li.fee-item > div > div > div  {
     padding-left: 16px;
   }
 }
+order-show-component .project li.cart-asset .transcode-icon {
+  margin-right: 6px;
+  font-size: 22px;
+  &.spinner {
+    animation-name: rotate360;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+  }
+}
 order-show-component .project li.cart-asset .tools {
   @media screen and (max-width: $layout-breakpoint-xs)  {
     text-align: left;

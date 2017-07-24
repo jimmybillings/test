@@ -76,3 +76,28 @@ export interface Coords {
   x?: number;
   y?: number;
 }
+
+export interface Position {
+  coords: {
+    latitude: number;
+    longitude: number;
+    accuracy: number;
+  };
+}
+
+export interface Geolocation {
+  lat: number;
+  lng: number;
+}
+
+export interface Circle {
+  center: number;
+  radius: number;
+  getBounds: Function;
+}
+
+export interface Autocomplete {
+  setBounds: Function;
+  addListener: Function;
+  getPlace: Function;
+}

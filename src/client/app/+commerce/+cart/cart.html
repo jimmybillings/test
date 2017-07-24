@@ -12,16 +12,17 @@
       <md-tab-group [(selectedIndex)]="selectedTabIndex">
         <md-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
           <ng-template md-tab-label>{{ tabLabelKey | uppercase }}</ng-template>
-          <cart-tab-component 
-            *ngIf="tabLabelKey === 'cart'" 
+          <cart-tab-component
+            *ngIf="tabLabelKey === 'cart'"
             (notify)="onNotification($event)">
           </cart-tab-component>
           <cart-billing-tab-component 
             *ngIf="tabLabelKey === 'billing'" 
+            [loaded]="selectedTabIndex === 1"
             (notify)="onNotification($event)">
           </cart-billing-tab-component>
           <cart-payment-tab-component 
-            *ngIf="tabLabelKey === 'payment'" 
+            *ngIf="tabLabelKey === 'payment'"
             (notify)="onNotification($event)">
           </cart-payment-tab-component>
           <cart-confirm-tab-component 
