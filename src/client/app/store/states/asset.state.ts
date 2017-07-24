@@ -1,7 +1,5 @@
-import { Action } from '@ngrx/store';
-
-import { Asset } from '../interfaces/common.interface';
 import * as AssetActions from '../actions/asset.actions';
+import { Asset } from '../../shared/interfaces/common.interface';
 
 export interface State {
   currentAsset: Asset;
@@ -13,13 +11,13 @@ export const initialState: State = {
   loaded: false
 };
 
-export function reducer(state: State = initialState, action: AssetActions.All): State {
+export function reducer(state: State = initialState, action: AssetActions.Any): State {
   switch (action.type) {
-    case AssetActions.LOAD: {
-      return JSON.parse(JSON.stringify(initialState));
+    case AssetActions.Load.Type: {
+      return { ...JSON.parse(JSON.stringify(state)), loaded: false };
     }
 
-    case AssetActions.LOAD_SUCCESS: {
+    case AssetActions.LoadSuccess.Type: {
       return { currentAsset: action.payload, loaded: true };
     }
 

@@ -1,20 +1,14 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+
 import { Collection } from '../../interfaces/collection.interface';
 import { Asset } from '../../interfaces/common.interface';
 import { Capabilities } from '../../services/capabilities.service';
-import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
+import { Frame } from 'wazee-frame-formatter';
 import { AssetService } from '../../../shared/services/asset.service';
 import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
+import { AppStore } from '../../../app.store';
 
 export class WzAsset {
-  public currentCollection: Collection;
-  @Output() onAddToCollection = new EventEmitter();
-  @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onAddToCart = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
   @Output() onShowSpeedview = new EventEmitter();
@@ -36,33 +30,34 @@ export class WzAsset {
 
   @Input() public userCan: Capabilities;
   @Input() public assetType: string = 'search';
-  @Input() public set collection(value: Collection) {
-    this.currentCollection = value;
-    this.assetIdsInCurrentCollection = value.assets.items.map((x) => x.assetId);
+  @Input() public set activeCollection(value: Collection) {
+    this._activeCollection = value;
+    this.assetIdsInActiveCollection = value.assets.items.map((x) => x.assetId);
   };
+
+  public get activeCollection(): Collection {
+    return this._activeCollection;
+  }
 
   public assetId: number;
   public hasComp: boolean;
   private _assets: Asset[];
-  private assetIdsInCurrentCollection: number[] = [];
+  private assetIdsInActiveCollection: number[] = [];
   private enhancedAssets: { [lookupId: string]: EnhancedAsset } = {};
+  private _activeCollection: Collection;
 
-  constructor(private assetService: AssetService) { }
+  constructor(private assetService: AssetService, private store: AppStore) { }
 
   public get assets(): Asset[] {
     return this._assets;
   }
 
-  public addToCollection(collection: Collection, asset: Asset) {
-    this.onAddToCollection.emit({
-      'collection': collection, 'asset': asset
-    });
+  public addToActiveCollection(asset: Asset) {
+    this.store.dispatch(factory => factory.activeCollection.addAsset(asset));
   }
 
-  public removeFromCollection(collection: Collection, asset: Asset) {
-    this.onRemoveFromCollection.emit({
-      'collection': collection, 'asset': asset
-    });
+  public removeFromActiveCollection(asset: Asset) {
+    this.store.dispatch(factory => factory.activeCollection.removeAsset(asset));
   }
 
   public addAssetToCart(asset: Asset) {
@@ -86,7 +81,7 @@ export class WzAsset {
   }
 
   public inCollection(asset: any): boolean {
-    return this.assetIdsInCurrentCollection.indexOf(asset.assetId) > -1;
+    return this.assetIdsInActiveCollection.indexOf(asset.assetId) > -1;
   }
 
   public nameOf(asset: Asset): string {
