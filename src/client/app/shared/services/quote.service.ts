@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
 import { CartService } from '../../shared/services/cart.service';
+import { UserService } from './user.service';
 import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
+import { User } from '../interfaces/user.interface';
 import { Observable } from 'rxjs/Observable';
 import {
   Quote,
@@ -27,7 +29,8 @@ export class QuoteService {
     private api: ApiService,
     private cartService: CartService,
     private quoteStore: QuoteStore,
-    private checkoutStore: CheckoutStore
+    private checkoutStore: CheckoutStore,
+    private userService: UserService
   ) { }
 
   // Store Accessors
@@ -73,10 +76,18 @@ export class QuoteService {
   }
 
   // Public Interface
-
   public getQuote(quoteId: number): Observable<Quote> {
+    let quote: Quote;
     return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-      .do((quote: Quote) => this.quoteStore.updateQuote(quote));
+      .flatMap((quoteResponse: Quote) => {
+        quote = quoteResponse;
+        return this.userService.getById(quote.createdUserId);
+      })
+      .do((user: User) => {
+        quote.createdUserFullName = user.emailAddress;
+        quote.createdUserEmailAddress = `${user.firstName} ${user.lastName}`;
+        this.quoteStore.updateQuote(quote);
+      });
   }
 
   public updateOrderInProgress(type: string, data: any): void {
@@ -132,9 +143,18 @@ export class QuoteService {
       expirationDate: new Date(newDate).toISOString(),
       quoteStatus: 'ACTIVE'
     });
-    return this.api.put(Api.Orders, `quote/${this.state.data.id}`, { body: newQuote }).do((quote: Quote) => {
-      this.quoteStore.replaceQuote(quote);
-    });
+    let quote: Quote;
+
+    return this.api.put(Api.Orders, `quote/${this.state.data.id}`, { body: newQuote })
+      .flatMap((quoteResponse: Quote) => {
+        quote = quoteResponse;
+        return this.userService.getById(quote.createdUserId);
+      })
+      .do((user: User) => {
+        quote.createdUserFullName = user.emailAddress;
+        quote.createdUserEmailAddress = `${user.firstName} ${user.lastName}`;
+        this.quoteStore.updateQuote(quote);
+      });
   }
 
   // Private Methods

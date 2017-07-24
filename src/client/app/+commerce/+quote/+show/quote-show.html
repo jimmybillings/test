@@ -43,7 +43,15 @@
             </span>
             <span>
               <strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
-              {{ (quote | async).purchaseType ? (quote | async).purchaseType : 'none' }}
+              {{ (quote | async).purchaseType || 'none' }}
+            </span>
+            <span>
+              <strong>{{ 'QUOTE.RECIPIENT_NAME' | translate }} </strong>
+              {{ (quote | async).createdUserFullName || 'N/A' }}
+            </span>
+            <span>
+              <strong>{{ 'QUOTE.RECIPIENT_EMAIL' | translate }} </strong>
+              {{ (quote | async).createdUserEmailAddress || 'N/A' }}
             </span>
             <span [ngClass]="{expired: isExpired}">
               <strong>{{ ( isExpired ? 'QUOTE.EXPIRED_LABEL' : 'QUOTE.EXPIRATION_LABEL') | translate }} </strong>

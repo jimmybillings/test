@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   describe('Quote Service', () => {
     let serviceUnderTest: QuoteService, mockApi: MockApiService, mockCartService: any,
-      mockQuoteStore: any, mockCheckoutStore: any, mockPaymentOptions: any;
+      mockQuoteStore: any, mockCheckoutStore: any, mockPaymentOptions: any, mockUserService: any;
 
     function setupFor(options: Array<PaymentOptions> = null) {
       mockPaymentOptions = options ? {
@@ -14,10 +14,9 @@ export function main() {
         explanation: 'Please select either of the payment options below',
         noCheckout: false
       } : null;
-
       mockCheckoutStore = { data: Observable.of({ paymentOptions: mockPaymentOptions }) };
 
-      return new QuoteService(null, null, null, mockCheckoutStore);
+      return new QuoteService(null, null, null, mockCheckoutStore, mockUserService);
     }
 
     beforeEach(() => {
@@ -29,11 +28,15 @@ export function main() {
       mockQuoteStore = {
         data: Observable.of({ data: { id: 3, ownerUserId: 10, itemCount: 1 } }),
         state: { data: { id: 3, ownerUserId: 10, itemCount: 1 } },
-        updateQuote: jasmine.createSpy('updateQuote')
+        updateQuote: jasmine.createSpy('updateQuote'),
+        addToQuote: jasmine.createSpy('addToQuote')
+      };
+      mockUserService = {
+        getById: jasmine.createSpy('getById').and.returnValue(Observable.of({}))
       };
       mockCheckoutStore = { updateOrderInProgress: jasmine.createSpy('updateOrderInProgress') };
       jasmine.addMatchers(mockApiMatchers);
-      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockQuoteStore, mockCheckoutStore);
+      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockQuoteStore, mockCheckoutStore, mockUserService);
     });
 
     describe('data getter', () => {
@@ -57,7 +60,8 @@ export function main() {
     });
 
     describe('getQuote', () => {
-      it('should call the api service correctly', () => {
+      it('should call the api service correctly to get a quote', () => {
+        mockApi.getResponse = {}
         serviceUnderTest.getQuote(1).take(1).subscribe();
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/1');
@@ -73,14 +77,14 @@ export function main() {
     describe('paymentOptionsEqual()', () => {
       describe('returns false', () => {
         it('when the store\'s paymentOptions don\'t contain the option to check', () => {
-          serviceUnderTest = setupFor(['Hold']);
+          serviceUnderTest = setupFor(['Hold'] as any);
           serviceUnderTest.paymentOptionsEqual(['CreditCard']).take(1).subscribe((result: boolean) => {
             expect(result).toBe(false);
           });
         });
 
         it('when the store\'s paymentOptions DO contain the option to check, but the lengths are different', () => {
-          serviceUnderTest = setupFor(['Hold']);
+          serviceUnderTest = setupFor(['Hold'] as any);
           serviceUnderTest.paymentOptionsEqual(['Hold', 'CreditCard']).take(1).subscribe((result: boolean) => {
             expect(result).toBe(false);
           });
@@ -89,14 +93,14 @@ export function main() {
 
       describe('returns true', () => {
         it('when the store\'s paymentOptions contain only the option to check', () => {
-          serviceUnderTest = setupFor(['Hold']);
+          serviceUnderTest = setupFor(['Hold'] as any);
           serviceUnderTest.paymentOptionsEqual(['Hold']).take(1).subscribe((result: boolean) => {
             expect(result).toBe(true);
           });
         });
 
         it('when the payment options contain both options AND the lengths are the same', () => {
-          serviceUnderTest = setupFor(['CreditCard', 'PurchaseOnCredit']);
+          serviceUnderTest = setupFor(['CreditCard', 'PurchaseOnCredit'] as any);
           serviceUnderTest.paymentOptionsEqual(['CreditCard', 'PurchaseOnCredit']).take(1).subscribe((result: boolean) => {
             expect(result).toBe(true);
           });

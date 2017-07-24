@@ -17,6 +17,10 @@ export class UserService {
     return this.api.get(Api.Identities, 'user/currentUser');
   }
 
+  public getById(id: number): Observable<any> {
+    return this.api.get(Api.Identities, 'user/' + id);
+  }
+
   public create(user: Object): Observable<any> {
     return this.api.post(Api.Identities, 'user/register',
       { body: user, loadingIndicator: true }
