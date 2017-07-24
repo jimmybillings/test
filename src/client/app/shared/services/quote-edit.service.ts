@@ -21,6 +21,7 @@ import { ActiveQuoteStore } from '../stores/active-quote.store';
 
 import { FeeConfigStore } from '../stores/fee-config.store';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
+import { Common } from '../utilities/common.functions';
 
 @Injectable()
 export class QuoteEditService {
@@ -79,6 +80,20 @@ export class QuoteEditService {
   // Public Api
   public createQuote(): Observable<Quote> {
     return this.api.post(Api.Orders, 'quote', { loading: true })
+      .do(this.replaceQuote);
+  }
+
+  public cloneQuote(quote: Quote): Observable<Quote> {
+    let clonedQuote: Quote = JSON.parse(JSON.stringify(quote));
+    Common.deletePropertiesFromObject(
+      clonedQuote,
+      ['id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus']
+    );
+    return this.api.post(Api.Orders, 'quote',
+      {
+        loading: true,
+        body: clonedQuote
+      })
       .do(this.replaceQuote);
   }
 

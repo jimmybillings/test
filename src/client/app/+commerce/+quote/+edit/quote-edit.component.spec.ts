@@ -1,5 +1,6 @@
 import { QuoteEditComponent } from './quote-edit.component';
 import { Observable } from 'rxjs/Observable';
+import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 
 export function main() {
   describe('Quote Edit Component', () => {
@@ -8,7 +9,12 @@ export function main() {
       mockErrorStore: any, mockDocument: any, mockSnackbar: any, mockTranslateService: any;
 
     beforeEach(() => {
+      mockCapabilities = {
+        cloneQuote: jasmine.createSpy('cloneQuote')
+      };
       mockQuoteEditService = {
+        state: { data: 'store' },
+        data: { store: 'test data' },
         quoteId: 1,
         addFeeTo: jasmine.createSpy('addFeeTo'),
         removeFee: jasmine.createSpy('removeFee'),
@@ -17,7 +23,8 @@ export function main() {
         sendQuote: jasmine.createSpy('sendQuote').and.returnValue(Observable.of({})),
         editLineItem: jasmine.createSpy('editLineItem'),
         deleteQuote: jasmine.createSpy('deleteQuote').and.returnValue(Observable.of({})),
-        createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({}))
+        createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({})),
+        cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({}))
       };
 
       mockUiConfig = {
@@ -164,6 +171,14 @@ export function main() {
           expect(mockQuoteEditService.editLineItem).toHaveBeenCalledWith({ id: 1, multiplier: 2 }, { multiplier: 1 });
         });
       });
+
+      describe('DEFAULT', () => {
+        it('Should call the parent class default onNotifcation because no case matches', () => {
+          spyOn(CommerceEditTab.prototype, 'onNotification');
+          componentUnderTest.onNotification({ type: 'TEST', payload: { test: 'test' } });
+          expect(CommerceEditTab.prototype.onNotification).toHaveBeenCalled();
+        });
+      });
     });
 
     describe('openQuoteDialog', () => {
@@ -298,6 +313,13 @@ export function main() {
       });
     });
 
+    describe('shouldShowCloneButton()', () => {
+      it('Should call the cloneQuote capability with the quote edit store', () => {
+        const shouldShowCloneButton = componentUnderTest.shouldShowCloneButton;
+        expect(mockCapabilities.cloneQuote).toHaveBeenCalledWith(mockQuoteEditService.data);
+      });
+    });
+
     describe('addBulkOrderId()', () => {
       describe('calls openFormDialog() on the dialog service with the correct arguments', () => {
         it('for a known property', () => {
@@ -345,18 +367,42 @@ export function main() {
       });
     });
 
-    describe('createQuote()', () => {
+    describe('onCreateQuote()', () => {
       it('Calls the quote service createQuote method', () => {
-        spyOn(componentUnderTest, 'showSnackBar');
         componentUnderTest.onCreateQuote();
 
         expect(mockQuoteEditService.createQuote).toHaveBeenCalled();
+      });
+
+      it('Shows a snack bar after creating a quote', () => {
+        spyOn(componentUnderTest, 'showSnackBar');
+        componentUnderTest.onCreateQuote();
+
         expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
           key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED',
           value: null
         });
       });
     });
+
+    describe('onCloneQuote()', () => {
+      it('Calls the quote service createQuote method', () => {
+        componentUnderTest.onCloneQuote();
+
+        expect(mockQuoteEditService.cloneQuote).toHaveBeenCalledWith('store');
+      });
+
+      it('Shows a snack bar after creating a quote', () => {
+        spyOn(componentUnderTest, 'showSnackBar');
+        componentUnderTest.onCloneQuote();
+
+        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
+          key: 'QUOTE.CLONE_SUCCESS',
+          value: null
+        });
+      });
+    });
+
 
     describe('editDiscount()', () => {
       describe('calls openFormDialog() on the dialog service with the correct arguments', () => {

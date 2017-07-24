@@ -6,6 +6,13 @@ export function main() {
 
     beforeEach(() => {
       componentUnderTest = new AdministerQuoteComponent();
+      componentUnderTest.userCanProceed = false;
+    });
+
+    describe('canOpenQuoteDialog', () => {
+      it('Should emit the onSaveAndNew event', () => {
+        expect(componentUnderTest.canOpenQuoteDialog).toEqual(false);
+      });
     });
 
     describe('onSaveAndNew()', () => {
@@ -44,6 +51,16 @@ export function main() {
         componentUnderTest.onSaveAsDraft();
 
         expect(componentUnderTest.saveAsDraft.emit).toHaveBeenCalled();
+
+      });
+    });
+
+    describe('onCloneQuote()', () => {
+      it('Should emit the saveAsDraft event', () => {
+        spyOn(componentUnderTest.cloneQuote, 'emit');
+        componentUnderTest.onCloneQuote();
+
+        expect(componentUnderTest.cloneQuote.emit).toHaveBeenCalled();
 
       });
     });

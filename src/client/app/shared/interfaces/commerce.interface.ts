@@ -20,7 +20,8 @@ export interface Project {
   clientName: string;
   subtotal: number;
   creditMemoForProjectId?: number;
-  lineItems?: Array<AssetLineItem | FeeLineItem>;
+  lineItems?: Array<AssetLineItem>;
+  feeLineItems?: Array<FeeLineItem>;
   attributes?: Array<SelectedPriceAttributes>;
   [index: string]: any;
 }

@@ -9,6 +9,13 @@
   <div layout="column" layout-align="center end">
     <div flex="100" layout-padding>
       <button
+          *ngIf="shouldShowCloneButton | async"
+          md-button
+          class="large-text is-outlined"
+          (click)="onCloneQuote()">
+          {{ 'QUOTE.CLONE_QUOTE' | translate }}
+        </button>
+      <button
         *ngIf="shouldShowExpireQuoteButton"
         md-button
         color="warn"

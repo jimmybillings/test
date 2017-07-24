@@ -11,12 +11,13 @@ import { UserPreferenceService } from '../../../shared/services/user-preference.
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
-import { QuoteOptions, Project, FeeLineItem, Quote, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
+import { QuoteOptions, Project, FeeLineItem, Quote, AssetLineItem, QuoteState } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   moduleId: module.id,
@@ -98,6 +99,10 @@ export class QuoteEditComponent extends CommerceEditTab {
     return (this.hasProperty('discount') && this.quoteType !== 'ProvisionalOrder') ? true : false;
   }
 
+  public get shouldShowCloneButton(): Observable<boolean> {
+    return this.userCan.cloneQuote(this.quoteEditService.data);
+  }
+
   public addBulkOrderId(): void {
     this.dialogService.openFormDialog(
       this.mergeFormValues(this.config.addBulkOrderId.items, 'bulkOrderId'),
@@ -137,6 +142,17 @@ export class QuoteEditComponent extends CommerceEditTab {
       accept: 'QUOTE.DELETE.ACCEPT',
       decline: 'QUOTE.DELETE.DECLINE'
     }, this.deleteQuote);
+  }
+
+  public onCloneQuote() {
+    this.quoteEditService.cloneQuote(this.quoteEditService.state.data)
+      .do(() => {
+        this.showSnackBar({
+          key: 'QUOTE.CLONE_SUCCESS',
+          value: null
+        });
+      })
+      .subscribe();
   }
 
   public onCreateQuote() {

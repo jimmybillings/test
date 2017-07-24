@@ -145,7 +145,7 @@ export class QuoteService {
       Api.Orders,
       `quote/${this.state.data.id}/stripe/process`,
       { body: { options }, loading: true }
-    ).map(_ => _ as Number);
+    ).map(_ => _ as number);
   }
 
   private purchaseOnCredit(): Observable<number> {

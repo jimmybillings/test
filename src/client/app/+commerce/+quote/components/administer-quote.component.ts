@@ -8,6 +8,13 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
       <div class="create-quote-actions">
         <button
           md-button
+          [disabled]="!shouldShowCloneButton"
+          class="large-text is-outlined"
+          (click)="onCloneQuote()">
+          {{ 'QUOTE.CLONE_QUOTE' | translate }}
+        </button>
+        <button
+          md-button
           class="large-text is-outlined"
           (click)="onSaveAndNew()">
           {{ 'QUOTE.SAVE_AND_NEW' | translate }}
@@ -31,10 +38,12 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 })
 export class AdministerQuoteComponent {
   @Input() public userCanProceed: boolean;
+  @Input() public shouldShowCloneButton: boolean;
   @Output() public saveAsDraft: EventEmitter<null> = new EventEmitter();
   @Output() public openQuoteDialog: EventEmitter<null> = new EventEmitter();
   @Output() public openDeleteDialog: EventEmitter<null> = new EventEmitter();
   @Output() public saveAndNew: EventEmitter<null> = new EventEmitter();
+  @Output() public cloneQuote: EventEmitter<null> = new EventEmitter();
 
   public get canOpenQuoteDialog() {
     return this.userCanProceed;
@@ -50,6 +59,10 @@ export class AdministerQuoteComponent {
 
   public onOpenQuoteDialog() {
     this.openQuoteDialog.emit();
+  }
+
+  public onCloneQuote() {
+    this.cloneQuote.emit();
   }
 
   public onSaveAsDraft() {

@@ -5,6 +5,7 @@ import { UiState } from '../../shared/services/ui.state';
 import { FeatureStore } from '../../shared/stores/feature.store';
 import { Feature } from '../../shared/interfaces/feature.interface';
 import { Address, ViewAddress } from '../../shared/interfaces/user.interface';
+import { Project, Quote, QuoteState } from '../../shared/interfaces/commerce.interface';
 
 @Injectable()
 export class CommerceCapabilities {
@@ -46,6 +47,17 @@ export class CommerceCapabilities {
 
   public administerQuotes(): boolean {
     return this.userHas('AdministerQuotes');
+  }
+
+  public cloneQuote(quoteObservable: Observable<QuoteState>): Observable<boolean> {
+    return quoteObservable.map((quoteState: QuoteState) => {
+      const quote: Quote = quoteState.data;
+      if (quote.projects) {
+        return quote.projects
+          .filter((project: Project) => project.lineItems || project.feeLineItems)
+          .length > 0 && this.administerQuotes();
+      } else { return false; }
+    });
   }
 
   public userHas(permission: string): boolean {

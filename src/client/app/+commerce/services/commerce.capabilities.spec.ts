@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 
 import { CommerceCapabilities } from './commerce.capabilities';
+import { QuoteState } from '../../shared/interfaces/commerce.interface';
 
 export function main() {
   describe('Cart Capabilities', () => {
@@ -80,34 +81,34 @@ export function main() {
     });
 
     describe('editAddress', () => {
-      it('should return true for an address of type "User" that has a valid address', () => {
+      it('should return true for an address of type \'User\' that has a valid address', () => {
         let addr: any = { type: 'User', address: {} };
         expect(capabilitiesUnderTest.editAddress(addr)).toBe(true);
       });
 
-      it('should return false for an address of type "Account" that has a valid address', () => {
+      it('should return false for an address of type \'Account\' that has a valid address', () => {
         let addr: any = { type: 'Account', address: {} };
         expect(capabilitiesUnderTest.editAddress(addr)).toBe(false);
       });
 
-      it('should return false for an address of type "User" that does not have a valid address', () => {
+      it('should return false for an address of type \'User\' that does not have a valid address', () => {
         let addr: any = { type: 'Account' };
         expect(capabilitiesUnderTest.editAddress(addr)).toBe(false);
       });
     });
 
     describe('addAddress', () => {
-      it('should return false for an address of type "User" that has a valid address', () => {
+      it('should return false for an address of type \'User\' that has a valid address', () => {
         let addr: any = { type: 'User', address: {} };
         expect(capabilitiesUnderTest.addAddress(addr)).toBe(false);
       });
 
-      it('should return false for an address of type "Account" that does not have a valid address', () => {
+      it('should return false for an address of type \'Account\' that does not have a valid address', () => {
         let addr: any = { type: 'Account' };
         expect(capabilitiesUnderTest.addAddress(addr)).toBe(false);
       });
 
-      it('should return true for an address of type "User" that does not have a valid address', () => {
+      it('should return true for an address of type \'User\' that does not have a valid address', () => {
         let addr: any = { type: 'User' };
         expect(capabilitiesUnderTest.addAddress(addr)).toBe(true);
       });
@@ -127,7 +128,7 @@ export function main() {
         expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(false);
       });
 
-      it('should return false if the address is of type "User"', () => {
+      it('should return false if the address is of type \'User\'', () => {
         addr = { type: 'User', address: {} };
         hasPermission = true;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
@@ -163,7 +164,7 @@ export function main() {
         expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(false);
       });
 
-      it('should return false if the address is of type "User"', () => {
+      it('should return false if the address is of type \'User\'', () => {
         addr = { type: 'User' };
         hasPermission = true;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
@@ -182,6 +183,151 @@ export function main() {
         hasPermission = true;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(true);
+      });
+    });
+
+    describe('cloneQuote()', () => {
+
+      const oneAsset = {
+        'data': {
+          'lastUpdated': '2017-07-23T18:41:21Z',
+          'createdOn': '2017-07-23T18:20:00Z',
+          'id': 282,
+          'siteName': 'commerce',
+          'projects': [
+            {
+              'name': '2017-04-27',
+              'id': '390bec17-929b-452d-a2f4-27b7b04cb6ea',
+              'lineItems': [
+                {
+                  'asset': {
+                    'assetId': 33737670
+                  },
+                  'id': 'f642f893-f4cf-4a3c-ad5e-dc2d0cd1a321',
+                  'subTotal': 159
+                }
+              ],
+              'assetLineItemSubtotal': 159,
+              'feeLineItemSubtotal': 0,
+              'totalAmount': 79.5,
+              'subTotal': 159
+            }
+          ]
+        }
+      };
+
+      const onFeeItem = {
+        'data': {
+          'lastUpdated': '2017-07-23T18:48:15Z',
+          'createdOn': '2017-07-23T18:20:00Z',
+          'id': 282,
+          'siteName': 'commerce',
+          'projects': [
+            {
+              'name': '2017-04-27',
+              'id': '390bec17-929b-452d-a2f4-27b7b04cb6ea',
+              'feeLineItems': [
+                {
+                  'amount': 60,
+                  'feeType': 'Research',
+                  'notes': '',
+                  'id': '3902a6f0-588f-4bfd-a0ee-2c02c864658f'
+                }
+              ],
+              'assetLineItemSubtotal': 0,
+              'feeLineItemSubtotal': 60,
+              'totalAmount': 60,
+              'subTotal': 60
+            }
+          ]
+        }
+      };
+
+      const oneFeeItemAndOneAsset = {
+        'data': {
+          'lastUpdated': '2017-07-23T18:46:52Z',
+          'createdOn': '2017-07-23T18:20:00Z',
+          'id': 282,
+          'siteName': 'commerce',
+          'projects': [{
+            'name': '2017-04-27',
+            'id': '390bec17-929b-452d-a2f4-27b7b04cb6ea',
+            'lineItems': [{
+              'asset': {
+                'assetId': 33737670
+              },
+              'id': 'f642f893-f4cf-4a3c-ad5e-dc2d0cd1a321',
+              'subTotal': 159
+            }],
+            'feeLineItems': [{
+              'amount': 60,
+              'feeType': 'Research',
+              'notes': '',
+              'id': '3902a6f0-588f-4bfd-a0ee-2c02c864658f'
+            }],
+            'assetLineItemSubtotal': 159,
+            'feeLineItemSubtotal': 60,
+            'totalAmount': 139.5,
+            'subTotal': 219
+          }]
+        }
+      };
+
+      const noFeeItemOrAsset = {
+        'data': {
+          'lastUpdated': '2017-07-23T18:49:05Z',
+          'createdOn': '2017-07-23T18:20:00Z',
+          'id': 282,
+          'siteName': 'commerce',
+          'projects': [
+            {
+              'name': '2017-04-27',
+              'id': '390bec17-929b-452d-a2f4-27b7b04cb6ea',
+              'assetLineItemSubtotal': 0,
+              'feeLineItemSubtotal': 0,
+              'totalAmount': 0,
+              'subTotal': 0
+            }
+          ]
+        }
+      };
+
+      let hasPermission: boolean = true;
+      let mockCurrentUserService: any;
+      beforeEach(() => {
+        mockCurrentUserService = { hasPermission: () => hasPermission };
+      });
+
+      it('Should return true if a user has at least one asset', () => {
+        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature)
+          .cloneQuote(Observable.of(oneAsset) as any)
+          .subscribe((result: boolean) => {
+            expect(result).toBe(true);
+          });
+      });
+
+      it('Should return true if a user has at least one fee item', () => {
+        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature)
+          .cloneQuote(Observable.of(onFeeItem) as any)
+          .subscribe((result: boolean) => {
+            expect(result).toBe(true);
+          });
+      });
+
+      it('Should return true if a user has both at least one asset AND one fee item', () => {
+        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature)
+          .cloneQuote(Observable.of(oneFeeItemAndOneAsset) as any)
+          .subscribe((result: boolean) => {
+            expect(result).toBe(true);
+          });
+      });
+
+      it('Should return false if a user no assets or fee items', () => {
+        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature)
+          .cloneQuote(Observable.of(noFeeItemOrAsset) as any)
+          .subscribe((result: boolean) => {
+            expect(result).toBe(false);
+          });
       });
     });
 
