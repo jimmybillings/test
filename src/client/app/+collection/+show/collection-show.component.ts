@@ -1,4 +1,6 @@
-import { Component, OnInit, OnDestroy, Renderer, ViewChild, ChangeDetectionStrategy, Inject } from '@angular/core';
+import {
+  Component, OnInit, OnDestroy, Renderer, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Inject
+} from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Collection, CollectionsStoreI } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
@@ -68,14 +70,21 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
     @Inject(DOCUMENT) private document: any,
-    private store: AppStore) {
+    private store: AppStore,
+    private changeDetectorRef: ChangeDetectorRef) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
   }
 
   ngOnInit() {
     this.activeCollectionSubscription =
-      this.store.select(state => state.activeCollection.collection).subscribe(collection => this.activeCollection = collection);
+      this.store.select(state => state.activeCollection.collection).subscribe(collection => {
+        this.activeCollection = collection;
+        // The view needs to update whenever the activeCollection changes (including individual assets).  This is
+        // a direct store subscription, not an @Input(), so we have to trigger change detection ourselves.
+        this.changeDetectorRef.markForCheck();
+      });
+
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
   }
 
