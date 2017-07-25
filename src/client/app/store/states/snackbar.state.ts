@@ -1,9 +1,9 @@
 import * as SnackbarActions from '../actions/snackbar.actions';
-import { Poj } from '../../shared/interfaces/common.interface';
+import { Pojo } from '../../shared/interfaces/common.interface';
 
 export interface State {
   messageKey: string;
-  messageParameters: Poj;
+  messageParameters: Pojo;
   translatedMessage: string;
 };
 
