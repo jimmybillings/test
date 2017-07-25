@@ -9,7 +9,7 @@ export function main() {
       mockWindow = { nativeWindow: { location: { href: {} }, innerWidth: 200 } };
       componentUnderTest = new CollectionShowComponent(
         null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, mockWindow, null, null, null, null
+        null, null, null, null, null, null, mockWindow, null, null, null, null, null
       );
     });
 
