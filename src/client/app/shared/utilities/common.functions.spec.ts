@@ -1,7 +1,7 @@
 import { Common } from './common.functions';
 
 export function main() {
-  describe('Commone Functions', () => {
+  describe('Common Functions', () => {
 
     describe('deletePropertiesFromObject', () => {
 
