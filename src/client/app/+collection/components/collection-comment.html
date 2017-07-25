@@ -1,0 +1,40 @@
+<section class="collection-comments" layout-gt-sm="row" layout="column" layout-align="space-between stretch">
+
+  <div flex="40"> 
+    <div layout="column" layout-align="center center" layout-padding class="new-comment">
+      <h1 md-dialog-title>Add a comment</h1>
+      <wz-form
+        [items]="formFields"
+        [submitLabel]="'post'"
+        (formSubmit)="onCommentSubmit($event)">
+      </wz-form>
+    </div> 
+  </div>
+
+  <div flex="60">
+    <div *ngIf="comments.length" layout="column" layout-align="start stretch" class="comments">
+      <div
+        class="md-display comment"
+        *ngFor="let comment of comments; let even = even; let odd = odd"
+        [ngClass]="{ odd: odd, even: even }">
+        <header class="comment-head" layout="row" layout-align="space-between center">
+          <div layout="row" layout-align="start center">
+            <div class="avatar" layout-align="center center"><p>{{initials(comment)}}</p></div>
+            <div>
+              <p><strong>{{comment.author}}</strong></p>
+              <p>{{comment.createdOn | date:'short' }}</p>
+            </div>
+          </div>
+          <div layout-gt-sm="row" layout="column" layout-align="center center">
+            <button md-icon-button title="edit"><md-icon>mode_edit</md-icon></button>
+            <button md-icon-button title="delete"><md-icon>delete</md-icon></button>
+          </div>
+        </header>
+        <div class="comment-body">
+          <span>{{comment.message}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

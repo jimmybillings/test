@@ -3,6 +3,8 @@ import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiState } from '../../shared/services/ui.state';
 import { FeatureStore } from '../../shared/stores/feature.store';
 import { Feature } from '../../shared/interfaces/feature.interface';
+import { Collection } from '../../shared/interfaces/collection.interface';
+import { User } from '../../shared/interfaces/user.interface';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -24,6 +26,12 @@ export class CollectionCapabilities {
   public viewCollectionTray(): Observable<boolean> {
     return this.uiState.headerIsExpanded().map((headerIsExpanded) => {
       return this.haveCollections() && headerIsExpanded && this.userHas('ViewCollections');
+    });
+  }
+
+  public editCollection(collection: Collection): Observable<boolean> {
+    return this.currentUser.data.map((user: User) => {
+      return user.id === collection.owner || collection.editors.includes(user.id);
     });
   }
 

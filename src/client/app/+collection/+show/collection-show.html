@@ -37,11 +37,32 @@
 							</div>
 						</div>
 
-						<div flex-gt-xs="33" layout-md="100" flex="100" class="actions" layout-align="end center">
-							<button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="editCollection();resetCollection()"><md-icon>edit</md-icon></button>
-							<button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" [disabled]="true"><md-icon>share</md-icon></button>
-							<button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" [disabled]="true"><md-icon>mode_comment</md-icon></button>
-							<button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreShowCollectionOptions"><md-icon>more_vert</md-icon></button>
+            <div flex-gt-xs="33" layout-md="100" flex="100" class="actions" layout-align="end center">
+              <button
+                md-icon-button
+                title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}"
+                (click)="editCollection();resetCollection()">
+                  <md-icon>edit</md-icon>
+              </button>
+              <button
+                md-icon-button
+                title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}"
+                [disabled]="true">
+                  <md-icon>share</md-icon>
+              </button>
+              <button
+                md-icon-button
+                title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
+                (click)="toggleComments($event)"
+                *ngIf="showCommentButton | async">
+                  <md-icon>mode_comment</md-icon>
+              </button>
+              <button
+                md-icon-button
+                title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}"
+                [md-menu-trigger-for]="moreShowCollectionOptions">
+                  <md-icon>more_vert</md-icon>
+              </button>
 
 							<md-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="mdMenu">
 								<button md-menu-item disabled><md-icon>file_download</md-icon>Download all comps</button>
@@ -64,7 +85,14 @@
 			</section>
 		</div>
 	</div>
+  <div layout="row" layout-align="center center">
+    <collection-comment-component
+      [ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
+      (commentSubmit)="onCommentSubmit($event)">
+    </collection-comment-component>
+  </div>
 </section>
+
 <section class="asset-results-header" layout="row" layout-align="center center">
 	<header flex-lg="90" flex-gt-lg="90" flex-gt-md="95" flex="100">
 		<div layout="row" layout-align="space-between end">
@@ -81,6 +109,7 @@
 		</div>
 	</header>
 </section>
+
 <section class="search-results">
 	<div layout="row" md-scroll-y="" layout-align="center start">
 		<div flex-lg="90" flex-gt-lg="90" flex-gt-md="95" flex="100">
@@ -118,4 +147,3 @@
 </section>
 
 <wz-speedview></wz-speedview>
-

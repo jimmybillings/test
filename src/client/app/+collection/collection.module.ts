@@ -8,6 +8,7 @@ import { CollectionShowResolver } from '../+collection/services/collection-show.
 import { CollectionGuard } from './services/collection-guard';
 import { WzCollectionItemListComponent } from './components/wz.collection-item-list.component';
 import { CollectionDeleteComponent } from './components/collection-delete.component';
+import { CollectionCommentComponent } from './components/collection-comment.component';
 import { CollectionComponent } from './collection.component';
 
 @NgModule({
@@ -17,7 +18,9 @@ import { CollectionComponent } from './collection.component';
     CollectionsComponent,
     CollectionShowComponent,
     WzCollectionItemListComponent,
-    CollectionDeleteComponent],
+    CollectionDeleteComponent,
+    CollectionCommentComponent
+  ],
   exports: [CollectionComponent, CollectionsComponent, CollectionShowComponent],
   providers: [CollectionShowResolver, CollectionGuard],
   entryComponents: [CollectionDeleteComponent]

@@ -21,6 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
+import { CollectionCommentComponent } from '../components/collection-comment.component';
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
@@ -46,6 +47,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public errorMessage: string;
   public config: Object;
   public screenWidth: number;
+  public showComments: boolean;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
   @ViewChild(WzSpeedviewComponent) private wzSpeedview: WzSpeedviewComponent;
@@ -260,5 +262,17 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public onChangeAssetView(assetView: any): void {
     this.userPreference.updateAssetViewPreference(assetView);
+  }
+
+  public get showCommentButton(): Observable<boolean> {
+    return this.userCan.editCollection(this.activeCollection);
+  }
+
+  public toggleComments(event: any): void {
+    this.showComments = !this.showComments;
+  }
+
+  public onCommentSubmit(comment: { message: string, visibility: string }) {
+    console.log(comment);
   }
 }

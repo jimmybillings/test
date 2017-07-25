@@ -1,0 +1,66 @@
+collection-comment-component {
+  width: 95%;
+  // animation: showCollectionComments;
+  // animation-direction: alternate;
+  // animation-duration: 300ms;
+  // animation-timing-function: cubic-bezier(0, .8, 1, 1);
+  .new-comment {
+    height: 280px;
+    margin: 10px;
+    wz-form {
+      width: 80%;
+    }
+  }
+  .comments {
+    margin: 10px;
+    height: 280px;
+    overflow-y: scroll;
+    .comment {
+      margin: -1px;
+      width: 100%;
+      .comment-head {
+        margin: 0 20px;
+        padding: 6px 0;
+        font-size: 14px;
+        button[md-icon-button] md-icon {
+          @include md-title();
+        }
+        p {
+          margin: 2px;
+        }
+        div.avatar {
+          width: 40px;
+          height: 40px;
+          padding: 5px;
+          margin-right: 10px;
+          border-radius: 50%;
+          p {
+            width: 20px;
+            height: 20px;
+            font-weight: 600;
+            font-size: 22px;
+          }
+        }
+      }
+      .comment-body {
+        margin: 0 20px;
+        padding: 10px 0;
+      }
+    }
+  }
+  &.not-visible {
+    display: none;
+  }
+}
+
+@keyframes showCollectionComments {
+  0% {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+  }
+  100% {
+    opacity: 1;
+    height: 300px;
+  }
+}

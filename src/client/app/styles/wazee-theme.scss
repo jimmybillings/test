@@ -5,6 +5,7 @@
 
 @import '../+collection/+index/collections-theme';
 @import '../+collection/+show/collection-show-theme';
+@import '../+collection/components/collection-comment-theme';
 
 @import '../+commerce/+cart/cart-theme';
 @import '../+commerce/+order/+show/order-show-theme';
@@ -72,6 +73,7 @@
 
   @include wz-collections-theme($theme);
   @include wz-collection-show-theme($theme);
+  @include wz-collection-comment-theme($theme);
 
   @include wz-cart-theme($theme);
   @include wz-order-show-theme($theme);
