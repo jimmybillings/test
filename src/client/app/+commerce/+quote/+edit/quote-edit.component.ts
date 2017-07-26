@@ -174,11 +174,11 @@ export class QuoteEditComponent extends CommerceEditTab {
     this.dialogService.openFormDialog(
       this.config.bulkImport.items,
       { title: 'QUOTE.BULK_IMPORT.TITLE', submitLabel: 'QUOTE.BULK_IMPORT.SUBMIT_BTN', autocomplete: 'off' },
-      (form: { assets: string }) => {
+      (form: { lineItemAttributes: string }) => {
         this.quoteEditService.bulkImport(form, projectId).do(() => {
           this.showSnackBar({
             key: 'QUOTE.BULK_IMPORT.CONFIRMATION',
-            value: { numOfAssets: form.assets.split('\n').length }
+            value: { numOfAssets: form.lineItemAttributes.split('\n').length }
           });
         }).subscribe();
       }

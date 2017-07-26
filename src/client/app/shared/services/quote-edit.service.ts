@@ -230,7 +230,7 @@ export class QuoteEditService {
     return this.api.get(Api.Orders, 'cart/licensing');
   }
 
-  public bulkImport(rawAssets: { assets: string }, projectId: string): Observable<Quote> {
+  public bulkImport(rawAssets: { lineItemAttributes: string }, projectId: string): Observable<Quote> {
     return this.api.put(Api.Orders, `quote/${this.state.data.id}/asset/direct/lineItem`, {
       body: rawAssets,
       parameters: { projectId }

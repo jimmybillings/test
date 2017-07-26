@@ -46,6 +46,7 @@ export function main() {
           expect(componentUnderTest.showRightsPricingBtn).toBe(false);
         });
       });
+
       describe('returns true', () => {
         it('when the quote type is OfflineAgreement and project has rights managed assets', () => {
           componentUnderTest.quoteType = 'OfflineAgreement';
@@ -64,6 +65,15 @@ export function main() {
           componentUnderTest.projectHasRmAssets = true;
           expect(componentUnderTest.showRightsPricingBtn).toBe(true);
         });
+      });
+    });
+
+    describe('onBulkImportClick', () => {
+      it('emits the \'bulkImport\' event', () => {
+        spyOn(componentUnderTest.bulkImport, 'emit');
+        componentUnderTest.onBulkImportClick();
+
+        expect(componentUnderTest.bulkImport.emit).toHaveBeenCalled();
       });
     });
   });
