@@ -15,7 +15,6 @@ export const ignoredFilePatterns: string[] = [
   'shared/modules/wz-dialog/components/index',
   'application',
   'app.store',
-  '*.actions',
   'store.spec-helper'
 ];
 

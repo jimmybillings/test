@@ -50,6 +50,19 @@ export interface EffectTestParameters {
   };
 };
 
+export interface ActionFactoryTestParameters {
+  comment?: string;
+  factoryMethod: {
+    class: any;
+    name: string;
+    parameters: any[];
+  };
+  expectedAction: {
+    type: string;
+    payload: any;
+  };
+}
+
 export class StoreSpecHelper {
   public readonly mockNgrxEffectsActionSubject: Subject<Action> = new Subject<Action>();
 
@@ -202,6 +215,21 @@ export class StoreSpecHelper {
 
   public actionCreatedBy(actionFactoryMethod: jasmine.Spy): any {
     return this.mockActionFrom(actionFactoryMethod.and.identity().replace('\'', '').split(' ')[0]);
+  }
+
+  public runStandardActionTestFor(parameters: ActionFactoryTestParameters): void {
+    const methodName: string = parameters.factoryMethod.name;
+    const optionalComment: string = parameters.comment ? ` (${parameters.comment})` : '';
+
+    describe(`${methodName}()`, () => {
+      it(`creates the expected action${optionalComment}`, () => {
+        const createdAction =
+          new parameters.factoryMethod.class()[methodName](...parameters.factoryMethod.parameters);
+
+        expect(createdAction.type).toEqual(parameters.expectedAction.type);
+        expect(createdAction.payload).toEqual(parameters.expectedAction.payload);
+      });
+    });
   }
 
   private mockActionFrom(actionFactoryMethodName: string): any {
