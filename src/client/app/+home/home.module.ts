@@ -6,6 +6,7 @@ import { HomeHighlightsComponent } from './components/home-highlights.component'
 import { HomeVendorMarqueeComponent } from './components/home-vendor-marquee.component';
 import { HomeCallToActionComponent } from './components/home-call-to-action.component';
 import { HomeResolver } from './services/home.resolver';
+import { HomeVideoService } from './services/home.video.service';
 
 @NgModule({
   imports: [SharedModule],
@@ -15,7 +16,7 @@ import { HomeResolver } from './services/home.resolver';
     HomeHighlightsComponent,
     HomeVendorMarqueeComponent,
     HomeCallToActionComponent],
-  providers: [HomeResolver],
+  providers: [HomeResolver, HomeVideoService],
   exports: [HomeComponent],
 })
 

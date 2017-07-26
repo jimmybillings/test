@@ -8,9 +8,12 @@ import { UiState } from '../shared/services/ui.state';
 import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { Router } from '@angular/router';
+import { HomeVideoService } from './services/home.video.service';
 
 import { GalleryViewService } from '../shared/services/gallery-view.service';
 import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from '../shared/interfaces/gallery-view.interface';
+
+declare var jwplayer: any;
 
 @Component({
   moduleId: module.id,
@@ -22,6 +25,9 @@ import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from
 export class HomeComponent implements OnInit, OnDestroy {
   public config: any;
   public data: Observable<Gallery>;
+  public heroVideo: any;
+  public isVideo: boolean = false;
+  public videoPlayer: any;
   private configSubscription: Subscription;
 
   constructor(
@@ -31,8 +37,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     private searchContext: SearchContext,
     private userPreference: UserPreferenceService,
     private galleryViewService: GalleryViewService,
+    private homeVideoService: HomeVideoService,
+
     private router: Router,
-    private filter: FilterService) { }
+    private filter: FilterService
+  ) { }
 
   ngOnInit() {
     this.configSubscription = this.uiConfig.get('home').subscribe((config) => {
@@ -40,6 +49,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
     if (this.currentUser.loggedIn() && this.config.galleryView) {
       this.data = this.galleryViewService.data;
+    }
+    if (this.config.heroContentType.value === 'video') {
+      this.getVideoPlaylist();
+      this.isVideo = true;
     }
   }
 
@@ -63,6 +76,28 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.searchContext.new({ gq: JSON.stringify(path), n: 100, i: 1, sortId: this.userPreference.state.sortId });
     }
   }
+
+  private getVideoPlaylist(): void {
+    this.homeVideoService.getVideo(this.config.heroContentId.value).take(1).subscribe((vid) => {
+      this.heroVideo = vid.playlist;
+      this.setUpVideo(this.heroVideo);
+    });
+  }
+  private setUpVideo(video: any): void {
+    this.videoPlayer = jwplayer('hero-video').setup({
+      autostart: true,
+      controls: false,
+      playlist: this.heroVideo,
+      androidhls: false,
+      mute: true,
+      repeat: true,
+      stretching: 'fill',
+      height: '100%',
+      width: '100%'
+    });
+  }
+
+
 
   private changeRouteFor(path: GalleryPath): void {
     const route: any[] = ['/gallery-view'];

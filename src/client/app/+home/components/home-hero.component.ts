@@ -1,9 +1,17 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+// import { WindowRef } from '../../shared/services/window-ref.service';
+// declare var jwplayer: any;
 
 @Component({
   moduleId: module.id,
   selector: 'home-hero',
   template: `
+    <div class="hero-video-container" *ngIf="isVideo">
+      <div class="hero-video" id="hero-video"></div>
+    </div>
+    <div class="hero-image-container" *ngIf="!isVideo">
+      <div class="hero-image"></div>
+    </div>
     <header class="hero">
       <div layout="row" md-scroll-y="" layout-align="center start" layout-padding>
         <div flex-gt-lg="35" flex-lg="40" flex-md="50" flex-gt-sm="55" flex-gt-xs="70" flex="100">
@@ -27,8 +35,11 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 })
 
 export class HomeHeroComponent {
+
   @Input() config: any;
   @Input() currentUser: any;
   @Input() uiState: any;
+  @Input() isVideo: boolean;
   @Output() searchContext: any = new EventEmitter();
+
 }
