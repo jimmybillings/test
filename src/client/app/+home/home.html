@@ -1,9 +1,10 @@
 <home-hero
   [config]="config"
   [currentUser]="currentUser" 
+  [isVideo]="isVideo"
   [uiState]="uiState"
   (searchContext)="newSearchContext($event)"
-  [ngClass]="{'gallery-home' : currentUser.loggedIn() && config.galleryView}">
+  [ngClass]="{'gallery-home' : currentUser.loggedIn() && config.galleryView, 'hero-v' : isVideo, 'hero-i' : !isVideo}">
 </home-hero>
 <home-highlights [config]="config" *ngIf="!currentUser.loggedIn() || !config.galleryView"></home-highlights>
 

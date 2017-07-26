@@ -217,8 +217,7 @@ header.app-header.search-closed + div.main-content asset-component {
 
 // pages that do not have options to open and close search and bins with a bk hero image or video (user, home)
 // currently the latest material header toolbar does not change sizes for mobile. If it does, then used the media query
-header.app-header + div.main-content user-component .hero,
-header.app-header + div.main-content home-component .hero {
+header.app-header + div.main-content user-component .hero {
   padding-top: rem(6.4);
   @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
     border-top-width: rem(4.8);
