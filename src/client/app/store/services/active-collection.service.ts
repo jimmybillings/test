@@ -16,12 +16,12 @@ export class ActiveCollectionService {
   constructor(private apiService: ApiService) { }
 
   public load(parameters: CollectionPaginationParameters): Observable<Collection> {
-    return this.apiService.get(Api.Assets, 'collectionSummary/focused', { loading: true }).
+    return this.apiService.get(Api.Assets, 'collectionSummary/focused', { loadingIndicator: true }).
       flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
   }
 
   public set(collectionId: number, parameters: CollectionPaginationParameters): Observable<Collection> {
-    return this.apiService.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loading: true }).
+    return this.apiService.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loadingIndicator: true }).
       flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
   }
 
@@ -29,7 +29,7 @@ export class ActiveCollectionService {
     return this.apiService.get(
       Api.Assets,
       `collectionSummary/assets/${collectionId}`,
-      { parameters: this.convertToApiParameters(parameters), loading: true }
+      { parameters: this.convertToApiParameters(parameters), loadingIndicator: true }
     ).map(this.convertToCollectionItems);
   }
 
@@ -39,7 +39,7 @@ export class ActiveCollectionService {
     };
 
     return this.apiService.post(
-      Api.Identities, 'collection/focused/addAssets', { body: { list: [assetInfo] }, loading: true }
+      Api.Identities, 'collection/focused/addAssets', { body: { list: [assetInfo] }, loadingIndicator: true }
     ).flatMap(response =>
       this.loadPage(activeCollection.id, { currentPage: 1, pageSize: activeCollection.assets.pagination.pageSize })
       );
@@ -53,7 +53,7 @@ export class ActiveCollectionService {
     if (!asset.uuid) asset = activeCollection.assets.items.find(otherAsset => otherAsset.assetId === asset.assetId);
 
     return this.apiService.post(
-      Api.Identities, `collection/focused/removeAssets`, { body: { list: [asset.uuid] }, loading: true }
+      Api.Identities, `collection/focused/removeAssets`, { body: { list: [asset.uuid] }, loadingIndicator: true }
     ).flatMap(response =>
       this.loadPage(activeCollection.id, { currentPage: pagination.currentPage, pageSize: pagination.pageSize })
       );
@@ -70,7 +70,7 @@ export class ActiveCollectionService {
     };
     const pagination: Pagination = activeCollection.assets.pagination;
 
-    return this.apiService.put(Api.Identities, `collection/focused/updateAsset`, { body: updater, loading: true })
+    return this.apiService.put(Api.Identities, `collection/focused/updateAsset`, { body: updater, loadingIndicator: true })
       .flatMap(response =>
         this.loadPage(activeCollection.id, { currentPage: pagination.currentPage, pageSize: pagination.pageSize })
       );
