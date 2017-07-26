@@ -150,7 +150,7 @@ export class QuoteService {
 
   // Private Methods
   private update(id: number, quote: Quote): Observable<Quote> {
-    return this.api.put(Api.Orders, `quote/${id}`, { body: quote, loadingIndicator: true });
+    return this.api.put(Api.Orders, `quote/${id}`, { body: quote, loadingIndicator: 'onBeforeRequest' });
   }
 
   private loadForAdminUser(quoteId: number): Observable<Quote> {

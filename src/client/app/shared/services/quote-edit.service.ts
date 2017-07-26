@@ -222,7 +222,7 @@ export class QuoteEditService {
   }
 
   public deleteQuote(): Observable<Quote> {
-    return this.api.delete(Api.Orders, `quote/${this.state.data.id}`);
+    return this.api.delete(Api.Orders, `quote/${this.state.data.id}`, { loadingIndicator: 'onBeforeRequest' });
   }
 
   // This method is here only cause the linter gets mad if it isn't

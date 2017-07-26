@@ -187,6 +187,7 @@ export function main() {
 
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3');
+        expect(mockApi.put).toHaveBeenCalledWithLoading('onBeforeRequest');
 
       });
     });
@@ -212,6 +213,7 @@ export function main() {
         expect(mockApi.put).toHaveBeenCalledWithBody({
           id: 3, ownerUserId: 10, itemCount: 1, expirationDate: new Date('2017-01-01').toISOString(), quoteStatus: 'ACTIVE'
         });
+        expect(mockApi.put).toHaveBeenCalledWithLoading('onBeforeRequest');
       });
 
       it('Should call the user service getById() with the createdUserId', () => {
