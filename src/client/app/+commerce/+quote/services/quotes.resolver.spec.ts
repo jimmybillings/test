@@ -3,12 +3,13 @@ import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Quotes Resolver', () => {
-    let resolverUnderTest: QuotesResolver, mockQuotesService: any, mockActivatedRoute: any,
-      mockRouterState: any, mockCapabilities: any;
+    let resolverUnderTest: QuotesResolver, mockQuotesService: any,
+      mockActivatedRoute: any, mockRouterState: any, mockCapabilities: any;
 
     beforeEach(() => {
       mockQuotesService = {
-        getQuotes: jasmine.createSpy('getQuotes').and.returnValue(Observable.of([{ some: 'quote' }, { another: 'quote' }]))
+        getQuotes: jasmine.createSpy('getQuotes').and.returnValue(Observable.of([{ some: 'quote' },
+        { another: 'quote' }]))
       };
       mockCapabilities = { administerQuotes: () => false };
       mockActivatedRoute = { params: { s: 'createdOn' } };

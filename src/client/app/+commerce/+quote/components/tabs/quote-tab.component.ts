@@ -132,9 +132,11 @@ export class QuoteTabComponent extends Tab {
   }
 
   private extendQuoteExpiration = (newDate: { expirationDate: string }): void => {
-    this.quoteService.extendExpirationDate(newDate.expirationDate).subscribe(() => {
-      this.router.navigate(['/commerce/quotes']);
-    });
+    this.quoteService
+      .extendExpirationDate(newDate.expirationDate)
+      .subscribe(() => {
+        this.router.navigate(['/commerce/quotes']);
+      });
   }
 
   private expireQuote = (): void => {

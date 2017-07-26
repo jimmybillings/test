@@ -22,6 +22,15 @@ export function main() {
       });
     });
 
+    describe('getById()', () => {
+      it('Should make a request to get a user by id', () => {
+        serviceUnderTest.getById(1).subscribe((res) => {
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('user/1');
+        });
+      });
+    });
+
     describe('create()', () => {
       it('Should make a request to create a new user', () => {
         serviceUnderTest.create(setUser()).subscribe((res) => {
