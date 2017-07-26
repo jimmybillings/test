@@ -10,7 +10,7 @@ export class FutureAssetService {
   constructor(private apiService: ApiService) { }
 
   public load(parameters: AssetLoadParameters): Observable<Asset> {
-    const options: ApiOptions = { loading: true };
+    const options: ApiOptions = { loadingIndicator: true };
     if (parameters.share_key) options.overridingToken = parameters.share_key;
 
     return this.apiService.get(Api.Assets, `clip/${parameters.id}/clipDetail`, options)
