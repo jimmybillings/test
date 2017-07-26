@@ -268,8 +268,8 @@ export function main() {
         });
       });
 
-      describe('with optional loading flag passed in', () => {
-        it('should not make the api call with loading', () => {
+      describe('with optional loadingIndicator flag passed in', () => {
+        it('should not make the api call with loadingIndicator', () => {
           serviceUnderTest.getItems(1, { i: 1, n: 100 }, true, false);
 
           expect(mockApi.get).toHaveBeenCalledWithLoading(false);

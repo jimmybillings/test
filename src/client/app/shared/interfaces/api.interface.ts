@@ -16,10 +16,12 @@ export interface ApiResponse {
   [key: string]: any;
 };
 
+export type LoadingIndicatorOption = boolean | 'onBeforeRequest' | 'offAfterResponse';
+
 export interface ApiOptions {
   parameters?: ApiParameters;
   body?: ApiBody;
-  loading?: boolean;
+  loadingIndicator?: LoadingIndicatorOption;
   overridingToken?: string;
   headerType?: string;
 }

@@ -41,7 +41,7 @@ export class ActiveCollectionService implements OnInit {
 
   public load(collectionId?: number, params: any = { i: 0, n: 100 }): Observable<any> {
     if (!collectionId) {
-      return this.api.get(Api.Assets, 'collectionSummary/focused', { loading: true })
+      return this.api.get(Api.Assets, 'collectionSummary/focused', { loadingIndicator: true })
         .flatMap((response: any) => {
           this.store.updateTo(response as Collection);
           return this.getItems(response.id, { i: 1, n: 100 });
@@ -82,7 +82,7 @@ export class ActiveCollectionService implements OnInit {
       return this.api.post(
         Api.Identities,
         `collection/${collection.id}/removeAssets`,
-        { body: { list: [uuid] }, loading: true })
+        { body: { list: [uuid] }, loadingIndicator: true })
         .do(response => this.store.remove(response['list'][0]));
     } else {
       return Observable.of({});
@@ -104,20 +104,20 @@ export class ActiveCollectionService implements OnInit {
     ).do(data => this.store.updateAsset(data));
   }
 
-  public getItems(collectionId: number, collectionParams: any, set: boolean = true, loading: boolean = true): Observable<any> {
+  public getItems(collectionId: number, collectionParams: any, set: boolean = true, loadingIndicator: boolean = true): Observable<any> {
     if (collectionParams['i']) collectionParams['i'] -= 1;
     this.params = Object.assign({}, this.params, collectionParams);
 
     return this.api.get(
       Api.Assets,
       `collectionSummary/assets/${collectionId}`,
-      { parameters: this.params, loading: loading }
+      { parameters: this.params, loadingIndicator: loadingIndicator }
     ).do(response => { if (set) { this.store.updateAssetsTo(response); } });
   }
 
   private set(collectionId: number, params?: any): Observable<any> {
     return Observable.forkJoin([
-      this.api.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loading: true }),
+      this.api.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loadingIndicator: true }),
       this.getItems(collectionId, params, false)
     ]).do((data: any) => {
       this.store.updateTo(data[0]);

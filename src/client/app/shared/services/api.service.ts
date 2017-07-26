@@ -33,11 +33,10 @@ export class ApiService {
   }
 
   // //// END OF PUBLIC INTERFACE
-
   private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<any> {
     options = this.combineDefaultOptionsWith(options);
 
-    this.showLoadingIf(options.loading);
+    this.showLoadingIf(options.loadingIndicator === 'onBeforeRequest' || options.loadingIndicator === true);
 
     const request: Request = new Request(
       new RequestOptions(
@@ -47,8 +46,10 @@ export class ApiService {
 
     return this.http.request(request)
       .map(response => { try { return response.json(); } catch (exception) { return response; } })
-      .do(() => this.hideLoadingIf(options.loading), error => {
-        this.hideLoadingIf(options.loading);
+      .do(() => {
+        this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
+      }, error => {
+        this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
         try { return error.json(); } catch (exception) { this.error.dispatch(error); }
         return error;
       });
@@ -57,17 +58,17 @@ export class ApiService {
   private combineDefaultOptionsWith(options: ApiOptions): ApiOptions {
     return Object.assign(
       {},
-      { parameters: {}, body: {}, loading: false, overridingToken: '' },
+      { parameters: {}, body: {}, loadingIndicator: false, overridingToken: '' },
       options
     );
   }
 
   private showLoadingIf(loadingOption: boolean) {
-    if (loadingOption) this.uiState.loading(true);
+    if (loadingOption) this.uiState.loadingIndicator(true);
   }
 
   private hideLoadingIf(loadingOption: boolean) {
-    if (loadingOption) this.uiState.loading(false);
+    if (loadingOption) this.uiState.loadingIndicator(false);
   }
 
   private urlFor(api: Api, endpoint: string) {

@@ -159,7 +159,8 @@ export const mockApiMatchers: jasmine.CustomMatcherFactories = {
   },
 
   toHaveBeenCalledWithLoading: (): jasmine.CustomMatcher => {
-    return optionMatcherFor('loading', booleanExpectationFormatterFor('loading'), booleanArgumentMapperFor('loading'));
+    return optionMatcherFor('loadingIndicator', booleanExpectationFormatterFor('loadingIndicator'),
+      booleanArgumentMapperFor('loadingIndicator'));
   },
 
   toHaveBeenCalledWithHeaderType: (): jasmine.CustomMatcher => {

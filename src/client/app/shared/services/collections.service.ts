@@ -27,10 +27,10 @@ export class CollectionsService {
     return this.store.state;
   }
 
-  public load(params?: any, loading: boolean = false): Observable<any> {
+  public load(params?: any, loadingIndicator: boolean = false): Observable<any> {
     if (params) this.params = Object.assign({}, this.params, params);
 
-    return this.api.get(Api.Assets, `collectionSummary/search`, { parameters: this.params, loading: loading })
+    return this.api.get(Api.Assets, `collectionSummary/search`, { parameters: this.params, loadingIndicator: loadingIndicator })
       .do(response => this.store.replaceAllCollectionsWith(response));
   }
 
