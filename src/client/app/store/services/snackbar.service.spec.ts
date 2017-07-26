@@ -12,7 +12,7 @@ export function main() {
       mockTranslateService = {
         get: jasmine.createSpy('translateService').and.returnValue(Observable.of('someTranslatedString'))
       };
-      mockSnackBar = { open: jasmine.createSpy('open') }
+      mockSnackBar = { open: jasmine.createSpy('open') };
 
       serviceUnderTest = new SnackbarService(mockTranslateService, mockSnackBar);
     });

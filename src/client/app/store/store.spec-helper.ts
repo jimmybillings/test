@@ -20,9 +20,9 @@ export interface EffectTestInputAction {
 }
 
 export interface EffectTestState {
-  storeSectionName: string,
-  propertyName?: string,
-  value: any
+  storeSectionName: string;
+  propertyName?: string;
+  value: any;
 };
 
 export interface EffectServiceMethod {
@@ -73,20 +73,6 @@ export class StoreSpecHelper {
 
   public mockService: any = {};
 
-  private mockNgrxDispatch: jasmine.Spy = jasmine.createSpy('ngrx dispatch');
-
-  private mockActionFactory: MockActionFactory = {
-    activeCollection: {} as any,
-    asset: {} as any,
-    snackbar: {} as any
-  };
-
-  private mockInternalActionFactory: MockInternalActionFactory = {
-    activeCollection: {} as any,
-    asset: {} as any,
-    snackbar: {} as any
-  };
-
   public mockState: MockAppState = {
     activeCollection: {} as any,
     asset: {} as any,
@@ -101,7 +87,7 @@ export class StoreSpecHelper {
       internalActionFactoryMapper(this.mockInternalActionFactory)
     ),
     select: jasmine.createSpy('select').and.callFake((stateMapper: StateMapper<any>) => {
-      try { return Observable.of(stateMapper(this.mockState)) } catch (exception) { return Observable.empty() };
+      try { return Observable.of(stateMapper(this.mockState)); } catch (exception) { return Observable.empty(); };
     }),
     snapshot: jasmine.createSpy('snapshot').and.callFake((stateMapper: StateMapper<any>) =>
       stateMapper(this.mockState)
@@ -115,6 +101,20 @@ export class StoreSpecHelper {
     blockUntil: jasmine.createSpy('blockUntil').and.callFake((stateMapper: StateMapper<boolean>) =>
       stateMapper(this.mockState) === true ? Observable.of(true) : Observable.empty()
     )
+  };
+
+  private mockNgrxDispatch: jasmine.Spy = jasmine.createSpy('ngrx dispatch');
+
+  private mockActionFactory: MockActionFactory = {
+    activeCollection: {} as any,
+    asset: {} as any,
+    snackbar: {} as any
+  };
+
+  private mockInternalActionFactory: MockInternalActionFactory = {
+    activeCollection: {} as any,
+    asset: {} as any,
+    snackbar: {} as any
   };
 
   public createMockStateSection(stateSectionName: string, value: any): void {

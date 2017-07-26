@@ -15,15 +15,15 @@ import * as SnackbarState from './store/states/snackbar.state';
 export type SnackbarState = SnackbarState.State;
 
 export interface ActionFactory {
-  readonly activeCollection: ActiveCollectionActions.ActionFactory,
-  readonly asset: AssetActions.ActionFactory,
-  readonly snackbar: SnackbarActions.ActionFactory
+  readonly activeCollection: ActiveCollectionActions.ActionFactory;
+  readonly asset: AssetActions.ActionFactory;
+  readonly snackbar: SnackbarActions.ActionFactory;
 };
 
 export interface InternalActionFactory {
-  readonly activeCollection: ActiveCollectionActions.InternalActionFactory,
-  readonly asset: AssetActions.InternalActionFactory,
-  readonly snackbar: SnackbarActions.InternalActionFactory
+  readonly activeCollection: ActiveCollectionActions.InternalActionFactory;
+  readonly asset: AssetActions.InternalActionFactory;
+  readonly snackbar: SnackbarActions.InternalActionFactory;
 };
 
 export interface AppState {
@@ -48,8 +48,6 @@ export type StateMapper<T> = (state: AppState) => T;
 
 @Injectable()
 export class AppStore {
-  constructor(private ngrxStore: Store<AppState>) { }
-
   private readonly actionFactory: ActionFactory = {
     activeCollection: new ActiveCollectionActions.ActionFactory(),
     asset: new AssetActions.ActionFactory(),
@@ -61,6 +59,8 @@ export class AppStore {
     asset: new AssetActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory()
   };
+
+  constructor(private ngrxStore: Store<AppState>) { }
 
   public dispatch(actionFactoryMapper: ActionFactoryMapper): void {
     this.ngrxStore.dispatch(actionFactoryMapper(this.actionFactory));
