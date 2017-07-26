@@ -4,20 +4,15 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   describe('Asset Component', () => {
 
-    let mockCurrentUserService: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
+    let mockCurrentUserService: any, mockCapabilities: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
-      mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
+      mockWindow: any, mockStore: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
       mockPricingStore: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
       mockCurrentUserService = {};
       mockCapabilities = { administerQuotes: () => false };
-      mockActiveCollection = {
-        addAsset: jasmine.createSpy('addAsset').and.returnValue(Observable.of({})),
-        removeAsset: jasmine.createSpy('removeAsset').and.returnValue(Observable.of({})),
-        getItems: jasmine.createSpy('getItems').and.returnValue(Observable.of({}))
-      };
       mockUiState = {};
       mockUserPreference = {
         openCollectionTray: jasmine.createSpy('openCollectionTray'),
@@ -34,6 +29,7 @@ export function main() {
       mockErrorStore = { dispatch: jasmine.createSpy('dispatch') };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
+      mockStore = { select: jasmine.createSpy('select').and.returnValue(Observable.of({ some: 'asset' })) };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };
@@ -50,8 +46,8 @@ export function main() {
         state: { priceForDetails: 100, priceForDialog: 1000 }
       };
       componentUnderTest = new AssetComponent(
-        mockCurrentUserService, mockCapabilities, mockActiveCollection, mockUiState,
-        mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore, mockCart,
+        mockCurrentUserService, mockCapabilities, mockUiState,
+        mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockErrorStore, mockCart,
         mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
       );
     });
@@ -61,38 +57,6 @@ export function main() {
         componentUnderTest.ngOnInit();
         expect(mockUiConfig.get).toHaveBeenCalledWith('global');
       });
-    });
-
-    describe('addToCollection()', () => {
-      it('Should open the collection tray when adding a asset to a collection', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.addToCollection({ collection: { id: 1 }, asset: { name: 123123 } });
-        expect(mockUserPreference.openCollectionTray).toHaveBeenCalled();
-      });
-
-      it('Should call the service to add and item to a collection', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.addToCollection({ collection: { id: 1 }, asset: { name: 123123 } });
-        expect(mockActiveCollection.addAsset).toHaveBeenCalledWith(1, { name: 123123 }, undefined);
-      });
-
-      it('Should call the service to get active collection items after an asset has succesfully been added', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.addToCollection({ collection: { id: 1 }, asset: { name: 123123 } });
-      });
-    });
-
-    describe('removeFromCollection()', () => {
-      it('Should open the collection tray when an asset is removed', () => {
-        componentUnderTest.removeFromCollection(mockActiveCollectionAndAsset());
-        expect(mockUserPreference.openCollectionTray).toHaveBeenCalled();
-      });
-
-      it('Should find the uuid of the correct asset in the collection to remove and call the service with it for removal', () => {
-        componentUnderTest.removeFromCollection(mockActiveCollectionAndAsset());
-        expect(mockActiveCollection.removeAsset).toHaveBeenCalledWith(mockActiveCollectionAndAsset());
-      });
-
     });
 
     describe('downloadComp()', () => {
@@ -112,8 +76,8 @@ export function main() {
             Observable.of({ url: 'http://downloadcomp.url' }))
         };
         componentUnderTest = new AssetComponent(
-          mockCurrentUserService, mockCapabilities, mockActiveCollection, mockUiState,
-          mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore,
+          mockCurrentUserService, mockCapabilities, mockUiState,
+          mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockErrorStore,
           mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
         );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
