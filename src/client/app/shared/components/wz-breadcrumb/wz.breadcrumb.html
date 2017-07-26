@@ -1,6 +1,5 @@
 
 <ul class="breadcrumbs" flex="100">
-  <!--<li *ngIf="loading"><md-progress-circle mode="indeterminate"></md-progress-circle></li>-->
   <li *ngFor="let filter of activeFilters">
       <button *ngIf="filter.active" class="breadcrumb" md-button (click)="toggleFilter(filter)" title="{{ 'SEARCH.BREADCRUMBS.CLEAR_SPECIFIC_FILTER_BTN_TITLE' | translate:{filterName:filter.name} }}">
         {{filter.name}} 

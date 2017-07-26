@@ -18,7 +18,7 @@ export class OrdersService {
 
   public getOrders(params: any): Observable<OrdersApiResponse> {
     return this.api.get(Api.Orders, 'order/myOrders',
-      { parameters: this.buildSearchParams(params), loading: true }
+      { parameters: this.buildSearchParams(params), loadingIndicator: true }
     ).do((response: OrdersApiResponse) => this.store.storeOrders(response));
   }
 

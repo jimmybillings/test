@@ -30,7 +30,7 @@ export class FilterService {
     return this.api.get(
       Api.Assets,
       this.currentUser.loggedIn() ? 'filter/filterTree' : 'filter/anonymous/filterTree',
-      { parameters: options, loading: false }
+      { parameters: options, loadingIndicator: false }
     ).do(response => {
       let activeFilterGroups: string[] = JSON.parse(localStorage.getItem('activeFilterGroups')) || [];
       this.set(this.sanitize(response, null, activeFilterGroups));

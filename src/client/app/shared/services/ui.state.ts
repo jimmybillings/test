@@ -5,7 +5,7 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 export const InitUiState: any = {
   headerIsExpanded: false,
   showFixedHeader: false,
-  loading: false,
+  loadingIndicator: false,
   filtersAreAvailable: false
 };
 
@@ -39,8 +39,8 @@ export class UiState {
     this.store.dispatch({ type: 'UI.STATE.UPDATE', payload: payload });
   }
 
-  public loading(state: boolean): void {
-    this.data.take(1).subscribe(s => this.update({ loading: state }));
+  public loadingIndicator(state: boolean): void {
+    this.data.take(1).subscribe(s => this.update({ loadingIndicator: state }));
   }
 
   public headerIsExpanded(): Observable<boolean> {

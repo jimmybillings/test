@@ -19,13 +19,13 @@ export class UserService {
 
   public create(user: Object): Observable<any> {
     return this.api.post(Api.Identities, 'user/register',
-      { body: user, loading: true }
+      { body: user, loadingIndicator: true }
     );
   }
 
   public forgotPassword(user: any): Observable<any> {
     return this.api.post(Api.Identities, 'user/requestPasswordReset',
-      { body: user, loading: true }
+      { body: user, loadingIndicator: true }
     );
   }
 
@@ -54,14 +54,14 @@ export class UserService {
   public changePassword(form: any): Observable<any> {
     return this.api.post(Api.Identities, 'user/changePassword', {
       body: { oldPassword: form.oldPassword, newPassword: form.newPassword },
-      loading: true
+      loadingIndicator: true
     });
   }
 
   // Used by a logged-out user to reset their password - requires overridingToken
   public resetPassword(form: any, overridingToken: string): Observable<any> {
     return this.api.post(Api.Identities, 'user/passwordReset',
-      { body: { newPassword: form.newPassword }, overridingToken: overridingToken, loading: true }
+      { body: { newPassword: form.newPassword }, overridingToken: overridingToken, loadingIndicator: true }
     );
   }
 

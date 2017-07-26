@@ -12,7 +12,7 @@ export class Authentication {
   constructor(private api: ApiService) { }
 
   public create(user: Object): Observable<any> {
-    return this.api.post(Api.Identities, 'login', { body: user, loading: true });
+    return this.api.post(Api.Identities, 'login', { body: user, loadingIndicator: true });
   }
 
   public destroy(): Observable<any> {

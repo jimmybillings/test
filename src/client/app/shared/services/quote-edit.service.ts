@@ -79,7 +79,7 @@ export class QuoteEditService {
 
   // Public Api
   public createQuote(): Observable<Quote> {
-    return this.api.post(Api.Orders, 'quote', { loading: true })
+    return this.api.post(Api.Orders, 'quote', { loadingIndicator: true })
       .do(this.replaceQuote);
   }
 
@@ -91,24 +91,24 @@ export class QuoteEditService {
     );
     return this.api.post(Api.Orders, 'quote',
       {
-        loading: true,
+        loadingIndicator: true,
         body: clonedQuote
       })
       .do(this.replaceQuote);
   }
 
   public getFocusedQuote(): Observable<Quote> {
-    return this.api.get(Api.Orders, 'quote/focused', { loading: true }).do(this.replaceQuote);
+    return this.api.get(Api.Orders, 'quote/focused', { loadingIndicator: true }).do(this.replaceQuote);
   }
 
   public addProject(): void {
-    this.api.post(Api.Orders, `quote/${this.quoteId}/project`, { loading: true })
+    this.api.post(Api.Orders, `quote/${this.quoteId}/project`, { loadingIndicator: true })
       .do(this.replaceQuote)
       .subscribe();
   }
 
   public removeProject(project: Project): void {
-    this.api.delete(Api.Orders, `quote/${this.quoteId}/project/${project.id}`, { loading: true })
+    this.api.delete(Api.Orders, `quote/${this.quoteId}/project/${project.id}`, { loadingIndicator: true })
       .subscribe(this.replaceQuote);
   }
 
@@ -125,7 +125,7 @@ export class QuoteEditService {
   }
 
   public updateProject(project: Project): void {
-    this.api.put(Api.Orders, `quote/${this.quoteId}/project`, { body: project, loading: true })
+    this.api.put(Api.Orders, `quote/${this.quoteId}/project`, { body: project, loadingIndicator: true })
       .subscribe(this.replaceQuote);
   }
 
@@ -133,7 +133,7 @@ export class QuoteEditService {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}/project/priceAttributes/${project.id}`,
-      { body: priceAttributes, loading: true }
+      { body: priceAttributes, loadingIndicator: true }
     ).subscribe(this.replaceQuote);
   }
 
@@ -141,18 +141,18 @@ export class QuoteEditService {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}/move/lineItem`,
-      { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true }
+      { parameters: { lineItemId: lineItem.id, projectId: project.id }, loadingIndicator: true }
     ).subscribe(this.replaceQuote);
   }
 
   public cloneLineItem(lineItem: AssetLineItem): void {
     this.api.put(Api.Orders, `quote/${this.quoteId}/clone/lineItem`,
-      { parameters: { lineItemId: lineItem.id }, loading: true })
+      { parameters: { lineItemId: lineItem.id }, loadingIndicator: true })
       .subscribe(this.replaceQuote);
   }
 
   public removeLineItem(lineItem: AssetLineItem): void {
-    this.api.delete(Api.Orders, `quote/${this.quoteId}/asset/${lineItem.id}`, { loading: true })
+    this.api.delete(Api.Orders, `quote/${this.quoteId}/asset/${lineItem.id}`, { loadingIndicator: true })
       .subscribe(this.replaceQuote);
   }
 
@@ -187,7 +187,7 @@ export class QuoteEditService {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}`,
-      { body: this.state.data, loading: true },
+      { body: this.state.data, loadingIndicator: true },
     ).subscribe(this.replaceQuote);
   }
 
@@ -197,7 +197,7 @@ export class QuoteEditService {
     return this.api.put(
       Api.Orders,
       `quote/send/${this.quoteId}`,
-      { parameters: options as ApiParameters, loading: true }
+      { parameters: options as ApiParameters, loadingIndicator: true }
     );
   }
 
@@ -205,7 +205,7 @@ export class QuoteEditService {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}/fee/lineItem`,
-      { body: fee, parameters: { projectName: project.name }, loading: true }
+      { body: fee, parameters: { projectName: project.name }, loadingIndicator: true }
     ).subscribe(this.replaceQuote);
   }
 
@@ -213,7 +213,7 @@ export class QuoteEditService {
     this.api.delete(
       Api.Orders,
       `quote/${this.quoteId}/fee/${fee.id}`,
-      { loading: true }
+      { loadingIndicator: true }
     ).subscribe(this.replaceQuote);
   }
 
@@ -276,7 +276,7 @@ export class QuoteEditService {
   }
 
   private loadFeeConfig(): Observable<FeeConfig> {
-    return this.api.get(Api.Identities, 'feeConfig/search', { loading: true })
+    return this.api.get(Api.Identities, 'feeConfig/search', { loadingIndicator: true })
       .do((response: FeeConfig) => this.feeConfigStore.replaceFeeConfigWith(response));
   }
 

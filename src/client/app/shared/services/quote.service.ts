@@ -75,7 +75,7 @@ export class QuoteService {
   // Public Interface
 
   public getQuote(quoteId: number): Observable<Quote> {
-    return this.api.get(Api.Orders, `quote/${quoteId}`, { loading: true })
+    return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
       .do((quote: Quote) => this.quoteStore.updateQuote(quote));
   }
 
@@ -144,7 +144,7 @@ export class QuoteService {
     return this.api.post(
       Api.Orders,
       `quote/${this.state.data.id}/stripe/process`,
-      { body: { options }, loading: true }
+      { body: { options }, loadingIndicator: true }
     ).map(_ => _ as number);
   }
 
@@ -153,7 +153,7 @@ export class QuoteService {
     return this.api.post(
       Api.Orders,
       `quote/${this.state.data.id}/checkout/convertToOrder`,
-      { body: { options }, loading: true }
+      { body: { options }, loadingIndicator: true }
     ).map((order: Order) => order.id);
   }
 
@@ -162,7 +162,7 @@ export class QuoteService {
     return this.api.post(
       Api.Orders,
       `quote/${this.state.data.id}/checkout/convertToOrder`,
-      { body: { options }, loading: true }
+      { body: { options }, loadingIndicator: true }
     ).map((order: Order) => order.id);
   }
 

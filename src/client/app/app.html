@@ -30,7 +30,7 @@
       (searchContext)="newSearchContext($event)"
       (toggleFilterTree)="toggleFilterTreePreference()">
     </wz-autocomplete-search>
-    <md-progress-bar mode="indeterminate" color="accent" *ngIf="(uiState.data | async).loading"></md-progress-bar>
+    <md-progress-bar mode="indeterminate" color="accent" *ngIf="(uiState.data | async).loadingIndicator"></md-progress-bar>
   </header>
   <div [ngClass]="{
     'collection-tray-closed': !(userPreference.data | async).collectionTrayIsOpen,
