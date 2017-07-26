@@ -51,7 +51,8 @@
             </span>
             <span>
               <strong>{{ 'QUOTE.RECIPIENT_EMAIL' | translate }} </strong>
-              {{ (quote | async).createdUserEmailAddress || 'N/A' }}
+
+              <a href="mailto: {{ (quote | async).createdUserEmailAddress }}">{{ (quote | async).createdUserEmailAddress}}</a> 
             </span>
             <span [ngClass]="{expired: isExpired}">
               <strong>{{ ( isExpired ? 'QUOTE.EXPIRED_LABEL' : 'QUOTE.EXPIRATION_LABEL') | translate }} </strong>
