@@ -360,7 +360,7 @@ export function main() {
               }
             }
           ]
-        }
+        };
       });
 
       it('does nothing if the active route is not /asset', () => {
