@@ -53,7 +53,7 @@ export class ActiveCollectionEffects {
     );
 
   @Effect({ dispatch: false })
-  public maybeChangeAssetRouteOnAddSuccess: Observable<Action> =
+  public maybeChangeAssetRouteOnAddSuccess: Observable<AppState> =
   this.actions.ofType(ActiveCollectionActions.AddAssetSuccess.Type)
     .do(() => {
       if (!this.assetRouteActivated()) return;
@@ -92,7 +92,7 @@ export class ActiveCollectionEffects {
     );
 
   @Effect({ dispatch: false })
-  public maybeChangeAssetRouteOnRemoveSuccess: Observable<Action> =
+  public maybeChangeAssetRouteOnRemoveSuccess: Observable<AppState> =
   this.actions.ofType(ActiveCollectionActions.RemoveAssetSuccess.Type)
     .do(() => {
       if (!this.assetRouteActivated()) return;
