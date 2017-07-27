@@ -18,7 +18,7 @@
 					[quoteType]="quoteType"
 					[projectHasRmAssets]="projectHasRmAssets(project)"
 					[rmAssetsHaveAttributes]="rmAssetsHaveAttributes(project)"
-          [allowQuoteAdministration]="allowQuoteAdministration"
+          [allowQuoteAdministration]="userCan.administerQuotes()"
 					(projectActionsNotify)="editProjectPrice($event, project)"
 					(remove)="onRemove(project)"
 					(edit)="onEdit(project)"

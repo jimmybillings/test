@@ -18,7 +18,6 @@ export class ProjectsComponent {
   @Input() config: any;
   @Input() projects: Array<Project>;
   @Input() userCan: Capabilities;
-  @Input() allowQuoteAdministration: boolean = false;
   @Input() quoteType: QuoteType;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
