@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: WzAssetGridComponent;
 
     beforeEach(() => {
-      componentUnderTest = new WzAssetGridComponent(null, null);
+      componentUnderTest = new WzAssetGridComponent(null);
     });
 
     it('has no functionality to test', () => {

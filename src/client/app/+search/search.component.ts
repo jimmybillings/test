@@ -3,6 +3,7 @@ import { SearchService } from '../shared/services/search.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { Observable } from 'rxjs/Observable';
 import { SearchContext } from '../shared/services/search-context.service';
+import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
@@ -19,8 +20,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
 import { SpeedviewEvent, SpeedviewData } from '../shared/interfaces/asset.interface';
-import { AppStore } from '../app.store';
-import { Collection } from '../shared/interfaces/collection.interface';
 
 /**
  * Asset search page component - renders search page results
@@ -44,6 +43,7 @@ export class SearchComponent implements OnDestroy {
   constructor(
     public uiState: UiState,
     public userCan: Capabilities,
+    public activeCollection: ActiveCollectionService,
     public filter: FilterService,
     private cart: CartService,
     private assetService: AssetService,
@@ -60,8 +60,7 @@ export class SearchComponent implements OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private detector: ChangeDetectorRef,
-    private quoteEditService: QuoteEditService,
-    private store: AppStore) {
+    private quoteEditService: QuoteEditService) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
     this.userPreferences = userPreferencesService;
@@ -77,10 +76,6 @@ export class SearchComponent implements OnDestroy {
     this.search.clearAssets();
   }
 
-  public get activeCollection(): Observable<Collection> {
-    return this.store.select(state => state.activeCollection.collection);
-  }
-
   public showSnackBar(message: any) {
     this.translate.get(message.key, message.value)
       .subscribe((res: string) => {
@@ -92,6 +87,24 @@ export class SearchComponent implements OnDestroy {
     this.filter.load(this.searchContext.state, !this.userPreferences.state.displayFilterCounts)
       .subscribe((_) => { return _; });
     this.userPreferences.toggleFilterCount();
+  }
+
+  public addToCollection(params: any): void {
+    this.userPreferences.openCollectionTray();
+    this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
+    this.showSnackBar({
+      key: 'COLLECTION.ADD_TO_COLLECTION_TOAST',
+      value: { collectionName: this.activeCollection.state.name }
+    });
+  }
+
+  public removeFromCollection(params: any): void {
+    this.userPreferences.openCollectionTray();
+    this.activeCollection.removeAsset(params).subscribe();
+    this.showSnackBar({
+      key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
+      value: { collectionName: this.activeCollection.state.name }
+    });
   }
 
   public addAssetToCart(asset: any): void {

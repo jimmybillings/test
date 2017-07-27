@@ -413,7 +413,6 @@ export class SeedConfig {
       'rxjs/*': 'node_modules/rxjs/*',
       '@ngrx/core': 'node_modules/@ngrx/core/bundles/core.min.umd.js',
       '@ngrx/store': 'node_modules/@ngrx/store/bundles/store.min.umd.js',
-      '@ngrx/effects': 'node_modules/@ngrx/effects/bundles/effects.min.umd.js',
 
       '@ngx-translate/core': 'node_modules/@ngx-translate/core/bundles/core.umd.js',
       '@ngx-translate/http-loader': 'node_modules/@ngx-translate/http-loader/bundles/http-loader.umd.js',

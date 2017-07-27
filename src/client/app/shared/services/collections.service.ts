@@ -1,42 +1,42 @@
 import { Injectable } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { Observable } from 'rxjs/Observable';
+import { ActiveCollectionService } from './active-collection.service';
 import { CollectionsStore } from '../stores/collections.store';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
-import { AppStore, ActiveCollectionState } from '../../app.store';
 
 @Injectable()
 export class CollectionsService {
   private params: any;
 
   constructor(
-    private collectionsStore: CollectionsStore,
+    private store: CollectionsStore,
     private api: ApiService,
-    private store: AppStore
+    private activeCollection: ActiveCollectionService
   ) {
     this.setSearchParams();
-    this.staySyncedWithActiveCollection();
+    this.syncActiveCollection();
   }
 
   public get data(): Observable<Collection[]> {
-    return this.collectionsStore.data;
+    return this.store.data;
   }
 
   public get state(): any {
-    return this.collectionsStore.state;
+    return this.store.state;
   }
 
   public load(params?: any, loadingIndicator: boolean = false): Observable<any> {
     if (params) this.params = Object.assign({}, this.params, params);
 
     return this.api.get(Api.Assets, `collectionSummary/search`, { parameters: this.params, loadingIndicator: loadingIndicator })
-      .do(response => this.collectionsStore.replaceAllCollectionsWith(response));
+      .do(response => this.store.replaceAllCollectionsWith(response));
   }
 
   public create(collection: Collection): Observable<any> {
     return this.api.post(Api.Assets, 'collectionSummary', { body: collection })
-      .do(response => this.collectionsStore.add(response as Collection));
+      .do(response => this.store.add(response as Collection));
   }
 
   public update(collection: Collection): Observable<any> {
@@ -44,13 +44,13 @@ export class CollectionsService {
   }
 
   public delete(collectionId: number): Observable<any> {
-    this.collectionsStore.deleteCollectionWith(collectionId);
+    this.store.deleteCollectionWith(collectionId);
     return this.api.delete(Api.Identities, `collection/${collectionId}`)
-      .switchMap(_ => {
-        if (this.store.match(collectionId, state => state.activeCollection.collection.id)) {
-          this.store.dispatch(factory => factory.activeCollection.load());
-
-          return this.store.blockUntil(state => state.activeCollection.loaded).switchMap(() => this.load());
+      .flatMap(_ => {
+        if (this.activeCollection.isActiveCollection(collectionId)) {
+          return this.activeCollection.load().flatMap(_ => {
+            return this.load();
+          });
         } else {
           return this.load();
         }
@@ -58,23 +58,13 @@ export class CollectionsService {
   }
 
   public destroyAll(): void {
-    this.collectionsStore.deleteAllCollections();
-    this.store.dispatch(factory => factory.activeCollection.reset());
+    this.store.deleteAllCollections();
+    this.activeCollection.resetStore();
   }
 
-  public getItems(collectionId: number): Observable<any> {
-    return this.api.get(
-      Api.Assets,
-      `collectionSummary/assets/${collectionId}`,
-      { parameters: { i: '0', n: '100' }, loadingIndicator: true }
-    );
-  }
-
-  private staySyncedWithActiveCollection(): void {
-    this.store.select(state => state.activeCollection).subscribe((activeCollectionState: ActiveCollectionState) => {
-      if (this.state.items && this.state.items.length > 0 && activeCollectionState.loaded) {
-        this.collectionsStore.update(activeCollectionState.collection);
-      }
+  private syncActiveCollection() {
+    this.activeCollection.data.subscribe((collection: Collection) => {
+      if (this.state.items && this.state.items.length > 0) this.store.update(collection);
     });
   }
 

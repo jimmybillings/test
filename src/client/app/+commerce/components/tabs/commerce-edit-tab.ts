@@ -16,7 +16,7 @@ import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
-import { SubclipMarkers } from '../../../shared/interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../../../shared/interfaces/asset.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';

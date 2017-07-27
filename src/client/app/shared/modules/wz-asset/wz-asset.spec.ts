@@ -1,13 +1,11 @@
 import { WzAsset } from './wz-asset';
 import { Collection } from '../../interfaces/collection.interface';
 import { Asset } from '../../interfaces/common.interface';
-import { StoreSpecHelper } from '../../../store/store.spec-helper';
 
 
 export function main() {
   describe('Wz Asset Component', () => {
     let componentUnderTest: WzAsset;
-    let storeSpecHelper: StoreSpecHelper;
     let mockCollection: Collection;
     let mockAsset: Asset;
     let mockEnhancedAsset: any;
@@ -24,8 +22,7 @@ export function main() {
       mockEnhancedAsset = {};
       mockAssetService = { enhance: (asset: Asset): any => mockEnhancedAsset };
 
-      storeSpecHelper = new StoreSpecHelper();
-      componentUnderTest = new WzAsset(mockAssetService, storeSpecHelper.mockStore);
+      componentUnderTest = new WzAsset(mockAssetService);
       componentUnderTest.assets = [mockAsset];
     });
 
@@ -35,25 +32,21 @@ export function main() {
       });
     });
 
-    describe('addToActiveCollection()', () => {
-      it('dispatches the expected action', () => {
-        const mockAsset: any = { some: 'asset' };
-        const spy = storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'addAsset');
-
-        componentUnderTest.addToActiveCollection(mockAsset);
-
-        storeSpecHelper.expectDispatchFor(spy, mockAsset);
+    describe('addToCollection()', () => {
+      it('Should emit an event to add an asset to a collection', () => {
+        spyOn(componentUnderTest.onAddToCollection, 'emit');
+        componentUnderTest.addToCollection(mockCollection, mockAsset);
+        expect(componentUnderTest.onAddToCollection.emit).toHaveBeenCalledWith(
+          { collection: mockCollection, asset: mockAsset });
       });
     });
 
-    describe('removeFromActiveCollection()', () => {
-      it('dispatches the expected action', () => {
-        const mockAsset: any = { some: 'asset' };
-        const spy = storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'removeAsset');
-
-        componentUnderTest.removeFromActiveCollection(mockAsset);
-
-        storeSpecHelper.expectDispatchFor(spy, mockAsset);
+    describe('removeFromCollection()', () => {
+      it('Should emit an event to remove an asset from a collection', () => {
+        spyOn(componentUnderTest.onRemoveFromCollection, 'emit');
+        componentUnderTest.removeFromCollection(mockCollection, mockAsset);
+        expect(componentUnderTest.onRemoveFromCollection.emit).toHaveBeenCalledWith(
+          { collection: mockCollection, asset: mockAsset });
       });
     });
 
@@ -90,7 +83,7 @@ export function main() {
     });
 
     describe('inCollection()', () => {
-      beforeEach(() => componentUnderTest.activeCollection = mockCollection);
+      beforeEach(() => componentUnderTest.collection = mockCollection);
 
       it('Should return true if an asset is already in the current collection', () => {
         expect(componentUnderTest.inCollection({ assetId: 1234, uuid: 'mockAssetuuid1', name: '' })).toBe(true);

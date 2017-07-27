@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: AssetSaveSubclipComponent;
 
     beforeEach(() => {
-      componentUnderTest = new AssetSaveSubclipComponent(null, null);
+      componentUnderTest = new AssetSaveSubclipComponent(null);
     });
 
     it('has no tests!', () => {

@@ -178,12 +178,12 @@
             </button>
 
             <ng-container *ngIf="userCan.haveCollections()">
-              <button md-icon-button *ngIf="!alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
-                (click)="addAssetToActiveCollection()">
+              <button md-icon-button *ngIf="!alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+                (click)="addToCollection(collection, asset.common[0]); onShowSnackBar.emit({key: 'COLLECTION.ADD_TO_COLLECTION_TOAST', value: {collectionName:collection.name}})">
                 <md-icon>library_add</md-icon>
               </button>
-              <button md-icon-button *ngIf="alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
-                (click)="removeAssetFromActiveCollection()">
+              <button md-icon-button *ngIf="alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+                (click)="removeFromCollection(collection, asset.common[0]); onShowSnackBar.emit({key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST', value: {collectionName:collection.name}})">
                 <md-icon>remove_circle</md-icon>
               </button>
             </ng-container>
@@ -224,12 +224,12 @@
       </div>
       <asset-save-subclip *ngIf="showAssetSaveSubclip" flex=""
         [userCan]="userCan"
-        [asset]="asset"
-        [activeCollectionName]="activeCollection.name"
+        [collectionName]="collection.name"
         [subclipMarkers]="subclipMarkers"
         [config]="(uiConfig.get('assetSaveSubclip') | async).config"
         (ontoggleSubclipPanel)="toggleAssetSaveSubclip()"
-        (onAddSubclipToCart)="addSubclipToCart()">
+        (onAddSubclipToCart)="addSubclipToCart()"
+        (onAddSubclipToCollection)="addSubclipToCollection()">
       </asset-save-subclip>
 
       <div flex-gt-xs="33" flex="100">
@@ -302,7 +302,7 @@
 <wz-dropdown #sharing>
   <asset-share layout="row" layout-align="end start" class="revealed"
     [userEmail]="userEmail | async" 
-    [assetThumbnailUrl]="asset.clipThumbnailUrl"
+    [assetThumbnailUrl]="asset.clipThumbnailUrl" 
     [assetName]="asset.common[5].value"
     [assetId]="asset.assetId" 
     [config]="(uiConfig.get('assetSharing') | async).config" 

@@ -1,18 +1,14 @@
-import {
-  Component, Input, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter
-} from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-
+import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { Asset } from '../../../shared/interfaces/common.interface';
 
 import { WzFormComponent } from '../../../shared/modules/wz-form/wz.form.component';
 import { CollectionsService } from '../../../shared/services/collections.service';
+import { ActiveCollectionService } from '../../../shared/services/active-collection.service';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { UiState } from '../../../shared/services/ui.state';
-import { AppStore } from '../../../app.store';
-
+import { Subscription } from 'rxjs/Subscription';
 /**
  * Directive that renders a list of collections
  */
@@ -44,10 +40,10 @@ export class CollectionFormComponent implements OnInit {
 
   constructor(
     public collections: CollectionsService,
+    public activeCollection: ActiveCollectionService,
     public uiState: UiState,
     private detector: ChangeDetectorRef,
-    private collectionContext: CollectionContextService,
-    private store: AppStore
+    private collectionContext: CollectionContextService
   ) {
   }
 
@@ -81,7 +77,7 @@ export class CollectionFormComponent implements OnInit {
     this.collections.update(collection)
       .subscribe(() => {
         this.loadCollections();
-        if (this.store.match(collection.id, state => state.activeCollection.collection.id)) this.getActiveCollection();
+        if (this.activeCollection.state.id === collection.id) this.getActiveCollection();
       }, this.error.bind(this));
   }
 
@@ -91,7 +87,7 @@ export class CollectionFormComponent implements OnInit {
   }
 
   public getActiveCollection() {
-    this.store.dispatch(factory => factory.activeCollection.load());
+    this.activeCollection.load().subscribe();
   }
 
   public success(): void {
