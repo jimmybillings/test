@@ -24,7 +24,8 @@ export function main() {
         editLineItem: jasmine.createSpy('editLineItem'),
         deleteQuote: jasmine.createSpy('deleteQuote').and.returnValue(Observable.of({})),
         createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({})),
-        cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({}))
+        cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({})),
+        bulkImport: jasmine.createSpy('bulkImport').and.returnValue(Observable.of({}))
       };
 
       mockUiConfig = {
@@ -33,7 +34,8 @@ export function main() {
             createQuote: { items: ['yay'] },
             addBulkOrderId: { items: [{ some: 'bulk' }] },
             addDiscount: { items: [{ some: 'discount' }] },
-            addCostMultiplier: { items: [{ some: 'multiplier' }] }
+            addCostMultiplier: { items: [{ some: 'multiplier' }] },
+            bulkImport: { items: [{ some: 'import' }] }
           }
         }))
       };
@@ -86,7 +88,8 @@ export function main() {
           createQuote: { items: ['yay'] },
           addBulkOrderId: { items: [{ some: 'bulk' }] },
           addDiscount: { items: [{ some: 'discount' }] },
-          addCostMultiplier: { items: [{ some: 'multiplier' }] }
+          addCostMultiplier: { items: [{ some: 'multiplier' }] },
+          bulkImport: { items: [{ some: 'import' }] }
         });
       });
     });
@@ -436,6 +439,37 @@ export function main() {
             },
             jasmine.any(Function)
           );
+        });
+      });
+    });
+
+    describe('onOpenBulkImportDialog()', () => {
+      beforeEach(() => {
+        componentUnderTest.ngOnInit();
+        componentUnderTest.onNotification({ type: 'OPEN_BULK_IMPORT_DIALOG', payload: 'abcd-1234' });
+      });
+
+      it('opens a form dialog', () => {
+        expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+          [{ some: 'import' }],
+          { title: 'QUOTE.BULK_IMPORT.TITLE', submitLabel: 'QUOTE.BULK_IMPORT.SUBMIT_BTN', autocomplete: 'off' },
+          jasmine.any(Function)
+        );
+      });
+
+      it('calls the bulkImport() on the quote edit service in the callback', () => {
+        mockDialogService.onSubmitCallback({ lineItemAttributes: 'one\ntwo' });
+
+        expect(mockQuoteEditService.bulkImport).toHaveBeenCalledWith({ lineItemAttributes: 'one\ntwo' }, 'abcd-1234');
+      });
+
+      it('calls the showSnackBar() in the callback', () => {
+        spyOn(componentUnderTest, 'showSnackBar');
+        mockDialogService.onSubmitCallback({ lineItemAttributes: 'one\ntwo' });
+
+        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
+          key: 'QUOTE.BULK_IMPORT.CONFIRMATION',
+          value: { numOfAssets: 2 }
         });
       });
     });

@@ -495,5 +495,15 @@ export function main() {
         });
       });
     });
+
+    describe('bulkImport', () => {
+      it('calls the api service correctly', () => {
+        serviceUnderTest.bulkImport({ lineItemAttributes: 'one\ntwo' }, 'abc-123');
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3/asset/direct/lineItem');
+        expect(mockApi.put).toHaveBeenCalledWithBody({ lineItemAttributes: 'one\ntwo' });
+        expect(mockApi.put).toHaveBeenCalledWithParameters({ projectId: 'abc-123' });
+      });
+    });
   });
 }
