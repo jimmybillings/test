@@ -16,13 +16,13 @@ export class ActiveCollectionService {
   constructor(private apiService: ApiService) { }
 
   public load(parameters: CollectionPaginationParameters): Observable<Collection> {
-    return this.apiService.get(Api.Assets, 'collectionSummary/focused', { loadingIndicator: true }).
-      flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
+    return this.apiService.get(Api.Assets, 'collectionSummary/focused', { loadingIndicator: true })
+      .flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
   }
 
   public set(collectionId: number, parameters: CollectionPaginationParameters): Observable<Collection> {
-    return this.apiService.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loadingIndicator: true }).
-      flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
+    return this.apiService.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loadingIndicator: true })
+      .flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
   }
 
   public loadPage(collectionId: number, parameters: CollectionPaginationParameters): Observable<CollectionItems> {
