@@ -234,7 +234,7 @@ export class QuoteEditService {
     return this.api.put(Api.Orders, `quote/${this.state.data.id}/asset/direct/lineItem`, {
       body: rawAssets,
       parameters: { projectId }
-    }).do(this.replaceQuote) as any;
+    }).do(this.replaceQuote);
   }
 
   // Private helper methods
