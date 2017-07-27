@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: WzAssetListComponent;
 
     beforeEach(() => {
-      componentUnderTest = new WzAssetListComponent(null, null);
+      componentUnderTest = new WzAssetListComponent(null);
     });
 
     it('has no functionality to test', () => {

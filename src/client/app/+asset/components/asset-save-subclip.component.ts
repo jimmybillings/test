@@ -5,9 +5,7 @@ import {
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component';
 import { Capabilities } from '../../shared/services/capabilities.service';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
-import { AppStore } from '../../app.store';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -19,9 +17,9 @@ import { Asset } from '../../shared/interfaces/common.interface';
 export class AssetSaveSubclipComponent {
   @Input() config: any;
   @Input() public userCan: Capabilities;
-  @Input() asset: Asset;
-  @Input() activeCollectionName: string;
+  @Input() collectionName: string;
   @Input() subclipMarkers: SubclipMarkers;
+  @Output() onAddSubclipToCollection: EventEmitter<null> = new EventEmitter<null>();
   @Output() onAddSubclipToCart: EventEmitter<null> = new EventEmitter<null>();
   @Output() ontoggleSubclipPanel: EventEmitter<null> = new EventEmitter<null>();
 
@@ -31,10 +29,12 @@ export class AssetSaveSubclipComponent {
 
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
 
-  constructor(private store: AppStore, private changeDetector: ChangeDetectorRef) { }
+  constructor(
+    private changeDetector: ChangeDetectorRef) {
+  }
 
-  public addSubclipToActiveCollection(comment: any): void {
-    this.store.dispatch(factory => factory.activeCollection.addAsset(this.asset, this.subclipMarkers));
+  public addSubclipToCollection(comment: any): void {
+    this.onAddSubclipToCollection.emit();
     this.clearAndClose();
   }
 

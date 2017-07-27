@@ -1,9 +1,8 @@
-import {
-  Component, OnInit, OnDestroy, Renderer, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Inject
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, Renderer, ViewChild, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Collection, CollectionsStoreI } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
+import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
@@ -24,13 +23,11 @@ import { CollectionDeleteComponent } from '../components/collection-delete.compo
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
-import { SpeedviewData, SpeedviewEvent } from '../../shared/interfaces/asset.interface';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
+import { SubclipMarkers, SpeedviewData, SpeedviewEvent } from '../../shared/interfaces/asset.interface';
 import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../shared/services/quote-edit.service';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzEvent, Coords } from '../../shared/interfaces/common.interface';
-import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -40,7 +37,8 @@ import { AppStore } from '../../app.store';
 })
 
 export class CollectionShowComponent implements OnInit, OnDestroy {
-  public activeCollection: Collection;
+  public focusedCollection: Collection;
+  public collection: Collection;
   public assets: any;
   public routeParams: any;
   public errorMessage: string;
@@ -55,7 +53,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public router: Router,
     public collections: CollectionsService,
     public asset: AssetService,
-    public collectionsStore: Store<CollectionsStoreI>,
+    public activeCollection: ActiveCollectionService,
+    public store: Store<CollectionsStoreI>,
     public currentUser: CurrentUserService,
     public uiState: UiState,
     public error: ErrorStore,
@@ -69,22 +68,15 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private window: WindowRef,
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
-    @Inject(DOCUMENT) private document: any,
-    private store: AppStore,
-    private changeDetectorRef: ChangeDetectorRef) {
+    @Inject(DOCUMENT) private document: any) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
   }
 
   ngOnInit() {
-    this.activeCollectionSubscription =
-      this.store.select(state => state.activeCollection.collection).subscribe(collection => {
-        this.activeCollection = collection;
-        // The view needs to update whenever the activeCollection changes (including individual assets).  This is
-        // a direct store subscription, not an @Input(), so we have to trigger change detection ourselves.
-        this.changeDetectorRef.markForCheck();
-      });
-
+    this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => {
+      this.collection = collection;
+    });
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
   }
 
@@ -132,7 +124,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public resetCollection() {
-    this.activeCollection = Object.assign({}, this.activeCollection);
+    this.collection = Object.assign({}, this.collection);
   }
 
   public buildRouteParams(params: any): void {
@@ -140,9 +132,18 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     delete (this.routeParams['id']);
   }
 
+  public removeFromCollection(params: any): void {
+    this.userPreference.openCollectionTray();
+    this.activeCollection.removeAsset(params).subscribe();
+    this.showSnackBar({
+      key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
+      value: { collectionName: this.activeCollection.state.name }
+    });
+  }
+
   public changePage(i: any): void {
     this.buildRouteParams({ i });
-    this.router.navigate(['/collections/' + this.activeCollection.id, this.routeParams]);
+    this.router.navigate(['/collections/' + this.collection.id, this.routeParams]);
   }
 
   public downloadComp(params: any): void {
@@ -161,7 +162,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         componentType: CollectionDeleteComponent,
         dialogConfig: { position: { top: '14%' } },
         inputOptions: {
-          collection: JSON.parse(JSON.stringify(this.activeCollection)),
+          collection: JSON.parse(JSON.stringify(this.collection)),
         },
         outputOptions: [{
           event: 'deleteEvent',
@@ -198,7 +199,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.dialogService.openComponentInDialog(
       {
         componentType: CollectionLinkComponent,
-        inputOptions: { assets: this.activeCollection.assets.items }
+        inputOptions: { assets: this.collection.assets.items }
       }
     );
   }
@@ -226,7 +227,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
               {
                 event: 'save',
                 callback: (updatedMarkers: SubclipMarkers) => {
-                  this.store.dispatch(factory => factory.activeCollection.updateAssetMarkers(asset, updatedMarkers));
+                  this.activeCollection.updateAsset(this.collection.id, asset, updatedMarkers).subscribe();
                 },
                 closeOnEvent: true
               }
@@ -244,7 +245,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         {
           componentType: CollectionFormComponent,
           inputOptions: {
-            collection: JSON.parse(JSON.stringify(this.activeCollection)),
+            collection: JSON.parse(JSON.stringify(this.collection)),
             fields: config.config,
             isEdit: true
           },

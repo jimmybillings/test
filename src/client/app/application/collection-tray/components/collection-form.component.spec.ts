@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 
 export function main() {
   let componentUnderTest: CollectionFormComponent, mockCollections: any, mockCollectionContext: any, mockActiveCollection: any;
-  let mockStore: any;
 
   describe('Collection Form Component', () => {
     beforeEach(() => {
@@ -11,10 +10,9 @@ export function main() {
         create: jasmine.createSpy('create').and.returnValue(Observable.of({})),
         load: jasmine.createSpy('load').and.returnValue(Observable.of({}))
       };
+      mockActiveCollection = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockCollectionContext = { resetCollectionOptions: jasmine.createSpy('resetCollectionOptions') };
-      mockStore = { dispatch: jasmine.createSpy('dispatch') };
-      componentUnderTest =
-        new CollectionFormComponent(mockCollections, null, null, mockCollectionContext, mockStore);
+      componentUnderTest = new CollectionFormComponent(mockCollections, mockActiveCollection, null, null, mockCollectionContext);
       componentUnderTest.dialog = { close: () => { } };
     });
 
@@ -26,7 +24,7 @@ export function main() {
         collectionWithParsedTags.tags = ['cat', 'dog', 'cow'];
         expect(componentUnderTest.loadCollections).toHaveBeenCalled();
         expect(componentUnderTest.collections.create).toHaveBeenCalledWith(collectionWithParsedTags);
-        // expect(mockStore.dispatch).toHaveBeenCalledWith(new ActiveCollectionActions.Load());
+        expect(componentUnderTest.activeCollection.load).toHaveBeenCalled();
       });
     });
   });

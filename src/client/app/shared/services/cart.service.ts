@@ -25,7 +25,7 @@ import {
   LicenseAgreements
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
-import { SubclipMarkers } from '../interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../interfaces/asset.interface';
 import { Frame } from 'wazee-frame-formatter';
 
 @Injectable()

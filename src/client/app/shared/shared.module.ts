@@ -8,8 +8,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MaterialModule } from './modules/wz-design/wz-design.module';
 import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { EffectsModule } from '@ngrx/effects';
 
 // Shared Wazee Modules
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
@@ -49,6 +47,7 @@ import { WzNotificationService } from './services/wz.notification.service';
 import { AssetService } from './services/asset.service';
 import { SearchContext } from './services/search-context.service';
 import { CollectionsService } from './services/collections.service';
+import { ActiveCollectionService } from './services/active-collection.service';
 import { UiState } from './services/ui.state';
 import { UserPreferenceService } from './services/user-preference.service';
 import { ApiService } from './services/api.service';
@@ -67,17 +66,12 @@ import { QuoteService } from './services/quote.service';
 import { QuotesService } from './services/quotes.service';
 import { QuoteEditService } from './services/quote-edit.service';
 
-import { FutureAssetService } from '../store/services/asset.service';
-import { ActiveCollectionService } from '../store/services/active-collection.service';
-import { SnackbarService } from '../store/services/snackbar.service';
-
 
 // WAZEE STORES
-import { AppStore, reducers } from '../app.store';
-
 import { searchStore, SearchStore } from './stores/search.store';
 import { cart, CartStore } from './stores/cart.store';
 import { collections, CollectionsStore } from './stores/collections.store';
+import { activeCollection, ActiveCollectionStore } from './stores/active-collection.store';
 import { errorStore, ErrorStore } from './stores/error.store';
 import { order, OrderStore } from './stores/order.store';
 import { orders, OrdersStore } from './stores/orders.store';
@@ -90,6 +84,8 @@ import { checkout, CheckoutStore } from './stores/checkout.store';
 import { feeConfig, FeeConfigStore } from './stores/fee-config.store';
 import { pricingReducer, PricingStore } from './stores/pricing.store';
 
+
+import { asset } from './services/asset.service';
 import { currentUser } from './services/current-user.service';
 import { config } from './services/ui.config';
 import { uiState } from './services/ui.state';
@@ -101,17 +97,11 @@ import { userPreferences } from './services/user-preference.service';
 import { collectionOptions } from './services/collection-context.service';
 import { sortDefinitions } from './services/sort-definitions.service';
 
-// WAZEE EFFECTS
-import { ActiveCollectionEffects } from '../store/effects/active-collection.effects';
-import { AssetEffects } from '../store/effects/asset.effects';
-import { SnackbarEffects } from '../store/effects/snackbar.effects';
-
 const WAZEE_SERVICES = [
   ApiConfig,
   CurrentUserService,
   UiConfig,
   AssetService,
-  FutureAssetService,
   WzNotificationService,
   CollectionsService,
   ActiveCollectionService,
@@ -136,13 +126,13 @@ const WAZEE_SERVICES = [
   WindowRef,
   QuoteService,
   QuotesService,
-  QuoteEditService,
-  SnackbarService
+  QuoteEditService
 ];
 
 const WAZEE_STORE_INTERFACES = [
   ErrorStore,
   CollectionsStore,
+  ActiveCollectionStore,
   CartStore,
   FeatureStore,
   SearchStore,
@@ -158,7 +148,6 @@ const WAZEE_STORE_INTERFACES = [
 ];
 
 const WAZEE_PROVIDERS: any = [
-  AppStore,
   ...WAZEE_SERVICES,
   ...WAZEE_STORE_INTERFACES
 ];
@@ -166,9 +155,11 @@ const WAZEE_PROVIDERS: any = [
 const WAZEE_STORES: any = {
   config: config,
   searchStore: searchStore,
+  asset: asset,
   currentUser: currentUser,
   searchContext: searchContext,
   collections: collections,
+  activeCollection: activeCollection,
   uiState: uiState,
   filters: filters,
   userPreferences: userPreferences,
@@ -188,13 +179,6 @@ const WAZEE_STORES: any = {
   feeConfig: feeConfig,
   paymentReducer: pricingReducer
 };
-
-const WAZEE_EFFECTS = [
-  EffectsModule.run(ActiveCollectionEffects),
-  EffectsModule.run(AssetEffects),
-  EffectsModule.run(SnackbarEffects)
-];
-
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
 
@@ -222,9 +206,7 @@ export function createTranslateLoader(http: Http) {
     WzFormModule,
     WzAssetModule,
     WzDialogModule,
-    StoreModule.provideStore({ ...reducers, ...WAZEE_STORES }),  // Eventually this will be just the reducers object...
-    StoreDevtoolsModule.instrumentOnlyWithExtension(),
-    ...WAZEE_EFFECTS
+    StoreModule.provideStore(WAZEE_STORES)
   ],
   declarations: [
     WzGalleryBreadcrumbComponent,

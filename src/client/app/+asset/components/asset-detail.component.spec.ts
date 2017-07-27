@@ -1,10 +1,8 @@
 import { AssetDetailComponent } from './asset-detail.component';
-import { StoreSpecHelper } from '../../store/store.spec-helper';
 
 export function main() {
   describe('Asset Detail Component', () => {
     let componentUnderTest: AssetDetailComponent;
-    let storeSpecHelper: StoreSpecHelper;
     let asset: any, collection: any;
     let transcodeTargets: any, detailTypeMap: any, finalAsset: any;
 
@@ -21,14 +19,10 @@ export function main() {
       asset = { assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl' };
       asset.detailTypeMap = detailTypeMap;
       asset.transcodeTargets = transcodeTargets;
-
-      storeSpecHelper = new StoreSpecHelper();
-      componentUnderTest = new AssetDetailComponent(storeSpecHelper.mockStore);
-
+      componentUnderTest = new AssetDetailComponent();
       componentUnderTest.asset = {
         assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl', transcodeTargets: transcodeTargets
-      } as any;
-
+      };
       componentUnderTest.window = window;
     });
 
@@ -55,7 +49,7 @@ export function main() {
         it('Should move the properties of detailTypeMap to the root level of asset', () => {
           componentUnderTest.ngOnChanges({ asset: { currentValue: asset } });
           for (let item in detailTypeMap) {
-            expect((componentUnderTest.asset as any)[item])
+            expect(componentUnderTest.asset[item])
               .not.toBeUndefined();
           }
         });
@@ -79,29 +73,29 @@ export function main() {
         });
 
         it('Should update the assetsArr if changes happen to changes.collection', () => {
-          componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
+          componentUnderTest.ngOnChanges({ collection: { currentValue: collection } });
           expect(componentUnderTest.alreadyInCollection(123)).toBe(true);
         });
       });
     });
 
-    describe('addAssetToActiveCollection()', () => {
-      it('dispatches the expected action', () => {
-        const spy = storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'addAsset');
+    describe('addToCollection()', () => {
+      it('Should emit an event to add an asset to a collection with the right parameters', () => {
+        spyOn(componentUnderTest.onAddToCollection, 'emit');
+        componentUnderTest.addToCollection(collection, { value: 1234 });
 
-        componentUnderTest.addAssetToActiveCollection();
-
-        storeSpecHelper.expectDispatchFor(spy, componentUnderTest.asset);
+        expect(componentUnderTest.onAddToCollection.emit).toHaveBeenCalledWith(
+          { collection: collection, asset: { value: 1234, assetId: 1234 }, markers: null }
+        );
       });
     });
 
-    describe('removeAssetFromActiveCollection()', () => {
-      it('dispatches the expected action', () => {
-        const spy = storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'removeAsset');
-
-        componentUnderTest.removeAssetFromActiveCollection();
-
-        storeSpecHelper.expectDispatchFor(spy, componentUnderTest.asset);
+    describe('removeFromCollection()', () => {
+      it('Should emit an event to remove an asset from a collection with the right parameters', () => {
+        spyOn(componentUnderTest.onRemoveFromCollection, 'emit');
+        componentUnderTest.removeFromCollection(collection, { value: 1234 });
+        expect(componentUnderTest.onRemoveFromCollection.emit)
+          .toHaveBeenCalledWith({ collection: collection, asset: { value: 1234, assetId: 1234 } });
       });
     });
 
@@ -117,7 +111,7 @@ export function main() {
     describe('addAssetToCart()', () => {
       it('Should emit an event to add an asset to the cart with the correct parameters', () => {
         // Gotta do both of these to set the asset as expected.
-        componentUnderTest.asset = { assetId: 1234, transcodeTargets: transcodeTargets } as any;
+        componentUnderTest.asset = { assetId: 1234, transcodeTargets: transcodeTargets };
         componentUnderTest.ngOnChanges({ asset: { assetId: 1234, currentValue: asset }, subclipMarkers: null });
 
         spyOn(componentUnderTest.addToCart, 'emit');

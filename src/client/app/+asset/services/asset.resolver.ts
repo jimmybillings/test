@@ -1,27 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-
-import { AppStore } from '../../app.store';
-import { AssetLoadParameters } from '../../shared/interfaces/common.interface';
+import { AssetService } from '../../shared/services/asset.service';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Injectable()
-export class AssetResolver implements Resolve<boolean> {
-  constructor(private store: AppStore) { }
+export class AssetResolver {
+  constructor(private asset: AssetService, private currentUser: CurrentUserService) { }
 
-  public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-    this.store.dispatch(factory => factory.asset.load(this.convertToLoadParameters(route.params)));
-
-    return this.store.blockUntil(state => state.asset.loaded);
-  }
-
-  private convertToLoadParameters(routeParameters: { [key: string]: any }): AssetLoadParameters {
-    return {
-      id: routeParameters['id'],
-      share_key: routeParameters['share_key'],
-      uuid: routeParameters['uuid'],
-      timeEnd: routeParameters['timeEnd'],
-      timeStart: routeParameters['timeStart']
-    };
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+    return this.asset.getData({
+      assetId: route.params['name'],
+      share_key: route.params['share_key'],
+      uuid: route.params['uuid'],
+      timeEnd: route.params['timeEnd'],
+      timeStart: route.params['timeStart']
+    });
   }
 }

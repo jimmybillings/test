@@ -3,11 +3,9 @@ import { Collection } from '../../shared/interfaces/collection.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
-import { AppStore } from '../../app.store';
-import { Asset } from '../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -17,13 +15,15 @@ import { Asset } from '../../shared/interfaces/common.interface';
 })
 
 export class AssetDetailComponent implements OnChanges {
-  @Input() public asset: Asset;
+  @Input() public asset: any;
   @Input() public userEmail: Observable<string>;
   @Input() public userCan: Capabilities;
   @Input() public uiConfig: UiConfig;
-  @Input() public activeCollection: Collection;
+  @Input() public collection: Collection;
   @Input() public usagePrice: Observable<number>;
   @Input() public window: Window;
+  @Output() onAddToCollection = new EventEmitter();
+  @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
@@ -35,12 +35,10 @@ export class AssetDetailComponent implements OnChanges {
   public subclipMarkers: SubclipMarkers;
   private assetsArr: Array<number> = [];
 
-  constructor(private store: AppStore) { }
-
   ngOnChanges(changes: any): void {
     if (changes.asset) this.parseNewAsset(changes.asset);
-    if (changes.activeCollection) {
-      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((x: any) => x.assetId);
+    if (changes.collection) {
+      this.assetsArr = changes.collection.currentValue.assets.items.map((x: any) => x.assetId);
     }
   }
 
@@ -55,6 +53,10 @@ export class AssetDetailComponent implements OnChanges {
   public alreadyInCollection(assetId: any): boolean {
     assetId = parseInt(assetId);
     return this.assetsArr.indexOf(assetId) > -1;
+  }
+
+  public addSubclipToCollection(): void {
+    this.onAddToCollection.emit({ 'collection': this.collection, 'asset': this.asset, 'markers': this.subclipMarkers });
   }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
@@ -79,12 +81,14 @@ export class AssetDetailComponent implements OnChanges {
     this.showAssetSaveSubclip = !this.showAssetSaveSubclip;
   }
 
-  public addAssetToActiveCollection(): void {
-    this.store.dispatch(factory => factory.activeCollection.addAsset(this.asset));
+  public addToCollection(collection: Collection, asset: any): void {
+    asset.assetId = asset.value;
+    this.onAddToCollection.emit({ 'collection': collection, 'asset': asset, markers: null });
   }
 
-  public removeAssetFromActiveCollection(): void {
-    this.store.dispatch(factory => factory.activeCollection.removeAsset(this.asset));
+  public removeFromCollection(collection: Collection, asset: any): void {
+    asset.assetId = asset.value;
+    this.onRemoveFromCollection.emit({ 'collection': collection, 'asset': asset });
   }
 
   public downloadComp(assetId: any, compType: any): void {
