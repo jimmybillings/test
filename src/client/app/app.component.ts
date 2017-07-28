@@ -1,13 +1,17 @@
 import 'rxjs/add/observable/throw';
+import 'rxjs/add/observable/empty';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/takeLast';
+import 'rxjs/add/operator/withLatestFrom';
+import 'rxjs/add/operator/ignoreElements';
 import { Component, OnInit, HostListener, NgZone } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { MultilingualService } from './shared/services/multilingual.service';
+
 // Services
 import { CurrentUserService } from './shared/services/current-user.service';
 import { ApiConfig } from './shared/services/api.config';
@@ -18,7 +22,6 @@ import { SortDefinitionsService } from './shared/services/sort-definitions.servi
 import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
 import { WzNotificationService } from './shared/services/wz.notification.service';
-import { ActiveCollectionService } from './shared/services/active-collection.service';
 import { CartService } from './shared/services/cart.service';
 import { QuoteEditService } from './shared/services/quote-edit.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
@@ -26,8 +29,11 @@ import { Capabilities } from './shared/services/capabilities.service';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { WindowRef } from './shared/services/window-ref.service';
+import { AppStore } from './app.store';
+
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
+import { Collection } from './shared/interfaces/collection.interface';
 
 @Component({
   moduleId: module.id,
@@ -48,7 +54,6 @@ export class AppComponent implements OnInit {
     public searchContext: SearchContext,
     public currentUser: CurrentUserService,
     public collections: CollectionsService,
-    public activeCollection: ActiveCollectionService,
     public uiState: UiState,
     public userPreference: UserPreferenceService,
     private notification: WzNotificationService,
@@ -61,7 +66,8 @@ export class AppComponent implements OnInit {
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private zone: NgZone,
-    private quoteEditService: QuoteEditService) {
+    private quoteEditService: QuoteEditService,
+    private store: AppStore) {
     this.loadConfig();
     this.userCan = capabilities;
     zone.runOutsideAngular(() => {
@@ -74,6 +80,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.routerChanges();
     this.processUser();
+  }
+
+  public get activeCollection(): Observable<Collection> {
+    return this.store.select(state => state.activeCollection.collection);
   }
 
   public get cartCount(): Observable<any> {
@@ -128,16 +138,21 @@ export class AppComponent implements OnInit {
 
   private processLoggedInUser() {
     this.userPreference.getPrefs();
+
     if (this.userCan.viewCollections()) {
-      this.activeCollection.load().subscribe(() => {
-        this.collections.load().subscribe(() => { });
+      this.store.dispatch(factory => factory.activeCollection.load());
+
+      this.store.blockUntil(state => state.activeCollection.loaded).subscribe(() => {
+        this.collections.load().subscribe();
       });
     }
+
     if (this.userCan.administerQuotes()) {
       this.quoteEditService.getFocusedQuote().subscribe();
     } else {
       this.cartService.initializeData().subscribe();
     }
+
     this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });

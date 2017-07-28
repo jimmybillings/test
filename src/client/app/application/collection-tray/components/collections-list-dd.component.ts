@@ -1,12 +1,13 @@
 import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../../shared/services/collections.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
-import { ActiveCollectionService } from '../../../shared/services/active-collection.service';
-import { Subscription } from 'rxjs/Subscription';
 import { UiState } from '../../../shared/services/ui.state';
+import { AppStore } from '../../../app.store';
 
 /**
  * Directive that renders a list of collections
@@ -35,8 +36,9 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
     public router: Router,
     public collections: CollectionsService,
     public collectionContext: CollectionContextService,
-    public activeCollection: ActiveCollectionService,
-    public uiConfig: UiConfig) { }
+    public uiConfig: UiConfig,
+    private store: AppStore
+  ) { }
 
   ngOnInit(): void {
     this.uiConfig.get('global').take(1).subscribe(config => {
@@ -57,7 +59,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
     if (this.onCollectionShowPage()) {
       this.navigateToCollectionShow(collection.id);
     } else {
-      this.activeCollection.load(collection.id).subscribe();
+      this.store.dispatch(factory => factory.activeCollection.set(collection.id));
     }
   }
 

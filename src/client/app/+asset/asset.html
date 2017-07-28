@@ -1,13 +1,11 @@
   <asset-detail #target
     [userEmail]="userEmail"
     [userCan]="userCan"
-    [asset]="assetService.data | async"
-    [collection]="activeCollection.data | async"
+    [asset]="asset"
+    [activeCollection]="activeCollection | async"
     [uiConfig]="uiConfig"
     [usagePrice]="priceForDetails"
     [window]="window.nativeWindow"
-    (onAddToCollection)="addToCollection($event)"
-    (onRemoveFromCollection)="removeFromCollection($event)"
     (onDownloadComp)="downloadComp($event)"
     (addToCart)="addAssetToCart($event)"
     (getPriceAttributes)="getPricingAttributes($event)"
@@ -16,6 +14,7 @@
   >
   </asset-detail>
   <asset-data
-    [asset]="assetService.data | async">
+    [asset]="asset"
+  >
   </asset-data>
 

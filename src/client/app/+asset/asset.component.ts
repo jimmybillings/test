@@ -1,7 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../shared/services/asset.service';
-import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
 import { WzEvent } from '../shared/interfaces/common.interface';
 import { UiConfig } from '../shared/services/ui.config';
@@ -20,6 +19,10 @@ import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { PricingStore } from '../shared/stores/pricing.store';
+import { Subscription } from 'rxjs/Subscription';
+import { Asset } from '../shared/interfaces/common.interface';
+import { AppStore } from '../app.store';
+import { Collection } from '../shared/interfaces/collection.interface';
 
 @Component({
   moduleId: module.id,
@@ -27,20 +30,22 @@ import { PricingStore } from '../shared/stores/pricing.store';
   templateUrl: 'asset.html',
 })
 
-export class AssetComponent implements OnInit {
+export class AssetComponent implements OnInit, OnDestroy {
   public pricingAttributes: any;
   public rightsReproduction: string = '';
+  public asset: Asset;
+  private assetSubscription: Subscription;
   private selectedAttrbutes: any;
   private pageSize: number = 50;
 
   constructor(
     public currentUser: CurrentUserService,
     public userCan: Capabilities,
-    public activeCollection: ActiveCollectionService,
     public uiState: UiState,
     public assetService: AssetService,
     public uiConfig: UiConfig,
     public window: WindowRef,
+    private store: AppStore,
     private userPreference: UserPreferenceService,
     private error: ErrorStore,
     private cart: CartService,
@@ -51,14 +56,26 @@ export class AssetComponent implements OnInit {
     private pricingStore: PricingStore) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
+
+    // Hopefully temporary:  Maintaining a subscription instead of an Observable<Asset> because we need the current asset's
+    // assetId in calculatePrice() below.
+    this.assetSubscription = this.store.select(state => state.asset.currentAsset).subscribe(asset => this.asset = asset);
+  }
+
+  public ngOnDestroy(): void {
+    if (this.assetSubscription) this.assetSubscription.unsubscribe();
   }
 
   public previousPage() {
     this.window.nativeWindow.history.back();
+  }
+
+  public get activeCollection(): Observable<Collection> {
+    return this.store.select(state => state.activeCollection.collection);
   }
 
   public get userEmail(): Observable<any> {
@@ -74,24 +91,6 @@ export class AssetComponent implements OnInit {
       .subscribe((res: string) => {
         this.snackBar.open(res, '', { duration: 2000 });
       });
-  }
-
-  public addToCollection(params: any): void {
-    this.userPreference.openCollectionTray();
-    this.activeCollection.addAsset(params.collection.id, params.asset, params.markers).subscribe();
-    this.showSnackBar({
-      key: 'COLLECTION.ADD_TO_COLLECTION_TOAST',
-      value: { collectionName: params.collection.name }
-    });
-  }
-
-  public removeFromCollection(params: any): void {
-    this.userPreference.openCollectionTray();
-    this.activeCollection.removeAsset(params).subscribe();
-    this.showSnackBar({
-      key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
-      value: { collectionName: params.collection.name }
-    });
   }
 
   public downloadComp(params: any): void {
@@ -178,6 +177,6 @@ export class AssetComponent implements OnInit {
 
   private calculatePrice(attributes: any): Observable<number> {
     this.selectedAttrbutes = attributes;
-    return this.assetService.getPrice(this.assetService.state.assetId, attributes);
+    return this.assetService.getPrice(this.asset.assetId, attributes);
   }
 }

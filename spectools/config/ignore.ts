@@ -13,7 +13,9 @@ export const ignoredFilePatterns: string[] = [
   'main-prod',
   'operators',
   'shared/modules/wz-dialog/components/index',
-  'application'
+  'application',
+  'app.store',
+  'store.spec-helper'
 ];
 
 export const ignoredDirectoryNames: string[] = [
