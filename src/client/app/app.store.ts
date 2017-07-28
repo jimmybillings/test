@@ -36,6 +36,7 @@ export interface AppReducers {
   readonly [reducerName: string]: Function;
 };
 
+// NOTE:  Until all the old legacy reducers are replaced, you must ALSO redefine these directly in shared.module.ts.
 export const reducers: AppReducers = {
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,

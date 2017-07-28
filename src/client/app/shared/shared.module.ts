@@ -73,7 +73,13 @@ import { SnackbarService } from '../store/services/snackbar.service';
 
 
 // WAZEE STORES
-import { AppStore, reducers } from '../app.store';
+import {
+  AppStore
+  // reducers
+} from '../app.store';
+import * as ActiveCollectionState from '../store/states/active-collection.state';
+import * as AssetState from '../store/states/asset.state';
+import * as SnackbarState from '../store/states/snackbar.state';
 
 import { searchStore, SearchStore } from './stores/search.store';
 import { cart, CartStore } from './stores/cart.store';
@@ -163,6 +169,7 @@ const WAZEE_PROVIDERS: any = [
   ...WAZEE_STORE_INTERFACES
 ];
 
+
 const WAZEE_STORES: any = {
   config: config,
   searchStore: searchStore,
@@ -186,7 +193,11 @@ const WAZEE_STORES: any = {
   activeQuote: activeQuote,
   checkout: checkout,
   feeConfig: feeConfig,
-  paymentReducer: pricingReducer
+  paymentReducer: pricingReducer,
+  // REDUX 200000.0.0
+  activeCollection: ActiveCollectionState.reducer,
+  asset: AssetState.reducer,
+  snackbar: SnackbarState.reducer
 };
 
 const WAZEE_EFFECTS = [
@@ -222,7 +233,7 @@ export function createTranslateLoader(http: Http) {
     WzFormModule,
     WzAssetModule,
     WzDialogModule,
-    StoreModule.provideStore({ ...reducers, ...WAZEE_STORES }),  // Eventually this will be just the reducers object...
+    StoreModule.provideStore(WAZEE_STORES),  // Eventually this will be just the reducers object...
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     ...WAZEE_EFFECTS
   ],
