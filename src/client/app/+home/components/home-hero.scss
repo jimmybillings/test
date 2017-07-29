@@ -51,7 +51,13 @@ home-hero {
       }
     }
   }
-
+  .hero-video-container {
+    background: mat-color($mat-grey, 900, .9);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+  }
   &.hero-v > div > div {
     position: absolute;
     top: 0;

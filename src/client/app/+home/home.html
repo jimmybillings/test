@@ -2,6 +2,8 @@
   [config]="config"
   [currentUser]="currentUser" 
   [isVideo]="isVideo"
+  [heroVideo]="heroVideo"
+  [isVideoHidden]="isPlaying | async"
   [uiState]="uiState"
   (searchContext)="newSearchContext($event)"
   [ngClass]="{'gallery-home' : currentUser.loggedIn() && config.galleryView, 'hero-v' : isVideo, 'hero-i' : !isVideo}">

@@ -1,13 +1,11 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-// import { WindowRef } from '../../shared/services/window-ref.service';
-// declare var jwplayer: any;
+import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   moduleId: module.id,
   selector: 'home-hero',
   template: `
-    <div class="hero-video-container" *ngIf="isVideo">
-      <div class="hero-video" id="hero-video"></div>
+    <div *ngIf="isVideo" class="hero-video-container" [ngClass]="{'is-hidden' : isVideoHidden}">
+      <div id="hero-video"></div>
     </div>
     <div class="hero-image-container" *ngIf="!isVideo">
       <div class="hero-image"></div>
@@ -34,12 +32,27 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class HomeHeroComponent {
+export class HomeHeroComponent implements OnInit {
+  // public isHidden: boolean = false;
 
   @Input() config: any;
   @Input() currentUser: any;
   @Input() uiState: any;
   @Input() isVideo: boolean;
+  @Input() heroVideo: any;
+  @Input() isVideoHidden: boolean;
   @Output() searchContext: any = new EventEmitter();
+
+  ngOnInit() {
+    this.isVideoHidden = false;
+
+    // this.heroVideo.subscribe((video: any) => {
+    //   video.on('play', function () {
+    //     this.isVideoHidden = false;
+    //     console.log(`vid is playing and hidden is ${this.isVideoHidden}`)
+    //   });
+    // });
+
+  }
 
 }

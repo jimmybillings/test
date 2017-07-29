@@ -27,6 +27,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   public data: Observable<Gallery>;
   public heroVideo: any;
   public isVideo: boolean = false;
+  public isVideoHidden: boolean = true;
+  public isVideoPlaying: boolean;
   public videoPlayer: any;
   private configSubscription: Subscription;
 
@@ -78,31 +80,45 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private getVideoPlaylist(): void {
-    this.homeVideoService.getVideo(this.config.heroContentId.value).take(1).subscribe((vid) => {
-      this.heroVideo = vid.playlist;
-      this.setUpVideo(this.heroVideo);
+    this.homeVideoService.getVideo(this.config.heroContentId.value).take(1).subscribe((video) => {
+      this.setUpVideo(video.playlist, 'hero-video');
     });
   }
-  private setUpVideo(video: any): void {
-    this.videoPlayer = jwplayer('hero-video').setup({
+
+  private setUpVideo(video: any, elementId: string): Observable<any> {
+    return this.heroVideo = jwplayer(elementId).setup({
       autostart: true,
       controls: false,
-      playlist: this.heroVideo,
+      playlist: video,
       androidhls: false,
       mute: true,
       repeat: true,
       stretching: 'fill',
       height: '100%',
       width: '100%'
-    });
+    }) as Observable<any>;
+
+
+    // return this.heroVideo.on('play', function () {
+    //   console.log(`vid is playing and hidden is ${this.isVideoHidden}`)
+    //   this.isVideoHidden = false;
+    // });
   }
 
-
+  // public get isPlaying(): Observable<boolean> {
+  //   return this.isVideoPlaying;
+  //   };
+  // }
+  // private isVidPlaying(): Observable<boolean> {
+  //   this.isVideoPlaying = true;
+  //   this.isVideoHidden = false;
+  //   console.log(this.isVideoPlaying);
+  //   return this.isVideoPlaying;
+  // }
 
   private changeRouteFor(path: GalleryPath): void {
     const route: any[] = ['/gallery-view'];
     if (path && path.length > 0) route.push({ path: JSON.stringify(path) });
-
     this.router.navigate(route);
   }
 }
