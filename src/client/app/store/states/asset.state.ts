@@ -2,12 +2,12 @@ import * as AssetActions from '../actions/asset.actions';
 import { Asset } from '../../shared/interfaces/common.interface';
 
 export interface State {
-  currentAsset: Asset;
+  activeAsset: Asset;
   loaded: boolean;
 };
 
 export const initialState: State = {
-  currentAsset: { assetId: 0, name: '' },
+  activeAsset: { assetId: 0, name: '' },
   loaded: false
 };
 
@@ -18,7 +18,7 @@ export function reducer(state: State = initialState, action: AssetActions.Any): 
     }
 
     case AssetActions.LoadSuccess.Type: {
-      return { currentAsset: action.payload, loaded: true };
+      return { activeAsset: action.activeAsset, loaded: true };
     }
 
     default: {

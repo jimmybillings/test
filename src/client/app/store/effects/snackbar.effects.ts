@@ -11,9 +11,7 @@ import { SnackbarService } from '../services/snackbar.service';
 export class SnackbarEffects {
   @Effect()
   public display: Observable<Action> = this.actions.ofType(SnackbarActions.Display.Type)
-    .switchMap((action: SnackbarActions.Display) =>
-      this.service.display(action.payload.messageKey, action.payload.messageParameters)
-    )
+    .switchMap((action: SnackbarActions.Display) => this.service.display(action.messageKey, action.messageParameters))
     .map((translatedString: string) => this.store.create(factory => factory.snackbar.displaySuccess(translatedString)));
 
   constructor(private actions: Actions, private store: AppStore, private service: SnackbarService) { }

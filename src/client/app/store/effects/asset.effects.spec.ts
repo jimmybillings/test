@@ -20,12 +20,12 @@ export function main() {
           effectName: 'load',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: AssetActions.Load,
-            payload: { some: 'payload' }
+            type: AssetActions.Load.Type,
+            loadParameters: { some: 'loadParameters' }
           },
           serviceMethod: {
             name: 'load',
-            expectedArguments: [{ some: 'payload' }],
+            expectedArguments: [{ some: 'loadParameters' }],
             returnsObservableOf: { some: 'asset' }
           },
           outputActionFactory: {

@@ -14,7 +14,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Load',
-        payload: { currentPage: 42, pageSize: 50 }
+        pagination: { currentPage: 42, pageSize: 50 }
       }
     });
 
@@ -27,7 +27,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Load',
-        payload: { currentPage: 1, pageSize: 100 }
+        pagination: { currentPage: 1, pageSize: 100 }
       }
     });
 
@@ -39,7 +39,8 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Set',
-        payload: { collectionId: 99, parameters: { currentPage: 42, pageSize: 50 } }
+        collectionId: 99,
+        pagination: { currentPage: 42, pageSize: 50 }
       }
     });
 
@@ -52,7 +53,8 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Set',
-        payload: { collectionId: 99, parameters: { currentPage: 1, pageSize: 100 } }
+        collectionId: 99,
+        pagination: { currentPage: 1, pageSize: 100 }
       }
     });
 
@@ -64,7 +66,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Load Page',
-        payload: { currentPage: 42, pageSize: 50 }
+        pagination: { currentPage: 42, pageSize: 50 }
       }
     });
 
@@ -77,7 +79,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Load Page',
-        payload: { currentPage: 1, pageSize: 100 }
+        pagination: { currentPage: 1, pageSize: 100 }
       }
     });
 
@@ -89,7 +91,8 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Add Asset',
-        payload: { asset: { some: 'asset' }, markers: { some: 'markers' } }
+        asset: { some: 'asset' },
+        markers: { some: 'markers' }
       }
     });
 
@@ -102,7 +105,8 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Add Asset',
-        payload: { asset: { some: 'asset' }, markers: undefined }
+        asset: { some: 'asset' },
+        markers: undefined
       }
     });
 
@@ -114,7 +118,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Remove Asset',
-        payload: { some: 'asset' }
+        asset: { some: 'asset' }
       }
     });
 
@@ -126,7 +130,8 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Update Asset Markers',
-        payload: { asset: { some: 'asset' }, markers: { some: 'markers' } }
+        asset: { some: 'asset' },
+        markers: { some: 'markers' }
       }
     });
 
@@ -137,8 +142,7 @@ export function main() {
         parameters: []
       },
       expectedAction: {
-        type: '[Active Collection] Reset',
-        payload: undefined
+        type: '[Active Collection] Reset'
       }
     });
 
@@ -150,7 +154,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Load Success',
-        payload: { some: 'collection' }
+        activeCollection: { some: 'collection' }
       }
     });
 
@@ -162,7 +166,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Set Success',
-        payload: { some: 'collection' }
+        activeCollection: { some: 'collection' }
       }
     });
 
@@ -174,7 +178,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Load Page Success',
-        payload: { some: 'assets' }
+        currentPageItems: { some: 'assets' }
       }
     });
 
@@ -186,7 +190,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Add Asset Success',
-        payload: { some: 'assets' }
+        currentPageItems: { some: 'assets' }
       }
     });
 
@@ -198,7 +202,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Remove Asset Success',
-        payload: { some: 'assets' }
+        currentPageItems: { some: 'assets' }
       }
     });
 
@@ -210,7 +214,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Active Collection] Update Asset Markers Success',
-        payload: { some: 'assets' }
+        currentPageItems: { some: 'assets' }
       }
     });
   });

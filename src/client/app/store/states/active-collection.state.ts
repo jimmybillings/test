@@ -65,7 +65,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
 
     case ActiveCollectionActions.LoadSuccess.Type:
     case ActiveCollectionActions.SetSuccess.Type: {
-      const collection: Collection = action.payload;
+      const collection: Collection = action.activeCollection;
 
       return {
         ...JSON.parse(JSON.stringify(initialState)),
@@ -76,7 +76,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
 
     case ActiveCollectionActions.LoadPageSuccess.Type:
     case ActiveCollectionActions.UpdateAssetMarkersSuccess.Type: {
-      const newAssets: CollectionItems = action.payload;
+      const newAssets: CollectionItems = action.currentPageItems;
       const stateClone: State = JSON.parse(JSON.stringify(state));
 
       return {
@@ -93,14 +93,14 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
       return {
         ...JSON.parse(JSON.stringify(state)),
         loaded: false,
-        latestAddition: action.payload.markers
-          ? { asset: action.payload.asset, markers: serialize(action.payload.markers) }
-          : { asset: action.payload.asset }
+        latestAddition: action.markers
+          ? { asset: action.asset, markers: serialize(action.markers) }
+          : { asset: action.asset }
       };
     }
 
     case ActiveCollectionActions.AddAssetSuccess.Type: {
-      const newAssets: CollectionItems = action.payload;
+      const newAssets: CollectionItems = action.currentPageItems;
       const stateClone: State = JSON.parse(JSON.stringify(state));
 
       return {
@@ -118,12 +118,12 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
       return {
         ...JSON.parse(JSON.stringify(state)),
         loaded: false,
-        latestRemoval: action.payload
+        latestRemoval: action.asset
       };
     }
 
     case ActiveCollectionActions.RemoveAssetSuccess.Type: {
-      const newAssets: CollectionItems = action.payload;
+      const newAssets: CollectionItems = action.currentPageItems;
       const stateClone: State = JSON.parse(JSON.stringify(state));
 
       return {

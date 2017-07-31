@@ -13,7 +13,8 @@ export function main() {
       },
       expectedAction: {
         type: '[Snackbar] Display',
-        payload: { messageKey: 'some key', messageParameters: { some: 'parameters' } }
+        messageKey: 'some key',
+        messageParameters: { some: 'parameters' }
       }
     });
 
@@ -26,7 +27,8 @@ export function main() {
       },
       expectedAction: {
         type: '[Snackbar] Display',
-        payload: { messageKey: 'some key', messageParameters: {} }
+        messageKey: 'some key',
+        messageParameters: {}
       }
     });
 
@@ -38,7 +40,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Snackbar] Display Success',
-        payload: 'some translated string'
+        translatedMessage: 'some translated string'
       }
     });
   });

@@ -17,19 +17,19 @@ import { UserPreferenceService } from '../../shared/services/user-preference.ser
 export class ActiveCollectionEffects {
   @Effect()
   public load: Observable<Action> = this.actions.ofType(ActiveCollectionActions.Load.Type)
-    .switchMap((action: ActiveCollectionActions.Load) => this.service.load(action.payload))
+    .switchMap((action: ActiveCollectionActions.Load) => this.service.load(action.pagination))
     .map((collection: Collection) => this.store.create(factory => factory.activeCollection.loadSuccess(collection)));
 
   @Effect()
   public set: Observable<Action> = this.actions.ofType(ActiveCollectionActions.Set.Type)
-    .switchMap((action: ActiveCollectionActions.Set) => this.service.set(action.payload.collectionId, action.payload.parameters))
+    .switchMap((action: ActiveCollectionActions.Set) => this.service.set(action.collectionId, action.pagination))
     .map((collection: Collection) => this.store.create(factory => factory.activeCollection.setSuccess(collection)));
 
   @Effect()
   public loadPage: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadPage.Type)
     .withLatestFrom(this.store.select(state => state.activeCollection.collection.id))
     .switchMap(([action, collectionId]: [ActiveCollectionActions.LoadPage, number]) =>
-      this.service.loadPage(collectionId, action.payload)
+      this.service.loadPage(collectionId, action.pagination)
     ).map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.loadPageSuccess(assets)));
 
   // TODO: After user preference service has been replaced, this will map to a user preference action instead of calling do().
@@ -42,7 +42,7 @@ export class ActiveCollectionEffects {
   public addAsset: Observable<Action> = this.actions.ofType(ActiveCollectionActions.AddAsset.Type)
     .withLatestFrom(this.store.select(state => state.activeCollection.collection))
     .switchMap(([action, collection]: [ActiveCollectionActions.AddAsset, Collection]) =>
-      this.service.addAssetTo(collection, action.payload.asset, action.payload.markers)
+      this.service.addAssetTo(collection, action.asset, action.markers)
     ).map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.addAssetSuccess(assets)));
 
   @Effect()
@@ -59,7 +59,7 @@ export class ActiveCollectionEffects {
       if (!this.assetRouteActivated()) return;
 
       const state: AppState = this.store.completeSnapshot();
-      const currentAsset: Asset = state.asset.currentAsset;
+      const currentAsset: Asset = state.asset.activeAsset;
       const addedAsset: Asset = state.activeCollection.latestAddition.asset;
       if (currentAsset.assetId !== addedAsset.assetId) return;
 
@@ -81,7 +81,7 @@ export class ActiveCollectionEffects {
   public removeAsset: Observable<Action> = this.actions.ofType(ActiveCollectionActions.RemoveAsset.Type)
     .withLatestFrom(this.store.select(state => state.activeCollection.collection))
     .switchMap(([action, collection]: [ActiveCollectionActions.RemoveAsset, Collection]) =>
-      this.service.removeAssetFrom(collection, action.payload)
+      this.service.removeAssetFrom(collection, action.asset)
     ).map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.removeAssetSuccess(assets)));
 
   @Effect()
@@ -98,7 +98,7 @@ export class ActiveCollectionEffects {
       if (!this.assetRouteActivated()) return;
 
       const state: AppState = this.store.completeSnapshot();
-      const currentAsset: Asset = state.asset.currentAsset;
+      const currentAsset: Asset = state.asset.activeAsset;
       const removedAsset: Asset = state.activeCollection.latestRemoval;
       if (currentAsset.assetId !== removedAsset.assetId || currentAsset.uuid !== removedAsset.uuid) return;
 
@@ -114,7 +114,7 @@ export class ActiveCollectionEffects {
   public updateAssetMarkers: Observable<Action> = this.actions.ofType(ActiveCollectionActions.UpdateAssetMarkers.Type)
     .withLatestFrom(this.store.select(state => state.activeCollection.collection))
     .switchMap(([action, collection]: [ActiveCollectionActions.UpdateAssetMarkers, Collection]) =>
-      this.service.updateAssetMarkers(collection, action.payload.asset, action.payload.markers)
+      this.service.updateAssetMarkers(collection, action.asset, action.markers)
     ).map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.updateAssetMarkersSuccess(assets)));
 
   constructor(
