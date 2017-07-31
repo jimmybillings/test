@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActionReducer, Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { PricingState } from '../interfaces/commerce.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const initState = {
   priceForDetails: NaN,
   priceForDialog: NaN
 };
 
-export function pricingReducer(state: PricingState = initState, action: Action) {
+export function pricingReducer(state: PricingState = initState, action: LegacyAction) {
   switch (action.type) {
     case 'SET_PRICE_FOR_DIALOG':
       return Object.assign({}, state, { priceForDialog: action.payload });
@@ -21,7 +22,7 @@ export function pricingReducer(state: PricingState = initState, action: Action) 
 
 @Injectable()
 export class PricingStore {
-  constructor(private store: Store<PricingState>) { }
+  constructor(private store: Store<any>) { }  // Was Store<PricingState> before ngrx upgrade.
 
   public get data(): Observable<PricingState> {
     return this.store.select('paymentReducer');

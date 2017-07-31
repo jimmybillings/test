@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
+import { LegacyAction } from '../interfaces/common.interface';
 
 export const InitUiState: any = {
   headerIsExpanded: false,
@@ -9,7 +10,7 @@ export const InitUiState: any = {
   filtersAreAvailable: false
 };
 
-export function uiState(state = InitUiState, action: Action) {
+export function uiState(state = InitUiState, action: LegacyAction) {
 
   switch (action.type) {
     case 'UI.STATE.INITIALIZE':

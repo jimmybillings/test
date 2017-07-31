@@ -200,11 +200,11 @@ const WAZEE_STORES: any = {
   snackbar: SnackbarState.reducer
 };
 
-const WAZEE_EFFECTS = [
-  EffectsModule.run(ActiveCollectionEffects),
-  EffectsModule.run(AssetEffects),
-  EffectsModule.run(SnackbarEffects)
-];
+const WAZEE_EFFECTS = EffectsModule.forRoot([
+  ActiveCollectionEffects,
+  AssetEffects,
+  SnackbarEffects
+]);
 
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
@@ -233,9 +233,11 @@ export function createTranslateLoader(http: Http) {
     WzFormModule,
     WzAssetModule,
     WzDialogModule,
-    StoreModule.provideStore(WAZEE_STORES),  // Eventually this will be just the reducers object...
-    StoreDevtoolsModule.instrumentOnlyWithExtension(),
-    ...WAZEE_EFFECTS
+    StoreModule.forRoot(WAZEE_STORES),  // Eventually this will be just the reducers object from app.store.ts
+    // TODO: Get StoreDevtoolsModule out of production!!!  (Looks scary, though:
+    // https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md)
+    StoreDevtoolsModule.instrument(),
+    WAZEE_EFFECTS
   ],
   declarations: [
     WzGalleryBreadcrumbComponent,
