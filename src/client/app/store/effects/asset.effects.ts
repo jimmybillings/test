@@ -12,7 +12,7 @@ import { Asset } from '../../shared/interfaces/common.interface';
 export class AssetEffects {
   @Effect()
   public load: Observable<Action> = this.actions.ofType(AssetActions.Load.Type)
-    .switchMap((action: AssetActions.Load) => this.service.load(action.payload))
+    .switchMap((action: AssetActions.Load) => this.service.load(action.loadParameters))
     .map((asset: Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)));
 
   constructor(private actions: Actions, private store: AppStore, private service: FutureAssetService) { }

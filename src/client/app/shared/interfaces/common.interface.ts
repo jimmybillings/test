@@ -1,3 +1,5 @@
+import { Action } from '@ngrx/store';
+
 export { ViewAddress } from './user.interface';
 import { SpeedviewData } from './asset.interface';
 
@@ -115,4 +117,9 @@ export interface Autocomplete {
   setBounds: Function;
   addListener: Function;
   getPlace: Function;
+}
+
+// Temporary interface -- needed only until we convert all stores to the new AppStore way.
+export interface LegacyAction extends Action {
+  payload?: any;
 }

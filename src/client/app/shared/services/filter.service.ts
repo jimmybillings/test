@@ -1,13 +1,14 @@
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { ActiveFilters } from '../interfaces/filters.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const initFilters: any = {};
-export function filters(state: Array<any> = initFilters, action: Action) {
+export function filters(state: Array<any> = initFilters, action: LegacyAction) {
   switch (action.type) {
     case 'FILTERS.SET_FILTERS':
       return Object.assign({}, JSON.parse(JSON.stringify(action.payload)));

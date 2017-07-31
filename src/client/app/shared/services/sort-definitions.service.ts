@@ -1,16 +1,17 @@
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { UserPreferenceService } from './user-preference.service';
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const initSortState: any = {
   sorts: [],
   currentSort: {}
 };
 
-export function sortDefinitions(state = initSortState, action: Action) {
+export function sortDefinitions(state = initSortState, action: LegacyAction) {
   switch (action.type) {
     case 'SORTS.UPDATE_DEFINITIONS':
       return Object.assign({}, state, action.payload);

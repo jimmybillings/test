@@ -63,7 +63,7 @@ export class AssetComponent implements OnInit, OnDestroy {
 
     // Hopefully temporary:  Maintaining a subscription instead of an Observable<Asset> because we need the current asset's
     // assetId in calculatePrice() below.
-    this.assetSubscription = this.store.select(state => state.asset.currentAsset).subscribe(asset => this.asset = asset);
+    this.assetSubscription = this.store.select(state => state.asset.activeAsset).subscribe(asset => this.asset = asset);
   }
 
   public ngOnDestroy(): void {

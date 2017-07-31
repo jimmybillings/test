@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
+import { LegacyAction } from '../interfaces/common.interface';
 import { Address } from '../interfaces/user.interface';
 import { QuoteState } from '../interfaces/commerce.interface';
 
@@ -15,7 +16,7 @@ const emptyQuote: QuoteState = {
   }
 };
 
-export function activeQuote(state: any = emptyQuote, action: Action) {
+export function activeQuote(state: any = emptyQuote, action: LegacyAction) {
   switch (action.type) {
     case 'ACTIVE_QUOTE.REPLACE_QUOTE':
       return Object.assign({}, state, { data: action.payload });

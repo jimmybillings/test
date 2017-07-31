@@ -20,8 +20,9 @@ export function main() {
           effectName: 'display',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: SnackbarActions.Display,
-            payload: { messageKey: 'someMessageKey', messageParameters: { some: 'parameters' } }
+            type: SnackbarActions.Display.Type,
+            messageKey: 'someMessageKey',
+            messageParameters: { some: 'parameters' }
           },
           serviceMethod: {
             name: 'display',

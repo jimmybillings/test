@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import { Gallery, GalleryResults, GalleryPath } from '../interfaces/gallery-view.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
-export function gallery(state: Gallery = initialState(), action: Action) {
+export function gallery(state: Gallery = initialState(), action: LegacyAction) {
   switch (action.type) {
     case 'REPLACE_GALLERY':
       return Object.assign({}, action.payload ? action.payload : initialState());
@@ -16,7 +17,7 @@ export function gallery(state: Gallery = initialState(), action: Action) {
 
 @Injectable()
 export class GalleryViewStore {
-  constructor(private store: Store<Gallery>) { }
+  constructor(private store: Store<any>) { }  // Was Store<Gallery> before ngrx upgrade.
 
   public get data(): Observable<Gallery> {
     return this.store.select('gallery');

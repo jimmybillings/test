@@ -9,21 +9,21 @@ export class ActionFactory {
 }
 
 export class InternalActionFactory extends ActionFactory {
-  public loadSuccess(asset: Asset): LoadSuccess {
-    return new LoadSuccess(asset);
+  public loadSuccess(activeAsset: Asset): LoadSuccess {
+    return new LoadSuccess(activeAsset);
   }
 }
 
 export class Load implements Action {
   public static readonly Type = '[Asset] Load';
   public readonly type = Load.Type;
-  constructor(public readonly payload: AssetLoadParameters) { }
+  constructor(public readonly loadParameters: AssetLoadParameters) { }
 }
 
 export class LoadSuccess implements Action {
   public static readonly Type = '[Asset] Load Success';
   public readonly type = LoadSuccess.Type;
-  constructor(public readonly payload: Asset) { }
+  constructor(public readonly activeAsset: Asset) { }
 }
 
 export type Any = Load | LoadSuccess;

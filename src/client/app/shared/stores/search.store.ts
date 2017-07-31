@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+
+import { LegacyAction } from '../interfaces/common.interface';
 
 const initAssets: any = {
   items: [],
@@ -14,7 +16,7 @@ const initAssets: any = {
   }
 };
 
-export function searchStore(state: any = initAssets, action: Action) {
+export function searchStore(state: any = initAssets, action: LegacyAction) {
 
   switch (action.type) {
     case 'SEARCH':

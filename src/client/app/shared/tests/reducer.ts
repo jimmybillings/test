@@ -1,4 +1,4 @@
-import { ActionReducer } from '@ngrx/store';
+import { ActionReducer, Action } from '@ngrx/store';
 
 // TODO: When all reducers have been updated and are using addFutureStandardReducerTestsFor():
 // 1) remove this function
@@ -14,13 +14,13 @@ export function addStandardReducerTestsFor(
 ) {
   describe('Reducer (standard tests)', () => {
     it('does not fail with a null current state', () => {
-      expect(() => reducer(null, { type: actionType, payload: payload })).not.toThrow();
+      expect(() => reducer(null, { type: actionType, payload: payload } as Action)).not.toThrow();
     });
 
     it('does not directly mutate the current state', () => {
       const currentStateSnapshot: string = JSON.stringify(currentState);
 
-      reducer(currentState, { type: actionType, payload: payload });
+      reducer(currentState, { type: actionType, payload: payload } as Action);
 
       expect(JSON.stringify(currentState)).toEqual(currentStateSnapshot);
     });
@@ -36,11 +36,11 @@ export function addFutureStandardReducerTestsFor(
 ) {
   describe('Reducer (standard tests)', () => {
     it('does not fail with a null current state', () => {
-      expect(() => reducer(null, { type: actionType, payload: payload })).not.toThrow();
+      expect(() => reducer(null, { type: actionType, payload: payload } as Action)).not.toThrow();
     });
 
     it('has test parameters sufficient to prove lack of mutation', () => {
-      const newState = reducer(currentState, { type: actionType, payload: payload });
+      const newState = reducer(currentState, { type: actionType, payload: payload } as Action);
 
       if (JSON.stringify(newState) === JSON.stringify(currentState)) {
         throw new Error(
@@ -56,7 +56,7 @@ export function addFutureStandardReducerTestsFor(
     it('does not directly mutate the current state', () => {
       const currentStateSnapshot: string = JSON.stringify(currentState);
 
-      reducer(currentState, { type: actionType, payload: payload });
+      reducer(currentState, { type: actionType, payload: payload } as Action);
 
       expect(JSON.stringify(currentState)).toEqual(currentStateSnapshot);
     });
@@ -64,7 +64,7 @@ export function addFutureStandardReducerTestsFor(
     it('does not directly mutate the initial state when there was a previous state', () => {
       const initialStateSnapshot: string = JSON.stringify(initialState);
 
-      reducer(currentState, { type: actionType, payload: payload });
+      reducer(currentState, { type: actionType, payload: payload } as Action);
 
       expect(JSON.stringify(initialState)).toEqual(initialStateSnapshot);
     });
@@ -72,25 +72,25 @@ export function addFutureStandardReducerTestsFor(
     it('does not directly mutate the initial state when there was not a previous state', () => {
       const initialStateSnapshot: string = JSON.stringify(initialState);
 
-      reducer(undefined, { type: actionType, payload: payload });
+      reducer(undefined, { type: actionType, payload: payload } as Action);
 
       expect(JSON.stringify(initialState)).toEqual(initialStateSnapshot);
     });
 
     it('protects the previous state from changes to the returned state', () => {
-      const newState = reducer(currentState, { type: actionType, payload: payload });
+      const newState = reducer(currentState, { type: actionType, payload: payload } as Action);
 
       expect(preserves(currentState, 'previous', newState)).toBe(true);
     });
 
     it('protects the initial state from changes to the returned state when there was a previous state', () => {
-      const newState = reducer(currentState, { type: actionType, payload: payload });
+      const newState = reducer(currentState, { type: actionType, payload: payload } as Action);
 
       expect(preserves(initialState, 'initial', newState)).toBe(true);
     });
 
     it('protects the initial state from changes to the returned state when there was not a previous state', () => {
-      const newState = reducer(undefined, { type: actionType, payload: payload });
+      const newState = reducer(undefined, { type: actionType, payload: payload } as Action);
 
       expect(preserves(initialState, 'initial', newState)).toBe(true);
     });

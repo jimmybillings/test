@@ -13,7 +13,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Asset] Load',
-        payload: { some: 'load parameters' }
+        loadParameters: { some: 'load parameters' }
       }
     });
 
@@ -25,7 +25,7 @@ export function main() {
       },
       expectedAction: {
         type: '[Asset] Load Success',
-        payload: { some: 'asset' }
+        activeAsset: { some: 'asset' }
       }
     });
   });

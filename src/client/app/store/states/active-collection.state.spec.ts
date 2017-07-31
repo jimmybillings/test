@@ -44,7 +44,7 @@ export function main() {
               assets: { pagination: { totalCount: 1 }, items: [{ some: 'item1' }] }, assetsCount: 1
             }
           } as any,
-          new ActiveCollectionActions.AddAsset({ some: 'item2' } as any)
+          new ActiveCollectionActions.AddAsset({ some: 'item2' } as any, null)
         )).toEqual({
           loaded: true,
           collection: {
@@ -61,7 +61,7 @@ export function main() {
               assets: { pagination: { totalCount: 0 }, items: [] }, assetsCount: 0
             }
           } as any,
-          new ActiveCollectionActions.AddAsset({ some: 'item1' } as any)
+          new ActiveCollectionActions.AddAsset({ some: 'item1' } as any, null)
         )).toEqual({
           loaded: true,
           collection: { assets: { pagination: { totalCount: 1 }, items: [{ some: 'item1' }] }, assetsCount: 1 }
@@ -71,21 +71,21 @@ export function main() {
       it('throws an exception when current state is passed in with assets undefined', () => {
         expect(() => ActiveCollectionState.reducer(
           {} as any,
-          new ActiveCollectionActions.AddAsset({ some: 'item1' } as any)
+          new ActiveCollectionActions.AddAsset({ some: 'item1' } as any, null)
         )).toThrowError();
       });
 
       it('throws an exception when current state is passed in with items undefined', () => {
         expect(() => ActiveCollectionState.reducer(
           { collection: { assets: { pagination: { totalCount: 1 } } } } as any,
-          new ActiveCollectionActions.AddAsset({ some: 'item1' } as any)
+          new ActiveCollectionActions.AddAsset({ some: 'item1' } as any, null)
         )).toThrowError();
       });
 
       it('throws an exception when current state is passed in with pagination undefined', () => {
         expect(() => ActiveCollectionState.reducer(
           { collection: { assets: { items: [{ some: 'item1' }] } } } as any,
-          new ActiveCollectionActions.AddAsset({ some: 'item1' } as any)
+          new ActiveCollectionActions.AddAsset({ some: 'item1' } as any, null)
         )).toThrowError();
       });
 
@@ -97,7 +97,7 @@ export function main() {
 
         expect(ActiveCollectionState.reducer(
           undefined,
-          new ActiveCollectionActions.AddAsset({ assetId: 10836, uuid: 'blah' } as any)
+          new ActiveCollectionActions.AddAsset({ assetId: 10836, uuid: 'blah' } as any, null)
         )).toEqual(expectedState);
       });
     });
@@ -231,10 +231,10 @@ export function main() {
               assetsCount: 2
             }
           } as any,
-          new ActiveCollectionActions.UpdateAssetMarkers({
-            asset: { assetId: 86, uuid: 't789' } as any,
-            markers: { in: { some: 'frame' } as any, out: { other: 'frame' } as any }
-          })
+          new ActiveCollectionActions.UpdateAssetMarkers(
+            { assetId: 86, uuid: 't789' } as any,
+            { in: { some: 'frame' } as any, out: { other: 'frame' } as any }
+          )
         )).toEqual({
           loaded: true,
           collection: {

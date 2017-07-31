@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+
+import { LegacyAction } from '../interfaces/common.interface';
 
 const collectionOptionsState: any = {
   currentFilter: {
@@ -18,7 +20,7 @@ const collectionOptionsState: any = {
   currentSearchQuery: { 'q': '' }
 };
 
-export function collectionOptions(state = collectionOptionsState, action: Action) {
+export function collectionOptions(state = collectionOptionsState, action: LegacyAction) {
   switch (action.type) {
     case 'RESET_OPTIONS':
       return Object.assign({}, action.payload);

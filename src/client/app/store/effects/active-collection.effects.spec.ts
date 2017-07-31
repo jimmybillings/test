@@ -18,7 +18,6 @@ export function main() {
     beforeEach(() => {
       storeSpecHelper = new StoreSpecHelper();
       mockUserPreferenceService = { openCollectionTray: jasmine.createSpy('openCollectionTray') };
-      // return this.router.routerState.snapshot.url.startsWith('/asset');
       mockRouter = {
         navigate: jasmine.createSpy('navigate'),
         routerState: { snapshot: { url: '/asset/blahblahblah' } }
@@ -31,12 +30,12 @@ export function main() {
           effectName: 'load',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: ActiveCollectionActions.Load,
-            payload: { some: 'payload' }
+            type: ActiveCollectionActions.Load.Type,
+            pagination: { some: 'pagination' }
           },
           serviceMethod: {
             name: 'load',
-            expectedArguments: [{ some: 'payload' }],
+            expectedArguments: [{ some: 'pagination' }],
             returnsObservableOf: { some: 'collection' }
           },
           outputActionFactory: {
@@ -54,12 +53,13 @@ export function main() {
           effectName: 'set',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: ActiveCollectionActions.Set,
-            payload: { collectionId: 42, parameters: { some: 'parameters' } }
+            type: ActiveCollectionActions.Set.Type,
+            collectionId: 42,
+            pagination: { some: 'pagination' }
           },
           serviceMethod: {
             name: 'set',
-            expectedArguments: [42, { some: 'parameters' }],
+            expectedArguments: [42, { some: 'pagination' }],
             returnsObservableOf: { some: 'collection' }
           },
           outputActionFactory: {
@@ -77,8 +77,8 @@ export function main() {
           effectName: 'loadPage',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: ActiveCollectionActions.LoadPage,
-            payload: { some: 'payload' }
+            type: ActiveCollectionActions.LoadPage.Type,
+            pagination: { some: 'pagination' }
           },
           state: {
             storeSectionName: 'activeCollection',
@@ -87,7 +87,7 @@ export function main() {
           },
           serviceMethod: {
             name: 'loadPage',
-            expectedArguments: [123, { some: 'payload' }],
+            expectedArguments: [123, { some: 'pagination' }],
             returnsObservableOf: { some: 'collection' }
           },
           outputActionFactory: {
@@ -106,7 +106,7 @@ export function main() {
             effectName: 'openTrayOnAddOrRemove',
             effectsInstantiator: instantiator,
             inputAction: {
-              class: ActiveCollectionActions.AddAsset
+              type: ActiveCollectionActions.AddAsset.Type
             }
           },
           () => {
@@ -121,7 +121,7 @@ export function main() {
             effectName: 'openTrayOnAddOrRemove',
             effectsInstantiator: instantiator,
             inputAction: {
-              class: ActiveCollectionActions.RemoveAsset
+              type: ActiveCollectionActions.RemoveAsset.Type
             }
           },
           () => {
@@ -137,8 +137,9 @@ export function main() {
           effectName: 'addAsset',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: ActiveCollectionActions.AddAsset,
-            payload: { asset: { some: 'asset' }, markers: { some: 'markers' } }
+            type: ActiveCollectionActions.AddAsset.Type,
+            asset: { some: 'asset' },
+            markers: { some: 'markers' }
           },
           state: {
             storeSectionName: 'activeCollection',
@@ -165,8 +166,8 @@ export function main() {
           effectName: 'showSnackBarOnAddSuccess',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: ActiveCollectionActions.AddAssetSuccess,
-            payload: { some: 'assets' }
+            type: ActiveCollectionActions.AddAssetSuccess.Type,
+            currentPage: { some: 'assets' }
           },
           state: {
             storeSectionName: 'activeCollection',
@@ -190,12 +191,12 @@ export function main() {
           effectName: 'maybeChangeAssetRouteOnAddSuccess',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: ActiveCollectionActions.AddAssetSuccess
+            type: ActiveCollectionActions.AddAssetSuccess.Type
           },
           state: [
             {
               storeSectionName: 'asset',
-              propertyName: 'currentAsset',
+              propertyName: 'activeAsset',
               value: { assetId: 123 }
             },
             {
@@ -275,8 +276,8 @@ export function main() {
           effectName: 'removeAsset',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: ActiveCollectionActions.RemoveAsset,
-            payload: { some: 'asset' }
+            type: ActiveCollectionActions.RemoveAsset.Type,
+            asset: { some: 'asset' }
           },
           state: {
             storeSectionName: 'activeCollection',
@@ -303,8 +304,8 @@ export function main() {
           effectName: 'showSnackBarOnRemoveSuccess',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: ActiveCollectionActions.RemoveAssetSuccess,
-            payload: { some: 'assets' }
+            type: ActiveCollectionActions.RemoveAssetSuccess.Type,
+            currentPageItems: { some: 'assets' }
           },
           state: {
             storeSectionName: 'activeCollection',
@@ -328,12 +329,12 @@ export function main() {
           effectName: 'maybeChangeAssetRouteOnRemoveSuccess',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: ActiveCollectionActions.RemoveAssetSuccess
+            type: ActiveCollectionActions.RemoveAssetSuccess.Type
           },
           state: [
             {
               storeSectionName: 'asset',
-              propertyName: 'currentAsset',
+              propertyName: 'activeAsset',
               value: { assetId: 123, uuid: 'ABCD' }
             },
             {
@@ -408,8 +409,9 @@ export function main() {
           effectName: 'updateAssetMarkers',
           effectsInstantiator: instantiator,
           inputAction: {
-            class: ActiveCollectionActions.UpdateAssetMarkers,
-            payload: { asset: { some: 'asset' }, markers: { some: 'markers' } }
+            type: ActiveCollectionActions.UpdateAssetMarkers.Type,
+            asset: { some: 'asset' },
+            markers: { some: 'markers' }
           },
           state: {
             storeSectionName: 'activeCollection',

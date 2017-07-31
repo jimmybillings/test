@@ -26,10 +26,9 @@ export class ProjectConfig extends SeedConfig {
     ];
 
     let additionalPackages: ExtendPackages[] = [
-      { name: '@ngrx/core', path: 'node_modules/@ngrx/core/bundles/core.min.umd.js' },
-      { name: '@ngrx/store', path: 'node_modules/@ngrx/store/bundles/store.min.umd.js' },
-      { name: '@ngrx/effects', path: 'node_modules/@ngrx/effects/bundles/effects.min.umd.js' },
-      { name: '@ngrx/store-devtools', path: 'node_modules/@ngrx/store-devtools/bundles/store-devtools.min.umd.js' },
+      { name: '@ngrx/store', path: 'node_modules/@ngrx/store/bundles/store.umd.min.js' },
+      { name: '@ngrx/effects', path: 'node_modules/@ngrx/effects/bundles/effects.umd.min.js' },
+      { name: '@ngrx/store-devtools', path: 'node_modules/@ngrx/store-devtools/bundles/store-devtools.umd.min.js' },
       { name: '@ngx-translate/core', path: 'node_modules/@ngx-translate/core/bundles/core.umd.js' },
       { name: '@ngx-translate/http-loader', path: 'node_modules/@ngx-translate/http-loader/bundles/http-loader.umd.js' }
     ];

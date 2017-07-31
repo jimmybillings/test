@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { CheckoutState } from '../interfaces/commerce.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const emptyCheckout: CheckoutState = {
   paymentOptions: null,
@@ -31,7 +32,7 @@ const emptyCheckout: CheckoutState = {
   selectedPaymentType: null
 };
 
-export function checkout(state: any = emptyCheckout, action: Action) {
+export function checkout(state: any = emptyCheckout, action: LegacyAction) {
   switch (action.type) {
     case 'UPDATE_ORDER_IN_PROGRESS':
       state[action.payload.key] = action.payload.data;

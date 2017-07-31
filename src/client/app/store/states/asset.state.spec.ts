@@ -5,7 +5,7 @@ import { addFutureStandardReducerTestsFor } from '../../shared/tests/reducer';
 export function main() {
   describe('Asset Reducer', () => {
     describe('for AssetActions.Load', () => {
-      const tempCurrentState = { currentAsset: { assetId: 123, name: 'George' }, loaded: true };
+      const tempCurrentState = { activeAsset: { assetId: 123, name: 'George' }, loaded: true };
 
       addFutureStandardReducerTestsFor(
         AssetState.reducer, AssetActions.Load.Type, AssetState.initialState, null, tempCurrentState
@@ -13,9 +13,9 @@ export function main() {
 
       it('returns current state but with loaded: false when current state is passed in', () => {
         expect(AssetState.reducer(
-          { currentAsset: { assetId: 123, name: 'fred' }, loaded: true },
+          { activeAsset: { assetId: 123, name: 'fred' }, loaded: true },
           new AssetActions.Load({} as any)
-        )).toEqual({ currentAsset: { assetId: 123, name: 'fred' }, loaded: false });
+        )).toEqual({ activeAsset: { assetId: 123, name: 'fred' }, loaded: false });
       });
 
       it('returns initialState when current state is not passed in', () => {
@@ -30,16 +30,16 @@ export function main() {
 
       it('returns an updated state when current state is passed in', () => {
         expect(AssetState.reducer(
-          { currentAsset: { assetId: 123, name: 'fred' }, loaded: true },
+          { activeAsset: { assetId: 123, name: 'fred' }, loaded: true },
           new AssetActions.LoadSuccess({ some: 'asset' } as any)
-        )).toEqual({ currentAsset: { some: 'asset' }, loaded: true });
+        )).toEqual({ activeAsset: { some: 'asset' }, loaded: true });
       });
 
       it('returns an updated state when current state is not passed in', () => {
         expect(AssetState.reducer(
           undefined,
           new AssetActions.LoadSuccess({ some: 'asset' } as any)
-        )).toEqual({ currentAsset: { some: 'asset' }, loaded: true });
+        )).toEqual({ activeAsset: { some: 'asset' }, loaded: true });
       });
     });
 

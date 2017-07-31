@@ -14,9 +14,8 @@ export interface MockActionFactory extends ActionFactory, Indexable { }
 export interface MockInternalActionFactory extends InternalActionFactory, Indexable { }
 export interface MockAppState extends AppState, Indexable { }
 
-export interface EffectTestInputAction {
-  class: any;
-  payload?: any;
+export interface ParameterizedAction extends Action {
+  [parameterName: string]: any;
 }
 
 export interface EffectTestState {
@@ -39,7 +38,7 @@ export interface HelperServiceMethod {
 export interface EffectTestParameters {
   effectName: string;
   effectsInstantiator: () => any;
-  inputAction: EffectTestInputAction;
+  inputAction: ParameterizedAction;
   state?: EffectTestState | EffectTestState[];
   serviceMethod?: EffectServiceMethod;
   helperServiceMethods?: HelperServiceMethod[];
@@ -57,14 +56,11 @@ export interface ActionFactoryTestParameters {
     name: string;
     parameters: any[];
   };
-  expectedAction: {
-    type: string;
-    payload: any;
-  };
+  expectedAction: ParameterizedAction;
 }
 
 export class StoreSpecHelper {
-  public readonly mockNgrxEffectsActionSubject: Subject<Action> = new Subject<Action>();
+  public readonly mockNgrxEffectsActionSubject: Subject<ParameterizedAction> = new Subject<ParameterizedAction>();
 
   public mockNgrxEffectsActions: any = {
     ofType: (...types: string[]): Observable<Action> =>
@@ -224,10 +220,13 @@ export class StoreSpecHelper {
     describe(`${methodName}()`, () => {
       it(`creates the expected action${optionalComment}`, () => {
         const createdAction =
-          new parameters.factoryMethod.class()[methodName](...parameters.factoryMethod.parameters);
+          (new parameters.factoryMethod.class() as any)[methodName](...parameters.factoryMethod.parameters);
 
-        expect(createdAction.type).toEqual(parameters.expectedAction.type);
-        expect(createdAction.payload).toEqual(parameters.expectedAction.payload);
+        expect(Object.keys(createdAction).length).toBe(Object.keys(parameters.expectedAction).length);
+
+        Object.keys(createdAction).forEach(key => {
+          expect(createdAction[key]).toEqual(parameters.expectedAction[key]);
+        });
       });
     });
   }
@@ -241,7 +240,7 @@ export class StoreSpecHelper {
       jasmine.createSpy(`'${methodName} internal action creator'`).and.returnValue(this.mockActionFrom(methodName));
   }
 
-  private checkForEmittedValue(effect: Observable<Action>, effectName: string, inputAction: EffectTestInputAction): void {
+  private checkForEmittedValue(effect: Observable<Action>, effectName: string, inputAction: ParameterizedAction): void {
     const expectedExceptionMessage: string = 'Expected exception message';
 
     try {
@@ -250,7 +249,7 @@ export class StoreSpecHelper {
 
       // Uh-oh.  We shouldn't have made it here because we threw an exception inside the subscription.
       fail(`Expected effect '${effectName}' to emit a value.
-        1. Expecting it to have been triggered by an action with type '${inputAction.class.Type}' -- was it?
+        1. Expecting it to have been triggered by an action with type '${inputAction.type}' -- was it?
         2. Is one of the effect's mapping methods not emitting a value?`);
     } catch (exception) {
       if (exception.message !== expectedExceptionMessage) {
@@ -273,7 +272,7 @@ export class StoreSpecHelper {
       });
   }
 
-  private simulateInputAction(inputAction: EffectTestInputAction): void {
-    this.mockNgrxEffectsActionSubject.next({ type: inputAction.class.Type, payload: inputAction.payload });
+  private simulateInputAction(inputAction: ParameterizedAction): void {
+    this.mockNgrxEffectsActionSubject.next(inputAction);
   }
 }

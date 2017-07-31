@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
 import { CurrentUserService } from './current-user.service';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const defaultPreferences: any = {
   displayFilterCounts: false,
@@ -15,7 +16,7 @@ const defaultPreferences: any = {
   pricingPreferences: ''
 };
 
-export function userPreferences(state = defaultPreferences, action: Action) {
+export function userPreferences(state = defaultPreferences, action: LegacyAction) {
   switch (action.type) {
     case 'USER_PREFS.UPDATE_PREFERENCES':
       return Object.assign({}, state, action.payload);

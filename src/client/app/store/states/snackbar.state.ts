@@ -19,8 +19,8 @@ export function reducer(state: State = initialState, action: SnackbarActions.Any
   switch (action.type) {
     case SnackbarActions.Display.Type: {
       return {
-        messageKey: action.payload.messageKey,
-        messageParameters: action.payload.messageParameters,
+        messageKey: action.messageKey,
+        messageParameters: action.messageParameters,
         translatedMessage: ''
       };
     }
@@ -29,7 +29,7 @@ export function reducer(state: State = initialState, action: SnackbarActions.Any
       return {
         messageKey: state.messageKey,
         messageParameters: { ...state.messageParameters },
-        translatedMessage: action.payload
+        translatedMessage: action.translatedMessage
       };
     }
 

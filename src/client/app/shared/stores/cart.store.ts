@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { CartState } from '../interfaces/commerce.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const emptyCart: CartState = {
   data: {
@@ -10,7 +11,7 @@ const emptyCart: CartState = {
   }
 };
 
-export function cart(state: any = emptyCart, action: Action) {
+export function cart(state: any = emptyCart, action: LegacyAction) {
   switch (action.type) {
     case 'REPLACE_CART':
       return Object.assign({}, state, { data: action.payload });
