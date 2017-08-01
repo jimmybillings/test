@@ -70,6 +70,7 @@ import { QuoteEditService } from './services/quote-edit.service';
 import { FutureAssetService } from '../store/services/asset.service';
 import { ActiveCollectionService } from '../store/services/active-collection.service';
 import { SnackbarService } from '../store/services/snackbar.service';
+import { CommentService } from '../store/services/comment.service';
 
 
 // WAZEE STORES
@@ -143,7 +144,8 @@ const WAZEE_SERVICES = [
   QuoteService,
   QuotesService,
   QuoteEditService,
-  SnackbarService
+  SnackbarService,
+  CommentService
 ];
 
 const WAZEE_STORE_INTERFACES = [

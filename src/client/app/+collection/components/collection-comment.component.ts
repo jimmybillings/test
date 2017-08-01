@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { FormFields } from '../../shared/interfaces/forms.interface';
-import { Pojo } from '../../shared/interfaces/common.interface';
+import { Comments, Comment } from '../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -10,36 +10,16 @@ import { Pojo } from '../../shared/interfaces/common.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CollectionCommentComponent {
-  @Output() commentSubmit: EventEmitter<Pojo> = new EventEmitter();
-  public formFields: Array<any> = [
-    {
-      name: 'message',
-      value: '',
-      validation: '',
-      type: 'text',
-      label: 'Comment'
-    },
-    {
-      name: 'visibility',
-      value: 'Editors',
-      validation: '',
-      type: 'select',
-      label: 'Visible',
-      options: 'Myself,Editors,Everyone'
-    }
-  ];
-  public comments: Array<any> = [];
+  @Input() comments: Comments;
+  @Input() formFields: FormFields;
+  @Input() showCommentActions: boolean;
+  @Output() commentSubmit: EventEmitter<Comment> = new EventEmitter();
 
-  public onCommentSubmit(comment: { message: string, visibility: string }): void {
-    this.comments.push(Object.assign({}, comment, {
-      author: 'ross.edfort@wazeedigital.com',
-      firstName: 'Ross',
-      lastName: 'Edfort',
-      createdOn: new Date()
-    }));
+  public onCommentSubmit(comment: Comment): void {
+    this.commentSubmit.emit(comment);
   }
 
-  public initials(comment: any): string {
-    return comment.firstName[0].toUpperCase() + comment.lastName[0].toUpperCase();
+  public get commentsExist(): boolean {
+    return this.comments.items.length > 0;
   }
 }

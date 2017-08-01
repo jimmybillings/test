@@ -3,7 +3,7 @@ import { Action } from '@ngrx/store';
 import {
   CollectionPaginationParameters, Collection, CollectionItems, CollectionItemMarkersUpdater, CollectionItemsResponse
 } from '../../shared/interfaces/collection.interface';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { Asset, Comment, Comments } from '../../shared/interfaces/common.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
 
 const defaultPagination: CollectionPaginationParameters = { currentPage: 1, pageSize: 100 };
@@ -31,6 +31,10 @@ export class ActionFactory {
 
   public updateAssetMarkers(asset: Asset, markers: SubclipMarkers): UpdateAssetMarkers {
     return new UpdateAssetMarkers(asset, markers);
+  }
+
+  public addComment(comment: Comment): AddComment {
+    return new AddComment(comment);
   }
 
   public reset(): Reset {
@@ -61,6 +65,10 @@ export class InternalActionFactory extends ActionFactory {
 
   public updateAssetMarkersSuccess(currentPageItems: CollectionItems): UpdateAssetMarkersSuccess {
     return new UpdateAssetMarkersSuccess(currentPageItems);
+  }
+
+  public addCommentSuccess(comments: Comments): AddCommentSuccess {
+    return new AddCommentSuccess(comments);
   }
 };
 
@@ -136,10 +144,22 @@ export class UpdateAssetMarkersSuccess implements Action {
   constructor(public readonly currentPageItems: CollectionItems) { }
 }
 
+export class AddComment implements Action {
+  public static readonly Type = '[Active Collection] Add Comment';
+  public readonly type = AddComment.Type;
+  constructor(public readonly comment: Comment) { }
+}
+
+export class AddCommentSuccess implements Action {
+  public static readonly Type = '[Active Collection] Add Comment Success';
+  public readonly type = AddCommentSuccess.Type;
+  constructor(public readonly activeCollectionComments: Comments) { }
+}
+
 export class Reset implements Action {
   public static readonly Type = '[Active Collection] Reset';
   public readonly type = Reset.Type;
 }
 
 export type Any = Load | LoadSuccess | Set | SetSuccess | LoadPage | LoadPageSuccess | AddAsset | AddAssetSuccess | RemoveAsset
-  | RemoveAssetSuccess | UpdateAssetMarkers | UpdateAssetMarkersSuccess | Reset;
+  | RemoveAssetSuccess | UpdateAssetMarkers | UpdateAssetMarkersSuccess | AddComment | AddCommentSuccess | Reset;

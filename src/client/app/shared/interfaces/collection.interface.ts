@@ -1,4 +1,4 @@
-import { Common, Pagination, Asset, AssetUrls } from './common.interface';
+import { Common, Pagination, Asset, AssetUrls, Comments } from './common.interface';
 import { SpeedviewData } from './asset.interface';
 
 export interface Collection extends Common {
@@ -14,6 +14,7 @@ export interface Collection extends Common {
   tagCount?: number;
   collectionThumbnail?: { name: string, urls: { https: string } };
   assetsCount?: number;
+  comments?: Comments;
 }
 
 export interface CollectionsStoreI {

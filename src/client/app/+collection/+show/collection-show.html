@@ -53,8 +53,8 @@
               <button
                 md-icon-button
                 title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
-                (click)="toggleComments($event)"
-                *ngIf="showCommentButton | async">
+                (click)="toggleCommentsVisibility()"
+                [disabled]="!(showCommentToggleButton | async)">
                   <md-icon>mode_comment</md-icon>
               </button>
               <button
@@ -86,8 +86,11 @@
 		</div>
 	</div>
   <div layout="row" layout-align="center center">
-    <collection-comment-component
-      [ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
+		<collection-comment-component
+			[ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
+			[formFields]="commentFormConfig"
+			[comments]="activeCollection.comments"
+			[showCommentActions]="showCommentActions | async"
       (commentSubmit)="onCommentSubmit($event)">
     </collection-comment-component>
   </div>

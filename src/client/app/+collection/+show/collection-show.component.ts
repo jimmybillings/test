@@ -30,7 +30,8 @@ import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interfac
 import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../shared/services/quote-edit.service';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { WzEvent, Coords } from '../../shared/interfaces/common.interface';
+import { WzEvent, Coords, Comment } from '../../shared/interfaces/common.interface';
+import { FormFields } from '../../shared/interfaces/forms.interface';
 import { AppStore } from '../../app.store';
 
 @Component({
@@ -45,7 +46,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public assets: any;
   public routeParams: any;
   public errorMessage: string;
-  public config: Object;
+  public commentFormConfig: FormFields;
   public screenWidth: number;
   public showComments: boolean;
   private activeCollectionSubscription: Subscription;
@@ -88,6 +89,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       });
 
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
+    this.uiConfig.get('comment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
   }
 
   ngOnDestroy() {
@@ -264,15 +266,23 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.userPreference.updateAssetViewPreference(assetView);
   }
 
-  public get showCommentButton(): Observable<boolean> {
-    return this.userCan.editCollection(this.activeCollection);
+  public get showCommentToggleButton(): Observable<boolean> {
+    return this.userCanEditCollection;
   }
 
-  public toggleComments(event: any): void {
+  public get showCommentActions(): Observable<boolean> {
+    return this.userCanEditCollection;
+  }
+
+  public toggleCommentsVisibility(): void {
     this.showComments = !this.showComments;
   }
 
-  public onCommentSubmit(comment: { message: string, visibility: string }) {
-    console.log(comment);
+  public onCommentSubmit(comment: Comment) {
+    this.store.dispatch(factory => factory.activeCollection.addComment(comment));
+  }
+
+  private get userCanEditCollection(): Observable<boolean> {
+    return this.userCan.editCollection(this.activeCollection);
   }
 }

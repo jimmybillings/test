@@ -1,16 +1,21 @@
+import { Observable } from 'rxjs/Observable';
+
 import { ActiveCollectionService } from './active-collection.service';
 import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
   describe('Active Collection Service', () => {
-    let serviceUnderTest: ActiveCollectionService;
-    let mockApiService: MockApiService;
+    let serviceUnderTest: ActiveCollectionService, mockApiService: MockApiService, mockCommentService: any;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApiService = new MockApiService();
-      serviceUnderTest = new ActiveCollectionService(mockApiService.injector);
+      mockCommentService = {
+        addCommentTo: jasmine.createSpy('addCommentTo').and.returnValue(Observable.of({ some: 'comment' })),
+        getCommentsFor: jasmine.createSpy('getCommentsFor').and.returnValue(Observable.of([{ some: 'comments' }])),
+      };
+      serviceUnderTest = new ActiveCollectionService(mockApiService.injector, mockCommentService);
     });
 
     describe('load()', () => {
@@ -66,9 +71,26 @@ export function main() {
                 hasPreviousPage: false,
                 numberOfPages: 1
               }
-            }
+            },
+            comments: [
+              { some: 'comments' }
+            ]
           });
         });
+      });
+    });
+
+    describe('addCommentTo()', () => {
+      beforeEach(() => {
+        serviceUnderTest.addCommentTo({ id: 123 } as any, { comment: 'yay' } as any).subscribe();
+      });
+
+      it('calls the comment service correctly', () => {
+        expect(mockCommentService.addCommentTo).toHaveBeenCalledWith('collection', 123, { comment: 'yay' });
+      });
+
+      it('gets the comments in the flatMap', () => {
+        expect(mockCommentService.getCommentsFor).toHaveBeenCalledWith('collection', 123);
       });
     });
   });

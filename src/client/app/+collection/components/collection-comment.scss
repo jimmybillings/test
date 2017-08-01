@@ -1,9 +1,5 @@
 collection-comment-component {
   width: 95%;
-  // animation: showCollectionComments;
-  // animation-direction: alternate;
-  // animation-duration: 300ms;
-  // animation-timing-function: cubic-bezier(0, .8, 1, 1);
   .new-comment {
     height: 280px;
     margin: 10px;
@@ -20,7 +16,7 @@ collection-comment-component {
       width: 100%;
       .comment-head {
         margin: 0 20px;
-        padding: 6px 0;
+        padding: 2px 0;
         font-size: 14px;
         button[md-icon-button] md-icon {
           @include md-title();
@@ -44,23 +40,11 @@ collection-comment-component {
       }
       .comment-body {
         margin: 0 20px;
-        padding: 10px 0;
+        padding: 20px 0;
       }
     }
   }
   &.not-visible {
     display: none;
-  }
-}
-
-@keyframes showCollectionComments {
-  0% {
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-  }
-  100% {
-    opacity: 1;
-    height: 300px;
   }
 }
