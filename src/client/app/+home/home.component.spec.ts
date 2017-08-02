@@ -11,6 +11,7 @@ export function main() {
       mockSearchContext: any,
       mockUserPreference: any,
       mockGalleryView: any,
+      mockhomeVideo: any,
       mockRouter: any,
       mockFilter: any
       ;
@@ -22,7 +23,8 @@ export function main() {
               'pageSize': { 'value': '100' },
               'notifications': {
                 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }]
-              }
+              },
+              'heroContentType': { 'value': 'image' }
             }
           }))
     };
@@ -33,6 +35,13 @@ export function main() {
             'results': [{ 'id': 10, 'name': 'Tee offs', 'resultCount': 6, 'thumbnailUrl': '', 'hasMore': false }]
           }))
     };
+    mockhomeVideo = {
+      get: jasmine.createSpy('data').and.returnValue(
+        Observable.of(
+          {
+            'results': [{ 'feedid': 'qKeeO3ld', 'kind': 'manual', 'playlist': [], 'title': 'commerce-hero' }]
+          }))
+    };
     mockCurrentUser = { loggedIn: () => loggedIn };
 
     mockSearchContext = { new: jasmine.createSpy('new') };
@@ -41,7 +50,7 @@ export function main() {
 
     beforeEach(() => {
       componentUnderTest = new HomeComponent(mockCurrentUser, null, mockUiConfig, mockSearchContext,
-        mockUserPreference, mockGalleryView, null, mockFilter);
+        mockUserPreference, mockGalleryView, mockhomeVideo, null, mockFilter);
     });
 
     describe('ngOnInit()', () => {
@@ -51,7 +60,8 @@ export function main() {
         expect(componentUnderTest.config).toEqual(
           {
             'pageSize': { 'value': '100' },
-            'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] }
+            'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] },
+            'heroContentType': { 'value': 'image' }
           });
       });
     });
@@ -71,7 +81,7 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
         componentUnderTest = new HomeComponent(
-          mockCurrentUser, null, mockUiConfig, mockSearchContext, mockUserPreference, mockGalleryView, null, mockFilter);
+          mockCurrentUser, null, mockUiConfig, mockSearchContext, mockUserPreference, mockGalleryView, mockhomeVideo, null, mockFilter);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();
