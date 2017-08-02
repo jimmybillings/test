@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
+import { LegacyAction } from '../interfaces/common.interface';
 
 export const InitUiState: any = {
   headerIsExpanded: false,
   showFixedHeader: false,
-  loading: false,
+  loadingIndicator: false,
   filtersAreAvailable: false
 };
 
-export function uiState(state = InitUiState, action: Action) {
+export function uiState(state = InitUiState, action: LegacyAction) {
 
   switch (action.type) {
     case 'UI.STATE.INITIALIZE':
@@ -39,8 +40,8 @@ export class UiState {
     this.store.dispatch({ type: 'UI.STATE.UPDATE', payload: payload });
   }
 
-  public loading(state: boolean): void {
-    this.data.take(1).subscribe(s => this.update({ loading: state }));
+  public loadingIndicator(state: boolean): void {
+    this.data.take(1).subscribe(s => this.update({ loadingIndicator: state }));
   }
 
   public headerIsExpanded(): Observable<boolean> {

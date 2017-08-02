@@ -1,3 +1,5 @@
+import { Action } from '@ngrx/store';
+
 export { ViewAddress } from './user.interface';
 import { SpeedviewData } from './asset.interface';
 
@@ -52,6 +54,21 @@ export interface Asset extends Common {
   timeStart?: number;
   timeEnd?: number;
   speedviewData?: SpeedviewData;
+
+  // These were all used in asset-detail.html before its
+  // "asset" input was typed.  Unsure if this is the right
+  // "Asset" to put these in...  Further analysis is warranted.
+  price?: number;
+  common?: Array<{ value: string }>;
+  clipThumbnailUrl?: string;
+}
+
+export interface AssetLoadParameters {
+  readonly id: string;
+  readonly share_key?: string;
+  readonly uuid?: string;
+  readonly timeStart?: string;
+  readonly timeEnd?: string;
 }
 
 export interface AssetUrls {
@@ -100,4 +117,9 @@ export interface Autocomplete {
   setBounds: Function;
   addListener: Function;
   getPlace: Function;
+}
+
+// Temporary interface -- needed only until we convert all stores to the new AppStore way.
+export interface LegacyAction extends Action {
+  payload?: any;
 }

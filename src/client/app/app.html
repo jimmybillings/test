@@ -9,7 +9,7 @@
       [currentUser]="currentUser"
       [prefs]="userPreference"
       [config]="(uiConfig.get('header') | async).config"
-      [collection]="activeCollection.data | async"
+      [collection]="activeCollection | async"
       [userCan]="userCan"
       [cartSize]="cartCount | async"
       (onLogOut)="logout()">
@@ -18,7 +18,7 @@
       *ngIf="userCan.viewCollectionTray() | async"
       [uiState]="uiState"
       [uiConfig]="uiConfig"
-      [collection]="activeCollection.data | async"
+      [collection]="activeCollection | async"
       (onOpenSnackbar)="showSnackBar($event)">
     </collection-tray>
      <wz-autocomplete-search
@@ -30,7 +30,7 @@
       (searchContext)="newSearchContext($event)"
       (toggleFilterTree)="toggleFilterTreePreference()">
     </wz-autocomplete-search>
-    <md-progress-bar mode="indeterminate" color="accent" *ngIf="(uiState.data | async).loading"></md-progress-bar>
+    <md-progress-bar mode="indeterminate" color="accent" *ngIf="(uiState.data | async).loadingIndicator"></md-progress-bar>
   </header>
   <div [ngClass]="{
     'collection-tray-closed': !(userPreference.data | async).collectionTrayIsOpen,

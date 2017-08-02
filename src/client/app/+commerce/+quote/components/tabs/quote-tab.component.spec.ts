@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   describe('Quote Tab Component', () => {
     let componentUnderTest: QuoteTabComponent, mockQuoteService: any, mockUserCan: any, mockDialogService: any, mockRouter: any,
-      mockUiConfig: any, mockData: any;
+      mockUiConfig: any, mockData: any, mockQuoteEditService: any, mockSnackBar: any, mockTranslate: any;
 
     function buildComponent(
       quoteHasAssets: boolean,
@@ -18,12 +18,24 @@ export function main() {
         getPaymentOptions: jasmine.createSpy('getPaymentOptions'),
         hasAssetLineItems: quoteHasAssets,
         retrieveLicenseAgreements: jasmine.createSpy('retrieveLicenseAgreements').and.returnValue(Observable.of({})),
-        mockRouter: { navigate: jasmine.createSpy('navigate') }
+        mockRouter: { navigate: jasmine.createSpy('navigate') },
+        cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({}))
       };
-
+      mockQuoteEditService = {
+        cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({}))
+      };
       mockUserCan = {
         viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton').and.returnValue(canViewLicenses),
-        administerQuotes: jasmine.createSpy('administerQuotes').and.returnValue(canAdministerQuotes)
+        administerQuotes: jasmine.createSpy('administerQuotes').and.returnValue(canAdministerQuotes),
+        cloneQuote: jasmine.createSpy('cloneQuote')
+      };
+
+      mockSnackBar = {
+        open: jasmine.createSpy('open')
+      };
+
+      mockTranslate = {
+        get: jasmine.createSpy('get').and.returnValue(Observable.of('Quote has been cloned'))
       };
 
       mockDialogService = {
@@ -38,7 +50,8 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { extendQuote: { items: [{ some: 'config' }] } } }))
       };
 
-      return new QuoteTabComponent(mockQuoteService, mockUserCan, mockDialogService, mockRouter, mockUiConfig);
+      return new QuoteTabComponent(mockQuoteService, mockUserCan, mockDialogService, mockRouter,
+        mockUiConfig, mockQuoteEditService, mockSnackBar, mockTranslate);
     }
 
     describe('checkout()', () => {
@@ -57,6 +70,36 @@ export function main() {
         componentUnderTest.checkout();
 
         expect(mockQuoteService.getPaymentOptions).toHaveBeenCalled();
+      });
+    });
+
+    describe('shouldShowCloneButton()', () => {
+      it('Should call the cloneQuote capability with the quote edit store', () => {
+        const shouldShowCloneButton = componentUnderTest.shouldShowCloneButton;
+        expect(mockUserCan.cloneQuote).toHaveBeenCalledWith(mockQuoteService.data);
+      });
+    });
+
+    describe('onCloneQuote()', () => {
+      it('Calls the quote service createQuote method', () => {
+        componentUnderTest.onCloneQuote();
+
+        expect(mockQuoteEditService.cloneQuote).toHaveBeenCalledWith(mockData);
+      });
+
+      it('Should navigate to active quote page after cloning a quote', () => {
+        componentUnderTest.onCloneQuote();
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/activeQuote']);
+      });
+
+      it('Should call the translate service with the correct translate key | value', () => {
+        componentUnderTest.onCloneQuote();
+        expect(mockTranslate.get).toHaveBeenCalledWith('QUOTE.CLONE_SUCCESS', null);
+      });
+
+      it('Should open the snackbar with the string response from the translate service', () => {
+        componentUnderTest.onCloneQuote();
+        expect(mockSnackBar.open).toHaveBeenCalledWith('Quote has been cloned', '', { duration: 2000 });
       });
     });
 
@@ -240,7 +283,8 @@ export function main() {
           data: Observable.of({ data: {} }),
           state: mockState,
         };
-        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockUiConfig);
+        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockUiConfig,
+          mockQuoteEditService, mockSnackBar, mockTranslate);
         expect(componentUnderTest.hasDiscount).toBe(true);
       });
     });

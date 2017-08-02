@@ -63,7 +63,7 @@ export class QuotesService {
   }
 
   private quotesList(params: any = {}): Observable<any> {
-    return this.api.get(Api.Orders, 'quote/myQuotes', { parameters: this.buildSearchParams(params), loading: true });
+    return this.api.get(Api.Orders, 'quote/myQuotes', { parameters: this.buildSearchParams(params), loadingIndicator: true });
   }
 
   private updateNewFocusedQuote(quoteId: number): void {

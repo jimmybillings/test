@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ActionReducer, Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Quote, Quotes } from '../interfaces/commerce.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const initState: Quotes = {
   items: [],
@@ -15,7 +16,7 @@ const initState: Quotes = {
   }
 };
 
-export function quotes(state: any = initState, action: Action) {
+export function quotes(state: any = initState, action: LegacyAction) {
   switch (action.type) {
     case 'QUOTES.SET_QUOTES':
       return Object.assign({}, action.payload);

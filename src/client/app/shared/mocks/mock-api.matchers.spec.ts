@@ -302,9 +302,9 @@ export function main() {
     describe('toHaveBeenCalledWithLoading()', () => {
       const matcher: jasmine.CustomMatcher = matchers.toHaveBeenCalledWithLoading();
 
-      describe('when expecting to have been called with a specific loading option', () => {
-        it('passes when spy was called with a matching loading option', () => {
-          apiSpy(whateverApi, whateverEndpoint, { loading: true });
+      describe('when expecting to have been called with a specific loadingIndicator option', () => {
+        it('passes when spy was called with a matching loadingIndicator option', () => {
+          apiSpy(whateverApi, whateverEndpoint, { loadingIndicator: true });
 
           const result = matcher.compare(apiSpy, true);
 
@@ -316,44 +316,45 @@ export function main() {
 
           expect(result.pass).toBe(false);
           expect(result.message)
-            .toEqual(`Expected spy to have been called with loading = true, but it was never called.`);
+            .toEqual(`Expected spy to have been called with loadingIndicator = true, but it was never called.`);
         });
 
-        it('fails when spy was called, but without a loading option', () => {
+        it('fails when spy was called, but without a loadingIndicator option', () => {
           apiSpy(whateverApi, whateverEndpoint);
           const result = matcher.compare(apiSpy, true);
 
           expect(result.pass).toBe(false);
           expect(result.message)
-            .toEqual(`Expected spy to have been called with loading = true, but it was never called with any loading option.`);
+            .toEqual('Expected spy to have been called with loadingIndicator = true, but it was' +
+            ' never called with any loadingIndicator option.');
         });
 
-        it('fails when spy was called, but not with the expected loading option', () => {
-          apiSpy(whateverApi, whateverEndpoint, { loading: false });
+        it('fails when spy was called, but not with the expected loadingIndicator option', () => {
+          apiSpy(whateverApi, whateverEndpoint, { loadingIndicator: false });
           apiSpy(whateverApi, whateverEndpoint);
 
           const result = matcher.compare(apiSpy, true);
 
           expect(result.pass).toBe(false);
           expect(result.message)
-            .toEqual(`Expected spy to have been called with loading = true, but it was called with false.`);
+            .toEqual(`Expected spy to have been called with loadingIndicator = true, but it was called with false.`);
         });
       });
 
-      describe('when expecting NOT to have been called with a specific loading option', () => {
-        it('produces appropriate message when spy is called with a matching loading option', () => {
-          apiSpy(whateverApi, whateverEndpoint, { loading: true });
+      describe('when expecting NOT to have been called with a specific loadingIndicator option', () => {
+        it('produces appropriate message when spy is called with a matching loadingIndicator option', () => {
+          apiSpy(whateverApi, whateverEndpoint, { loadingIndicator: true });
 
           const result = matcher.compare(apiSpy, true);
 
           expect(result.message)
-            .toEqual(`Expected spy not to have been called with loading = true, but it was.`);
+            .toEqual(`Expected spy not to have been called with loadingIndicator = true, but it was.`);
         });
       });
 
-      describe('when expecting to have been called with any loading option', () => {
-        it('passes when spy was called with a loading option', () => {
-          apiSpy(whateverApi, whateverEndpoint, { loading: true });
+      describe('when expecting to have been called with any loadingIndicator option', () => {
+        it('passes when spy was called with a loadingIndicator option', () => {
+          apiSpy(whateverApi, whateverEndpoint, { loadingIndicator: true });
           const result = matcher.compare(apiSpy, undefined);
 
           expect(result.pass).toBe(true);
@@ -363,27 +364,27 @@ export function main() {
           const result = matcher.compare(apiSpy, undefined);
 
           expect(result.pass).toBe(false);
-          expect(result.message).toEqual(`Expected spy to have been called with a loading option, but it was never called.`);
+          expect(result.message).toEqual(`Expected spy to have been called with a loadingIndicator option, but it was never called.`);
         });
 
-        it('fails when spy was called, but without a loading option', () => {
+        it('fails when spy was called, but without a loadingIndicator option', () => {
           apiSpy(whateverApi, whateverEndpoint);
 
           const result = matcher.compare(apiSpy, undefined);
 
           expect(result.pass).toBe(false);
-          expect(result.message).toEqual('Expected spy to have been called with a loading option, but it was not.');
+          expect(result.message).toEqual('Expected spy to have been called with a loadingIndicator option, but it was not.');
         });
       });
 
-      describe('when expecting NOT to have been called with any loading option', () => {
-        it('produces appropriate message when spy is called with a loading option', () => {
-          apiSpy(whateverApi, whateverEndpoint, { loading: true });
+      describe('when expecting NOT to have been called with any loadingIndicator option', () => {
+        it('produces appropriate message when spy is called with a loadingIndicator option', () => {
+          apiSpy(whateverApi, whateverEndpoint, { loadingIndicator: true });
 
           const result = matcher.compare(apiSpy, undefined);
 
           expect(result.message)
-            .toEqual(`Expected spy not to have been called with a loading option, but it was called with true.`);
+            .toEqual(`Expected spy not to have been called with a loadingIndicator option, but it was called with true.`);
         });
       });
     });

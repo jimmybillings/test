@@ -6,6 +6,7 @@ import { CommerceCapabilities } from '../../+commerce/services/commerce.capabili
 import { AssetCapabilities } from '../../+asset/services/asset.capabilities';
 import { CollectionCapabilities } from '../../+collection/services/collection.capabilities';
 import { SearchCapabilities } from '../../+search/services/search.capabilities';
+import { QuoteState } from '../../shared/interfaces/commerce.interface';
 
 import { CurrentUserService } from './current-user.service';
 import { UiState } from '../services/ui.state';
@@ -35,6 +36,7 @@ export class Capabilities implements CommerceCapabilities, CollectionCapabilitie
   editAccountAddress: () => boolean;
   addAccountAddress: () => boolean;
   administerQuotes: () => boolean;
+  cloneQuote: (quoteObservable: Observable<QuoteState>) => Observable<boolean>;
   viewLicenseAgreementsButton: () => boolean;
   calculatePrice: () => boolean;
   findMetadataValueFor: (metadataName: string, object: any) => string | null;

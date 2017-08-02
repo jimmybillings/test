@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Feature, Features } from '../interfaces/feature.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const initState: Features = {
   disableCartAccess: false,
@@ -9,7 +10,7 @@ const initState: Features = {
   disableCommerceAgreements: false
 };
 
-export function features(state: Features = initState, action: Action) {
+export function features(state: Features = initState, action: LegacyAction) {
   switch (action.type) {
     case 'FEATURE.SET_STATE':
       return Object.assign({}, state, action.payload);

@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { WzAsset } from '../wz-asset';
 import { AssetService } from '../../../../shared/services/asset.service';
+import { AppStore } from '../../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -9,7 +10,7 @@ import { AssetService } from '../../../../shared/services/asset.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WzAssetGridComponent extends WzAsset {
-  constructor(assetService: AssetService) {
-    super(assetService);
+  constructor(assetService: AssetService, store: AppStore) {
+    super(assetService, store);
   }
 }

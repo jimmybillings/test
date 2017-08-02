@@ -1,5 +1,5 @@
 import { ViewAddress, Pagination, Common, SelectedPriceAttributes, Store } from './common.interface';
-import { SubclipMarkers } from './asset.interface';
+import { SubclipMarkers } from './subclip-markers.interface';
 
 export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
@@ -20,7 +20,8 @@ export interface Project {
   clientName: string;
   subtotal: number;
   creditMemoForProjectId?: number;
-  lineItems?: Array<AssetLineItem | FeeLineItem>;
+  lineItems?: Array<AssetLineItem>;
+  feeLineItems?: Array<FeeLineItem>;
   attributes?: Array<SelectedPriceAttributes>;
   [index: string]: any;
 }
@@ -148,6 +149,8 @@ export interface Order extends CommonCommerce {
 
 export interface Quote extends CommonCommerce {
   createdUserId: number;
+  createdUserEmailAddress?: string;
+  createdUserFullName?: string;
   ownerUserId: number;
   total: number;
   subTotal?: number;

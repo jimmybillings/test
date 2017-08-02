@@ -15,12 +15,13 @@ import {
   FeeConfig,
   LicenseAgreements
 } from '../interfaces/commerce.interface';
-import { SubclipMarkers } from '../interfaces/asset.interface';
+import { SubclipMarkers } from '../interfaces/subclip-markers.interface';
 import { Frame } from 'wazee-frame-formatter';
 import { ActiveQuoteStore } from '../stores/active-quote.store';
 
 import { FeeConfigStore } from '../stores/fee-config.store';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
+import { Common } from '../utilities/common.functions';
 
 @Injectable()
 export class QuoteEditService {
@@ -78,22 +79,36 @@ export class QuoteEditService {
 
   // Public Api
   public createQuote(): Observable<Quote> {
-    return this.api.post(Api.Orders, 'quote', { loading: true })
+    return this.api.post(Api.Orders, 'quote', { loadingIndicator: true })
+      .do(this.replaceQuote);
+  }
+
+  public cloneQuote(quote: Quote): Observable<Quote> {
+    let clonedQuote: Quote = JSON.parse(JSON.stringify(quote));
+    Common.deletePropertiesFromObject(
+      clonedQuote,
+      ['id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus']
+    );
+    return this.api.post(Api.Orders, 'quote',
+      {
+        loadingIndicator: true,
+        body: clonedQuote
+      })
       .do(this.replaceQuote);
   }
 
   public getFocusedQuote(): Observable<Quote> {
-    return this.api.get(Api.Orders, 'quote/focused', { loading: true }).do(this.replaceQuote);
+    return this.api.get(Api.Orders, 'quote/focused', { loadingIndicator: true }).do(this.replaceQuote);
   }
 
   public addProject(): void {
-    this.api.post(Api.Orders, `quote/${this.quoteId}/project`, { loading: true })
+    this.api.post(Api.Orders, `quote/${this.quoteId}/project`, { loadingIndicator: true })
       .do(this.replaceQuote)
       .subscribe();
   }
 
   public removeProject(project: Project): void {
-    this.api.delete(Api.Orders, `quote/${this.quoteId}/project/${project.id}`, { loading: true })
+    this.api.delete(Api.Orders, `quote/${this.quoteId}/project/${project.id}`, { loadingIndicator: true })
       .subscribe(this.replaceQuote);
   }
 
@@ -110,7 +125,7 @@ export class QuoteEditService {
   }
 
   public updateProject(project: Project): void {
-    this.api.put(Api.Orders, `quote/${this.quoteId}/project`, { body: project, loading: true })
+    this.api.put(Api.Orders, `quote/${this.quoteId}/project`, { body: project, loadingIndicator: true })
       .subscribe(this.replaceQuote);
   }
 
@@ -118,7 +133,7 @@ export class QuoteEditService {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}/project/priceAttributes/${project.id}`,
-      { body: priceAttributes, loading: true }
+      { body: priceAttributes, loadingIndicator: true }
     ).subscribe(this.replaceQuote);
   }
 
@@ -126,18 +141,18 @@ export class QuoteEditService {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}/move/lineItem`,
-      { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true }
+      { parameters: { lineItemId: lineItem.id, projectId: project.id }, loadingIndicator: true }
     ).subscribe(this.replaceQuote);
   }
 
   public cloneLineItem(lineItem: AssetLineItem): void {
     this.api.put(Api.Orders, `quote/${this.quoteId}/clone/lineItem`,
-      { parameters: { lineItemId: lineItem.id }, loading: true })
+      { parameters: { lineItemId: lineItem.id }, loadingIndicator: true })
       .subscribe(this.replaceQuote);
   }
 
   public removeLineItem(lineItem: AssetLineItem): void {
-    this.api.delete(Api.Orders, `quote/${this.quoteId}/asset/${lineItem.id}`, { loading: true })
+    this.api.delete(Api.Orders, `quote/${this.quoteId}/asset/${lineItem.id}`, { loadingIndicator: true })
       .subscribe(this.replaceQuote);
   }
 
@@ -172,7 +187,7 @@ export class QuoteEditService {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}`,
-      { body: this.state.data, loading: true },
+      { body: this.state.data, loadingIndicator: true },
     ).subscribe(this.replaceQuote);
   }
 
@@ -182,7 +197,7 @@ export class QuoteEditService {
     return this.api.put(
       Api.Orders,
       `quote/send/${this.quoteId}`,
-      { parameters: options as ApiParameters, loading: true }
+      { parameters: options as ApiParameters, loadingIndicator: true }
     );
   }
 
@@ -190,7 +205,7 @@ export class QuoteEditService {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}/fee/lineItem`,
-      { body: fee, parameters: { projectName: project.name }, loading: true }
+      { body: fee, parameters: { projectName: project.name }, loadingIndicator: true }
     ).subscribe(this.replaceQuote);
   }
 
@@ -198,7 +213,7 @@ export class QuoteEditService {
     this.api.delete(
       Api.Orders,
       `quote/${this.quoteId}/fee/${fee.id}`,
-      { loading: true }
+      { loadingIndicator: true }
     ).subscribe(this.replaceQuote);
   }
 
@@ -207,12 +222,19 @@ export class QuoteEditService {
   }
 
   public deleteQuote(): Observable<Quote> {
-    return this.api.delete(Api.Orders, `quote/${this.state.data.id}`);
+    return this.api.delete(Api.Orders, `quote/${this.state.data.id}`, { loadingIndicator: 'onBeforeRequest' });
   }
 
   // This method is here only cause the linter gets mad if it isn't
   public retrieveLicenseAgreements(): Observable<LicenseAgreements> {
     return this.api.get(Api.Orders, 'cart/licensing');
+  }
+
+  public bulkImport(rawAssets: { lineItemAttributes: string }, projectId: string): Observable<Quote> {
+    return this.api.put(Api.Orders, `quote/${this.state.data.id}/asset/direct/lineItem`, {
+      body: rawAssets,
+      parameters: { projectId }
+    }).do(this.replaceQuote);
   }
 
   // Private helper methods
@@ -261,7 +283,7 @@ export class QuoteEditService {
   }
 
   private loadFeeConfig(): Observable<FeeConfig> {
-    return this.api.get(Api.Identities, 'feeConfig/search', { loading: true })
+    return this.api.get(Api.Identities, 'feeConfig/search', { loadingIndicator: true })
       .do((response: FeeConfig) => this.feeConfigStore.replaceFeeConfigWith(response));
   }
 

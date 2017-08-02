@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ActionReducer, Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-export function errorStore(state = {}, action: Action) {
+import { LegacyAction } from '../interfaces/common.interface';
+
+export function errorStore(state = {}, action: LegacyAction) {
   switch (action.type) {
     case 'UPDATE_ERROR':
       return Object.assign({}, state, action.payload);

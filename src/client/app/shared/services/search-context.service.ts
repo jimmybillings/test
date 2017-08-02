@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+
+import { LegacyAction } from '../interfaces/common.interface';
 
 const initSearchContext: any = {
   q: null,
@@ -10,7 +12,7 @@ const initSearchContext: any = {
   sortId: 0
 };
 
-export function searchContext(state: any = initSearchContext, action: Action) {
+export function searchContext(state: any = initSearchContext, action: LegacyAction) {
   switch (action.type) {
     case 'SEARCHCONTEXT.CREATE':
       return Object.assign({}, action.payload);

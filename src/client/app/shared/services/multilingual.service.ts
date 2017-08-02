@@ -1,9 +1,10 @@
 // angular
 import { Injectable } from '@angular/core';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { ILang, MultilingualStateI } from '../interfaces/language.interface';
 import { ApiConfig } from './api.config';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const initialState: MultilingualStateI = {
   lang: ''
@@ -15,7 +16,7 @@ const MULTILINGUAL_ACTIONS: any = {
 };
 
 // ActionReducer
-export function multilingualActionReducer(state: MultilingualStateI = initialState, action: Action) {
+export function multilingualActionReducer(state: MultilingualStateI = initialState, action: LegacyAction) {
   switch (action.type) {
     case MULTILINGUAL_ACTIONS.LANG_CHANGE:
       return Object.assign({}, state, action.payload);

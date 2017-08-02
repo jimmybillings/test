@@ -404,7 +404,7 @@ export function main() {
       describe('toHaveBeenCalledWithLoading()', () => {
         describe('with a specific expectation', () => {
           it('works with positive test and a matching call', () => {
-            mockApi.injector.get(Api.Identities, 'some/endpoint', { loading: true });
+            mockApi.injector.get(Api.Identities, 'some/endpoint', { loadingIndicator: true });
 
             expect(mockApi.get).toHaveBeenCalledWithLoading(true);
           });
@@ -420,7 +420,7 @@ export function main() {
           });
 
           it('works with a negative test and a non-matching call', () => {
-            mockApi.injector.get(Api.Identities, 'some/endpoint', { loading: true });
+            mockApi.injector.get(Api.Identities, 'some/endpoint', { loadingIndicator: true });
 
             expect(mockApi.get).not.toHaveBeenCalledWithLoading(false);
           });
@@ -428,7 +428,7 @@ export function main() {
 
         describe('without a specific expectation', () => {
           it('works with a positive test and any matching option', () => {
-            mockApi.injector.get(Api.Identities, 'some/endpoint', { loading: true });
+            mockApi.injector.get(Api.Identities, 'some/endpoint', { loadingIndicator: true });
 
             expect(mockApi.get).toHaveBeenCalledWithLoading();
           });

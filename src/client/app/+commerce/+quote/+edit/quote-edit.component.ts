@@ -11,12 +11,13 @@ import { UserPreferenceService } from '../../../shared/services/user-preference.
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
-import { QuoteOptions, Project, FeeLineItem, Quote, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
+import { QuoteOptions, Project, FeeLineItem, Quote, AssetLineItem, QuoteState } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   moduleId: module.id,
@@ -73,6 +74,10 @@ export class QuoteEditComponent extends CommerceEditTab {
         this.removeCostMultiplierFrom(message.payload);
         break;
 
+      case 'OPEN_BULK_IMPORT_DIALOG':
+        this.onOpenBulkImportDialog(message.payload);
+        break;
+
       default:
         super.onNotification(message);
     };
@@ -96,6 +101,10 @@ export class QuoteEditComponent extends CommerceEditTab {
 
   public get showDiscount(): boolean {
     return (this.hasProperty('discount') && this.quoteType !== 'ProvisionalOrder') ? true : false;
+  }
+
+  public get shouldShowCloneButton(): Observable<boolean> {
+    return this.userCan.cloneQuote(this.quoteEditService.data);
   }
 
   public addBulkOrderId(): void {
@@ -139,6 +148,17 @@ export class QuoteEditComponent extends CommerceEditTab {
     }, this.deleteQuote);
   }
 
+  public onCloneQuote() {
+    this.quoteEditService.cloneQuote(this.quoteEditService.state.data)
+      .do(() => {
+        this.showSnackBar({
+          key: 'QUOTE.CLONE_SUCCESS',
+          value: null
+        });
+      })
+      .subscribe();
+  }
+
   public onCreateQuote() {
     this.quoteEditService.createQuote()
       .do(() => {
@@ -148,6 +168,21 @@ export class QuoteEditComponent extends CommerceEditTab {
         });
       })
       .subscribe();
+  }
+
+  public onOpenBulkImportDialog(projectId: string): void {
+    this.dialogService.openFormDialog(
+      this.config.bulkImport.items,
+      { title: 'QUOTE.BULK_IMPORT.TITLE', submitLabel: 'QUOTE.BULK_IMPORT.SUBMIT_BTN', autocomplete: 'off' },
+      (form: { lineItemAttributes: string }) => {
+        this.quoteEditService.bulkImport(form, projectId).do(() => {
+          this.showSnackBar({
+            key: 'QUOTE.BULK_IMPORT.CONFIRMATION',
+            value: { numOfAssets: form.lineItemAttributes.split('\n').length }
+          });
+        }).subscribe();
+      }
+    );
   }
 
   private updateQuoteField = (options: any): void => {

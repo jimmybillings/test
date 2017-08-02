@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
+import { LegacyAction } from '../interfaces/common.interface';
 
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
 
 const InitState: any = { loaded: false, components: {} };
-export function config(state = InitState, action: Action) {
+export function config(state = InitState, action: LegacyAction) {
 
   switch (action.type) {
     case 'INITIALIZE':

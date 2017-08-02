@@ -18,10 +18,11 @@
 					[quoteType]="quoteType"
 					[projectHasRmAssets]="projectHasRmAssets(project)"
 					[rmAssetsHaveAttributes]="rmAssetsHaveAttributes(project)"
-          [includeFees]="includeFees"
+          [allowQuoteAdministration]="userCan.administerQuotes()"
 					(projectActionsNotify)="editProjectPrice($event, project)"
 					(remove)="onRemove(project)"
 					(edit)="onEdit(project)"
+					(bulkImport)="onClickBulkImportButton(project)"
           (addFee)="onClickAddFeeButtonFor(project)">
 				</project-actions-component>
 				<project-price-info-component

@@ -1,10 +1,11 @@
-import { ActionReducer, Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Order } from '../interfaces/commerce.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const initState: any = { id: 1, projects: [], orderStatus: '', orderType: '' };
-export function order(state: any = initState, action: Action) {
+export function order(state: any = initState, action: LegacyAction) {
   switch (action.type) {
     case 'ORDER.SET_CURRENT_ORDER':
       return Object.assign({}, action.payload);

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import { Collection, CollectionsStoreI } from '../interfaces/collection.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
-export function collections(state: CollectionsStoreI = initialState(), action: Action) {
+export function collections(state: CollectionsStoreI = initialState(), action: LegacyAction) {
   if (state === null) state = initialState();
 
   let updatedItems: Collection[];
@@ -44,7 +45,7 @@ export function collections(state: CollectionsStoreI = initialState(), action: A
 
 @Injectable()
 export class CollectionsStore {
-  constructor(private store: Store<CollectionsStoreI>) { }
+  constructor(private store: Store<any>) { }  // Was Store<CollectionsStoreI> before ngrx upgrade.
 
   public get data(): Observable<Collection[]> {
     return this.store.select('collections');

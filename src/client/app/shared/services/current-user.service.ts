@@ -1,10 +1,12 @@
 import { User } from '../interfaces/user.interface';
 import { Observable } from 'rxjs/Observable';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
+
+import { LegacyAction } from '../interfaces/common.interface';
 import { ErrorStore } from '../stores/error.store';
 
-export function currentUser(state = {}, action: Action) {
+export function currentUser(state = {}, action: LegacyAction) {
 
   switch (action.type) {
     case 'SET_USER':

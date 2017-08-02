@@ -47,7 +47,7 @@
 		</wz-pagination>
 		<!-- COLLECTION LIST -->
 		<wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="editCollection($event)"
-			[activeCollection]="(activeCollection.data | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event);"
+			[activeCollection]="(activeCollection | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event);"
 			(generateCollectionLink)="getAssetsForLink($event);">
 		</wz-collection-item-list>
 		<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"

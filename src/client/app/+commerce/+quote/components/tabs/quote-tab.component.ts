@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuoteService } from '../../../../shared/services/quote.service';
-import { Quote } from '../../../../shared/interfaces/commerce.interface';
+import { Quote, QuoteState, Project, AssetLineItem, FeeLineItem } from '../../../../shared/interfaces/commerce.interface';
 import { Tab } from '../../../components/tabs/tab';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { Observable } from 'rxjs/Observable';
@@ -11,6 +11,10 @@ import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interf
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { FormFields } from '../../../../shared/interfaces/forms.interface';
+import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
+import { MdSnackBar } from '@angular/material';
+import { TranslateService } from '@ngx-translate/core';
+import { Pojo } from '../../../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -25,9 +29,12 @@ export class QuoteTabComponent extends Tab {
   constructor(
     public quoteService: QuoteService,
     public userCan: CommerceCapabilities,
-    public dialogService: WzDialogService,
+    private dialogService: WzDialogService,
     private router: Router,
-    private uiConfig: UiConfig) {
+    private uiConfig: UiConfig,
+    private quoteEditService: QuoteEditService,
+    private snackBar: MdSnackBar,
+    private translate: TranslateService) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
     this.uiConfig.get('cart').take(1).subscribe((config: any) => this.config = config.config);
@@ -40,6 +47,22 @@ export class QuoteTabComponent extends Tab {
   public checkout(): void {
     this.quoteService.getPaymentOptions();
     this.goToNextTab();
+  }
+
+  public onCloneQuote() {
+    this.quoteEditService.cloneQuote(this.quoteService.state.data)
+      .do(() => {
+        this.router.navigate(['/commerce/activeQuote']);
+        this.showSnackBar({
+          key: 'QUOTE.CLONE_SUCCESS',
+          value: null
+        });
+      })
+      .subscribe();
+  }
+
+  public get shouldShowCloneButton(): Observable<boolean> {
+    return this.userCan.cloneQuote(this.quoteService.data);
   }
 
   public get shouldShowLicenseDetailsBtn(): boolean {
@@ -109,9 +132,11 @@ export class QuoteTabComponent extends Tab {
   }
 
   private extendQuoteExpiration = (newDate: { expirationDate: string }): void => {
-    this.quoteService.extendExpirationDate(newDate.expirationDate).subscribe(() => {
-      this.router.navigate(['/commerce/quotes']);
-    });
+    this.quoteService
+      .extendExpirationDate(newDate.expirationDate)
+      .subscribe(() => {
+        this.router.navigate(['/commerce/quotes']);
+      });
   }
 
   private expireQuote = (): void => {
@@ -124,5 +149,12 @@ export class QuoteTabComponent extends Tab {
     this.quoteService.rejectQuote().take(1).subscribe(() => {
       this.router.navigate(['commerce/quotes']);
     });
+  }
+
+  private showSnackBar(message: Pojo) {
+    this.translate.get(message.key, message.value)
+      .subscribe((res: string) => {
+        this.snackBar.open(res, '', { duration: 2000 });
+      });
   }
 }

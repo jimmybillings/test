@@ -21,7 +21,7 @@ export class GalleryViewService {
   public load(path: GalleryPath): Observable<ApiResponse> {
     let query: string = (path && path.length > 0) ? this.stringifyPathForSearch(path) : null;
 
-    return this.api.get(Api.Assets, 'galleryResult', { loading: true, parameters: { query: query } })
+    return this.api.get(Api.Assets, 'galleryResult', { loadingIndicator: true, parameters: { query: query } })
       .do((response: any) => this.store.replaceWith(response.list, path));
   }
 

@@ -1,8 +1,8 @@
-import { ActionReducer, Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Orders } from '../interfaces/commerce.interface';
-
+import { LegacyAction } from '../interfaces/common.interface';
 
 /**
  * Orders store -
@@ -19,7 +19,7 @@ const ordersState: Orders = {
   }
 };
 
-export function orders(state: Orders = ordersState, action: Action) {
+export function orders(state: Orders = ordersState, action: LegacyAction) {
   switch (action.type) {
     case 'ORDERS.GET_ORDERS':
       return Object.assign({}, action.payload);

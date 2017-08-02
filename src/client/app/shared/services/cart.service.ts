@@ -25,7 +25,7 @@ import {
   LicenseAgreements
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
-import { SubclipMarkers } from '../interfaces/asset.interface';
+import { SubclipMarkers } from '../interfaces/subclip-markers.interface';
 import { Frame } from 'wazee-frame-formatter';
 
 @Injectable()
@@ -99,7 +99,7 @@ export class CartService {
   // Finally, we call share() to ensure that the do() call happens exactly once instead
   // of once per subscriber.
   public initializeData(): Observable<Cart> {
-    return this.api.get(Api.Orders, 'cart', { loading: true })
+    return this.api.get(Api.Orders, 'cart', { loadingIndicator: true })
       .do(this.replaceCartWith)
       .takeLast(1)
       .map(_ => { return {}; })
@@ -122,7 +122,7 @@ export class CartService {
   }
 
   public removeProject(project: Project): void {
-    this.api.delete(Api.Orders, `cart/project/${project.id}`, { loading: true })
+    this.api.delete(Api.Orders, `cart/project/${project.id}`, { loadingIndicator: true })
       .subscribe(wholeCartResponse => {
         this.replaceCartWith(wholeCartResponse);
       });
@@ -141,7 +141,7 @@ export class CartService {
   }
 
   public updateProject(project: Project): void {
-    this.api.put(Api.Orders, 'cart/project', { body: project, loading: true })
+    this.api.put(Api.Orders, 'cart/project', { body: project, loadingIndicator: true })
       .subscribe(this.replaceCartWith);
   }
 
@@ -149,7 +149,7 @@ export class CartService {
     this.api.put(
       Api.Orders,
       `cart/project/priceAttributes/${project.id}`,
-      { body: priceAttributes, loading: true }
+      { body: priceAttributes, loadingIndicator: true }
     ).subscribe(this.replaceCartWith);
   }
 
@@ -157,17 +157,17 @@ export class CartService {
     this.api.put(
       Api.Orders,
       'cart/move/lineItem',
-      { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true }
+      { parameters: { lineItemId: lineItem.id, projectId: project.id }, loadingIndicator: true }
     ).subscribe(this.replaceCartWith);
   }
 
   public cloneLineItem(lineItem: AssetLineItem): void {
-    this.api.put(Api.Orders, 'cart/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
+    this.api.put(Api.Orders, 'cart/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loadingIndicator: true })
       .subscribe(this.replaceCartWith);
   }
 
   public removeLineItem(lineItem: AssetLineItem): void {
-    this.api.delete(Api.Orders, `cart/asset/${lineItem.id}`, { loading: true })
+    this.api.delete(Api.Orders, `cart/asset/${lineItem.id}`, { loadingIndicator: true })
       .subscribe(this.replaceCartWith);
   }
 
@@ -214,14 +214,14 @@ export class CartService {
 
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;
-    return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options }, loading: true })
+    return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options }, loadingIndicator: true })
       .do(() => this.initializeData().subscribe())
       .map(_ => _ as Number);
   }
 
   private purchaseOnCredit(): Observable<number> {
     const options: AddressPurchaseOptions = this.addressPurchaseOptions;
-    return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { body: { options }, loading: true })
+    return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { body: { options }, loadingIndicator: true })
       .do(() => this.initializeData().subscribe())
       .map((order: Order) => order.id);
   }
@@ -263,7 +263,7 @@ export class CartService {
   }
 
   private addProjectAndReturnObservable(): Observable<any> {
-    return this.api.post(Api.Orders, 'cart/project', { body: { clientName: this.fullName }, loading: true })
+    return this.api.post(Api.Orders, 'cart/project', { body: { clientName: this.fullName }, loadingIndicator: true })
       .do(this.replaceCartWith)
       .share();
   }

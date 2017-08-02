@@ -27,7 +27,7 @@ export class SearchService {
     return this.api.get(
       Api.Assets,
       this.currentUser.loggedIn() ? 'search' : 'search/anonymous',
-      { parameters: cloneParams, loading: true }
+      { parameters: cloneParams, loadingIndicator: true }
     ).do(response => this.store.storeAssets(response));
   }
 

@@ -49,7 +49,6 @@
           [projects]="quoteEditService.projects | async"
           [config]="config" 
           [userCan]="userCan"
-          [includeFees]="true"
           (projectsNotify)="onNotification($event)">
         </projects-component>
 
@@ -81,9 +80,11 @@
               <administer-quote-component
                 flex="100"
                 [userCanProceed]="userCanProceed"
+                [shouldShowCloneButton]="shouldShowCloneButton | async"
                 (openQuoteDialog)="onOpenQuoteDialog()"
                 (openDeleteDialog)="onOpenDeleteQuoteDialog()"
-                (saveAndNew)="onCreateQuote()">
+                (saveAndNew)="onCreateQuote()"
+                (cloneQuote)="onCloneQuote()">
               </administer-quote-component>
             </div>
             <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="showUsageWarning">

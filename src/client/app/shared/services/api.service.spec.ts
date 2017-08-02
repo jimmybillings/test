@@ -25,7 +25,7 @@ export function main() {
         portal: 'PORTAL'
       };
 
-      mockUiState = jasmine.createSpyObj('mockUiState', ['loading']);
+      mockUiState = jasmine.createSpyObj('mockUiState', ['loadingIndicator']);
       mockErrorService = jasmine.createSpyObj('mockErrorService', ['dispatch']);
 
       mockBackEnd.connections.subscribe((c: any) => connection = c);
@@ -192,7 +192,7 @@ export function main() {
           });
         });
 
-        describe('loading animation', () => {
+        describe('loadingIndicator animation', () => {
           let noOp: Function = () => { return; };
 
           for (const result of ['succeeds', 'errors']) {
@@ -201,24 +201,38 @@ export function main() {
                 if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
               });
 
-              describe('when loading option is not specified', () => {
+              describe('when loadingIndicator option is not specified', () => {
                 it('is not affected', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loading).not.toHaveBeenCalled());
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loadingIndicator).not.toHaveBeenCalled());
                 });
               });
 
-              describe('when loading option is false', () => {
+              describe('when loadingIndicator option is false', () => {
                 it('is not affected', () => {
-                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loading: false })
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loading).not.toHaveBeenCalled());
+                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: false })
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loadingIndicator).not.toHaveBeenCalled());
                 });
               });
 
-              describe('when loading option is true', () => {
-                it('is started at first and stopped when the call is complete', () => {
-                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loading: true })
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loading.calls.allArgs()).toEqual([[true], [false]]));
+              describe('when loadingIndicator option is true', () => {
+                it('is started with the request and stopped when the response is returned', () => {
+                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: true })
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loadingIndicator.calls.allArgs()).toEqual([[true], [false]]));
+                });
+              });
+
+              describe('when loadingIndicator option is onBeforeRequest', () => {
+                it('is only started with the request and not turned off when the response is returned', () => {
+                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: 'onBeforeRequest' })
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loadingIndicator.calls.allArgs()).toEqual([[true]]));
+                });
+              });
+
+              describe('when loadingIndicator option is offAfterResponse', () => {
+                it('is not started with the request but is stopped when the response is returned', () => {
+                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: 'offAfterResponse' })
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loadingIndicator.calls.allArgs()).toEqual([[false]]));
                 });
               });
             });

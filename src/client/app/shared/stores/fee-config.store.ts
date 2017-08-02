@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Store, ActionReducer, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import { Address } from '../interfaces/user.interface';
 import { FeeConfigState, FeeConfig } from '../interfaces/commerce.interface';
+import { LegacyAction } from '../interfaces/common.interface';
 
 const emptyFeeConfigState: FeeConfigState = {
   initialized: false,
   feeConfig: { items: [] }
 };
 
-export function feeConfig(state: FeeConfigState = emptyFeeConfigState, action: Action) {
+export function feeConfig(state: FeeConfigState = emptyFeeConfigState, action: LegacyAction) {
   switch (action.type) {
     case 'FEE_CONFIG.REPLACE':
       return Object.assign({ initialized: !!(action.payload) }, { feeConfig: action.payload ? action.payload : { items: [] } });
