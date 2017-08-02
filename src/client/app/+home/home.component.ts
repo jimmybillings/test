@@ -25,11 +25,11 @@ declare var jwplayer: any;
 export class HomeComponent implements OnInit, OnDestroy {
   public config: any;
   public data: Observable<Gallery>;
-  public heroVideo: any;
   public isVideo: boolean = false;
-  public isVideoHidden: boolean = true;
-  public isVideoPlaying: boolean;
-  public videoPlayer: any;
+  public heroVideo: any;
+  // public isVideoHidden: boolean = true;
+  // public isVideoPlaying: boolean;
+  // public videoPlayer: any;
   private configSubscription: Subscription;
 
   constructor(
