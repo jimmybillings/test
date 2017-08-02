@@ -1,8 +1,8 @@
-@mixin wz-collection-comment-theme($theme) {
+@mixin wz-comment-theme($theme) {
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
 
-  collection-comment-component .collection-comments {
+  wz-comment .wz-comments {
     .new-comment {
       background-color: mat-color($background, card);
     }

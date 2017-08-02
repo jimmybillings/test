@@ -1,11 +1,11 @@
-import { CollectionCommentComponent } from './collection-comment.component';
+import { WzCommentComponent } from './wz.comment.component';
 
 export function main() {
   describe('Collection Comment Component', () => {
-    let componentUnderTest: CollectionCommentComponent;
+    let componentUnderTest: WzCommentComponent;
 
     beforeEach(() => {
-      componentUnderTest = new CollectionCommentComponent();
+      componentUnderTest = new WzCommentComponent();
     });
 
     describe('onCommentSubmit', () => {

@@ -1,15 +1,15 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { FormFields } from '../../shared/interfaces/forms.interface';
-import { Comments, Comment } from '../../shared/interfaces/common.interface';
+import { FormFields } from '../../interfaces/forms.interface';
+import { Comments, Comment } from '../../interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
-  selector: 'collection-comment-component',
-  templateUrl: 'collection-comment.html',
+  selector: 'wz-comment',
+  templateUrl: 'wz.comment.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CollectionCommentComponent {
+export class WzCommentComponent {
   @Input() comments: Comments;
   @Input() formFields: FormFields;
   @Input() showCommentActions: boolean;

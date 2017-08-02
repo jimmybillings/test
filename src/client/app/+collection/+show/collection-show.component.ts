@@ -21,7 +21,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
-import { CollectionCommentComponent } from '../components/collection-comment.component';
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
@@ -280,6 +279,10 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public onCommentSubmit(comment: Comment) {
     this.store.dispatch(factory => factory.activeCollection.addComment(comment));
+  }
+
+  public get commentCount(): number {
+    return this.activeCollection.comments.items.length;
   }
 
   private get userCanEditCollection(): Observable<boolean> {
