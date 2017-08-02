@@ -52,6 +52,18 @@ collection-show .collections-list {
     }
     .actions {
       text-align: right;
+        span.comment-count {
+          position: absolute;
+          top:0;
+          right: rem(-.2);
+          border-radius: 2px;
+          min-width: rem(1.4);
+          font-size: .8em;
+          line-height: 1;
+          margin-right: 0;
+          margin-left: 0;
+          padding: 2px 3px;
+        }
     }
   }
 }

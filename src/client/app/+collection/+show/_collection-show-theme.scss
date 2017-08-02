@@ -26,4 +26,11 @@
   wz-subclip-edit-actions [md-button].is-outlined[disabled] {
     color: mat-color($foreground, text);
   }
+
+  collection-show .collections-list li.collection .actions {
+    .comment-count {
+      background-color: mat-color($primary, 500);
+      color: mat-color($background, card);
+    }
+  }
 }
