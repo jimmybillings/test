@@ -27,9 +27,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   public data: Observable<Gallery>;
   public isVideo: boolean = false;
   public heroVideo: any;
-  // public isVideoHidden: boolean = true;
-  // public isVideoPlaying: boolean;
-  // public videoPlayer: any;
   private configSubscription: Subscription;
 
   constructor(

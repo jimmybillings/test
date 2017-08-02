@@ -39,8 +39,6 @@ export class HomeHeroComponent implements OnInit {
   @Input() currentUser: any;
   @Input() uiState: any;
   @Input() isVideo: boolean;
-  // @Input() heroVideo: any;
-  // @Input() isVideoHidden: boolean;
   @Output() searchContext: any = new EventEmitter();
 
   ngOnInit() {
