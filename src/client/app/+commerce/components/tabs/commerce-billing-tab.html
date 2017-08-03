@@ -12,6 +12,7 @@
           [formItems]="formItems"
           [loaded]="loaded"
           [title]="createFormTitle('user')"
+          [address]="(orderInProgress | async).addresses[0]"
           (onSaveAddress)="addUserAddress($event)">
         </address-form-component>
       </md-card-content>

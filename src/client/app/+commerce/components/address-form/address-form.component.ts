@@ -47,6 +47,10 @@ export class AddressFormComponent {
     }
   }
 
+  public get addressFormValid(): boolean {
+    return this.addressForm.valid;
+  }
+
   private fillInAddress = (): void => {
     let googleAddress: FormattedGoogleAddress = this.google.getPlace();
 
