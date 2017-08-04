@@ -56,7 +56,7 @@
                 (click)="toggleCommentsVisibility()"
                 [disabled]="!(showCommentToggleButton | async)">
 									<md-icon>mode_comment</md-icon>
-									<span class="comment-count">{{commentCount}}</span>
+									<span *ngIf="commentCount > 0" class="comment-count">{{commentCount}}</span>
               </button>
               <button
                 md-icon-button

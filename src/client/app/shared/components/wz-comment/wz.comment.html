@@ -2,10 +2,10 @@
 
   <div flex="40"> 
     <div layout="column" layout-align="center center" layout-padding class="new-comment">
-      <h1 md-dialog-title>Add a comment</h1>
+      <h1 md-dialog-title>{{ 'COMMENTS.COMMENTS_LABEL' | translate }}</h1>
       <wz-form
         [items]="formFields"
-        [submitLabel]="'post'"
+        [submitLabel]="'COMMENTS.SUBMIT_BTN_LABEL'"
         (formSubmit)="onFormSubmit($event)">
       </wz-form>
     </div> 
