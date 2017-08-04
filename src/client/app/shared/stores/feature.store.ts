@@ -58,7 +58,6 @@ export class FeatureStore {
         data[key] = data[key];
       }
     }
-    console.log(data);
     return data;
   }
 }
