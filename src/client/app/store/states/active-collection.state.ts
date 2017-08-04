@@ -143,14 +143,13 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     }
 
     case ActiveCollectionActions.AddCommentSuccess.Type: {
-      const newComments: Comments = action.activeCollectionComments;
       const stateClone: State = JSON.parse(JSON.stringify(state));
 
       return {
         ...stateClone,
         collection: {
           ...stateClone.collection,
-          comments: newComments
+          comments: action.activeCollectionComments
         },
         loaded: true
       };
