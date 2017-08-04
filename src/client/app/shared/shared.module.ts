@@ -37,6 +37,7 @@ import { WzGalleryTwoLevelComponent } from './components/wz-gallery-two-level/wz
 import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
 import { WzSiteChangerComponent } from './components/wz-site-changer/wz-site-changer.component';
 import { WzNotFoundComponent } from './components/wz-not-found/wz-not-found.component';
+import { WzCommentComponent } from './components/wz-comment/wz.comment.component';
 
 // WAZEE SERVICES
 import { ApiConfig } from './services/api.config';
@@ -70,6 +71,7 @@ import { QuoteEditService } from './services/quote-edit.service';
 import { FutureAssetService } from '../store/services/asset.service';
 import { ActiveCollectionService } from '../store/services/active-collection.service';
 import { SnackbarService } from '../store/services/snackbar.service';
+import { CommentService } from '../store/services/comment.service';
 
 
 // WAZEE STORES
@@ -143,7 +145,8 @@ const WAZEE_SERVICES = [
   QuoteService,
   QuotesService,
   QuoteEditService,
-  SnackbarService
+  SnackbarService,
+  CommentService
 ];
 
 const WAZEE_STORE_INTERFACES = [
@@ -259,7 +262,8 @@ export function createTranslateLoader(http: Http) {
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
     WzSiteChangerComponent,
-    WzNotFoundComponent
+    WzNotFoundComponent,
+    WzCommentComponent
   ],
   exports: [
     StoreModule,
@@ -292,7 +296,8 @@ export function createTranslateLoader(http: Http) {
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
     WzSiteChangerComponent,
-    WzNotFoundComponent
+    WzNotFoundComponent,
+    WzCommentComponent
   ],
   entryComponents: [
     CollectionLinkComponent,

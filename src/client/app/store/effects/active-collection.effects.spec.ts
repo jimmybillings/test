@@ -431,5 +431,33 @@ export function main() {
         });
       });
     });
+
+    describe('addCollectionComment', () => {
+      it('works as expected', () => {
+        storeSpecHelper.runStandardEffectTest({
+          effectName: 'addCollectionComment',
+          effectsInstantiator: instantiator,
+          inputAction: {
+            type: ActiveCollectionActions.AddComment.Type,
+            comment: { some: 'comment' }
+          },
+          state: {
+            storeSectionName: 'activeCollection',
+            propertyName: 'collection',
+            value: { some: 'collection' }
+          },
+          serviceMethod: {
+            name: 'addCommentTo',
+            expectedArguments: [{ some: 'collection' }, { some: 'comment' }],
+            returnsObservableOf: { some: 'comments' }
+          },
+          outputActionFactory: {
+            sectionName: 'activeCollection',
+            methodName: 'addCommentSuccess',
+            expectedArguments: [{ some: 'comments' }]
+          }
+        });
+      });
+    });
   });
 }

@@ -123,3 +123,27 @@ export interface Autocomplete {
 export interface LegacyAction extends Action {
   payload?: any;
 }
+
+export type ObjectType = 'collection' | 'cart';
+
+export type CommentAccess = 'Commenter' | 'Viewer' | 'Editor' | 'Root';
+
+export interface Comment extends Common {
+  userId: number;
+  objectType: ObjectType;
+  objectId: string;
+  hidden: boolean;
+  comment: string;
+  access: CommentAccess;
+  timeStart?: string;
+  timeEnd?: string;
+}
+
+export interface CommentsApiResponse extends Pagination {
+  items: Array<Comment>;
+}
+
+export interface Comments {
+  items: Array<Comment>;
+  pagination: Pagination;
+}

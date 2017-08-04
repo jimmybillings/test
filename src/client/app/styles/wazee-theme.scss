@@ -43,6 +43,7 @@
 @import '../shared/components/wz-pagination/wz.pagination-theme';
 @import '../shared/components/wz-sort/wz.sort-theme';
 @import '../shared/components/wz-not-found/wz-not-found-theme';
+@import '../shared/components/wz-comment/wz.comment-theme';
 
 @import '../shared/modules/wz-asset/wz-asset-grid/wz.asset-grid-theme';
 @import '../shared/modules/wz-asset/wz-asset-list/wz-asset-list-theme';
@@ -72,6 +73,7 @@
 
   @include wz-collections-theme($theme);
   @include wz-collection-show-theme($theme);
+  @include wz-comment-theme($theme);
 
   @include wz-cart-theme($theme);
   @include wz-order-show-theme($theme);

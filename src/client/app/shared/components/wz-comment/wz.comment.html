@@ -1,0 +1,40 @@
+<section class="wz-comments" layout-gt-sm="row" layout="column" layout-align="space-between stretch">
+
+  <div flex="40"> 
+    <div layout="column" layout-align="center center" layout-padding class="new-comment">
+      <h1 md-dialog-title>{{ 'COMMENTS.FORM_TITLE' | translate }}</h1>
+      <wz-form
+        [items]="formFields"
+        [submitLabel]="'COMMENTS.SUBMIT_BTN_LABEL'"
+        (formSubmit)="onFormSubmit($event)">
+      </wz-form>
+    </div> 
+  </div>
+
+  <div flex="60">
+    <div *ngIf="commentsExist" layout="column" layout-align="start stretch" class="comments">
+      <div
+        class="md-display comment"
+        *ngFor="let comment of comments.items; let even = even; let odd = odd"
+        [ngClass]="{ odd: odd, even: even }">
+        <header class="comment-head" layout="row" layout-align="space-between center">
+           <div layout="row" layout-align="start center">
+              <!-- Leaving this for now, as it may be used later -->
+              <!-- <div class="avatar" layout-align="center center"><p>{{RE}}</p></div>  -->
+            <div>
+              <p><strong>Posted: </strong>{{comment.createdOn | date:'short' }}</p>
+            </div>
+          </div> 
+          <div *ngIf="showCommentActions" layout-gt-sm="row" layout="column" layout-align="center center">
+            <button disabled md-icon-button title="edit"><md-icon>mode_edit</md-icon></button>
+            <button disabled md-icon-button title="delete"><md-icon>delete</md-icon></button>
+          </div>
+        </header>
+        <div class="comment-body">
+          <span>{{comment.comment}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

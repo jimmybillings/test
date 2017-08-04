@@ -17,7 +17,8 @@ import { CollectionComponent } from './collection.component';
     CollectionsComponent,
     CollectionShowComponent,
     WzCollectionItemListComponent,
-    CollectionDeleteComponent],
+    CollectionDeleteComponent
+  ],
   exports: [CollectionComponent, CollectionsComponent, CollectionShowComponent],
   providers: [CollectionShowResolver, CollectionGuard],
   entryComponents: [CollectionDeleteComponent]

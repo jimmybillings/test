@@ -10,19 +10,25 @@ import {
 import { Asset, Pagination } from '../../shared/interfaces/common.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
 import { Frame } from 'wazee-frame-formatter';
+import { CommentService } from './comment.service';
+import { Comments, Comment } from '../../shared/interfaces/common.interface';
 
 @Injectable()
 export class ActiveCollectionService {
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private commentService: CommentService) { }
 
   public load(parameters: CollectionPaginationParameters): Observable<Collection> {
-    return this.apiService.get(Api.Assets, 'collectionSummary/focused', { loadingIndicator: true })
-      .flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
+    return this.combineCollectionWithAuxiliaryData(
+      this.apiService.get(Api.Assets, 'collectionSummary/focused', { loadingIndicator: true }),
+      parameters
+    );
   }
 
   public set(collectionId: number, parameters: CollectionPaginationParameters): Observable<Collection> {
-    return this.apiService.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loadingIndicator: true })
-      .flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
+    return this.combineCollectionWithAuxiliaryData(
+      this.apiService.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loadingIndicator: true }),
+      parameters
+    );
   }
 
   public loadPage(collectionId: number, parameters: CollectionPaginationParameters): Observable<CollectionItems> {
@@ -84,9 +90,30 @@ export class ActiveCollectionService {
     return markers && markers.out ? this.toMilliseconds(markers.out) : -2;
   }
 
+  public addCommentTo(collection: Collection, comment: Comment): Observable<Comments> {
+    return this.commentService.addCommentTo('collection', collection.id, comment)
+      .flatMap(() => this.getCommentsFor(collection));
+  }
+
+  private combineCollectionWithAuxiliaryData(
+    collection: Observable<Collection>,
+    parameters: CollectionPaginationParameters): Observable<any> {
+    return collection
+      .flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters))
+      .flatMap((fullCollection: Collection) => this.combineCommentsWith(fullCollection));
+  }
+
   private combineAssetsWith(collectionSummary: Collection, parameters: CollectionPaginationParameters): Observable<Collection> {
     return this.loadPage(collectionSummary.id, parameters)
       .map((assets: CollectionItems) => ({ ...collectionSummary, assets: assets }));
+  }
+
+  private combineCommentsWith(collection: Collection): Observable<Collection> {
+    return this.getCommentsFor(collection).map((comments: Comments) => ({ ...collection, comments: comments }));
+  }
+
+  private getCommentsFor(collection: Collection): Observable<Comments> {
+    return this.commentService.getCommentsFor('collection', collection.id);
   }
 
   private convertToApiParameters(parameters: CollectionPaginationParameters) {

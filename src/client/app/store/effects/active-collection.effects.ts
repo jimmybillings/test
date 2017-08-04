@@ -8,7 +8,7 @@ import * as ActiveCollectionActions from '../actions/active-collection.actions';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { AppStore, AppState } from '../../app.store';
 import { Collection, CollectionItems } from '../../shared/interfaces/collection.interface';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { Asset, Comments } from '../../shared/interfaces/common.interface';
 import { SubclipMarkers, deserialize } from '../../shared/interfaces/subclip-markers.interface';
 import { Frame } from 'wazee-frame-formatter';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
@@ -116,6 +116,13 @@ export class ActiveCollectionEffects {
     .switchMap(([action, collection]: [ActiveCollectionActions.UpdateAssetMarkers, Collection]) =>
       this.service.updateAssetMarkers(collection, action.asset, action.markers)
     ).map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.updateAssetMarkersSuccess(assets)));
+
+  @Effect()
+  public addCollectionComment: Observable<Action> = this.actions.ofType(ActiveCollectionActions.AddComment.Type)
+    .withLatestFrom(this.store.select(state => state.activeCollection.collection))
+    .switchMap(([action, collection]: [ActiveCollectionActions.AddComment, Collection]) =>
+      this.service.addCommentTo(collection, action.comment))
+    .map((comments: Comments) => this.store.create(factory => factory.activeCollection.addCommentSuccess(comments)));
 
   constructor(
     private actions: Actions,

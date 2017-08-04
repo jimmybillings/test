@@ -138,6 +138,18 @@ export function main() {
     storeSpecHelper.runStandardActionTestFor({
       factoryMethod: {
         class: ActionFactory,
+        name: 'addComment',
+        parameters: [{ some: 'comment' }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Add Comment',
+        comment: { some: 'comment' }
+      }
+    });
+
+    storeSpecHelper.runStandardActionTestFor({
+      factoryMethod: {
+        class: ActionFactory,
         name: 'reset',
         parameters: []
       },
@@ -215,6 +227,18 @@ export function main() {
       expectedAction: {
         type: '[Active Collection] Update Asset Markers Success',
         currentPageItems: { some: 'assets' }
+      }
+    });
+
+    storeSpecHelper.runStandardActionTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'addCommentSuccess',
+        parameters: [{ some: 'comments' }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Add Comment Success',
+        activeCollectionComments: { some: 'comments' }
       }
     });
   });

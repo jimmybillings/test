@@ -7,6 +7,7 @@ import { AssetCapabilities } from '../../+asset/services/asset.capabilities';
 import { CollectionCapabilities } from '../../+collection/services/collection.capabilities';
 import { SearchCapabilities } from '../../+search/services/search.capabilities';
 import { QuoteState } from '../../shared/interfaces/commerce.interface';
+import { Collection } from '../../shared/interfaces/collection.interface';
 
 import { CurrentUserService } from './current-user.service';
 import { UiState } from '../services/ui.state';
@@ -17,6 +18,7 @@ export class Capabilities implements CommerceCapabilities, CollectionCapabilitie
   haveCollections: () => boolean;
   viewCollections: () => boolean;
   editCollections: () => boolean;
+  editCollection: (collection: Collection) => Observable<boolean>;
   viewAssetDetails: () => boolean;
   viewDownloadCompOptions: (hasComp: boolean) => boolean;
   downloadWatermarkComps: (hasComp: boolean) => boolean;
