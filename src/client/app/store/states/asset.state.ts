@@ -2,8 +2,8 @@ import * as AssetActions from '../actions/asset.actions';
 import { Asset } from '../../shared/interfaces/common.interface';
 
 export interface State {
-  activeAsset: Asset;
-  loaded: boolean;
+  readonly activeAsset: Asset;
+  readonly loaded: boolean;
 };
 
 export const initialState: State = {
