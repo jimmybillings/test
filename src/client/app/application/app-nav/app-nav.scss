@@ -135,12 +135,12 @@ header.app-header + div.main-content asset-component {
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(15.2);
   }
-  wz-asset-list {
-    min-height: calc(100vh - 518px);
-    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-      min-height: calc(100vh - 799px);
-    }
-  }
+  // wz-asset-list {
+  //   min-height: calc(100vh - 518px);
+  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
+  //     min-height: calc(100vh - 799px);
+  //   }
+  // }
 }
 
 header.app-header.collection-tray-closed + div.main-content gallery-view-component,
@@ -159,12 +159,12 @@ header.app-header.collection-tray-closed + div.main-content asset-component {
   @media (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(9.6);
   }
-  wz-asset-list {
-    min-height: calc(100vh - 462px);
-    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-      min-height: calc(100vh - 791px);
-    }
-  }
+  // wz-asset-list {
+  //   min-height: calc(100vh - 462px);
+  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
+  //     min-height: calc(100vh - 791px);
+  //   }
+  // }
 }
 
 header.app-header.collection-tray-closed.search-closed + div.main-content gallery-view-component,
@@ -183,12 +183,12 @@ header.app-header.collection-tray-closed.search-closed + div.main-content asset-
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(5.6);
   }
-  wz-asset-list {
-    min-height: calc(100vh - 416px);
-    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-      min-height: calc(100vh - 751px);
-    }
-  }
+  // wz-asset-list {
+  //   min-height: calc(100vh - 416px);
+  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
+  //     min-height: calc(100vh - 751px);
+  //   }
+  // }
 }
 
 header.app-header.search-closed + div.main-content gallery-view-component,
@@ -207,12 +207,12 @@ header.app-header.search-closed + div.main-content asset-component {
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(11.2);
   }
-  wz-asset-list {
-    min-height: calc(100vh - 472px);
-    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-      min-height: calc(100vh - 807px);
-    }
-  }
+  // wz-asset-list {
+  //   min-height: calc(100vh - 472px);
+  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
+  //     min-height: calc(100vh - 807px);
+  //   }
+  // }
 }
 
 // pages that do not have options to open and close search and bins with a bk hero image or video (user, home)

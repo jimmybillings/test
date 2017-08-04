@@ -14,4 +14,7 @@
   .quote-summary .quote-info > span.expired {
     color: mat-color($warn, darker);
   }
+  .quote-summary .quote-info a {
+    color: mat-color($primary, darker, 1);
+  }
 }

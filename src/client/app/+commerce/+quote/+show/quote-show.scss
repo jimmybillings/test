@@ -35,5 +35,11 @@ quote-show-component .project .assets {
         padding-right: rem(.5);
       }
     }
+    a {
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }    
   }
 }
