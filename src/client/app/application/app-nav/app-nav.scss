@@ -47,14 +47,15 @@ header.app-header {
     }
   }
   &.fixed {
-    position: fixed;
-    top: 0;
-    animation: slideDownHeader .75s ease-in-out;
-    border-bottom: none;
-    @include mat-elevation(3);
-    // width: calc(100% - 16px);
-    a.home-link > .logo-wrapper {
-      opacity: .95;
+    @media (min-height: 875px) {
+      position: fixed;
+      top: 0;
+      animation: slideDownHeader .75s ease-in-out;
+      border-bottom: none;
+      @include mat-elevation(3);
+      a.home-link > .logo-wrapper {
+        opacity: .95;
+      }
     }
   }
 }
