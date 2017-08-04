@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Authentication } from '../../shared/services/authentication.data.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UserService } from '../../shared/services/user.service';
 import { PendoService } from '../../shared/services/pendo.service';
+import { Session, Credentials } from '../../shared/interfaces/session.interface';
 import { Observable } from 'rxjs/Observable';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
 import { FeatureStore } from '../../shared/stores/feature.store';
@@ -30,20 +31,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     private currentUser: CurrentUserService,
     private user: UserService,
     private uiConfig: UiConfig,
-    private route: ActivatedRoute,
     private pendo: PendoService,
     private dialogService: WzDialogService,
-    private feature: FeatureStore,
-    private ref: ChangeDetectorRef) {
-
-  }
+    private feature: FeatureStore) { }
 
   ngOnInit(): void {
-    this.routeSubscription = this.route.params.subscribe((params: any) => {
-      if (params.newUser === 'true') {
-        this.firstTimeUser = true;
-      }
-    });
+    this.firstTimeUser = this.router.routerState.snapshot.url.indexOf('newUser=true') > -1;
+
     this.configSubscription =
       this.uiConfig.get('login').subscribe((config: any) =>
         this.config = config.config);
@@ -51,33 +45,24 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.configSubscription.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 
-  public onSubmit(user: any): void {
-    this.authentication.create(user).subscribe((res) => {
+  public onSubmit(user: Credentials): void {
+    this.authentication.create(user).subscribe((session: Session) => {
 
-      this.currentUser.set(res.user, res.token.token);
-      this.pendo.initialize(res.user);
+      this.currentUser.set(session.user, session.token.token);
+      this.pendo.initialize(session.user);
+      if (session.siteFeatures) this.feature.set(session.siteFeatures);
 
-      if (res.siteFeatures) {
-        this.feature.setInLocalStorage(res.siteFeatures);
-        this.feature.set(res.siteFeatures);
-      }
-
-      if (res.documentsRequiringAgreement && res.documentsRequiringAgreement.indexOf('TOS') > -1) {
+      if (session.documentsRequiringAgreement &&
+        session.documentsRequiringAgreement.indexOf('TOS') > -1) {
         this.showTerms();
-      } else {
-        this.router.navigate(['/']).then((_: any) => {
-          this.uiConfig.load().subscribe((_: any) => _);
-        });
-      }
+      } else { this.redirectUserAppropriately(); }
     });
-    this.ref.markForCheck();
   }
 
-  public showTerms() {
-    this.user.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
+  private showTerms(): void {
+    this.user.downloadActiveTosDocument().take(1).subscribe((terms: string) => {
       this.dialogService.openComponentInDialog({
         componentType: WzTermsComponent,
         inputOptions: {
@@ -89,8 +74,19 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  private agreeToTermsAndClose = () => {
+  private redirectUserAppropriately(): void {
+    const redirectUrl: string = localStorage.getItem('redirectUrl');
+    if (redirectUrl) {
+      this.router.navigateByUrl(redirectUrl);
+      localStorage.removeItem('redirectUrl');
+    } else {
+      this.router.navigate(['/']);
+    }
+    this.uiConfig.load().subscribe((_: any) => _);
+  }
+
+  private agreeToTermsAndClose = (): void => {
     this.user.agreeUserToTerms();
-    this.router.navigate(['/']);
+    this.redirectUserAppropriately();
   }
 }
