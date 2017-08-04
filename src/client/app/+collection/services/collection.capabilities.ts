@@ -12,7 +12,7 @@ export class CollectionCapabilities {
   constructor(public currentUser: CurrentUserService, public uiState: UiState, public feature: FeatureStore) { }
 
   public haveCollections(): boolean {
-    return this.feature.isAvailable(Feature.disableCollectionAccess);
+    return this.feature.isAvailable('disableCollectionAccess');
   }
 
   public viewCollections(): boolean {

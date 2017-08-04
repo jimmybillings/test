@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorStore } from '../stores/error.store';
 import { WzDialogService } from '../modules/wz-dialog/services/wz.dialog.service';
+import { Location } from '@angular/common';
+import { ApiErrorResponse } from '../interfaces/api.interface';
 
 @Injectable()
 export class WzNotificationService {
@@ -10,11 +12,12 @@ export class WzNotificationService {
   constructor(
     private router: Router,
     private error: ErrorStore,
-    private dialog: WzDialogService) {
+    private dialog: WzDialogService,
+    private location: Location) {
     error.data.subscribe(this.handle.bind(this));
   }
 
-  private handle(error: any): void {
+  private handle(error: ApiErrorResponse): void {
     if (!error.status || this.callInProgress) return;
     this.callInProgress = true;
     switch (error.status) {
@@ -38,7 +41,7 @@ export class WzNotificationService {
         break;
       default:
         this.callInProgress = false;
-        if (isNaN(error.status)) this.customError(error.status);
+        if (isNaN(error.status as any)) this.customError(error.status);
         break;
     }
   }
@@ -50,12 +53,12 @@ export class WzNotificationService {
   // I think this is only being used when "disableAnonymousSearch": true is in the site config.
   // a 400 error is return when someone not logged in attempts a search.
   private BadRequest(): void {
-    this.router.navigate(['/user/login']).then(_ => {
-      this.create({
-        title: 'NOTIFICATION.REQUIRE_LOGIN',
-        message: 'NOTIFICATION.REQUIRE_LOGIN_MESSAGE',
-        prompt: 'NOTIFICATION.CLOSE'
-      });
+    this.storeRedirectUrl();
+    this.router.navigate(['/user/login']);
+    this.create({
+      title: 'NOTIFICATION.REQUIRE_LOGIN',
+      message: 'NOTIFICATION.REQUIRE_LOGIN_MESSAGE',
+      prompt: 'NOTIFICATION.CLOSE'
     });
   }
 
@@ -68,13 +71,14 @@ export class WzNotificationService {
   }
 
   private unAuthorized(): void {
-    this.router.navigate(['/user/login']).then(_ => {
-      this.create({
-        title: 'NOTIFICATION.ERROR',
-        message: 'NOTIFICATION.INVALID_CREDENTIALS',
-        prompt: 'NOTIFICATION.CLOSE'
-      });
+    this.storeRedirectUrl();
+    this.router.navigate(['/user/login']);
+    this.create({
+      title: 'NOTIFICATION.ERROR',
+      message: 'NOTIFICATION.INVALID_CREDENTIALS',
+      prompt: 'NOTIFICATION.CLOSE'
     });
+
   }
 
   private forbidden(): void {
@@ -86,13 +90,14 @@ export class WzNotificationService {
   }
 
   private expiredSession(): void {
-    this.router.navigate(['/user/login']).then(_ => {
-      this.create({
-        title: 'NOTIFICATION.ERROR',
-        message: 'NOTIFICATION.EXPIRED_SESSION',
-        prompt: 'NOTIFICATION.CLOSE'
-      });
+    this.storeRedirectUrl();
+    this.router.navigate(['/user/login']);
+    this.create({
+      title: 'NOTIFICATION.ERROR',
+      message: 'NOTIFICATION.EXPIRED_SESSION',
+      prompt: 'NOTIFICATION.CLOSE'
     });
+
   }
 
   private customError(error: number | string) {
@@ -104,5 +109,9 @@ export class WzNotificationService {
 
   private notFound(): void {
     this.router.navigate(['/404']);
+  }
+
+  private storeRedirectUrl(): void {
+    localStorage.setItem('redirectUrl', this.location.path());
   }
 }

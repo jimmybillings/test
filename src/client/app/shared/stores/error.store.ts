@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-
+import { ApiErrorResponse } from '../interfaces/api.interface';
 import { LegacyAction } from '../interfaces/common.interface';
 
 export function errorStore(state = {}, action: LegacyAction) {
@@ -17,11 +17,11 @@ export function errorStore(state = {}, action: LegacyAction) {
 export class ErrorStore {
   constructor(private store: Store<any>) { }
 
-  public get data(): Observable<any> {
+  public get data(): Observable<ApiErrorResponse> {
     return this.store.select('errorStore');
   }
 
-  public dispatch(error: any): void {
+  public dispatch(error: ApiErrorResponse): void {
     this.store.dispatch({ type: 'UPDATE_ERROR', payload: error });
   }
 }
