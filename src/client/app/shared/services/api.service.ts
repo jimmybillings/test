@@ -3,7 +3,7 @@ import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSe
 import { Observable } from 'rxjs/Observable';
 import { ErrorStore } from '../stores/error.store';
 import { ApiConfig } from './api.config';
-import { Api, ApiOptions, ApiParameters, ApiBody } from '../interfaces/api.interface';
+import { Api, ApiOptions, ApiParameters, ApiBody, ApiErrorResponse } from '../interfaces/api.interface';
 import { UiState } from './ui.state';
 
 @Injectable()
@@ -48,7 +48,7 @@ export class ApiService {
       .map(response => { try { return response.json(); } catch (exception) { return response; } })
       .do(() => {
         this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
-      }, error => {
+      }, (error: ApiErrorResponse) => {
         this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
         try { return error.json(); } catch (exception) { this.error.dispatch(error); }
         return error;
