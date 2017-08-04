@@ -15,7 +15,7 @@ export class WzCommentComponent {
   @Input() showCommentActions: boolean;
   @Output() commentSubmit: EventEmitter<Comment> = new EventEmitter();
 
-  public onCommentSubmit(comment: Comment): void {
+  public onFormSubmit(comment: Comment): void {
     this.commentSubmit.emit(comment);
   }
 
