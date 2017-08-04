@@ -28,14 +28,11 @@ export class FeatureStore {
   }
 
   public isAvailable(feature: Feature): boolean {
-    return !this.state[Feature[feature]];
-  }
-
-  public setInLocalStorage(data: any): void {
-    localStorage.setItem('siteFeatures', JSON.stringify(this.format(data)));
+    return !this.state[feature];
   }
 
   public set(data: any): void {
+    this.setInLocalStorage(data);
     this.store.dispatch({ type: 'FEATURE.SET_STATE', payload: this.format(data) });
   }
 
@@ -49,6 +46,10 @@ export class FeatureStore {
     return s;
   }
 
+  private setInLocalStorage(data: any): void {
+    localStorage.setItem('siteFeatures', JSON.stringify(this.format(data)));
+  }
+
   private format(data: any): Features {
     for (let key in data) {
       try {
@@ -57,6 +58,7 @@ export class FeatureStore {
         data[key] = data[key];
       }
     }
+    console.log(data);
     return data;
   }
 }

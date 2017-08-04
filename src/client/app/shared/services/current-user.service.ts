@@ -24,7 +24,7 @@ export function currentUser(state = {}, action: LegacyAction) {
 @Injectable()
 export class CurrentUserService {
   public permissions: any;
-  public data: Observable<any>;
+  public data: Observable<User>;
 
   constructor(
     private store: Store<User>, private error: ErrorStore) {
@@ -44,13 +44,13 @@ export class CurrentUserService {
     this.store.dispatch({ type: 'SET_USER', payload: this._user() });
   }
 
-  public destroy() {
+  public destroy(): void {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
     this.set();
   }
 
-  public loggedInState(): Observable<any> {
+  public loggedInState(): Observable<boolean> {
     return this.data.map(user => user.id > 0);
   }
 
@@ -62,7 +62,7 @@ export class CurrentUserService {
     return loggedIn;
   }
 
-  public fullName(): Observable<any> {
+  public fullName(): Observable<string> {
     return this.data.map(user => `${user.firstName} ${user.lastName}`);
   }
 

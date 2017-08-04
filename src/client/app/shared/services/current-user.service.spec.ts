@@ -11,42 +11,49 @@ export function main() {
     let mockErrorStore: any = { data: Observable.of({}) };
     let serviceUnderTest: any;
 
-    describe('hasPermission() - individual permissions', () => {
-      beforeEach(() => {
-        mockUser = {
-          'lastUpdated': '2016-01-14T16:46:21Z',
-          'createdOn': '2016-01-14T16:46:21Z',
-          'id': 6,
-          'emailAddress': 'test_email@email.com',
-          'password': '5daf7de08c0014ec2baa13a64b35a4e0',
-          'firstName': 'first',
-          'lastName': 'last',
-          'siteName': 'cnn',
-          'accountIds': [4],
-          'roles': {
-            'id': 1,
-            'permissions': [
-              'ViewClips',
-              'ViewCollections',
-            ]
-          },
+    beforeEach(() => {
+      mockUser = {
+        'lastUpdated': '2016-01-14T16:46:21Z',
+        'createdOn': '2016-01-14T16:46:21Z',
+        'id': 6,
+        'emailAddress': 'test_email@email.com',
+        'password': '5daf7de08c0014ec2baa13a64b35a4e0',
+        'firstName': 'first',
+        'lastName': 'last',
+        'siteName': 'cnn',
+        'accountIds': [4],
+        'roles': {
+          'id': 1,
           'permissions': [
-            'ViewCarts'
-          ],
-          'allUserPermissions': [
             'ViewClips',
             'ViewCollections',
-            'ViewCarts'
           ]
-        };
-        mockData = {};
-        mockStore = {
-          select: (_: string) => Observable.of(mockUser),
-          dispatch: () => true
-        };
-        serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
-      });
+        },
+        'permissions': [
+          'ViewCarts'
+        ],
+        'allUserPermissions': [
+          'ViewClips',
+          'ViewCollections',
+          'ViewCarts'
+        ]
+      };
+      mockData = {};
+      mockStore = {
+        select: (_: string) => Observable.of(mockUser),
+        dispatch: () => true
+      };
+      serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
+    });
 
+    describe('get state()', () => {
+      it('should return the current user from the store', () => {
+        const user = serviceUnderTest.state;
+        expect(user).toEqual(mockUser);
+      });
+    });
+
+    describe('hasPermission() - individual permissions', () => {
       it('returns true if a user has a certain permission', () => {
         expect(serviceUnderTest.hasPermission('ViewCarts')).toBe(true);
         expect(serviceUnderTest.hasPermission('ViewCollections')).toBe(true);
