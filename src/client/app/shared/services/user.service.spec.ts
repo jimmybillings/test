@@ -4,13 +4,13 @@ import { UserService } from './user.service';
 
 export function main() {
   describe('User Service', () => {
-    let serviceUnderTest: UserService;
-    let mockApi: MockApiService;
+    let serviceUnderTest: UserService, mockApi: MockApiService, mockCurrentUserService: any;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApi = new MockApiService();
-      serviceUnderTest = new UserService(mockApi.injector, null);
+      mockCurrentUserService = { set: jasmine.createSpy('set') };
+      serviceUnderTest = new UserService(mockApi.injector, mockCurrentUserService);
     });
 
     describe('get()', () => {
@@ -148,11 +148,11 @@ export function main() {
         serviceUnderTest.addBillingAddress(mockAddress).take(1).subscribe();
 
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
-        expect(mockApi.put).toHaveBeenCalledWithEndpoint('user/1');
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('user/self');
         expect(mockApi.put).toHaveBeenCalledWithBody({
           id: 1, firstName: 'ross', billingInfo: { address: { address: '123 Oak Street' } }
         });
-        expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify(mockApi.putResponse));
+        expect(mockCurrentUserService.set).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 

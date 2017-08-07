@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
 import { Response } from '@angular/http';
-import { User, Address, ViewAddress, Document } from '../../shared/interfaces/user.interface';
+import { User, Address, ViewAddress, Document, UserBasicInfo } from '../../shared/interfaces/user.interface';
 import { CurrentUserService } from './current-user.service';
 /**
  * Service that provides api access registering new users.
@@ -78,9 +78,7 @@ export class UserService {
 
   public addBillingAddress(address: Address): Observable<any> {
     let newUser: User = Object.assign({}, JSON.parse(localStorage.getItem('currentUser')), { billingInfo: { address: address } });
-    return this.api.put(Api.Identities, `user/${newUser.id}`, { body: newUser }).do((user: User) => {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-    });
+    return this.editSelfSafe(newUser);
   }
 
   public addAccountBillingAddress(address: ViewAddress): Observable<any> {
@@ -92,5 +90,16 @@ export class UserService {
 
   public getAccount(accountId: number): Observable<any> {
     return this.api.get(Api.Identities, `account/${accountId}`);
+  }
+
+  public changeBasicInfo(form: UserBasicInfo): Observable<any> {
+    let newUser: User = Object.assign({}, JSON.parse(localStorage.getItem('currentUser')), form);
+    return this.editSelfSafe(newUser);
+  }
+
+  public editSelfSafe(body: User) {
+    return this.api.put(Api.Identities, 'user/self', { body: body }).do((user: User) => {
+      this.currentUser.set(user);
+    });
   }
 }

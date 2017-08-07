@@ -92,10 +92,6 @@ export function main() {
           });
         });
       });
-
-      xit('should set up the form items from the uiConfig', () => {
-        expect(componentUnderTest.formItems).toEqual([{ name: '', value: '' }]);
-      });
     });
 
     describe('typeFor()', () => {

@@ -40,6 +40,11 @@ export interface User extends Common {
   [index: string]: any;
 }
 
+export interface UserBasicInfo {
+  firstName: string;
+  lastName: string;
+}
+
 export const AddressKeys: Array<string> = ['address', 'state', 'city', 'country', 'zipcode', 'phone'];
 
 export interface Address {

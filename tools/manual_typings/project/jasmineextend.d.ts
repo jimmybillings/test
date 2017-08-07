@@ -23,6 +23,6 @@ declare module jasmine {
   interface SpyAnd {
     // This is part of Jasmine's language, but isn't defined in their index.d.ts file for whatever reason.
     /** Returns the "name" parameter that the Spy was created with */
-    identity(): string
+    identity(): string;
   }
 }

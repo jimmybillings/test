@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { WindowRef } from '../../shared/services/window-ref.service';
-import { GoogleAddress, FormattedGoogleAddress, GoogleAddressComponent } from '../../shared/interfaces/user.interface';
-import { Geolocation, Position, Circle, Autocomplete } from '../../shared/interfaces/common.interface';
+import { WindowRef } from '../../../services/window-ref.service';
+import { GoogleAddress, FormattedGoogleAddress, GoogleAddressComponent } from '../../../interfaces/user.interface';
+import { Geolocation, Position, Circle, Autocomplete } from '../../../interfaces/common.interface';
 
 @Injectable()
 export class GooglePlacesService {

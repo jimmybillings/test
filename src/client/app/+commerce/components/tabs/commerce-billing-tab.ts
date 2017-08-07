@@ -8,7 +8,7 @@ import { RowFormFields } from '../../../shared/interfaces/forms.interface';
 import { CheckoutState } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
-import { AddressFormComponent } from '../address-form/address-form.component';
+import { WzAddressFormComponent } from '../../../shared/modules/wz-form/components/wz-address-form/wz.address-form.component';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Tab } from './tab';
@@ -16,7 +16,6 @@ import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.d
 
 export class CommerceBillingTab extends Tab implements OnInit {
   public orderInProgress: Observable<CheckoutState>;
-  public formItems: RowFormFields;
   public addressErrors: any = {};
   public showAddAddressForm: boolean;
   public showEditAddressForm: boolean;
@@ -36,7 +35,6 @@ export class CommerceBillingTab extends Tab implements OnInit {
   ngOnInit() {
     this.orderInProgress = this.commerceService.checkoutData;
     // this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
-    this.formItems = this.items;
     this.fetchAddresses().subscribe();
   }
 
@@ -106,13 +104,12 @@ export class CommerceBillingTab extends Tab implements OnInit {
     let title: string = mode === 'edit' ? this.editFormTitle(resourceType) : this.createFormTitle(resourceType);
     this.dialog.openComponentInDialog(
       {
-        componentType: AddressFormComponent,
+        componentType: WzAddressFormComponent,
         dialogConfig: { position: { top: '6%' } },
         inputOptions: {
           loaded: this.loaded,
-          formItems: this.formItems,
           title: title,
-          address: mode === 'edit' ? address : null
+          address: mode === 'edit' ? address.address : null
         },
         outputOptions: [{
           event: 'onSaveAddress',
@@ -226,96 +223,5 @@ export class CommerceBillingTab extends Tab implements OnInit {
         }
       });
     });
-  }
-
-  // ------------------------------------------------------- //
-  // UI Config to support rows in wz-form - to be removed
-  // ------------------------------------------------------- //
-  private get items(): RowFormFields {
-    return [
-      {
-        fields: [
-          {
-            name: 'address',
-            label: 'Address Line 1',
-            type: 'text',
-            value: '',
-            validation: 'REQUIRED',
-            googleFields: ['street_number', 'route'],
-            addressType: 'long_name'
-          }
-        ]
-      },
-      {
-        fields: [
-          {
-            name: 'address2',
-            label: 'Address Line 2',
-            type: 'text',
-            value: '',
-            validation: 'OPTIONAL',
-            googleFields: [],
-            addressType: ''
-          }
-        ]
-      },
-      {
-        fields: [
-          {
-            name: 'city',
-            label: 'City',
-            type: 'text',
-            value: '',
-            validation: 'REQUIRED',
-            googleFields: ['locality'],
-            addressType: 'long_name'
-          },
-          {
-            name: 'state',
-            label: 'State',
-            type: 'text',
-            value: '',
-            validation: 'REQUIRED',
-            googleFields: ['administrative_area_level_1'],
-            addressType: 'short_name'
-          }
-        ]
-      },
-      {
-        fields: [
-          {
-            name: 'zipcode',
-            label: 'Zipcode/Postal Code',
-            type: 'text',
-            value: '',
-            validation: 'REQUIRED',
-            googleFields: ['postal_code'],
-            addressType: 'short_name'
-          },
-          {
-            name: 'country',
-            label: 'Country',
-            type: 'text',
-            value: '',
-            validation: 'REQUIRED',
-            googleFields: ['country'],
-            addressType: 'long_name'
-          }
-        ]
-      },
-      {
-        fields: [
-          {
-            name: 'phone',
-            label: 'Phone Number',
-            type: 'text',
-            value: '',
-            validation: 'REQUIRED',
-            googleFields: [],
-            addressType: ''
-          }
-        ]
-      }
-    ];
   }
 }
