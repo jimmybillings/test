@@ -1,11 +1,12 @@
 import {
   Component, Input, ChangeDetectionStrategy,
-  Output, EventEmitter, SimpleChanges, ChangeDetectorRef
+  Output, EventEmitter, SimpleChanges, ChangeDetectorRef, Inject
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Address, FormattedGoogleAddress } from '../../../../interfaces/user.interface';
 import { RowFormFields, FormRow, FormFields } from '../../../../interfaces/forms.interface';
 import { GooglePlacesService } from '../../services/google-places.service';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   moduleId: module.id,
@@ -18,6 +19,7 @@ import { GooglePlacesService } from '../../services/google-places.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WzAddressFormComponent {
+  @Input() scrollTop: number;
   @Input() title: string;
   @Input()
   public set address(address: Address) {
@@ -34,7 +36,8 @@ export class WzAddressFormComponent {
   constructor(
     private fb: FormBuilder,
     private google: GooglePlacesService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    @Inject(DOCUMENT) private document: Document
   ) { }
 
   public saveAddress() {
@@ -42,6 +45,7 @@ export class WzAddressFormComponent {
   }
 
   public geolocate(): void {
+    this.setAutocompleteMarginTop();
     if (navigator.geolocation) {
       this.google.geolocate();
     }
@@ -91,6 +95,12 @@ export class WzAddressFormComponent {
 
   private loadGooglePlaces(): void {
     this.google.loadPlacesLibrary(this.fillInAddress);
+  }
+
+  private setAutocompleteMarginTop() {
+    let scrollTopMargin: number = -1 * this.document.body.getBoundingClientRect().top;
+    let autocompleteContainer = this.document.getElementsByClassName('pac-container');
+    autocompleteContainer[autocompleteContainer.length - 1].setAttribute('style', `margin-top: ${scrollTopMargin}px`);
   }
 
   // ------------------------------------------------------- //
