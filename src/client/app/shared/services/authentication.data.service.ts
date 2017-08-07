@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
+import { Credentials, Session } from '../interfaces/session.interface';
 
 /**
  * Service that provides access to the api for logging user in and out.
@@ -11,11 +12,11 @@ import { Api } from '../../shared/interfaces/api.interface';
 export class Authentication {
   constructor(private api: ApiService) { }
 
-  public create(user: Object): Observable<any> {
+  public create(user: Credentials): Observable<Session> {
     return this.api.post(Api.Identities, 'login', { body: user, loadingIndicator: true });
   }
 
-  public destroy(): Observable<any> {
+  public destroy(): Observable<null> {
     return this.api.post(Api.Identities, 'invalidate');
   }
 }

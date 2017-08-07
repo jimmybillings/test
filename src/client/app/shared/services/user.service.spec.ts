@@ -132,36 +132,54 @@ export function main() {
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('user/currentUsersAssociatedAddresses');
       });
 
-      describe('addBillingAddress()', () => {
-        it('should call the API correctly', () => {
-          localStorage.setItem('currentUser', JSON.stringify({ id: 1, firstName: 'ross' }));
-          spyOn(localStorage, 'setItem');
-          let mockAddress: any = { address: '123 Oak Street' };
-          serviceUnderTest.addBillingAddress(mockAddress).take(1).subscribe();
-
-          expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
-          expect(mockApi.put).toHaveBeenCalledWithEndpoint('user/1');
-          expect(mockApi.put).toHaveBeenCalledWithBody({
-            id: 1, firstName: 'ross', billingInfo: { address: { address: '123 Oak Street' } }
-          });
-          expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify(mockApi.putResponse));
-        });
-      });
-
-      describe('addAccountBillingAddress', () => {
-        it('should call the API service correctly', () => {
-          let mockAddress: any = { addressEntityId: 3, address: { address: '123 Oak Street' } };
-          serviceUnderTest.addAccountBillingAddress(mockAddress).take(1).subscribe();
-
-          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
-          expect(mockApi.get).toHaveBeenCalledWithEndpoint('account/3');
-          expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
-          expect(mockApi.put).toHaveBeenCalledWithEndpoint('account/3');
-          let expectedBody: any = Object.assign(mockApi.getResponse, { billingInfo: { address: { address: '123 Oak Street' } } });
-          expect(mockApi.put).toHaveBeenCalledWithBody(expectedBody);
+      it('Should parse the response for easier user by the caller', () => {
+        mockApi.getResponse = { list: [{ 'address1': {} }, { 'address2': {} }] };
+        serviceUnderTest.getAddresses().subscribe(res => {
+          expect(res).toEqual([{ 'address1': {} }, { 'address2': {} }]);
         });
       });
     });
+
+    describe('addBillingAddress()', () => {
+      it('should call the API correctly', () => {
+        localStorage.setItem('currentUser', JSON.stringify({ id: 1, firstName: 'ross' }));
+        spyOn(localStorage, 'setItem');
+        let mockAddress: any = { address: '123 Oak Street' };
+        serviceUnderTest.addBillingAddress(mockAddress).take(1).subscribe();
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('user/1');
+        expect(mockApi.put).toHaveBeenCalledWithBody({
+          id: 1, firstName: 'ross', billingInfo: { address: { address: '123 Oak Street' } }
+        });
+        expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify(mockApi.putResponse));
+      });
+    });
+
+    describe('addAccountBillingAddress', () => {
+      it('should call the API service correctly', () => {
+        let mockAddress: any = { addressEntityId: 3, address: { address: '123 Oak Street' } };
+        serviceUnderTest.addAccountBillingAddress(mockAddress).take(1).subscribe();
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('account/3');
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('account/3');
+        let expectedBody: any = Object.assign(mockApi.getResponse, { billingInfo: { address: { address: '123 Oak Street' } } });
+        expect(mockApi.put).toHaveBeenCalledWithBody(expectedBody);
+      });
+    });
+
+    describe('getAccount()', () => {
+      it('should call the API service correctly', () => {
+        serviceUnderTest.getAccount(1).take(1).subscribe();
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('account/1');
+
+      });
+    });
+
 
     function setUser() {
       return {

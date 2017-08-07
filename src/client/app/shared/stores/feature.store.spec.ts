@@ -44,7 +44,7 @@ export function main() {
 
     describe('isAvailable', () => {
       it('should return true if the feature is not disabled', () => {
-        expect(storeUnderTest.isAvailable(Feature.disableCartAccess)).toBe(true);
+        expect(storeUnderTest.isAvailable('disableCartAccess')).toBe(true);
       });
     });
 

@@ -12,7 +12,7 @@ export class CommerceCapabilities {
   constructor(public currentUser: CurrentUserService, public uiState: UiState, public feature: FeatureStore) { }
 
   public haveCart(): boolean {
-    return this.feature.isAvailable(Feature.disableCartAccess);
+    return this.feature.isAvailable('disableCartAccess');
   }
 
   public viewCartIcon(): Observable<boolean> {
@@ -92,6 +92,6 @@ export class CommerceCapabilities {
   public viewLicenseAgreementsButton(cartHasAssets: Observable<boolean>): boolean {
     let hasAssets: boolean;
     cartHasAssets.take(1).subscribe((has: boolean) => hasAssets = has);
-    return this.feature.isAvailable(Feature.disableCommerceAgreements) && hasAssets;
+    return this.feature.isAvailable('disableCommerceAgreements') && hasAssets;
   }
 }
