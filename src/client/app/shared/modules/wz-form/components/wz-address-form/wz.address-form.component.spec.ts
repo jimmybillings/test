@@ -1,25 +1,19 @@
-import { AddressFormComponent } from './address-form.component';
+import { WzAddressFormComponent } from './wz.address-form.component';
 import { FormBuilder } from '@angular/forms';
-import { ViewAddress } from '../../../shared/interfaces/user.interface';
+import { Address } from '../../../../interfaces/user.interface';
 
 export function main() {
   describe('Address Form Component', () => {
-    let componentUnderTest: AddressFormComponent, fb: FormBuilder = new FormBuilder(), mockGoogleService: any;
+    let componentUnderTest: WzAddressFormComponent, fb: FormBuilder = new FormBuilder(), mockGoogleService: any;
 
-    const mockAddress: ViewAddress = {
-      address: {
-        address: '123 Oak Street',
-        address2: 'Apartment 10',
-        state: 'CO',
-        country: 'USA',
-        zipcode: '11111',
-        phone: '2223334444',
-        city: 'Denver'
-      },
-      addressEntityId: 123,
-      defaultAddress: false,
-      type: 'User',
-      name: 'Ross Edfort'
+    const mockAddress: Address = {
+      address: '123 Oak Street',
+      address2: 'Apartment 10',
+      state: 'CO',
+      country: 'USA',
+      zipcode: '11111',
+      phone: '2223334444',
+      city: 'Denver'
     };
 
     beforeEach(() => {
@@ -29,7 +23,7 @@ export function main() {
           addListener: jasmine.createSpy('addListener')
         }
       };
-      componentUnderTest = new AddressFormComponent(fb, mockGoogleService, null);
+      componentUnderTest = new WzAddressFormComponent(fb, mockGoogleService, null);
     });
 
     describe('address setter', () => {
@@ -40,7 +34,7 @@ export function main() {
       it('builds the addressForm', () => {
         expect(componentUnderTest.addressForm).toBeUndefined();
         componentUnderTest.address = mockAddress;
-        expect(componentUnderTest.addressForm.value).toEqual(mockAddress.address);
+        expect(componentUnderTest.addressForm.value).toEqual(mockAddress);
       });
     });
 

@@ -42,9 +42,7 @@ import { QuoteConfirmTabComponent } from './+quote/components/tabs/quote-confirm
 // SHARED STUFF
 import { CommerceListComponent } from './components/commerce-list/commerce-list.component';
 import { CommerceHeaderComponent } from './components/commerce-header/commerce-header.component';
-import { AddressFormComponent } from './components/address-form/address-form.component';
 import { LicenseAgreementComponent } from './components/license-agreement/license-agreement.component';
-import { GooglePlacesService } from './services/google-places.service';
 
 // project
 import { ProjectsComponent } from './components/project/projects.component';
@@ -93,7 +91,6 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     OrdersComponent,
     CommerceListComponent,
     CommerceHeaderComponent,
-    AddressFormComponent,
     LicenseAgreementComponent,
     QuoteShowComponent,
     QuotesComponent,
@@ -116,9 +113,8 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuoteEditResolver,
     CartGuard,
     QuoteEditGuard,
-    GooglePlacesService
   ],
-  entryComponents: [AddressFormComponent, LicenseAgreementComponent]
+  entryComponents: [LicenseAgreementComponent]
 })
 
 export class CommerceModule { }

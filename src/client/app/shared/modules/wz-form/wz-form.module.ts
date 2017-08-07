@@ -13,6 +13,8 @@ import { EqualValidatorDirective } from './wz-validators/wz-equal-validator.dire
 import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
 import { FormModel } from './wz.form.model';
 
+import { GooglePlacesService } from './services/google-places.service';
+import { WzAddressFormComponent } from './components/wz-address-form/wz.address-form.component';
 
 @NgModule({
   imports: [
@@ -20,9 +22,10 @@ import { FormModel } from './wz.form.model';
     MaterialModule,
     TranslateModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
+    WzAddressFormComponent,
     WzFormComponent,
     WzCcFormComponent,
     WzInputTagsComponent,
@@ -35,8 +38,10 @@ import { FormModel } from './wz.form.model';
     WzFormComponent,
     WzCcFormComponent,
     WzPikaDayDirective,
-    WzAutocompleteSearchComponent
+    WzAutocompleteSearchComponent,
+    WzAddressFormComponent
   ],
-  providers: [FormModel]
+  entryComponents: [WzAddressFormComponent],
+  providers: [FormModel, GooglePlacesService]
 })
 export class WzFormModule { }
