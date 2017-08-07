@@ -23,7 +23,7 @@ export function main() {
           addListener: jasmine.createSpy('addListener')
         }
       };
-      componentUnderTest = new WzAddressFormComponent(fb, mockGoogleService, null);
+      componentUnderTest = new WzAddressFormComponent(fb, mockGoogleService, null, null);
     });
 
     describe('address setter', () => {
