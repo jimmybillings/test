@@ -7,7 +7,7 @@ export function main() {
     let capabilitiesUnderTest: CollectionCapabilities, mockCurrentUserService: any;
 
     beforeEach(() => {
-      mockCurrentUserService = { data: Observable.of({ id: 123 }) };
+      mockCurrentUserService = { data: Observable.of({ id: 123, editableCollections: [7] }) };
       capabilitiesUnderTest = new CollectionCapabilities(mockCurrentUserService, null, null);
     });
 
@@ -18,17 +18,17 @@ export function main() {
         });
 
         it('when the user is an editor of the collection', () => {
-          capabilitiesUnderTest.editCollection({ editors: [123] } as any).take(1).subscribe(d => expect(d).toBe(true));
+          capabilitiesUnderTest.editCollection({ id: 7 } as any).take(1).subscribe(d => expect(d).toBe(true));
         });
       });
 
       describe('returns false', () => {
         it('when the user doesn\'t own the collection', () => {
-          capabilitiesUnderTest.editCollection({ owner: 1, editors: [] } as any).take(1).subscribe(d => expect(d).toBe(false));
+          capabilitiesUnderTest.editCollection({ owner: 1 } as any).take(1).subscribe(d => expect(d).toBe(false));
         });
 
         it('when the user isn\'t an editor of the collection', () => {
-          capabilitiesUnderTest.editCollection({ editors: [1] } as any).take(1).subscribe(d => expect(d).toBe(false));
+          capabilitiesUnderTest.editCollection({ owner: 1, id: 1 } as any).take(1).subscribe(d => expect(d).toBe(false));
         });
       });
     });
