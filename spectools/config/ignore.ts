@@ -14,11 +14,11 @@ export const ignoredFilePatterns: string[] = [
   'operators',
   'shared/modules/wz-dialog/components/index',
   'application',
-  'app.store',
-  'store.spec-helper'
+  'app.store'
 ];
 
 export const ignoredDirectoryNames: string[] = [
   'imports',
-  'tests'
+  'tests',
+  'store/spec-helpers'
 ];

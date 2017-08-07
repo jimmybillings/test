@@ -1,5 +1,5 @@
 import { AssetComponent } from './asset.component';
-import { StoreSpecHelper } from '../store/store.spec-helper';
+import { MockAppStore } from '../store/spec-helpers/mock-app.store';
 import { Observable } from 'rxjs/Observable';
 
 export function main() {
@@ -9,7 +9,7 @@ export function main() {
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
       mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
       mockPricingStore: any;
-    let storeSpecHelper: StoreSpecHelper;
+    let mockStore: MockAppStore;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
@@ -46,10 +46,10 @@ export function main() {
         priceForDetails: Observable.of(100),
         state: { priceForDetails: 100, priceForDialog: 1000 }
       };
-      storeSpecHelper = new StoreSpecHelper();
+      mockStore = new MockAppStore();
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockUiState,
-        mockAssetService, mockUiConfig, mockWindow, storeSpecHelper.mockStore, mockUserPreference, mockErrorStore, mockCart,
+        mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockErrorStore, mockCart,
         mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
       );
     });
@@ -79,7 +79,7 @@ export function main() {
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockUiState,
-          mockAssetService, mockUiConfig, mockWindow, storeSpecHelper.mockStore, mockUserPreference, mockErrorStore,
+          mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockErrorStore,
           mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
         );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });

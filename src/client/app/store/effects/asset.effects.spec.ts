@@ -1,22 +1,24 @@
 import { AssetEffects } from './asset.effects';
 import * as AssetActions from '../actions/asset.actions';
-import { StoreSpecHelper } from '../store.spec-helper';
+import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
 
 export function main() {
   describe('Asset Effects', () => {
-    let storeSpecHelper: StoreSpecHelper;
+    let effectsSpecHelper: EffectsSpecHelper;
 
     function instantiator(): any {
-      return new AssetEffects(storeSpecHelper.mockNgrxEffectsActions, storeSpecHelper.mockStore, storeSpecHelper.mockService);
+      return new AssetEffects(
+        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
+      );
     }
 
     beforeEach(() => {
-      storeSpecHelper = new StoreSpecHelper();
+      effectsSpecHelper = new EffectsSpecHelper();
     });
 
     describe('load', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'load',
           effectsInstantiator: instantiator,
           inputAction: {

@@ -3,18 +3,18 @@ import { Observable } from 'rxjs/Observable';
 import * as ActiveCollectionState from './active-collection.state';
 import * as ActiveCollectionActions from '../actions/active-collection.actions';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { StoreSpecHelper } from '../store.spec-helper';
+import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 
 export function main() {
-  const storeSpecHelper: StoreSpecHelper = new StoreSpecHelper();
+  const stateSpecHelper: StateSpecHelper = new StateSpecHelper();
 
   describe('Active Collection Reducer', () => {
-    storeSpecHelper.setReducerTestModules({
+    stateSpecHelper.setReducerTestModules({
       actions: ActiveCollectionActions,
       state: ActiveCollectionState,
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: ['Load', 'Set', 'LoadPage', 'AddComment', 'UpdateAssetMarkers'],
       mutationTestData: {
         previousState: { loaded: true }
@@ -32,7 +32,7 @@ export function main() {
       ]
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: ['LoadSuccess', 'SetSuccess'],
       customTests: [
         {
@@ -49,7 +49,7 @@ export function main() {
       ]
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: ['LoadPageSuccess', 'UpdateAssetMarkersSuccess'],
       customTests: [
         {
@@ -70,7 +70,7 @@ export function main() {
       ]
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'AddAsset',
       customTests: [
         {
@@ -122,7 +122,7 @@ export function main() {
       ]
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'AddAssetSuccess',
       customTests: [
         {
@@ -151,7 +151,7 @@ export function main() {
       ]
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'RemoveAsset',
       customTests: [
         {
@@ -179,7 +179,7 @@ export function main() {
       ]
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'RemoveAssetSuccess',
       customTests: [
         {
@@ -208,7 +208,7 @@ export function main() {
       ]
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'AddCommentSuccess',
       customTests: [
         {
@@ -237,7 +237,7 @@ export function main() {
       ]
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'Reset',
       mutationTestData: {
         previousState: { loaded: true }

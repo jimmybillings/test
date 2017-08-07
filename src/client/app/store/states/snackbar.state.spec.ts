@@ -1,17 +1,17 @@
 import * as SnackbarActions from '../actions/snackbar.actions';
 import * as SnackbarState from './snackbar.state';
-import { StoreSpecHelper } from '../store.spec-helper';
+import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 
 export function main() {
-  const storeSpecHelper: StoreSpecHelper = new StoreSpecHelper();
+  const stateSpecHelper: StateSpecHelper = new StateSpecHelper();
 
   describe('Snackbar Reducer', () => {
-    storeSpecHelper.setReducerTestModules({
+    stateSpecHelper.setReducerTestModules({
       actions: SnackbarActions,
       state: SnackbarState,
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'Display',
       customTests: [
         {
@@ -47,7 +47,7 @@ export function main() {
       ]
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'DisplaySuccess',
       customTests: [
         {

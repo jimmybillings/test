@@ -1,17 +1,17 @@
 import * as AssetActions from '../actions/asset.actions';
 import * as AssetState from './asset.state';
-import { StoreSpecHelper } from '../store.spec-helper';
+import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 
 export function main() {
-  const storeSpecHelper: StoreSpecHelper = new StoreSpecHelper();
+  const stateSpecHelper: StateSpecHelper = new StateSpecHelper();
 
   describe('Asset Reducer', () => {
-    storeSpecHelper.setReducerTestModules({
+    stateSpecHelper.setReducerTestModules({
       actions: AssetActions,
       state: AssetState,
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'Load',
       mutationTestData: {
         previousState: { loaded: true }
@@ -29,7 +29,7 @@ export function main() {
       ]
     });
 
-    storeSpecHelper.addReducerTestsFor({
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'LoadSuccess',
       customTests: [
         {
