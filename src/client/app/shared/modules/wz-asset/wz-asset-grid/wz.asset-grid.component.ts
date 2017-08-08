@@ -13,4 +13,10 @@ export class WzAssetGridComponent extends WzAsset {
   constructor(assetService: AssetService, store: AppStore) {
     super(assetService, store);
   }
+
+  assetCanBePurchased(asset: any) {
+    let rights = asset.metaData.find((asset: any) => asset.name === 'Rights.Reproduction');
+    if (!rights) return false;
+    return ['Rights Managed', 'Royalty Free'].includes(rights.value) ? true : false;
+  }
 }
