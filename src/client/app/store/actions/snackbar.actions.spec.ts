@@ -1,11 +1,11 @@
 import { ActionFactory, InternalActionFactory } from './snackbar.actions';
-import { StoreSpecHelper } from '../store.spec-helper';
+import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
 export function main() {
   describe('Snackbar Action Factory', () => {
-    let storeSpecHelper: StoreSpecHelper = new StoreSpecHelper();
+    let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'display',
@@ -18,7 +18,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       comment: 'with no parameters',
       factoryMethod: {
         class: ActionFactory,
@@ -32,7 +32,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
         name: 'displaySuccess',

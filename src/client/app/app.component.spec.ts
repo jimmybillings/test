@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { NavigationEnd } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { StoreSpecHelper } from './store/store.spec-helper';
+import { MockAppStore } from './store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('App Component', () => {
@@ -15,7 +15,7 @@ export function main() {
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
     let componentUnderTest: AppComponent;
     let configHasLoaded = true;
-    let storeSpecHelper: StoreSpecHelper;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
       mockUiConfig = {
@@ -74,13 +74,13 @@ export function main() {
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       mockNgZone = { runOutsideAngular: () => true };
-      storeSpecHelper = new StoreSpecHelper();
+      mockStore = new MockAppStore();
 
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
         mockCollections, mockUiState, mockUserPreference,
         mockNotification, mockApiConfig, mockUserCan,
-        mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, storeSpecHelper.mockStore);
+        mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore);
     });
 
 
@@ -100,18 +100,18 @@ export function main() {
           componentUnderTest.ngOnInit();
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
           expect(mockCart.initializeData).toHaveBeenCalled();
-          expect(storeSpecHelper.mockStore.dispatch).not.toHaveBeenCalled();
+          expect(mockStore.dispatch).not.toHaveBeenCalled();
         });
 
         it('Should process the actions for a logged in user with view collections permissions', () => {
           loggedInState = true;
           canViewCollections = true;
-          storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'load');
-          storeSpecHelper.createMockStateElement('activeCollection', 'loaded', true);
+          mockStore.createActionFactoryMethod('activeCollection', 'load');
+          mockStore.createStateElement('activeCollection', 'loaded', true);
 
           componentUnderTest.ngOnInit();
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
-          expect(storeSpecHelper.mockStore.dispatch).toHaveBeenCalled();
+          expect(mockStore.dispatch).toHaveBeenCalled();
           expect(mockCollections.load).toHaveBeenCalled();
           expect(mockCart.initializeData).toHaveBeenCalled();
         });
@@ -127,7 +127,7 @@ export function main() {
 
       describe('routerChanges()', () => {
         beforeEach(() => {
-          storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'load');
+          mockStore.createActionFactoryMethod('activeCollection', 'load');
         });
 
         it('Pass the current state url to see if we should display the search bar', () => {
@@ -186,7 +186,7 @@ export function main() {
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
           mockCollections, mockUiState, mockUserPreference,
           mockNotification, mockApiConfig, mockUserCan,
-          mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, storeSpecHelper.mockStore);
+          mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore);
 
         expect(mockRouter.initialNavigation).toHaveBeenCalled();
         expect(mockUiConfig.load).not.toHaveBeenCalled();
@@ -199,7 +199,7 @@ export function main() {
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
           mockCollections, mockUiState, mockUserPreference,
           mockNotification, mockApiConfig, mockUserCan,
-          mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, storeSpecHelper.mockStore);
+          mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore);
 
         expect(mockUiConfig.load).toHaveBeenCalled();
         expect(mockRouter.initialNavigation).toHaveBeenCalled();

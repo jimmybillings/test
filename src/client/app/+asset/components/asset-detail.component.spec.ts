@@ -1,10 +1,10 @@
 import { AssetDetailComponent } from './asset-detail.component';
-import { StoreSpecHelper } from '../../store/store.spec-helper';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Asset Detail Component', () => {
     let componentUnderTest: AssetDetailComponent;
-    let storeSpecHelper: StoreSpecHelper;
+    let mockStore: MockAppStore;
     let asset: any, collection: any;
     let transcodeTargets: any, detailTypeMap: any, finalAsset: any;
 
@@ -22,8 +22,8 @@ export function main() {
       asset.detailTypeMap = detailTypeMap;
       asset.transcodeTargets = transcodeTargets;
 
-      storeSpecHelper = new StoreSpecHelper();
-      componentUnderTest = new AssetDetailComponent(storeSpecHelper.mockStore);
+      mockStore = new MockAppStore();
+      componentUnderTest = new AssetDetailComponent(mockStore);
 
       componentUnderTest.asset = {
         assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl', transcodeTargets: transcodeTargets
@@ -87,21 +87,21 @@ export function main() {
 
     describe('addAssetToActiveCollection()', () => {
       it('dispatches the expected action', () => {
-        const spy = storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'addAsset');
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'addAsset');
 
         componentUnderTest.addAssetToActiveCollection();
 
-        storeSpecHelper.expectDispatchFor(spy, componentUnderTest.asset);
+        mockStore.expectDispatchFor(spy, componentUnderTest.asset);
       });
     });
 
     describe('removeAssetFromActiveCollection()', () => {
       it('dispatches the expected action', () => {
-        const spy = storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'removeAsset');
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
 
         componentUnderTest.removeAssetFromActiveCollection();
 
-        storeSpecHelper.expectDispatchFor(spy, componentUnderTest.asset);
+        mockStore.expectDispatchFor(spy, componentUnderTest.asset);
       });
     });
 

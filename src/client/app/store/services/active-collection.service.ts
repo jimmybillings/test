@@ -46,7 +46,7 @@ export class ActiveCollectionService {
 
     return this.apiService.post(
       Api.Identities, 'collection/focused/addAssets', { body: { list: [assetInfo] }, loadingIndicator: true }
-    ).flatMap(response =>
+    ).flatMap(() =>
       this.loadPage(activeCollection.id, { currentPage: 1, pageSize: activeCollection.assets.pagination.pageSize })
       );
   }
@@ -60,7 +60,7 @@ export class ActiveCollectionService {
 
     return this.apiService.post(
       Api.Identities, `collection/focused/removeAssets`, { body: { list: [asset.uuid] }, loadingIndicator: true }
-    ).flatMap(response =>
+    ).flatMap(() =>
       this.loadPage(activeCollection.id, { currentPage: pagination.currentPage, pageSize: pagination.pageSize })
       );
   }
