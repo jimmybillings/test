@@ -1,14 +1,14 @@
 import { HomeVendorMarqueeComponent } from './home-vendor-marquee.component';
 
 export function main() {
-  describe('Home Vendor Marquee Component', () => {
+  xdescribe('Home Vendor Marquee Component', () => {
     let componentUnderTest: HomeVendorMarqueeComponent;
 
     beforeEach(() => {
       componentUnderTest = new HomeVendorMarqueeComponent();
     });
 
-    it('has no tests!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

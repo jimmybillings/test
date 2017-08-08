@@ -1,7 +1,7 @@
 import { WzItemSearchFormComponent } from './wz.item-search-form.component';
 
 export function main() {
-  describe('Collections Search Form Component', () => {
+  xdescribe('Collections Search Form Component', () => {
     let componentUnderTest: WzItemSearchFormComponent;
     let mockFormBuilder: any;
 
@@ -13,7 +13,7 @@ export function main() {
       componentUnderTest = new WzItemSearchFormComponent(mockFormBuilder);
     });
 
-    it('has no tests!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

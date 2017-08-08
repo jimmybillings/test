@@ -1,7 +1,7 @@
 import { SortDefinitionsService } from './sort-definitions.service';
 
 export function main() {
-  describe('Sort Definitions Service', () => {
+  xdescribe('Sort Definitions Service', () => {
     let serviceUnderTest: SortDefinitionsService;
     let mockStore: any, mockUserPreference: any;
 
@@ -14,7 +14,7 @@ export function main() {
       serviceUnderTest = new SortDefinitionsService(null, mockStore, mockUserPreference);
     });
 
-    it('has no tests!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

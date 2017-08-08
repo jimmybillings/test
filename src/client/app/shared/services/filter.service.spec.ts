@@ -1,7 +1,7 @@
 import { FilterService } from './filter.service';
 
 export function main() {
-  describe('Filter Service', () => {
+  xdescribe('Filter Service', () => {
     let serviceUnderTest: FilterService;
     let mockStore: any;
 
@@ -12,7 +12,7 @@ export function main() {
       serviceUnderTest = new FilterService(null, mockStore, null);
     });
 
-    it('has no tests!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

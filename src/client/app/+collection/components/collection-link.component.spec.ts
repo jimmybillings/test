@@ -2,14 +2,14 @@
 import { CollectionLinkComponent } from './collection-link.component';
 
 export function main() {
-  describe('Collection Link Component', () => {
+  xdescribe('Collection Link Component', () => {
     let componentUnderTest: CollectionLinkComponent;
 
     beforeEach(() => {
       componentUnderTest = new CollectionLinkComponent();
     });
 
-    it('has no tests!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

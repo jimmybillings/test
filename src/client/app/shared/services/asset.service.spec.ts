@@ -11,8 +11,8 @@ export function main() {
     serviceUnderTest = new AssetService(mockApi.injector, null);
   });
 
-  describe('Asset Service', () => {
-    it('has no tests!', () => {
+  xdescribe('Asset Service', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });
