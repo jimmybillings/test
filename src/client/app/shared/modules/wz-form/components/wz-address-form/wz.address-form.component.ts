@@ -19,7 +19,6 @@ import { DOCUMENT } from '@angular/platform-browser';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WzAddressFormComponent {
-  @Input() scrollTop: number;
   @Input() title: string;
   @Input()
   public set address(address: Address) {
@@ -29,6 +28,7 @@ export class WzAddressFormComponent {
   public set loaded(loaded: boolean) {
     if (loaded) this.loadGooglePlaces();
   }
+  @Input() public includeCloseButton: boolean = false;
   @Output() onSaveAddress = new EventEmitter();
   public addressForm: FormGroup;
   public formItems: RowFormFields = this.items;

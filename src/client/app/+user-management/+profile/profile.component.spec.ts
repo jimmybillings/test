@@ -130,7 +130,8 @@ export function main() {
           inputOptions: {
             address: user.billingInfo.address,
             loaded: true,
-            title: 'PROFILE.BASIC_INFO.BILLING_ADDRESS_EDIT_BTN_LABEL'
+            title: 'PROFILE.BASIC_INFO.BILLING_ADDRESS_EDIT_BTN_LABEL',
+            includeCloseButton: true
           },
           outputOptions: [{
             event: 'onSaveAddress',

@@ -56,9 +56,10 @@ export class ProfileComponent implements OnDestroy, OnInit {
       componentType: WzAddressFormComponent,
       dialogConfig: { disableClose: true },
       inputOptions: {
-        address: this.user.billingInfo.address,
+        address: this.user.billingInfo ? this.user.billingInfo.address : { address: null },
         loaded: true,
-        title: 'PROFILE.BASIC_INFO.BILLING_ADDRESS_EDIT_BTN_LABEL'
+        title: 'PROFILE.BASIC_INFO.BILLING_ADDRESS_EDIT_BTN_LABEL',
+        includeCloseButton: true
       },
       outputOptions: [{
         event: 'onSaveAddress',
