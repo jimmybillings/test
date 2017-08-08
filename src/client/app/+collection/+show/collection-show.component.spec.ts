@@ -27,19 +27,10 @@ export function main() {
       );
     });
 
-    describe('get showCommentToggleButton()', () => {
+    describe('get userCanEditCollection()', () => {
       it('should call editCollection() on the cababilities service', () => {
         componentUnderTest.ngOnInit();
-        let result: Observable<boolean> = componentUnderTest.showCommentToggleButton;
-
-        expect(mockCapabilitiesService.editCollection).toHaveBeenCalledWith({ some: 'collection' });
-      });
-    });
-
-    describe('get showCommentActions()', () => {
-      it('should call editCollection() on the cababilities service', () => {
-        componentUnderTest.ngOnInit();
-        let result: Observable<boolean> = componentUnderTest.showCommentToggleButton;
+        let result: Observable<boolean> = componentUnderTest.userCanEditCollection;
 
         expect(mockCapabilitiesService.editCollection).toHaveBeenCalledWith({ some: 'collection' });
       });
@@ -55,10 +46,19 @@ export function main() {
       });
     });
 
-    describe('onCommentSubmit()', () => {
+    describe('onAddCommentSubmit()', () => {
       it('dispatches the proper action with the comment', () => {
         const spy = mockStore.createActionFactoryMethod('activeCollection', 'addComment');
-        componentUnderTest.onCommentSubmit({ comment: 'wowowowo' } as any);
+        componentUnderTest.onAddCommentSubmit({ comment: 'wowowowo' } as any);
+
+        mockStore.expectDispatchFor(spy, { comment: 'wowowowo' });
+      });
+    });
+
+    describe('onEditCommentSubmit()', () => {
+      it('dispatches the proper action with the comment', () => {
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'addComment');
+        componentUnderTest.onEditCommentSubmit({ comment: 'wowowowo' } as any);
 
         mockStore.expectDispatchFor(spy, { comment: 'wowowowo' });
       });

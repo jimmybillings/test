@@ -37,6 +37,10 @@ export class ActionFactory {
     return new AddComment(comment);
   }
 
+  public editComment(comment: Comment): EditComment {
+    return new EditComment(comment);
+  }
+
   public reset(): Reset {
     return new Reset();
   }
@@ -69,6 +73,10 @@ export class InternalActionFactory extends ActionFactory {
 
   public addCommentSuccess(comments: Comments): AddCommentSuccess {
     return new AddCommentSuccess(comments);
+  }
+
+  public editCommentSucces(comments: Comments): EditCommentSuccess {
+    return new EditCommentSuccess(comments);
   }
 };
 
@@ -150,9 +158,21 @@ export class AddComment implements Action {
   constructor(public readonly comment: Comment) { }
 }
 
+export class EditComment implements Action {
+  public static readonly Type = '[Active Collection] Edit Comment';
+  public readonly type = EditComment.Type;
+  constructor(public readonly comment: Comment) { }
+}
+
 export class AddCommentSuccess implements Action {
   public static readonly Type = '[Active Collection] Add Comment Success';
   public readonly type = AddCommentSuccess.Type;
+  constructor(public readonly activeCollectionComments: Comments) { }
+}
+
+export class EditCommentSuccess implements Action {
+  public static readonly Type = '[Active Collection] Edit Comment Success';
+  public readonly type = EditCommentSuccess.Type;
   constructor(public readonly activeCollectionComments: Comments) { }
 }
 
@@ -162,4 +182,5 @@ export class Reset implements Action {
 }
 
 export type Any = Load | LoadSuccess | Set | SetSuccess | LoadPage | LoadPageSuccess | AddAsset | AddAssetSuccess | RemoveAsset
-  | RemoveAssetSuccess | UpdateAssetMarkers | UpdateAssetMarkersSuccess | AddComment | AddCommentSuccess | Reset;
+  | RemoveAssetSuccess | UpdateAssetMarkers | UpdateAssetMarkersSuccess | AddComment | AddCommentSuccess | EditComment
+  | EditCommentSuccess | Reset;

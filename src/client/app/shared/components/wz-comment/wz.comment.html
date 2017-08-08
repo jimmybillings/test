@@ -1,5 +1,4 @@
 <section class="wz-comments" layout-gt-sm="row" layout="column" layout-align="space-between stretch">
-
   <div flex="40"> 
     <div layout="column" layout-align="center center" layout-padding class="new-comment">
       <wz-form
@@ -24,8 +23,14 @@
               <p><strong>Posted: </strong>{{comment.createdOn | date:'short' }}</p>
             </div>
           </div> 
-          <div *ngIf="showCommentActions" layout-gt-sm="row" layout="column" layout-align="center center">
-            <button disabled md-icon-button title="edit"><md-icon>mode_edit</md-icon></button>
+          <div layout-gt-sm="row" layout="column" layout-align="center center">
+            <button
+              (click)="onEditCommentButtonClick(comment)"
+              [disabled]="!showEditCommentButton"
+              md-icon-button
+              title="edit">
+                <md-icon>mode_edit</md-icon>
+            </button>
             <button disabled md-icon-button title="delete"><md-icon>delete</md-icon></button>
           </div>
         </header>
@@ -35,5 +40,4 @@
       </div>
     </div>
   </div>
-
 </section>

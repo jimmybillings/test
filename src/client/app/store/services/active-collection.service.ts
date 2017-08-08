@@ -95,6 +95,11 @@ export class ActiveCollectionService {
       .flatMap(() => this.getCommentsFor(collection));
   }
 
+  public editComment(collection: Collection, comment: Comment): Observable<Comments> {
+    return this.commentService.editComment(comment)
+      .flatMap(() => this.getCommentsFor(collection));
+  }
+
   private combineCollectionWithAuxiliaryData(
     collection: Observable<Collection>,
     parameters: CollectionPaginationParameters): Observable<any> {

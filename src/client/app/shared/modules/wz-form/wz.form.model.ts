@@ -29,11 +29,11 @@ export class FormModel {
   }
 
   public markFormAsUntouched(form: FormGroup): void {
-    form['_touched'] = false;
-    form['_pristine'] = true;
-    for (var i in form.controls) {
-      (<any>form.controls[i])._touched = false;
-      (<any>form.controls[i])._pristine = true;
+    form.markAsUntouched();
+    form.markAsPristine();
+    for (var controlName in form.controls) {
+      (<FormControl>form.controls[controlName]).markAsUntouched();
+      (<FormControl>form.controls[controlName]).markAsPristine();
     }
   }
 
