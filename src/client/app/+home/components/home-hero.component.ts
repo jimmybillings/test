@@ -1,10 +1,11 @@
-import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,
   selector: 'home-hero',
   template: `
-    <div *ngIf="isVideo" class="hero-video-container" [ngClass]="{'is-hidden' : isVideoHidden}">
+    <div *ngIf="isVideo" class="hero-video-container" [ngClass]="{'fade-in' : !isVideoHidden}">
       <div id="hero-video"></div>
     </div>
     <div class="hero-image-container" *ngIf="!isVideo">
@@ -32,25 +33,33 @@ import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class HomeHeroComponent implements OnInit {
-  public isVideoHidden: boolean = true;
-
+export class HomeHeroComponent implements OnInit, OnDestroy {
   @Input() config: any;
   @Input() currentUser: any;
   @Input() uiState: any;
   @Input() isVideo: boolean;
+  @Input() heroVideo: any;
   @Output() searchContext: any = new EventEmitter();
 
-  ngOnInit() {
-    this.isVideoHidden = false;
+  public isVideoHidden: boolean = true;
+  private videoSubscription: Subscription;
 
-    // this.heroVideo.subscribe((video: any) => {
-    //   video.on('play', function () {
-    //     this.isVideoHidden = false;
-    //     console.log(`vid is playing and hidden is ${this.isVideoHidden}`)
-    //   });
-    // });
-
+  constructor(
+    private changeDetector: ChangeDetectorRef) {
   }
 
+  ngOnInit() {
+    if (this.isVideo) {
+      this.videoSubscription = this.heroVideo.subscribe((video: any) => {
+        video.on('play', () => {
+          this.isVideoHidden = false;
+          this.changeDetector.markForCheck();
+        });
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.videoSubscription) this.videoSubscription.unsubscribe();
+  }
 }

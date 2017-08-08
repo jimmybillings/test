@@ -4,6 +4,8 @@ import { CurrentUserService } from '../shared/services/current-user.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { SearchContext } from '../shared/services/search-context.service';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+
 import { UiState } from '../shared/services/ui.state';
 import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
@@ -26,8 +28,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   public config: any;
   public data: Observable<Gallery>;
   public isVideo: boolean = false;
-  public heroVideo: any;
+  public heroVideo: Subject<any> = new Subject();
   private configSubscription: Subscription;
+  private videoSubscription: Subscription;
 
   constructor(
     public currentUser: CurrentUserService,
@@ -57,6 +60,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.configSubscription.unsubscribe();
+    if (this.videoSubscription) this.videoSubscription.unsubscribe();
   }
 
   public newSearchContext(query: any): void {
@@ -77,41 +81,26 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private getVideoPlaylist(): void {
-    this.homeVideoService.getVideo(this.config.heroContentId.value).take(1).subscribe((video) => {
+    this.videoSubscription = this.homeVideoService.getVideo(this.config.heroContentId.value).take(1).subscribe((video) => {
       this.setUpVideo(video.playlist, 'hero-video');
     });
   }
 
-  private setUpVideo(video: any, elementId: string): Observable<any> {
-    return this.heroVideo = jwplayer(elementId).setup({
-      autostart: true,
-      controls: false,
-      playlist: video,
-      androidhls: false,
-      mute: true,
-      repeat: true,
-      stretching: 'fill',
-      height: '100%',
-      width: '100%'
-    }) as Observable<any>;
-
-
-    // return this.heroVideo.on('play', function () {
-    //   console.log(`vid is playing and hidden is ${this.isVideoHidden}`)
-    //   this.isVideoHidden = false;
-    // });
+  private setUpVideo(video: any, elementId: string): void {
+    this.heroVideo.next(
+      jwplayer(elementId).setup({
+        autostart: true,
+        controls: false,
+        playlist: video,
+        androidhls: false,
+        mute: true,
+        repeat: true,
+        stretching: 'fill',
+        height: '100%',
+        width: '100%'
+      })
+    );
   }
-
-  // public get isPlaying(): Observable<boolean> {
-  //   return this.isVideoPlaying;
-  //   };
-  // }
-  // private isVidPlaying(): Observable<boolean> {
-  //   this.isVideoPlaying = true;
-  //   this.isVideoHidden = false;
-  //   console.log(this.isVideoPlaying);
-  //   return this.isVideoPlaying;
-  // }
 
   private changeRouteFor(path: GalleryPath): void {
     const route: any[] = ['/gallery-view'];
