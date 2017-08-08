@@ -129,7 +129,7 @@ export class ActiveCollectionEffects {
     .withLatestFrom(this.store.select(state => state.activeCollection.collection))
     .switchMap(([action, collection]: [ActiveCollectionActions.AddComment, Collection]) =>
       this.service.editComment(collection, action.comment))
-    .map((comments: Comments) => this.store.create(factory => factory.activeCollection.editCommentSucces(comments)));
+    .map((comments: Comments) => this.store.create(factory => factory.activeCollection.editCommentSuccess(comments)));
 
   constructor(
     private actions: Actions,

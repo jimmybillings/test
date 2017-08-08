@@ -75,7 +75,7 @@ export class InternalActionFactory extends ActionFactory {
     return new AddCommentSuccess(comments);
   }
 
-  public editCommentSucces(comments: Comments): EditCommentSuccess {
+  public editCommentSuccess(comments: Comments): EditCommentSuccess {
     return new EditCommentSuccess(comments);
   }
 };

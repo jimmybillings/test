@@ -16,6 +16,7 @@ export function main() {
       mockCommentService = {
         addCommentTo: jasmine.createSpy('addCommentTo').and.returnValue(Observable.of({ some: 'comment' })),
         getCommentsFor: jasmine.createSpy('getCommentsFor').and.returnValue(Observable.of([{ some: 'comments' }])),
+        editComment: jasmine.createSpy('editComment').and.returnValue(Observable.of([{ some: 'comments' }]))
       };
       serviceUnderTest = new ActiveCollectionService(mockApiService.injector, mockCommentService);
     });
@@ -478,6 +479,20 @@ export function main() {
 
       it('calls the comment service correctly', () => {
         expect(mockCommentService.addCommentTo).toHaveBeenCalledWith('collection', 123, { comment: 'yay' });
+      });
+
+      it('gets the comments in the flatMap', () => {
+        expect(mockCommentService.getCommentsFor).toHaveBeenCalledWith('collection', 123);
+      });
+    });
+
+    describe('editComment()', () => {
+      beforeEach(() => {
+        serviceUnderTest.editComment({ id: 123 } as any, { some: 'comment' } as any).subscribe();
+      });
+
+      it('calls the comment service correctly', () => {
+        expect(mockCommentService.editComment).toHaveBeenCalledWith({ some: 'comment' });
       });
 
       it('gets the comments in the flatMap', () => {
