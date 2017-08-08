@@ -63,7 +63,10 @@ export class FormModel {
   }
 
   private _getRequiredValidator(): Validators {
-    return Validators.required;
+    return Validators.compose([
+      Validators.required,
+      Validators.pattern(/\S/)
+    ]);
   }
 
   private _getEmailValidator(): Validators {
