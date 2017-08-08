@@ -76,7 +76,11 @@ export class ProfileComponent implements OnDestroy, OnInit {
   }
 
   public getBillingAddressInfo(segment: string): string {
-    return this.user.billingInfo && this.user.billingInfo.address ? this.user.billingInfo.address[segment] : '';
+    if (this.user.billingInfo && this.user.billingInfo.address) {
+      return this.user.billingInfo.address[segment] ? this.user.billingInfo.address[segment] : '';
+    } else {
+      return '';
+    }
   }
 
   private addBillingAddress = (form: Address) => {
