@@ -2,9 +2,9 @@ import * as SnackbarActions from '../actions/snackbar.actions';
 import { Pojo } from '../../shared/interfaces/common.interface';
 
 export interface State {
-  messageKey: string;
-  messageParameters: Pojo;
-  translatedMessage: string;
+  readonly messageKey: string;
+  readonly messageParameters: Pojo;
+  readonly translatedMessage: string;
 };
 
 export const initialState = {

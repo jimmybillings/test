@@ -1,4 +1,5 @@
 import { AssetComponent } from './asset.component';
+import { MockAppStore } from '../store/spec-helpers/mock-app.store';
 import { Observable } from 'rxjs/Observable';
 
 export function main() {
@@ -6,8 +7,9 @@ export function main() {
 
     let mockCurrentUserService: any, mockCapabilities: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
-      mockWindow: any, mockStore: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
+      mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
       mockPricingStore: any;
+    let mockStore: MockAppStore;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
@@ -29,7 +31,6 @@ export function main() {
       mockErrorStore = { dispatch: jasmine.createSpy('dispatch') };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
-      mockStore = { select: jasmine.createSpy('select').and.returnValue(Observable.of({ some: 'asset' })) };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };
@@ -45,6 +46,7 @@ export function main() {
         priceForDetails: Observable.of(100),
         state: { priceForDetails: 100, priceForDialog: 1000 }
       };
+      mockStore = new MockAppStore();
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockErrorStore, mockCart,

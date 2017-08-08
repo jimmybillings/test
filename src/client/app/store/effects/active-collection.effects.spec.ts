@@ -1,22 +1,22 @@
 import { ActiveCollectionEffects } from './active-collection.effects';
 import * as ActiveCollectionActions from '../actions/active-collection.actions';
-import { StoreSpecHelper, EffectTestParameters } from '../store.spec-helper';
+import { EffectsSpecHelper, EffectTestParameters } from '../spec-helpers/effects.spec-helper';
 
 export function main() {
   describe('Active Collection Effects', () => {
-    let storeSpecHelper: StoreSpecHelper;
+    let effectsSpecHelper: EffectsSpecHelper;
     let mockUserPreferenceService: any;
     let mockRouter: any;
 
     function instantiator(): ActiveCollectionEffects {
       return new ActiveCollectionEffects(
-        storeSpecHelper.mockNgrxEffectsActions, storeSpecHelper.mockStore, storeSpecHelper.mockService,
+        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService,
         mockUserPreferenceService, mockRouter
       );
     }
 
     beforeEach(() => {
-      storeSpecHelper = new StoreSpecHelper();
+      effectsSpecHelper = new EffectsSpecHelper();
       mockUserPreferenceService = { openCollectionTray: jasmine.createSpy('openCollectionTray') };
       mockRouter = {
         navigate: jasmine.createSpy('navigate'),
@@ -26,7 +26,7 @@ export function main() {
 
     describe('load', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'load',
           effectsInstantiator: instantiator,
           inputAction: {
@@ -49,7 +49,7 @@ export function main() {
 
     describe('set', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'set',
           effectsInstantiator: instantiator,
           inputAction: {
@@ -73,7 +73,7 @@ export function main() {
 
     describe('loadPage', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'loadPage',
           effectsInstantiator: instantiator,
           inputAction: {
@@ -101,7 +101,7 @@ export function main() {
 
     describe('openTrayOnAddOrRemove', () => {
       it('works as expected for ActiveCollectionActions.AddAsset', () => {
-        storeSpecHelper.runCustomEffectTest(
+        effectsSpecHelper.generateCustomTestFor(
           {
             effectName: 'openTrayOnAddOrRemove',
             effectsInstantiator: instantiator,
@@ -116,7 +116,7 @@ export function main() {
       });
 
       it('works as expected for ActiveCollectionActions.RemoveAsset', () => {
-        storeSpecHelper.runCustomEffectTest(
+        effectsSpecHelper.generateCustomTestFor(
           {
             effectName: 'openTrayOnAddOrRemove',
             effectsInstantiator: instantiator,
@@ -133,7 +133,7 @@ export function main() {
 
     describe('addAsset', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'addAsset',
           effectsInstantiator: instantiator,
           inputAction: {
@@ -162,7 +162,7 @@ export function main() {
 
     describe('showSnackBarOnAddSuccess', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'showSnackBarOnAddSuccess',
           effectsInstantiator: instantiator,
           inputAction: {
@@ -241,7 +241,7 @@ export function main() {
       it('does nothing if the active route is not /asset', () => {
         mockRouter.routerState.snapshot.url = '/something/else';
 
-        storeSpecHelper.runCustomEffectTest(testParameters, () => {
+        effectsSpecHelper.generateCustomTestFor(testParameters, () => {
           expect(mockRouter.navigate).not.toHaveBeenCalled();
         });
       });
@@ -249,13 +249,13 @@ export function main() {
       it('does nothing if the added asset ID does not match the currently displayed asset', () => {
         (testParameters.state as any)[1].value.latestAddition.asset.assetId = 456;
 
-        storeSpecHelper.runCustomEffectTest(testParameters, () => {
+        effectsSpecHelper.generateCustomTestFor(testParameters, () => {
           expect(mockRouter.navigate).not.toHaveBeenCalled();
         });
       });
 
       it('otherwise activates a route for a newly added asset', () => {
-        storeSpecHelper.runCustomEffectTest(testParameters, () => {
+        effectsSpecHelper.generateCustomTestFor(testParameters, () => {
           expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'ABCD', timeStart: '1234', timeEnd: '5678' }]);
         });
       });
@@ -264,7 +264,7 @@ export function main() {
         testParameters.helperServiceMethods[0].returns = undefined;
         testParameters.helperServiceMethods[1].returns = undefined;
 
-        storeSpecHelper.runCustomEffectTest(testParameters, () => {
+        effectsSpecHelper.generateCustomTestFor(testParameters, () => {
           expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'EFGH' }]);
         });
       });
@@ -272,7 +272,7 @@ export function main() {
 
     describe('removeAsset', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'removeAsset',
           effectsInstantiator: instantiator,
           inputAction: {
@@ -300,7 +300,7 @@ export function main() {
 
     describe('showSnackBarOnRemoveSuccess', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'showSnackBarOnRemoveSuccess',
           effectsInstantiator: instantiator,
           inputAction: {
@@ -367,7 +367,7 @@ export function main() {
       it('does nothing if the active route is not /asset', () => {
         mockRouter.routerState.snapshot.url = '/something/else';
 
-        storeSpecHelper.runCustomEffectTest(testParameters, () => {
+        effectsSpecHelper.generateCustomTestFor(testParameters, () => {
           expect(mockRouter.navigate).not.toHaveBeenCalled();
         });
       });
@@ -375,7 +375,7 @@ export function main() {
       it('does nothing if the removed asset ID does not match the currently displayed asset', () => {
         (testParameters.state as any)[1].value.latestRemoval.assetId = 456;
 
-        storeSpecHelper.runCustomEffectTest(testParameters, () => {
+        effectsSpecHelper.generateCustomTestFor(testParameters, () => {
           expect(mockRouter.navigate).not.toHaveBeenCalled();
         });
       });
@@ -383,13 +383,13 @@ export function main() {
       it('does nothing if the removed asset UUID does not match the currently displayed asset', () => {
         (testParameters.state as any)[1].value.latestRemoval.uuid = 'MNOP';
 
-        storeSpecHelper.runCustomEffectTest(testParameters, () => {
+        effectsSpecHelper.generateCustomTestFor(testParameters, () => {
           expect(mockRouter.navigate).not.toHaveBeenCalled();
         });
       });
 
       it('otherwise activates a route for the first collection asset it finds with the same asset ID', () => {
-        storeSpecHelper.runCustomEffectTest(testParameters, () => {
+        effectsSpecHelper.generateCustomTestFor(testParameters, () => {
           expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'EFGH' }]);
         });
       });
@@ -397,7 +397,7 @@ export function main() {
       it('otherwise activates a route with the same asset ID and no UUID if no instances of asset ID remain', () => {
         (testParameters.state as any)[1].value.collection.assets.items = [];
 
-        storeSpecHelper.runCustomEffectTest(testParameters, () => {
+        effectsSpecHelper.generateCustomTestFor(testParameters, () => {
           expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', {}]);
         });
       });
@@ -405,7 +405,7 @@ export function main() {
 
     describe('updateAssetMarkers', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'updateAssetMarkers',
           effectsInstantiator: instantiator,
           inputAction: {
@@ -434,7 +434,7 @@ export function main() {
 
     describe('addCollectionComment', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'addCollectionComment',
           effectsInstantiator: instantiator,
           inputAction: {

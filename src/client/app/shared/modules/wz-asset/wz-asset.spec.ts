@@ -1,13 +1,13 @@
 import { WzAsset } from './wz-asset';
 import { Collection } from '../../interfaces/collection.interface';
 import { Asset } from '../../interfaces/common.interface';
-import { StoreSpecHelper } from '../../../store/store.spec-helper';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 
 export function main() {
   describe('Wz Asset Component', () => {
     let componentUnderTest: WzAsset;
-    let storeSpecHelper: StoreSpecHelper;
+    let mockStore: MockAppStore;
     let mockCollection: Collection;
     let mockAsset: Asset;
     let mockEnhancedAsset: any;
@@ -24,8 +24,8 @@ export function main() {
       mockEnhancedAsset = {};
       mockAssetService = { enhance: (asset: Asset): any => mockEnhancedAsset };
 
-      storeSpecHelper = new StoreSpecHelper();
-      componentUnderTest = new WzAsset(mockAssetService, storeSpecHelper.mockStore);
+      mockStore = new MockAppStore();
+      componentUnderTest = new WzAsset(mockAssetService, mockStore);
       componentUnderTest.assets = [mockAsset];
     });
 
@@ -38,22 +38,22 @@ export function main() {
     describe('addToActiveCollection()', () => {
       it('dispatches the expected action', () => {
         const mockAsset: any = { some: 'asset' };
-        const spy = storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'addAsset');
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'addAsset');
 
         componentUnderTest.addToActiveCollection(mockAsset);
 
-        storeSpecHelper.expectDispatchFor(spy, mockAsset);
+        mockStore.expectDispatchFor(spy, mockAsset);
       });
     });
 
     describe('removeFromActiveCollection()', () => {
       it('dispatches the expected action', () => {
         const mockAsset: any = { some: 'asset' };
-        const spy = storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'removeAsset');
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
 
         componentUnderTest.removeFromActiveCollection(mockAsset);
 
-        storeSpecHelper.expectDispatchFor(spy, mockAsset);
+        mockStore.expectDispatchFor(spy, mockAsset);
       });
     });
 

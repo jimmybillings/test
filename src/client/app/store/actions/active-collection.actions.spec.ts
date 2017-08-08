@@ -1,12 +1,12 @@
 
 import { ActionFactory, InternalActionFactory } from './active-collection.actions';
-import { StoreSpecHelper } from '../store.spec-helper';
+import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
 export function main() {
   describe('Active Collection Action Factory', () => {
-    let storeSpecHelper: StoreSpecHelper = new StoreSpecHelper();
+    let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'load',
@@ -18,7 +18,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       comment: 'with default parameters',
       factoryMethod: {
         class: ActionFactory,
@@ -31,7 +31,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'set',
@@ -44,7 +44,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       comment: 'with default parameters',
       factoryMethod: {
         class: ActionFactory,
@@ -58,7 +58,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'loadPage',
@@ -70,7 +70,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       comment: 'with default parameters',
       factoryMethod: {
         class: ActionFactory,
@@ -83,7 +83,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'addAsset',
@@ -96,7 +96,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       comment: 'no markers',
       factoryMethod: {
         class: ActionFactory,
@@ -110,7 +110,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'removeAsset',
@@ -122,7 +122,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'updateAssetMarkers',
@@ -135,7 +135,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'addComment',
@@ -147,7 +147,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'reset',
@@ -158,7 +158,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
         name: 'loadSuccess',
@@ -170,7 +170,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
         name: 'setSuccess',
@@ -182,7 +182,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
         name: 'loadPageSuccess',
@@ -194,7 +194,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
         name: 'addAssetSuccess',
@@ -206,7 +206,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
         name: 'removeAssetSuccess',
@@ -218,7 +218,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
         name: 'updateAssetMarkersSuccess',
@@ -230,7 +230,7 @@ export function main() {
       }
     });
 
-    storeSpecHelper.runStandardActionTestFor({
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
         name: 'addCommentSuccess',

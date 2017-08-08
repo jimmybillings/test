@@ -1,22 +1,24 @@
 import { SnackbarEffects } from './snackbar.effects';
 import * as SnackbarActions from '../actions/snackbar.actions';
-import { StoreSpecHelper } from '../store.spec-helper';
+import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
 
 export function main() {
   describe('Snackbar Effects', () => {
-    let storeSpecHelper: StoreSpecHelper;
+    let effectsSpecHelper: EffectsSpecHelper;
 
     function instantiator(): any {
-      return new SnackbarEffects(storeSpecHelper.mockNgrxEffectsActions, storeSpecHelper.mockStore, storeSpecHelper.mockService);
+      return new SnackbarEffects(
+        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
+      );
     }
 
     beforeEach(() => {
-      storeSpecHelper = new StoreSpecHelper();
+      effectsSpecHelper = new EffectsSpecHelper();
     });
 
     describe('display', () => {
       it('works as expected', () => {
-        storeSpecHelper.runStandardEffectTest({
+        effectsSpecHelper.generateStandardTestFor({
           effectName: 'display',
           effectsInstantiator: instantiator,
           inputAction: {

@@ -4,14 +4,14 @@ import { CollectionsService } from './collections.service';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api } from '../interfaces/api.interface';
 import { Collection } from '../interfaces/collection.interface';
-import { StoreSpecHelper } from '../../store/store.spec-helper';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Collections service', () => {
     let serviceUnderTest: CollectionsService, mockCollectionsStore: any,
       mockApi: MockApiService, mockCollection: Collection;
 
-    let storeSpecHelper: StoreSpecHelper;
+    let mockStore: MockAppStore;
 
     mockCollection = {
       lastUpdated: null,
@@ -38,8 +38,8 @@ export function main() {
         data: Observable.of({ items: [{ id: 1 }, { id: 2 }], pagination: {} })
       };
 
-      storeSpecHelper = new StoreSpecHelper();
-      serviceUnderTest = new CollectionsService(mockCollectionsStore, mockApi.injector, storeSpecHelper.mockStore);
+      mockStore = new MockAppStore();
+      serviceUnderTest = new CollectionsService(mockCollectionsStore, mockApi.injector, mockStore);
     });
 
     it('should not sync if there are no collections', () => {
@@ -52,8 +52,8 @@ export function main() {
         state: { items: [], pagination: {} },
         data: Observable.of({ items: [], pagination: {} })
       };
-      storeSpecHelper.createMockStateElement('activeCollection', 'collection', { items: [] });
-      serviceUnderTest = new CollectionsService(mockCollectionsStore, mockApi.injector, storeSpecHelper.mockStore);
+      mockStore.createStateElement('activeCollection', 'collection', { items: [] });
+      serviceUnderTest = new CollectionsService(mockCollectionsStore, mockApi.injector, mockStore);
       expect(mockCollectionsStore.update).not.toHaveBeenCalled();
     });
 
@@ -134,26 +134,26 @@ export function main() {
       });
 
       it('should reload the active collection if the collection being deleted is active', () => {
-        storeSpecHelper.createMockStateSection('activeCollection', { loaded: true, collection: { id: 123 } });
-        const spy = storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'load');
+        mockStore.createStateSection('activeCollection', { loaded: true, collection: { id: 123 } });
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'load');
 
         serviceUnderTest.delete(123).take(1).subscribe();
 
-        storeSpecHelper.expectDispatchFor(spy);
+        mockStore.expectDispatchFor(spy);
       });
 
       it('should NOT reload the active collection if the collection being deleted is NOT active', () => {
-        storeSpecHelper.createMockStateSection('activeCollection', { loaded: true, collection: { id: 123 } });
+        mockStore.createStateSection('activeCollection', { loaded: true, collection: { id: 123 } });
 
         serviceUnderTest.delete(1).take(1).subscribe();
 
-        expect(storeSpecHelper.mockStore.dispatch).not.toHaveBeenCalled();
+        expect(mockStore.dispatch).not.toHaveBeenCalled();
       });
     });
 
     describe('destroyAll()', () => {
       it('should call deleteAllCollections() on the collections store', () => {
-        storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'reset');
+        mockStore.createActionFactoryMethod('activeCollection', 'reset');
 
         serviceUnderTest.destroyAll();
 
@@ -161,11 +161,11 @@ export function main() {
       });
 
       it('dispatches an active collection reset action', () => {
-        const spy = storeSpecHelper.createMockActionFactoryMethod(factory => factory.activeCollection, 'reset');
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'reset');
 
         serviceUnderTest.destroyAll();
 
-        storeSpecHelper.expectDispatchFor(spy);
+        mockStore.expectDispatchFor(spy);
       });
     });
   });
