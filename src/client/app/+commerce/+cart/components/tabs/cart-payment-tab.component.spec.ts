@@ -1,14 +1,14 @@
 import { CartPaymentTabComponent } from './cart-payment-tab.component';
 
 export function main() {
-  describe('Cart Payment Tab Component', () => {
+  xdescribe('Cart Payment Tab Component', () => {
     let componentUnderTest: CartPaymentTabComponent;
 
     beforeEach(() => {
       componentUnderTest = new CartPaymentTabComponent(null, null, null, null);
     });
 
-    it('has no tests!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

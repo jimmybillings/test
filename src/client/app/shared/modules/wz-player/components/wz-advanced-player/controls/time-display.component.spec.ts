@@ -1,14 +1,14 @@
 import { TimeDisplayComponent } from './time-display.component';
 
 export function main() {
-  describe('Time Display Component', () => {
+  xdescribe('Time Display Component', () => {
     let componentUnderTest: TimeDisplayComponent;
 
     beforeEach(() => {
       componentUnderTest = new TimeDisplayComponent();
     });
 
-    it('has no testable functionality', () => {
+    xit('has no testable functionality', () => {
       expect(true).toBe(true);
     });
   });

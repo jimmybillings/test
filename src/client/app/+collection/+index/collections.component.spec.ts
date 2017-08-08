@@ -1,14 +1,14 @@
 import { CollectionsComponent } from './collections.component';
 
 export function main() {
-  describe('Collections Component', () => {
+  xdescribe('Collections Component', () => {
     let componentUnderTest: CollectionsComponent;
 
     beforeEach(() => {
       componentUnderTest = new CollectionsComponent(null, null, null, null, null, null, null, null, null, null);
     });
 
-    it('has no tests!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });
