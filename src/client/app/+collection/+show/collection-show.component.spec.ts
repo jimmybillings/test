@@ -57,7 +57,7 @@ export function main() {
 
     describe('onEditCommentSubmit()', () => {
       it('dispatches the proper action with the comment', () => {
-        const spy = mockStore.createActionFactoryMethod('activeCollection', 'addComment');
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'editComment');
         componentUnderTest.onEditCommentSubmit({ comment: 'wowowowo' } as any);
 
         mockStore.expectDispatchFor(spy, { comment: 'wowowowo' });
