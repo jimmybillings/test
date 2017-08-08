@@ -16,8 +16,10 @@
       }
     }
     &.fixed {
-      background-color:rgba(mat-color($background, app-bar), .95);
-      @include text-contrast(mat-color($background, app-bar), mat-color($foreground, secondary-text), mat-color($background, app-bar));
+      @media (min-height: 875px) {
+        background-color:rgba(mat-color($background, app-bar), .95);
+        @include text-contrast(mat-color($background, app-bar), mat-color($foreground, secondary-text), mat-color($background, app-bar));
+      }
     }
   }
 
@@ -43,9 +45,11 @@
 
   header.app-header.fixed [md-button],
   header.app-header.fixed [md-icon-button] {
-    @include text-contrast(mat-color($background, app-bar), mat-color($foreground, secondary-text), mat-color($background, app-bar));
-    &:hover {
-      background-color: rgba(mat-color($background, hover), .08);
+    @media (min-height: 875px) {
+      @include text-contrast(mat-color($background, app-bar), mat-color($foreground, secondary-text), mat-color($background, app-bar));
+      &:hover {
+        background-color: rgba(mat-color($background, hover), .08);
+      }
     }
   }
 }

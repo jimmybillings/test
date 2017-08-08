@@ -3,6 +3,7 @@
   [currentUser]="currentUser" 
   [uiState]="uiState"
   [isVideo]="isVideo"
+  [heroVideo]="heroVideo"
   (searchContext)="newSearchContext($event)"
   [ngClass]="{'gallery-home' : currentUser.loggedIn() && config.galleryView, 'hero-v' : isVideo, 'hero-i' : !isVideo}">
 </home-hero>

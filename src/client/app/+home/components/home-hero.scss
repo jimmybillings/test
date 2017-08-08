@@ -7,6 +7,9 @@ home-hero {
   height: 0;
   margin: 0;
   padding: 56.25% 0 0 0;
+  &.hero-v {
+    background-color: mat-color($mat-grey, 900, .9);
+  }
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     padding-top: 104.25%;
   }
@@ -36,7 +39,7 @@ home-hero {
       height: 250px;
       width: 100%;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-        height: 194px;
+        height: 162px;
       }
       .logo {
         background-position: bottom center;
@@ -46,7 +49,7 @@ home-hero {
         opacity: .3;
         @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
           background-size: 145px;
-          height: 205px;
+          height: 174px;
         }
       }
     }
@@ -59,11 +62,11 @@ home-hero {
     top: 0;
     left: 0;
     & > div {
+      opacity: 0;
+    }
+    &.fade-in > div {
       opacity: 1;
       transition: opacity 2s ease-out;
-      &.is-hidden {
-        opacity: 0;
-      }
     }
   }
   &.hero-v > div > div {
