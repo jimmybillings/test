@@ -17,8 +17,7 @@
         [ngClass]="{ odd: odd, even: even }">
         <header class="comment-head" layout="row" layout-align="space-between center">
            <div layout="row" layout-align="start center">
-              <!-- Leaving this for now, as it may be used later -->
-              <!-- <div class="avatar" layout-align="center center"><p>{{RE}}</p></div>  -->
+               <div class="avatar" layout-align="center center"><p>{{initials(comment.userName)}}</p></div>  
             <div>
               <p><strong>Posted: </strong>{{comment.createdOn | date:'short' }}</p>
             </div>

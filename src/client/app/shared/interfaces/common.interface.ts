@@ -137,6 +137,7 @@ export interface Comment extends Common {
   access: CommentAccess;
   timeStart?: string;
   timeEnd?: string;
+  userName?: string;
   [index: string]: any;
 }
 

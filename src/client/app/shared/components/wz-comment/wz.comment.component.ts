@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
 import { FormFields } from '../../interfaces/forms.interface';
-import { Comments, Comment, CommentAccess } from '../../interfaces/common.interface';
+import { Comments, Comment } from '../../interfaces/common.interface';
 import { WzFormComponent } from '../../modules/wz-form/wz.form.component';
 import { Capabilities } from '../../services/capabilities.service';
 
@@ -44,5 +44,10 @@ export class WzCommentComponent {
       return field;
     });
     this.wzForm.mergeNewValues(newFormFields);
+  }
+
+  public initials(userName: string): string {
+    let [firstName, lastName] = userName.split(' ');
+    return `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`;
   }
 }
