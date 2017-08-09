@@ -126,7 +126,7 @@ export interface LegacyAction extends Action {
 
 export type ObjectType = 'collection' | 'cart';
 
-export type CommentAccess = 'Commenter' | 'Viewer' | 'Editor' | 'Root';
+export type CommentAccess = 'Commenter' | 'Viewer' | 'Editor';
 
 export interface Comment extends Common {
   userId: number;
@@ -137,6 +137,8 @@ export interface Comment extends Common {
   access: CommentAccess;
   timeStart?: string;
   timeEnd?: string;
+  userName?: string;
+  [index: string]: any;
 }
 
 export interface CommentsApiResponse extends Pagination {

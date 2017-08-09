@@ -49,7 +49,11 @@ export function main() {
           type: InputTypes.generic,
           cases: [
             { case: null, validationResult: 'fail', error: 'required' },
-            { case: 'value', validationResult: 'pass', error: 'required' }
+            { case: 'value', validationResult: 'pass', error: 'required' },
+            { case: ' ', validationResult: 'fail', error: 'pattern' },
+            { case: '     \n', validationResult: 'fail', error: 'pattern' },
+            { case: '\n\n\n\n', validationResult: 'fail', error: 'pattern' },
+            { case: '   wow\n', validationResult: 'pass', error: 'required' },
           ]
         },
         {

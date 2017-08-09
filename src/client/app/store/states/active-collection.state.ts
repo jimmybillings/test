@@ -68,6 +68,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     case ActiveCollectionActions.Set.Type:
     case ActiveCollectionActions.LoadPage.Type:
     case ActiveCollectionActions.AddComment.Type:
+    case ActiveCollectionActions.EditComment.Type:
     case ActiveCollectionActions.UpdateAssetMarkers.Type: {
       return {
         ...JSON.parse(JSON.stringify(state)),
@@ -142,7 +143,8 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
       };
     }
 
-    case ActiveCollectionActions.AddCommentSuccess.Type: {
+    case ActiveCollectionActions.AddCommentSuccess.Type:
+    case ActiveCollectionActions.EditCommentSuccess.Type: {
       const stateClone: State = JSON.parse(JSON.stringify(state));
 
       return {
