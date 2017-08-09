@@ -459,5 +459,33 @@ export function main() {
         });
       });
     });
+
+    describe('editCollectionComment', () => {
+      it('works as expected', () => {
+        effectsSpecHelper.generateStandardTestFor({
+          effectName: 'editCollectionComment',
+          effectsInstantiator: instantiator,
+          inputAction: {
+            type: ActiveCollectionActions.EditComment.Type,
+            comment: { some: 'comment' }
+          },
+          state: {
+            storeSectionName: 'activeCollection',
+            propertyName: 'collection',
+            value: { some: 'collection' }
+          },
+          serviceMethod: {
+            name: 'editComment',
+            expectedArguments: [{ some: 'collection' }, { some: 'comment' }],
+            returnsObservableOf: { some: 'comments' }
+          },
+          outputActionFactory: {
+            sectionName: 'activeCollection',
+            methodName: 'editCommentSuccess',
+            expectedArguments: [{ some: 'comments' }]
+          }
+        });
+      });
+    });
   });
 }

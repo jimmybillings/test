@@ -53,8 +53,7 @@
               <button
                 md-icon-button
                 title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
-                (click)="toggleCommentsVisibility()"
-                [disabled]="!(showCommentToggleButton | async)">
+                (click)="toggleCommentsVisibility()">
 									<md-icon>mode_comment</md-icon>
 									<span *ngIf="commentCount > 0" class="comment-count">{{commentCount}}</span>
               </button>
@@ -91,8 +90,9 @@
 			[ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
 			[formFields]="commentFormConfig"
 			[comments]="activeCollection.comments"
-			[showCommentActions]="showCommentActions | async"
-      (commentSubmit)="onCommentSubmit($event)">
+			[showEditCommentButton]="userCanEditCollection | async"
+      (addCommentSubmit)="onAddCommentSubmit($event)"
+      (editCommentSubmit)="onEditCommentSubmit($event)">
     </wz-comment>
   </div>
 </section>

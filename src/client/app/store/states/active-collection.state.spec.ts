@@ -15,7 +15,7 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['Load', 'Set', 'LoadPage', 'AddComment', 'UpdateAssetMarkers'],
+      actionClassName: ['Load', 'Set', 'LoadPage', 'AddComment', 'UpdateAssetMarkers', 'EditComment'],
       mutationTestData: {
         previousState: { loaded: true }
       },
@@ -209,7 +209,7 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'AddCommentSuccess',
+      actionClassName: ['AddCommentSuccess', 'EditCommentSuccess'],
       customTests: [
         {
           it: 'with previous state, returns previously state but with updated comments and loaded: true',

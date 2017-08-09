@@ -41,8 +41,9 @@ export class WzFormBase implements OnInit, OnChanges {
     });
   }
 
-  public mergeNewValues() {
-    this.items.forEach((field: any) => {
+  public mergeNewValues(formFields?: Array<FormFields>) {
+    let fields: Array<FormFields> = formFields ? formFields : this.items;
+    fields.forEach((field: any) => {
       for (let control in this.form.controls) {
         if (control === field.name) {
           (<FormControl>this.form.controls[control]).patchValue(field.value);
@@ -139,10 +140,8 @@ export class WzFormBase implements OnInit, OnChanges {
   }
 
   public resetForm() {
-    this.element.nativeElement.children[0].reset();
+    this.form.reset();
     this.submitAttempt = false;
-    this.formModel.updateForm(this.form, {});
-    this.formModel.markFormAsUntouched(this.form);
   }
 
   public onDollarsInput(event: any): void {
