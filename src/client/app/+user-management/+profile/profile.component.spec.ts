@@ -75,7 +75,7 @@ export function main() {
         expect(result).toBe('');
       });
 
-      it('should return undefined when part of billingInfo.address exist but requested part is missing', () => {
+      it('should return an empty string when part of billingInfo.address exist but requested part is missing', () => {
         mockUser = {
           emailAddress: 'jdoe@gmail.com',
           firstName: 'John', lastName: 'Doe', password: '3978f324e14ac256b2994b754586e05f',
@@ -86,7 +86,7 @@ export function main() {
         componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, null);
         componentUnderTest.ngOnInit();
         let result = componentUnderTest.getBillingAddressInfo('address');
-        expect(result).toBeUndefined();
+        expect(result).toBe('');
       });
 
       it('should return correct part of billingInfo address if it exists', () => {

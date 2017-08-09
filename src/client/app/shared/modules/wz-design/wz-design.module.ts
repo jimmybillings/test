@@ -2,7 +2,6 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import {
   MdRippleModule,
-  RtlModule,
   ObserveContentModule,
   PortalModule,
   OverlayModule,
@@ -65,7 +64,6 @@ const MATERIAL_MODULES = [
   MdTooltipModule,
   OverlayModule,
   PortalModule,
-  RtlModule,
   StyleModule,
   A11yModule,
   PlatformModule,

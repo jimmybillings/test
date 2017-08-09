@@ -265,27 +265,23 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.userPreference.updateAssetViewPreference(assetView);
   }
 
-  public get showCommentToggleButton(): Observable<boolean> {
-    return this.userCanEditCollection;
-  }
-
-  public get showCommentActions(): Observable<boolean> {
-    return this.userCanEditCollection;
-  }
-
   public toggleCommentsVisibility(): void {
     this.showComments = !this.showComments;
   }
 
-  public onCommentSubmit(comment: Comment) {
+  public onAddCommentSubmit(comment: Comment) {
     this.store.dispatch(factory => factory.activeCollection.addComment(comment));
+  }
+
+  public onEditCommentSubmit(comment: Comment) {
+    this.store.dispatch(factory => factory.activeCollection.editComment(comment));
   }
 
   public get commentCount(): number {
     return this.activeCollection.comments.items.length;
   }
 
-  private get userCanEditCollection(): Observable<boolean> {
+  public get userCanEditCollection(): Observable<boolean> {
     return this.userCan.editCollection(this.activeCollection);
   }
 }

@@ -1,14 +1,14 @@
 import { AssetSaveSubclipComponent } from './asset-save-subclip.component';
 
 export function main() {
-  describe('Asset Save Subclip Component', () => {
+  xdescribe('Asset Save Subclip Component', () => {
     let componentUnderTest: AssetSaveSubclipComponent;
 
     beforeEach(() => {
       componentUnderTest = new AssetSaveSubclipComponent(null, null);
     });
 
-    it('has no tests!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

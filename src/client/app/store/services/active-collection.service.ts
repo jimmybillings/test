@@ -46,7 +46,7 @@ export class ActiveCollectionService {
 
     return this.apiService.post(
       Api.Identities, 'collection/focused/addAssets', { body: { list: [assetInfo] }, loadingIndicator: true }
-    ).flatMap(response =>
+    ).flatMap(() =>
       this.loadPage(activeCollection.id, { currentPage: 1, pageSize: activeCollection.assets.pagination.pageSize })
       );
   }
@@ -60,7 +60,7 @@ export class ActiveCollectionService {
 
     return this.apiService.post(
       Api.Identities, `collection/focused/removeAssets`, { body: { list: [asset.uuid] }, loadingIndicator: true }
-    ).flatMap(response =>
+    ).flatMap(() =>
       this.loadPage(activeCollection.id, { currentPage: pagination.currentPage, pageSize: pagination.pageSize })
       );
   }
@@ -92,6 +92,11 @@ export class ActiveCollectionService {
 
   public addCommentTo(collection: Collection, comment: Comment): Observable<Comments> {
     return this.commentService.addCommentTo('collection', collection.id, comment)
+      .flatMap(() => this.getCommentsFor(collection));
+  }
+
+  public editComment(collection: Collection, comment: Comment): Observable<Comments> {
+    return this.commentService.editComment(comment)
       .flatMap(() => this.getCommentsFor(collection));
   }
 

@@ -24,6 +24,14 @@ export class CommentService {
     );
   }
 
+  public editComment(comment: Comment): Observable<Comment> {
+    return this.apiService.put(
+      Api.Identities,
+      `comment/${comment.id}`,
+      { body: comment, loadingIndicator: true }
+    );
+  }
+
   private convertToComments = (comments: CommentsApiResponse): Comments => {
     return {
       items: comments.items || [],

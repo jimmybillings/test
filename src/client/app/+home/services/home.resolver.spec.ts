@@ -2,7 +2,7 @@ import { HomeResolver } from './home.resolver';
 import { Observable } from 'rxjs/Observable';
 
 export function main() {
-  describe('Home Resolver', () => {
+  xdescribe('Home Resolver', () => {
     let resolverUnderTest: HomeResolver;
     let mockUiConfig: any;
 
@@ -22,7 +22,7 @@ export function main() {
       resolverUnderTest = new HomeResolver(null, mockUiConfig, null);
     });
 
-    it('has no tests!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

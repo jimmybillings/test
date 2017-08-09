@@ -5,7 +5,9 @@
         <md-card-content>
           <wz-form
             [items]="formFields"
-            [submitLabel]="'COMMENTS.SUBMIT_BTN_LABEL'"
+            [submitLabel]="formSubmitLabel"
+            [includeCancel]="includeFormCancel"
+            (formCancel)="onFormCancel()"
             (formSubmit)="onFormSubmit($event)">
           </wz-form>
         </md-card-content>
@@ -21,14 +23,19 @@
         [ngClass]="{ odd: odd, even: even }">
         <header class="comment-head" layout="row" layout-align="space-between center">
            <div layout="row" layout-align="start center">
-              <!-- Leaving this for now, as it may be used later -->
-            <div class="avatar" layout-align="center center"><strong>RE</strong></div>  
+            <div class="avatar" layout-align="center center"><strong>{{initials(comment.userName)}}</strong></div>  
             <div>
               <strong>Posted: </strong>{{comment.createdOn | date:'short' }}
             </div>
           </div> 
-          <div *ngIf="showCommentActions" layout-gt-sm="row" layout="column" layout-align="end center">
-            <button disabled md-icon-button title="edit"><md-icon>mode_edit</md-icon></button>
+          <div layout-gt-sm="row" layout="column" layout-align="end center">
+            <button
+              (click)="onEditCommentButtonClick(comment)"
+              [disabled]="!showEditCommentButton"
+              md-icon-button
+              title="edit">
+                <md-icon>mode_edit</md-icon>
+            </button>
             <button disabled md-icon-button title="delete"><md-icon>delete</md-icon></button>
           </div>
         </header>
@@ -36,5 +43,4 @@
       </div>
     </div>
   </div>
-
 </section>

@@ -1,14 +1,14 @@
 import { WzNotificationDialogComponent } from './wz.notification-dialog.component';
 
 export function main() {
-  describe('Wz Notification Dialog Component', () => {
+  xdescribe('Wz Notification Dialog Component', () => {
     let componentUnderTest: WzNotificationDialogComponent;
 
     beforeEach(() => {
       componentUnderTest = new WzNotificationDialogComponent();
     });
 
-    it('has no tests!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

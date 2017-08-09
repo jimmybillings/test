@@ -1,62 +1,49 @@
-import * as AssetState from './asset.state';
 import * as AssetActions from '../actions/asset.actions';
-import { addFutureStandardReducerTestsFor } from '../../shared/tests/reducer';
+import * as AssetState from './asset.state';
+import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 
 export function main() {
+  const stateSpecHelper: StateSpecHelper = new StateSpecHelper();
+
   describe('Asset Reducer', () => {
-    describe('for AssetActions.Load', () => {
-      const tempCurrentState = { activeAsset: { assetId: 123, name: 'George' }, loaded: true };
-
-      addFutureStandardReducerTestsFor(
-        AssetState.reducer, AssetActions.Load.Type, AssetState.initialState, null, tempCurrentState
-      );
-
-      it('returns current state but with loaded: false when current state is passed in', () => {
-        expect(AssetState.reducer(
-          { activeAsset: { assetId: 123, name: 'fred' }, loaded: true },
-          new AssetActions.Load({} as any)
-        )).toEqual({ activeAsset: { assetId: 123, name: 'fred' }, loaded: false });
-      });
-
-      it('returns initialState when current state is not passed in', () => {
-        expect(AssetState.reducer(
-          undefined, new AssetActions.Load({} as any)
-        )).toEqual(AssetState.initialState);
-      });
+    stateSpecHelper.setReducerTestModules({
+      actions: AssetActions,
+      state: AssetState,
     });
 
-    describe('for AssetActions.LoadSuccess', () => {
-      addFutureStandardReducerTestsFor(AssetState.reducer, AssetActions.LoadSuccess.Type, AssetState.initialState);
-
-      it('returns an updated state when current state is passed in', () => {
-        expect(AssetState.reducer(
-          { activeAsset: { assetId: 123, name: 'fred' }, loaded: true },
-          new AssetActions.LoadSuccess({ some: 'asset' } as any)
-        )).toEqual({ activeAsset: { some: 'asset' }, loaded: true });
-      });
-
-      it('returns an updated state when current state is not passed in', () => {
-        expect(AssetState.reducer(
-          undefined,
-          new AssetActions.LoadSuccess({ some: 'asset' } as any)
-        )).toEqual({ activeAsset: { some: 'asset' }, loaded: true });
-      });
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'Load',
+      mutationTestData: {
+        previousState: { loaded: true }
+      },
+      customTests: [
+        {
+          it: 'with previous state, returns previous state but with loaded: false',
+          previousState: { some: 'stuff', loaded: true },
+          expectedNextState: { some: 'stuff', loaded: false }
+        },
+        {
+          it: 'without previous state, returns initialState but with loaded: false',
+          expectedNextState: { ...AssetState.initialState, loaded: false }
+        }
+      ]
     });
 
-    describe('Unexpected action type', () => {
-      it('returns the current state when current state is passed in', () => {
-        expect(AssetState.reducer(
-          { current: 'state' } as any,
-          { type: 'BLAH', payload: { someKey: 'someValue' } } as any
-        )).toEqual({ current: 'state' });
-      });
-
-      it('returns the initial state when current state is not passed in', () => {
-        expect(AssetState.reducer(
-          undefined,
-          { type: 'BLAH', payload: { someKey: 'someValue' } } as any
-        )).toEqual(AssetState.initialState);
-      });
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'LoadSuccess',
+      customTests: [
+        {
+          it: 'with previous state, returns new state with updated asset and loaded: true',
+          previousState: { activeAsset: 'previous', loaded: false },
+          actionParameters: { activeAsset: 'new' },
+          expectedNextState: { activeAsset: 'new', loaded: true }
+        },
+        {
+          it: 'without previous state, returns new state with updated asset and loaded: true',
+          actionParameters: { activeAsset: 'new' },
+          expectedNextState: { activeAsset: 'new', loaded: true }
+        }
+      ]
     });
   });
 }

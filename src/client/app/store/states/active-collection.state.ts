@@ -6,13 +6,13 @@ import { Asset, Comments } from '../../shared/interfaces/common.interface';
 import { SerializedSubclipMarkers, serialize } from '../../shared/interfaces/subclip-markers.interface';
 
 export interface State {
-  loaded: boolean;
-  collection: Collection;
-  latestAddition: {
-    asset: Asset;
-    markers: SerializedSubclipMarkers
+  readonly loaded: boolean;
+  readonly collection: Collection;
+  readonly latestAddition: {
+    readonly asset: Asset;
+    readonly markers: SerializedSubclipMarkers
   };
-  latestRemoval: Asset;
+  readonly latestRemoval: Asset;
 };
 
 export const initialState: State = {
@@ -68,6 +68,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     case ActiveCollectionActions.Set.Type:
     case ActiveCollectionActions.LoadPage.Type:
     case ActiveCollectionActions.AddComment.Type:
+    case ActiveCollectionActions.EditComment.Type:
     case ActiveCollectionActions.UpdateAssetMarkers.Type: {
       return {
         ...JSON.parse(JSON.stringify(state)),
@@ -77,25 +78,22 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
 
     case ActiveCollectionActions.LoadSuccess.Type:
     case ActiveCollectionActions.SetSuccess.Type: {
-      const collection: Collection = action.activeCollection;
-
       return {
         ...JSON.parse(JSON.stringify(initialState)),
-        collection: collection,
+        collection: action.activeCollection,
         loaded: true
       };
     }
 
     case ActiveCollectionActions.LoadPageSuccess.Type:
     case ActiveCollectionActions.UpdateAssetMarkersSuccess.Type: {
-      const newAssets: CollectionItems = action.currentPageItems;
       const stateClone: State = JSON.parse(JSON.stringify(state));
 
       return {
         ...stateClone,
         collection: {
           ...stateClone.collection,
-          assets: newAssets
+          assets: action.currentPageItems
         },
         loaded: true
       };
@@ -105,21 +103,18 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
       return {
         ...JSON.parse(JSON.stringify(state)),
         loaded: false,
-        latestAddition: action.markers
-          ? { asset: action.asset, markers: serialize(action.markers) }
-          : { asset: action.asset }
+        latestAddition: action.markers ? { asset: action.asset, markers: serialize(action.markers) } : { asset: action.asset }
       };
     }
 
     case ActiveCollectionActions.AddAssetSuccess.Type: {
-      const newAssets: CollectionItems = action.currentPageItems;
       const stateClone: State = JSON.parse(JSON.stringify(state));
 
       return {
         ...stateClone,
         collection: {
           ...stateClone.collection,
-          assets: newAssets,
+          assets: action.currentPageItems,
           assetsCount: stateClone.collection.assetsCount + 1
         },
         loaded: true
@@ -135,29 +130,28 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     }
 
     case ActiveCollectionActions.RemoveAssetSuccess.Type: {
-      const newAssets: CollectionItems = action.currentPageItems;
       const stateClone: State = JSON.parse(JSON.stringify(state));
 
       return {
         ...stateClone,
         collection: {
           ...stateClone.collection,
-          assets: newAssets,
+          assets: action.currentPageItems,
           assetsCount: stateClone.collection.assetsCount - 1
         },
         loaded: true
       };
     }
 
-    case ActiveCollectionActions.AddCommentSuccess.Type: {
-      const newComments: Comments = action.activeCollectionComments;
+    case ActiveCollectionActions.AddCommentSuccess.Type:
+    case ActiveCollectionActions.EditCommentSuccess.Type: {
       const stateClone: State = JSON.parse(JSON.stringify(state));
 
       return {
         ...stateClone,
         collection: {
           ...stateClone.collection,
-          comments: newComments
+          comments: action.activeCollectionComments
         },
         loaded: true
       };
