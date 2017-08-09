@@ -7,6 +7,7 @@ import { Frame } from 'wazee-frame-formatter';
 import { AssetService } from '../../../shared/services/asset.service';
 import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 import { AppStore } from '../../../app.store';
+import { Metadatum } from '../../../shared/interfaces/commerce.interface';
 
 export class WzAsset {
   @Output() onAddToCart = new EventEmitter();
@@ -168,9 +169,9 @@ export class WzAsset {
   }
 
   public canBePurchased(asset: Asset): boolean {
-    let rights = asset.metaData.find((asset: any) => asset.name === 'Rights.Reproduction');
+    const rights: Metadatum = asset.metaData.find((metadatum: Metadatum) => metadatum.name === 'Rights.Reproduction');
     if (!rights) return false;
-    return ['Rights Managed', 'Royalty Free'].includes(rights.value) ? true : false;
+    return ['Rights Managed', 'Royalty Free'].includes(rights.value);
   }
 
   private enhancedAssetFor(asset: Asset): EnhancedAsset {
