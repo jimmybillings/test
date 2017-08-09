@@ -32,7 +32,7 @@ export function main() {
         componentUnderTest.ngOnInit();
         let result: Observable<boolean> = componentUnderTest.userCanEditCollection;
 
-        expect(mockCapabilitiesService.editCollection).toHaveBeenCalledWith({ some: 'collection' });
+        result.take(1).subscribe(res => expect(res).toEqual(true));
       });
     });
 
