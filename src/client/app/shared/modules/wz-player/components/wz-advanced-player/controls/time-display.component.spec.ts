@@ -8,7 +8,7 @@ export function main() {
       componentUnderTest = new TimeDisplayComponent();
     });
 
-    xit('has no testable functionality', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

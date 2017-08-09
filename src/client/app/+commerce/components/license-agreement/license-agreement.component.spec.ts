@@ -1,14 +1,14 @@
 import { LicenseAgreementComponent } from './license-agreement.component';
 
 export function main() {
-  describe('License Agreement Component', () => {
+  xdescribe('License Agreement Component', () => {
     let componentUnderTest: LicenseAgreementComponent;
 
     beforeEach(() => {
       componentUnderTest = new LicenseAgreementComponent();
     });
 
-    it('has nothing to test!', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

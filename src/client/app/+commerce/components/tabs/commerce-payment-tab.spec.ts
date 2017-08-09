@@ -1,14 +1,14 @@
 import { CommercePaymentTab } from './commerce-payment-tab';
 
 export function main() {
-  describe('Payment Tab Component', () => {
+  xdescribe('Payment Tab Component', () => {
     let componentUnderTest: CommercePaymentTab;
 
     beforeEach(() => {
       componentUnderTest = new CommercePaymentTab(null, null, null, null);
     });
 
-    it('has no functionality yet', () => {
+    xit('has no tests!', () => {
       expect(true).toBe(true);
     });
   });

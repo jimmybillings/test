@@ -83,8 +83,8 @@ export function main() {
       });
     });
 
-    describe('selectLineItem()', () => {
-      it('has no visible effect (yet)', () => {
+    xdescribe('selectLineItem()', () => {
+      xit('has no testable effect (yet)', () => {
         let lineItem: any = { some: 'lineItem' };
 
         classUnderTest.selectLineItem(lineItem);
