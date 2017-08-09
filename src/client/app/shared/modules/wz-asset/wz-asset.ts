@@ -167,6 +167,12 @@ export class WzAsset {
     return this.enhancedAssetFor(asset).outMarkerFrame;
   }
 
+  public canBePurchased(asset: Asset): boolean {
+    let rights = asset.metaData.find((asset: any) => asset.name === 'Rights.Reproduction');
+    if (!rights) return false;
+    return ['Rights Managed', 'Royalty Free'].includes(rights.value) ? true : false;
+  }
+
   private enhancedAssetFor(asset: Asset): EnhancedAsset {
     return this.enhancedAssets[asset.uuid || asset.assetId];
   }

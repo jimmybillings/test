@@ -71,6 +71,7 @@
         <!-- ADD TO CART -->
         <button
           *ngIf="userCan.addToCart()"
+          [disabled]="!canBePurchased(asset)"
           md-icon-button
           (click)="addAssetToCart(asset);"
           title="{{ (userCan.administerQuotes() ? 'COLLECTION.SHOW.ADD_TO_QUOTE_BTN_TITLE' : 'COLLECTION.SHOW.ADD_TO_CART_BTN_TITLE') | translate}}">
