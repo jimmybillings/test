@@ -1,14 +1,14 @@
 import { CommerceComponent } from './commerce.component';
 
 export function main() {
-  xdescribe('Commerce Component', () => {
+  describe('Commerce Component', () => {
     let componentUnderTest: CommerceComponent;
 
     beforeEach(() => {
       componentUnderTest = new CommerceComponent();
     });
 
-    xit('has no tests!', () => {
+    it('has no testable functionality', () => {
       expect(true).toBe(true);
     });
   });

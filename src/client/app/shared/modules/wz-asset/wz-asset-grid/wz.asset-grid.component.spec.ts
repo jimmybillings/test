@@ -1,14 +1,14 @@
 import { WzAssetGridComponent } from './wz.asset-grid.component';
 
 export function main() {
-  xdescribe('Wz Asset Grid Component', () => {
+  describe('Wz Asset Grid Component', () => {
     let componentUnderTest: WzAssetGridComponent;
 
     beforeEach(() => {
       componentUnderTest = new WzAssetGridComponent(null, null);
     });
 
-    xit('has no tests!', () => {
+    it('has no testable functionality', () => {
       expect(true).toBe(true);
     });
   });

@@ -1,14 +1,14 @@
 import { NoResultsComponent } from './no-results.component';
 
 export function main() {
-  xdescribe('No Results Component', () => {
+  describe('No Results Component', () => {
     let componentUnderTest: NoResultsComponent;
 
     beforeEach(() => {
       componentUnderTest = new NoResultsComponent();
     });
 
-    xit('has no tests!', () => {
+    it('has no testable functionality', () => {
       expect(true).toBe(true);
     });
   });

@@ -1,14 +1,14 @@
 import { AssetComponent } from './asset.component';
 
 export function main() {
-  xdescribe('Asset Component', () => {
+  describe('Asset Component', () => {
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
       componentUnderTest = new AssetComponent();
     });
 
-    xit('has no tests!', () => {
+    it('has no testable functionality', () => {
       expect(true).toBe(true);
     });
   });
