@@ -2,20 +2,21 @@
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
 
+  .comments-section {
+    background-color: mat-color($background, status-bar);
+  }
   wz-comment .wz-comments {
-    .new-comment {
-      background-color: mat-color($background, card);
-    }
     .comments {
+      border: 1px solid mat-color($foreground, divider);
       color: mat-color($mat-grey, 700);
       .comment {
         .comment-head {
           border-bottom: 1px solid mat-color($foreground, divider);
           .avatar {
-            background-color: mat-color($mat-grey, 300);
-            p {
-              background-color: rgba(0, 0, 0, 0);
-              color: mat-color($background, card);
+            background-color: mat-color($background, selected-button);
+            strong {
+              color: mat-color($foreground, hint-text);
+              font-weight: 200;
             }
           }
         }

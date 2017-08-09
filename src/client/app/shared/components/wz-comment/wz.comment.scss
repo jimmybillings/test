@@ -1,45 +1,48 @@
 wz-comment {
-  width: 95%;
-  .new-comment {
-    margin: 10px;
-    wz-form {
-      width: 80%;
-    }
+  margin: 38px 0 2px 0;
+  & > section {
+    padding: 70px 17px 28px 17px;
   }
+  .space-between {
+    min-width: 28px;
+    min-height: 28px;
+  }
+  .new-comment .mat-card.wz-form-card {
+    margin: 0;
+    padding: 20px 40px 36px 40px;
+  }  
   .comments {
-    margin: 10px;
-    height: 260px;
+    max-height: 288px;
     overflow-y: scroll;
     .comment {
-      margin: -1px;
-      width: 100%;
       .comment-head {
         margin: 0 20px;
-        padding: 2px 0;
-        font-size: 14px;
+        padding: 4px 0;
+        font-size: .8em;
         button[md-icon-button] md-icon {
           @include md-title();
         }
-        p {
-          margin: 2px;
-        }
         div.avatar {
+          position: relative;
           width: 40px;
           height: 40px;
-          padding: 5px;
           margin-right: 10px;
           border-radius: 50%;
-          p {
-            width: 20px;
-            height: 20px;
-            font-weight: 600;
-            font-size: 22px;
+          strong {
+            width: 50%;
+            height: 50%;
+            font-size: 1.4em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -25% 0 0 -25%;
           }
         }
       }
       .comment-body {
-        margin: 0 20px;
-        padding: 20px 0;
+        padding: 12px 20px 16px 20px;
+        font-size: .8em;
+        line-height: 1.4em;
       }
     }
   }

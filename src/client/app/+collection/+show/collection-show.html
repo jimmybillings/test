@@ -1,100 +1,95 @@
 <section class="collection-head">
-	<div layout="row" layout-align="center start">
+	<section class="comments-section" layout="row" layout-align="center start">
 		<div flex-gt-md="95" flex="100">
-			<section class="collections-list">
-				<ul>
-					<li class="collection" flex="100" layout="row" layout-xs="column">
-						<div flex="100" flex-gt-xs="66">
-							<div flex="100" layout="row" layout-xs="column">
-								<div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding>
-									<div class="asset">
-										<div class="asset-thb">
-											<span class="asset-id"><span class="id">{{activeCollection.id}}</span></span>
-											<img *ngIf="(activeCollection.collectionThumbnail | json) != '{}'" src="{{activeCollection?.collectionThumbnail?.urls?.https}}" />
-											<img *ngIf="(activeCollection.collectionThumbnail | json) == '{}'" src="/assets/img/tbn_missing.jpg" />
-										</div>
-									</div>
-								</div>
-								<div flex-gt-xs="60" flex-lg="70" flex="100" layout-padding>
-									<h3 class="md-headline">{{activeCollection.name}}
-										<span class="asset-count">
-                      <span class="count">{{activeCollection.assetsCount}}</span>
-										</span>
-									</h3>
-									<div class="md-caption collection-info">
-										<span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ activeCollection.email }}</span>
-										<span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ activeCollection.userRole }}</span>
-										<span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ activeCollection.createdOn | date:'short' }}</span>
-										<span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ activeCollection.lastUpdated | date:'short' }}</span>
-									</div>
-									<div class="md-caption collection-tags">
-										<strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
-										<ul class="meta-data-tags">
-											<li class="tag mat-elevation-z0" *ngFor="let tag of activeCollection.tags">{{tag}}</li>
-										</ul>
-									</div>
+			<wz-comment
+				[ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
+				[formFields]="commentFormConfig"
+				[comments]="activeCollection.comments"
+				[showCommentActions]="showCommentActions | async"
+				(commentSubmit)="onCommentSubmit($event)">
+			</wz-comment>
+		</div>
+	</section>
+	<section class="collections-list" layout="row" layout-align="center start">
+		<ul flex-gt-md="95" flex="100">
+			<li class="collection" flex="100" layout="row" layout-xs="column">
+				<div flex="100" flex-gt-xs="66">
+					<div flex="100" layout="row" layout-xs="column">
+						<div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding>
+							<div class="asset">
+								<div class="asset-thb">
+									<span class="asset-id"><span class="id">{{activeCollection.id}}</span></span>
+									<img *ngIf="(activeCollection.collectionThumbnail | json) != '{}'" src="{{activeCollection?.collectionThumbnail?.urls?.https}}" />
+									<img *ngIf="(activeCollection.collectionThumbnail | json) == '{}'" src="/assets/img/tbn_missing.jpg" />
 								</div>
 							</div>
 						</div>
-
-            <div flex-gt-xs="33" layout-md="100" flex="100" class="actions" layout-align="end center">
-              <button
-                md-icon-button
-                title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}"
-                (click)="editCollection();resetCollection()">
-                  <md-icon>edit</md-icon>
-              </button>
-              <button
-                md-icon-button
-                title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}"
-                [disabled]="true">
-                  <md-icon>share</md-icon>
-              </button>
-              <button
-                md-icon-button
-                title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
-                (click)="toggleCommentsVisibility()"
-                [disabled]="!(showCommentToggleButton | async)">
-									<md-icon>mode_comment</md-icon>
-									<span *ngIf="commentCount > 0" class="comment-count">{{commentCount}}</span>
-              </button>
-              <button
-                md-icon-button
-                title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}"
-                [md-menu-trigger-for]="moreShowCollectionOptions">
-                  <md-icon>more_vert</md-icon>
-              </button>
-
-							<md-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="mdMenu">
-								<button md-menu-item disabled><md-icon>file_download</md-icon>Download all comps</button>
-								<button md-menu-item disabled><md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}</button>
-								<div class="divider"></div>
-								<button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
-								<button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
-								<button md-menu-item (click)="getAssetsForLink()"><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
-								<div *ngIf="!!activeCollection.owner">
-									<div class="divider"></div>
-									<button md-menu-item class="delete" (click)="setCollectionForDelete()">
-										<md-icon>delete</md-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
-									</button>
-								</div>
-							</md-menu>
-
+						<div flex-gt-xs="60" flex-lg="70" flex="100" layout-padding>
+							<h3 class="md-headline">{{activeCollection.name}}
+								<span class="asset-count">
+									<span class="count">{{activeCollection.assetsCount}}</span>
+								</span>
+							</h3>
+							<div class="md-caption collection-info">
+								<span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ activeCollection.email }}</span>
+								<span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ activeCollection.userRole }}</span>
+								<span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ activeCollection.createdOn | date:'short' }}</span>
+								<span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ activeCollection.lastUpdated | date:'short' }}</span>
+							</div>
+							<div class="md-caption collection-tags">
+								<strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
+								<ul class="meta-data-tags">
+									<li class="tag mat-elevation-z0" *ngFor="let tag of activeCollection.tags">{{tag}}</li>
+								</ul>
+							</div>
 						</div>
-					</li>
-				</ul>
-			</section>
-		</div>
-	</div>
-  <div layout="row" layout-align="center center">
-		<wz-comment
-			[ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
-			[formFields]="commentFormConfig"
-			[comments]="activeCollection.comments"
-			[showCommentActions]="showCommentActions | async"
-      (commentSubmit)="onCommentSubmit($event)">
-    </wz-comment>
-  </div>
+					</div>
+				</div>
+				<div flex-gt-xs="33" flex="100" class="actions" layout-align="end start" flex-order-xs="-1">
+					<button
+						md-icon-button
+						title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}"
+						(click)="editCollection();resetCollection()">
+							<md-icon>edit</md-icon>
+					</button>
+					<button
+						md-icon-button
+						title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}"
+						[disabled]="true">
+							<md-icon>share</md-icon>
+					</button>
+					<button
+						md-icon-button
+						title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
+						(click)="toggleCommentsVisibility()"
+						[disabled]="!(showCommentToggleButton | async)">
+							<md-icon>mode_comment</md-icon>
+							<span *ngIf="commentCount > 0" class="comment-count">{{commentCount}}</span>
+					</button>
+					<button
+						md-icon-button
+						title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}"
+						[md-menu-trigger-for]="moreShowCollectionOptions">
+							<md-icon>more_vert</md-icon>
+					</button>
+					<md-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="mdMenu">
+						<button md-menu-item disabled><md-icon>file_download</md-icon>Download all comps</button>
+						<button md-menu-item disabled><md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}</button>
+						<div class="divider"></div>
+						<button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
+						<button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
+						<button md-menu-item (click)="getAssetsForLink()"><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
+						<div *ngIf="!!activeCollection.owner">
+							<div class="divider"></div>
+							<button md-menu-item class="delete" (click)="setCollectionForDelete()">
+								<md-icon>delete</md-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
+							</button>
+						</div>
+					</md-menu>
+				</div>
+			</li>
+		</ul>
+	</section>
 </section>
 
 <section class="asset-results-header" layout="row" layout-align="center center">
