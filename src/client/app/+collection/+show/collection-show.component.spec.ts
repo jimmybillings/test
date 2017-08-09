@@ -23,7 +23,7 @@ export function main() {
 
       componentUnderTest = new CollectionShowComponent(
         mockCapabilitiesService, null, null, null, null, null, null, null, mockUiConfig,
-        null, null, mockRoute, null, null, null, mockWindow, null, null, null, mockStore, mockChangeDetectorRef
+        null, null, mockRoute, null, null, mockWindow, null, null, null, mockStore, mockChangeDetectorRef
       );
     });
 

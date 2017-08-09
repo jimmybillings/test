@@ -1,3 +1,4 @@
+<wz-speedview></wz-speedview>
 <section class="collection-head">
 	<div layout="row" layout-align="center start">
 		<div flex-gt-md="95" flex="100">
@@ -128,8 +129,8 @@
 				[activeCollection]="activeCollection"
 				(onAddToCart)="addAssetToCart($event)" 
 				(onDownloadComp)="downloadComp($event)" 
-				(onShowSpeedview)="showSpeedview($event)" 
-				(onHideSpeedview)="hideSpeedview()"
+				(onShowSpeedview)="wzSpeedview.showSpeedview($event)" 
+				(onHideSpeedview)="wzSpeedview.hideSpeedview()"
 				(onEditAsset)="editAsset($event)">
 			</wz-asset-grid>
 
@@ -140,8 +141,8 @@
 				[activeCollection]="activeCollection"
 				(onAddToCart)="addAssetToCart($event)" 
 				(onDownloadComp)="downloadComp($event)" 
-				(onShowSpeedview)="showSpeedview($event)" 
-				(onHideSpeedview)="hideSpeedview()"
+				(onShowSpeedview)="wzSpeedview.showSpeedview($event)" 
+				(onHideSpeedview)="wzSpeedview.hideSpeedview()"
 				(onEditAsset)="editAsset($event)">
 			</wz-asset-list>
 
@@ -150,4 +151,3 @@
 	</div>
 </section>
 
-<wz-speedview></wz-speedview>

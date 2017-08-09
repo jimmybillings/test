@@ -33,9 +33,7 @@
 						[assetType]="'search'"
 						[activeCollection]="activeCollection | async"
 						(onAddToCart)="addAssetToCart($event)" 
-						(onDownloadComp)="downloadComp($event)" 
-						(onShowSpeedview)="showSpeedview($event)" 
-						(onHideSpeedview)="hideSpeedview()">
+						(onDownloadComp)="downloadComp($event)">
 					</wz-asset-grid>
 				
 					<wz-asset-list *ngIf="(userPreferences.data | async).assetView =='list'" class="list" 
@@ -44,9 +42,7 @@
 						[assetType]="'search'"
 						[activeCollection]="activeCollection | async"
 						(onAddToCart)="addAssetToCart($event)" 
-						(onDownloadComp)="downloadComp($event)" 
-						(onShowSpeedview)="showSpeedview($event)" 
-						(onHideSpeedview)="hideSpeedview()">
+						(onDownloadComp)="downloadComp($event)">
 					</wz-asset-list>
 				</content>
 
@@ -55,5 +51,3 @@
 		</div>
 	</section>
 </md-sidenav-container>
-
-<wz-speedview></wz-speedview>

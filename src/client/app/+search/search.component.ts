@@ -2,13 +2,13 @@ import { Component, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy, Cha
 import { SearchService } from '../shared/services/search.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { SearchContext } from '../shared/services/search-context.service';
 import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
-import { AssetService } from '../shared/services/asset.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,7 +18,6 @@ import { UiState } from '../shared/services/ui.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
-import { SpeedviewEvent, SpeedviewData } from '../shared/interfaces/asset.interface';
 import { AppStore } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
 
@@ -33,7 +32,6 @@ import { Collection } from '../shared/interfaces/collection.interface';
 })
 
 export class SearchComponent implements OnDestroy {
-  public speedviewData: any;
   public screenWidth: number;
   public path: any;
   public userPreferences: UserPreferenceService;
@@ -46,14 +44,12 @@ export class SearchComponent implements OnDestroy {
     public userCan: Capabilities,
     public filter: FilterService,
     private cart: CartService,
-    private assetService: AssetService,
     private sortDefinitionService: SortDefinitionsService,
     private error: ErrorStore,
     private searchContext: SearchContext,
     private uiConfig: UiConfig,
     private searchService: SearchService,
     private userPreferencesService: UserPreferenceService,
-    private renderer: Renderer,
     private window: WindowRef,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
@@ -115,37 +111,6 @@ export class SearchComponent implements OnDestroy {
         this.error.dispatch({ status: 'COMPS.NO_COMP' });
       }
     });
-  }
-
-  public showSpeedview(speedviewEvent: SpeedviewEvent): void {
-    if (speedviewEvent.asset.speedviewData) {
-      // set the data on the wzSpeedview component instance
-      this.wzSpeedview.speedviewAssetInfo = speedviewEvent.asset.speedviewData;
-      // show the speedview overlay in the calculated position
-      this.wzSpeedview.show(speedviewEvent.position).then((speedview: WzSpeedviewComponent) => {
-        // force the video player to start playing
-        speedview.previewUrl = speedviewEvent.asset.speedviewData.url;
-      });
-    } else {
-      this.assetService.getSpeedviewData(speedviewEvent.asset.assetId).subscribe((data: SpeedviewData) => {
-        // cache the speedview data on the asset
-        speedviewEvent.asset.speedviewData = data;
-        // set the data on the wzSpeedview component instance
-        this.wzSpeedview.speedviewAssetInfo = data;
-        // show the speedview overlay in the calculated position
-        this.wzSpeedview.show(speedviewEvent.position).then((speedview: WzSpeedviewComponent) => {
-          // force the video player to start playing
-          speedview.previewUrl = data.url;
-        });
-      });
-    }
-    this.renderer.listenGlobal('document', 'scroll', () => this.wzSpeedview.destroy());
-  }
-
-  public hideSpeedview(): void {
-    this.wzSpeedview.previewUrl = null;
-    this.wzSpeedview.speedviewAssetInfo = null;
-    this.wzSpeedview.destroy();
   }
 
   public changePage(page: any): void {
