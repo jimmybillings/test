@@ -50,4 +50,18 @@ export class WzCommentComponent {
     let [firstName, lastName] = userName.split(' ');
     return `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`;
   }
+
+  public get includeFormCancel(): boolean {
+    return this.formMode === 'EDIT';
+  }
+
+  public get formSubmitLabel(): string {
+    return this.formMode === 'ADD' ? 'COMMENTS.SUBMIT_BTN_LABEL' : 'COMMENTS.SAVE_BTN_LABEL';
+  }
+
+  public onFormCancel(): void {
+    this.formMode = 'ADD';
+    this.wzForm.resetForm();
+    this.commentToEdit = null;
+  }
 }

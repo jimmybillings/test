@@ -11,6 +11,7 @@ export function main() {
         mergeNewValues: jasmine.createSpy('mergeNewValues')
       };
       componentUnderTest.wzForm = mockWzForm;
+      componentUnderTest.formFields = [{ name: 'some', value: '' }] as any;
     });
 
     describe('onCommentSubmit', () => {
@@ -25,7 +26,7 @@ export function main() {
 
       describe('for editing a comment', () => {
         beforeEach(() => {
-          componentUnderTest.formFields = [{ name: 'some', value: '' }] as any;
+
           componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any);
         });
 
@@ -59,10 +60,6 @@ export function main() {
     });
 
     describe('onEditButtonClick()', () => {
-      beforeEach(() => {
-        componentUnderTest.formFields = [{ name: 'some', value: '' }] as any;
-      });
-
       it('calls mergeNewValues() on the form', () => {
         componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any);
 
@@ -77,6 +74,38 @@ export function main() {
 
       it('upcases the names', () => {
         expect(componentUnderTest.initials('ross edfort')).toBe('RE');
+      });
+    });
+
+    describe('get includeFormCancel', () => {
+      it('returns false when the formMode is \'ADD\'', () => {
+        expect(componentUnderTest.includeFormCancel).toBe(false);
+      });
+
+      it('returns true when the formMode is \'EDIT\'', () => {
+        componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any); // force formMode to 'EDIT'
+
+        expect(componentUnderTest.includeFormCancel).toBe(true);
+      });
+    });
+
+    describe('get formSubmitLabel', () => {
+      it('returns \'COMMENTS.SUBMIT_BTN_LABEL\' when the formMode is \'ADD\'', () => {
+        expect(componentUnderTest.formSubmitLabel).toBe('COMMENTS.SUBMIT_BTN_LABEL');
+      });
+
+      it('returns \'COMMENTS.SAVE_BTN_LABEL\' when the formMode is \'EDIT\'', () => {
+        componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any); // force formMode to 'EDIT'
+
+        expect(componentUnderTest.formSubmitLabel).toBe('COMMENTS.SAVE_BTN_LABEL');
+      });
+    });
+
+    describe('onFormCancel()', () => {
+      it('calls resetForm() on the wzForm', () => {
+        componentUnderTest.onFormCancel();
+
+        expect(mockWzForm.resetForm).toHaveBeenCalled();
       });
     });
   });

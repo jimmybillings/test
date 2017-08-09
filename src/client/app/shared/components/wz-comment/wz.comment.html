@@ -3,7 +3,9 @@
     <div layout="column" layout-align="center center" layout-padding class="new-comment">
       <wz-form
         [items]="formFields"
-        [submitLabel]="'COMMENTS.SUBMIT_BTN_LABEL'"
+        [submitLabel]="formSubmitLabel"
+        [includeCancel]="includeFormCancel"
+        (formCancel)="onFormCancel()"
         (formSubmit)="onFormSubmit($event)">
       </wz-form>
     </div> 
