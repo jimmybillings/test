@@ -127,7 +127,7 @@ export class AssetDetailComponent implements OnChanges {
     }
     if (this.asset.transcodeTargets) {
       this.selectedTarget = this.asset.transcodeTargets[0];
-    };
+    }
   }
 
   private get markersAreDefined(): boolean {
