@@ -84,7 +84,7 @@ export function main() {
     });
 
     describe('selectLineItem()', () => {
-      it('has no visible effect (yet)', () => {
+      it('has no testable effect (yet)', () => {
         let lineItem: any = { some: 'lineItem' };
 
         classUnderTest.selectLineItem(lineItem);

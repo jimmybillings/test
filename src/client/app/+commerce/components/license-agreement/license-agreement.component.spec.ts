@@ -8,7 +8,7 @@ export function main() {
       componentUnderTest = new LicenseAgreementComponent();
     });
 
-    it('has nothing to test!', () => {
+    it('has no testable functionality', () => {
       expect(true).toBe(true);
     });
   });

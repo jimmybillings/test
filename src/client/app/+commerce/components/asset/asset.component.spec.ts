@@ -8,7 +8,7 @@ export function main() {
       componentUnderTest = new AssetComponent();
     });
 
-    it('has no functionality to test', () => {
+    it('has no testable functionality', () => {
       expect(true).toBe(true);
     });
   });

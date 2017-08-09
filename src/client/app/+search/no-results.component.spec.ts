@@ -8,7 +8,7 @@ export function main() {
       componentUnderTest = new NoResultsComponent();
     });
 
-    it('has no functionality, only display component!', () => {
+    it('has no testable functionality', () => {
       expect(true).toBe(true);
     });
   });
