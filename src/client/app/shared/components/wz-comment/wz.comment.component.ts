@@ -52,7 +52,7 @@ export class WzCommentComponent {
   }
 
   public get includeFormCancel(): boolean {
-    return this.formMode === 'EDIT';
+    return this.formMode === 'EDIT' || this.formMode === 'ADD';
   }
 
   public get formSubmitLabel(): string {

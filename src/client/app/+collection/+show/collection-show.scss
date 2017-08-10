@@ -1,9 +1,6 @@
 collection-show .collection-head {
+  position: relative;
   @include mat-elevation(2);
-  padding-left: rem(.8);
-  padding-top: rem(1.1);
-  padding-bottom: rem(1.1);
-  padding-right: rem(.8);
 }
 collection-show .asset-results-header {
   padding-left: rem(1.6);
@@ -29,9 +26,11 @@ collection-show .search-results > div > div {
 }
 collection-show .collections-list {
   ul {
+    padding: 11px 8px;
     margin-top: 0;
   }
   li.collection {
+    position: static;
     background-color: transparent;
     margin-bottom: 0;
     padding: 0;
@@ -51,6 +50,9 @@ collection-show .collections-list {
       padding: 0;
     }
     .actions {
+      position: absolute;
+      top: 11px;
+      right: calc(2.5% + 8px);
       text-align: right;
         span.comment-count {
           position: absolute;

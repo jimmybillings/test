@@ -1,49 +1,104 @@
 wz-comment {
-  width: 95%;
-  .new-comment {
-    margin: 10px;
-    wz-form {
-      width: 80%;
+  display: block;
+  & > section {
+    padding: 6px 17px 28px 17px;
+  }
+  header {
+    // position: relative;
+    // z-index: 1;
+    padding: 13px 0 5px 1px;
+    .md-display-1 {
+      margin: 0;
+      width: calc(100% - 120px);
+      font-size: 26px;
     }
   }
+  .space-between {
+    min-width: 24px;
+    min-height: 24px;
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: $layout-breakpoint-xs) {
+      min-width: 14px;
+    }
+  }
+  .new-comment .mat-card.wz-form-card {
+    margin: 0;
+    padding: 20px 30px 30px;
+  }  
   .comments {
-    margin: 10px;
-    height: 260px;
+    max-height: 282px;
     overflow-y: scroll;
     .comment {
-      margin: -1px;
-      width: 100%;
       .comment-head {
         margin: 0 20px;
-        padding: 6px 0;
-        font-size: 14px;
+        padding: 4px 0;
+        font-size: .8em;
         button[md-icon-button] md-icon {
           @include md-title();
         }
-        p {
-          margin: 2px;
-        }
         div.avatar {
+          position: relative;
           width: 40px;
           height: 40px;
-          padding: 5px;
           margin-right: 10px;
           border-radius: 50%;
-          p {
-            width: 20px;
-            height: 20px;
-            font-weight: 600;
-            font-size: 22px;
+          strong {
+            width: 94%;
+            height: 50%;
+            font-size: 1.4em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -25% 0 0 -47%;
+            text-align: center;
           }
         }
       }
       .comment-body {
-        margin: 0 20px;
-        padding: 20px 0;
+        padding: 12px 20px 16px 20px;
+        font-size: .8em;
+        line-height: 1.4em;
       }
     }
   }
   &.not-visible {
-    display: none;
+    overflow: hidden;
+    max-height: 0;
+    animation-name: slide-up;
+    animation-duration: 400ms;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+    animation-fill-mode: none;
+  }
+  &.visible {
+    overflow: hidden;
+    animation-name: slide-down;
+    animation-duration: 500ms;
+    animation-timing-function: $swift-ease-in-timing-function;
+    animation-iteration-count: 1;
+    animation-fill-mode: backwards;
+    animation-delay: .2s;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    max-height: 0;
+    opacity: 1;
+  }
+  100% {
+    max-height: 600px;
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    max-height: 600px;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    max-height: 0;
+    opacity: 0;
   }
 }
