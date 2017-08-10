@@ -4,6 +4,7 @@ import { FormFields } from '../../interfaces/forms.interface';
 import { Comments, Comment } from '../../interfaces/common.interface';
 import { WzFormComponent } from '../../modules/wz-form/wz.form.component';
 import { Capabilities } from '../../services/capabilities.service';
+import { WzDialogService } from '../../modules/wz-dialog/services/wz.dialog.service';
 
 @Component({
   moduleId: module.id,
@@ -17,9 +18,12 @@ export class WzCommentComponent {
   @Input() showEditCommentButton: boolean;
   @Output() addCommentSubmit: EventEmitter<Comment> = new EventEmitter();
   @Output() editCommentSubmit: EventEmitter<Comment> = new EventEmitter();
+  @Output() deleteComment: EventEmitter<number> = new EventEmitter();
   @ViewChild(WzFormComponent) wzForm: WzFormComponent;
   private formMode: 'ADD' | 'EDIT' = 'ADD';
   private commentToEdit: Comment;
+
+  constructor(private wzDialogService: WzDialogService) { }
 
   public onFormSubmit(comment: Comment): void {
     if (this.formMode === 'ADD') {
@@ -59,5 +63,13 @@ export class WzCommentComponent {
     this.formMode = 'ADD';
     this.wzForm.resetForm();
     this.commentToEdit = null;
+  }
+
+  public onDeleteCommentButtonClick(comment: Comment): void {
+    this.wzDialogService.openConfirmationDialog({
+      title: 'Are you sure you want to delete this comment?',
+      accept: 'Yes, I\'m Sure',
+      decline: 'No'
+    }, () => this.deleteComment.emit(comment.id));
   }
 }

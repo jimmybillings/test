@@ -32,7 +32,7 @@
       <div *ngIf="commentsExist" layout="column" class="comments">
         <div
           class="md-display comment"
-          *ngFor="let comment of comments.items; let even = even; let odd = odd"
+          *ngFor="let comment of (comments | async).items; let even = even; let odd = odd"
           [ngClass]="{ odd: odd, even: even }">
           <header class="comment-head" layout="row" layout-align="space-between end">
             <div flex="grow" layout="row" layout-align="center center">
@@ -49,8 +49,13 @@
                 title="{{ 'COMMENTS.EDIT_HOVER_TITLE' | translate }}">
                   <md-icon>mode_edit</md-icon>
               </button>
-              <button disabled md-icon-button title="{{ 'COMMENTS.DELETE_HOVER_TITLE' | translate }}">
-                <md-icon>delete</md-icon>
+              <button
+                title="{{ 'COMMENTS.DELETE_HOVER_TITLE' | translate }}"
+                (click)="onDeleteCommentButtonClick(comment)"
+                [disabled]="!showEditCommentButton"
+                md-icon-button
+                title="delete">
+                  <md-icon>delete</md-icon>
               </button>
             </div>
           </header>

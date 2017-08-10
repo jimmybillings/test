@@ -245,6 +245,10 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.store.dispatch(factory => factory.activeCollection.editComment(comment));
   }
 
+  public onDeleteComment(commentId: number): void {
+    this.store.dispatch(factory => factory.activeCollection.removeComment(commentId));
+  }
+
   public get commentCount(): number {
     return this.activeCollection.comments.items.length;
   }

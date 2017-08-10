@@ -41,6 +41,10 @@ export class ActionFactory {
     return new EditComment(comment);
   }
 
+  public removeComment(commentId: number): RemoveComment {
+    return new RemoveComment(commentId);
+  }
+
   public reset(): Reset {
     return new Reset();
   }
@@ -77,6 +81,10 @@ export class InternalActionFactory extends ActionFactory {
 
   public editCommentSuccess(comments: Comments): EditCommentSuccess {
     return new EditCommentSuccess(comments);
+  }
+
+  public removeCommentSuccess(comments: Comments): RemoveCommentSuccess {
+    return new RemoveCommentSuccess(comments);
   }
 };
 
@@ -164,6 +172,12 @@ export class EditComment implements Action {
   constructor(public readonly comment: Comment) { }
 }
 
+export class RemoveComment implements Action {
+  public static readonly Type = '[Active Collection] Remove Comment';
+  public readonly type = RemoveComment.Type;
+  constructor(public readonly commentId: number) { }
+}
+
 export class AddCommentSuccess implements Action {
   public static readonly Type = '[Active Collection] Add Comment Success';
   public readonly type = AddCommentSuccess.Type;
@@ -176,6 +190,12 @@ export class EditCommentSuccess implements Action {
   constructor(public readonly activeCollectionComments: Comments) { }
 }
 
+export class RemoveCommentSuccess implements Action {
+  public static readonly Type = '[Active Collection] Remove Comment Success';
+  public readonly type = RemoveCommentSuccess.Type;
+  constructor(public readonly activeCollectionComments: Comments) { }
+}
+
 export class Reset implements Action {
   public static readonly Type = '[Active Collection] Reset';
   public readonly type = Reset.Type;
@@ -183,4 +203,4 @@ export class Reset implements Action {
 
 export type Any = Load | LoadSuccess | Set | SetSuccess | LoadPage | LoadPageSuccess | AddAsset | AddAssetSuccess | RemoveAsset
   | RemoveAssetSuccess | UpdateAssetMarkers | UpdateAssetMarkersSuccess | AddComment | AddCommentSuccess | EditComment
-  | EditCommentSuccess | Reset;
+  | EditCommentSuccess | RemoveComment | RemoveCommentSuccess | Reset;

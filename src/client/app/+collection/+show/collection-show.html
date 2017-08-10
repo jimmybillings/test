@@ -45,6 +45,7 @@
 								</ul>
 							</div>
 						</div>
+<<<<<<< HEAD
 					</div>
 				</div>
 				<div flex-gt-xs="33" flex="100" class="actions" layout-align="end start" flex-order-xs="-1">
@@ -91,6 +92,24 @@
 			</li>
 		</ul>
 	</section>
+=======
+					</li>
+				</ul>
+			</section>
+		</div>
+	</div>
+  <div layout="row" layout-align="center center">
+		<wz-comment
+			[ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
+			[formFields]="commentFormConfig"
+			[comments]="activeCollection.comments"
+			[showEditCommentButton]="userCanEditCollection | async"
+      (addCommentSubmit)="onAddCommentSubmit($event)"
+      (editCommentSubmit)="onEditCommentSubmit($event)"
+      (deleteComment)="onDeleteComment($event)">
+    </wz-comment>
+  </div>
+>>>>>>> CRUX-2322 - collection comments can be deleted
 </section>
 
 <section class="asset-results-header" layout="row" layout-align="center center">

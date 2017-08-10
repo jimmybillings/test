@@ -32,6 +32,14 @@ export class CommentService {
     );
   }
 
+  public removeComment(commentId: number): Observable<Comment> {
+    return this.apiService.delete(
+      Api.Identities,
+      `comment/${commentId}`,
+      { loadingIndicator: true }
+    );
+  }
+
   private convertToComments = (comments: CommentsApiResponse): Comments => {
     return {
       items: comments.items || [],

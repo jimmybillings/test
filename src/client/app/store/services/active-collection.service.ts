@@ -100,6 +100,11 @@ export class ActiveCollectionService {
       .flatMap(() => this.getCommentsFor(collection));
   }
 
+  public removeComment(collection: Collection, commentId: number): Observable<Comments> {
+    return this.commentService.removeComment(commentId)
+      .flatMap(() => this.getCommentsFor(collection));
+  }
+
   private combineCollectionWithAuxiliaryData(
     collection: Observable<Collection>,
     parameters: CollectionPaginationParameters): Observable<any> {

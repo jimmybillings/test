@@ -131,6 +131,13 @@ export class ActiveCollectionEffects {
       this.service.editComment(collection, action.comment))
     .map((comments: Comments) => this.store.create(factory => factory.activeCollection.editCommentSuccess(comments)));
 
+  @Effect()
+  public removeCollectionComment: Observable<Action> = this.actions.ofType(ActiveCollectionActions.RemoveComment.Type)
+    .withLatestFrom(this.store.select(state => state.activeCollection.collection))
+    .switchMap(([action, collection]: [ActiveCollectionActions.RemoveComment, Collection]) =>
+      this.service.removeComment(collection, action.commentId))
+    .map((comments: Comments) => this.store.create(factory => factory.activeCollection.removeCommentSuccess(comments)));
+
   constructor(
     private actions: Actions,
     private store: AppStore,
