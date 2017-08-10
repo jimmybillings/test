@@ -3,16 +3,16 @@ collection-show .collection-head {
   @include mat-elevation(2);
 }
 collection-show .asset-results-header {
-  padding-left: rem(1.6);
-  padding-right: rem(1.6);
+  padding-left: 16px;
+  padding-right: 16px;
   header {
-    padding-top: rem(.6);
-    padding-bottom: rem(.5);
+    padding-top: 6px;
+    padding-bottom: 5px;
     position: relative;
     .md-display-1 {
       margin: 0;
       width: calc(100% - 120px);
-      font-size: rem(2.6);
+      font-size: 26px;
     }
   }
   .tools {
@@ -21,8 +21,8 @@ collection-show .asset-results-header {
   }
 }
 collection-show .search-results > div > div {
-  padding-left: rem(1.6);
-  padding-right: rem(1.6);
+  padding-left: 16px;
+  padding-right: 16px;
 }
 collection-show .collections-list {
   ul {
@@ -37,10 +37,13 @@ collection-show .collections-list {
     border-radius: 0;
     border-width: 0;
     transition: $swift-ease-out;
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+      padding-top: 40px;
+    }
     & > div[layout="row"] > div[layout-padding]:first-child {
       padding-left: 0;
-      padding-top: rem(.4);
-      padding-right: rem(1.6);
+      padding-top: 4px;
+      padding-right: 16px;
       padding-bottom: 0;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         padding-right: 0;
@@ -52,20 +55,23 @@ collection-show .collections-list {
     .actions {
       position: absolute;
       top: 11px;
-      right: calc(2.5% + 8px);
       text-align: right;
-        span.comment-count {
-          position: absolute;
-          top:0;
-          right: rem(-.2);
-          border-radius: 2px;
-          min-width: rem(1.4);
-          font-size: .8em;
-          line-height: 1;
-          margin-right: 0;
-          margin-left: 0;
-          padding: 2px 3px;
-        }
+      right: 8px;
+      @media screen and (min-width: $layout-breakpoint-md) {
+        right: calc(2.5% + 8px);
+      }
+      span.comment-count {
+        position: absolute;
+        top:0;
+        right: -2px;
+        border-radius: 2px;
+        min-width: 14px;
+        font-size: .8em;
+        line-height: 1;
+        margin-right: 0;
+        margin-left: 0;
+        padding: 2px 3px;
+      }
     }
   }
 }
@@ -74,28 +80,28 @@ collection-show .collections-list {
 // override dialog container padding as well as specific styles for the editing dialog
 
 wz-subclip-editor > section {
-  padding: rem(1.4) rem(1.2) rem(1.1) 0;
+  padding: 14px 12px 11px 0;
   [md-button].is-outlined {
-    line-height: rem(3.5);
-    padding: 0 rem(1.6);
-    height: rem(3.5);
-    margin-left: rem(.5);
+    line-height: 35px;
+    padding: 0 16px;
+    height: 35px;
+    margin-left: 5px;
     &[disabled] {
       opacity: .35;
     }
   }
 }
 .subclipping-edit-open .cdk-overlay-pane md-dialog-container.mat-dialog-container {
-  padding: rem(.2);
-  min-height: rem(33.0);
+  padding: 2px;
+  min-height: 330px;
   wz-subclip-edit-actions {
     text-align: right;
-    padding: rem(1.6) rem(1.6) rem(1.6) 0;
+    padding: 16px 16px 16px 0;
     [md-button].is-outlined {
-      line-height: rem(3.5);
-      padding: 0 rem(1.6);
-      height: rem(3.5);
-      margin-left: rem(.5);
+      line-height: 35px;
+      padding: 0 16px;
+      height: 35px;
+      margin-left: 5px;
       &[disabled] {
         opacity: .35;
       }
@@ -105,7 +111,7 @@ wz-subclip-editor > section {
     position: relative;
     markers-clear-button {
       position: absolute;
-      right: rem(0.1);
+      right: 1px;
     }
   }
 }
