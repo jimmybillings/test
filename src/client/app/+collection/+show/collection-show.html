@@ -19,7 +19,8 @@
 						<div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding>
 							<div class="asset">
 								<div class="asset-thb">
-									<span class="asset-id"><span class="id">{{activeCollection.id}}</span></span>
+									<!-- I don't think this needs to be here anymore. It was more for troubleshooting JH -->
+									<!-- <span class="asset-id"><span class="id">{{activeCollection.id}}</span></span> -->
 									<img *ngIf="(activeCollection.collectionThumbnail | json) != '{}'" src="{{activeCollection?.collectionThumbnail?.urls?.https}}" />
 									<img *ngIf="(activeCollection.collectionThumbnail | json) == '{}'" src="/assets/img/tbn_missing.jpg" />
 								</div>

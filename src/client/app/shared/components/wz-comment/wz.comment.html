@@ -1,45 +1,51 @@
-<section class="wz-comments" layout-gt-xs="row" layout="column" layout-align="space-between stretch">
-  <div flex="33" flex-sm="50"> 
-    <div layout="column" layout-align="start" class="new-comment">
-      <md-card class="wz-form-card cc-form">
-        <md-card-content>
-          <wz-form
-            [items]="formFields"
-            [submitLabel]="formSubmitLabel"
-            [includeCancel]="includeFormCancel"
-            (formCancel)="onFormCancel()"
-            (formSubmit)="onFormSubmit($event)">
-          </wz-form>
-        </md-card-content>
-      </md-card>
-    </div> 
-  </div>
-  <div flex="nogrow" class="space-between"></div>
-  <div flex="66" flex-sm="50">
-    <div *ngIf="commentsExist" layout="column" class="comments">
-      <div
-        class="md-display comment"
-        *ngFor="let comment of comments.items; let even = even; let odd = odd"
-        [ngClass]="{ odd: odd, even: even }">
-        <header class="comment-head" layout="row" layout-align="space-between center">
-           <div layout="row" layout-align="start center">
-            <div class="avatar" layout-align="center center"><strong>{{initials(comment.userName)}}</strong></div>  
-            <div>
-              <strong>Posted: </strong>{{comment.createdOn | date:'short' }}
+<section class="wz-comments">
+  <header class="comments-header" layout-gt-xs="row" layout="column" layout-align="space-between end">
+    <h2 flex="grow" class="md-display-1">Comments</h2>
+    <div class="actions close" flex="auto"></div>
+  </header>
+  <div layout-gt-xs="row" layout="column" layout-align="space-between">
+    <div flex="33" flex-sm="40"> 
+      <div layout="column" layout-align="start" class="new-comment">
+        <md-card class="wz-form-card">
+          <md-card-content>
+            <wz-form
+              [items]="formFields"
+              [submitLabel]="formSubmitLabel"
+              [includeCancel]="includeFormCancel"
+              (formCancel)="onFormCancel()"
+              (formSubmit)="onFormSubmit($event)">
+            </wz-form>
+          </md-card-content>
+        </md-card>
+      </div> 
+    </div>
+    <div flex="nogrow" class="space-between"></div>
+    <div flex="66" flex-sm="60">
+      <div *ngIf="commentsExist" layout="column" class="comments">
+        <div
+          class="md-display comment"
+          *ngFor="let comment of comments.items; let even = even; let odd = odd"
+          [ngClass]="{ odd: odd, even: even }">
+          <header class="comment-head" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+              <div class="avatar" layout-align="center center"><strong>{{initials(comment.userName)}}</strong></div>  
+              <div>
+                <strong>{{comment.userName}} </strong>{{comment.createdOn | date:'short' }}
+              </div>
+            </div> 
+            <div layout-gt-sm="row" layout="column" layout-align="end center">
+              <button
+                (click)="onEditCommentButtonClick(comment)"
+                [disabled]="!showEditCommentButton"
+                md-icon-button
+                title="edit">
+                  <md-icon>mode_edit</md-icon>
+              </button>
+              <button disabled md-icon-button title="delete"><md-icon>delete</md-icon></button>
             </div>
-          </div> 
-          <div layout-gt-sm="row" layout="column" layout-align="end center">
-            <button
-              (click)="onEditCommentButtonClick(comment)"
-              [disabled]="!showEditCommentButton"
-              md-icon-button
-              title="edit">
-                <md-icon>mode_edit</md-icon>
-            </button>
-            <button disabled md-icon-button title="delete"><md-icon>delete</md-icon></button>
-          </div>
-        </header>
-        <div class="comment-body">{{comment.comment}}</div>
+          </header>
+          <div class="comment-body">{{comment.comment}}</div>
+        </div>
       </div>
     </div>
   </div>

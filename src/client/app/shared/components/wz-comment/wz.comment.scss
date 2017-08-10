@@ -1,18 +1,31 @@
 wz-comment {
-  margin: 38px 0 2px 0;
+  display: block;
   & > section {
-    padding: 70px 17px 28px 17px;
+    padding: 6px 17px 28px 17px;
+  }
+  header {
+    // position: relative;
+    // z-index: 1;
+    padding: 13px 0 5px 1px;
+    .md-display-1 {
+      margin: 0;
+      width: calc(100% - 120px);
+      font-size: 26px;
+    }
   }
   .space-between {
-    min-width: 28px;
-    min-height: 28px;
+    min-width: 24px;
+    min-height: 24px;
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: $layout-breakpoint-xs) {
+      min-width: 14px;
+    }
   }
   .new-comment .mat-card.wz-form-card {
     margin: 0;
-    padding: 20px 40px 36px 40px;
+    padding: 20px 30px 30px;
   }  
   .comments {
-    max-height: 288px;
+    max-height: 282px;
     overflow-y: scroll;
     .comment {
       .comment-head {
@@ -29,13 +42,14 @@ wz-comment {
           margin-right: 10px;
           border-radius: 50%;
           strong {
-            width: 50%;
+            width: 94%;
             height: 50%;
             font-size: 1.4em;
             position: absolute;
             top: 50%;
             left: 50%;
-            margin: -25% 0 0 -25%;
+            margin: -25% 0 0 -47%;
+            text-align: center;
           }
         }
       }
@@ -47,6 +61,44 @@ wz-comment {
     }
   }
   &.not-visible {
-    display: none;
+    overflow: hidden;
+    max-height: 0;
+    animation-name: slide-up;
+    animation-duration: 400ms;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+    animation-fill-mode: none;
+  }
+  &.visible {
+    overflow: hidden;
+    animation-name: slide-down;
+    animation-duration: 500ms;
+    animation-timing-function: $swift-ease-in-timing-function;
+    animation-iteration-count: 1;
+    animation-fill-mode: backwards;
+    animation-delay: .2s;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    max-height: 0;
+    opacity: 1;
+  }
+  100% {
+    max-height: 600px;
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    max-height: 600px;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    max-height: 0;
+    opacity: 0;
   }
 }

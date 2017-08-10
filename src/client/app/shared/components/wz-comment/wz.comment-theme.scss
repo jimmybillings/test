@@ -1,10 +1,15 @@
 @mixin wz-comment-theme($theme) {
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
+  $primary: map-get($theme, primary);
 
   .comments-section {
+    box-shadow: inset 0 -1px 46px 1px mat-color($foreground, base, .1), inset 0 -1px 0 0 mat-color($foreground, base, .1);
     background-color: mat-color($background, status-bar);
+    // box-shadow: inset 0 -1px 6px 1px mat-color($foreground, base, .001), inset 0 -1px 0 0 mat-color($foreground, base, .1);
+    // background-color: mat-color($background, card);
   }
+
   wz-comment .wz-comments {
     .comments {
       border: 1px solid mat-color($foreground, divider);
@@ -27,6 +32,12 @@
           background-color: mat-color($background, card);
         }
       }
+    }
+  }
+  wz-comment > section > header {
+    // background-color: mat-color($background, card);
+    .md-display-1 {
+      color: mat-color($primary, default);
     }
   }
 }
