@@ -8,7 +8,7 @@ export function main() {
       componentUnderTest = new CommerceComponent();
     });
 
-    it('has no functionality yet', () => {
+    it('has no testable functionality', () => {
       expect(true).toBe(true);
     });
   });

@@ -125,7 +125,9 @@ export class AssetDetailComponent implements OnChanges {
       this.asset = Object.assign({}, this.asset, asset.currentValue.detailTypeMap);
       delete this.asset.detailTypeMap;
     }
-    this.selectedTarget = this.asset.transcodeTargets[0];
+    if (this.asset.transcodeTargets) {
+      this.selectedTarget = this.asset.transcodeTargets[0];
+    }
   }
 
   private get markersAreDefined(): boolean {
