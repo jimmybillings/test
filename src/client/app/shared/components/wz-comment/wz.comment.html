@@ -10,7 +10,7 @@
           <md-card-content>
             <wz-form
               [items]="formFields"
-              [submitLabel]="formSubmitLabel"
+              [submitLabel]="formSubmitLabel | async"
               [includeCancel]="true"
               (formCancel)="onFormCancel()"
               (formSubmit)="onFormSubmit($event)">

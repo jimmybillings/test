@@ -25,3 +25,10 @@ export interface Comments {
   items: Array<Comment>;
   pagination: Pagination;
 }
+
+export interface CommentParentObject {
+  objectType: ObjectType;
+  objectId: number;
+}
+
+export type CommentFormMode = 'ADD' | 'EDIT';

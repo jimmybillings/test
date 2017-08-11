@@ -4,7 +4,7 @@
 			<wz-comment
 				[ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
 				[formFields]="commentFormConfig"
-				[parentObject]="{ objectType: 'collection', objectId: activeCollection.id }"
+				[parentObject]="commentParentObject"
 				[showEditCommentButton]="userCanEditCollection | async">
 			</wz-comment>
 		</div>

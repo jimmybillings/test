@@ -22,7 +22,7 @@ export function main() {
           effectName: 'getComments',
           effectsInstantiator: instantiator,
           inputAction: {
-            type: CommentActions.GetComments.Type,
+            type: CommentActions.Load.Type,
             objectType: 'collection',
             objectId: 1
           },
@@ -96,7 +96,7 @@ export function main() {
           effectName: 'removeComment',
           effectsInstantiator: instantiator,
           inputAction: {
-            type: CommentActions.RemoveComment.Type,
+            type: CommentActions.Remove.Type,
             objectType: 'collection',
             objectId: 1,
             commentId: 2

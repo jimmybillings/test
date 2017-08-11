@@ -26,6 +26,7 @@ import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-edi
 import { WindowRef } from '../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
 import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
+import { CommentParentObject } from '../../shared/interfaces/comment.interface';
 import { QuoteEditService } from '../../shared/services/quote-edit.service';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzEvent, Coords } from '../../shared/interfaces/common.interface';
@@ -47,7 +48,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public commentFormConfig: FormFields;
   public screenWidth: number;
   public showComments: boolean;
-  @ViewChild(WzSpeedviewComponent) public wzSpeedview: WzSpeedviewComponent;
+  public commentParentObject: CommentParentObject;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
 
@@ -81,6 +82,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.activeCollectionSubscription =
       this.store.select(state => state.activeCollection.collection).subscribe(collection => {
         this.activeCollection = collection;
+        this.commentParentObject = { objectType: 'collection', objectId: collection.id };
         // The view needs to update whenever the activeCollection changes (including individual assets).  This is
         // a direct store subscription, not an @Input(), so we have to trigger change detection ourselves.
         this.changeDetectorRef.markForCheck();

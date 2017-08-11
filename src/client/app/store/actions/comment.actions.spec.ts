@@ -8,11 +8,11 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
-        name: 'getComments',
+        name: 'load',
         parameters: ['collection', 1]
       },
       expectedAction: {
-        type: '[Comments] Get',
+        type: '[Comments] Load',
         objectType: 'collection',
         objectId: 1
       }
@@ -21,11 +21,11 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
-        name: 'addComment',
+        name: 'formSubmit',
         parameters: ['collection', 1, { some: 'comment' }]
       },
       expectedAction: {
-        type: '[Comment] Add',
+        type: '[Comment] Form Submit',
         objectType: 'collection',
         objectId: 1,
         comment: { some: 'comment' },
@@ -35,21 +35,7 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
-        name: 'editComment',
-        parameters: ['collection', 1, { some: 'comment' }]
-      },
-      expectedAction: {
-        type: '[Comment] Edit',
-        objectType: 'collection',
-        objectId: 1,
-        comment: { some: 'comment' },
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: ActionFactory,
-        name: 'removeComment',
+        name: 'remove',
         parameters: ['collection', 1, 2]
       },
       expectedAction: {
@@ -63,7 +49,7 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
-        name: 'getCommentsSuccess',
+        name: 'loadSuccess',
         parameters: [{ some: 'comments' }]
       },
       expectedAction: {
@@ -75,11 +61,11 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
-        name: 'addCommentSuccess',
+        name: 'formSubmitSuccess',
         parameters: [{ some: 'comments' }]
       },
       expectedAction: {
-        type: '[Comment] Add Success',
+        type: '[Comment] Form Submit Success',
         comments: { some: 'comments' }
       }
     });
@@ -87,19 +73,7 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
-        name: 'editCommentSuccess',
-        parameters: [{ some: 'comments' }]
-      },
-      expectedAction: {
-        type: '[Comment] Edit Success',
-        comments: { some: 'comments' }
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: InternalActionFactory,
-        name: 'removeCommentSuccess',
+        name: 'removeSuccess',
         parameters: [{ some: 'comments' }]
       },
       expectedAction: {

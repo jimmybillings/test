@@ -1,90 +1,89 @@
 import { Action } from '@ngrx/store';
 
-import { Comment, Comments, ObjectType } from '../../shared/interfaces/comment.interface';
+import { Comment, Comments, ObjectType, CommentFormMode, CommentParentObject } from '../../shared/interfaces/comment.interface';
 
 export class ActionFactory {
-  public getComments(objectType: ObjectType, objectId: number): GetComments {
-    return new GetComments(objectType, objectId);
+  public load(parentObject: CommentParentObject): Load {
+    return new Load(parentObject);
   }
 
-  public addComment(objectType: ObjectType, objectId: number, comment: Comment): AddComment {
-    return new AddComment(objectType, objectId, comment);
+  public formSubmit(parentObject: CommentParentObject, comment: Comment): FormSubmit {
+    return new FormSubmit(parentObject, comment);
   }
 
-  public editComment(objectType: ObjectType, objectId: number, comment: Comment): EditComment {
-    return new EditComment(objectType, objectId, comment);
+  public remove(parentObject: CommentParentObject, commentId: number): Remove {
+    return new Remove(parentObject, commentId);
   }
 
-  public removeComment(objectType: ObjectType, objectId: number, commentId: number): RemoveComment {
-    return new RemoveComment(objectType, objectId, commentId);
+  public changeFormModeToAdd(): ChangeFormModeToAdd {
+    return new ChangeFormModeToAdd();
+  }
+
+  public changeFormModeToEdit(commentBeingEdited: Comment): ChangeFormModeToEdit {
+    return new ChangeFormModeToEdit(commentBeingEdited);
   }
 }
 
 export class InternalActionFactory {
-  public getCommentsSuccess(comments: Comments): GetCommentsSuccess {
-    return new GetCommentsSuccess(comments);
+  public loadSuccess(comments: Comments): LoadSuccess {
+    return new LoadSuccess(comments);
   }
 
-  public addCommentSuccess(comments: Comments): AddCommentSuccess {
-    return new AddCommentSuccess(comments);
+  public formSubmitSuccess(comments: Comments): FormSubmitSuccess {
+    return new FormSubmitSuccess(comments);
   }
 
-  public editCommentSuccess(comments: Comments): EditCommentSuccess {
-    return new EditCommentSuccess(comments);
-  }
-
-  public removeCommentSuccess(comments: Comments): RemoveCommentSuccess {
-    return new RemoveCommentSuccess(comments);
+  public removeSuccess(comments: Comments): RemoveSuccess {
+    return new RemoveSuccess(comments);
   }
 }
 
-export class GetComments implements Action {
-  public static readonly Type = '[Comments] Get';
-  public readonly type = GetComments.Type;
-  constructor(public readonly objectType: ObjectType, public readonly objectId: number) { }
+export class Load implements Action {
+  public static readonly Type = '[Comments] Load';
+  public readonly type = Load.Type;
+  constructor(public readonly parentObject: CommentParentObject) { }
 }
 
-export class AddComment implements Action {
-  public static readonly Type = '[Comment] Add';
-  public readonly type = AddComment.Type;
-  constructor(public readonly objectType: ObjectType, public readonly objectId: number, public readonly comment: Comment) { }
+export class FormSubmit implements Action {
+  public static readonly Type = '[Comment] Form Submit';
+  public readonly type = FormSubmit.Type;
+  constructor(public readonly parentObject: CommentParentObject, public readonly comment: Comment) { }
 }
 
-export class EditComment implements Action {
-  public static readonly Type = '[Comment] Edit';
-  public readonly type = EditComment.Type;
-  constructor(public readonly objectType: ObjectType, public readonly objectId: number, public readonly comment: Comment) { }
-}
-
-export class RemoveComment implements Action {
+export class Remove implements Action {
   public static readonly Type = '[Comment] Remove';
-  public readonly type = RemoveComment.Type;
-  constructor(public readonly objectType: ObjectType, public readonly objectId: number, public readonly commentId: number) { }
+  public readonly type = Remove.Type;
+  constructor(public readonly parentObject: CommentParentObject, public readonly commentId: number) { }
 }
 
-export class GetCommentsSuccess implements Action {
-  public static readonly Type = '[Comments] Get Success';
-  public readonly type = GetCommentsSuccess.Type;
+export class ChangeFormModeToAdd implements Action {
+  public static readonly Type = '[Comment] Change Form Mode To ADD';
+  public readonly type = ChangeFormModeToAdd.Type;
+}
+
+export class ChangeFormModeToEdit implements Action {
+  public static readonly Type = '[Comment] Change Form Mode To EDIT';
+  public readonly type = ChangeFormModeToEdit.Type;
+  constructor(public readonly commentBeingEdited: Comment) { }
+}
+
+export class LoadSuccess implements Action {
+  public static readonly Type = '[Comments] Load Success';
+  public readonly type = LoadSuccess.Type;
   constructor(public readonly comments: Comments) { }
 }
 
-export class AddCommentSuccess implements Action {
-  public static readonly Type = '[Comment] Add Success';
-  public readonly type = AddCommentSuccess.Type;
+export class FormSubmitSuccess implements Action {
+  public static readonly Type = '[Comment] Form Submit Success';
+  public readonly type = FormSubmitSuccess.Type;
   constructor(public readonly comments: Comments) { }
 }
 
-export class EditCommentSuccess implements Action {
-  public static readonly Type = '[Comment] Edit Success';
-  public readonly type = EditCommentSuccess.Type;
-  constructor(public readonly comments: Comments) { }
-}
-
-export class RemoveCommentSuccess implements Action {
+export class RemoveSuccess implements Action {
   public static readonly Type = '[Comment] Remove Success';
-  public readonly type = RemoveCommentSuccess.Type;
+  public readonly type = RemoveSuccess.Type;
   constructor(public readonly comments: Comments) { }
 }
 
-export type Any = GetComments | AddComment | AddCommentSuccess | EditComment |
-  GetCommentsSuccess | EditCommentSuccess | RemoveComment | RemoveCommentSuccess;
+export type Any = Load | FormSubmit | ChangeFormModeToAdd | ChangeFormModeToEdit |
+  LoadSuccess | FormSubmitSuccess | Remove | RemoveSuccess;
