@@ -32,7 +32,7 @@ import { WzAsperaDownloadDirective } from '../../components/wz-aspera-download/a
     WzAssetGridComponent,
     WzAssetListComponent,
     WzAsperaDownloadDirective
-
   ],
+  entryComponents: [WzSpeedviewComponent]
 })
 export class WzAssetModule { }

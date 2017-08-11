@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, OnDestroy, Renderer, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Inject
+  Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Inject
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Collection, CollectionsStoreI } from '../../shared/interfaces/collection.interface';
@@ -24,7 +24,6 @@ import { CollectionDeleteComponent } from '../components/collection-delete.compo
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
-import { SpeedviewData, SpeedviewEvent } from '../../shared/interfaces/asset.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
 import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../shared/services/quote-edit.service';
@@ -48,9 +47,10 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public commentFormConfig: FormFields;
   public screenWidth: number;
   public showComments: boolean;
+  @ViewChild(WzSpeedviewComponent) public wzSpeedview: WzSpeedviewComponent;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
-  @ViewChild(WzSpeedviewComponent) private wzSpeedview: WzSpeedviewComponent;
+
 
   constructor(
     public userCan: Capabilities,
@@ -67,7 +67,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
-    private renderer: Renderer,
     private window: WindowRef,
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
@@ -101,37 +100,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       .subscribe((res: string) => {
         this.snackBar.open(res, '', { duration: 2000 });
       });
-  }
-
-  public showSpeedview(speedviewEvent: SpeedviewEvent): void {
-    if (speedviewEvent.asset.speedviewData) {
-      // set the data on the wzSpeedview component instance
-      this.wzSpeedview.speedviewAssetInfo = speedviewEvent.asset.speedviewData;
-      // show the speedview overlay in the calculated position
-      this.wzSpeedview.show(speedviewEvent.position).then((speedview: WzSpeedviewComponent) => {
-        // force the video player to start playing
-        speedview.previewUrl = speedviewEvent.asset.speedviewData.url;
-      });
-    } else {
-      this.asset.getSpeedviewData(speedviewEvent.asset.assetId).subscribe((data: SpeedviewData) => {
-        // cache the speedview data on the asset
-        speedviewEvent.asset.speedviewData = data;
-        // set the data on the wzSpeedview component instance
-        this.wzSpeedview.speedviewAssetInfo = data;
-        // show the speedview overlay in the calculated position
-        this.wzSpeedview.show(speedviewEvent.position).then((speedview: WzSpeedviewComponent) => {
-          // force the video player to start playing
-          speedview.previewUrl = data.url;
-        });
-      });
-    }
-    this.renderer.listenGlobal('document', 'scroll', () => this.wzSpeedview.destroy());
-  }
-
-  public hideSpeedview(): void {
-    this.wzSpeedview.previewUrl = null;
-    this.wzSpeedview.speedviewAssetInfo = null;
-    this.wzSpeedview.destroy();
   }
 
   public resetCollection() {

@@ -124,8 +124,8 @@
 				[activeCollection]="activeCollection"
 				(onAddToCart)="addAssetToCart($event)" 
 				(onDownloadComp)="downloadComp($event)" 
-				(onShowSpeedview)="showSpeedview($event)" 
-				(onHideSpeedview)="hideSpeedview()"
+				(onShowSpeedview)="wzSpeedview.showSpeedview($event)" 
+				(onHideSpeedview)="wzSpeedview.hideSpeedview()"
 				(onEditAsset)="editAsset($event)">
 			</wz-asset-grid>
 
@@ -136,8 +136,8 @@
 				[activeCollection]="activeCollection"
 				(onAddToCart)="addAssetToCart($event)" 
 				(onDownloadComp)="downloadComp($event)" 
-				(onShowSpeedview)="showSpeedview($event)" 
-				(onHideSpeedview)="hideSpeedview()"
+				(onShowSpeedview)="wzSpeedview.showSpeedview($event)" 
+				(onHideSpeedview)="wzSpeedview.hideSpeedview()"
 				(onEditAsset)="editAsset($event)">
 			</wz-asset-list>
 
@@ -146,4 +146,3 @@
 	</div>
 </section>
 
-<wz-speedview></wz-speedview>

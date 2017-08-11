@@ -6,7 +6,7 @@ export function main() {
     let componentUnderTest: SearchComponent;
     let mockAssetData: any, mockUiConfig: any, mockUserCan: any,
       mockSearchContext: any, mockFilter: any, mockUserPreferences: any, mockErrorStore: any,
-      mockSortDefinition: any, mockCart: any, mockAssetService: any, mockRenderer: any,
+      mockSortDefinition: any, mockCart: any,
       mockWindow: any, mockTranslate: any, mockSnackBar: any, mockRouter: any, mockActivatedRoute: any, MockRefDetecor: any;
 
     beforeEach(() => {
@@ -59,13 +59,6 @@ export function main() {
       mockCart = {
         addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart')
       };
-      mockAssetService = {
-        getSpeedviewData: jasmine.createSpy('getSpeedviewData').and.returnValue(Observable.of([]))
-      };
-      mockRenderer = {
-        listenGlobal: jasmine.createSpy('listenGlobal')
-          .and.callFake((a: any, b: any, c: Function) => { c(); })
-      };
       mockWindow = {
         nativeWindow: {
           location: { href: null },
@@ -95,8 +88,8 @@ export function main() {
         markForCheck: () => { return true; }
       };
       componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart,
-        mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-        mockUserPreferences, mockRenderer, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter,
+        mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
+        mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter,
         MockRefDetecor, null, null);
     });
 
@@ -104,8 +97,8 @@ export function main() {
       it('should not set the path if the "gq" parameter doesn\'t exist', () => {
         mockActivatedRoute = { snapshot: { params: { i: 1, n: 100 } } };
         componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart,
-          mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter,
+          mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
+          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter,
           MockRefDetecor, null, null);
 
         expect(componentUnderTest.path).toEqual('');
@@ -228,8 +221,8 @@ export function main() {
           downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({}))
         };
         componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter,
-          mockCart, mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext,
-          mockUiConfig, mockAssetData, mockUserPreferences, mockRenderer, mockWindow, null, null,
+          mockCart, mockSortDefinition, mockErrorStore, mockSearchContext,
+          mockUiConfig, mockAssetData, mockUserPreferences, mockWindow, null, null,
           mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
         componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
         expect(mockErrorStore.dispatch).toHaveBeenCalledWith({ status: 'COMPS.NO_COMP' });
@@ -272,74 +265,74 @@ export function main() {
       });
     });
 
-    describe('showSpeedview()', () => {
-      let mockSpeedview: any;
+    // describe('showSpeedview()', () => {
+    //   let mockSpeedview: any;
 
-      beforeEach(() => {
-        mockSpeedview = {
-          show: jasmine.createSpy('show').and.returnValue(Promise.resolve()),
-          destroy: jasmine.createSpy('destroy').and.returnValue(Promise.resolve())
-        };
-      });
+    //   beforeEach(() => {
+    //     mockSpeedview = {
+    //       show: jasmine.createSpy('show').and.returnValue(Promise.resolve()),
+    //       destroy: jasmine.createSpy('destroy').and.returnValue(Promise.resolve())
+    //     };
+    //   });
 
-      it('when speedview data has been cached already so not call the server for it', () => {
-        componentUnderTest.wzSpeedview = mockSpeedview;
-        componentUnderTest.showSpeedview({ asset: { speedviewData: 'mockSpeedViewData' }, position: 'mockPosition' } as any);
-        expect(mockAssetService.getSpeedviewData).not.toHaveBeenCalled();
-      });
+    //   it('when speedview data has been cached already so not call the server for it', () => {
+    //     componentUnderTest.wzSpeedview = mockSpeedview;
+    //     componentUnderTest.showSpeedview({ asset: { speedviewData: 'mockSpeedViewData' }, position: 'mockPosition' } as any);
+    //     expect(mockAssetService.getSpeedviewData).not.toHaveBeenCalled();
+    //   });
 
-      it('Should show speedview with cached data', () => {
-        componentUnderTest.wzSpeedview = mockSpeedview;
-        componentUnderTest.showSpeedview({ asset: { speedviewData: 'mockSpeedViewData' }, position: 'mockPosition' } as any);
-        expect(mockAssetService.getSpeedviewData).not.toHaveBeenCalled();
-        expect(componentUnderTest.wzSpeedview.show).toHaveBeenCalled();
-      });
+    //   it('Should show speedview with cached data', () => {
+    //     componentUnderTest.wzSpeedview = mockSpeedview;
+    //     componentUnderTest.showSpeedview({ asset: { speedviewData: 'mockSpeedViewData' }, position: 'mockPosition' } as any);
+    //     expect(mockAssetService.getSpeedviewData).not.toHaveBeenCalled();
+    //     expect(componentUnderTest.wzSpeedview.show).toHaveBeenCalled();
+    //   });
 
-      it('Should call the asset service to request speedview data from api', () => {
-        componentUnderTest.wzSpeedview = mockSpeedview;
-        componentUnderTest.showSpeedview({ asset: { assetId: 'mockAssetId' }, position: 'mockPosition' } as any);
-        expect(mockAssetService.getSpeedviewData).toHaveBeenCalledWith('mockAssetId');
-      });
+    //   it('Should call the asset service to request speedview data from api', () => {
+    //     componentUnderTest.wzSpeedview = mockSpeedview;
+    //     componentUnderTest.showSpeedview({ asset: { assetId: 'mockAssetId' }, position: 'mockPosition' } as any);
+    //     expect(mockAssetService.getSpeedviewData).toHaveBeenCalledWith('mockAssetId');
+    //   });
 
-      it('Should set up a window scoll listener to destory speedview on scroll', () => {
-        componentUnderTest.wzSpeedview = mockSpeedview;
-        componentUnderTest.showSpeedview({ asset: { assetId: 'mockAssetId' }, position: 'mockPosition' } as any);
-        expect(mockRenderer.listenGlobal).toHaveBeenCalledWith('document', 'scroll', jasmine.any(Function));
-      });
-    });
+    //   it('Should set up a window scoll listener to destory speedview on scroll', () => {
+    //     componentUnderTest.wzSpeedview = mockSpeedview;
+    //     componentUnderTest.showSpeedview({ asset: { assetId: 'mockAssetId' }, position: 'mockPosition' } as any);
+    //     expect(mockRenderer.listenGlobal).toHaveBeenCalledWith('document', 'scroll', jasmine.any(Function));
+    //   });
+    // });
 
-    describe('hideSpeedview()', () => {
-      it('Should call destroy on the speedview component', () => {
-        componentUnderTest.wzSpeedview = { destroy: jasmine.createSpy('destroy') } as any;
-        componentUnderTest.hideSpeedview();
-        expect(componentUnderTest.wzSpeedview.destroy).toHaveBeenCalled();
-      });
-    });
+    // describe('hideSpeedview()', () => {
+    //   it('Should call destroy on the speedview component', () => {
+    //     componentUnderTest.wzSpeedview = { destroy: jasmine.createSpy('destroy') } as any;
+    //     componentUnderTest.hideSpeedview();
+    //     expect(componentUnderTest.wzSpeedview.destroy).toHaveBeenCalled();
+    //   });
+    // });
 
     describe('filterAssets()', () => {
       it('Should reset the page number to page 1', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
-        componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart, mockAssetService,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
+          mockUserPreferences, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ i: 1 });
       });
 
       it('Should update the search context with the filter ids', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [1, 2, 3], values: [] });
-        componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart, mockAssetService,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
+          mockUserPreferences, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ 'filterIds': '1,2,3' });
       });
 
       it('Should remove the filterIds from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
-        componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart, mockAssetService,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
+          mockUserPreferences, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.remove).toEqual('filterIds');
       });
@@ -347,17 +340,17 @@ export function main() {
       it('Should update the search context with the filter values', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart,
-          mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
+          mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
+          mockUserPreferences, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ 'filterValues': 'cat,dog' });
       });
 
       it('Should remove the filterValues from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
-        componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart, mockAssetService,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
+          mockUserPreferences, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.remove).toEqual('filterValues');
       });
@@ -365,8 +358,8 @@ export function main() {
       it('Should call go on search context when it has filtered the assets', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter, mockCart,
-          mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
+          mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
+          mockUserPreferences, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.go).toHaveBeenCalled();
       });

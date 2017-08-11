@@ -1,66 +1,64 @@
-import { Component, Directive, Input, ViewChild, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { OverlayState, OverlayRef, Overlay, GlobalPositionStrategy, TemplatePortalDirective } from '@angular/material';
-import { Coords } from '../../../interfaces/common.interface';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { SpeedviewData } from '../../../interfaces/asset.interface';
-import { Observable } from 'rxjs/Observable';
+import {
+  style,
+  trigger,
+  state,
+  transition,
+  animate,
+  AnimationEvent,
+} from '@angular/animations';
+
+export type SpeedPreviewVisibility = 'initial' | 'visible' | 'hidden';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-speedview',
   templateUrl: 'wz.speedview.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('state', [
+      state('hidden', style({
+        opacity: '0',
+        transform: 'scale(0)'
+      })),
+      state('visible', style({
+        opacity: '1',
+        transform: 'scale(1)'
+      })),
+      transition('hidden => visible', animate('200ms cubic-bezier(0.0, 0.0, 0.2, 1)')),
+      transition('visible => hidden', animate('200ms cubic-bezier(0.4, 0.0, 1, 1)'))
+    ])
+  ],
 })
-export class WzSpeedviewComponent implements OnDestroy {
-  public speedviewAssetInfo: SpeedviewData;
+
+export class WzSpeedviewComponent {
+  public speedviewAssetInfo: SpeedviewData = { values: [], url: '', pricingType: '', price: 0, imageQuickView: false };
   public previewUrl: string;
-  private config: OverlayState = new OverlayState();
-  private overlayRef: OverlayRef = null;
-  @ViewChild('wzSpeedviewTemplate') private componentPortal: TemplatePortalDirective;
+  public visibility: SpeedPreviewVisibility = 'hidden';
 
-  constructor(private overlay: Overlay) { }
 
-  ngOnDestroy() {
-    this.destroy();
-  }
-
-  public show(position: Coords): Promise<WzSpeedviewComponent> {
-    this.config.positionStrategy = this.positionStrategy(position);
-    return this.destroy()
-      .then(() => {
-        return this.overlay.create(this.config);
-      }).then((overlayRef: OverlayRef) => {
-        this.overlayRef = overlayRef;
-        this.overlayRef.attach(this.componentPortal);
-      }).then(() => {
-        return this;
-      });
-  }
-
-  public destroy(): Promise<WzSpeedviewComponent> {
-    if (!this.overlayRef) {
-      return Promise.resolve(this);
-    } else {
-      return Promise.resolve()
-        .then(() => {
-          return this.overlayRef.detach();
-        })
-        .then(() => {
-          this.overlayRef.dispose();
-          this.overlayRef = null;
-          return this;
-        });
-    }
-  }
+  constructor(private detector: ChangeDetectorRef) { }
 
   public translationReady(field: string) {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
-  private positionStrategy(coordinates: Coords): GlobalPositionStrategy {
-    return this.overlay
-      .position()
-      .global()
-      .top(`${coordinates.y}px`)
-      .left(`${coordinates.x}px`);
+  public setSpeedviewAssetInfo(data: any) {
+    this.speedviewAssetInfo = Object.assign(this.speedviewAssetInfo, data);
+    this.detector.markForCheck();
   }
+
+  public setSpeedViewPosterUrl(posterUrl: string) {
+    this.speedviewAssetInfo.posterUrl = posterUrl;
+    this.detector.markForCheck();
+  }
+
+  public show() {
+    setTimeout(() => {
+      this.visibility = 'visible';
+      this.detector.markForCheck();
+    }, 300);
+  }
+
 }

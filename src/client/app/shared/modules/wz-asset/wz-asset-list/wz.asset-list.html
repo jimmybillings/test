@@ -7,7 +7,7 @@
     <div flex="100" flex-gt-xs="75">
       <div flex="100" layout="row" layout-xs="column">
         <div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding>
-          <a [routerLink]="routerLinkFor(asset)" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
+          <a [routerLink]="routerLinkFor(asset)" [wzSpeedview]="asset">
             <div class="asset-thb">
               <img *ngIf="hasThumbnail(asset)" src="{{ thumbnailUrlFor(asset) }}"/>
               <span *ngIf="hasFormatType(asset)" class="mdata-2">

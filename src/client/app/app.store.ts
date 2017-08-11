@@ -14,22 +14,29 @@ import * as SnackbarActions from './store/actions/snackbar.actions';
 import * as SnackbarState from './store/states/snackbar.state';
 export type SnackbarState = SnackbarState.State;
 
+import * as SpeedPreviewActions from './store/actions/speed-preview.actions';
+import * as SpeedPreviewState from './store/states/speed-preview.state';
+export type SpeedPreviewState = SpeedPreviewState.State;
+
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly asset: AssetActions.ActionFactory;
   readonly snackbar: SnackbarActions.ActionFactory;
+  readonly speedPreview: SpeedPreviewActions.ActionFactory;
 };
 
 export interface InternalActionFactory {
   readonly activeCollection: ActiveCollectionActions.InternalActionFactory;
   readonly asset: AssetActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
+  readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
 };
 
 export interface AppState {
   readonly activeCollection: ActiveCollectionState;
   readonly asset: AssetState;
   readonly snackbar: SnackbarState;
+  readonly speedPreview: SpeedPreviewState;
 }
 
 export interface AppReducers {
@@ -40,7 +47,8 @@ export interface AppReducers {
 export const reducers: AppReducers = {
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,
-  snackbar: SnackbarState.reducer
+  snackbar: SnackbarState.reducer,
+  speedPreview: SpeedPreviewState.reducer
 };
 
 export type ActionFactoryMapper = (factory: ActionFactory) => Action;
@@ -52,13 +60,15 @@ export class AppStore {
   private readonly actionFactory: ActionFactory = {
     activeCollection: new ActiveCollectionActions.ActionFactory(),
     asset: new AssetActions.ActionFactory(),
-    snackbar: new SnackbarActions.ActionFactory()
+    snackbar: new SnackbarActions.ActionFactory(),
+    speedPreview: new SpeedPreviewActions.ActionFactory()
   };
 
   private readonly internalActionFactory: InternalActionFactory = {
     activeCollection: new ActiveCollectionActions.InternalActionFactory(),
     asset: new AssetActions.InternalActionFactory(),
-    snackbar: new SnackbarActions.InternalActionFactory()
+    snackbar: new SnackbarActions.InternalActionFactory(),
+    speedPreview: new SpeedPreviewActions.InternalActionFactory()
   };
 
   constructor(private ngrxStore: Store<AppState>) { }

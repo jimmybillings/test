@@ -24,7 +24,10 @@
     width: 100%;
   }
   video {
+    min-height: 225px;
     max-height: 225px;
+    background-image: linear-gradient(rgba(mat-color($mat-grey, 900),1), rgba(mat-color($mat-grey, 900),.6)),
+      linear-gradient(rgba(mat-color($mat-grey, 900),.5), rgba(mat-color($mat-grey, 900),1));
   }
   .info {
     min-height: rem(5.5);

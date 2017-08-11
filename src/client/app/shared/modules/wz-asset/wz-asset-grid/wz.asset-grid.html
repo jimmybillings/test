@@ -5,9 +5,7 @@
         flex=""
         [routerLink]="routerLinkFor(asset)"
         class="asset-thb"
-        wzSpeedview
-        (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})"
-        (hidePreview)="onHideSpeedview.emit()">
+        [wzSpeedview]="asset">
         <div class="asset-name">{{ nameOf(asset) }}</div>
         <img *ngIf="hasThumbnail(asset)" src="{{ thumbnailUrlFor(asset) }}"/>
         <span *ngIf="hasTitle(asset)" class="mdata-0">
