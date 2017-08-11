@@ -5,7 +5,7 @@
     </div>
   </div>
   <div layout="column" flex="none" *ngIf="!speedviewAssetInfo.imageQuickView">
-    <video [src]="speedviewAssetInfo.url" width="400" height="100%" poster=""
+    <video [src]="speedviewAssetInfo.url" width="400" height="100%" poster="{{speedviewAssetInfo.posterUrl}}"
       autoplay name="media" type="video/mp4"></video>
   </div>
   <section div class="info" layout="row" layout-align="space-between none">

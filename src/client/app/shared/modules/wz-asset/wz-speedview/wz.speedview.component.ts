@@ -44,12 +44,21 @@ export class WzSpeedviewComponent {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
+  public setSpeedviewAssetInfo(data: any) {
+    this.speedviewAssetInfo = Object.assign(this.speedviewAssetInfo, data);
+    this.detector.markForCheck();
+  }
+
+  public setSpeedViewPostUrl(posterUrl: string) {
+    this.speedviewAssetInfo.posterUrl = posterUrl;
+    this.detector.markForCheck();
+  }
+
   public show() {
     setTimeout(() => {
       this.visibility = 'visible';
       this.detector.markForCheck();
-    }, 100);
-
+    }, 300);
   }
 
 }
