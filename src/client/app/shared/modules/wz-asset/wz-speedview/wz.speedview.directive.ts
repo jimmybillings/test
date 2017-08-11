@@ -29,9 +29,9 @@ import {
 
 import {
   Viewport,
-  Coords,
-  Asset
+  Coords
 } from '../../../interfaces/common.interface';
+import { EnhancedAsset } from '../../../interfaces/enhanced-asset';
 
 import { State as SpeedPreviewStore } from '../../../../store/states/speed-preview.state';
 import { WzSpeedviewComponent } from './wz.speedview.component';
@@ -48,18 +48,17 @@ const delay: number = 200;            // How long we want to wait before showing
 export class WzSpeedviewDirective implements OnDestroy {
 
   @Input()
-  set wzSpeedview(value: Asset) {
-    this.currentAsset = value;
+  set wzSpeedview(value: EnhancedAsset) {
+    this.enhancedAsset = Object.assign(new EnhancedAsset(), value).normalize();
   }
 
-  private timeout: number;
   private viewport: Viewport;
   private config: OverlayState;
   private speedViewInstance: WzSpeedviewComponent;
   private overlayRef: OverlayRef;
-  private previewSubscription: Subscription;
+  private speedViewDataSubscription: Subscription;
   private scollListener: Function;
-  private currentAsset: Asset;
+  private enhancedAsset: EnhancedAsset;
 
   constructor(
     private viewContainerRef: ViewContainerRef,
@@ -74,7 +73,6 @@ export class WzSpeedviewDirective implements OnDestroy {
   @HostListener('mouseenter', ['$event']) public onMouseEnter($event: any): void {
     if (window.innerWidth <= previewWidth) return;
     this.viewport = $event.currentTarget.getBoundingClientRect();
-    this.overlayRef = this.prepareOverlay;
     this.prepareSpeedView();
   }
 
@@ -91,8 +89,8 @@ export class WzSpeedviewDirective implements OnDestroy {
     return this.overlay.create(this.config);
   }
 
-  private get hasSpeedViewData(): boolean {
-    return this.store.snapshot(state => state.speedPreview[this.currentAsset.assetId]) !== undefined;
+  private get speedViewDataIsLoaded(): boolean {
+    return this.store.snapshot(state => state.speedPreview[this.enhancedAsset.assetId]) !== undefined;
   }
 
   private get speedViewComponent(): ComponentPortal<WzSpeedviewComponent> {
@@ -100,41 +98,52 @@ export class WzSpeedviewDirective implements OnDestroy {
   }
 
   private prepareSpeedView(): void {
-    if (this.hasSpeedViewData) {
-      this.speedViewInstance = this.overlayRef.attach(this.speedViewComponent).instance;
-      this.speedViewInstance.speedviewAssetInfo = this.speedViewData;
-      this.speedViewInstance!.show();
+    this.overlayRef = this.prepareOverlay;
+    this.displaySpeedViewDialog();
+
+    if (this.speedViewDataIsLoaded) {
+      this.bindSpeedViewData();
     } else {
-      this.loadSpeedViewData();
+      this.speedViewDataSubscription = this.loadSpeedViewData()
+        .subscribe(() => this.bindSpeedViewData());
     }
-    this.scollListener = this.renderer.listenGlobal('document', 'scroll', () => this.disposeSpeedview());
+
+    this.scollListener = this.renderer
+      .listenGlobal('document', 'scroll', () => this.disposeSpeedview());
   }
 
-  private loadSpeedViewData() {
-    this.store.dispatch(factory => factory.speedPreview.load(this.currentAsset));
+  private loadSpeedViewData(): Observable<boolean> {
+    this.store.dispatch(factory => factory.speedPreview.load(this.enhancedAsset));
+    return this.store.blockUntil(state => !!state.speedPreview[this.enhancedAsset.assetId]);
+  }
+
+  private displaySpeedViewDialog() {
     this.speedViewInstance = this.overlayRef.attach(this.speedViewComponent).instance;
-    this.previewSubscription = this.store.blockUntil(state => !!state.speedPreview[this.currentAsset.assetId])
-      .subscribe(() => {
-        this.speedViewInstance.speedviewAssetInfo = this.speedViewData;
-        this.speedViewInstance!.show();
-      });
+    this.setPosterUrl();
+    this.speedViewInstance!.show();
+  }
+
+  private setPosterUrl() {
+    this.speedViewInstance.setSpeedViewPostUrl(this.enhancedAsset.thumbnailUrl);
+  }
+
+  private bindSpeedViewData() {
+    this.speedViewInstance.setSpeedviewAssetInfo(this.speedViewData);
   }
 
   private get speedViewData(): SpeedviewData {
-    return this.store.snapshot(state => state.speedPreview[this.currentAsset.assetId]);
+    return this.store.snapshot(state => state.speedPreview[this.enhancedAsset.assetId]);
   }
 
   /** Disposes the current speed preview and the overlay it is attached to */
   private disposeSpeedview(): void {
-    window.clearTimeout(this.timeout);
-
     if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = null;
     }
 
-    if (this.previewSubscription) {
-      this.previewSubscription.unsubscribe();
+    if (this.speedViewDataSubscription) {
+      this.speedViewDataSubscription.unsubscribe();
     }
 
     if (this.scollListener) {

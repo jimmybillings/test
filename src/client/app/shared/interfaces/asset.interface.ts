@@ -20,5 +20,6 @@ export interface SpeedviewData {
   price?: number;
   pricingType?: 'Royalty Free' | 'Rights Managed' | '';
   url?: string;
+  posterUrl?: string;
   values?: Array<Pojo>;
 }
