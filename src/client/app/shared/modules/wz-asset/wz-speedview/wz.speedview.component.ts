@@ -26,8 +26,8 @@ export type SpeedPreviewVisibility = 'initial' | 'visible' | 'hidden';
         opacity: '1',
         transform: 'scale(1)'
       })),
-      transition('hidden => visible', animate('250ms cubic-bezier(0.0, 0.0, 0.2, 1)')),
-      transition('visible => hidden', animate('250ms cubic-bezier(0.4, 0.0, 1, 1)'))
+      transition('hidden => visible', animate('200ms cubic-bezier(0.0, 0.0, 0.2, 1)')),
+      transition('visible => hidden', animate('200ms cubic-bezier(0.4, 0.0, 1, 1)'))
     ])
   ],
 })
