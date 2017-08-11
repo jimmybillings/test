@@ -51,10 +51,6 @@ export class WzCommentComponent {
     return `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`;
   }
 
-  public get includeFormCancel(): boolean {
-    return this.formMode === 'EDIT' || this.formMode === 'ADD';
-  }
-
   public get formSubmitLabel(): string {
     return this.formMode === 'ADD' ? 'COMMENTS.SUBMIT_BTN_LABEL' : 'COMMENTS.SAVE_BTN_LABEL';
   }

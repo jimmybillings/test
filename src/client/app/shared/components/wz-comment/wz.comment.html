@@ -1,6 +1,6 @@
 <section class="wz-comments">
-  <header class="comments-header" layout-gt-xs="row" layout="column" layout-align="space-between end">
-    <h2 flex="grow" class="md-display-1">Comments</h2>
+  <header class="comments-header" layout-gt-xs="row" layout="column" layout-align="space-between">
+    <h2 flex="grow" class="md-display-1">{{ 'COMMENTS.SECTION_TITLE' | translate }}</h2>
     <div class="actions close" flex="auto"></div>
   </header>
   <div layout-gt-xs="row" layout="column" layout-align="space-between">
@@ -11,7 +11,7 @@
             <wz-form
               [items]="formFields"
               [submitLabel]="formSubmitLabel"
-              [includeCancel]="includeFormCancel"
+              [includeCancel]="true"
               (formCancel)="onFormCancel()"
               (formSubmit)="onFormSubmit($event)">
             </wz-form>
@@ -21,27 +21,37 @@
     </div>
     <div flex="nogrow" class="space-between"></div>
     <div flex="66" flex-sm="60">
+      <div *ngIf="!commentsExist" layout="column" class="comments empty-comments">
+        <div layout="row" layout-align="center">
+          <div flex-gt-lg="35" flex-gt-md="40" flex-gt-sm=55 flex="80">
+            <h2 class="md-display-1">{{ 'COMMENTS.EMPTY_COMMENTS_HEADING' | translate }}</h2>  
+            <p>{{ 'COMMENTS.EMPTY_COMMENTS_MSG' | translate }}</p>
+          </div>
+        </div> 
+      </div>
       <div *ngIf="commentsExist" layout="column" class="comments">
         <div
           class="md-display comment"
           *ngFor="let comment of comments.items; let even = even; let odd = odd"
           [ngClass]="{ odd: odd, even: even }">
-          <header class="comment-head" layout="row" layout-align="space-between center">
-            <div layout="row" layout-align="start center">
-              <div class="avatar" layout-align="center center"><strong>{{initials(comment.userName)}}</strong></div>  
-              <div>
+          <header class="comment-head" layout="row" layout-align="space-between end">
+            <div flex="grow" layout="row" layout-align="center center">
+              <div class="avatar" flex="none"><strong>{{initials(comment.userName)}}</strong></div>  
+              <div flex="initial">
                 <strong>{{comment.userName}} </strong>{{comment.createdOn | date:'short' }}
               </div>
             </div> 
-            <div layout-gt-sm="row" layout="column" layout-align="end center">
+            <div flex="auto" class="actions" layout="row" layout-align="end center">
               <button
                 (click)="onEditCommentButtonClick(comment)"
                 [disabled]="!showEditCommentButton"
                 md-icon-button
-                title="edit">
+                title="{{ 'COMMENTS.EDIT_HOVER_TITLE' | translate }}">
                   <md-icon>mode_edit</md-icon>
               </button>
-              <button disabled md-icon-button title="delete"><md-icon>delete</md-icon></button>
+              <button disabled md-icon-button title="{{ 'COMMENTS.DELETE_HOVER_TITLE' | translate }}">
+                <md-icon>delete</md-icon>
+              </button>
             </div>
           </header>
           <div class="comment-body">{{comment.comment}}</div>
