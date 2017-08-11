@@ -23,7 +23,7 @@ export function main() {
 
     describe('getCommentsFor()', () => {
       it('calls the API correctly', () => {
-        serviceUnderTest.getCommentsFor('collection', 123);
+        serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: 123 });
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
@@ -31,7 +31,7 @@ export function main() {
 
       describe('converts to response to the proper shape', () => {
         it('when items exist', () => {
-          serviceUnderTest.getCommentsFor('collection', 123).subscribe(comments => expect(comments).toEqual({
+          serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: 123 }).subscribe(comments => expect(comments).toEqual({
             items: [{ some: 'comment' }],
             pagination: {
               currentPage: 0,
@@ -54,7 +54,7 @@ export function main() {
             totalCount: 100
           };
 
-          serviceUnderTest.getCommentsFor('collection', 123).subscribe(comments => expect(comments).toEqual({
+          serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: 123 }).subscribe(comments => expect(comments).toEqual({
             items: [],
             pagination: {
               currentPage: 0,
@@ -71,7 +71,7 @@ export function main() {
 
     describe('addCommentTo()', () => {
       it('calls the API correctly', () => {
-        serviceUnderTest.addCommentTo('collection', 123, { comment: 'wow' } as any);
+        serviceUnderTest.addCommentTo({ objectType: 'collection', objectId: 123 }, { comment: 'wow' } as any);
 
         expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.post).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
@@ -80,7 +80,7 @@ export function main() {
       });
 
       it('calls getCommentsFor() with the correct objectType and objectId', () => {
-        serviceUnderTest.addCommentTo('collection', 123, { comment: 'wow' } as any).subscribe();
+        serviceUnderTest.addCommentTo({ objectType: 'collection', objectId: 123 }, { comment: 'wow' } as any).subscribe();
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
@@ -89,7 +89,7 @@ export function main() {
 
     describe('editComment()', () => {
       it('calls the api service correctly', () => {
-        serviceUnderTest.editComment('collection', 123, { some: 'comment', id: 123 } as any);
+        serviceUnderTest.editComment({ objectType: 'collection', objectId: 123 }, { some: 'comment', id: 123 } as any);
 
         expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.put).toHaveBeenCalledWithEndpoint('comment/123');
@@ -98,7 +98,7 @@ export function main() {
       });
 
       it('calls getCommentsFor() with the correct objectType and objectId', () => {
-        serviceUnderTest.editComment('collection', 123, { comment: 'wow' } as any).subscribe();
+        serviceUnderTest.editComment({ objectType: 'collection', objectId: 123 }, { comment: 'wow' } as any).subscribe();
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
@@ -107,7 +107,7 @@ export function main() {
 
     describe('removeComment()', () => {
       it('calls the api service correctly', () => {
-        serviceUnderTest.removeComment('collection', 123, 1);
+        serviceUnderTest.removeComment({ objectType: 'collection', objectId: 123 }, 1);
 
         expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('comment/1');
@@ -115,7 +115,7 @@ export function main() {
       });
 
       it('calls getCommentsFor() with the correct objectType and objectId', () => {
-        serviceUnderTest.removeComment('collection', 123, 1).subscribe();
+        serviceUnderTest.removeComment({ objectType: 'collection', objectId: 123 }, 1).subscribe();
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');

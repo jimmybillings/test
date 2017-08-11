@@ -23,67 +23,71 @@ export function main() {
           effectsInstantiator: instantiator,
           inputAction: {
             type: CommentActions.Load.Type,
-            objectType: 'collection',
-            objectId: 1
+            parentObject: { objectType: 'collection', objectId: 1 }
           },
           serviceMethod: {
             name: 'getCommentsFor',
-            expectedArguments: ['collection', 1],
+            expectedArguments: [{ objectType: 'collection', objectId: 1 }],
             returnsObservableOf: { items: [{ some: 'comment' }], pagination: {} }
           },
           outputActionFactory: {
             sectionName: 'comment',
-            methodName: 'getCommentsSuccess',
+            methodName: 'loadSuccess',
             expectedArguments: [{ items: [{ some: 'comment' }], pagination: {} }]
           }
         });
       });
     });
 
-    describe('addComment', () => {
-      it('works as expected', () => {
-        effectsSpecHelper.generateStandardTestFor({
-          effectName: 'addComment',
-          effectsInstantiator: instantiator,
-          inputAction: {
-            type: CommentActions.AddComment.Type,
-            objectType: 'collection',
-            objectId: 1,
-            comment: { some: 'comment' }
-          },
-          serviceMethod: {
-            name: 'addCommentTo',
-            expectedArguments: ['collection', 1, { some: 'comment' }],
-            returnsObservableOf: { items: [{ some: 'comment' }], pagination: {} }
-          },
-          outputActionFactory: {
-            sectionName: 'comment',
-            methodName: 'addCommentSuccess',
-            expectedArguments: [{ items: [{ some: 'comment' }], pagination: {} }]
-          }
-        });
+    describe('formSubmit', () => {
+      beforeEach(() => {
+        effectsSpecHelper = new EffectsSpecHelper();
       });
-    });
 
-    describe('editComment', () => {
-      it('works as expected', () => {
+      it('works as expected for edit', () => {
         effectsSpecHelper.generateStandardTestFor({
-          effectName: 'editComment',
+          state: [
+            { storeSectionName: 'comment', propertyName: 'formMode', value: 'EDIT' },
+            { storeSectionName: 'comment', propertyName: 'commentBeingEdited', value: { old: 'comment' } }
+          ],
+          effectName: 'formSubmit',
           effectsInstantiator: instantiator,
           inputAction: {
-            type: CommentActions.EditComment.Type,
-            objectType: 'collection',
-            objectId: 1,
+            type: CommentActions.FormSubmit.Type,
+            parentObject: { objectType: 'collection', objectId: 1 },
             comment: { some: 'comment' }
           },
           serviceMethod: {
             name: 'editComment',
-            expectedArguments: ['collection', 1, { some: 'comment' }],
+            expectedArguments: [{ objectType: 'collection', objectId: 1 }, { old: 'comment' }],
             returnsObservableOf: { items: [{ some: 'comment' }], pagination: {} }
           },
           outputActionFactory: {
             sectionName: 'comment',
-            methodName: 'editCommentSuccess',
+            methodName: 'formSubmitSuccess',
+            expectedArguments: [{ items: [{ some: 'comment' }], pagination: {} }]
+          }
+        });
+      });
+
+      it('works as expected for add', () => {
+        effectsSpecHelper.generateStandardTestFor({
+          state: { storeSectionName: 'comment', propertyName: 'formMode', value: 'ADD' },
+          effectName: 'formSubmit',
+          effectsInstantiator: instantiator,
+          inputAction: {
+            type: CommentActions.FormSubmit.Type,
+            parentObject: { objectType: 'collection', objectId: 1 },
+            comment: { some: 'comment' }
+          },
+          serviceMethod: {
+            name: 'addCommentTo',
+            expectedArguments: [{ objectType: 'collection', objectId: 1 }, { some: 'comment' }],
+            returnsObservableOf: { items: [{ some: 'comment' }], pagination: {} }
+          },
+          outputActionFactory: {
+            sectionName: 'comment',
+            methodName: 'formSubmitSuccess',
             expectedArguments: [{ items: [{ some: 'comment' }], pagination: {} }]
           }
         });
@@ -97,18 +101,17 @@ export function main() {
           effectsInstantiator: instantiator,
           inputAction: {
             type: CommentActions.Remove.Type,
-            objectType: 'collection',
-            objectId: 1,
+            parentObject: { objectType: 'collection', objectId: 1 },
             commentId: 2
           },
           serviceMethod: {
             name: 'removeComment',
-            expectedArguments: ['collection', 1, 2],
+            expectedArguments: [{ objectType: 'collection', objectId: 1 }, 2],
             returnsObservableOf: { items: [{ some: 'comment' }], pagination: {} }
           },
           outputActionFactory: {
             sectionName: 'comment',
-            methodName: 'removeCommentSuccess',
+            methodName: 'removeSuccess',
             expectedArguments: [{ items: [{ some: 'comment' }], pagination: {} }]
           }
         });

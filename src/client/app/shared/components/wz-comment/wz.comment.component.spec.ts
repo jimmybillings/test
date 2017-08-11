@@ -4,7 +4,8 @@ import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 export function main() {
   describe('Wz Comment Component', () => {
     let componentUnderTest: WzCommentComponent, mockStore: MockAppStore,
-      getCommentsSpy: jasmine.Spy, addCommentSpy: jasmine.Spy, editCommentSpy: jasmine.Spy, removeCommentSpy: jasmine.Spy;
+      loadSpy: jasmine.Spy, formSubmitSpy: jasmine.Spy, removeSpy: jasmine.Spy, changeToEditSpy: jasmine.Spy,
+      changeFormModeToAdd: jasmine.Spy;
 
     const mockWzForm: any = {
       resetForm: jasmine.createSpy('resetForm'),
@@ -13,12 +14,16 @@ export function main() {
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      mockStore.createStateSection('comment', { collection: { items: [{ some: 'comment' }], pagination: {} } });
+      mockStore.createStateSection('comment', {
+        formSubmitLabel: 'some.trKey',
+        collection: { items: [{ some: 'comment' }], pagination: {} }
+      });
 
-      getCommentsSpy = mockStore.createActionFactoryMethod('comment', 'getComments');
-      addCommentSpy = mockStore.createActionFactoryMethod('comment', 'addComment');
-      editCommentSpy = mockStore.createActionFactoryMethod('comment', 'editComment');
-      removeCommentSpy = mockStore.createActionFactoryMethod('comment', 'removeComment');
+      loadSpy = mockStore.createActionFactoryMethod('comment', 'load');
+      formSubmitSpy = mockStore.createActionFactoryMethod('comment', 'formSubmit');
+      removeSpy = mockStore.createActionFactoryMethod('comment', 'remove');
+      changeToEditSpy = mockStore.createActionFactoryMethod('comment', 'changeFormModeToEdit');
+      changeFormModeToAdd = mockStore.createActionFactoryMethod('comment', 'changeFormModeToAdd');
 
       componentUnderTest = new WzCommentComponent(mockStore);
       componentUnderTest.wzForm = mockWzForm;
@@ -31,7 +36,7 @@ export function main() {
       });
 
       it('should dispatch the getComments action', () => {
-        mockStore.expectDispatchFor(getCommentsSpy, 'collection', 1);
+        mockStore.expectDispatchFor(loadSpy, { objectType: 'collection', objectId: 1 });
       });
 
       it('should set the comments instance variable', () => {
@@ -46,24 +51,10 @@ export function main() {
         componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
       });
 
-      describe('for adding a comment', () => {
-        it('dispatches the proper action to the store', () => {
-          componentUnderTest.onFormSubmit({ some: 'comment' } as any);
+      it('dispatches the proper action to the store', () => {
+        componentUnderTest.onFormSubmit({ some: 'comment' } as any);
 
-          mockStore.expectDispatchFor(addCommentSpy, 'collection', 1, { some: 'comment' });
-        });
-      });
-
-      describe('for editing a comment', () => {
-        beforeEach(() => {
-          componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any);
-        });
-
-        it('emits the \'editCommentSubmit\' event with the new comment', () => {
-          componentUnderTest.onFormSubmit({ the: 'newComment' } as any);
-
-          mockStore.expectDispatchFor(editCommentSpy, 'collection', 1, { some: 'comment', the: 'newComment' });
-        });
+        mockStore.expectDispatchFor(formSubmitSpy, { objectType: 'collection', objectId: 1 }, { some: 'comment' });
       });
 
       it('resets the form', () => {
@@ -89,10 +80,16 @@ export function main() {
     });
 
     describe('onEditButtonClick()', () => {
-      it('calls mergeNewValues() on the form', () => {
+      beforeEach(() => {
         componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any);
+      });
 
+      it('calls mergeNewValues() on the form', () => {
         expect(mockWzForm.mergeNewValues).toHaveBeenCalledWith([{ name: 'some', value: 'comment' }]);
+      });
+
+      it('dispatches the proper action', () => {
+        mockStore.expectDispatchFor(changeToEditSpy, { some: 'comment' });
       });
     });
 
@@ -107,22 +104,23 @@ export function main() {
     });
 
     describe('get formSubmitLabel', () => {
-      it('returns \'COMMENTS.SUBMIT_BTN_LABEL\' when the formMode is \'ADD\'', () => {
-        expect(componentUnderTest.formSubmitLabel).toBe('COMMENTS.SUBMIT_BTN_LABEL');
-      });
-
-      it('returns \'COMMENTS.SAVE_BTN_LABEL\' when the formMode is \'EDIT\'', () => {
-        componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any); // force formMode to 'EDIT'
-
-        expect(componentUnderTest.formSubmitLabel).toBe('COMMENTS.SAVE_BTN_LABEL');
+      it('returns the value thats in the store', () => {
+        componentUnderTest.formSubmitLabel
+          .subscribe(label => expect(label).toBe('some.trKey'));
       });
     });
 
     describe('onFormCancel()', () => {
-      it('calls resetForm() on the wzForm', () => {
+      beforeEach(() => {
         componentUnderTest.onFormCancel();
+      });
 
+      it('calls resetForm() on the wzForm', () => {
         expect(mockWzForm.resetForm).toHaveBeenCalled();
+      });
+
+      it('dispatches the correct action', () => {
+        mockStore.expectDispatchFor(changeFormModeToAdd);
       });
     });
 
@@ -131,7 +129,7 @@ export function main() {
         componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
         componentUnderTest.onDeleteCommentButtonClick({ some: 'comment', id: 2 } as any);
 
-        mockStore.expectDispatchFor(removeCommentSpy, 'collection', 1, 2);
+        mockStore.expectDispatchFor(removeSpy, { objectType: 'collection', objectId: 1 }, 2);
       });
     });
   });

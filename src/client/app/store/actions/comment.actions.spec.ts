@@ -2,19 +2,18 @@ import { ActionFactory, InternalActionFactory } from './comment.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
 export function main() {
-  describe('Action Factory', () => {
+  describe('Comment Action Factory', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'load',
-        parameters: ['collection', 1]
+        parameters: [{ objectType: 'collection', objectId: 1 }]
       },
       expectedAction: {
         type: '[Comments] Load',
-        objectType: 'collection',
-        objectId: 1
+        parentObject: { objectType: 'collection', objectId: 1 }
       }
     });
 
@@ -22,12 +21,11 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'formSubmit',
-        parameters: ['collection', 1, { some: 'comment' }]
+        parameters: [{ objectType: 'collection', objectId: 1 }, { some: 'comment' }]
       },
       expectedAction: {
         type: '[Comment] Form Submit',
-        objectType: 'collection',
-        objectId: 1,
+        parentObject: { objectType: 'collection', objectId: 1 },
         comment: { some: 'comment' },
       }
     });
@@ -36,13 +34,35 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'remove',
-        parameters: ['collection', 1, 2]
+        parameters: [{ objectType: 'collection', objectId: 1 }, 2]
       },
       expectedAction: {
         type: '[Comment] Remove',
-        objectType: 'collection',
-        objectId: 1,
+        parentObject: { objectType: 'collection', objectId: 1 },
         commentId: 2,
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'changeFormModeToAdd',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Comment] Change Form Mode To ADD'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'changeFormModeToEdit',
+        parameters: [{ some: 'comment' }]
+      },
+      expectedAction: {
+        type: '[Comment] Change Form Mode To EDIT',
+        commentBeingEdited: { some: 'comment' }
       }
     });
 
@@ -53,7 +73,7 @@ export function main() {
         parameters: [{ some: 'comments' }]
       },
       expectedAction: {
-        type: '[Comments] Get Success',
+        type: '[Comments] Load Success',
         comments: { some: 'comments' }
       }
     });

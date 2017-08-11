@@ -15,11 +15,55 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['AddComment', 'EditComment', 'RemoveComment', 'GetComments'],
+      actionClassName: ['ChangeFormModeToEdit'],
+      customTests: [
+        {
+          it: 'changes formMode to \'EDIT\', commentBeingEdited to the action\'s commentBeingEdited, and the formSubmitLabel',
+          actionParameters: { commentBeingEdited: { some: 'comment' } },
+          previousState: CommentState.initialState,
+          expectedNextState: {
+            ...CommentState.initialState,
+            formMode: 'EDIT',
+            commentBeingEdited: { some: 'comment' },
+            formSubmitLabel: 'COMMENTS.SAVE_BTN_LABEL'
+          }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: ['ChangeFormModeToAdd'],
+      mutationTestData: {
+        previousState: { formMode: 'ADD' }
+      },
+      customTests: [
+        {
+          it: 'changes formMode to  \'ADD\', commentBeingEdited to null, and the formSubmitLabel',
+          previousState: {
+            ...CommentState.initialState,
+            formMode: 'EDIT',
+            commentBeingEdited: { some: 'comment' },
+            formSubmitLabel: 'COMMENTS.SAVE_BTN_LABEL'
+          },
+          expectedNextState: {
+            ...CommentState.initialState,
+            formMode: 'ADD',
+            commentBeingEdited: null,
+            formSubmitLabel: 'COMMENTS.SUBMIT_BTN_LABEL'
+          }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: ['Remove', 'Load'],
+      mutationTestData: {
+        actionParameters: { parentObject: { objectType: 'collection', objectId: 1 } }
+      },
       customTests: [
         {
           it: 'changes the activeObjectType to the action\'s objectType',
-          actionParameters: { objectType: 'collection' },
+          actionParameters: { parentObject: { objectType: 'collection', objectId: 1 } },
           previousState: { activeObjectType: null },
           expectedNextState: { activeObjectType: 'collection' }
         }
@@ -27,13 +71,34 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['AddCommentSuccess', 'EditCommentSuccess', 'RemoveCommentSuccess', 'GetCommentsSuccess'],
+      actionClassName: ['FormSubmitSuccess', 'RemoveSuccess', 'LoadSuccess'],
+      mutationTestData: {
+        actionParameters: { comments: { items: [{ some: 'collection' }], pagination: {} } }
+      },
       customTests: [
         {
           it: 'adds the comments to the right part of the store and sets activeObjectType back to null',
           actionParameters: { comments: { items: [{ some: 'collection' }], pagination: {} } },
           previousState: { activeObjectType: 'collection' },
-          expectedNextState: { activeObjectType: null, collection: { items: [{ some: 'collection' }], pagination: {} } }
+          expectedNextState: {
+            activeObjectType: 'collection',
+            formMode: 'ADD',
+            formSubmitLabel: 'COMMENTS.SUBMIT_BTN_LABEL',
+            commentBeingEdited: null,
+            collection: { items: [{ some: 'collection' }], pagination: {} }
+          }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: ['FormSubmit'],
+      customTests: [
+        {
+          it: 'merges the commentBeingEdited',
+          actionParameters: { comment: { the: 'newComment' } },
+          previousState: { commentBeingEdited: { some: 'comment' } },
+          expectedNextState: { commentBeingEdited: { some: 'comment', the: 'newComment' } }
         }
       ]
     });
