@@ -29,7 +29,7 @@ export function main() {
         listenGlobal: jasmine.createSpy('listenGlobal')
           .and.callFake((a: any, b: any, c: Function) => { c(); })
       };
-      componentUnderTest = new WzSpeedviewComponent(mockOverlay, mockAssetService, mockRenderer);
+      componentUnderTest = new WzSpeedviewComponent(null);
     });
 
     // describe('show()', () => {

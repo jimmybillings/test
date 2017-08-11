@@ -23,19 +23,22 @@ export class MockAppStore extends AppStore {
     this._actionFactory = {
       activeCollection: {} as any,
       asset: {} as any,
-      snackbar: {} as any
+      snackbar: {} as any,
+      speedPreview: {} as any
     };
 
     this._internalActionFactory = {
       activeCollection: {} as any,
       asset: {} as any,
-      snackbar: {} as any
+      snackbar: {} as any,
+      speedPreview: {} as any
     };
 
     this._state = {
       activeCollection: {} as any,
       asset: {} as any,
-      snackbar: {} as any
+      snackbar: {} as any,
+      speedPreview: {} as any
     };
 
     spyOn(this, 'dispatch').and.callFake((actionFactoryMapper: ActionFactoryMapper) =>

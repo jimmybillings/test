@@ -49,7 +49,7 @@ export class WzSpeedviewComponent {
     this.detector.markForCheck();
   }
 
-  public setSpeedViewPostUrl(posterUrl: string) {
+  public setSpeedViewPosterUrl(posterUrl: string) {
     this.speedviewAssetInfo.posterUrl = posterUrl;
     this.detector.markForCheck();
   }

@@ -6,7 +6,6 @@ import {
   ViewContainerRef,
   Renderer,
   Input,
-  ChangeDetectorRef,
   OnDestroy
 } from '@angular/core';
 
@@ -64,79 +63,47 @@ export class WzSpeedviewDirective implements OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private overlay: Overlay,
     private renderer: Renderer,
-    private detector: ChangeDetectorRef,
     private store: AppStore) {
     this.config = new OverlayState();
-
   }
 
   @HostListener('mouseenter', ['$event']) public onMouseEnter($event: any): void {
     if (window.innerWidth <= previewWidth) return;
     this.viewport = $event.currentTarget.getBoundingClientRect();
-    this.prepareSpeedView();
+    this.loadSpeedView();
   }
 
   @HostListener('mouseleave', ['$event']) public onMouseLeave(): void {
-    this.disposeSpeedview();
+    this.destroySpeedView();
   }
 
   ngOnDestroy() {
-    this.disposeSpeedview();
+    this.destroySpeedView();
   }
 
-  private get prepareOverlay() {
-    this.config.positionStrategy = this.positionStrategy(this.previewPosition);
-    return this.overlay.create(this.config);
-  }
-
-  private get speedViewDataIsLoaded(): boolean {
-    return this.store.snapshot(state => state.speedPreview[this.enhancedAsset.assetId]) !== undefined;
-  }
-
-  private get speedViewComponent(): ComponentPortal<WzSpeedviewComponent> {
-    return new ComponentPortal(WzSpeedviewComponent, this.viewContainerRef);
-  }
-
-  private prepareSpeedView(): void {
-    this.overlayRef = this.prepareOverlay;
+  private loadSpeedView(): void {
+    this.overlayRef = this.loadOverlay;
     this.displaySpeedViewDialog();
 
-    if (this.speedViewDataIsLoaded) {
-      this.bindSpeedViewData();
-    } else {
-      this.speedViewDataSubscription = this.loadSpeedViewData()
-        .subscribe(() => this.bindSpeedViewData());
-    }
+    this.speedViewDataSubscription = this.loadSpeedViewData
+      .subscribe(() => this.setSpeedviewAssetInfo());
 
     this.scollListener = this.renderer
-      .listenGlobal('document', 'scroll', () => this.disposeSpeedview());
+      .listenGlobal('document', 'scroll', () => this.destroySpeedView());
   }
 
-  private loadSpeedViewData(): Observable<boolean> {
-    this.store.dispatch(factory => factory.speedPreview.load(this.enhancedAsset));
-    return this.store.blockUntil(state => !!state.speedPreview[this.enhancedAsset.assetId]);
-  }
-
-  private displaySpeedViewDialog() {
+  private displaySpeedViewDialog(): void {
     this.speedViewInstance = this.overlayRef.attach(this.speedViewComponent).instance;
-    this.setPosterUrl();
+    this.speedViewInstance.setSpeedViewPosterUrl(this.enhancedAsset.thumbnailUrl);
     this.speedViewInstance!.show();
   }
 
-  private setPosterUrl() {
-    this.speedViewInstance.setSpeedViewPostUrl(this.enhancedAsset.thumbnailUrl);
-  }
-
-  private bindSpeedViewData() {
+  private setSpeedviewAssetInfo(): void {
     this.speedViewInstance.setSpeedviewAssetInfo(this.speedViewData);
   }
 
-  private get speedViewData(): SpeedviewData {
-    return this.store.snapshot(state => state.speedPreview[this.enhancedAsset.assetId]);
-  }
-
   /** Disposes the current speed preview and the overlay it is attached to */
-  private disposeSpeedview(): void {
+  private destroySpeedView(): void {
     if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = null;
@@ -159,6 +126,32 @@ export class WzSpeedviewDirective implements OnDestroy {
       .global()
       .top(`${coordinates.y}px`)
       .left(`${coordinates.x}px`);
+  }
+
+  private get loadOverlay(): OverlayRef {
+    this.config.positionStrategy = this.positionStrategy(this.previewPosition);
+    return this.overlay.create(this.config);
+  }
+
+  private get speedViewDataIsLoaded(): boolean {
+    return this.store.snapshot(state => state.speedPreview[this.enhancedAsset.assetId]) !== undefined;
+  }
+
+  private get speedViewComponent(): ComponentPortal<WzSpeedviewComponent> {
+    return new ComponentPortal(WzSpeedviewComponent, this.viewContainerRef);
+  }
+
+  private get speedViewData(): SpeedviewData {
+    return this.store.snapshot(state => state.speedPreview[this.enhancedAsset.assetId]);
+  }
+
+  private get loadSpeedViewData(): Observable<boolean> {
+    if (this.speedViewDataIsLoaded) {
+      return Observable.of(true);
+    } else {
+      this.store.dispatch(factory => factory.speedPreview.load(this.enhancedAsset));
+      return this.store.blockUntil(state => !!state.speedPreview[this.enhancedAsset.assetId]);
+    }
   }
 
   // Determines the x and y coordinate that the preview's top left corner should start at
