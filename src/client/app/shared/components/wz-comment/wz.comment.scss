@@ -1,5 +1,7 @@
 wz-comment {
   display: block;
+  overflow: hidden;
+  max-height: 0;
   & > section {
     padding: 6px 17px 28px 17px;
   }
@@ -41,6 +43,8 @@ wz-comment {
           position: relative;
           width: 40px;
           height: 40px;
+          max-width: 40px;
+          max-height: 40px;
           margin-right: 10px;
           border-radius: 50%;
           strong {
@@ -53,6 +57,9 @@ wz-comment {
             margin: -25% 0 0 -47%;
             text-align: center;
           }
+        }
+        .actions  {
+          max-width: 80px;
         }
       }
       .comment-body {
@@ -86,6 +93,7 @@ wz-comment {
     animation-fill-mode: none;
   }
   &.visible {
+    max-height: none;
     overflow: hidden;
     animation-name: slide-down;
     animation-duration: 500ms;

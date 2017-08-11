@@ -77,18 +77,6 @@ export function main() {
       });
     });
 
-    describe('get includeFormCancel', () => {
-      it('returns false when the formMode is \'ADD\'', () => {
-        expect(componentUnderTest.includeFormCancel).toBe(false);
-      });
-
-      it('returns true when the formMode is \'EDIT\'', () => {
-        componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any); // force formMode to 'EDIT'
-
-        expect(componentUnderTest.includeFormCancel).toBe(true);
-      });
-    });
-
     describe('get formSubmitLabel', () => {
       it('returns \'COMMENTS.SUBMIT_BTN_LABEL\' when the formMode is \'ADD\'', () => {
         expect(componentUnderTest.formSubmitLabel).toBe('COMMENTS.SUBMIT_BTN_LABEL');

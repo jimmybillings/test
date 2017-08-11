@@ -11,7 +11,7 @@
             <wz-form
               [items]="formFields"
               [submitLabel]="formSubmitLabel"
-              [includeCancel]="includeFormCancel"
+              [includeCancel]="true"
               (formCancel)="onFormCancel()"
               (formSubmit)="onFormSubmit($event)">
             </wz-form>
@@ -34,14 +34,14 @@
           class="md-display comment"
           *ngFor="let comment of comments.items; let even = even; let odd = odd"
           [ngClass]="{ odd: odd, even: even }">
-          <header class="comment-head" layout="row" layout-align="space-between center">
-            <div layout="row" layout-align="start center">
-              <div class="avatar" layout-align="center center"><strong>{{initials(comment.userName)}}</strong></div>  
-              <div>
+          <header class="comment-head" layout="row" layout-align="space-between end">
+            <div flex="grow" layout="row" layout-align="center center">
+              <div class="avatar" flex="none"><strong>{{initials(comment.userName)}}</strong></div>  
+              <div flex="initial">
                 <strong>{{comment.userName}} </strong>{{comment.createdOn | date:'short' }}
               </div>
             </div> 
-            <div layout-gt-sm="row" layout="column" layout-align="end center">
+            <div flex="auto" class="actions" layout="row" layout-align="end center">
               <button
                 (click)="onEditCommentButtonClick(comment)"
                 [disabled]="!showEditCommentButton"
