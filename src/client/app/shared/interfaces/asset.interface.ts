@@ -18,7 +18,7 @@ export interface SpeedviewEvent {
 export interface SpeedviewData {
   imageQuickView?: boolean;
   price?: number;
-  pricingType?: 'Royalty Free' | 'Rights Managed';
+  pricingType?: 'Royalty Free' | 'Rights Managed' | '';
   url?: string;
   values?: Array<Pojo>;
 }

@@ -11,11 +11,6 @@ import {
 } from '@angular/core';
 
 import {
-  Viewport,
-  Coords,
-  Asset
-} from '../../../interfaces/common.interface';
-import {
   OverlayState,
   OverlayRef,
   Overlay,
@@ -23,20 +18,31 @@ import {
   TemplatePortalDirective,
   ComponentPortal
 } from '@angular/material';
-import { WzSpeedviewComponent } from './wz.speedview.component';
-import { AssetService } from '../../../services/asset.service';
+
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+
 import {
   SpeedviewData,
   SpeedviewEvent
 } from '../../../interfaces/asset.interface';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+
+import {
+  Viewport,
+  Coords,
+  Asset
+} from '../../../interfaces/common.interface';
+
+import { State as SpeedPreviewStore } from '../../../../store/states/speed-preview.state';
+import { WzSpeedviewComponent } from './wz.speedview.component';
+
+import { AppStore } from '../../../../app.store';
 
 const previewWidth: number = 420;     // How wide the speed preview dialog is
 const previewHeight: number = 300;    // How tall the speed preview dialog is
 const horizontalPadding: number = 10; // How much room we want on each side of the speed preview
 const verticalPadding: number = 20;   // How much room we want above and below the preview
-const delay: number = 333;            // How long we want to wait before showing the preview
+const delay: number = 200;            // How long we want to wait before showing the preview
 
 @Directive({ selector: '[wzSpeedview]' })
 export class WzSpeedviewDirective implements OnDestroy {
@@ -45,27 +51,31 @@ export class WzSpeedviewDirective implements OnDestroy {
   set wzSpeedview(value: Asset) {
     this.currentAsset = value;
   }
-  private timeout: any;
+
+  private timeout: number;
   private viewport: Viewport;
-  private config: OverlayState = new OverlayState();
+  private config: OverlayState;
   private speedViewInstance: WzSpeedviewComponent;
   private overlayRef: OverlayRef;
   private previewSubscription: Subscription;
-  private scollListener: any;
-  private currentAsset: any;
+  private scollListener: Function;
+  private currentAsset: Asset;
 
   constructor(
     private viewContainerRef: ViewContainerRef,
     private overlay: Overlay,
-    private assetService: AssetService,
     private renderer: Renderer,
-    private detector: ChangeDetectorRef) { }
+    private detector: ChangeDetectorRef,
+    private store: AppStore) {
+    this.config = new OverlayState();
+
+  }
 
   @HostListener('mouseenter', ['$event']) public onMouseEnter($event: any): void {
     if (window.innerWidth <= previewWidth) return;
     this.viewport = $event.currentTarget.getBoundingClientRect();
-    this.overlayRef = this.prepareOverlay();
-    this.show(this.speedViewComponent());
+    this.overlayRef = this.prepareOverlay;
+    this.prepareSpeedView();
   }
 
   @HostListener('mouseleave', ['$event']) public onMouseLeave(): void {
@@ -76,36 +86,47 @@ export class WzSpeedviewDirective implements OnDestroy {
     this.disposeSpeedview();
   }
 
-  private prepareOverlay() {
+  private get prepareOverlay() {
     this.config.positionStrategy = this.positionStrategy(this.previewPosition);
     return this.overlay.create(this.config);
   }
 
-  private speedViewComponent() {
+  private get hasSpeedViewData(): boolean {
+    return this.store.snapshot(state => state.speedPreview[this.currentAsset.assetId]) !== undefined;
+  }
+
+  private get speedViewComponent(): ComponentPortal<WzSpeedviewComponent> {
     return new ComponentPortal(WzSpeedviewComponent, this.viewContainerRef);
   }
 
-  private show(component: ComponentPortal<WzSpeedviewComponent>): void {
-    this.previewSubscription = this.loadSpeedViewData()
-      .subscribe((data: SpeedviewData) => {
-        this.speedViewInstance = this.overlayRef.attach(component).instance;
-        this.speedViewInstance.speedviewAssetInfo = data;
-        this.detector.markForCheck();
-      });
-
+  private prepareSpeedView(): void {
+    if (this.hasSpeedViewData) {
+      this.speedViewInstance = this.overlayRef.attach(this.speedViewComponent).instance;
+      this.speedViewInstance.speedviewAssetInfo = this.speedViewData;
+      this.speedViewInstance!.show();
+    } else {
+      this.loadSpeedViewData();
+    }
     this.scollListener = this.renderer.listenGlobal('document', 'scroll', () => this.disposeSpeedview());
   }
 
-  private loadSpeedViewData(): Observable<SpeedviewData> {
-    if (this.currentAsset.speedviewData) {
-      return Observable.of(this.currentAsset.speedviewData);
-    } else {
-      return this.assetService.getSpeedviewData(this.currentAsset.assetId);
-    }
+  private loadSpeedViewData() {
+    this.store.dispatch(factory => factory.speedPreview.load(this.currentAsset));
+    this.speedViewInstance = this.overlayRef.attach(this.speedViewComponent).instance;
+    this.previewSubscription = this.store.blockUntil(state => !!state.speedPreview[this.currentAsset.assetId])
+      .subscribe(() => {
+        this.speedViewInstance.speedviewAssetInfo = this.speedViewData;
+        this.speedViewInstance!.show();
+      });
+  }
+
+  private get speedViewData(): SpeedviewData {
+    return this.store.snapshot(state => state.speedPreview[this.currentAsset.assetId]);
   }
 
   /** Disposes the current speed preview and the overlay it is attached to */
   private disposeSpeedview(): void {
+    window.clearTimeout(this.timeout);
 
     if (this.overlayRef) {
       this.overlayRef.dispose();
@@ -121,6 +142,14 @@ export class WzSpeedviewDirective implements OnDestroy {
     }
 
     this.speedViewInstance = null;
+  }
+
+  private positionStrategy(coordinates: Coords): GlobalPositionStrategy {
+    return this.overlay
+      .position()
+      .global()
+      .top(`${coordinates.y}px`)
+      .left(`${coordinates.x}px`);
   }
 
   // Determines the x and y coordinate that the preview's top left corner should start at
@@ -165,13 +194,5 @@ export class WzSpeedviewDirective implements OnDestroy {
   // Returns true if there is at least 20px below the hovered element
   private get roomBelow(): boolean {
     return window.innerHeight - (this.viewport.top - (previewHeight / 3) + previewHeight) >= verticalPadding;
-  }
-
-  private positionStrategy(coordinates: Coords): GlobalPositionStrategy {
-    return this.overlay
-      .position()
-      .global()
-      .top(`${coordinates.y}px`)
-      .left(`${coordinates.x}px`);
   }
 }

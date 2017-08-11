@@ -72,6 +72,7 @@ import { FutureAssetService } from '../store/services/asset.service';
 import { ActiveCollectionService } from '../store/services/active-collection.service';
 import { SnackbarService } from '../store/services/snackbar.service';
 import { CommentService } from '../store/services/comment.service';
+import { SpeedPreviewService } from '../store/services/speed-preview.service';
 
 
 // WAZEE STORES
@@ -82,6 +83,7 @@ import {
 import * as ActiveCollectionState from '../store/states/active-collection.state';
 import * as AssetState from '../store/states/asset.state';
 import * as SnackbarState from '../store/states/snackbar.state';
+import * as SpeedPreviewState from '../store/states/speed-preview.state';
 
 import { searchStore, SearchStore } from './stores/search.store';
 import { cart, CartStore } from './stores/cart.store';
@@ -113,6 +115,7 @@ import { sortDefinitions } from './services/sort-definitions.service';
 import { ActiveCollectionEffects } from '../store/effects/active-collection.effects';
 import { AssetEffects } from '../store/effects/asset.effects';
 import { SnackbarEffects } from '../store/effects/snackbar.effects';
+import { SpeedPreviewEffects } from '../store/effects/speed-preview.effects';
 
 const WAZEE_SERVICES = [
   ApiConfig,
@@ -146,7 +149,8 @@ const WAZEE_SERVICES = [
   QuotesService,
   QuoteEditService,
   SnackbarService,
-  CommentService
+  CommentService,
+  SpeedPreviewService
 ];
 
 const WAZEE_STORE_INTERFACES = [
@@ -200,13 +204,15 @@ const WAZEE_STORES: any = {
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,
-  snackbar: SnackbarState.reducer
+  snackbar: SnackbarState.reducer,
+  speedPreview: SpeedPreviewState.reducer
 };
 
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
   AssetEffects,
-  SnackbarEffects
+  SnackbarEffects,
+  SpeedPreviewEffects
 ]);
 
 // Shared pipes

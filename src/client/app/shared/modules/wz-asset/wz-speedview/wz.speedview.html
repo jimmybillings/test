@@ -1,4 +1,4 @@
-<div class="wz-speedview">
+<div class="wz-speedview" [@state]="visibility">
   <div layout="column" flex="none" *ngIf="speedviewAssetInfo.imageQuickView">
     <div class="image-bg">
       <img class="image-speedview" [src]="speedviewAssetInfo.url">

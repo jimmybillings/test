@@ -65,11 +65,6 @@ export class AssetService {
     });
   }
 
-  public getSpeedviewData(assetId: number): Observable<any> {
-    let path: string = this.currentUser.loggedIn() ? `assetInfo/view/SpeedView` : `assetInfo/anonymous/view/SpeedView`;
-    return this.api.get(Api.Assets, `${path}/${assetId}`);
-  }
-
   public getClipPreviewData(assetId: number): Observable<any> {
     const viewType: ApiOptions = { parameters: { 'useType': 'clipPreview' } };
     return this.api.get(Api.Assets, `renditionType/${assetId}`, viewType);
