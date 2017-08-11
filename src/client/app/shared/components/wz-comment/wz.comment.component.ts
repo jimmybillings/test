@@ -1,10 +1,11 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
+import { AppStore } from '../../../app.store';
 import { FormFields } from '../../interfaces/forms.interface';
-import { Comments, Comment } from '../../interfaces/common.interface';
+import { Comments, Comment, ObjectType } from '../../interfaces/comment.interface';
 import { WzFormComponent } from '../../modules/wz-form/wz.form.component';
 import { Capabilities } from '../../services/capabilities.service';
-import { WzDialogService } from '../../modules/wz-dialog/services/wz.dialog.service';
 
 @Component({
   moduleId: module.id,
@@ -13,36 +14,40 @@ import { WzDialogService } from '../../modules/wz-dialog/services/wz.dialog.serv
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WzCommentComponent {
-  @Input() comments: Comments;
+  @Input()
+  set parentObject(commentObject: { objectType: ObjectType, objectId: number }) {
+    this._parentObject = commentObject;
+    this.initializeData();
+  }
   @Input() formFields: Array<FormFields>;
   @Input() showEditCommentButton: boolean;
-  @Output() addCommentSubmit: EventEmitter<Comment> = new EventEmitter();
-  @Output() editCommentSubmit: EventEmitter<Comment> = new EventEmitter();
-  @Output() deleteComment: EventEmitter<number> = new EventEmitter();
   @ViewChild(WzFormComponent) wzForm: WzFormComponent;
+  public comments: Observable<Comments>;
   private formMode: 'ADD' | 'EDIT' = 'ADD';
   private commentToEdit: Comment;
+  private _parentObject: { objectType: ObjectType, objectId: number };
 
-  constructor(private wzDialogService: WzDialogService) { }
+  constructor(private store: AppStore) { }
 
   public onFormSubmit(comment: Comment): void {
     if (this.formMode === 'ADD') {
-      this.addCommentSubmit.emit(comment);
+      this.store.dispatch(factory => factory.comment.addComment(this._parentObject.objectType, this._parentObject.objectId, comment));
     } else {
       let editedComment: Comment = Object.assign({}, this.commentToEdit, comment);
-      this.editCommentSubmit.emit(editedComment);
-      this.formMode = 'ADD';
+      this.store.dispatch(factory =>
+        factory.comment.editComment(this._parentObject.objectType, this._parentObject.objectId, editedComment));
+      this.toggleFormMode();
     }
     this.wzForm.resetForm();
   }
 
-  public get commentsExist(): boolean {
-    return this.comments.items.length > 0;
+  public get commentsExist(): Observable<boolean> {
+    return this.comments.map(comments => comments.items.length > 0);
   }
 
   public onEditCommentButtonClick(comment: Comment): void {
     this.commentToEdit = comment;
-    this.formMode = 'EDIT';
+    this.toggleFormMode();
     let newFormFields: Array<FormFields> = this.formFields.map((field: FormFields) => {
       field.value = comment[field.name];
       return field;
@@ -60,16 +65,21 @@ export class WzCommentComponent {
   }
 
   public onFormCancel(): void {
-    this.formMode = 'ADD';
+    this.toggleFormMode();
     this.wzForm.resetForm();
     this.commentToEdit = null;
   }
 
   public onDeleteCommentButtonClick(comment: Comment): void {
-    this.wzDialogService.openConfirmationDialog({
-      title: 'Are you sure you want to delete this comment?',
-      accept: 'Yes, I\'m Sure',
-      decline: 'No'
-    }, () => this.deleteComment.emit(comment.id));
+    this.store.dispatch(factory => factory.comment.removeComment(this._parentObject.objectType, this._parentObject.objectId, comment.id));
+  }
+
+  private initializeData(): void {
+    this.store.dispatch(factory => factory.comment.getComments(this._parentObject.objectType, this._parentObject.objectId));
+    this.comments = this.store.select(state => state.comment[this._parentObject.objectType]);
+  }
+
+  private toggleFormMode(): void {
+    this.formMode === 'ADD' ? this.formMode = 'EDIT' : this.formMode = 'ADD';
   }
 }

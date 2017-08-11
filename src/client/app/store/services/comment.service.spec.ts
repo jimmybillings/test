@@ -10,7 +10,7 @@ export function main() {
       jasmine.addMatchers(mockApiMatchers);
       mockApiService = new MockApiService();
       mockApiService.getResponse = {
-        items: [],
+        items: [{ some: 'comment' }],
         currentPage: 0,
         numberOfPages: 10,
         hasNextPage: true,
@@ -32,7 +32,7 @@ export function main() {
       describe('converts to response to the proper shape', () => {
         it('when items exist', () => {
           serviceUnderTest.getCommentsFor('collection', 123).subscribe(comments => expect(comments).toEqual({
-            items: [],
+            items: [{ some: 'comment' }],
             pagination: {
               currentPage: 0,
               numberOfPages: 10,
@@ -78,16 +78,47 @@ export function main() {
         expect(mockApiService.post).toHaveBeenCalledWithBody({ comment: 'wow' });
         expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
       });
+
+      it('calls getCommentsFor() with the correct objectType and objectId', () => {
+        serviceUnderTest.addCommentTo('collection', 123, { comment: 'wow' } as any).subscribe();
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
+      });
     });
 
     describe('editComment()', () => {
       it('calls the api service correctly', () => {
-        serviceUnderTest.editComment({ some: 'comment', id: 123 } as any);
+        serviceUnderTest.editComment('collection', 123, { some: 'comment', id: 123 } as any);
 
         expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.put).toHaveBeenCalledWithEndpoint('comment/123');
         expect(mockApiService.put).toHaveBeenCalledWithBody({ some: 'comment', id: 123 });
         expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('calls getCommentsFor() with the correct objectType and objectId', () => {
+        serviceUnderTest.editComment('collection', 123, { comment: 'wow' } as any).subscribe();
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
+      });
+    });
+
+    describe('removeComment()', () => {
+      it('calls the api service correctly', () => {
+        serviceUnderTest.removeComment('collection', 123, 1);
+
+        expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('comment/1');
+        expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('calls getCommentsFor() with the correct objectType and objectId', () => {
+        serviceUnderTest.removeComment('collection', 123, 1).subscribe();
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
       });
     });
   });

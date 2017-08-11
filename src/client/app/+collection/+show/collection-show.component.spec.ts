@@ -45,23 +45,5 @@ export function main() {
         expect(componentUnderTest.showComments).toBe(false);
       });
     });
-
-    describe('onAddCommentSubmit()', () => {
-      it('dispatches the proper action with the comment', () => {
-        const spy = mockStore.createActionFactoryMethod('activeCollection', 'addComment');
-        componentUnderTest.onAddCommentSubmit({ comment: 'wowowowo' } as any);
-
-        mockStore.expectDispatchFor(spy, { comment: 'wowowowo' });
-      });
-    });
-
-    describe('onEditCommentSubmit()', () => {
-      it('dispatches the proper action with the comment', () => {
-        const spy = mockStore.createActionFactoryMethod('activeCollection', 'editComment');
-        componentUnderTest.onEditCommentSubmit({ comment: 'wowowowo' } as any);
-
-        mockStore.expectDispatchFor(spy, { comment: 'wowowowo' });
-      });
-    });
   });
 }

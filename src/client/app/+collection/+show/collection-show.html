@@ -4,10 +4,8 @@
 			<wz-comment
 				[ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
 				[formFields]="commentFormConfig"
-				[comments]="activeCollection.comments"
-				[showEditCommentButton]="userCanEditCollection | async"
-				(addCommentSubmit)="onAddCommentSubmit($event)"
-				(editCommentSubmit)="onEditCommentSubmit($event)">
+				[parentObject]="{ objectType: 'collection', objectId: activeCollection.id }"
+				[showEditCommentButton]="userCanEditCollection | async">
 			</wz-comment>
 		</div>
 	</section>
@@ -45,7 +43,6 @@
 								</ul>
 							</div>
 						</div>
-<<<<<<< HEAD
 					</div>
 				</div>
 				<div flex-gt-xs="33" flex="100" class="actions" layout-align="end start" flex-order-xs="-1">
@@ -66,7 +63,7 @@
 						title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
 						(click)="toggleCommentsVisibility()">
 							<md-icon>mode_comment</md-icon>
-							<span *ngIf="commentCount > 0" class="comment-count">{{commentCount}}</span>
+							<span *ngIf="(commentCount | async) > 0" class="comment-count">{{commentCount| async}}</span>
 					</button>
 					<button
 						md-icon-button
@@ -92,24 +89,6 @@
 			</li>
 		</ul>
 	</section>
-=======
-					</li>
-				</ul>
-			</section>
-		</div>
-	</div>
-  <div layout="row" layout-align="center center">
-		<wz-comment
-			[ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
-			[formFields]="commentFormConfig"
-			[comments]="activeCollection.comments"
-			[showEditCommentButton]="userCanEditCollection | async"
-      (addCommentSubmit)="onAddCommentSubmit($event)"
-      (editCommentSubmit)="onEditCommentSubmit($event)"
-      (deleteComment)="onDeleteComment($event)">
-    </wz-comment>
-  </div>
->>>>>>> CRUX-2322 - collection comments can be deleted
 </section>
 
 <section class="asset-results-header" layout="row" layout-align="center center">

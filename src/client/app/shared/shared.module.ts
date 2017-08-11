@@ -84,6 +84,7 @@ import * as ActiveCollectionState from '../store/states/active-collection.state'
 import * as AssetState from '../store/states/asset.state';
 import * as SnackbarState from '../store/states/snackbar.state';
 import * as SpeedPreviewState from '../store/states/speed-preview.state';
+import * as CommentState from '../store/states/comment.state';
 
 import { searchStore, SearchStore } from './stores/search.store';
 import { cart, CartStore } from './stores/cart.store';
@@ -116,6 +117,7 @@ import { ActiveCollectionEffects } from '../store/effects/active-collection.effe
 import { AssetEffects } from '../store/effects/asset.effects';
 import { SnackbarEffects } from '../store/effects/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/effects/speed-preview.effects';
+import { CommentEffects } from '../store/effects/comment.effects';
 
 const WAZEE_SERVICES = [
   ApiConfig,
@@ -205,14 +207,16 @@ const WAZEE_STORES: any = {
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,
   snackbar: SnackbarState.reducer,
-  speedPreview: SpeedPreviewState.reducer
+  speedPreview: SpeedPreviewState.reducer,
+  comment: CommentState.reducer
 };
 
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
   AssetEffects,
   SnackbarEffects,
-  SpeedPreviewEffects
+  SpeedPreviewEffects,
+  CommentEffects
 ]);
 
 // Shared pipes

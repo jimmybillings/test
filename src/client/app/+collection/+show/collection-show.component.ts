@@ -28,7 +28,7 @@ import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interfac
 import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../shared/services/quote-edit.service';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { WzEvent, Coords, Comment } from '../../shared/interfaces/common.interface';
+import { WzEvent, Coords } from '../../shared/interfaces/common.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { AppStore } from '../../app.store';
 
@@ -237,20 +237,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.showComments = !this.showComments;
   }
 
-  public onAddCommentSubmit(comment: Comment) {
-    this.store.dispatch(factory => factory.activeCollection.addComment(comment));
-  }
-
-  public onEditCommentSubmit(comment: Comment) {
-    this.store.dispatch(factory => factory.activeCollection.editComment(comment));
-  }
-
-  public onDeleteComment(commentId: number): void {
-    this.store.dispatch(factory => factory.activeCollection.removeComment(commentId));
-  }
-
-  public get commentCount(): number {
-    return this.activeCollection.comments.items.length;
+  public get commentCount(): Observable<number> {
+    return this.store.select(factory => factory.comment.collection.items.length);
   }
 
   public get userCanEditCollection(): Observable<boolean> {
