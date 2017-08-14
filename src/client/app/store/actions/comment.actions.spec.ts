@@ -12,7 +12,7 @@ export function main() {
         parameters: [{ objectType: 'collection', objectId: 1 }]
       },
       expectedAction: {
-        type: '[Comments] Load',
+        type: '[Comment] Load',
         parentObject: { objectType: 'collection', objectId: 1 }
       }
     });
@@ -73,7 +73,7 @@ export function main() {
         parameters: [{ some: 'comments' }]
       },
       expectedAction: {
-        type: '[Comments] Load Success',
+        type: '[Comment] Load Success',
         comments: { some: 'comments' }
       }
     });

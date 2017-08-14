@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 
 import { AppStore } from '../../../app.store';
 import { FormFields } from '../../interfaces/forms.interface';
@@ -23,9 +22,6 @@ export class WzCommentComponent {
   @Input() formFields: Array<FormFields>;
   @Input() showEditCommentButton: boolean;
   @ViewChild(WzFormComponent) wzForm: WzFormComponent;
-  public comments: Observable<Comments>;
-  private formMode: CommentFormMode;
-  private storeSubscription: Subscription;
   private _parentObject: CommentParentObject;
 
   constructor(private store: AppStore) { }
@@ -73,8 +69,11 @@ export class WzCommentComponent {
     ));
   }
 
+  public get comments(): Observable<Comments> {
+    return this.store.select(state => state.comment[this._parentObject.objectType]);
+  }
+
   private initializeData(): void {
     this.store.dispatch(factory => factory.comment.load(this._parentObject));
-    this.comments = this.store.select(state => state.comment[this._parentObject.objectType]);
   }
 }

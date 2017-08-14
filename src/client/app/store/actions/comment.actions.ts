@@ -39,7 +39,7 @@ export class InternalActionFactory {
 }
 
 export class Load implements Action {
-  public static readonly Type = '[Comments] Load';
+  public static readonly Type = '[Comment] Load';
   public readonly type = Load.Type;
   constructor(public readonly parentObject: CommentParentObject) { }
 }
@@ -68,7 +68,7 @@ export class ChangeFormModeToEdit implements Action {
 }
 
 export class LoadSuccess implements Action {
-  public static readonly Type = '[Comments] Load Success';
+  public static readonly Type = '[Comment] Load Success';
   public readonly type = LoadSuccess.Type;
   constructor(public readonly comments: Comments) { }
 }

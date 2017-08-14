@@ -16,17 +16,13 @@ export class ActiveCollectionService {
   constructor(private apiService: ApiService) { }
 
   public load(parameters: CollectionPaginationParameters): Observable<Collection> {
-    return this.combineCollectionWithAuxiliaryData(
-      this.apiService.get(Api.Assets, 'collectionSummary/focused', { loadingIndicator: true }),
-      parameters
-    );
+    return this.apiService.get(Api.Assets, 'collectionSummary/focused', { loadingIndicator: true })
+      .flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
   }
 
   public set(collectionId: number, parameters: CollectionPaginationParameters): Observable<Collection> {
-    return this.combineCollectionWithAuxiliaryData(
-      this.apiService.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loadingIndicator: true }),
-      parameters
-    );
+    return this.apiService.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loadingIndicator: true })
+      .flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
   }
 
   public loadPage(collectionId: number, parameters: CollectionPaginationParameters): Observable<CollectionItems> {
@@ -86,13 +82,6 @@ export class ActiveCollectionService {
 
   public timeEndFrom(markers: SubclipMarkers): number {
     return markers && markers.out ? this.toMilliseconds(markers.out) : -2;
-  }
-
-  private combineCollectionWithAuxiliaryData(
-    collection: Observable<Collection>,
-    parameters: CollectionPaginationParameters): Observable<any> {
-    return collection
-      .flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
   }
 
   private combineAssetsWith(collectionSummary: Collection, parameters: CollectionPaginationParameters): Observable<Collection> {

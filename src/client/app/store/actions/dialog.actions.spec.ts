@@ -2,6 +2,9 @@ import { ActionFactory, InternalActionFactory } from './dialog.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
 export function main() {
+  const onAcceptFn: Function = () => { };
+  const onDeclineFn: Function = () => { };
+
   describe('Dialog Action Factory', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
@@ -10,12 +13,12 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'showConfirmation',
-        parameters: [{ some: 'title' }, () => { }]
+        parameters: [{ some: 'title' }, onAcceptFn]
       },
       expectedAction: {
         type: '[Dialog] Show Confirmation',
         confirmationDialogOptions: { some: 'title' },
-        onAccept: jasmine.any(Function),
+        onAccept: onAcceptFn,
         onDecline: jasmine.any(Function)
       }
     });
@@ -25,13 +28,13 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'showConfirmation',
-        parameters: [{ some: 'title' }, () => { }, () => { }]
+        parameters: [{ some: 'title' }, onAcceptFn, onDeclineFn]
       },
       expectedAction: {
         type: '[Dialog] Show Confirmation',
         confirmationDialogOptions: { some: 'title' },
-        onAccept: jasmine.any(Function),
-        onDecline: jasmine.any(Function)
+        onAccept: onAcceptFn,
+        onDecline: onDeclineFn
       }
     });
 
