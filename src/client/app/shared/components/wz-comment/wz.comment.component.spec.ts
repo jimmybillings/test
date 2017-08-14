@@ -1,41 +1,60 @@
 import { WzCommentComponent } from './wz.comment.component';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Wz Comment Component', () => {
-    let componentUnderTest: WzCommentComponent, mockWzForm: any;
+    let componentUnderTest: WzCommentComponent, mockStore: MockAppStore,
+      loadSpy: jasmine.Spy, formSubmitSpy: jasmine.Spy, removeSpy: jasmine.Spy, changeToEditSpy: jasmine.Spy,
+      changeFormModeToAdd: jasmine.Spy;
+
+    const mockWzForm: any = {
+      resetForm: jasmine.createSpy('resetForm'),
+      mergeNewValues: jasmine.createSpy('mergeNewValues')
+    };
 
     beforeEach(() => {
-      componentUnderTest = new WzCommentComponent();
-      mockWzForm = {
-        resetForm: jasmine.createSpy('resetForm'),
-        mergeNewValues: jasmine.createSpy('mergeNewValues')
-      };
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('comment', {
+        formSubmitLabel: 'some.trKey',
+        collection: { items: [{ some: 'comment' }], pagination: {} }
+      });
+
+      loadSpy = mockStore.createActionFactoryMethod('comment', 'load');
+      formSubmitSpy = mockStore.createActionFactoryMethod('comment', 'formSubmit');
+      removeSpy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
+      changeToEditSpy = mockStore.createActionFactoryMethod('comment', 'changeFormModeToEdit');
+      changeFormModeToAdd = mockStore.createActionFactoryMethod('comment', 'changeFormModeToAdd');
+
+      componentUnderTest = new WzCommentComponent(mockStore);
       componentUnderTest.wzForm = mockWzForm;
       componentUnderTest.formFields = [{ name: 'some', value: '' }] as any;
     });
 
-    describe('onCommentSubmit', () => {
-      describe('for adding a comment', () => {
-        it('should emit the \'addCommentSubmit\' event with the comment', () => {
-          spyOn(componentUnderTest.addCommentSubmit, 'emit');
-          componentUnderTest.onFormSubmit({ some: 'comment' } as any);
-
-          expect(componentUnderTest.addCommentSubmit.emit).toHaveBeenCalledWith({ some: 'comment' });
-        });
+    describe('parentObject setter', () => {
+      beforeEach(() => {
+        componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
       });
 
-      describe('for editing a comment', () => {
-        beforeEach(() => {
+      it('should dispatch the getComments action', () => {
+        mockStore.expectDispatchFor(loadSpy, { objectType: 'collection', objectId: 1 });
+      });
 
-          componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any);
-        });
+      it('should set the comments instance variable', () => {
+        componentUnderTest.comments.take(1).subscribe(comments =>
+          expect(comments).toEqual({ items: [{ some: 'comment' }], pagination: {} })
+        );
+      });
+    });
 
-        it('emits the \'editCommentSubmit\' event with the new comment', () => {
-          spyOn(componentUnderTest.editCommentSubmit, 'emit');
-          componentUnderTest.onFormSubmit({ the: 'newComment' } as any);
+    describe('onFormSubmit', () => {
+      beforeEach(() => {
+        componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
+      });
 
-          expect(componentUnderTest.editCommentSubmit.emit).toHaveBeenCalledWith({ some: 'comment', the: 'newComment' });
-        });
+      it('dispatches the proper action to the store', () => {
+        componentUnderTest.onFormSubmit({ some: 'comment' } as any);
+
+        mockStore.expectDispatchFor(formSubmitSpy, { objectType: 'collection', objectId: 1 }, { some: 'comment' });
       });
 
       it('resets the form', () => {
@@ -47,23 +66,30 @@ export function main() {
 
     describe('get commentsExist()', () => {
       it('returns true if there are comments', () => {
-        componentUnderTest.comments = { items: [{ some: 'comment' }] } as any;
+        componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
 
-        expect(componentUnderTest.commentsExist).toBe(true);
+        componentUnderTest.commentsExist.take(1).subscribe(result => expect(result).toBe(true));
       });
 
       it('returns false if there are no comments', () => {
-        componentUnderTest.comments = { items: [] } as any;
+        mockStore.createStateSection('comment', { collection: { items: [], pagination: {} } });
+        componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
 
-        expect(componentUnderTest.commentsExist).toBe(false);
+        componentUnderTest.commentsExist.take(1).subscribe(result => expect(result).toBe(false));
       });
     });
 
     describe('onEditButtonClick()', () => {
-      it('calls mergeNewValues() on the form', () => {
+      beforeEach(() => {
         componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any);
+      });
 
+      it('calls mergeNewValues() on the form', () => {
         expect(mockWzForm.mergeNewValues).toHaveBeenCalledWith([{ name: 'some', value: 'comment' }]);
+      });
+
+      it('dispatches the proper action', () => {
+        mockStore.expectDispatchFor(changeToEditSpy, { some: 'comment' });
       });
     });
 
@@ -78,22 +104,32 @@ export function main() {
     });
 
     describe('get formSubmitLabel', () => {
-      it('returns \'COMMENTS.SUBMIT_BTN_LABEL\' when the formMode is \'ADD\'', () => {
-        expect(componentUnderTest.formSubmitLabel).toBe('COMMENTS.SUBMIT_BTN_LABEL');
-      });
-
-      it('returns \'COMMENTS.SAVE_BTN_LABEL\' when the formMode is \'EDIT\'', () => {
-        componentUnderTest.onEditCommentButtonClick({ some: 'comment' } as any); // force formMode to 'EDIT'
-
-        expect(componentUnderTest.formSubmitLabel).toBe('COMMENTS.SAVE_BTN_LABEL');
+      it('returns the value thats in the store', () => {
+        componentUnderTest.formSubmitLabel
+          .subscribe(label => expect(label).toBe('some.trKey'));
       });
     });
 
     describe('onFormCancel()', () => {
-      it('calls resetForm() on the wzForm', () => {
+      beforeEach(() => {
         componentUnderTest.onFormCancel();
+      });
 
+      it('calls resetForm() on the wzForm', () => {
         expect(mockWzForm.resetForm).toHaveBeenCalled();
+      });
+
+      it('dispatches the correct action', () => {
+        mockStore.expectDispatchFor(changeFormModeToAdd);
+      });
+    });
+
+    describe('onDeleteCommentButtonClick()', () => {
+      it('dispatches the right action', () => {
+        componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
+        componentUnderTest.onDeleteCommentButtonClick({ some: 'comment', id: 2 } as any);
+
+        mockStore.expectDispatchFor(removeSpy, jasmine.any(Object), jasmine.any(Function));
       });
     });
   });

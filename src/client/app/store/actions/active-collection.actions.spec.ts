@@ -138,30 +138,6 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
-        name: 'addComment',
-        parameters: [{ some: 'comment' }]
-      },
-      expectedAction: {
-        type: '[Active Collection] Add Comment',
-        comment: { some: 'comment' }
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: ActionFactory,
-        name: 'editComment',
-        parameters: [{ some: 'comment' }]
-      },
-      expectedAction: {
-        type: '[Active Collection] Edit Comment',
-        comment: { some: 'comment' }
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: ActionFactory,
         name: 'reset',
         parameters: []
       },
@@ -239,30 +215,6 @@ export function main() {
       expectedAction: {
         type: '[Active Collection] Update Asset Markers Success',
         currentPageItems: { some: 'assets' }
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: InternalActionFactory,
-        name: 'addCommentSuccess',
-        parameters: [{ some: 'comments' }]
-      },
-      expectedAction: {
-        type: '[Active Collection] Add Comment Success',
-        activeCollectionComments: { some: 'comments' }
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: InternalActionFactory,
-        name: 'editCommentSuccess',
-        parameters: [{ some: 'comments' }]
-      },
-      expectedAction: {
-        type: '[Active Collection] Edit Comment Success',
-        activeCollectionComments: { some: 'comments' }
       }
     });
   });

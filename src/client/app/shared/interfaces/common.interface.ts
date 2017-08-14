@@ -4,7 +4,7 @@ export { ViewAddress } from './user.interface';
 import { SpeedviewData } from './asset.interface';
 
 export interface Pagination {
-  totalCount: number;
+  totalCount?: number;
   currentPage?: number;
   pageSize?: number;
   hasNextPage?: boolean;
@@ -122,30 +122,4 @@ export interface Autocomplete {
 // Temporary interface -- needed only until we convert all stores to the new AppStore way.
 export interface LegacyAction extends Action {
   payload?: any;
-}
-
-export type ObjectType = 'collection' | 'cart';
-
-export type CommentAccess = 'Commenter' | 'Viewer' | 'Editor';
-
-export interface Comment extends Common {
-  userId: number;
-  objectType: ObjectType;
-  objectId: string;
-  hidden: boolean;
-  comment: string;
-  access: CommentAccess;
-  timeStart?: string;
-  timeEnd?: string;
-  userName?: string;
-  [index: string]: any;
-}
-
-export interface CommentsApiResponse extends Pagination {
-  items: Array<Comment>;
-}
-
-export interface Comments {
-  items: Array<Comment>;
-  pagination: Pagination;
 }

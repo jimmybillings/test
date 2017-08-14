@@ -8,17 +8,12 @@ import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
   describe('Active Collection Service', () => {
-    let serviceUnderTest: ActiveCollectionService, mockApiService: MockApiService, mockCommentService: any;
+    let serviceUnderTest: ActiveCollectionService, mockApiService: MockApiService;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApiService = new MockApiService();
-      mockCommentService = {
-        addCommentTo: jasmine.createSpy('addCommentTo').and.returnValue(Observable.of({ some: 'comment' })),
-        getCommentsFor: jasmine.createSpy('getCommentsFor').and.returnValue(Observable.of([{ some: 'comments' }])),
-        editComment: jasmine.createSpy('editComment').and.returnValue(Observable.of([{ some: 'comments' }]))
-      };
-      serviceUnderTest = new ActiveCollectionService(mockApiService.injector, mockCommentService);
+      serviceUnderTest = new ActiveCollectionService(mockApiService.injector);
     });
 
     describe('load()', () => {
@@ -74,10 +69,7 @@ export function main() {
                 hasPreviousPage: false,
                 numberOfPages: 1
               }
-            },
-            comments: [
-              { some: 'comments' }
-            ]
+            }
           });
         });
       });
@@ -134,10 +126,7 @@ export function main() {
                 hasPreviousPage: false,
                 numberOfPages: 1
               }
-            },
-            comments: [
-              { some: 'comments' }
-            ]
+            }
           });
         });
       });
@@ -469,34 +458,6 @@ export function main() {
         const markers: SubclipMarkers = undefined;
 
         expect(serviceUnderTest.timeEndFrom(markers)).toBe(-2);
-      });
-    });
-
-    describe('addCommentTo()', () => {
-      beforeEach(() => {
-        serviceUnderTest.addCommentTo({ id: 123 } as any, { comment: 'yay' } as any).subscribe();
-      });
-
-      it('calls the comment service correctly', () => {
-        expect(mockCommentService.addCommentTo).toHaveBeenCalledWith('collection', 123, { comment: 'yay' });
-      });
-
-      it('gets the comments in the flatMap', () => {
-        expect(mockCommentService.getCommentsFor).toHaveBeenCalledWith('collection', 123);
-      });
-    });
-
-    describe('editComment()', () => {
-      beforeEach(() => {
-        serviceUnderTest.editComment({ id: 123 } as any, { some: 'comment' } as any).subscribe();
-      });
-
-      it('calls the comment service correctly', () => {
-        expect(mockCommentService.editComment).toHaveBeenCalledWith({ some: 'comment' });
-      });
-
-      it('gets the comments in the flatMap', () => {
-        expect(mockCommentService.getCommentsFor).toHaveBeenCalledWith('collection', 123);
       });
     });
   });

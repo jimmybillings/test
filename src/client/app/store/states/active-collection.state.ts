@@ -2,7 +2,7 @@ import * as ActiveCollectionActions from '../actions/active-collection.actions';
 import {
   Collection, CollectionItems, CollectionItemsResponse, CollectionItemMarkersUpdater
 } from '../../shared/interfaces/collection.interface';
-import { Asset, Comments } from '../../shared/interfaces/common.interface';
+import { Asset } from '../../shared/interfaces/common.interface';
 import { SerializedSubclipMarkers, serialize } from '../../shared/interfaces/subclip-markers.interface';
 
 export interface State {
@@ -39,17 +39,6 @@ export const initialState: State = {
         numberOfPages: 0
       },
     },
-    comments: {
-      items: [],
-      pagination: {
-        totalCount: 0,
-        currentPage: 1,
-        pageSize: 20,
-        hasNextPage: false,
-        hasPreviousPage: false,
-        numberOfPages: 0
-      }
-    },
     tags: [],
     assetsCount: 0
   },
@@ -67,8 +56,6 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     case ActiveCollectionActions.Load.Type:
     case ActiveCollectionActions.Set.Type:
     case ActiveCollectionActions.LoadPage.Type:
-    case ActiveCollectionActions.AddComment.Type:
-    case ActiveCollectionActions.EditComment.Type:
     case ActiveCollectionActions.UpdateAssetMarkers.Type: {
       return {
         ...JSON.parse(JSON.stringify(state)),
@@ -138,20 +125,6 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
           ...stateClone.collection,
           assets: action.currentPageItems,
           assetsCount: stateClone.collection.assetsCount - 1
-        },
-        loaded: true
-      };
-    }
-
-    case ActiveCollectionActions.AddCommentSuccess.Type:
-    case ActiveCollectionActions.EditCommentSuccess.Type: {
-      const stateClone: State = JSON.parse(JSON.stringify(state));
-
-      return {
-        ...stateClone,
-        collection: {
-          ...stateClone.collection,
-          comments: action.activeCollectionComments
         },
         loaded: true
       };

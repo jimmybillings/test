@@ -3,33 +3,47 @@ import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
-import { CommentsApiResponse, Comments, Comment, ObjectType } from '../../shared/interfaces/common.interface';
+import {
+  CommentsApiResponse, Comments, Comment, ObjectType, CommentParentObject
+} from '../../shared/interfaces/comment.interface';
 
 @Injectable()
 export class CommentService {
   constructor(private apiService: ApiService) { }
 
-  public getCommentsFor(objectType: ObjectType, objectId: number): Observable<Comments> {
+  public getCommentsFor(parentObject: CommentParentObject): Observable<Comments> {
     return this.apiService.get(
       Api.Identities,
-      `comment/byType/${objectType}/${objectId}`
+      `comment/byType/${this.urlSegmentFor(parentObject)}`
     ).map(this.convertToComments);
   }
 
-  public addCommentTo(objectType: ObjectType, objectId: number, comment: Comment): Observable<Comment> {
+  public addCommentTo(parentObject: CommentParentObject, comment: Comment): Observable<Comments> {
     return this.apiService.post(
       Api.Identities,
-      `comment/byType/${objectType}/${objectId}`,
+      `comment/byType/${this.urlSegmentFor(parentObject)}`,
       { body: comment, loadingIndicator: true }
-    );
+    ).flatMap(() => this.getCommentsFor(parentObject));
   }
 
-  public editComment(comment: Comment): Observable<Comment> {
+  public editComment(parentObject: CommentParentObject, comment: Comment): Observable<Comments> {
     return this.apiService.put(
       Api.Identities,
       `comment/${comment.id}`,
       { body: comment, loadingIndicator: true }
-    );
+    ).flatMap(() => this.getCommentsFor(parentObject));
+  }
+
+  public removeComment(parentObject: CommentParentObject, commentId: number): Observable<Comments> {
+    return this.apiService.delete(
+      Api.Identities,
+      `comment/${commentId}`,
+      { loadingIndicator: true }
+    ).flatMap(() => this.getCommentsFor(parentObject));
+  }
+
+  private urlSegmentFor(parentObject: CommentParentObject): string {
+    return `${parentObject.objectType}/${parentObject.objectId}`;
   }
 
   private convertToComments = (comments: CommentsApiResponse): Comments => {

@@ -15,7 +15,7 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['Load', 'Set', 'LoadPage', 'AddComment', 'UpdateAssetMarkers', 'EditComment'],
+      actionClassName: ['Load', 'Set', 'LoadPage', 'UpdateAssetMarkers'],
       mutationTestData: {
         previousState: { loaded: true }
       },
@@ -202,35 +202,6 @@ export function main() {
           expectedNextState: {
             ...ActiveCollectionState.initialState,
             collection: { ...ActiveCollectionState.initialState.collection, assets: 'new', assetsCount: -1 },
-            loaded: true
-          }
-        }
-      ]
-    });
-
-    stateSpecHelper.generateTestsFor({
-      actionClassName: ['AddCommentSuccess', 'EditCommentSuccess'],
-      customTests: [
-        {
-          it: 'with previous state, returns previously state but with updated comments and loaded: true',
-          previousState: {
-            some: 'stuff',
-            collection: { some: 'collectionStuff', comments: { some: 'old comments' } },
-            loaded: false
-          },
-          actionParameters: { activeCollectionComments: { some: 'updated comments' } },
-          expectedNextState: {
-            some: 'stuff',
-            collection: { some: 'collectionStuff', comments: { some: 'updated comments' } },
-            loaded: true
-          }
-        },
-        {
-          it: 'without previous state, returns initial state but with updated comments and loaded: true',
-          actionParameters: { activeCollectionComments: { some: 'updated comments' } },
-          expectedNextState: {
-            ...ActiveCollectionState.initialState,
-            collection: { ...ActiveCollectionState.initialState.collection, comments: { some: 'updated comments' } },
             loaded: true
           }
         }
