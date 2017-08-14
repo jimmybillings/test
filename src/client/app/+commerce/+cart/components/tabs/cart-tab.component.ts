@@ -42,7 +42,8 @@ export class CartTabComponent extends CommerceEditTab {
   ) {
     super(
       userCan, cartService, uiConfig, dialogService, assetService, window,
-      userPreference, error, document, snackBar, translate, pricingStore
+      userPreference, error, document, snackBar, translate, pricingStore,
+      null, null
     );
   }
 

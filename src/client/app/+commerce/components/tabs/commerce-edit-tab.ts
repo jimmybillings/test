@@ -14,6 +14,7 @@ import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-
 import { AssetService } from '../../../shared/services/asset.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
+import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../shared/interfaces/subclip-markers.interface';
@@ -21,7 +22,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 import { SelectedPriceAttributes, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
+import { FormFields } from '../../../shared/interfaces/forms.interface';
+import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
+import { AppStore } from '../../../app.store';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public cart: Observable<any>;
@@ -29,6 +33,9 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public priceAttributes: Array<PriceAttribute> = null;
   public pricingPreferences: Pojo;
   public quoteType: QuoteType = null;
+  public commentFormConfig: Array<FormFields>;
+  public commentParentObject: CommentParentObject;
+  public showComments: boolean = null;
   protected configSubscription: Subscription;
   protected preferencesSubscription: Subscription;
   protected usagePrice: Observable<number>;
@@ -45,7 +52,9 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     protected document: any,
     protected snackBar: MdSnackBar,
     protected translate: TranslateService,
-    protected pricingStore: PricingStore) {
+    protected pricingStore: PricingStore,
+    protected currentUserService: CurrentUserService,
+    protected appStore: AppStore) {
     super();
   }
 
@@ -53,6 +62,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     this.preferencesSubscription = this.userPreference.data.subscribe((data: any) => {
       this.pricingPreferences = data.pricingPreferences;
     });
+    this.uiConfig.get('comment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
     this.configSubscription = this.uiConfig.get('cart').subscribe((config: any) => this.config = config.config);
   }
 
@@ -142,6 +152,14 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
       .subscribe((res: string) => {
         this.snackBar.open(res, '', { duration: 2000 });
       });
+  }
+
+  public get currentUserId(): Observable<number> {
+    return this.currentUserService.data.map(user => user.id);
+  }
+
+  public toggleCommentsVisibility(): void {
+    this.showComments = !this.showComments;
   }
 
   protected editProjectPricing(project: Project) {

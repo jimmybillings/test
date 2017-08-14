@@ -1,12 +1,14 @@
 import { QuoteEditComponent } from './quote-edit.component';
 import { Observable } from 'rxjs/Observable';
 import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Quote Edit Component', () => {
     let componentUnderTest: QuoteEditComponent, mockCapabilities: any, mockQuoteEditService: any, mockUiConfig: any,
       mockDialogService: any, mockAssetService: any, mockWindow: any, mockUserPreference: any, mockRouter: any,
-      mockErrorStore: any, mockDocument: any, mockSnackbar: any, mockTranslateService: any;
+      mockErrorStore: any, mockDocument: any, mockSnackbar: any, mockTranslateService: any, mockAppStore: MockAppStore,
+      mockCurrentUserService: any;
 
     beforeEach(() => {
       mockCapabilities = {
@@ -31,6 +33,7 @@ export function main() {
       mockUiConfig = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({
           config: {
+            form: { items: ['comment', 'stuff'] },
             createQuote: { items: ['yay'] },
             addBulkOrderId: { items: [{ some: 'bulk' }] },
             addDiscount: { items: [{ some: 'discount' }] },
@@ -57,11 +60,15 @@ export function main() {
 
       mockRouter = { navigate: jasmine.createSpy('navigate') };
 
+      mockCurrentUserService = {};
+
+      mockAppStore = new MockAppStore();
+
       componentUnderTest =
         new QuoteEditComponent(
           mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
           mockWindow, mockUserPreference, mockErrorStore, mockDocument, mockSnackbar, mockTranslateService,
-          null, mockRouter
+          null, mockRouter, mockCurrentUserService, mockAppStore
         );
     });
 
@@ -73,7 +80,7 @@ export function main() {
       };
       componentUnderTest = new QuoteEditComponent(
         null, mockQuoteEditService, mockUiConfig, mockDialogService, null, null,
-        mockUserPreference, null, null, null, null, null, mockRouter
+        mockUserPreference, null, null, null, null, null, mockRouter, mockCurrentUserService, mockAppStore
       );
       return componentUnderTest;
     };
@@ -85,11 +92,18 @@ export function main() {
 
       it('sets up the config instance variable', () => {
         expect(componentUnderTest.config).toEqual({
+          form: { items: ['comment', 'stuff'] },
           createQuote: { items: ['yay'] },
           addBulkOrderId: { items: [{ some: 'bulk' }] },
           addDiscount: { items: [{ some: 'discount' }] },
           addCostMultiplier: { items: [{ some: 'multiplier' }] },
           bulkImport: { items: [{ some: 'import' }] }
+        });
+      });
+
+      it('sets up the commentParentObject instance variable', () => {
+        expect(componentUnderTest.commentParentObject).toEqual({
+          objectType: 'quote', objectId: 1
         });
       });
     });
@@ -320,6 +334,14 @@ export function main() {
       it('Should call the cloneQuote capability with the quote edit store', () => {
         const shouldShowCloneButton = componentUnderTest.shouldShowCloneButton;
         expect(mockCapabilities.cloneQuote).toHaveBeenCalledWith(mockQuoteEditService.data);
+      });
+    });
+
+    describe('commentCount', () => {
+      it('should get the count from the correct part of the store', () => {
+        mockAppStore.createStateSection('comment', { quote: { pagination: { totalCount: 10 } } });
+
+        componentUnderTest.commentCount.take(1).subscribe(count => expect(count).toBe(10));
       });
     });
 

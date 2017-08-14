@@ -7,7 +7,7 @@ export function main() {
   describe('Commerce Edit tab', () => {
     let componentUnderTest: CommerceEditTab, mockCartService: any, mockUiConfig: any, mockDialogService: any,
       mockAssetService: any, mockUserPreference: any, mockDocument: any, mockWindow: any, mockState: any,
-      mockQuoteService: any, mockTranslateService: any, mockSnackbar: any, mockPricingStore: any;
+      mockQuoteService: any, mockTranslateService: any, mockSnackbar: any, mockPricingStore: any, mockCurrentUserService: any;
 
     beforeEach(() => {
       mockState = {
@@ -83,11 +83,13 @@ export function main() {
         priceForDialog: Observable.of(1000)
       };
 
+      mockCurrentUserService = { data: Observable.of({ id: 10 }) };
+
       componentUnderTest = new CommerceEditTab(
         null, mockCartService, mockUiConfig, mockDialogService,
         mockAssetService, mockWindow, mockUserPreference,
         null, mockDocument, mockSnackbar,
-        mockTranslateService, mockPricingStore
+        mockTranslateService, mockPricingStore, mockCurrentUserService, null
       );
     });
 
@@ -109,13 +111,13 @@ export function main() {
     describe('Destruction', () => {
       it('unsubscribes from the UI config to prevent memory leakage', () => {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
-        let mockObservable = { subscribe: () => mockSubscription };
+        let mockObservable = { subscribe: () => mockSubscription, take: () => mockObservable };
         mockUiConfig = { get: () => mockObservable };
 
         componentUnderTest = new CommerceEditTab(
           null, mockCartService, mockUiConfig, mockDialogService,
           null, mockWindow, mockUserPreference, null, null, null, null,
-          null
+          null, null, null
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
@@ -149,7 +151,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -163,7 +165,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -182,7 +184,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(true);
@@ -196,7 +198,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(false);
@@ -214,7 +216,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -239,7 +241,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(true);
@@ -264,7 +266,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -276,6 +278,22 @@ export function main() {
       it('should set the quoteType instance variable', () => {
         componentUnderTest.onSelectQuoteType({ type: 'OfflineAgreement' });
         expect(componentUnderTest.quoteType).toBe('OfflineAgreement');
+      });
+    });
+
+    describe('currentUserId', () => {
+      it('returns the current user\'s id', () => {
+        componentUnderTest.currentUserId.take(1).subscribe(userId => expect(userId).toBe(10));
+      });
+    });
+
+    describe('toggleCommentVisibility', () => {
+      it('should toggle the showComments flag', () => {
+        expect(componentUnderTest.showComments).toBe(null);
+        componentUnderTest.toggleCommentsVisibility();
+        expect(componentUnderTest.showComments).toBe(true);
+        componentUnderTest.toggleCommentsVisibility();
+        expect(componentUnderTest.showComments).toBe(false);
       });
     });
 

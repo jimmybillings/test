@@ -1,34 +1,56 @@
-<section class="header" layout="row" layout-align="center center">
-	<header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-    <div flex="100" layout="row" layout-align="space-between end" layout-align-xs="start">
-      <div 
-        flex-gt-lg="35" 
-        flex-gt-md="40" 
-        flex-md="55"
-        flex="70">
-        <h2 flex="grow" class="md-display-1">{{ 'QUOTE.CREATE_HEADER' | translate }}</h2>
-        <span class="bulk-order" flex="nogrow" *ngIf="quoteEditService.hasProperty('bulkOrderId') | async">
-          <span>{{ 'QUOTE.BULK_ORDER_NAME' | translate }}</span> {{quoteEditService.hasProperty('bulkOrderId') | async}}
-        </span>
+<section class="header">
+  <section
+    class="comments-section"
+    layout="row" layout-align="center start">
+    <div flex-gt-md="95" flex="100">
+      <wz-comment
+        [ngClass]="{ 'visible': showComments, 'not-visible': showComments === false }"
+        [formFields]="commentFormConfig"
+        [parentObject]="commentParentObject"
+        [currentUserId]="currentUserId | async"
+        [userCanAddComments]="true">
+      </wz-comment>
+    </div>
+  </section>
+  <section layout="row" layout-align="center start">
+    <header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
+      <div flex="100" layout="row" layout-align="space-between end" layout-align-xs="start">
+        <div 
+          flex-gt-lg="35" 
+          flex-gt-md="40" 
+          flex-md="55"
+          flex="70">
+          <h2 flex="grow" class="md-display-1">{{ 'QUOTE.CREATE_HEADER' | translate }}</h2>
+          <span class="bulk-order" flex="nogrow" *ngIf="quoteEditService.hasProperty('bulkOrderId') | async">
+            <span>{{ 'QUOTE.BULK_ORDER_NAME' | translate }}</span> {{quoteEditService.hasProperty('bulkOrderId') | async}}
+          </span>
+        </div>
+        <div class="tools" flex="auto" layout-align="end center">
+          <button
+            md-icon-button
+            title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
+            (click)="toggleCommentsVisibility()">
+              <md-icon>mode_comment</md-icon>
+              <span *ngIf="(commentCount | async) > 0" class="comment-count">{{ commentCount | async }}</span>
+          </button>
+          <a [routerLink]="['/commerce/quotes']" md-icon-button color="primary" title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
+            <md-icon>inbox</md-icon>
+          </a>
+          <button md-icon-button color="primary" [md-menu-trigger-for]="quoteOptionsMenu" title="{{ 'QUOTE.MORE_OPTIONS_TITLE' | translate }}">
+            <md-icon>more_vert</md-icon>
+          </button>
+        </div>
+        <md-menu x-position="before" #quoteOptionsMenu="mdMenu">
+          <button md-menu-item (click)="addBulkOrderId()">
+            <md-icon>bookmark_border</md-icon>{{ bulkOrderIdActionLabel | translate }}
+          </button>
+          <button md-menu-item (click)="editDiscount()">
+            <md-icon>monetization_on</md-icon>{{ discountActionLabel | translate }}
+          </button>
+        </md-menu>
       </div>
-      <div class="tools" flex="auto" layout-align="end center">
-				<a [routerLink]="['/commerce/quotes']" md-icon-button color="primary" title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
-					<md-icon>inbox</md-icon>
-				</a>
-        <button md-icon-button color="primary" [md-menu-trigger-for]="quoteOptionsMenu" title="{{ 'QUOTE.MORE_OPTIONS_TITLE' | translate }}">
-          <md-icon>more_vert</md-icon>
-        </button>
-      </div>
-      <md-menu x-position="before" #quoteOptionsMenu="mdMenu">
-        <button md-menu-item (click)="addBulkOrderId()">
-          <md-icon>bookmark_border</md-icon>{{ bulkOrderIdActionLabel | translate }}
-        </button>
-        <button md-menu-item (click)="editDiscount()">
-          <md-icon>monetization_on</md-icon>{{ discountActionLabel | translate }}
-        </button>
-      </md-menu>
-		</div>
-	</header>
+    </header>
+  </section>
 </section>
 
 <section class="tabs-section quote-section">

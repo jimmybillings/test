@@ -13,10 +13,12 @@ import { WindowRef } from '../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteOptions, Project, FeeLineItem, Quote, AssetLineItem, QuoteState } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
+import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
+import { AppStore } from '../../../app.store';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -40,12 +42,16 @@ export class QuoteEditComponent extends CommerceEditTab {
     public snackBar: MdSnackBar,
     public translate: TranslateService,
     public pricingStore: PricingStore,
-    public router: Router
+    public router: Router,
+    public currentUserService: CurrentUserService,
+    public appStore: AppStore
   ) {
     super(
       userCan, quoteEditService, uiConfig, dialogService, assetService, window,
-      userPreference, error, document, snackBar, translate, pricingStore
+      userPreference, error, document, snackBar, translate, pricingStore, currentUserService,
+      appStore
     );
+    this.commentParentObject = { objectId: this.quoteEditService.quoteId, objectType: 'quote' };
   }
 
   public onNotification(message: WzEvent): void {
@@ -105,6 +111,10 @@ export class QuoteEditComponent extends CommerceEditTab {
 
   public get shouldShowCloneButton(): Observable<boolean> {
     return this.userCan.cloneQuote(this.quoteEditService.data);
+  }
+
+  public get commentCount(): Observable<number> {
+    return this.appStore.select(state => state.comment['quote'].pagination.totalCount);
   }
 
   public addBulkOrderId(): void {
