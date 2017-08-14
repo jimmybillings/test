@@ -118,6 +118,7 @@ import { AssetEffects } from '../store/effects/asset.effects';
 import { SnackbarEffects } from '../store/effects/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/effects/speed-preview.effects';
 import { CommentEffects } from '../store/effects/comment.effects';
+import { DialogEffects } from '../store/effects/dialog.effects';
 
 const WAZEE_SERVICES = [
   ApiConfig,
@@ -216,7 +217,8 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   AssetEffects,
   SnackbarEffects,
   SpeedPreviewEffects,
-  CommentEffects
+  CommentEffects,
+  DialogEffects
 ]);
 
 // Shared pipes

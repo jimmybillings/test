@@ -21,7 +21,7 @@ export function main() {
 
       loadSpy = mockStore.createActionFactoryMethod('comment', 'load');
       formSubmitSpy = mockStore.createActionFactoryMethod('comment', 'formSubmit');
-      removeSpy = mockStore.createActionFactoryMethod('comment', 'remove');
+      removeSpy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
       changeToEditSpy = mockStore.createActionFactoryMethod('comment', 'changeFormModeToEdit');
       changeFormModeToAdd = mockStore.createActionFactoryMethod('comment', 'changeFormModeToAdd');
 
@@ -129,7 +129,7 @@ export function main() {
         componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
         componentUnderTest.onDeleteCommentButtonClick({ some: 'comment', id: 2 } as any);
 
-        mockStore.expectDispatchFor(removeSpy, { objectType: 'collection', objectId: 1 }, 2);
+        mockStore.expectDispatchFor(removeSpy, jasmine.any(Object), jasmine.any(Function));
       });
     });
   });

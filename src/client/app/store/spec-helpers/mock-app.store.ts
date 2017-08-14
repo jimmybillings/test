@@ -25,7 +25,8 @@ export class MockAppStore extends AppStore {
       asset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
-      comment: {} as any
+      comment: {} as any,
+      dialog: {} as any
     };
 
     this._internalActionFactory = {
@@ -33,7 +34,8 @@ export class MockAppStore extends AppStore {
       asset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
-      comment: {} as any
+      comment: {} as any,
+      dialog: {} as any
     };
 
     this._state = {

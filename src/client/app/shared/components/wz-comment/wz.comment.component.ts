@@ -63,7 +63,14 @@ export class WzCommentComponent {
   }
 
   public onDeleteCommentButtonClick(comment: Comment): void {
-    this.store.dispatch(factory => factory.comment.remove(this._parentObject, comment.id));
+    this.store.dispatch(factory => factory.dialog.showConfirmation(
+      {
+        title: 'COMMENTS.DELETE_CONFIRMATION.TITLE',
+        accept: 'COMMENTS.DELETE_CONFIRMATION.ACCEPT',
+        decline: 'COMMENTS.DELETE_CONFIRMATION.DECLINE'
+      },
+      () => this.store.dispatch(factory => factory.comment.remove(this._parentObject, comment.id))
+    ));
   }
 
   private initializeData(): void {

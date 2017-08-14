@@ -22,12 +22,15 @@ import * as CommentActions from './store/actions/comment.actions';
 import * as CommentState from './store/states/comment.state';
 export type CommentState = CommentState.State;
 
+import * as DialogActions from './store/actions/dialog.actions';
+
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly asset: AssetActions.ActionFactory;
   readonly snackbar: SnackbarActions.ActionFactory;
   readonly speedPreview: SpeedPreviewActions.ActionFactory;
   readonly comment: CommentActions.ActionFactory;
+  readonly dialog: DialogActions.ActionFactory;
 };
 
 export interface InternalActionFactory {
@@ -36,6 +39,7 @@ export interface InternalActionFactory {
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
   readonly comment: CommentActions.InternalActionFactory;
+  readonly dialog: DialogActions.InternalActionFactory;
 };
 
 export interface AppState {
@@ -70,7 +74,8 @@ export class AppStore {
     asset: new AssetActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
     speedPreview: new SpeedPreviewActions.ActionFactory(),
-    comment: new CommentActions.ActionFactory()
+    comment: new CommentActions.ActionFactory(),
+    dialog: new DialogActions.ActionFactory()
   };
 
   private readonly internalActionFactory: InternalActionFactory = {
@@ -78,7 +83,8 @@ export class AppStore {
     asset: new AssetActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
     speedPreview: new SpeedPreviewActions.InternalActionFactory(),
-    comment: new CommentActions.InternalActionFactory()
+    comment: new CommentActions.InternalActionFactory(),
+    dialog: new DialogActions.InternalActionFactory()
   };
 
   constructor(private ngrxStore: Store<AppState>) { }

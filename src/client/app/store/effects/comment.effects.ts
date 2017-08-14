@@ -32,6 +32,10 @@ export class CommentEffects {
       this.service.removeComment(action.parentObject, action.commentId))
     .map((comments: Comments) => this.store.create(factory => factory.comment.removeSuccess(comments)));
 
+  @Effect()
+  public showSnackBarOnRemoveSuccess: Observable<Action> = this.actions.ofType(CommentActions.RemoveSuccess.Type)
+    .map(() => this.store.create(factory => factory.snackbar.display('COMMENTS.DELETE_SUCCESS_TOAST')));
+
   constructor(
     private actions: Actions,
     private store: AppStore,

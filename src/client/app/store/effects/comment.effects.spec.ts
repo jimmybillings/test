@@ -117,5 +117,22 @@ export function main() {
         });
       });
     });
+
+    describe('showSnackBarOnRemoveSuccess', () => {
+      it('works as expected', () => {
+        effectsSpecHelper.generateStandardTestFor({
+          effectName: 'showSnackBarOnRemoveSuccess',
+          effectsInstantiator: instantiator,
+          inputAction: {
+            type: CommentActions.RemoveSuccess.Type
+          },
+          outputActionFactory: {
+            sectionName: 'snackbar',
+            methodName: 'display',
+            expectedArguments: ['COMMENTS.DELETE_SUCCESS_TOAST']
+          }
+        });
+      });
+    });
   });
 }
