@@ -5,7 +5,15 @@
   </header>
   <div layout-gt-xs="row" layout="column" layout-align="space-between">
     <div flex="33" flex-sm="40"> 
-      <div layout="column" layout-align="start" class="new-comment">
+      <div *ngIf="!userCanAddComments" layout="column" class="empty-comment-container">
+        <div layout="row" layout-align="center">
+          <div flex="90">
+            <h2 class="md-display-1">You cannot add comments to this collection</h2>  
+            <p>Please contact the collection owner</p>
+          </div>
+        </div> 
+      </div>
+      <div *ngIf="userCanAddComments" layout="column" layout-align="start" class="new-comment">
         <md-card class="wz-form-card">
           <md-card-content>
             <wz-form
@@ -21,7 +29,7 @@
     </div>
     <div flex="nogrow" class="space-between"></div>
     <div flex="66" flex-sm="60">
-      <div *ngIf="!commentsExist" layout="column" class="comments empty-comments">
+      <div *ngIf="!(commentsExist | async)" layout="column" class="comments empty-comment-container">
         <div layout="row" layout-align="center">
           <div flex-gt-lg="35" flex-gt-md="40" flex-gt-sm=55 flex="80">
             <h2 class="md-display-1">{{ 'COMMENTS.EMPTY_COMMENTS_HEADING' | translate }}</h2>  
@@ -29,7 +37,7 @@
           </div>
         </div> 
       </div>
-      <div *ngIf="commentsExist" layout="column" class="comments">
+      <div *ngIf="commentsExist | async" layout="column" class="comments">
         <div
           class="md-display comment"
           *ngFor="let comment of (comments | async).items; let even = even; let odd = odd"
@@ -43,18 +51,17 @@
             </div> 
             <div flex="auto" class="actions" layout="row" layout-align="end center">
               <button
+                title="{{ 'COMMENTS.EDIT_HOVER_TITLE' | translate }}"
+                *ngIf="showEditCommentButton(comment.userId)"
                 (click)="onEditCommentButtonClick(comment)"
-                [disabled]="!showEditCommentButton"
-                md-icon-button
-                title="{{ 'COMMENTS.EDIT_HOVER_TITLE' | translate }}">
+                md-icon-button>
                   <md-icon>mode_edit</md-icon>
               </button>
               <button
                 title="{{ 'COMMENTS.DELETE_HOVER_TITLE' | translate }}"
+                *ngIf="showDeleteCommentButton(comment.userId)"
                 (click)="onDeleteCommentButtonClick(comment)"
-                [disabled]="!showEditCommentButton"
-                md-icon-button
-                title="delete">
+                md-icon-button>
                   <md-icon>delete</md-icon>
               </button>
             </div>

@@ -20,7 +20,8 @@ export class WzCommentComponent {
     this.initializeData();
   }
   @Input() formFields: Array<FormFields>;
-  @Input() showEditCommentButton: boolean;
+  @Input() userCanAddComments: boolean;
+  @Input() currentUserId: number;
   @ViewChild(WzFormComponent) wzForm: WzFormComponent;
   private _parentObject: CommentParentObject;
 
@@ -71,6 +72,14 @@ export class WzCommentComponent {
 
   public get comments(): Observable<Comments> {
     return this.store.select(state => state.comment[this._parentObject.objectType]);
+  }
+
+  public showEditCommentButton(commentOwnerId: number): boolean {
+    return commentOwnerId === this.currentUserId;
+  }
+
+  public showDeleteCommentButton(commentOwnerId: number): boolean {
+    return commentOwnerId === this.currentUserId;
   }
 
   private initializeData(): void {

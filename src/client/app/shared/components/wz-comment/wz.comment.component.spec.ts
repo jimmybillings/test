@@ -132,5 +132,37 @@ export function main() {
         mockStore.expectDispatchFor(removeSpy, jasmine.any(Object), jasmine.any(Function));
       });
     });
+
+    describe('showEditCommentButton', () => {
+      describe('returns true', () => {
+        it('when the userId is the same as the comment ownerId', () => {
+          componentUnderTest.currentUserId = 1;
+          expect(componentUnderTest.showEditCommentButton(1)).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the userId is NOT the same as the comment ownerId', () => {
+          componentUnderTest.currentUserId = 1;
+          expect(componentUnderTest.showEditCommentButton(2)).toBe(false);
+        });
+      });
+    });
+
+    describe('showDeleteCommentButton', () => {
+      describe('returns true', () => {
+        it('when the userId is the same as the comment ownerId', () => {
+          componentUnderTest.currentUserId = 1;
+          expect(componentUnderTest.showDeleteCommentButton(1)).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the userId is NOT the same as the comment ownerId', () => {
+          componentUnderTest.currentUserId = 1;
+          expect(componentUnderTest.showDeleteCommentButton(2)).toBe(false);
+        });
+      });
+    });
   });
 }

@@ -247,4 +247,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public get userCanEditCollection(): Observable<boolean> {
     return this.userCan.editCollection(this.activeCollection);
   }
+
+  public get currentUserId(): Observable<number> {
+    return this.currentUser.data.map(user => user.id);
+  }
 }
