@@ -47,8 +47,9 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public errorMessage: string;
   public commentFormConfig: FormFields;
   public screenWidth: number;
-  public showComments: boolean;
   public commentParentObject: CommentParentObject;
+  public showComments: boolean = null;
+  @ViewChild(WzSpeedviewComponent) public wzSpeedview: WzSpeedviewComponent;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
 

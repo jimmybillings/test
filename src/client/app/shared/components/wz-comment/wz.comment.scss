@@ -1,8 +1,9 @@
 wz-comment {
-  display: block;
-  overflow: hidden;
   max-height: 0;
+  display: flex;
+  overflow: hidden;
   & > section {
+    width: 100%;
     padding: 6px 17px 28px 17px;
   }
   header {
@@ -25,12 +26,15 @@ wz-comment {
   }
   .new-comment .mat-card.wz-form-card {
     margin: 0;
-    padding: 20px 30px 30px;
+    // padding: 20px 30px 30px;
+    padding: 0;
+    box-shadow: none;
   }  
   .comments {
     max-height: 282px;
     min-height: 282px;
     overflow-y: scroll;
+    border-width: 0;
     .comment {
       .comment-head {
         margin: 0 20px;
@@ -70,6 +74,7 @@ wz-comment {
     }
   }
   .empty-comments {
+    border-width: 1px;
     text-align: center;
     & > div {
       min-height: 278px;
@@ -87,7 +92,7 @@ wz-comment {
     overflow: hidden;
     max-height: 0;
     animation-name: slide-up;
-    animation-duration: 400ms;
+    animation-duration: 300ms;
     animation-timing-function: linear;
     animation-iteration-count: 1;
     animation-fill-mode: none;
