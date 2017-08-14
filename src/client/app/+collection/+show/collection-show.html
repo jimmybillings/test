@@ -1,8 +1,10 @@
 <section class="collection-head">
-	<section class="comments-section" layout="row" layout-align="center start">
+	<section 
+		class="comments-section" 
+		layout="row" layout-align="center start">
 		<div flex-gt-md="95" flex="100">
 			<wz-comment
-				[ngClass]="{ 'visible': showComments, 'not-visible': !showComments }"
+				[ngClass]="{ 'visible': showComments, 'not-visible': showComments === false }"
 				[formFields]="commentFormConfig"
 				[comments]="activeCollection.comments"
 				[showEditCommentButton]="userCanEditCollection | async"
