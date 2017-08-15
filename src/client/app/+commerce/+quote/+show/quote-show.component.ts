@@ -4,6 +4,11 @@ import { QuoteService } from '../../../shared/services/quote.service';
 import { Quote } from '../../../shared/interfaces/commerce.interface';
 import { Observable } from 'rxjs/Observable';
 import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
+import { FormFields } from '../../../shared/interfaces/forms.interface';
+import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
+import { UiConfig } from '../../../shared/services/ui.config';
+import { CurrentUserService } from '../../../shared/services/current-user.service';
+import { AppStore } from '../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -16,8 +21,17 @@ export class QuoteShowComponent implements OnInit {
   public tabEnabled: boolean[];
   public selectedTabIndex: number;
   public quote: Observable<Quote>;
+  public commentFormConfig: Array<FormFields>;
+  public commentParentObject: CommentParentObject;
+  public showComments: boolean = null;
 
-  constructor(public userCan: CommerceCapabilities, public quoteService: QuoteService) {
+  constructor(
+    public userCan: CommerceCapabilities,
+    public quoteService: QuoteService,
+    private uiConfig: UiConfig,
+    private currentUserService: CurrentUserService,
+    private appStore: AppStore
+  ) {
     this.quote = this.quoteService.data.map(state => state.data);
   }
 
@@ -28,6 +42,10 @@ export class QuoteShowComponent implements OnInit {
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
 
     this.selectedTabIndex = 0;
+
+    this.uiConfig.get('comment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+
+    this.commentParentObject = { objectType: 'quote', objectId: this.quoteService.state.data.id };
   }
 
   public get hasPurchaseType(): boolean {
@@ -68,6 +86,18 @@ export class QuoteShowComponent implements OnInit {
         this.disableTab(message.payload);
       }
     }
+  }
+
+  public get currentUserId(): Observable<number> {
+    return this.currentUserService.data.map(user => user.id);
+  }
+
+  public toggleCommentsVisibility(): void {
+    this.showComments = !this.showComments;
+  }
+
+  public get commentCount(): Observable<number> {
+    return this.appStore.select(state => state.comment.quote.pagination.totalCount);
   }
 
   private goToNextTab(): void {

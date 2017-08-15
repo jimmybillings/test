@@ -114,7 +114,7 @@ export class QuoteEditComponent extends CommerceEditTab {
   }
 
   public get commentCount(): Observable<number> {
-    return this.appStore.select(state => state.comment['quote'].pagination.totalCount);
+    return this.appStore.select(state => state.comment.quote.pagination.totalCount);
   }
 
   public addBulkOrderId(): void {
