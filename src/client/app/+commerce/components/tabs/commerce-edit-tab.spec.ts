@@ -101,6 +101,12 @@ export function main() {
         expect(mockUiConfig.get).toHaveBeenCalledWith('cart');
       });
 
+      it('gets the UI config specifically for the comments', () => {
+        componentUnderTest.ngOnInit();
+
+        expect(mockUiConfig.get).toHaveBeenCalledWith('orderableComment');
+      });
+
       it('caches the cart UI config', () => {
         componentUnderTest.ngOnInit();
 

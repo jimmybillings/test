@@ -62,7 +62,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     this.preferencesSubscription = this.userPreference.data.subscribe((data: any) => {
       this.pricingPreferences = data.pricingPreferences;
     });
-    this.uiConfig.get('comment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+    this.uiConfig.get('orderableComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
     this.configSubscription = this.uiConfig.get('cart').subscribe((config: any) => this.config = config.config);
   }
 

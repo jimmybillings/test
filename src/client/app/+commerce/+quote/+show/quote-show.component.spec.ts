@@ -44,7 +44,7 @@ export function main() {
       });
 
       it('access the right part of the uiConfig store', () => {
-        expect(mockUiConfig.get).toHaveBeenCalledWith('comment');
+        expect(mockUiConfig.get).toHaveBeenCalledWith('orderableComment');
       });
 
       it('assigns the commentFormConfig instance variable', () => {

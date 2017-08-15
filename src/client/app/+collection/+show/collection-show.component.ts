@@ -90,7 +90,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       });
 
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
-    this.uiConfig.get('comment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+    this.uiConfig.get('collectionComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
   }
 
   ngOnDestroy() {
