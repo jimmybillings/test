@@ -17,7 +17,8 @@ export interface EffectTestState {
 export interface EffectServiceMethod {
   name: string;
   expectedArguments?: any[];
-  returnsObservableOf: any;
+  returnsObservableOf?: any;
+  expectToHaveBeenCalled?: boolean;
 }
 
 export interface HelperServiceMethod {
@@ -37,6 +38,7 @@ export interface EffectTestParameters {
     methodName: string;
     expectedArguments: any[];
   };
+  expectToEmitValue?: boolean;
 }
 
 export class EffectsSpecHelper {
@@ -80,17 +82,33 @@ export class EffectsSpecHelper {
     }
 
     const effect: Observable<Action> = parameters.effectsInstantiator()[parameters.effectName];
-    this.checkForEmittedValue(effect, parameters.effectName, parameters.inputAction);
+
+    if (parameters.expectToEmitValue !== false) {
+      this.checkForEmittedValue(effect, parameters.effectName, parameters.inputAction);
+    }
 
     effect.take(1).subscribe((mappedAction: any) => {
+
       if (parameters.serviceMethod) {
-        expect(this.mockService[parameters.serviceMethod.name])
-          .toHaveBeenCalledWith(...parameters.serviceMethod.expectedArguments);
+
+        if (parameters.serviceMethod.expectToHaveBeenCalled !== false) {
+          expect(this.mockService[parameters.serviceMethod.name])
+            .toHaveBeenCalledWith(...parameters.serviceMethod.expectedArguments);
+        }
+
+        if (parameters.expectToEmitValue === false) {
+          fail(`Expected effect '${parameters.effectName}' not to emit a value.`);
+        }
       }
 
       expect(internalActionFactoryMethod).toHaveBeenCalledWith(...parameters.outputActionFactory.expectedArguments);
       expect(mappedAction).toEqual(this.mockStore.getActionCreatedBy(internalActionFactoryMethod));
     });
+
+    if (parameters.serviceMethod && parameters.serviceMethod.expectToHaveBeenCalled === false) {
+      expect(this.mockService[parameters.serviceMethod.name])
+        .not.toHaveBeenCalled();
+    }
 
     this.simulateInputAction(parameters.inputAction);
   }
