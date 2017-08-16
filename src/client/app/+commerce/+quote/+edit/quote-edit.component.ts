@@ -18,6 +18,7 @@ import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
+import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
 import { AppStore } from '../../../app.store';
 import { Observable } from 'rxjs/Observable';
 
@@ -29,6 +30,10 @@ import { Observable } from 'rxjs/Observable';
 })
 
 export class QuoteEditComponent extends CommerceEditTab {
+  public commentFormConfig: Array<FormFields>;
+  public commentParentObject: CommentParentObject;
+  public showComments: boolean = null;
+
   constructor(
     public userCan: Capabilities,
     public quoteEditService: QuoteEditService,
@@ -51,6 +56,7 @@ export class QuoteEditComponent extends CommerceEditTab {
       userPreference, error, document, snackBar, translate, pricingStore, currentUserService,
       appStore
     );
+    this.uiConfig.get('orderableComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
     this.commentParentObject = { objectId: this.quoteEditService.quoteId, objectType: 'quote' };
   }
 
@@ -113,8 +119,16 @@ export class QuoteEditComponent extends CommerceEditTab {
     return this.userCan.cloneQuote(this.quoteEditService.data);
   }
 
+  public toggleCommentsVisibility(): void {
+    this.showComments = !this.showComments;
+  }
+
   public get commentCount(): Observable<number> {
     return this.appStore.select(state => state.comment.quote.pagination.totalCount);
+  }
+
+  public get currentUserId(): Observable<number> {
+    return this.currentUserService.data.map(user => user.id);
   }
 
   public addBulkOrderId(): void {

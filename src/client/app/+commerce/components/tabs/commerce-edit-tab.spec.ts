@@ -101,12 +101,6 @@ export function main() {
         expect(mockUiConfig.get).toHaveBeenCalledWith('cart');
       });
 
-      it('gets the UI config specifically for the comments', () => {
-        componentUnderTest.ngOnInit();
-
-        expect(mockUiConfig.get).toHaveBeenCalledWith('orderableComment');
-      });
-
       it('caches the cart UI config', () => {
         componentUnderTest.ngOnInit();
 
@@ -284,22 +278,6 @@ export function main() {
       it('should set the quoteType instance variable', () => {
         componentUnderTest.onSelectQuoteType({ type: 'OfflineAgreement' });
         expect(componentUnderTest.quoteType).toBe('OfflineAgreement');
-      });
-    });
-
-    describe('currentUserId', () => {
-      it('returns the current user\'s id', () => {
-        componentUnderTest.currentUserId.take(1).subscribe(userId => expect(userId).toBe(10));
-      });
-    });
-
-    describe('toggleCommentVisibility', () => {
-      it('should toggle the showComments flag', () => {
-        expect(componentUnderTest.showComments).toBe(null);
-        componentUnderTest.toggleCommentsVisibility();
-        expect(componentUnderTest.showComments).toBe(true);
-        componentUnderTest.toggleCommentsVisibility();
-        expect(componentUnderTest.showComments).toBe(false);
       });
     });
 

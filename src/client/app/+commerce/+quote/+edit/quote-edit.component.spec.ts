@@ -60,7 +60,7 @@ export function main() {
 
       mockRouter = { navigate: jasmine.createSpy('navigate') };
 
-      mockCurrentUserService = {};
+      mockCurrentUserService = { data: Observable.of({ id: 10 }) };
 
       mockAppStore = new MockAppStore();
 
@@ -105,6 +105,12 @@ export function main() {
         expect(componentUnderTest.commentParentObject).toEqual({
           objectType: 'quote', objectId: 1
         });
+      });
+
+      it('gets the UI config specifically for the comments', () => {
+        componentUnderTest.ngOnInit();
+
+        expect(mockUiConfig.get).toHaveBeenCalledWith('orderableComment');
       });
     });
 
@@ -195,6 +201,22 @@ export function main() {
           componentUnderTest.onNotification({ type: 'TEST', payload: { test: 'test' } });
           expect(CommerceEditTab.prototype.onNotification).toHaveBeenCalled();
         });
+      });
+    });
+
+    describe('toggleCommentVisibility', () => {
+      it('should toggle the showComments flag', () => {
+        expect(componentUnderTest.showComments).toBe(null);
+        componentUnderTest.toggleCommentsVisibility();
+        expect(componentUnderTest.showComments).toBe(true);
+        componentUnderTest.toggleCommentsVisibility();
+        expect(componentUnderTest.showComments).toBe(false);
+      });
+    });
+
+    describe('currentUserId', () => {
+      it('returns the current user\'s id', () => {
+        componentUnderTest.currentUserId.take(1).subscribe(userId => expect(userId).toBe(10));
       });
     });
 
