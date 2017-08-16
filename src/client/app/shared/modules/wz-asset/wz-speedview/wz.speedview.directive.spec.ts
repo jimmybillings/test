@@ -1,6 +1,6 @@
 import { WzSpeedviewDirective } from './wz.speedview.directive';
 import { Observable } from 'rxjs/Observable';
-import { SpeedViewPositionCalculator as SpeedViewPosition } from './wz.speedview-position-calculator';
+import { SpeedViewPositionCalculator } from './wz.speedview-position-calculator';
 import { ViewContainerRef } from '@angular/core';
 import {
   OverlayState,
@@ -23,7 +23,7 @@ export function main() {
       componentInstance: any;
 
     beforeEach(() => {
-      spyOn(SpeedViewPosition, 'calculate').and.returnValue({ x: 100, y: 200 });
+      spyOn(SpeedViewPositionCalculator, 'calculate').and.returnValue({ x: 100, y: 200 });
       mockRenderer = {
         listenGlobal: jasmine.createSpy('listenGlobal')
           .and.callFake((a: any, b: any, c: Function) => {
@@ -105,7 +105,7 @@ export function main() {
       describe('loadOverlay()', () => {
         it('Should call the speedview position calculator with the view port', () => {
           directiveUnderTest.onMouseEnter($event);
-          expect(SpeedViewPosition.calculate).toHaveBeenCalledWith({
+          expect(SpeedViewPositionCalculator.calculate).toHaveBeenCalledWith({
             bottom: 380.03125,
             height: 114.96875,
             left: 327.828125,
@@ -164,6 +164,7 @@ export function main() {
             .toEqual([[{ posterUrl: 'https://test.jpg' }], [enhancedAssetUnderTest]]);
         });
       });
+
       describe('destroySpeedView()', () => {
         beforeEach(() => {
           const enhancedAssetUnderTest = Object.assign(new EnhancedAsset(), asset).normalize();
@@ -183,14 +184,13 @@ export function main() {
           });
         });
       });
+
       describe('onClick()', () => {
         it('should destroy the speed view', () => {
           directiveUnderTest.onClick();
         });
       });
     });
-
-
   });
 }
 

@@ -3,7 +3,7 @@ import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.ser
 import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
-  describe('Future Asset Service', () => {
+  describe('Speed Preview Service', () => {
     let serviceUnderTest: SpeedPreviewService;
     let mockApiService: MockApiService;
     let mockCurrentUserService: any = {};

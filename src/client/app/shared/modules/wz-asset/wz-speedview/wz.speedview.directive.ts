@@ -29,7 +29,7 @@ import {
 
 import { Coords, Viewport, Asset } from '../../../interfaces/common.interface';
 import { EnhancedAsset } from '../../../interfaces/enhanced-asset';
-import { SpeedViewPositionCalculator as SpeedViewPosition } from './wz.speedview-position-calculator';
+import { SpeedViewPositionCalculator } from './wz.speedview-position-calculator';
 import { State as SpeedPreviewStore } from '../../../../store/states/speed-preview.state';
 import { WzSpeedviewComponent } from './wz.speedview.component';
 
@@ -82,7 +82,7 @@ export class WzSpeedviewDirective implements OnDestroy, OnInit {
   }
 
   private loadOverlay(viewPort: Viewport): void {
-    const coords: Coords = SpeedViewPosition.calculate(viewPort);
+    const coords: Coords = SpeedViewPositionCalculator.calculate(viewPort);
     this.config.positionStrategy = this.positionStrategy(coords);
     this.overlayRef = this.overlay.create(this.config);
   }
