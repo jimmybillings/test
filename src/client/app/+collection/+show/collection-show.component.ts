@@ -241,7 +241,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public get commentCount(): Observable<number> {
-    return this.store.select(factory => factory.comment.collection.items.length);
+    return this.store.select(state => state.comment.collection.pagination.totalCount);
   }
 
   public get userCanEditCollection(): Observable<boolean> {

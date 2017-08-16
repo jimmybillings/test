@@ -7,8 +7,7 @@
         [ngClass]="{ 'visible': showComments, 'not-visible': showComments === false }"
         [formFields]="commentFormConfig"
         [parentObject]="commentParentObject"
-        [currentUserId]="currentUserId | async"
-        [userCanAddComments]="true">
+        [currentUserId]="currentUserId | async">
       </wz-comment>
     </div>
   </section>
