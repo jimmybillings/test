@@ -9,7 +9,7 @@ import {
   AnimationEvent,
 } from '@angular/animations';
 
-export type SpeedPreviewVisibility = 'initial' | 'visible' | 'hidden';
+export type SpeedPreviewVisibility = 'visible' | 'hidden';
 
 @Component({
   moduleId: module.id,
@@ -26,17 +26,15 @@ export type SpeedPreviewVisibility = 'initial' | 'visible' | 'hidden';
         opacity: '1',
         transform: 'scale(1)'
       })),
-      transition('hidden => visible', animate('200ms cubic-bezier(0.0, 0.0, 0.2, 1)')),
-      transition('visible => hidden', animate('200ms cubic-bezier(0.4, 0.0, 1, 1)'))
+      transition('hidden => visible', animate('150ms cubic-bezier(0.0, 0.0, 0.2, 1)')),
+      transition('visible => hidden', animate('150ms cubic-bezier(0.4, 0.0, 1, 1)'))
     ])
   ],
 })
 
 export class WzSpeedviewComponent {
   public speedviewAssetInfo: SpeedviewData = { values: [], url: '', pricingType: '', price: 0, imageQuickView: false };
-  public previewUrl: string;
   public visibility: SpeedPreviewVisibility = 'hidden';
-
 
   constructor(private detector: ChangeDetectorRef) { }
 
@@ -44,13 +42,8 @@ export class WzSpeedviewComponent {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
-  public setSpeedviewAssetInfo(data: any) {
-    this.speedviewAssetInfo = Object.assign(this.speedviewAssetInfo, data);
-    this.detector.markForCheck();
-  }
-
-  public setSpeedViewPosterUrl(posterUrl: string) {
-    this.speedviewAssetInfo.posterUrl = posterUrl;
+  public merge(data: SpeedviewData) {
+    this.speedviewAssetInfo = { ...this.speedviewAssetInfo, ...data };
     this.detector.markForCheck();
   }
 
@@ -60,5 +53,4 @@ export class WzSpeedviewComponent {
       this.detector.markForCheck();
     }, 300);
   }
-
 }
