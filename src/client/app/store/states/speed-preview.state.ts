@@ -10,6 +10,7 @@ export interface State {
 export const initialState: State = {};
 
 export function reducer(state: State = initialState, action: SpeedPreviewActions.Any): State {
+  if (state === null) state = initialState;
   switch (action.type) {
 
     case SpeedPreviewActions.Load.Type: {
