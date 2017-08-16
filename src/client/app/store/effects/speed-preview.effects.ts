@@ -15,13 +15,14 @@ export class SpeedPreviewEffects {
   @Effect()
   public load: Observable<Action> = this.actions.ofType(SpeedPreviewActions.Load.Type)
 
-    .switchMap((action: SpeedPreviewActions.Load) => {
-      return this.service.load(action.asset);
-    })
+    .filter((action: SpeedPreviewActions.Load) =>
+      !this.store.snapshot(state => state.speedPreview[action.asset.assetId]))
 
-    .map((speedPreviewData: SpeedviewData) => {
-      return this.store.create(factory => factory.speedPreview.loadSuccess(speedPreviewData));
-    });
+    .switchMap((action: SpeedPreviewActions.Load) =>
+      this.service.load(action.asset))
+
+    .map((speedPreviewData: SpeedviewData) =>
+      this.store.create(factory => factory.speedPreview.loadSuccess(speedPreviewData)));
 
   constructor(
     private actions: Actions,
