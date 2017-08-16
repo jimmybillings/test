@@ -10,12 +10,10 @@ import { UiState } from '../shared/services/ui.state';
 import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { Router } from '@angular/router';
-import { HomeVideoService } from './services/home.video.service';
 
 import { GalleryViewService } from '../shared/services/gallery-view.service';
 import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from '../shared/interfaces/gallery-view.interface';
-
-declare var jwplayer: any;
+import { HomeVideoService } from './services/home.video.service';
 
 @Component({
   moduleId: module.id,
@@ -27,10 +25,9 @@ declare var jwplayer: any;
 export class HomeComponent implements OnInit, OnDestroy {
   public config: any;
   public data: Observable<Gallery>;
-  public isVideo: boolean = false;
-  public heroVideo: Subject<any> = new Subject();
+  public isVideo: boolean = true;
+  public playlist: Subject<any> = new Subject();
   private configSubscription: Subscription;
-  private videoSubscription: Subscription;
 
   constructor(
     public currentUser: CurrentUserService,
@@ -40,7 +37,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     private userPreference: UserPreferenceService,
     private galleryViewService: GalleryViewService,
     private homeVideoService: HomeVideoService,
-
     private router: Router,
     private filter: FilterService
   ) { }
@@ -53,14 +49,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.data = this.galleryViewService.data;
     }
     if (this.config && this.config.heroContentType.value === 'video') {
-      this.getVideoPlaylist();
       this.isVideo = true;
+      this.getVideoPlaylist();
     }
   }
 
   ngOnDestroy() {
     this.configSubscription.unsubscribe();
-    if (this.videoSubscription) this.videoSubscription.unsubscribe();
   }
 
   public newSearchContext(query: any): void {
@@ -80,26 +75,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getVideoPlaylist(): void {
-    this.videoSubscription = this.homeVideoService.getVideo(this.config.heroContentId.value).take(1).subscribe((video) => {
-      this.setUpVideo(video.playlist, 'hero-video');
-    });
-  }
-
-  private setUpVideo(video: any, elementId: string): void {
-    this.heroVideo.next(
-      jwplayer(elementId).setup({
-        autostart: true,
-        controls: false,
-        playlist: video,
-        androidhls: false,
-        mute: true,
-        repeat: true,
-        stretching: 'fill',
-        height: '100%',
-        width: '100%'
-      })
-    );
+  public getVideoPlaylist(): void {
+    this.homeVideoService.getVideo(this.config.heroContentId.value)
+      .map(video => video.playlist)
+      .subscribe(playlist => this.playlist.next(playlist));
   }
 
   private changeRouteFor(path: GalleryPath): void {

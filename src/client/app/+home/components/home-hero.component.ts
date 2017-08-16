@@ -1,5 +1,6 @@
-import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, Input, Output, EventEmitter, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+
+declare var jwplayer: any;
 
 @Component({
   moduleId: module.id,
@@ -33,33 +34,41 @@ import { Subscription } from 'rxjs/Subscription';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class HomeHeroComponent implements OnInit, OnDestroy {
+export class HomeHeroComponent {
   @Input() config: any;
   @Input() currentUser: any;
   @Input() uiState: any;
   @Input() isVideo: boolean;
-  @Input() heroVideo: any;
+  @Input()
+  set playlist(value: any) {
+    if (value !== null) this.setUpVideo(value, 'hero-video');
+  }
   @Output() searchContext: any = new EventEmitter();
 
   public isVideoHidden: boolean = true;
-  private videoSubscription: Subscription;
+  public heroVideo: any;
 
   constructor(
+    private _zone: NgZone,
     private changeDetector: ChangeDetectorRef) {
   }
 
-  ngOnInit() {
-    if (this.isVideo) {
-      this.videoSubscription = this.heroVideo.subscribe((video: any) => {
-        video.on('play', () => {
-          this.isVideoHidden = false;
-          this.changeDetector.markForCheck();
-        });
+  private setUpVideo(video: any, elementId: string): void {
+    this.heroVideo = jwplayer(elementId).setup({
+      autostart: true,
+      controls: false,
+      playlist: video,
+      androidhls: false,
+      mute: true,
+      repeat: true,
+      stretching: 'fill',
+      height: '100%',
+      width: '100%'
+    }).on('play', () => {
+      this._zone.run(() => {
+        this.isVideoHidden = false;
+        this.changeDetector.markForCheck();
       });
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.videoSubscription) this.videoSubscription.unsubscribe();
+    });
   }
 }
