@@ -140,4 +140,25 @@ header.app-header.collection-tray-closed collection-tray section {
   & > li:first-child {
     margin-left: 0;
   }
+  & > li.empty-collection {
+    position: relative;
+    font-size: .93rem;
+    margin: 0;
+    width: auto;
+    opacity: .4;
+    height: 56px;
+    display: flex;
+    span {
+      position: relative;
+      &::before {
+        content: "\e02e";
+        font-family: 'Material Icons';
+        position: absolute;
+        top: 0;
+        left: -28px;
+        font-size: 1.5em;
+        opacity: .8;
+      }
+    }
+  }
 }

@@ -2,6 +2,13 @@
 <section layout="row" flex="100" layout-align="start" class="header-tray">
   <div flex="100" class="asset-carousel grid">
     <ul class="asset-list" *ngIf="collection.assets">
+      <li *ngIf="collection.assets.items.length === 0"
+        class="empty-collection"
+        layout="row"
+        flex="100"
+        layout-align="center center">
+          <span>{{ 'COLLECTION.EMPTY_COLLECTION_MSG' | translate }}</span>
+      </li>
       <li *ngFor="let asset of collection.assets.items">
         <div class="asset">
           <a *ngIf="hasId(asset)" flex="" [routerLink]="routerLinkFor(asset)" class="asset-thb">
