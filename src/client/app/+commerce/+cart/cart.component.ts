@@ -43,7 +43,7 @@ export class CartComponent implements OnInit {
 
     this.selectedTabIndex = 0;
 
-    this.uiConfig.get('orderableComment').take(1).subscribe(config => this.commentFormConfig = config.config.form.items);
+    this.uiConfig.get('cartComment').take(1).subscribe(config => this.commentFormConfig = config.config.form.items);
 
     this.commentParentObject = { objectType: 'cart', objectId: this.cartService.state.data.id };
   }

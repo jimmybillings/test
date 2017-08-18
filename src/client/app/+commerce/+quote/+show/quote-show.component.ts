@@ -43,7 +43,7 @@ export class QuoteShowComponent implements OnInit {
 
     this.selectedTabIndex = 0;
 
-    this.uiConfig.get('orderableComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+    this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
 
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteService.state.data.id };
   }

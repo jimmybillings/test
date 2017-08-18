@@ -39,7 +39,7 @@ export function main() {
       });
 
       it('gets the uiConfig for the comment form', () => {
-        expect(mockUiConfig.get).toHaveBeenCalledWith('orderableComment');
+        expect(mockUiConfig.get).toHaveBeenCalledWith('cartComment');
         expect(componentUnderTest.commentFormConfig).toEqual(['config']);
       });
 

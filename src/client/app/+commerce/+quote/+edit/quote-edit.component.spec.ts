@@ -110,7 +110,7 @@ export function main() {
       it('gets the UI config specifically for the comments', () => {
         componentUnderTest.ngOnInit();
 
-        expect(mockUiConfig.get).toHaveBeenCalledWith('orderableComment');
+        expect(mockUiConfig.get).toHaveBeenCalledWith('quoteComment');
       });
     });
 

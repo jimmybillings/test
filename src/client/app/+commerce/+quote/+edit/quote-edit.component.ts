@@ -56,7 +56,7 @@ export class QuoteEditComponent extends CommerceEditTab {
       userPreference, error, document, snackBar, translate, pricingStore, currentUserService,
       appStore
     );
-    this.uiConfig.get('orderableComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+    this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
     this.commentParentObject = { objectId: this.quoteEditService.quoteId, objectType: 'quote' };
   }
 
