@@ -32,11 +32,11 @@ export function main() {
 
     describe('parentObject setter', () => {
       beforeEach(() => {
-        componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
+        componentUnderTest.parentObject = { objectType: 'collection', objectId: '1' };
       });
 
       it('should dispatch the getComments action', () => {
-        mockStore.expectDispatchFor(loadSpy, { objectType: 'collection', objectId: 1 });
+        mockStore.expectDispatchFor(loadSpy, { objectType: 'collection', objectId: '1' });
       });
 
       it('should set the comments instance variable', () => {
@@ -48,13 +48,13 @@ export function main() {
 
     describe('onFormSubmit', () => {
       beforeEach(() => {
-        componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
+        componentUnderTest.parentObject = { objectType: 'collection', objectId: '1' };
       });
 
       it('dispatches the proper action to the store', () => {
         componentUnderTest.onFormSubmit({ some: 'comment' } as any);
 
-        mockStore.expectDispatchFor(formSubmitSpy, { objectType: 'collection', objectId: 1 }, { some: 'comment' });
+        mockStore.expectDispatchFor(formSubmitSpy, { objectType: 'collection', objectId: '1' }, { some: 'comment' });
       });
 
       it('resets the form', () => {
@@ -66,14 +66,14 @@ export function main() {
 
     describe('get commentsExist()', () => {
       it('returns true if there are comments', () => {
-        componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
+        componentUnderTest.parentObject = { objectType: 'collection', objectId: '1' };
 
         componentUnderTest.commentsExist.take(1).subscribe(result => expect(result).toBe(true));
       });
 
       it('returns false if there are no comments', () => {
         mockStore.createStateSection('comment', { collection: { items: [], pagination: {} } });
-        componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
+        componentUnderTest.parentObject = { objectType: 'collection', objectId: '1' };
 
         componentUnderTest.commentsExist.take(1).subscribe(result => expect(result).toBe(false));
       });
@@ -126,7 +126,7 @@ export function main() {
 
     describe('onDeleteCommentButtonClick()', () => {
       it('dispatches the right action', () => {
-        componentUnderTest.parentObject = { objectType: 'collection', objectId: 1 };
+        componentUnderTest.parentObject = { objectType: 'collection', objectId: '1' };
         componentUnderTest.onDeleteCommentButtonClick({ some: 'comment', id: 2 } as any);
 
         mockStore.expectDispatchFor(removeSpy, jasmine.any(Object), jasmine.any(Function));

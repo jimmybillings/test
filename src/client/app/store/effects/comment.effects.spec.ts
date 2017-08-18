@@ -134,5 +134,28 @@ export function main() {
         });
       });
     });
+
+    describe('getCounts', () => {
+      it('works as expected', () => {
+        effectsSpecHelper.generateStandardTestFor({
+          effectName: 'getCounts',
+          effectsInstantiator: instantiator,
+          inputAction: {
+            type: CommentActions.GetCounts.Type,
+            parentObject: { some: 'parentObject' }
+          },
+          serviceMethod: {
+            name: 'getCountsFor',
+            expectedArguments: [{ some: 'parentObject' }],
+            returnsObservableOf: { 'abc': 1 }
+          },
+          outputActionFactory: {
+            sectionName: 'comment',
+            methodName: 'getCountsSuccess',
+            expectedArguments: [{ 'abc': 1 }]
+          }
+        });
+      });
+    });
   });
 }

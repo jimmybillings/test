@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { Collection } from '../../interfaces/collection.interface';
 import { Asset } from '../../interfaces/common.interface';
@@ -172,6 +173,10 @@ export class WzAsset {
     const rights: Metadatum = asset.metaData.find((metadatum: Metadatum) => metadatum.name === 'Rights.Reproduction');
     if (!rights) return false;
     return ['Rights Managed', 'Royalty Free'].includes(rights.value);
+  }
+
+  public commentCountFor(objectId: string): Observable<number> {
+    return this.store.select(factory => factory.comment.counts[objectId]);
   }
 
   private enhancedAssetFor(asset: Asset): EnhancedAsset {

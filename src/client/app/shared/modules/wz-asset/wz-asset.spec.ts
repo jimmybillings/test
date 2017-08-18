@@ -25,11 +25,13 @@ export function main() {
       mockAssetService = { enhance: (asset: Asset): any => mockEnhancedAsset };
 
       mockStore = new MockAppStore();
+      mockStore.createStateElement('comment', 'counts', { 'abc-123': 3 });
+
       componentUnderTest = new WzAsset(mockAssetService, mockStore);
       componentUnderTest.assets = [mockAsset];
     });
 
-    xdescribe('assets getter', () => {
+    describe('assets getter', () => {
       it('returns the original input assets', () => {
         expect(componentUnderTest.assets).toEqual([mockAsset]);
       });
@@ -332,6 +334,12 @@ export function main() {
           ]
         };
         expect(componentUnderTest.canBePurchased(asset)).toBe(true);
+      });
+    });
+
+    describe('commentCountFor()', () => {
+      it('selects the right part of the appStore', () => {
+        componentUnderTest.commentCountFor('abc-123').take(1).subscribe(count => expect(count).toBe(3));
       });
     });
   });

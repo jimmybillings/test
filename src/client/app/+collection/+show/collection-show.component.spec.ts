@@ -7,8 +7,7 @@ import { ActionFactory } from '../../store/actions/active-collection.actions';
 export function main() {
   describe('Collection Show Component', () => {
     let componentUnderTest: CollectionShowComponent, mockWindow: any, mockStore: MockAppStore,
-      mockCapabilitiesService: any, mockChangeDetectorRef: any, mockRoute: any, mockUiConfig: any;
-
+      mockCapabilitiesService: any, mockChangeDetectorRef: any, mockRoute: any, mockUiConfig: any, getCountsSpy: jasmine.Spy;
 
     beforeEach(() => {
       mockWindow = { nativeWindow: { location: { href: {} }, innerWidth: 200 } };
@@ -19,12 +18,21 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: [{ some: 'item' }] } } }))
       };
       mockStore = new MockAppStore();
-      mockStore.createStateElement('activeCollection', 'collection', { some: 'collection' });
+      mockStore.createStateElement('activeCollection', 'collection', { id: 123 });
+      mockStore.createStateElement('comment', 'count', { 'abc-123': 5 });
+      getCountsSpy = mockStore.createActionFactoryMethod('comment', 'getCounts');
 
       componentUnderTest = new CollectionShowComponent(
         mockCapabilitiesService, null, null, null, null, null, null, null, mockUiConfig,
         null, null, mockRoute, null, null, mockWindow, null, null, null, mockStore, mockChangeDetectorRef
       );
+    });
+
+    describe('ngOnInit()', () => {
+      it('calls getCounts on the comment action factory', () => {
+        componentUnderTest.ngOnInit();
+        expect(getCountsSpy).toHaveBeenCalled();
+      });
     });
 
     describe('get userCanEditCollection()', () => {

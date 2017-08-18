@@ -28,7 +28,21 @@ export interface Comments {
 
 export interface CommentParentObject {
   objectType: ObjectType;
-  objectId: number;
+  objectId: string;
+  nestedObjectType?: 'lineItem';
+  nestedObjectId?: string;
 }
 
 export type CommentFormMode = 'ADD' | 'EDIT';
+
+export interface CommentCountsApiResponse {
+  list: Array<CommentCount>;
+}
+
+export interface CommentCounts {
+  [index: string]: number;
+}
+
+export interface CommentCount extends CommentParentObject {
+  count: number;
+}
