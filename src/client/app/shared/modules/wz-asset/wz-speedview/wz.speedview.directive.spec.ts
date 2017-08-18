@@ -1,107 +1,196 @@
 import { WzSpeedviewDirective } from './wz.speedview.directive';
-import { Viewport } from '../../../interfaces/common.interface';
+import { Observable } from 'rxjs/Observable';
+import { SpeedViewPositionCalculator } from './wz.speedview-position-calculator';
+import { ViewContainerRef } from '@angular/core';
+import {
+  OverlayState,
+  OverlayRef,
+  Overlay,
+  GlobalPositionStrategy,
+  TemplatePortalDirective,
+  ComponentPortal
+} from '@angular/material';
+import { WzSpeedviewComponent } from './wz.speedview.component';
+import { MockAppStore } from '../../../../store/spec-helpers/mock-app.store';
+import { EnhancedAsset } from '../../../interfaces/enhanced-asset';
+import { Coords, Viewport } from '../../../interfaces/common.interface';
 
 export function main() {
-  const mockViewportWidth: number = 240;
-  const mockViewportHeight: number = 180;
 
-  xdescribe('Hover Intent directive', () => {
-    let directiveUnderTest: WzSpeedviewDirective;
+  describe('Wz Speedview Directive', () => {
+    let directiveUnderTest: WzSpeedviewDirective, mockviewContainerRef: any = {},
+      mockRenderer: any, mockAppStore: any, mockOverlayRef: any, mockOverlay: any,
+      componentInstance: any;
 
     beforeEach(() => {
-      jasmine.clock().uninstall();
-      jasmine.clock().install();
-      directiveUnderTest = new WzSpeedviewDirective(null, null, null, null);
+      spyOn(SpeedViewPositionCalculator, 'calculate').and.returnValue({ x: 100, y: 200 });
+      mockRenderer = {
+        listenGlobal: jasmine.createSpy('listenGlobal')
+          .and.callFake((a: any, b: any, c: Function) => {
+            c();
+            return () => true;
+          })
+      };
+      componentInstance = {
+        merge: jasmine.createSpy('merge'),
+        show: jasmine.createSpy('show')
+      };
+      mockOverlayRef = {
+        attach: jasmine.createSpy('attach').and.returnValue({ instance: componentInstance }),
+        detach: jasmine.createSpy('detach').and.returnValue(Promise.resolve()),
+        dispose: jasmine.createSpy('dispose')
+      };
+      mockOverlay = {
+        create: jasmine.createSpy('create').and.returnValue(mockOverlayRef),
+        position: jasmine.createSpy('position').and.returnValue({
+          global: jasmine.createSpy('global').and.returnValue({
+            top: jasmine.createSpy('top').and.returnValue({
+              left: jasmine.createSpy('left').and.returnValue({ x: 100, y: 200 })
+            })
+          })
+        })
+      };
+      mockAppStore = new MockAppStore();
+      directiveUnderTest = new WzSpeedviewDirective(mockviewContainerRef, mockOverlay, mockRenderer, mockAppStore);
+      directiveUnderTest.ngOnInit();
     });
 
-    afterEach(() => {
-      jasmine.clock().uninstall();
+    describe('ngOnInit()', () => {
+
+      it('Should assign a new instance of overlay state', () => {
+        directiveUnderTest.ngOnInit();
+      });
     });
 
-    describe('should not calculate if the window is too small', () => {
+    describe('onMouseEnter()', () => {
+      let $event: any, spy: any, asset: any;
       beforeEach(() => {
-        (<any>window).innerHeight = 640;
-        (<any>window).innerWidth = 400;
-        // spyOn(directiveUnderTest.showPreview, 'emit');
+
+        $event = {
+          currentTarget: {
+            getBoundingClientRect: (): Viewport => {
+              return {
+                bottom: 380.03125,
+                height: 114.96875,
+                left: 327.828125,
+                right: 532.21875,
+                top: 265.0625,
+                width: 204.390625,
+              };
+            }
+          }
+        };
+        asset = {
+          'assetId': 35634858,
+          'name': '34548576_056',
+          'metaData': [],
+          'thumbnail': {
+            'name': 'thumbnail',
+            'urls': {
+              'https': 'https://test.jpg'
+            }
+          },
+          'smallPreview': {
+            'name': 'quickPreview',
+            'urls': {
+              'https': 'https://test.flv'
+            }
+          },
+          'hasDownloadableComp': false
+        };
+        directiveUnderTest.wzSpeedview = asset;
+        spy = mockAppStore.createActionFactoryMethod('speedPreview', 'load');
       });
 
-      it('horizontal', () => {
-        directiveUnderTest.onMouseEnter({});
+      describe('loadOverlay()', () => {
+        it('Should call the speedview position calculator with the view port', () => {
+          directiveUnderTest.onMouseEnter($event);
+          expect(SpeedViewPositionCalculator.calculate).toHaveBeenCalledWith({
+            bottom: 380.03125,
+            height: 114.96875,
+            left: 327.828125,
+            right: 532.21875,
+            top: 265.0625,
+            width: 204.390625,
+          });
+        });
 
-        // expect(directiveUnderTest.showPreview.emit).not.toHaveBeenCalled();
-      });
-    });
+        it('should configure the position correctly', () => {
+          directiveUnderTest.onMouseEnter($event);
+          expect(mockOverlay.position).toHaveBeenCalled();
+          expect(mockOverlay.position().global).toHaveBeenCalled();
+          expect(mockOverlay.position().global().top).toHaveBeenCalledWith('200px');
+          expect(mockOverlay.position().global().top().left).toHaveBeenCalledWith('100px');
+        });
 
-    describe('should properly determine the x and y coordinates to place the hover preview', () => {
-      let mockEvent: any;
-
-      beforeEach(() => {
-        (<any>window).innerHeight = 800;
-        (<any>window).innerWidth = 1440;
-        // spyOn(directiveUnderTest.showPreview, 'emit');
-      });
-
-      it('for an asset with room above, below, and to the right', () => {
-        let viewport: Viewport = calculateViewport(100, 300);
-        mockEvent = { currentTarget: { getBoundingClientRect: () => { return viewport; } } };
-        directiveUnderTest.onMouseEnter(mockEvent);
-
-        jasmine.clock().tick(340);
-
-        let y: number = viewport.top - (300 / 3);
-        // expect(directiveUnderTest.showPreview.emit).toHaveBeenCalledWith({ x: 350, y: y });
-      });
-
-      it('for an asset with room above, below, but not to the right', () => {
-        let viewport: Viewport = calculateViewport(1000, 300);
-        mockEvent = { currentTarget: { getBoundingClientRect: () => { return viewport; } } };
-        directiveUnderTest.onMouseEnter(mockEvent);
-
-        jasmine.clock().tick(340);
-
-        let y: number = viewport.top - (300 / 3);
-        // expect(directiveUnderTest.showPreview.emit).toHaveBeenCalledWith({ x: 570, y: y });
+        it('should create a new overlay', () => {
+          let overlayState: OverlayState = new OverlayState();
+          overlayState.positionStrategy = { x: 100, y: 200 } as any;
+          directiveUnderTest.onMouseEnter($event);
+          expect(mockOverlay.create).toHaveBeenCalledWith(overlayState);
+        });
       });
 
-      it('for an asset with no room below, but room to the right', () => {
-        let viewport: Viewport = calculateViewport(100, 700);
-        mockEvent = { currentTarget: { getBoundingClientRect: () => { return viewport; } } };
-        directiveUnderTest.onMouseEnter(mockEvent);
+      describe('loadSpeedView()', () => {
+        it('Should attach the speed view component to the overlay', () => {
+          directiveUnderTest.onMouseEnter($event);
+          expect(mockOverlayRef.attach).toHaveBeenCalledWith(
+            new ComponentPortal(WzSpeedviewComponent, {} as any)
+          );
+        });
 
-        jasmine.clock().tick(340);
+        it('Should merge the poster url onto the speedview while we wait for the video to start playing', () => {
+          directiveUnderTest.onMouseEnter($event);
+          expect(componentInstance.merge).toHaveBeenCalledWith({ posterUrl: 'https://test.jpg' });
+        });
 
-        // expect(directiveUnderTest.showPreview.emit).toHaveBeenCalledWith({ x: 350, y: 480 });
+        it('Should call the show method on the component instance', () => {
+          directiveUnderTest.onMouseEnter($event);
+          expect(componentInstance.show).toHaveBeenCalled();
+        });
+
+        it('Should dispatch the correct action to load speedview data', () => {
+          const enhancedAssetUnderTest = Object.assign(new EnhancedAsset(), asset).normalize();
+          directiveUnderTest.onMouseEnter($event);
+
+          mockAppStore.expectDispatchFor(spy, enhancedAssetUnderTest);
+        });
+
+        it('Should merge the new speedview data into the component when loaded', () => {
+          const enhancedAssetUnderTest = Object.assign(new EnhancedAsset(), asset).normalize();
+          mockAppStore.createStateElement('speedPreview', 35634858, enhancedAssetUnderTest);
+          directiveUnderTest.onMouseEnter($event);
+          expect(componentInstance.merge.calls.allArgs())
+            .toEqual([[{ posterUrl: 'https://test.jpg' }], [enhancedAssetUnderTest]]);
+        });
       });
 
-      it('for an asset with no room above, but room to the right', () => {
-        let viewport: Viewport = calculateViewport(100, 0);
-        mockEvent = { currentTarget: { getBoundingClientRect: () => { return viewport; } } };
-        directiveUnderTest.onMouseEnter(mockEvent);
-
-        jasmine.clock().tick(340);
-
-        // expect(directiveUnderTest.showPreview.emit).toHaveBeenCalledWith({ x: 350, y: 20 });
+      describe('destroySpeedView()', () => {
+        beforeEach(() => {
+          const enhancedAssetUnderTest = Object.assign(new EnhancedAsset(), asset).normalize();
+          mockAppStore.createStateElement('speedPreview', 35634858, enhancedAssetUnderTest);
+          directiveUnderTest.onMouseEnter($event);
+        });
+        describe('ngOnDestroy()', () => {
+          it('should destroy the speed view', () => {
+            directiveUnderTest.ngOnDestroy();
+            expect(mockOverlayRef.dispose).toHaveBeenCalled();
+          });
+        });
+        describe('onMouseLeave()', () => {
+          it('should destroy the speed view', () => {
+            directiveUnderTest.onMouseLeave();
+            expect(mockOverlayRef.dispose).toHaveBeenCalled();
+          });
+        });
       });
-    });
 
-    describe('mouseLeave', () => {
-      it('should emit the hidePreview event', () => {
-        // spyOn(directiveUnderTest.hidePreview, 'emit');
-        directiveUnderTest.onMouseLeave();
-
-        // expect(directiveUnderTest.hidePreview.emit).toHaveBeenCalled();
+      describe('onClick()', () => {
+        it('should destroy the speed view', () => {
+          directiveUnderTest.onClick();
+        });
       });
     });
   });
-
-  function calculateViewport(x: number, y: number): Viewport {
-    return {
-      left: x,
-      top: y,
-      right: x + mockViewportWidth,
-      bottom: y + mockViewportHeight,
-      width: mockViewportWidth,
-      height: mockViewportHeight
-    };
-  }
 }
+

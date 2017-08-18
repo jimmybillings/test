@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: HomeHeroComponent;
 
     beforeEach(() => {
-      componentUnderTest = new HomeHeroComponent(null);
+      componentUnderTest = new HomeHeroComponent(null, null);
     });
 
     xit('has no tests!', () => {
