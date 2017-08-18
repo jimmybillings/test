@@ -23,6 +23,12 @@
         &.mdata-3 {
           @include text-contrast(mat-color($foreground, base));
         }
+        &.comment-count {
+          color: rgba(mat-color($primary, default), .8);
+          span.count {
+            color: mat-color($background, card);
+          }
+        }
         &.subclip-timeline.sub-clip-indicator-2 {
           background-color: darken(mat-color($background, status-bar), 1%);
           .subclip-segment {
