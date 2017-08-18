@@ -60,7 +60,7 @@ export function main() {
       it('resets the form', () => {
         componentUnderTest.onFormSubmit({ some: 'comment' } as any);
 
-        expect(componentUnderTest.wzForm.resetForm).toHaveBeenCalled();
+        expect(componentUnderTest.wzForm.resetForm).toHaveBeenCalledWith(['access']);
       });
     });
 
@@ -116,7 +116,7 @@ export function main() {
       });
 
       it('calls resetForm() on the wzForm', () => {
-        expect(mockWzForm.resetForm).toHaveBeenCalled();
+        expect(mockWzForm.resetForm).toHaveBeenCalledWith(['access']);
       });
 
       it('dispatches the correct action', () => {
