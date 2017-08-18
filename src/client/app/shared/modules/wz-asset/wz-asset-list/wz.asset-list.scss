@@ -53,10 +53,10 @@ wz-asset-list ul.asset-list-view {
       }
     }
     span {
-      font-size: rem(1.2);
-      line-height: rem(1.55);
-      position: absolute;
       &.comment-count {
+        font-size: rem(1.2);
+        line-height: rem(1.55);
+        position: absolute;
         top: 2px;
         left: 2px;
         span.count {
