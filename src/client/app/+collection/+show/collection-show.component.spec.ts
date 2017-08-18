@@ -29,9 +29,33 @@ export function main() {
     });
 
     describe('ngOnInit()', () => {
-      it('calls getCounts on the comment action factory', () => {
-        componentUnderTest.ngOnInit();
-        expect(getCountsSpy).toHaveBeenCalled();
+      describe('with a valid active collection', () => {
+        beforeEach(() => {
+          componentUnderTest.ngOnInit();
+        });
+
+        it('calls getCounts on the comment action factory', () => {
+          expect(getCountsSpy).toHaveBeenCalled();
+        });
+
+        it('sets up the commentParentObject instance variable', () => {
+          expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'collection', objectId: '123' });
+        });
+      });
+
+      describe('with an invalid active collection (without an id)', () => {
+        beforeEach(() => {
+          mockStore.createStateElement('activeCollection', 'collection', { id: null });
+          componentUnderTest.ngOnInit();
+        });
+
+        it('does not call getCounts on the comment action factory', () => {
+          expect(getCountsSpy).not.toHaveBeenCalled();
+        });
+
+        it('does not set up the commentParentObject instance variabl', () => {
+          expect(componentUnderTest.commentParentObject).toBeUndefined();
+        });
       });
     });
 
