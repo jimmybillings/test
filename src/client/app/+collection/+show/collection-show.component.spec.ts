@@ -39,7 +39,7 @@ export function main() {
         });
 
         it('sets up the commentParentObject instance variable', () => {
-          expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'collection', objectId: '123' });
+          expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'collection', objectId: 123 });
         });
       });
 

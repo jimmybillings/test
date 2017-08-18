@@ -339,7 +339,7 @@ export function main() {
 
     describe('commentCountFor()', () => {
       it('selects the right part of the appStore', () => {
-        componentUnderTest.commentCountFor('abc-123').take(1).subscribe(count => expect(count).toBe(3));
+        componentUnderTest.commentCountFor({ uuid: 'abc-123' } as any).take(1).subscribe(count => expect(count).toBe(3));
       });
     });
   });

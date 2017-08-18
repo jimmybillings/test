@@ -147,12 +147,12 @@ export function main() {
           serviceMethod: {
             name: 'getCountsFor',
             expectedArguments: [{ some: 'parentObject' }],
-            returnsObservableOf: { 'abc': 1 }
+            returnsObservableOf: { abc: 1 }
           },
           outputActionFactory: {
             sectionName: 'comment',
             methodName: 'getCountsSuccess',
-            expectedArguments: [{ 'abc': 1 }]
+            expectedArguments: [{ abc: 1 }]
           }
         });
       });

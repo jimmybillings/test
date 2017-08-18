@@ -23,7 +23,7 @@ export function main() {
 
     describe('getCommentsFor()', () => {
       it('calls the API correctly', () => {
-        serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: '123' });
+        serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: 123 });
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
@@ -31,7 +31,7 @@ export function main() {
 
       describe('converts to response to the proper shape', () => {
         it('when items exist', () => {
-          serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: '123' }).subscribe(comments => expect(comments).toEqual({
+          serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: 123 }).subscribe(comments => expect(comments).toEqual({
             items: [{ some: 'comment' }],
             pagination: {
               currentPage: 0,
@@ -54,7 +54,7 @@ export function main() {
             totalCount: 100
           };
 
-          serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: '123' }).subscribe(comments => expect(comments).toEqual({
+          serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: 123 }).subscribe(comments => expect(comments).toEqual({
             items: [],
             pagination: {
               currentPage: 0,
@@ -71,7 +71,7 @@ export function main() {
 
     describe('addCommentTo()', () => {
       it('calls the API correctly', () => {
-        serviceUnderTest.addCommentTo({ objectType: 'collection', objectId: '123' }, { comment: 'wow' } as any);
+        serviceUnderTest.addCommentTo({ objectType: 'collection', objectId: 123 }, { comment: 'wow' } as any);
 
         expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.post).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
@@ -80,7 +80,7 @@ export function main() {
       });
 
       it('calls getCommentsFor() with the correct objectType and objectId', () => {
-        serviceUnderTest.addCommentTo({ objectType: 'collection', objectId: '123' }, { comment: 'wow' } as any).subscribe();
+        serviceUnderTest.addCommentTo({ objectType: 'collection', objectId: 123 }, { comment: 'wow' } as any).subscribe();
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
@@ -89,7 +89,7 @@ export function main() {
 
     describe('editComment()', () => {
       it('calls the api service correctly', () => {
-        serviceUnderTest.editComment({ objectType: 'collection', objectId: '123' }, { some: 'comment', id: 123 } as any);
+        serviceUnderTest.editComment({ objectType: 'collection', objectId: 123 }, { some: 'comment', id: 123 } as any);
 
         expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.put).toHaveBeenCalledWithEndpoint('comment/123');
@@ -98,7 +98,7 @@ export function main() {
       });
 
       it('calls getCommentsFor() with the correct objectType and objectId', () => {
-        serviceUnderTest.editComment({ objectType: 'collection', objectId: '123' }, { comment: 'wow' } as any).subscribe();
+        serviceUnderTest.editComment({ objectType: 'collection', objectId: 123 }, { comment: 'wow' } as any).subscribe();
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
@@ -107,7 +107,7 @@ export function main() {
 
     describe('removeComment()', () => {
       it('calls the api service correctly', () => {
-        serviceUnderTest.removeComment({ objectType: 'collection', objectId: '123' }, 1);
+        serviceUnderTest.removeComment({ objectType: 'collection', objectId: 123 }, 1);
 
         expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('comment/1');
@@ -115,7 +115,7 @@ export function main() {
       });
 
       it('calls getCommentsFor() with the correct objectType and objectId', () => {
-        serviceUnderTest.removeComment({ objectType: 'collection', objectId: '123' }, 1).subscribe();
+        serviceUnderTest.removeComment({ objectType: 'collection', objectId: 123 }, 1).subscribe();
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
@@ -124,7 +124,7 @@ export function main() {
 
     describe('getCountsFor()', () => {
       it('calls the api service correctly', () => {
-        serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: '1' });
+        serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: 1 });
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/counts/collection/1');
@@ -134,7 +134,7 @@ export function main() {
         it('when the response has a properly formatted list', () => {
           mockApiService.getResponse = { list: [{ objectId: 'abc', count: 2 }, { objectId: 'def', count: 4 }] };
 
-          serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: '1' }).take(1).subscribe(res => {
+          serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: 1 }).take(1).subscribe(res => {
             expect(res).toEqual({ 'abc': 2, 'def': 4 });
           });
         });
@@ -142,7 +142,7 @@ export function main() {
         it('when the response has no list', () => {
           mockApiService.getResponse = {};
 
-          serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: '1' }).take(1).subscribe(res => {
+          serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: 1 }).take(1).subscribe(res => {
             expect(res).toEqual({});
           });
         });
@@ -155,7 +155,7 @@ export function main() {
             ]
           };
 
-          serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: '1' }).take(1).subscribe(res => {
+          serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: 1 }).take(1).subscribe(res => {
             expect(res).toEqual({ 'abc': 2, '123': 4 });
           });
         });

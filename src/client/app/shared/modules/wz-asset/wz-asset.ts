@@ -175,8 +175,8 @@ export class WzAsset {
     return ['Rights Managed', 'Royalty Free'].includes(rights.value);
   }
 
-  public commentCountFor(objectId: string): Observable<number> {
-    return this.store.select(factory => factory.comment.counts[objectId]);
+  public commentCountFor(asset: Asset): Observable<number> {
+    return this.store.select(factory => factory.comment.counts[asset.uuid]);
   }
 
   private enhancedAssetFor(asset: Asset): EnhancedAsset {

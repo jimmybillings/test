@@ -84,7 +84,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       this.store.select(state => state.activeCollection.collection).subscribe(collection => {
         this.activeCollection = collection;
         if (collection.id) { // We only want to do these things when there is a valid active collection
-          this.commentParentObject = { objectType: 'collection', objectId: collection.id.toString() };
+          this.commentParentObject = { objectType: 'collection', objectId: collection.id };
           this.store.dispatch(factory => factory.comment.getCounts(this.commentParentObject));
         }
         // The view needs to update whenever the activeCollection changes (including individual assets).  This is
@@ -244,7 +244,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public get commentCount(): Observable<number> {
-    return this.store.select(factory => factory.comment.counts[this.activeCollection.id]);
+    return this.store.select(state => state.comment.counts[this.activeCollection.id]);
   }
 
   public get userCanEditCollection(): Observable<boolean> {

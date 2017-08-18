@@ -45,7 +45,7 @@ export class CartComponent implements OnInit {
 
     this.uiConfig.get('cartComment').take(1).subscribe(config => this.commentFormConfig = config.config.form.items);
 
-    this.commentParentObject = { objectType: 'cart', objectId: this.cartService.state.data.id.toString() };
+    this.commentParentObject = { objectType: 'cart', objectId: this.cartService.state.data.id };
   }
 
   public onNotification(message: CommerceMessage): void {

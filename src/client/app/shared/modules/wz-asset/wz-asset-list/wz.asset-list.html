@@ -10,9 +10,9 @@
           <a [routerLink]="routerLinkFor(asset)" [wzSpeedview]="asset">
             <div class="asset-thb">
               <img *ngIf="hasThumbnail(asset)" src="{{ thumbnailUrlFor(asset) }}"/>
-              <span *ngIf="commentCountFor(asset.uuid) | async" class="comment-count">
+              <span *ngIf="commentCountFor(asset) | async" class="comment-count">
                 <md-icon>chat_bubble</md-icon>
-                <span class="count">{{ commentCountFor(asset.uuid) | async }}</span>
+                <span class="count">{{ commentCountFor(asset) | async }}</span>
               </span>
               <span *ngIf="hasFormatType(asset)" class="mdata-2">
                 <span [ngClass]="formatClassNameFor(asset)" class="sd-hd">{{ formatTypeOf(asset) }}</span>

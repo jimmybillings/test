@@ -103,7 +103,7 @@ export function main() {
       });
 
       it('sets up the commentParentObject instance variable', () => {
-        expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'quote', objectId: '1' });
+        expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'quote', objectId: 1 });
       });
 
       it('gets the UI config specifically for the comments', () => {

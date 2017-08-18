@@ -28,7 +28,7 @@ export interface Comments {
 
 export interface CommentParentObject {
   objectType: ObjectType;
-  objectId: string;
+  objectId: number;
   nestedObjectType?: 'lineItem';
   nestedObjectId?: string;
 }

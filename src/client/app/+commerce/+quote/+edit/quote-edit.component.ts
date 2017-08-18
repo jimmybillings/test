@@ -57,7 +57,7 @@ export class QuoteEditComponent extends CommerceEditTab {
       appStore
     );
     this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
-    this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId.toString() };
+    this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
   }
 
   public onNotification(message: WzEvent): void {

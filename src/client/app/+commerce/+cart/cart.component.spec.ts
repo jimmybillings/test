@@ -44,7 +44,7 @@ export function main() {
       });
 
       it('assigns the commentParentObject instance variable', () => {
-        expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'cart', objectId: '77' });
+        expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'cart', objectId: 77 });
       });
     });
 
