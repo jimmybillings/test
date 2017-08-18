@@ -121,5 +121,45 @@ export function main() {
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
       });
     });
+
+    describe('getCountsFor()', () => {
+      it('calls the api service correctly', () => {
+        serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: 1 });
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/counts/collection/1');
+      });
+
+      describe('maps the result', () => {
+        it('when the response has a properly formatted list', () => {
+          mockApiService.getResponse = { list: [{ objectId: 'abc', count: 2 }, { objectId: 'def', count: 4 }] };
+
+          serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: 1 }).take(1).subscribe(res => {
+            expect(res).toEqual({ 'abc': 2, 'def': 4 });
+          });
+        });
+
+        it('when the response has no list', () => {
+          mockApiService.getResponse = {};
+
+          serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: 1 }).take(1).subscribe(res => {
+            expect(res).toEqual({});
+          });
+        });
+
+        it('when there are comments for lineItems', () => {
+          mockApiService.getResponse = {
+            list: [
+              { objectId: 'abc', count: 2 },
+              { objectType: 'collection', objectId: 'def', nestedObjectType: 'lineItem', nestedObjectId: '123', count: 4 }
+            ]
+          };
+
+          serviceUnderTest.getCountsFor({ objectType: 'collection', objectId: 1 }).take(1).subscribe(res => {
+            expect(res).toEqual({ 'abc': 2, '123': 4 });
+          });
+        });
+      });
+    });
   });
 }

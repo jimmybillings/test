@@ -92,6 +92,18 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
+      actionClassName: ['GetCountsSuccess'],
+      customTests: [
+        {
+          it: 'merges the counts into the state',
+          actionParameters: { counts: { 'abc': 4, 'def': 2 } },
+          previousState: CommentState.initialState,
+          expectedNextState: { ...JSON.parse(JSON.stringify(CommentState.initialState)), counts: { 'abc': 4, 'def': 2 } }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
       actionClassName: ['FormSubmit'],
       customTests: [
         {

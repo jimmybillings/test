@@ -1,6 +1,8 @@
 import { Action } from '@ngrx/store';
 
-import { Comment, Comments, ObjectType, CommentFormMode, CommentParentObject } from '../../shared/interfaces/comment.interface';
+import {
+  Comment, Comments, ObjectType, CommentFormMode, CommentParentObject, CommentCounts
+} from '../../shared/interfaces/comment.interface';
 
 export class ActionFactory {
   public load(parentObject: CommentParentObject): Load {
@@ -22,6 +24,10 @@ export class ActionFactory {
   public changeFormModeToEdit(commentBeingEdited: Comment): ChangeFormModeToEdit {
     return new ChangeFormModeToEdit(commentBeingEdited);
   }
+
+  public getCounts(parentObject: CommentParentObject): GetCounts {
+    return new GetCounts(parentObject);
+  }
 }
 
 export class InternalActionFactory {
@@ -35,6 +41,10 @@ export class InternalActionFactory {
 
   public removeSuccess(comments: Comments): RemoveSuccess {
     return new RemoveSuccess(comments);
+  }
+
+  public getCountsSuccess(counts: CommentCounts): GetCountsSuccess {
+    return new GetCountsSuccess(counts);
   }
 }
 
@@ -67,6 +77,12 @@ export class ChangeFormModeToEdit implements Action {
   constructor(public readonly commentBeingEdited: Comment) { }
 }
 
+export class GetCounts {
+  public static readonly Type = '[Comment] Get Counts';
+  public readonly type = GetCounts.Type;
+  constructor(public readonly parentObject: CommentParentObject) { }
+}
+
 export class LoadSuccess implements Action {
   public static readonly Type = '[Comment] Load Success';
   public readonly type = LoadSuccess.Type;
@@ -85,5 +101,11 @@ export class RemoveSuccess implements Action {
   constructor(public readonly comments: Comments) { }
 }
 
-export type Any = Load | FormSubmit | ChangeFormModeToAdd | ChangeFormModeToEdit |
-  LoadSuccess | FormSubmitSuccess | Remove | RemoveSuccess;
+export class GetCountsSuccess {
+  public static readonly Type = '[Comment] Get Counts Success';
+  public readonly type = GetCountsSuccess.Type;
+  constructor(public readonly counts: CommentCounts) { }
+}
+
+export type Any = Load | FormSubmit | ChangeFormModeToAdd | ChangeFormModeToEdit | GetCounts |
+  LoadSuccess | FormSubmitSuccess | Remove | RemoveSuccess | GetCountsSuccess;
