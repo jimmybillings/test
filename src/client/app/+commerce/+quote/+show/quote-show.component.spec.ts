@@ -52,7 +52,7 @@ export function main() {
       });
 
       it('assigns the commentParentObject instance variable', () => {
-        expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'quote', objectId: 7 });
+        expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'quote', objectId: '7' });
       });
     });
 

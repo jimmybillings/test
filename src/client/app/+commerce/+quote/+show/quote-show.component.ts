@@ -45,7 +45,7 @@ export class QuoteShowComponent implements OnInit {
 
     this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
 
-    this.commentParentObject = { objectType: 'quote', objectId: this.quoteService.state.data.id };
+    this.commentParentObject = { objectType: 'quote', objectId: this.quoteService.state.data.id.toString() };
   }
 
   public get hasPurchaseType(): boolean {

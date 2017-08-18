@@ -76,7 +76,8 @@ export function main() {
     let setupFor = (propertyInQuestion: any) => {
       mockQuoteEditService = {
         hasProperty: jasmine.createSpy('hasProperty').and.returnValue(Observable.of(propertyInQuestion)),
-        updateQuoteField: jasmine.createSpy('updateQuoteField')
+        updateQuoteField: jasmine.createSpy('updateQuoteField'),
+        quoteId: 1
       };
       componentUnderTest = new QuoteEditComponent(
         null, mockQuoteEditService, mockUiConfig, mockDialogService, null, null,
@@ -102,9 +103,7 @@ export function main() {
       });
 
       it('sets up the commentParentObject instance variable', () => {
-        expect(componentUnderTest.commentParentObject).toEqual({
-          objectType: 'quote', objectId: 1
-        });
+        expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'quote', objectId: '1' });
       });
 
       it('gets the UI config specifically for the comments', () => {
