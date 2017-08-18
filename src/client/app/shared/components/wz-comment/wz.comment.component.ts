@@ -20,7 +20,7 @@ export class WzCommentComponent {
     this.initializeData();
   }
   @Input() formFields: Array<FormFields>;
-  @Input() userCanAddComments: boolean;
+  @Input() userCanAddComments: boolean = true;
   @Input() currentUserId: number;
   @ViewChild(WzFormComponent) wzForm: WzFormComponent;
   private _parentObject: CommentParentObject;

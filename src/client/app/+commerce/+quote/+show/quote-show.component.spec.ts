@@ -1,35 +1,58 @@
 import { QuoteShowComponent } from './quote-show.component';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 import { Observable } from 'rxjs/Observable';
 
 
 export function main() {
   describe('Quote Show Component', () => {
-    let componentUnderTest: QuoteShowComponent, mockCapabilities: any, mockQuoteService: any;
-
-    mockCapabilities = { administerQuotes: () => false };
-    mockQuoteService = { data: Observable.of({}), state: { data: { purchaseType: 'blah' } } };
+    let componentUnderTest: QuoteShowComponent, mockCapabilities: any, mockQuoteService: any, mockUiConfig: any,
+      mockCurrentUserService: any, mockAppStore: MockAppStore;
 
     beforeEach(() => {
-      componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService);
+      mockCapabilities = { administerQuotes: () => false };
+
+      mockQuoteService = { data: Observable.of({}), state: { data: { purchaseType: 'blah', id: 7 } } };
+
+      mockUiConfig = {
+        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: ['wow'] } } }))
+      };
+
+      mockCurrentUserService = { data: Observable.of({ id: 10 }) };
+
+      mockAppStore = new MockAppStore();
+
+      componentUnderTest = new QuoteShowComponent(
+        mockCapabilities, mockQuoteService, mockUiConfig, mockCurrentUserService, mockAppStore
+      );
     });
 
     describe('Initialization', () => {
-      it('defines the expected tabs', () => {
+      beforeEach(() => {
         componentUnderTest.ngOnInit();
+      });
 
+      it('defines the expected tabs', () => {
         expect(componentUnderTest.tabLabelKeys).toEqual(['quote', 'billing', 'payment', 'confirm']);
       });
 
       it('disables all but the first tab', () => {
-        componentUnderTest.ngOnInit();
-
         expect(componentUnderTest.tabEnabled).toEqual([true, false, false, false]);
       });
 
       it('selects the first tab', () => {
-        componentUnderTest.ngOnInit();
-
         expect(componentUnderTest.selectedTabIndex).toBe(0);
+      });
+
+      it('access the right part of the uiConfig store', () => {
+        expect(mockUiConfig.get).toHaveBeenCalledWith('quoteComment');
+      });
+
+      it('assigns the commentFormConfig instance variable', () => {
+        expect(componentUnderTest.commentFormConfig).toEqual(['wow']);
+      });
+
+      it('assigns the commentParentObject instance variable', () => {
+        expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'quote', objectId: 7 });
       });
     });
 
@@ -96,8 +119,32 @@ export function main() {
           data: Observable.of({ data: {} }),
           state: mockState,
         };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService);
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, null);
         expect(componentUnderTest.hasDiscount).toBe(true);
+      });
+    });
+
+    describe('currentUserId', () => {
+      it('should access the data property on the currentUserService', () => {
+        componentUnderTest.currentUserId.take(1).subscribe(id => expect(id).toBe(10));
+      });
+    });
+
+    describe('toggleCommentVisibility', () => {
+      it('should toggle the showComments flag', () => {
+        expect(componentUnderTest.showComments).toBe(null);
+        componentUnderTest.toggleCommentsVisibility();
+        expect(componentUnderTest.showComments).toBe(true);
+        componentUnderTest.toggleCommentsVisibility();
+        expect(componentUnderTest.showComments).toBe(false);
+      });
+    });
+
+    describe('commentCount', () => {
+      it('should get the count from the correct part of the store', () => {
+        mockAppStore.createStateSection('comment', { quote: { pagination: { totalCount: 10 } } });
+
+        componentUnderTest.commentCount.take(1).subscribe(count => expect(count).toBe(10));
       });
     });
   });

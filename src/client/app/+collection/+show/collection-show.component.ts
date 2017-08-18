@@ -90,7 +90,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       });
 
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
-    this.uiConfig.get('comment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+    this.uiConfig.get('collectionComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
   }
 
   ngOnDestroy() {
@@ -241,7 +241,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public get commentCount(): Observable<number> {
-    return this.store.select(factory => factory.comment.collection.items.length);
+    return this.store.select(state => state.comment.collection.pagination.totalCount);
   }
 
   public get userCanEditCollection(): Observable<boolean> {
