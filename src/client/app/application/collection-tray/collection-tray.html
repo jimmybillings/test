@@ -19,8 +19,11 @@
     </ul>
   </div>
   <div layout="row" flex="auto" layout-align="end center" class="focused-collection">
-    <nav class="focused" *ngIf="collection.name" (click)="list.show($event)">
-      <button md-button class="is-dd">{{collection.name}}</button>
+    <nav class="focused" *ngIf="collection.name">
+      <button md-button [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
+        <md-icon>folder_special</md-icon>
+        {{collection.name}}
+      </button>
       <button md-button class="asset-count">
         <span class="count" *ngIf="collection.assets">{{collection.assetsCount}}</span>
         <span class="count" *ngIf="!collection.assets">0</span>
