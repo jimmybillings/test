@@ -43,7 +43,7 @@ export class WzCommentComponent {
 
   public onFormSubmit(comment: Comment): void {
     this.store.dispatch(factory => factory.comment.formSubmit(this._parentObject, comment));
-    this.wzForm.resetForm();
+    this.wzForm.resetForm(['access']);
   }
 
   public onEditCommentButtonClick(comment: Comment): void {
@@ -57,7 +57,7 @@ export class WzCommentComponent {
 
   public onFormCancel(): void {
     this.store.dispatch(factory => factory.comment.changeFormModeToAdd());
-    this.wzForm.resetForm();
+    this.wzForm.resetForm(['access']);
   }
 
   public onDeleteCommentButtonClick(comment: Comment): void {

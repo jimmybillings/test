@@ -171,6 +171,16 @@ wz-asset-grid ul.asset-grid-view {
       &.mdata-0 {
         display: none;
       }
+      &.comment-count {
+        top: 2px;
+        left: 2px;
+        span.count {
+          font-weight: bold;
+          position: absolute;
+          top: 3px;
+          left: 9px;
+        }
+      }
       &.mdata-2 {
         position: absolute;
         height: 30px;

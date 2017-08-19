@@ -4,7 +4,7 @@ import { Effect, Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import * as CommentActions from '../actions/comment.actions';
-import { Comment, Comments, CommentFormMode } from '../../shared/interfaces/comment.interface';
+import { Comment, Comments, CommentFormMode, CommentCounts } from '../../shared/interfaces/comment.interface';
 import { CommentService } from '../services/comment.service';
 import { AppStore, CommentState } from '../../app.store';
 
@@ -35,6 +35,11 @@ export class CommentEffects {
   @Effect()
   public showSnackBarOnRemoveSuccess: Observable<Action> = this.actions.ofType(CommentActions.RemoveSuccess.Type)
     .map(() => this.store.create(factory => factory.snackbar.display('COMMENTS.DELETE_SUCCESS_TOAST')));
+
+  @Effect()
+  public getCounts: Observable<Action> = this.actions.ofType(CommentActions.GetCounts.Type)
+    .switchMap((action: CommentActions.GetCounts) => this.service.getCountsFor(action.parentObject))
+    .map((counts: CommentCounts) => this.store.create(factory => factory.comment.getCountsSuccess(counts)));
 
   constructor(
     private actions: Actions,

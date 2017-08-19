@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import {
-  CommentsApiResponse, Comments, Comment, ObjectType, CommentParentObject
+  CommentsApiResponse, Comments, Comment, ObjectType, CommentParentObject, CommentCountsApiResponse, CommentCounts, CommentCount
 } from '../../shared/interfaces/comment.interface';
 
 @Injectable()
@@ -42,6 +42,13 @@ export class CommentService {
     ).flatMap(() => this.getCommentsFor(parentObject));
   }
 
+  public getCountsFor(parentObject: CommentParentObject): Observable<CommentCounts> {
+    return this.apiService.get(
+      Api.Identities,
+      `comment/byType/counts/${this.urlSegmentFor(parentObject)}`
+    ).map(this.convertCounts);
+  }
+
   private urlSegmentFor(parentObject: CommentParentObject): string {
     return `${parentObject.objectType}/${parentObject.objectId}`;
   }
@@ -58,5 +65,14 @@ export class CommentService {
         totalCount: comments.totalCount
       }
     };
+  }
+
+  private convertCounts = (counts: CommentCountsApiResponse): CommentCounts => {
+    if (!counts.list) return {};
+    return counts.list.reduce((formatted: CommentCounts, commentCount: CommentCount) => {
+      const countKey = commentCount.nestedObjectId ? commentCount.nestedObjectId : commentCount.objectId;
+      formatted[countKey] = commentCount.count;
+      return formatted;
+    }, {});
   }
 }
