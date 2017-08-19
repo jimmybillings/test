@@ -1,7 +1,12 @@
 <section class="wz-comments">
   <header class="comments-header" layout-gt-xs="row" layout="column" layout-align="space-between">
     <h2 flex="grow" class="md-display-1">{{ 'COMMENTS.SECTION_TITLE' | translate }}</h2>
-    <div class="actions close" flex="auto"></div>
+    <div class="actions close" flex="auto">
+      <button md-button title="close comments" type="button" class="close" (click)="closeComments()">
+        <span class="close-btn-label">close</span>
+        <md-icon>close</md-icon>
+      </button>
+    </div>
   </header>
   <div layout-gt-xs="row" layout="column" layout-align="space-between">
     <div flex="33" flex-sm="40"> 

@@ -1,6 +1,6 @@
 quote-show-component section.header {
-  padding-left: rem(.4);
-  padding-right: rem(.4);
+  // padding-left: rem(.4);
+  // padding-right: rem(.4);
   header {
     padding-top: rem(.6);
     padding-bottom: rem(.5);
@@ -54,4 +54,7 @@ quote-show-component .project .assets {
       }
     }    
   }
+}
+commerce-component wz-comment > section {
+  padding: 6px 0 28px 0;
 }

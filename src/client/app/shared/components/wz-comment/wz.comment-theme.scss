@@ -39,7 +39,7 @@
   }
   wz-comment > section > header {
     // background-color: mat-color($background, status-bar);
-    // background-color: mat-color($background, card);
+    background-color: mat-color($background, card);
     .md-display-1 {
       color: mat-color($primary, default);
     }

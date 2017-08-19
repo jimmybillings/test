@@ -2,12 +2,13 @@
   <section
     class="comments-section"
     layout="row" layout-align="center start">
-    <div flex-gt-md="95" flex="100">
+    <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
       <wz-comment
         [ngClass]="{ 'visible': showComments, 'not-visible': showComments === false }"
         [formFields]="commentFormConfig"
         [parentObject]="commentParentObject"
-        [currentUserId]="currentUserId | async">
+        [currentUserId]="currentUserId | async"
+        (toggleCommentsVisibility)="toggleCommentsVisibility()">
       </wz-comment>
     </div>
   </section>
@@ -24,17 +25,22 @@
             <span>{{ 'QUOTE.BULK_ORDER_NAME' | translate }}</span> {{quoteEditService.hasProperty('bulkOrderId') | async}}
           </span>
         </div>
-        <div class="tools" flex="auto" layout-align="end center">
+        <div 
+          class="tools" 
+          flex="auto" 
+          layout-align="end center"
+          [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
+          <a [routerLink]="['/commerce/quotes']" md-icon-button color="primary" title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
+            <md-icon>inbox</md-icon>
+          </a>
           <button
             md-icon-button
+            color="primary"
             title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
             (click)="toggleCommentsVisibility()">
               <md-icon>mode_comment</md-icon>
               <span *ngIf="(commentCount | async) > 0" class="comment-count">{{ commentCount | async }}</span>
           </button>
-          <a [routerLink]="['/commerce/quotes']" md-icon-button color="primary" title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
-            <md-icon>inbox</md-icon>
-          </a>
           <button md-icon-button color="primary" [md-menu-trigger-for]="quoteOptionsMenu" title="{{ 'QUOTE.MORE_OPTIONS_TITLE' | translate }}">
             <md-icon>more_vert</md-icon>
           </button>
