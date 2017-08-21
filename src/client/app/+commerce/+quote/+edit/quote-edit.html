@@ -15,12 +15,8 @@
   <section layout="row" layout-align="center start">
     <header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
       <div flex="100" layout="row" layout-align="space-between end" layout-align-xs="start">
-        <div 
-          flex-gt-lg="35" 
-          flex-gt-md="40" 
-          flex-md="55"
-          flex="70">
-          <h2 flex="grow" class="md-display-1">{{ 'QUOTE.CREATE_HEADER' | translate }}</h2>
+        <div flex="no-grow">
+          <h2 class="md-display-1">{{ 'QUOTE.CREATE_HEADER' | translate }}</h2>
           <span class="bulk-order" flex="nogrow" *ngIf="quoteEditService.hasProperty('bulkOrderId') | async">
             <span>{{ 'QUOTE.BULK_ORDER_NAME' | translate }}</span> {{quoteEditService.hasProperty('bulkOrderId') | async}}
           </span>

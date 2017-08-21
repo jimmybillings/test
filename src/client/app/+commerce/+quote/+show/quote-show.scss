@@ -1,7 +1,9 @@
 quote-show-component section.header {
-  // padding-left: rem(.4);
-  // padding-right: rem(.4);
   header {
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
+      padding-right: 8px;
+      padding-left: 8px;
+    }
     padding-top: rem(.6);
     padding-bottom: rem(.5);
     position: relative;
