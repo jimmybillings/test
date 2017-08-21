@@ -11,14 +11,16 @@
 		<div flex="100" layout="row" layout-align="space-between end">
 			<h2 flex="grow" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
 			<div class="asset-sort-by tools" flex="auto">
-				<button md-icon-button 
+				<button md-icon-button
+					color="primary"
 					*ngIf="!collectionSearchIsShowing" 
 					title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}"
 					type="button" 
 					(click)="toggleCollectionSearch()">
-						<md-icon *ngIf="!collectionSearchIsShowing">search</md-icon>
+					<md-icon *ngIf="!collectionSearchIsShowing">search</md-icon>
 				</button>
 				<button 
+					color="primary"
 					md-icon-button *ngIf="collectionSearchIsShowing" 
 					class="collapse-search" 
 					title="{{ 'COLLECTION.DD_MENU.COLLAPSE_SEARCH_HOVER_TITLE' | translate }}"

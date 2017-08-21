@@ -1,29 +1,36 @@
 <section
   class="comments-section"
   layout="row" layout-align="center start">
-  <div flex-gt-md="95" flex="100">
+  <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
     <wz-comment
       [ngClass]="{ 'visible': showComments, 'not-visible': showComments === false }"
       [formFields]="commentFormConfig"
       [parentObject]="commentParentObject"
       [userCanAddComments]="true"
-      [currentUserId]="currentUserId | async">
+      [currentUserId]="currentUserId | async"
+      (toggleCommentsVisibility)="toggleCommentsVisibility()">
     </wz-comment>
   </div>
 </section>
 
 <section class="header" layout="row" layout-align="center center">
 	<header layout="row" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-    <div flex="100" layout="row" layout-align="space-between end">
-			<h2 flex="grow" class="md-display-1">{{ 'CART.PAGE_TITLE' | translate }}</h2>
+    <div flex="no-grow" layout="row" layout-align="space-between end">
+			<h2 class="md-display-1">{{ 'CART.PAGE_TITLE' | translate }}</h2>
     </div>
-    <button
-      md-icon-button
-      title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
-      (click)="toggleCommentsVisibility()">
-        <md-icon>mode_comment</md-icon>
-        <span *ngIf="(commentCount | async) > 0" class="comment-count">{{commentCount| async}}</span>
-    </button>
+    <div 
+      class="tools" 
+      flex="auto" 
+      [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
+      <button
+        md-icon-button
+        color="primary"
+        title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
+        (click)="toggleCommentsVisibility()">
+          <md-icon>mode_comment</md-icon>
+          <span *ngIf="(commentCount | async) > 0" class="comment-count">{{commentCount| async}}</span>
+      </button>
+    </div>
   </header>
 </section>
 
