@@ -5,16 +5,53 @@ wz-comment {
   & > section {
     width: 100%;
     padding: 6px 17px 28px 17px;
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+      padding: 6px 0 28px 0;
+    }
   }
   header {
-    // position: relative;
-    // z-index: 1;
+    position: relative;
+    z-index: 1;
     padding: 3px 0 0 1px;
     margin: 3px -9px 5px 0;
     .md-display-1 {
       margin: 0;
       width: calc(100% - 120px);
       font-size: 26px;
+    }
+    .actions.close {
+      button[md-button].close {
+        position: absolute;
+        right: 0;
+        top: 3px;
+        font-size: 24px;
+        line-height: 34px;
+        opacity: .6;
+        transition: opacity 300ms cubic-bezier(0.55, 0, 0.55, 0.2);
+        md-icon {
+          font-size: 1em;
+          height: 1em;
+          width: 1em;
+        }
+        &:hover {
+          opacity: 1;
+        }
+        &:hover .mat-button-focus-overlay,
+        .mat-button-focus-overlay {
+            opacity: 0;
+        }
+        .close-btn-label {
+          font-size: 15px;
+          font-weight: 400;
+          text-transform: uppercase;
+        }
+      }
+    }
+    &.comments-header {
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
+        padding-right: 0;
+        padding-left: 0;
+      }
     }
   }
   .space-between {
@@ -96,6 +133,7 @@ wz-comment {
     animation-timing-function: linear;
     animation-iteration-count: 1;
     animation-fill-mode: none;
+    transition: padding 200ms cubic-bezier(0.55, 0, 0.55, 0.2) 500ms;
   }
   &.visible {
     max-height: none;
@@ -106,6 +144,9 @@ wz-comment {
     animation-iteration-count: 1;
     animation-fill-mode: backwards;
     animation-delay: .2s;
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+      padding: 0 8px;
+    }
   }
 }
 
@@ -129,5 +170,29 @@ wz-comment {
   100% {
     max-height: 0;
     opacity: 0;
+  }
+}
+
+// animations to show/hide header action items specific to the page
+commerce-component header .tools.hide-for-comments,
+.collection-head .actions.hide-for-comments {
+  transition: opacity 100ms linear;
+  opacity: 0
+}
+commerce-component header .tools.comments-closed,
+.collection-head .actions.comments-closed {
+  animation-name: fadeIn;
+  animation-duration: 500ms;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: backwards;
+  animation-delay: .35s;
+}
+
+
+quote-show-component section.header header.comments-header {
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
+    padding-right: 0;
+    padding-left: 0;
   }
 }

@@ -2,18 +2,20 @@
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
   $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
   $warn: map-get($theme, warn);
 
   quote-show-component section.header {
-    color: mat-color($primary, default);
+    color: mat-color($foreground, text, .7);
     box-shadow: inset 0 -1px 0 0 mat-color($foreground, divider), 0 1px 0 0 rgba(mat-color($background, card), .6);
     header .md-display-1.alert {
       color: mat-color($warn, darker);
     }
     .tools {
       .comment-count {
-        background-color: mat-color($mat-grey, 700);
-        color: mat-color($background, card);
+        background-color: mat-color($background, card);
+        color: mat-color($foreground, text, .8);
+        border-color: mat-color($foreground, text, .6);
       }
     }
   }

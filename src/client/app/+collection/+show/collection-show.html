@@ -8,7 +8,8 @@
         [formFields]="commentFormConfig"
         [parentObject]="commentParentObject"
         [currentUserId]="currentUserId | async"
-        [userCanAddComments]="userCanEditCollection | async">
+        [userCanAddComments]="userCanEditCollection | async"
+        (toggleCommentsVisibility)="toggleCommentsVisibility()">
       </wz-comment>
     </div>
   </section>
@@ -48,7 +49,13 @@
             </div>
           </div>
         </div>
-        <div flex-gt-xs="33" flex="100" class="actions" layout-align="end start" flex-order-xs="-1">
+        <div 
+          flex-gt-xs="33"
+          flex="100"
+          class="actions"
+          layout-align="end start" 
+          flex-order-xs="-1"
+          [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
           <button
             md-icon-button
             title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}"

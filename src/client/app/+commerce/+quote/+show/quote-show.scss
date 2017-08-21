@@ -1,7 +1,9 @@
 quote-show-component section.header {
-  padding-left: rem(.4);
-  padding-right: rem(.4);
   header {
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
+      padding-right: 8px;
+      padding-left: 8px;
+    }
     padding-top: rem(.6);
     padding-bottom: rem(.5);
     position: relative;
@@ -18,11 +20,13 @@ quote-show-component section.header {
         right: -2px;
         border-radius: 2px;
         min-width: 14px;
-        font-size: .8em;
+        font-size: .77em;
         line-height: 1;
         margin-right: 0;
         margin-left: 0;
-        padding: 2px 3px;
+        padding: 1px 2px;
+        border-width: 1px;
+        border-style: solid;
       }
     }
   }
@@ -54,4 +58,7 @@ quote-show-component .project .assets {
       }
     }    
   }
+}
+commerce-component wz-comment > section {
+  padding: 6px 0 28px 0;
 }

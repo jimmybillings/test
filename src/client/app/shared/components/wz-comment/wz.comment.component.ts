@@ -22,6 +22,7 @@ export class WzCommentComponent {
   @Input() formFields: Array<FormFields>;
   @Input() userCanAddComments: boolean = true;
   @Input() currentUserId: number;
+  @Output() toggleCommentsVisibility: EventEmitter<null> = new EventEmitter();
   @ViewChild(WzFormComponent) wzForm: WzFormComponent;
   private _parentObject: CommentParentObject;
 
@@ -68,6 +69,10 @@ export class WzCommentComponent {
       },
       () => this.store.dispatch(factory => factory.comment.remove(this._parentObject, comment.id))
     ));
+  }
+
+  public closeComments(): void {
+    this.toggleCommentsVisibility.emit();
   }
 
   public get comments(): Observable<Comments> {
