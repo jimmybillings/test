@@ -24,11 +24,12 @@
           }
         }
         &.odd {
-          background-color: mat-color($primary, darker, .006);
+          // background-color: mat-color($primary, darker, .006);
           // background-color: mat-color($background, card);
+          background-color: mat-color($mat-grey, 200, .1);
         }
         &.even {
-          background-color: mat-color($primary, darker, .07);
+          background-color: mat-color($primary, darker, .3);
           // background-color: mat-color($mat-grey, 100);
         }
       }
