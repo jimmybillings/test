@@ -12,30 +12,34 @@
 			<h2 flex="grow" class="md-display-1">{{ type + '.INDEX.PAGE_TITLE' | translate }}</h2>
 			<div class="tools" flex="auto">
 				<button
+					color="primary"
 					md-icon-button
 					*ngIf="!itemSearchIsShowing"
 					title="{{ type + '.INDEX.SEARCH_BTN_TITLE' | translate }}"
 					type="button"
 					(click)="toggleSearch()">
-            <md-icon *ngIf="!itemSearchIsShowing">search</md-icon>
+					<md-icon *ngIf="!itemSearchIsShowing">search</md-icon>
         </button>
 				<button
+					color="primary"
 					md-icon-button
 					*ngIf="itemSearchIsShowing"
 					class="collapse-search"
 					title="{{ type + '.INDEX.COLLAPSE_SEARCH_BTN_TITLE' | translate }}"
 					type="button"
 					(click)="toggleSearch()">
-          	<md-icon>arrow_drop_up</md-icon>
+					<md-icon>arrow_drop_up</md-icon>
         </button>
 				<button
+					color="primary"
 					*ngIf="filterOptions"
 					md-icon-button
 					title="{{ type + '.INDEX.FILTER_BTN_TITLE' | translate }}"
 					[md-menu-trigger-for]="commerceFilterMenu"><md-icon>filter_list</md-icon>
 				</button>
 				<button
-					*ngIf="sortOptions"
+				*ngIf="sortOptions"
+					color="primary"
 					md-icon-button
 					title="{{ type + '.INDEX.SORT_BTN_TITLE' | translate }}"
 					[md-menu-trigger-for]="commerceSortMenu"><md-icon>sort</md-icon>

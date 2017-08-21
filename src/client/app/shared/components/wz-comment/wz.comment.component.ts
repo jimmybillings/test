@@ -22,7 +22,7 @@ export class WzCommentComponent {
   @Input() formFields: Array<FormFields>;
   @Input() userCanAddComments: boolean = true;
   @Input() currentUserId: number;
-  @Output() toggleCommentsVisibility = new EventEmitter();
+  @Output() toggleCommentsVisibility: EventEmitter<null> = new EventEmitter();
   @ViewChild(WzFormComponent) wzForm: WzFormComponent;
   private _parentObject: CommentParentObject;
 

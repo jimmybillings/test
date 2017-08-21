@@ -20,11 +20,13 @@ quote-show-component section.header {
         right: -2px;
         border-radius: 2px;
         min-width: 14px;
-        font-size: .8em;
+        font-size: .77em;
         line-height: 1;
         margin-right: 0;
         margin-left: 0;
-        padding: 2px 3px;
+        padding: 1px 2px;
+        border-width: 1px;
+        border-style: solid;
       }
     }
   }

@@ -23,10 +23,10 @@
           {{ 'QUOTE.PURCHASE_HEADER' | translate }} <span *ngIf="hasPurchaseType">- {{ (quote | async).purchaseType }}</span>
         </h2>
         <div 
-          class="tools" 
+          class="tools"
           flex="auto" 
           [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
-          <a [routerLink]="['/commerce/quotes']" md-icon-button title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
+          <a color="primary" [routerLink]="['/commerce/quotes']" md-icon-button title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
             <md-icon>inbox</md-icon>
           </a>
           <button
