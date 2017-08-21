@@ -11,6 +11,10 @@
         <span *ngIf="hasTitle(asset)" class="mdata-0">
           <span>{{ titleOf(asset) }}</span>
         </span>
+        <span *ngIf="commentCountFor(asset) | async" class="comment-count">
+          <md-icon>chat_bubble</md-icon>
+          <span class="count">{{ commentCountFor(asset) | async }}</span>
+        </span>
         <span *ngIf="hasFormatType(asset)" class="mdata-2">
           <span [ngClass]="formatClassNameFor(asset)" class="sd-hd">{{ formatTypeOf(asset) }}</span>
         </span>

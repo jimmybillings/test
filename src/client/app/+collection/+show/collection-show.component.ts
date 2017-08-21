@@ -83,14 +83,17 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.activeCollectionSubscription =
       this.store.select(state => state.activeCollection.collection).subscribe(collection => {
         this.activeCollection = collection;
-        this.commentParentObject = { objectType: 'collection', objectId: collection.id };
+        if (collection.id) { // We only want to do these things when there is a valid active collection
+          this.commentParentObject = { objectType: 'collection', objectId: collection.id };
+          this.store.dispatch(factory => factory.comment.getCounts(this.commentParentObject));
+        }
         // The view needs to update whenever the activeCollection changes (including individual assets).  This is
         // a direct store subscription, not an @Input(), so we have to trigger change detection ourselves.
         this.changeDetectorRef.markForCheck();
       });
 
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
-    this.uiConfig.get('comment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+    this.uiConfig.get('collectionComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
   }
 
   ngOnDestroy() {
@@ -241,7 +244,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public get commentCount(): Observable<number> {
-    return this.store.select(factory => factory.comment.collection.items.length);
+    return this.store.select(state => state.comment.counts[this.activeCollection.id]);
   }
 
   public get userCanEditCollection(): Observable<boolean> {

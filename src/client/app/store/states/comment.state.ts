@@ -1,5 +1,7 @@
 import * as CommentActions from '../actions/comment.actions';
-import { Comment, Comments, ObjectType, CommentFormMode } from '../../shared/interfaces/comment.interface';
+import {
+  Comment, Comments, ObjectType, CommentFormMode, CommentCountsApiResponse, CommentCounts
+} from '../../shared/interfaces/comment.interface';
 import { Pagination } from '../../shared/interfaces/common.interface';
 
 // I would love to take advantage of our ObjectType type here, but currently can't find a way to do it (R.E. 08/10/2017)
@@ -13,6 +15,7 @@ export interface State {
   readonly cart?: Comments;
   readonly collection?: Comments;
   readonly quote?: Comments;
+  readonly counts?: CommentCounts;
 }
 
 const defaultCommentPagination: Pagination = { pageSize: 100, currentPage: 1, hasNextPage: false, hasPreviousPage: false };
@@ -24,7 +27,8 @@ export const initialState: State = {
   formMode: 'ADD',
   cart: { items: [], pagination: defaultCommentPagination },
   collection: { items: [], pagination: defaultCommentPagination },
-  quote: { items: [], pagination: defaultCommentPagination }
+  quote: { items: [], pagination: defaultCommentPagination },
+  counts: {}
 };
 
 export function reducer(state: State = initialState, action: CommentActions.Any): State {
@@ -69,6 +73,13 @@ export function reducer(state: State = initialState, action: CommentActions.Any)
         formMode: 'ADD',
         formSubmitLabel: 'COMMENTS.SUBMIT_BTN_LABEL',
         commentBeingEdited: null
+      };
+    }
+
+    case CommentActions.GetCountsSuccess.Type: {
+      return {
+        ...JSON.parse(JSON.stringify(state)),
+        counts: action.counts
       };
     }
 

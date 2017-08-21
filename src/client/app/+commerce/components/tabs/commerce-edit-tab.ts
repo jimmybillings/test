@@ -14,6 +14,7 @@ import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-
 import { AssetService } from '../../../shared/services/asset.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
+import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../shared/interfaces/subclip-markers.interface';
@@ -22,6 +23,7 @@ import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 import { SelectedPriceAttributes, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
+import { AppStore } from '../../../app.store';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public cart: Observable<any>;
@@ -45,7 +47,9 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     protected document: any,
     protected snackBar: MdSnackBar,
     protected translate: TranslateService,
-    protected pricingStore: PricingStore) {
+    protected pricingStore: PricingStore,
+    protected currentUserService: CurrentUserService,
+    protected appStore: AppStore) {
     super();
   }
 

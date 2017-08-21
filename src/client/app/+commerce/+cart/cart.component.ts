@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { CommerceCapabilities } from '../services/commerce.capabilities';
 import { CommerceMessage } from '../../shared/interfaces/commerce.interface';
+import { AppStore } from '../../app.store';
+import { UiConfig } from '../../shared/services/ui.config';
+import { FormFields } from '../../shared/interfaces/forms.interface';
+import { CommentParentObject } from '../../shared/interfaces/comment.interface';
+import { CartService } from '../../shared/services/cart.service';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Component({
   moduleId: module.id,
@@ -12,8 +19,17 @@ export class CartComponent implements OnInit {
   public tabLabelKeys: string[];
   public tabEnabled: boolean[];
   public selectedTabIndex: number;
+  public showComments: boolean = null;
+  public commentFormConfig: FormFields;
+  public commentParentObject: CommentParentObject;
 
-  constructor(public userCan: CommerceCapabilities) { }
+  constructor(
+    public userCan: CommerceCapabilities,
+    private appStore: AppStore,
+    private uiConfig: UiConfig,
+    private cartService: CartService,
+    private currentUserService: CurrentUserService
+  ) { }
 
   ngOnInit() {
     // We could initialize a subset of these instead, based on some condition.
@@ -26,6 +42,10 @@ export class CartComponent implements OnInit {
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
 
     this.selectedTabIndex = 0;
+
+    this.uiConfig.get('cartComment').take(1).subscribe(config => this.commentFormConfig = config.config.form.items);
+
+    this.commentParentObject = { objectType: 'cart', objectId: this.cartService.state.data.id };
   }
 
   public onNotification(message: CommerceMessage): void {
@@ -46,6 +66,18 @@ export class CartComponent implements OnInit {
         this.disableTab(message.payload);
       }
     }
+  }
+
+  public toggleCommentsVisibility(): void {
+    this.showComments = !this.showComments;
+  }
+
+  public get commentCount(): Observable<number> {
+    return this.appStore.select(state => state.comment.cart.pagination.totalCount);
+  }
+
+  public get currentUserId(): Observable<number> {
+    return this.currentUserService.data.map(user => user.id);
   }
 
   private goToNextTab(): void {

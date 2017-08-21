@@ -7,8 +7,7 @@ import { ActionFactory } from '../../store/actions/active-collection.actions';
 export function main() {
   describe('Collection Show Component', () => {
     let componentUnderTest: CollectionShowComponent, mockWindow: any, mockStore: MockAppStore,
-      mockCapabilitiesService: any, mockChangeDetectorRef: any, mockRoute: any, mockUiConfig: any;
-
+      mockCapabilitiesService: any, mockChangeDetectorRef: any, mockRoute: any, mockUiConfig: any, getCountsSpy: jasmine.Spy;
 
     beforeEach(() => {
       mockWindow = { nativeWindow: { location: { href: {} }, innerWidth: 200 } };
@@ -19,12 +18,45 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: [{ some: 'item' }] } } }))
       };
       mockStore = new MockAppStore();
-      mockStore.createStateElement('activeCollection', 'collection', { some: 'collection' });
+      mockStore.createStateElement('activeCollection', 'collection', { id: 123 });
+      mockStore.createStateElement('comment', 'count', { 'abc-123': 5 });
+      getCountsSpy = mockStore.createActionFactoryMethod('comment', 'getCounts');
 
       componentUnderTest = new CollectionShowComponent(
         mockCapabilitiesService, null, null, null, null, null, null, null, mockUiConfig,
         null, null, mockRoute, null, null, mockWindow, null, null, null, mockStore, mockChangeDetectorRef
       );
+    });
+
+    describe('ngOnInit()', () => {
+      describe('with a valid active collection', () => {
+        beforeEach(() => {
+          componentUnderTest.ngOnInit();
+        });
+
+        it('calls getCounts on the comment action factory', () => {
+          expect(getCountsSpy).toHaveBeenCalled();
+        });
+
+        it('sets up the commentParentObject instance variable', () => {
+          expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'collection', objectId: 123 });
+        });
+      });
+
+      describe('with an invalid active collection (without an id)', () => {
+        beforeEach(() => {
+          mockStore.createStateElement('activeCollection', 'collection', { id: null });
+          componentUnderTest.ngOnInit();
+        });
+
+        it('does not call getCounts on the comment action factory', () => {
+          expect(getCountsSpy).not.toHaveBeenCalled();
+        });
+
+        it('does not set up the commentParentObject instance variabl', () => {
+          expect(componentUnderTest.commentParentObject).toBeUndefined();
+        });
+      });
     });
 
     describe('get userCanEditCollection()', () => {

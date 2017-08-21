@@ -68,6 +68,18 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
+        class: ActionFactory,
+        name: 'getCounts',
+        parameters: [{ some: 'parentObject' }]
+      },
+      expectedAction: {
+        type: '[Comment] Get Counts',
+        parentObject: { some: 'parentObject' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
         class: InternalActionFactory,
         name: 'loadSuccess',
         parameters: [{ some: 'comments' }]
@@ -99,6 +111,18 @@ export function main() {
       expectedAction: {
         type: '[Comment] Remove Success',
         comments: { some: 'comments' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'getCountsSuccess',
+        parameters: [{ some: 'counts' }]
+      },
+      expectedAction: {
+        type: '[Comment] Get Counts Success',
+        counts: { some: 'counts' }
       }
     });
   });

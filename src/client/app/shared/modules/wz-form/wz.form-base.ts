@@ -139,8 +139,12 @@ export class WzFormBase implements OnInit, OnChanges {
     }
   }
 
-  public resetForm() {
-    this.form.reset();
+  public resetForm(fieldsToIgnore: Array<string> = []) {
+    for (let controlName in this.form.controls) {
+      if (!(fieldsToIgnore.includes(controlName))) {
+        (<FormControl>this.form.controls[controlName]).reset();
+      }
+    }
     this.submitAttempt = false;
   }
 
