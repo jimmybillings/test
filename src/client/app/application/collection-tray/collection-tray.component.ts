@@ -4,7 +4,7 @@ import { CollectionFormComponent } from './components/collection-form.component'
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Asset, WzEvent } from '../../shared/interfaces/common.interface';
 import { AssetService } from '../../shared/services/asset.service';
-import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
+import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -21,7 +21,7 @@ export class CollectionTrayComponent implements OnInit {
     this._collection = collection;
 
     for (const asset of collection.assets.items) {
-      this.enhancedAssets[asset.uuid] = this.assetService.enhance(asset);
+      this.enhancedAssets[asset.uuid] = enhanceAsset(asset);
     }
   };
 
@@ -36,7 +36,7 @@ export class CollectionTrayComponent implements OnInit {
   private _collection: any;
   private enhancedAssets: { [uuid: string]: EnhancedAsset } = {};
 
-  constructor(private dialogService: WzDialogService, private assetService: AssetService) { }
+  constructor(private dialogService: WzDialogService) { }
 
   ngOnInit() {
     this.uiConfig.get('global').take(1).subscribe((config: any) => {

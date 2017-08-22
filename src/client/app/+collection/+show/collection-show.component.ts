@@ -32,6 +32,7 @@ import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dial
 import { WzEvent, Coords } from '../../shared/interfaces/common.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { AppStore } from '../../app.store';
+import { enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -191,7 +192,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
             dialogConfig: { width: '544px' },
             inputOptions: {
               window: this.window.nativeWindow,
-              enhancedAsset: this.asset.enhance(asset),
+              enhancedAsset: enhanceAsset(asset),
               usagePrice: null
             },
             outputOptions: [

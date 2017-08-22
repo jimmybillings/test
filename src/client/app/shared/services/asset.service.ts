@@ -7,7 +7,7 @@ import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import * as commerce from '../interfaces/commerce.interface';
 import * as common from '../interfaces/common.interface';
-import { EnhancedAsset } from '../interfaces/enhanced-asset';
+import { EnhancedAsset, enhanceAsset } from '../interfaces/enhanced-asset';
 
 @Injectable()
 export class AssetService {
@@ -30,7 +30,7 @@ export class AssetService {
   }
 
   public getPriceFor(asset: commerce.Asset, attributes?: any): Observable<any> {
-    const enhancedAsset: EnhancedAsset = this.enhance(asset);
+    const enhancedAsset: EnhancedAsset = enhanceAsset(asset);
     const parameters: ApiParameters =
       Object.assign(
         { region: 'AAA' },
@@ -60,10 +60,6 @@ export class AssetService {
   public getClipPreviewData(assetId: number): Observable<any> {
     const viewType: ApiOptions = { parameters: { 'useType': 'clipPreview' } };
     return this.api.get(Api.Assets, `renditionType/${assetId}`, viewType);
-  }
-
-  public enhance(asset: commerce.Asset | common.Asset): EnhancedAsset {
-    return Object.assign(new EnhancedAsset(), asset).normalize();
   }
 
   private formatAttributes(attrs: any): any {

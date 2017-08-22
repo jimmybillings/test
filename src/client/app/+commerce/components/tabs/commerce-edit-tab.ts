@@ -24,6 +24,7 @@ import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pri
 import { SelectedPriceAttributes, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
 import { AppStore } from '../../../app.store';
+import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public cart: Observable<any>;
@@ -278,7 +279,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
             dialogConfig: { width: '530px', position: { top: '14%' } },
             inputOptions: {
               window: this.window.nativeWindow,
-              enhancedAsset: this.assetService.enhance(lineItem.asset),
+              enhancedAsset: enhanceAsset(lineItem.asset),
               usagePrice: null
             },
             outputOptions: [
