@@ -8,7 +8,7 @@ export function main() {
     let componentUnderTest: QuoteEditComponent, mockCapabilities: any, mockQuoteEditService: any, mockUiConfig: any,
       mockDialogService: any, mockAssetService: any, mockWindow: any, mockUserPreference: any, mockRouter: any,
       mockErrorStore: any, mockDocument: any, mockSnackbar: any, mockTranslateService: any, mockAppStore: MockAppStore,
-      mockCurrentUserService: any;
+      mockCurrentUserService: any, mockPricingService: any;
 
     beforeEach(() => {
       mockCapabilities = {
@@ -62,13 +62,18 @@ export function main() {
 
       mockCurrentUserService = { data: Observable.of({ id: 10 }) };
 
+      mockPricingService = {
+        getPriceFor: jasmine.createSpy('getPriceFor'),
+        getPriceAttributes: jasmine.createSpy('getPricingAttributes')
+      };
+
       mockAppStore = new MockAppStore();
 
       componentUnderTest =
         new QuoteEditComponent(
           mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
           mockWindow, mockUserPreference, mockErrorStore, mockDocument, mockSnackbar, mockTranslateService,
-          null, mockRouter, mockCurrentUserService, mockAppStore
+          null, mockRouter, mockCurrentUserService, mockAppStore, mockPricingService
         );
     });
 
@@ -81,7 +86,7 @@ export function main() {
       };
       componentUnderTest = new QuoteEditComponent(
         null, mockQuoteEditService, mockUiConfig, mockDialogService, null, null,
-        mockUserPreference, null, null, null, null, null, mockRouter, mockCurrentUserService, mockAppStore
+        mockUserPreference, null, null, null, null, null, mockRouter, mockCurrentUserService, mockAppStore, mockPricingService
       );
       return componentUnderTest;
     };

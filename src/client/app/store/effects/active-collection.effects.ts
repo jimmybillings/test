@@ -65,8 +65,9 @@ export class ActiveCollectionEffects {
 
       const addedMarkers: SubclipMarkersInterface.SubclipMarkers =
         SubclipMarkersInterface.deserialize(state.activeCollection.latestAddition.markers);
-      let addedTimeStart: number = SubclipMarkersInterface.timeStartFrom(addedMarkers);
-      let addedTimeEnd: number = SubclipMarkersInterface.timeEndFrom(addedMarkers);
+      const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(addedMarkers);
+      let addedTimeStart: number = duration.timeStart;
+      let addedTimeEnd: number = duration.timeEnd;
       if (addedTimeEnd < 0) addedTimeEnd = undefined;
       if (addedTimeStart < 0) addedTimeStart = undefined;
       // ASSUMPTION: If the active collection happens to have two assets with the same id and markers the user just added,

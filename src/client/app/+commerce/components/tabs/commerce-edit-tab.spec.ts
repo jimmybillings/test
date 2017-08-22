@@ -7,7 +7,8 @@ export function main() {
   describe('Commerce Edit tab', () => {
     let componentUnderTest: CommerceEditTab, mockCartService: any, mockUiConfig: any, mockDialogService: any,
       mockAssetService: any, mockUserPreference: any, mockDocument: any, mockWindow: any, mockState: any,
-      mockQuoteService: any, mockTranslateService: any, mockSnackbar: any, mockPricingStore: any, mockCurrentUserService: any;
+      mockQuoteService: any, mockTranslateService: any, mockSnackbar: any, mockPricingStore: any, mockCurrentUserService: any,
+      mockPricingService: any;
 
     beforeEach(() => {
       mockState = {
@@ -58,8 +59,6 @@ export function main() {
 
       mockAssetService = {
         getClipPreviewData: jasmine.createSpy('getClipPreviewData').and.returnValue(Observable.of({ url: 'fake url' })),
-        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({ some: 'attribute' })),
-        getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({ price: 100 })),
         enhance: () => { }
       };
 
@@ -83,13 +82,18 @@ export function main() {
         priceForDialog: Observable.of(1000)
       };
 
+      mockPricingService = {
+        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({ some: 'attribute' })),
+        getPriceFor: jasmine.createSpy('getPriceFor').and.returnValue(Observable.of({ price: 100 }))
+      };
+
       mockCurrentUserService = { data: Observable.of({ id: 10 }) };
 
       componentUnderTest = new CommerceEditTab(
         null, mockCartService, mockUiConfig, mockDialogService,
         mockAssetService, mockWindow, mockUserPreference,
         null, mockDocument, mockSnackbar,
-        mockTranslateService, mockPricingStore, mockCurrentUserService, null
+        mockTranslateService, mockPricingStore, mockCurrentUserService, null, mockPricingService
       );
     });
 
@@ -117,7 +121,7 @@ export function main() {
         componentUnderTest = new CommerceEditTab(
           null, mockCartService, mockUiConfig, mockDialogService,
           null, mockWindow, mockUserPreference, null, null, null, null,
-          null, null, null
+          null, null, null, mockPricingService
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
@@ -151,7 +155,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -165,7 +169,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -184,7 +188,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(true);
@@ -198,7 +202,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(false);
@@ -216,7 +220,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -241,7 +245,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(true);
@@ -266,7 +270,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -351,7 +355,7 @@ export function main() {
         let mockAsset = { assetId: 1234 };
         componentUnderTest.onNotification({ type: 'EDIT_PROJECT_PRICING', payload: { asset: mockAsset } });
 
-        expect(mockAssetService.getPriceAttributes).toHaveBeenCalledWith();
+        expect(mockPricingService.getPriceAttributes).toHaveBeenCalledWith();
       });
 
       describe('calls openPricingDialog with SHOW_PRICING_DIALOG', () => {
@@ -360,7 +364,7 @@ export function main() {
           componentUnderTest.priceAttributes = { some: 'attr' } as any;
           componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
 
-          expect(mockAssetService.getPriceAttributes).not.toHaveBeenCalled();
+          expect(mockPricingService.getPriceAttributes).not.toHaveBeenCalled();
           expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
 
@@ -371,7 +375,7 @@ export function main() {
           };
           componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
 
-          expect(mockAssetService.getPriceAttributes).toHaveBeenCalled();
+          expect(mockPricingService.getPriceAttributes).toHaveBeenCalled();
           expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
       });

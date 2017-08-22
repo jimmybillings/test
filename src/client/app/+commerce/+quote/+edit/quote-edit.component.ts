@@ -20,6 +20,7 @@ import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
 import { AppStore } from '../../../app.store';
+import { PricingService } from '../../../shared/services/pricing.service';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -49,12 +50,13 @@ export class QuoteEditComponent extends CommerceEditTab {
     public pricingStore: PricingStore,
     public router: Router,
     public currentUserService: CurrentUserService,
-    public appStore: AppStore
+    public appStore: AppStore,
+    public pricingService: PricingService
   ) {
     super(
       userCan, quoteEditService, uiConfig, dialogService, assetService, window,
       userPreference, error, document, snackBar, translate, pricingStore, currentUserService,
-      appStore
+      appStore, pricingService
     );
     this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };

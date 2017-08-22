@@ -16,6 +16,7 @@ import { PricingStore } from '../../../../shared/stores/pricing.store';
 import { FeatureStore } from '../../../../shared/stores/feature.store';
 import { Feature } from '../../../../shared/interfaces/feature.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
+import { PricingService } from '../../../../shared/services/pricing.service';
 
 @Component({
   moduleId: module.id,
@@ -38,12 +39,13 @@ export class CartTabComponent extends CommerceEditTab {
     public snackBar: MdSnackBar,
     public translate: TranslateService,
     public pricingStore: PricingStore,
-    public featureStore: FeatureStore
+    public featureStore: FeatureStore,
+    public pricingService: PricingService
   ) {
     super(
       userCan, cartService, uiConfig, dialogService, assetService, window,
       userPreference, error, document, snackBar, translate, pricingStore,
-      null, null
+      null, null, pricingService
     );
   }
 

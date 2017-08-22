@@ -180,10 +180,9 @@ export class CartService {
   }
 
   public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkersInterface.SubclipMarkers): void {
-    Object.assign(lineItem.asset, {
-      timeStart: SubclipMarkersInterface.timeStartFrom(newMarkers),
-      timeEnd: SubclipMarkersInterface.timeEndFrom(newMarkers)
-    });
+    const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(newMarkers);
+
+    Object.assign(lineItem.asset, duration);
 
     this.editLineItem(lineItem, {});
   }
@@ -217,8 +216,7 @@ export class CartService {
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;
     return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options }, loadingIndicator: true })
-      .do(() => this.initializeData().subscribe())
-      .map(_ => _ as number);
+      .do(() => this.initializeData().subscribe());
   }
 
   private purchaseOnCredit(): Observable<number> {
@@ -246,8 +244,9 @@ export class CartService {
     let timeEnd: number;
 
     if (markers) {
-      timeStart = SubclipMarkersInterface.timeStartFrom(markers);
-      timeEnd = SubclipMarkersInterface.timeEndFrom(markers);
+      const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(markers);
+      timeStart = duration.timeStart;
+      timeEnd = duration.timeEnd;
     } else {
       timeStart = asset.timeStart;
       timeEnd = asset.timeEnd;

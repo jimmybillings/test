@@ -37,10 +37,11 @@ export class ActiveCollectionService {
     activeCollection: Collection,
     asset: Asset,
     markers: SubclipMarkersInterface.SubclipMarkers): Observable<CollectionItems> {
+    const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(markers);
     const assetInfo: object = {
       assetId: asset.assetId,
-      timeStart: String(SubclipMarkersInterface.timeStartFrom(markers)),
-      timeEnd: String(SubclipMarkersInterface.timeEndFrom(markers))
+      timeStart: String(duration.timeStart),
+      timeEnd: String(duration.timeEnd)
     };
 
     return this.apiService.post(
@@ -67,11 +68,12 @@ export class ActiveCollectionService {
   public updateAssetMarkers(
     activeCollection: Collection, asset: Asset, updatedMarkers: SubclipMarkersInterface.SubclipMarkers
   ): Observable<CollectionItems> {
+    const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(updatedMarkers);
     const updater: CollectionItemMarkersUpdater = {
       uuid: asset.uuid,
       assetId: asset.assetId,
-      timeStart: String(SubclipMarkersInterface.timeStartFrom(updatedMarkers)),
-      timeEnd: String(SubclipMarkersInterface.timeEndFrom(updatedMarkers))
+      timeStart: String(duration.timeStart),
+      timeEnd: String(duration.timeEnd)
     };
     const pagination: Pagination = activeCollection.assets.pagination;
 
