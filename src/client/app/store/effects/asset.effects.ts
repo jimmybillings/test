@@ -9,6 +9,7 @@ import { FutureAssetService } from '../services/asset.service';
 import { Asset, Pojo } from '../../shared/interfaces/common.interface';
 import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 import { Location } from '@angular/common';
+import { Common } from '../../shared/utilities/common.functions';
 
 @Injectable()
 export class AssetEffects {
@@ -35,28 +36,9 @@ export class AssetEffects {
     private location: Location) { }
 
   private navigateWithUpdatedMarkers(assetId: number, updatedTimeStart: number, updatedTimeEnd: number) {
-    let params: Pojo = this.urlStringToParamsObject(this.router.routerState.snapshot.url);
+    let params: Pojo = Common.urlStringToParamsObject(this.router.routerState.snapshot.url);
     params.timeStart = updatedTimeStart;
     params.timeEnd = updatedTimeEnd;
-    this.location.go(`/asset/${assetId}${this.urlParamsObjectToUrlStringParams(params)}`);
-  }
-
-  private urlStringToParamsObject(url: string): Pojo {
-    var hashes: string | string[] = url.split(/;(.+)/)[1];
-    hashes = (hashes) ? hashes.split(';') : [];
-    return hashes.reduce((urlObj: Pojo, hash: string) => {
-      let param: string[] = hash.split('=');
-      urlObj[param[0]] = param[1];
-      return urlObj;
-    }, {});
-  }
-
-  private urlParamsObjectToUrlStringParams(urlObj: Pojo): string {
-    let paramString: string = ';';
-    Object.keys(urlObj).forEach((param) => {
-      paramString = paramString + param + '=' + urlObj[param] + ';';
-    });
-    paramString = paramString.slice(0, -1);
-    return paramString;
+    this.location.go(`/asset/${assetId}${Common.urlParamsObjectToUrlStringParams(params)}`);
   }
 }
