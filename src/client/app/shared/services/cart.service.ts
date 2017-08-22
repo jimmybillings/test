@@ -5,7 +5,7 @@ import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
 import { CurrentUserService } from '../services/current-user.service';
 import { Address, ViewAddress } from '../interfaces/user.interface';
-import * as SubclipMarkersInterface from '../interfaces/subclip-markers.interface';
+import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 import { CartStore } from '../stores/cart.store';
 import { CheckoutStore } from '../stores/checkout.store';
 import {

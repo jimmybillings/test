@@ -8,7 +8,7 @@ import {
   CollectionItemsResponse, CollectionAssetResponse
 } from '../../shared/interfaces/collection.interface';
 import { Asset, Pagination } from '../../shared/interfaces/common.interface';
-import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers.interface';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 import { Frame } from 'wazee-frame-formatter';
 
 @Injectable()

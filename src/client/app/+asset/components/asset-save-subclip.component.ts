@@ -5,7 +5,7 @@ import {
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component';
 import { Capabilities } from '../../shared/services/capabilities.service';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { AppStore } from '../../app.store';
 import { Asset } from '../../shared/interfaces/common.interface';
 

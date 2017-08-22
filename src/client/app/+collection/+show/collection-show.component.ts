@@ -24,7 +24,7 @@ import { CollectionDeleteComponent } from '../components/collection-delete.compo
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
 import { QuoteEditService } from '../../shared/services/quote-edit.service';

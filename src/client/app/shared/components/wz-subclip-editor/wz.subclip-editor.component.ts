@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { SubclipMarkers } from '../../interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../../interfaces/subclip-markers';
 import { EnhancedAsset } from '../../interfaces/enhanced-asset';
 
 @Component({

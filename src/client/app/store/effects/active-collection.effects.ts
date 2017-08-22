@@ -9,7 +9,7 @@ import { ActiveCollectionService } from '../services/active-collection.service';
 import { AppStore, AppState } from '../../app.store';
 import { Collection, CollectionItems } from '../../shared/interfaces/collection.interface';
 import { Asset } from '../../shared/interfaces/common.interface';
-import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers.interface';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 import { Frame } from 'wazee-frame-formatter';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 

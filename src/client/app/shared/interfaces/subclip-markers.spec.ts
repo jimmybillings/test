@@ -1,5 +1,5 @@
 import { Frame } from 'wazee-frame-formatter';
-import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers.interface';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 
 export function main() {
 

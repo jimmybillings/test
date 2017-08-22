@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ActiveCollectionService } from './active-collection.service';
 import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.service';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { Api } from '../../shared/interfaces/api.interface';
 import { Frame } from 'wazee-frame-formatter';
 

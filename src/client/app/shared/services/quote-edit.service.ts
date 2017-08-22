@@ -15,7 +15,7 @@ import {
   FeeConfig,
   LicenseAgreements
 } from '../interfaces/commerce.interface';
-import * as SubclipMarkersInterface from '../interfaces/subclip-markers.interface';
+import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 import { Frame } from 'wazee-frame-formatter';
 import { ActiveQuoteStore } from '../stores/active-quote.store';
 

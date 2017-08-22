@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 
 export class ActionFactory {
   public load(parameters: AssetLoadParameters): Load {

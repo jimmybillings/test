@@ -7,7 +7,7 @@ import * as AssetActions from '../actions/asset.actions';
 import { AppStore } from '../../app.store';
 import { FutureAssetService } from '../services/asset.service';
 import { Asset, Pojo } from '../../shared/interfaces/common.interface';
-import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers.interface';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 import { Location } from '@angular/common';
 
 @Injectable()
