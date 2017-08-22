@@ -97,6 +97,10 @@ header.app-header.fixed [md-icon-button] {
   }
 }
 
+header.app-header app-nav button.open-collection-tray,
+header.app-header app-nav button.open-search {
+  display: none;
+}
 header.app-header.collection-tray-closed app-nav button.open-collection-tray,
 header.app-header.search-closed app-nav button.open-search {
   display: initial;
@@ -128,20 +132,11 @@ header.app-header + div.main-content cms-component,
 header.app-header + div.main-content search-component,
 header.app-header + div.main-content asset-component {
   display: block;
-  transition: border-top-width 0.35s, $swift-ease-in-out-timing-function;
-  border-top: rem(16.6) solid mat-color($mat-grey, 900, .7);
-  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-  //   border-top-width: rem(14.4);
-  // }
+  transition: border-top-width 200ms $swift-ease-in-out-timing-function 200ms;
+  border-top: 158px solid mat-color($mat-grey, 900, .7);
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-    border-top-width: rem(15.2);
+    border-top-width: 148px;
   }
-  // wz-asset-list {
-  //   min-height: calc(100vh - 518px);
-  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-  //     min-height: calc(100vh - 799px);
-  //   }
-  // }
 }
 
 header.app-header.collection-tray-closed + div.main-content gallery-view-component,
@@ -153,19 +148,11 @@ header.app-header.collection-tray-closed + div.main-content collections-componen
 header.app-header.collection-tray-closed + div.main-content cms-component,
 header.app-header.collection-tray-closed + div.main-content search-component,
 header.app-header.collection-tray-closed + div.main-content asset-component {
-  border-top-width: rem(11.0);
-  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-  //   border-top-width: rem(8.8);
-  // }
+  transition: border-top-width 250ms linear 100ms;
+  border-top-width: 106px;
   @media (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-    border-top-width: rem(9.6);
+    border-top-width: 96px;
   }
-  // wz-asset-list {
-  //   min-height: calc(100vh - 462px);
-  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-  //     min-height: calc(100vh - 791px);
-  //   }
-  // }
 }
 
 header.app-header.collection-tray-closed.search-closed + div.main-content gallery-view-component,
@@ -177,19 +164,11 @@ header.app-header.collection-tray-closed.search-closed + div.main-content collec
 header.app-header.collection-tray-closed.search-closed + div.main-content cms-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content search-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content asset-component {
+  transition: border-top-width 250ms linear 100ms;
   border-top-width: rem(6.4);
-  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-  //   border-top-width: rem(4.8);
-  // }
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(5.6);
   }
-  // wz-asset-list {
-  //   min-height: calc(100vh - 416px);
-  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-  //     min-height: calc(100vh - 751px);
-  //   }
-  // }
 }
 
 header.app-header.search-closed + div.main-content gallery-view-component,
@@ -201,19 +180,11 @@ header.app-header.search-closed + div.main-content collections-component,
 header.app-header.search-closed + div.main-content cms-component,
 header.app-header.search-closed + div.main-content search-component,
 header.app-header.search-closed + div.main-content asset-component {
-  border-top-width: rem(12.0);
-  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-  //   border-top-width: rem(10.4);
-  // }
+  transition: border-top-width 250ms linear 100ms;
+  border-top-width: 116px;
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-    border-top-width: rem(11.2);
+    border-top-width: 108px;
   }
-  // wz-asset-list {
-  //   min-height: calc(100vh - 472px);
-  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-  //     min-height: calc(100vh - 807px);
-  //   }
-  // }
 }
 
 // pages that do not have options to open and close search and bins with a bk hero image or video (user, home)

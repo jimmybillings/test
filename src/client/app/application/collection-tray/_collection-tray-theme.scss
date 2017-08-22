@@ -20,13 +20,9 @@
             color: rgba(mat-color($foreground, secondary-text), .6);
           }
           .asset-count {
-            background-color: rgba(mat-color($foreground, secondary-text), .4);
-            
+            background-color: rgba(mat-color($foreground, secondary-text), .3);
             .count {
               @include text-contrast(mat-color($foreground, secondary-text));
-            }
-            &:hover {
-              background-color: rgba(mat-color($foreground, secondary-text), .4);
             }
           }
         }

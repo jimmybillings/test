@@ -22,15 +22,30 @@
     <nav class="focused" *ngIf="collection.name">
       <button md-button [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
         <md-icon>folder_special</md-icon>
-        {{collection.name}}
-      </button>
-      <button md-button class="asset-count">
-        <span class="count" *ngIf="collection.assets">{{collection.assetsCount}}</span>
-        <span class="count" *ngIf="!collection.assets">0</span>
+          {{collection.name}}
+        <span class="asset-count" *ngIf="collection.assets">
+          <span class="count" *ngIf="collection.assets">{{collection.assetsCount}}</span>
+          <span class="count" *ngIf="!collection.assets">0</span>
+        </span>
       </button>
     </nav>
-    <button md-icon-button flex="none" title="more collection options" [md-menu-trigger-for]="moreCollectionTrayOptions"><md-icon>more_vert</md-icon></button>
-    
+    <button
+      md-icon-button
+      flex="none"
+      title="more collection options"
+      [md-menu-trigger-for]="moreCollectionTrayOptions">
+      <md-icon>more_vert</md-icon>
+    </button>
+    <div flex="none" class="close-btn-wrapper"> 
+      <button
+        flex="none"
+        md-icon-button
+        class="close-tray"
+        (click)="toggleCollectionTray()"
+        title="close collection tray">
+        <md-icon>close</md-icon>
+      </button>
+    </div>
     <md-menu x-position="before" #moreCollectionTrayOptions="mdMenu">
       <button md-menu-item (click)="createCollection()">
         <md-icon>add_circle_outline</md-icon>{{ 'COLLECTION.MORE_DD_MENU.CREATE_NEW' | translate }}
@@ -41,9 +56,6 @@
       <a md-menu-item *ngIf="collection.id" [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
         <md-icon>open_in_browser</md-icon>{{ 'COLLECTION.MORE_DD_MENU.OPEN_SELECTED' | translate }}
       </a>
-      <button md-menu-item (click)="getAssetsForLink()">
-        <md-icon>link</md-icon>{{ 'COLLECTION.MORE_DD_MENU.COPY_LEGACY_LINK' | translate }}
-      </button>
       <a md-menu-item [routerLink]="['/collections/']">
         <md-icon>folder_open</md-icon>{{ 'COLLECTION.MORE_DD_MENU.VIEW_ALL' | translate }}
       </a>

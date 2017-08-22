@@ -2,8 +2,6 @@ collection-tray {
   width: 100%;
   margin: 0;
   & > section {
-    overflow: hidden;
-    height: auto;
     width: 100%;
     .asset-carousel {
       width: calc(100% - 500px);
@@ -14,53 +12,77 @@ collection-tray {
       border-radius: 0;
     }
     .focused-collection {
-      transition: max-height 0.45s, min-height 0.35s, opacity .99s, $swift-ease-in-out-timing-function;
-      min-height: 56px;
-      max-height: 56px;
       white-space: nowrap;
+      max-height: 100%;
+      min-height: 100%;
       .focused {
-        margin-left: 10px;
+        margin-left: 8px;
         width: auto;
         white-space: nowrap;
+        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+          margin-right: 5px;         
+        }
+        button[md-button] {
+          @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+            max-width: 33px;
+            min-width: 33px;
+            overflow: hidden;
+            padding: 0 0 0 5px;         
+          }
+        }
         button[md-button] .mat-icon {
           line-height: .88;
-          margin-right: 4px;
+          margin-right: 0;
+          margin-left: 0;
         }
         .asset-count {
           border-radius: 2px;
           min-width: 24px;
-          line-height: 1em;
+          font-size: .9em;
+          line-height: 1;
           margin-right: 0;
-          margin-left: 0;
-          padding: 2px 3px; 
-          &:hover {
-            cursor: default;
-          }
-          &:hover::after {
-            background-color: transparent;
-          }
+          margin-left: 6px;
+          padding: 1px 3px; 
         }
       }
       button[md-icon-button] {
         margin-top: -2px;
-        margin-right: 4px;
+        margin-right: 0;
+        margin-left: 0;
         max-width: 40px;
         min-width: 40px;
-      } 
+      }
+      button.close-tray[md-icon-button] .mat-icon {
+        font-size: 28px;
+        height: 28px;
+        width: 28px;
+        line-height: 1;
+        opacity: .75;
+      }
     }
   }
 }
 
 header.app-header.collection-tray-closed collection-tray section {
-  .focused-collection, .asset-carousel.grid ul.asset-list {
-    max-height: 0;
-    min-height: 0;
-  }
-  button.close {
-    max-height: 0;
-    min-height: 0;
-    overflow: hidden;
-  }
+  animation-name: slide-up-tray;
+  animation-duration: 250ms;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-fill-mode: backwards;
+  animation-delay: 100ms;
+}
+
+header.app-header collection-tray section {
+  max-height: 0;
+  overflow: hidden;
+  animation-name: slide-down-tray;
+  animation-duration: 250ms;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+  animation-delay: 100ms;
 }
 
 .asset-carousel.grid ul.asset-list {
@@ -71,23 +93,19 @@ header.app-header.collection-tray-closed collection-tray section {
   margin: 0 0 0 0;
   white-space: nowrap;
   overflow-y: hidden;
-  transition: max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function;
-  min-height: 56px;
-  max-height: 56px;
-  // padding: 0;
+  max-height: 100%;
   & > li {
     font-size: 1em;
     position: relative;
     display: inline-block;
     vertical-align: bottom;
     margin: 0 0 0 0;
-    width: 99.57px;
+    width: 92.444px;
     opacity: .9;
     transition: none;
     .asset {
       padding: 0;
       padding-bottom: 0;
-
       a.asset-thb {
         display: block;
         height: 0;
@@ -128,16 +146,16 @@ header.app-header.collection-tray-closed collection-tray section {
       }
     }
     @media screen and (max-width: $layout-breakpoint-lg) {
-      width: 99.57px;
+      width: 92.444px;
     }
     @media screen and (max-width: $layout-breakpoint-md) {
-      width: 99.57px;
+      width: 92.444px;
     }
     @media screen and (max-width: $layout-breakpoint-sm) {
-      width: 99.57px;
+      width: 92.444px;
     }
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-      width: 99.57px;
+      width: 92.444px;
       margin-bottom: 0;          
     }
   }
@@ -164,5 +182,22 @@ header.app-header.collection-tray-closed collection-tray section {
         opacity: .8;
       }
     }
+  }
+}
+
+@keyframes slide-down-tray {
+  0% {
+    max-height: 0;
+  }
+  100% {
+    max-height: 52px;
+  }
+}
+@keyframes slide-up-tray {
+  0% {
+    max-height: 52px;
+  }
+  100% {
+    max-height: 0;
   }
 }

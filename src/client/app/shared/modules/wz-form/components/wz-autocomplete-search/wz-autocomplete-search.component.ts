@@ -12,6 +12,7 @@ import { WzInputSuggestionsComponent } from '../wz-input-suggestions/wz-input-su
 export class WzAutocompleteSearchComponent {
   @Input() public config: any;
   @Input() public currentUser: any;
+  @Input() prefs: any;
   @Input() public uiState: UiState;
   @Input()
   set state(value: string) {
@@ -47,6 +48,10 @@ export class WzAutocompleteSearchComponent {
     } else {
       this.searchContext.emit(this.searchForm.value.query);
     }
+  }
+
+  public toggleSearch() {
+    this.prefs.toggleSearch();
   }
 
   private updateSearchBoxValue(searchParams: any) {

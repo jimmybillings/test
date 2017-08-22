@@ -24,9 +24,8 @@ export class CollectionTrayComponent implements OnInit {
       this.enhancedAssets[asset.uuid] = this.assetService.enhance(asset);
     }
   };
-
+  @Input() prefs: any;
   @Output() onOpenSnackbar = new EventEmitter();
-
   public pageSize: string;
 
   public get collection(): any {
@@ -39,6 +38,7 @@ export class CollectionTrayComponent implements OnInit {
   constructor(private dialogService: WzDialogService, private assetService: AssetService) { }
 
   ngOnInit() {
+    console.log(this.prefs.state.collectionTrayIsOpen);
     this.uiConfig.get('global').take(1).subscribe((config: any) => {
       this.pageSize = config.config.pageSize.value;
     });
@@ -81,6 +81,10 @@ export class CollectionTrayComponent implements OnInit {
         }]
       });
     });
+  }
+
+  public toggleCollectionTray() {
+    this.prefs.toggleCollectionTray();
   }
 
   private enhancedAssetFor(asset: Asset): EnhancedAsset {

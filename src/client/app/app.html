@@ -19,11 +19,13 @@
       [uiState]="uiState"
       [uiConfig]="uiConfig"
       [collection]="activeCollection | async"
+      [prefs]="userPreference"
       (onOpenSnackbar)="showSnackBar($event)">
     </collection-tray>
      <wz-autocomplete-search
       *ngIf="uiState.headerIsExpanded()| async"
       [currentUser]="currentUser"
+      [prefs]="userPreference"
       [uiState]="uiState"
       [state]="state"
       [config]="(uiConfig.get('searchBox') | async).config"
