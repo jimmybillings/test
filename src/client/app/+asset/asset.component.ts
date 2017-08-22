@@ -22,7 +22,7 @@ import { PricingStore } from '../shared/stores/pricing.store';
 import { Subscription } from 'rxjs/Subscription';
 import { EnhancedAsset, enhanceAsset } from '../shared/interfaces/enhanced-asset';
 import { Asset, Pojo } from '../shared/interfaces/common.interface';
-import { SubclipMarkers } from '../shared/interfaces/subclip-markers';
+import * as SubclipMarkersInterface from '../shared/interfaces/subclip-markers';
 import { AppStore } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { PricingService } from '../shared/services/pricing.service';
@@ -69,7 +69,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     // assetId in calculatePrice() below.
     this.assetSubscription = this.store.select(state => state.asset.activeAsset)
       .map(asset => enhanceAsset(asset))
-      .subscribe(asset => this.asset = asset);
+      .subscribe(asset => { this.asset = asset; this.pricingStore.setPriceForDetails(this.asset.price); });
   }
 
   public ngOnDestroy(): void {
@@ -142,7 +142,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.rightsReproduction = rightsReproduction;
   }
 
-  public onMarkersChange(markers: SubclipMarkers): void {
+  public onMarkersChange(markers: SubclipMarkersInterface.SubclipMarkers): void {
     if (this.selectedAttrbutes && markers.out && markers.in) {
       this.calculatePrice(this.selectedAttrbutes, markers).subscribe((price: number) => {
         this.pricingStore.setPriceForDetails(price);
@@ -189,8 +189,8 @@ export class AssetComponent implements OnInit, OnDestroy {
     }
   }
 
-  private calculatePrice(attributes: Pojo, markers?: SubclipMarkers): Observable<number> {
+  private calculatePrice(attributes: Pojo, markers?: SubclipMarkersInterface.SubclipMarkers): Observable<number> {
     this.selectedAttrbutes = attributes;
-    return this.pricingService.getPriceFor(this.asset, markers, attributes);
+    return this.pricingService.getPriceFor(this.asset, attributes, markers);
   }
 }

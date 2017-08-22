@@ -42,6 +42,7 @@ export function main() {
       mockPricingStore = {
         priceForDialog: Observable.of(1000),
         priceForDetails: Observable.of(100),
+        setPriceForDetails: jasmine.createSpy('setPriceForDetails'),
         state: { priceForDetails: 100, priceForDialog: 1000 }
       };
       mockPricingService = {
