@@ -26,8 +26,4 @@ export class AssetService {
     const viewType: ApiOptions = { parameters: { 'useType': 'clipPreview' } };
     return this.api.get(Api.Assets, `renditionType/${assetId}`, viewType);
   }
-
-  public enhance(asset: commerce.Asset | common.Asset): EnhancedAsset {
-    return Object.assign(new EnhancedAsset(), asset).normalize();
-  }
 }
