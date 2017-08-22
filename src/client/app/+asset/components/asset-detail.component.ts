@@ -65,6 +65,9 @@ export class AssetDetailComponent implements OnChanges {
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
     this.subclipMarkers = newMarkers;
     this.showAssetSaveSubclip = this.markersAreDefined;
+    if (this.markersAreDefined) {
+      this.store.dispatch(factory => factory.asset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId));
+    }
   }
 
   public get markersSaveButtonEnabled(): boolean {
@@ -120,11 +123,8 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   private parseNewAsset(asset: any) {
+
     this.usagePrice = null;
-    if (Object.keys(asset.currentValue.detailTypeMap.common).length > 0) {
-      this.asset = Object.assign({}, this.asset, asset.currentValue.detailTypeMap);
-      delete this.asset.detailTypeMap;
-    }
     if (this.asset.transcodeTargets) {
       this.selectedTarget = this.asset.transcodeTargets[0];
     }

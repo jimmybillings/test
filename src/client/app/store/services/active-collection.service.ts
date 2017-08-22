@@ -8,7 +8,7 @@ import {
   CollectionItemsResponse, CollectionAssetResponse
 } from '../../shared/interfaces/collection.interface';
 import { Asset, Pagination } from '../../shared/interfaces/common.interface';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers.interface';
 import { Frame } from 'wazee-frame-formatter';
 
 @Injectable()
@@ -33,9 +33,14 @@ export class ActiveCollectionService {
     ).map(this.convertToCollectionItems);
   }
 
-  public addAssetTo(activeCollection: Collection, asset: Asset, markers: SubclipMarkers): Observable<CollectionItems> {
+  public addAssetTo(
+    activeCollection: Collection,
+    asset: Asset,
+    markers: SubclipMarkersInterface.SubclipMarkers): Observable<CollectionItems> {
     const assetInfo: object = {
-      assetId: asset.assetId, timeStart: String(this.timeStartFrom(markers)), timeEnd: String(this.timeEndFrom(markers))
+      assetId: asset.assetId,
+      timeStart: String(SubclipMarkersInterface.timeStartFrom(markers)),
+      timeEnd: String(SubclipMarkersInterface.timeEndFrom(markers))
     };
 
     return this.apiService.post(
@@ -60,13 +65,13 @@ export class ActiveCollectionService {
   }
 
   public updateAssetMarkers(
-    activeCollection: Collection, asset: Asset, updatedMarkers: SubclipMarkers
+    activeCollection: Collection, asset: Asset, updatedMarkers: SubclipMarkersInterface.SubclipMarkers
   ): Observable<CollectionItems> {
     const updater: CollectionItemMarkersUpdater = {
       uuid: asset.uuid,
       assetId: asset.assetId,
-      timeStart: String(this.timeStartFrom(updatedMarkers)),
-      timeEnd: String(this.timeEndFrom(updatedMarkers))
+      timeStart: String(SubclipMarkersInterface.timeStartFrom(updatedMarkers)),
+      timeEnd: String(SubclipMarkersInterface.timeEndFrom(updatedMarkers))
     };
     const pagination: Pagination = activeCollection.assets.pagination;
 
@@ -74,14 +79,6 @@ export class ActiveCollectionService {
       .flatMap(response =>
         this.loadPage(activeCollection.id, { currentPage: pagination.currentPage, pageSize: pagination.pageSize })
       );
-  }
-
-  public timeStartFrom(markers: SubclipMarkers): number {
-    return markers && markers.in ? this.toMilliseconds(markers.in) : -1;
-  }
-
-  public timeEndFrom(markers: SubclipMarkers): number {
-    return markers && markers.out ? this.toMilliseconds(markers.out) : -2;
   }
 
   private combineAssetsWith(collectionSummary: Collection, parameters: CollectionPaginationParameters): Observable<Collection> {
@@ -111,9 +108,5 @@ export class ActiveCollectionService {
         numberOfPages: response.numberOfPages || 0
       }
     };
-  }
-
-  private toMilliseconds(frame: Frame): number {
-    return frame.asSeconds(3) * 1000;
   }
 }

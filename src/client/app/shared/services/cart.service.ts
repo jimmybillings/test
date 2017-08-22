@@ -5,7 +5,7 @@ import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
 import { CurrentUserService } from '../services/current-user.service';
 import { Address, ViewAddress } from '../interfaces/user.interface';
-
+import * as SubclipMarkersInterface from '../interfaces/subclip-markers.interface';
 import { CartStore } from '../stores/cart.store';
 import { CheckoutStore } from '../stores/checkout.store';
 import {
@@ -25,7 +25,6 @@ import {
   LicenseAgreements
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
-import { SubclipMarkers } from '../interfaces/subclip-markers.interface';
 import { Frame } from 'wazee-frame-formatter';
 
 @Injectable()
@@ -180,8 +179,11 @@ export class CartService {
       .subscribe(this.replaceCartWith);
   }
 
-  public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkers): void {
-    Object.assign(lineItem.asset, { timeStart: this.timeStartFrom(newMarkers), timeEnd: this.timeEndFrom(newMarkers) });
+  public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkersInterface.SubclipMarkers): void {
+    Object.assign(lineItem.asset, {
+      timeStart: SubclipMarkersInterface.timeStartFrom(newMarkers),
+      timeEnd: SubclipMarkersInterface.timeEndFrom(newMarkers)
+    });
 
     this.editLineItem(lineItem, {});
   }
@@ -216,7 +218,7 @@ export class CartService {
     const options: PurchaseOptions = this.purchaseOptions;
     return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options }, loadingIndicator: true })
       .do(() => this.initializeData().subscribe())
-      .map(_ => _ as Number);
+      .map(_ => _ as number);
   }
 
   private purchaseOnCredit(): Observable<number> {
@@ -235,17 +237,17 @@ export class CartService {
     return formatted;
   }
 
-  private formatLineItem(lineItem: any, markers: SubclipMarkers): any {
+  private formatLineItem(lineItem: any, markers: SubclipMarkersInterface.SubclipMarkers): any {
     return Object.assign({}, lineItem, { asset: this.formatAsset(lineItem.asset, markers) });
   }
 
-  private formatAsset(asset: any, markers: SubclipMarkers): any {
+  private formatAsset(asset: any, markers: SubclipMarkersInterface.SubclipMarkers): any {
     let timeStart: number;
     let timeEnd: number;
 
     if (markers) {
-      timeStart = this.timeStartFrom(markers);
-      timeEnd = this.timeEndFrom(markers);
+      timeStart = SubclipMarkersInterface.timeStartFrom(markers);
+      timeEnd = SubclipMarkersInterface.timeEndFrom(markers);
     } else {
       timeStart = asset.timeStart;
       timeEnd = asset.timeEnd;
@@ -300,18 +302,5 @@ export class CartService {
       stripeToken: this.checkoutState.authorization.id,
       stripeTokenType: this.checkoutState.authorization.type
     };
-  }
-
-  private timeStartFrom(markers: SubclipMarkers): number {
-    return markers && markers.in ? this.toMilliseconds(markers.in) : -1;
-  }
-
-  private timeEndFrom(markers: SubclipMarkers): number {
-    return markers && markers.out ? this.toMilliseconds(markers.out) : -2;
-  }
-
-
-  private toMilliseconds(frame: Frame): number {
-    return frame.asSeconds(3) * 1000;
   }
 }

@@ -1,5 +1,10 @@
 import { Frame } from 'wazee-frame-formatter';
 
+export interface Markers {
+  startTime?: number;
+  endTime?: number;
+};
+
 export interface SubclipMarkers {
   in?: Frame;
   out?: Frame;
@@ -33,6 +38,18 @@ export function deserialize(serializedMarkers: SerializedSubclipMarkers): Subcli
   if (serializedMarkers.out) markers.out = deserializeSingle(serializedMarkers.out);
 
   return markers;
+}
+
+export function timeStartFrom(markers: SubclipMarkers): number {
+  return markers && markers.in ? toMilliseconds(markers.in) : -1;
+}
+
+export function timeEndFrom(markers: SubclipMarkers): number {
+  return markers && markers.out ? toMilliseconds(markers.out) : -2;
+}
+
+function toMilliseconds(frame: Frame): number {
+  return frame.asSeconds(3) * 1000;
 }
 
 function serializeSingle(marker: Frame): SerializedSubclipMarker {

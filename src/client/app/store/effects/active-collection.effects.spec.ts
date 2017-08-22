@@ -1,7 +1,7 @@
 import { ActiveCollectionEffects } from './active-collection.effects';
 import * as ActiveCollectionActions from '../actions/active-collection.actions';
 import { EffectsSpecHelper, EffectTestParameters } from '../spec-helpers/effects.spec-helper';
-
+import { Frame } from 'wazee-frame-formatter';
 export function main() {
   describe('Active Collection Effects', () => {
     let effectsSpecHelper: EffectsSpecHelper;
@@ -204,7 +204,10 @@ export function main() {
               value: {
                 latestAddition: {
                   asset: { assetId: 123 },
-                  markers: { latest: 'markers' }
+                  markers: {
+                    in: { frameNumber: 30, framesPerSecond: 30 },
+                    out: { frameNumber: 60, framesPerSecond: 30 }
+                  }
                 },
                 collection: {
                   assets: {
@@ -212,8 +215,8 @@ export function main() {
                       {
                         assetId: 123,
                         uuid: 'ABCD',
-                        timeStart: 1234,
-                        timeEnd: 5678
+                        timeStart: 1000,
+                        timeEnd: 2000
                       },
                       {
                         assetId: 123,
@@ -223,16 +226,6 @@ export function main() {
                   }
                 }
               }
-            }
-          ],
-          helperServiceMethods: [
-            {
-              name: 'timeStartFrom',
-              returns: 1234
-            },
-            {
-              name: 'timeEndFrom',
-              returns: 5678
             }
           ]
         };
@@ -256,13 +249,12 @@ export function main() {
 
       it('otherwise activates a route for a newly added asset', () => {
         effectsSpecHelper.generateCustomTestFor(testParameters, () => {
-          expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'ABCD', timeStart: '1234', timeEnd: '5678' }]);
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'ABCD', timeStart: '1000', timeEnd: '2000' }]);
         });
       });
 
       it('otherwise activates a route for a newly added asset without markers', () => {
-        testParameters.helperServiceMethods[0].returns = undefined;
-        testParameters.helperServiceMethods[1].returns = undefined;
+        (testParameters.state as any)[1].value.latestAddition = { asset: { assetId: 123 } };
 
         effectsSpecHelper.generateCustomTestFor(testParameters, () => {
           expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'EFGH' }]);

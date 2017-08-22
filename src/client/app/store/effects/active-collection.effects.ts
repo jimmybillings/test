@@ -9,7 +9,7 @@ import { ActiveCollectionService } from '../services/active-collection.service';
 import { AppStore, AppState } from '../../app.store';
 import { Collection, CollectionItems } from '../../shared/interfaces/collection.interface';
 import { Asset } from '../../shared/interfaces/common.interface';
-import { SubclipMarkers, deserialize } from '../../shared/interfaces/subclip-markers.interface';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers.interface';
 import { Frame } from 'wazee-frame-formatter';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
@@ -63,10 +63,12 @@ export class ActiveCollectionEffects {
       const addedAsset: Asset = state.activeCollection.latestAddition.asset;
       if (currentAsset.assetId !== addedAsset.assetId) return;
 
-      const addedMarkers: SubclipMarkers = deserialize(state.activeCollection.latestAddition.markers);
-      const addedTimeStart: number = this.service.timeStartFrom(addedMarkers);
-      const addedTimeEnd: number = this.service.timeEndFrom(addedMarkers);
-
+      const addedMarkers: SubclipMarkersInterface.SubclipMarkers =
+        SubclipMarkersInterface.deserialize(state.activeCollection.latestAddition.markers);
+      let addedTimeStart: number = SubclipMarkersInterface.timeStartFrom(addedMarkers);
+      let addedTimeEnd: number = SubclipMarkersInterface.timeEndFrom(addedMarkers);
+      if (addedTimeEnd < 0) addedTimeEnd = undefined;
+      if (addedTimeStart < 0) addedTimeStart = undefined;
       // ASSUMPTION: If the active collection happens to have two assets with the same id and markers the user just added,
       // the user doesn't care which one we give him (and we can't tell which one is right anyway).
       const newAsset: Asset =

@@ -41,15 +41,7 @@ export class AssetService {
     return this.api.get(Api.Orders, `priceBook/price/${asset.assetId}`, { parameters }).map((data: any) => data.price);
   }
 
-  public getshareLink(id: any, accessStartDate: any, accessEndDate: any): Observable<any> {
-    return this.api.post(
-      Api.Identities,
-      'accessInfo',
-      { body: { type: 'asset', accessInfo: id, accessStartDate: accessStartDate, accessEndDate: accessEndDate } }
-    );
-  }
-
-  public createShareLink(shareLink: any): Observable<any> {
+  public createShareLink(shareLink: common.Pojo): Observable<any> {
     return this.api.post(Api.Identities, 'accessInfo', { body: shareLink });
   }
 
