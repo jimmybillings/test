@@ -34,7 +34,7 @@
       md-icon-button
       class="cart"
       title="{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}"
-      [routerLink]="['/commerce']">
+      [routerLink]="['/cart']">
       <md-icon>shopping_cart</md-icon>
       <span class="asset-count" *ngIf="cartSize && cartSize > 0">
         <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
@@ -46,7 +46,7 @@
       md-icon-button
       class="cart"
       title="{{ 'HEADER.USER_DD_MENU.QUOTE_LINK'| translate}}"
-      [routerLink]="['/commerce/activeQuote']">
+      [routerLink]="['/activeQuote']">
       <md-icon>work</md-icon>
       <span class="asset-count" *ngIf="cartSize && cartSize > 0">
           <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
@@ -62,16 +62,16 @@
     <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collections']">
         <md-icon>folder_open</md-icon>{{ 'HEADER.USER_DD_MENU.COLLECTIONS_LINK' | translate }}
     </a>
-    <a md-menu-item *ngIf="userCan.addToCart() && !userCan.administerQuotes()" [routerLink]="['/commerce']">
+    <a md-menu-item *ngIf="userCan.addToCart() && !userCan.administerQuotes()" [routerLink]="['/cart']">
         <md-icon>shopping_cart</md-icon>{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}
     </a>
-    <a md-menu-item *ngIf="userCan.addToCart() && userCan.administerQuotes()" [routerLink]="['/commerce/activeQuote']">
+    <a md-menu-item *ngIf="userCan.addToCart() && userCan.administerQuotes()" [routerLink]="['/activeQuote']">
         <md-icon>work</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTE_LINK' | translate}}
     </a>
-    <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/commerce/quotes']">
+    <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/quotes']">
         <md-icon>inbox</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTES_SAVED_LINK' | translate }}
     </a>
-    <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/commerce/orders']">
+    <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/orders']">
         <md-icon>description</md-icon>{{ 'HEADER.USER_DD_MENU.ORDERS_LINK' | translate }}
     </a>
     <div class="divider"></div>

@@ -277,7 +277,7 @@ export class QuoteEditComponent extends CommerceEditTab {
 
   private deleteQuote = (): void => {
     this.quoteEditService.deleteQuote().subscribe(() => {
-      this.router.navigate(['/commerce/quotes']);
+      this.router.navigate(['/quotes']);
     });
   }
 }

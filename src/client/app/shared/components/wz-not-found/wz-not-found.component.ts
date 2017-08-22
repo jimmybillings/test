@@ -20,7 +20,7 @@ import { Capabilities } from '../../services/capabilities.service';
                     color="primary"
                     *ngIf="showCartLink"
                     md-icon-button
-                    [routerLink]="['/commerce']">
+                    [routerLink]="['/cart']">
                       <md-icon>shopping_cart</md-icon>
                   </button>
                   <button
@@ -34,7 +34,7 @@ import { Capabilities } from '../../services/capabilities.service';
                     color="primary"
                     *ngIf="showQuotesLink"
                     md-icon-button
-                    [routerLink]="['/commerce/quotes']">
+                    [routerLink]="['/quotes']">
                       <md-icon>inbox</md-icon>
                   </button>
                 </div>

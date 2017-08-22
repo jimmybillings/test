@@ -13,7 +13,7 @@
 				<button md-button color="primary" class="is-outlined mini">
 					{{ 'ORDER.SHOW.PRINT_INVOICE_BTN_TITLE' | translate }}
 				</button>
-				<a [routerLink]="['/commerce/orders']" md-icon-button color="primary" title="{{ 'ORDER.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
+				<a [routerLink]="['/orders']" md-icon-button color="primary" title="{{ 'ORDER.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
 					<md-icon>description</md-icon>
 				</a>
 			</div>
@@ -39,7 +39,7 @@
 					<span>
 						<strong>{{ 'ORDER.PURCHASE_TYPE_LABEL' | translate }} </strong>{{ (order.data | async).orderType }}
 					</span>
-					<a *ngIf="isRefund | async" class="indicate-refund" [routerLink]="['/commerce/orders/', creditMemoForOrderId | async]">
+					<a *ngIf="isRefund | async" class="indicate-refund" [routerLink]="['/orders/', creditMemoForOrderId | async]">
 						<strong>{{ 'ORDER.SHOW.REFUND_FOR_ORDER' | translate }}</strong> {{ creditMemoForOrderId | async }}
 					</a>
 				</div>

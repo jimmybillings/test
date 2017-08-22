@@ -175,11 +175,24 @@ wz-comment {
 
 // animations to show/hide header action items specific to the page
 commerce-component header .tools.hide-for-comments,
+
+cart-component header .tools.hide-for-comments,
+orders-component header .tools.hide-for-comments,
+order-show-component header .tools.hide-for-comments,
+quote-edit-component header .tools.hide-for-comments,
+quotes-component header .tools.hide-for-comments,
+quote-show-component header .tools.hide-for-comments,
 .collection-head .actions.hide-for-comments {
   transition: opacity 100ms linear;
   opacity: 0
 }
-commerce-component header .tools.comments-closed,
+
+cart-component header .tools.comments-closed,
+orders-component header .tools.comments-closed,
+order-show-component header .tools.comments-closed,
+quote-edit-component header .tools.comments-closed,
+quotes-component header .tools.comments-closed,
+quote-show-component header .tools.comments-closed,
 .collection-head .actions.comments-closed {
   animation-name: fadeIn;
   animation-duration: 500ms;

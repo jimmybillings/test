@@ -287,7 +287,7 @@ export function main() {
         });
 
         it('navigates to the correct route', () => {
-          expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes']);
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes']);
         });
       });
     });

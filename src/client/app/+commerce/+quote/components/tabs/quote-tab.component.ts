@@ -52,7 +52,7 @@ export class QuoteTabComponent extends Tab {
   public onCloneQuote() {
     this.quoteEditService.cloneQuote(this.quoteService.state.data)
       .do(() => {
-        this.router.navigate(['/commerce/activeQuote']);
+        this.router.navigate(['/activeQuote']);
         this.showSnackBar({
           key: 'QUOTE.CLONE_SUCCESS',
           value: null
@@ -135,19 +135,19 @@ export class QuoteTabComponent extends Tab {
     this.quoteService
       .extendExpirationDate(newDate.expirationDate)
       .subscribe(() => {
-        this.router.navigate(['/commerce/quotes']);
+        this.router.navigate(['/quotes']);
       });
   }
 
   private expireQuote = (): void => {
     this.quoteService.expireQuote().subscribe(() => {
-      this.router.navigate(['commerce/quotes']);
+      this.router.navigate(['/quotes']);
     });
   }
 
   private rejectQuote = (): void => {
     this.quoteService.rejectQuote().take(1).subscribe(() => {
-      this.router.navigate(['commerce/quotes']);
+      this.router.navigate(['/quotes']);
     });
   }
 

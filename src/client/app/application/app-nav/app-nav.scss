@@ -120,13 +120,19 @@ header.app-header.search-closed app-nav button.open-search {
 // Also the current mdToolbar does not change height for mobile. This could change, that is what the media queries are for.
 header.app-header + div.main-content gallery-view-component,
 header.app-header + div.main-content not-found-component,
-header.app-header + div.main-content commerce-component,
 header.app-header + div.main-content profile-component,
 header.app-header + div.main-content collection-show,
 header.app-header + div.main-content collections-component,
 header.app-header + div.main-content cms-component,
 header.app-header + div.main-content search-component,
-header.app-header + div.main-content asset-component {
+header.app-header + div.main-content asset-component,
+header.app-header + div.main-content cart-component,
+header.app-header + div.main-content orders-component,
+header.app-header + div.main-content order-show-component,
+header.app-header + div.main-content quote-edit-component,
+header.app-header + div.main-content quotes-component,
+header.app-header + div.main-content quote-show-component,
+{
   display: block;
   transition: border-top-width 0.35s, $swift-ease-in-out-timing-function;
   border-top: rem(16.6) solid mat-color($mat-grey, 900, .7);
@@ -146,13 +152,18 @@ header.app-header + div.main-content asset-component {
 
 header.app-header.collection-tray-closed + div.main-content gallery-view-component,
 header.app-header.collection-tray-closed + div.main-content not-found-component,
-header.app-header.collection-tray-closed + div.main-content commerce-component,
 header.app-header.collection-tray-closed + div.main-content profile-component,
 header.app-header.collection-tray-closed + div.main-content collection-show,
 header.app-header.collection-tray-closed + div.main-content collections-component,
 header.app-header.collection-tray-closed + div.main-content cms-component,
 header.app-header.collection-tray-closed + div.main-content search-component,
-header.app-header.collection-tray-closed + div.main-content asset-component {
+header.app-header.collection-tray-closed + div.main-content asset-component,
+header.app-header.collection-tray-closed + div.main-content cart-component,
+header.app-header.collection-tray-closed + div.main-content orders-component,
+header.app-header.collection-tray-closed + div.main-content order-show-component,
+header.app-header.collection-tray-closed + div.main-content quote-edit-component,
+header.app-header.collection-tray-closed + div.main-content quotes-component,
+header.app-header.collection-tray-closed + div.main-content quote-show-component {
   border-top-width: rem(11.0);
   // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
   //   border-top-width: rem(8.8);
@@ -170,13 +181,18 @@ header.app-header.collection-tray-closed + div.main-content asset-component {
 
 header.app-header.collection-tray-closed.search-closed + div.main-content gallery-view-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content not-found-component,
-header.app-header.collection-tray-closed.search-closed + div.main-content commerce-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content profile-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content collection-show,
 header.app-header.collection-tray-closed.search-closed + div.main-content collections-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content cms-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content search-component,
-header.app-header.collection-tray-closed.search-closed + div.main-content asset-component {
+header.app-header.collection-tray-closed.search-closed + div.main-content asset-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content cart-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content orders-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content order-show-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content quote-edit-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content quotes-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content quote-show-component {
   border-top-width: rem(6.4);
   // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
   //   border-top-width: rem(4.8);
@@ -194,13 +210,18 @@ header.app-header.collection-tray-closed.search-closed + div.main-content asset-
 
 header.app-header.search-closed + div.main-content gallery-view-component,
 header.app-header.search-closed + div.main-content not-found-component,
-header.app-header.search-closed + div.main-content commerce-component,
 header.app-header.search-closed + div.main-content profile-component,
 header.app-header.search-closed + div.main-content collection-show,
 header.app-header.search-closed + div.main-content collections-component,
 header.app-header.search-closed + div.main-content cms-component,
 header.app-header.search-closed + div.main-content search-component,
-header.app-header.search-closed + div.main-content asset-component {
+header.app-header.search-closed + div.main-content asset-component,
+header.app-header.search-closed + div.main-content cart-component,
+header.app-header.search-closed + div.main-content orders-component,
+header.app-header.search-closed + div.main-content order-show-component,
+header.app-header.search-closed + div.main-content quote-edit-component,
+header.app-header.search-closed + div.main-content quotes-component,
+header.app-header.search-closed + div.main-content quote-show-component {
   border-top-width: rem(12.0);
   // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
   //   border-top-width: rem(10.4);
