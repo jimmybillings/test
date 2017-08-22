@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from './api.service';
-import { EnhancedAsset } from '../interfaces/enhanced-asset';
+import { EnhancedAsset, enhanceAsset } from '../interfaces/enhanced-asset';
 import { PriceAttribute } from '../interfaces/commerce.interface';
 import { Api, ApiParameters } from '../interfaces/api.interface';
-import { SubclipMarkers, Duration, durationFrom } from '../interfaces/subclip-markers.interface';
+import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 import * as commerce from '../interfaces/commerce.interface';
 import * as common from '../interfaces/common.interface';
 
@@ -13,14 +13,14 @@ import * as common from '../interfaces/common.interface';
 export class PricingService {
   constructor(private apiService: ApiService) { }
 
-  public getPriceFor(asset: commerce.Asset, markers: SubclipMarkers, attributes?: any): Observable<any> {
-    const duration: Duration = durationFrom(markers);
+  public getPriceFor(asset: commerce.Asset, markers: SubclipMarkersInterface.SubclipMarkers, attributes?: any): Observable<any> {
+    const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(markers);
     const assetWithDuration: commerce.Asset = {
       ...JSON.parse(JSON.stringify(asset)),
       timeStart: duration.timeStart,
       timeEnd: duration.timeEnd
     };
-    const enhancedAsset: EnhancedAsset = this.enhance(assetWithDuration);
+    const enhancedAsset: EnhancedAsset = enhanceAsset(assetWithDuration);
     const parameters: ApiParameters =
       Object.assign(
         { region: 'AAA' },
@@ -55,9 +55,5 @@ export class PricingService {
     return {
       startSecond: enhancedAsset.inMarkerFrame.asSeconds(3) * 1000, endSecond: enhancedAsset.outMarkerFrame.asSeconds(3) * 1000
     };
-  }
-
-  private enhance(asset: commerce.Asset | common.Asset): EnhancedAsset {
-    return Object.assign(new EnhancedAsset(), asset).normalize();
   }
 }

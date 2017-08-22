@@ -20,8 +20,9 @@ export class AssetEffects {
   @Effect({ dispatch: false })
   public updateMarkersInUrl: Observable<Action> = this.actions.ofType(AssetActions.UpdateMarkersInUrl.Type)
     .do((action: AssetActions.UpdateMarkersInUrl) => {
-      let updatedTimeStart: number = SubclipMarkersInterface.timeStartFrom(action.markers);
-      let updatedTimeEnd: number = SubclipMarkersInterface.timeEndFrom(action.markers);
+      const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(action.markers);
+      let updatedTimeStart: number = duration.timeStart;
+      let updatedTimeEnd: number = duration.timeEnd;
       if (updatedTimeEnd < 0) updatedTimeEnd = undefined;
       if (updatedTimeStart < 0) updatedTimeStart = undefined;
       this.navigateWithUpdatedMarkers(action.assetId, updatedTimeStart, updatedTimeEnd);

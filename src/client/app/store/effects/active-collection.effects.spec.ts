@@ -183,7 +183,7 @@ export function main() {
       });
     });
 
-    fdescribe('maybeChangeAssetRouteOnAddSuccess', () => {
+    describe('maybeChangeAssetRouteOnAddSuccess', () => {
       let testParameters: EffectTestParameters;
 
       beforeEach(() => {
