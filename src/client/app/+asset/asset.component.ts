@@ -69,7 +69,11 @@ export class AssetComponent implements OnInit, OnDestroy {
     // assetId in calculatePrice() below.
     this.assetSubscription = this.store.select(state => state.asset.activeAsset)
       .map(asset => enhanceAsset(asset))
-      .subscribe(asset => { this.asset = asset; this.pricingStore.setPriceForDetails(this.asset.price); });
+      .subscribe(asset => {
+        this.asset = asset;
+        this.pricingStore.setPriceForDetails(this.asset.price);
+        this.selectedAttrbutes = null;
+      });
   }
 
   public ngOnDestroy(): void {
