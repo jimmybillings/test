@@ -32,7 +32,7 @@
     <button
       md-icon-button
       flex="none"
-      title="more collection options"
+      title="{{ 'COLLECTION.TRAY.MORE_BTN_TITLE' | translate }}"
       [md-menu-trigger-for]="moreCollectionTrayOptions">
       <md-icon>more_vert</md-icon>
     </button>
@@ -42,7 +42,7 @@
         md-icon-button
         class="close-tray"
         (click)="toggleCollectionTray()"
-        title="close collection tray">
+        title="{{ 'COLLECTION.TRAY.CLOSE_BTN_TITLE' | translate }}">
         <md-icon>close</md-icon>
       </button>
     </div>

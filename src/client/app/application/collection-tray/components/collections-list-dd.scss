@@ -27,7 +27,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
   .collections-dd-menu {
     @include mat-elevation(6);
     transition: $swift-ease-out;
-    min-width: rem(40.0);
+    min-width: 400px;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       position: static;
       min-width: 100%;
@@ -36,9 +36,9 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
     header, .subhead {
       padding: 7px 10px;
       .md-headline {
-        font-size: rem(2.0);
+        font-size: 20px;
         margin: 0;
-        margin-top: rem(.5);
+        margin-top: 5px;
         width: calc(100% - 120px);
       }
       .tools {
@@ -57,30 +57,30 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
     }
     .query-details {
       span {
-        margin-left: rem(1.3);
-        margin-right: rem(1.3);
+        margin-left: 13px;
+        margin-right: 13px;
         margin-top: 0;
         display: inline-block;
         position: relative;
-        padding-left: rem(2.3);
-        line-height: rem(1.9);
+        padding-left: 23px;
+        line-height: 19px;
         &:before {
           content: " ";
           position: absolute;
           top: 0;
           left: 0;
-          height: rem(2);
-          width: rem(2);
+          height: 20px;
+          width: 20px;
           border-radius: 50%;
         }
         &:after {
           content: "\e152";
           font-family: 'Material Icons';
           font-weight: 100;
-          font-size: rem(1.5);
-          line-height: rem(1.7);
-          height: rem(2);
-          width: rem(2);
+          font-size: 15px;
+          line-height: 17px;
+          height: 20px;
+          width: 20px;
           position: absolute;
           left: 0;
           top: 50%;
@@ -94,14 +94,14 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
           content: "\e164";
         }
         &:first-child {
-          margin-top: rem(1.2);
+          margin-top: 12px;
         }
         &:last-child {
-          margin-bottom: rem(1.2);
+          margin-bottom: 12px;
         }
         strong {
           display: inline-block;
-          padding-right: rem(.5);
+          padding-right: 5px;
           font-weight: 600;
         }
       }
@@ -109,15 +109,14 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
     .mat-list[dense] {
       margin: 8px 0;
       padding-top: 0;
-      max-height: rem(34.2);
-      min-height: rem(31.2);
+      max-height: 342px;
+      min-height: 312px;
       overflow-x: hidden;
-      // margin-bottom: rem(1.1);
       .mat-list-item .mat-list-item-content {
-        height: rem(3.8);
+        height: 38px;
         padding: 0;
         button {
-          height: rem(3.8);
+          height: 38px;
           display: flex;
           align-items: center;
           width: 100%;
@@ -127,11 +126,11 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
           text-align: left;
           background: none;
           background-color: transparent;
-          font-size: inherit;
-          line-height: inherit;
+          font-size: 1.1em;
+          line-height: 1;
           transition: $swift-ease-out;
-          padding-left: rem(1.6);
-          padding-right: rem(1.6);
+          padding-left: 16px;
+          padding-right: 16px;
           &:hover, &:focus {
             cursor: pointer;
             outline: none;
@@ -144,42 +143,57 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
             }
           }
         }
-        md-icon {
+        md-icon.not-owner,
+        md-icon.select-indicator {
           transition: $swift-ease-out;
           opacity: .15;
-          margin-right: rem(1.4);
+          margin-right: 14px;
           &.right-align.material-icons {
             margin-left: auto;
-            margin-right: rem(-.3);
+            margin-right: -3px;
             opacity: .3;
+          }
+        }
+        .open-collection-link {
+          position: absolute;
+          top: 0;
+          right: 1px;
+          opacity: 0;
+        }
+        button:hover .open-collection-link {
+          opacity: .8;
+          &:hover {
+            opacity: 1;
           }
         }
       }
       md-list-item.active .mat-list-item-content button {
-        md-icon {
+        md-icon.select-indicator {
           opacity: 1;
         }
         &:hover {
           cursor: default;
         }
+
+
       }
       md-list-item:first-child .mat-list-item-content button {
         box-shadow: none;
       }
     }
     footer .actions {
-      margin-bottom: rem(1.6);
+      margin-bottom: 16px;
       [md-button], button {
         transition: $swift-ease-out;
         line-height: 1;
         white-space: normal;
-        min-width: rem(9.2);
-        padding-top: rem(.4);
-        padding-bottom: rem(.4);
-        padding-left: rem(.8);
-        padding-right: rem(.8);
-        margin-left: rem(.4);
-        margin-right: rem(.4);
+        min-width: 92px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 8px;
+        padding-right: 8px;
+        margin-left: 4px;
+        margin-right: 4px;
         &:hover {
           md-icon {
             opacity: 1;
@@ -221,10 +235,10 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
   @include mat-elevation(2);
   header {
     display: flex;
-    padding-left: rem(.3);
-    padding-right: rem(.3);
+    padding-left: 3px;
+    padding-right: 3px;
     .md-headline {
-      margin-left: rem(2.1);
+      margin-left: 21px;
     }
     .tools button.back {
       transform: rotate(90deg);
@@ -297,8 +311,8 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper wz-item-search-form {
     overflow: hidden;
   }
   100% {
-    max-height: rem(44.1);
-    max-width: rem(40.0);
-    min-width: rem(32.0);
+    max-height: 441px;
+    max-width: 400px;
+    min-width: 320px;
   }
 }

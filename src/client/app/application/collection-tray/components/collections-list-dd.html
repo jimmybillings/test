@@ -6,7 +6,12 @@
           {{ 'COLLECTION.DD_MENU.HEADING' | translate }}
         </h4>
         <div class="tools" flex="auto" layout-align="end center">
-          <button md-icon-button title="close" (click)="closeCollectionsList()"><md-icon>close</md-icon></button>
+          <button 
+            md-icon-button 
+            title="{{ 'COLLECTION.DD_MENU.CLOSE_HOVER_TITLE' | translate }}" 
+            (click)="closeCollectionsList()">
+            <md-icon>close</md-icon>
+          </button>
         </div>
       </div>
     </header>
@@ -51,33 +56,22 @@
         <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{ options.currentSort.name | translate }}
       </span> 
     </div>
-
     <md-list dense>
       <md-list-item *ngFor="let collection of (collections.data | async).items" [ngClass]="{active: focusedCollection.id === collection.id}">
         <button (click)="selectFocusedCollection(collection);closeCollectionsList()">
-          <md-icon *ngIf="focusedCollection.id === collection.id">star</md-icon>
-          <md-icon *ngIf="focusedCollection.id !== collection.id">star_border</md-icon>
+          <md-icon class="select-indicator" *ngIf="focusedCollection.id === collection.id">star</md-icon>
+          <md-icon class="select-indicator" *ngIf="focusedCollection.id !== collection.id">star_border</md-icon>
           {{collection.name}}
-          <md-icon class="right-align" title="{{ 'COLLECTION.DD_MENU.SHARED_TITLE' | translate:{role:collection.userRole} }}" *ngIf="collection.userRole !== 'owner'">folder_shared</md-icon>
+          <md-icon class="not-owner right-align" title="{{ 'COLLECTION.DD_MENU.SHARED_TITLE' | translate:{role:collection.userRole} }}" *ngIf="collection.userRole !== 'owner'">folder_shared</md-icon>
+          <a md-icon-button
+            color="primary"
+            class="open-collection-link"
+            title="{{ 'COLLECTION.MORE_DD_MENU.OPEN_COLLECTION' | translate }}"
+            [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
+            <md-icon>open_in_browser</md-icon>
+          </a>
         </button>
       </md-list-item>
     </md-list>
-    <!-- <footer layout="row" layout-align="center center">
-      <div class="actions" flex="90" layout="row" layout-align="center center">
-        <div flex="33" layout-align="center start">
-          <button md-button type="button" (click)="onCreateCollection.emit();closeCollectionsList()" disableRipple="true"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
-        </div>
-        <div flex="33" layout-align="center center">
-          <a md-button (click)="navigateToCollectionsIndex();closeCollectionsList()" disableRipple="true">
-            <md-icon>folder_open</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.VIEW_BTN_LABEL' | translate }}</span>
-          </a>
-        </div>
-        <div flex="33" layout-align="center end">
-          <a md-button (click)="navigateToCollectionShow(focusedCollection.id);closeCollectionsList();" disableRipple="true">
-            <md-icon>open_in_browser</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.OPEN_BTN_LABEL' | translate }}</span>
-          </a>
-        </div>
-      </div>
-    </footer> -->
   </div>
 </div>
