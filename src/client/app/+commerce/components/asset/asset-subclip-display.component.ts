@@ -2,8 +2,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
 import { Asset } from '../../../shared/interfaces/commerce.interface';
-import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
-import { AssetService } from '../../../shared/services/asset.service';
+import { enhanceAsset, EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -35,10 +34,8 @@ import { AssetService } from '../../../shared/services/asset.service';
 export class AssetSubclipDisplayComponent {
   private enhancedAsset: EnhancedAsset;
 
-  constructor(private assetService: AssetService) { }
-
   @Input() public set asset(asset: Asset) {
-    this.enhancedAsset = this.assetService.enhance(asset);
+    this.enhancedAsset = enhanceAsset(asset);
   }
 
   public get isSubclipped(): boolean {

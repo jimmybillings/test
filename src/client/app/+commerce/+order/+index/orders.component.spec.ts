@@ -30,7 +30,7 @@ export function main() {
     describe('changePage()', () => {
       it('Should accept a page number and navigate to the correct page url', () => {
         componentUnderTest.changePage(99);
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/orders', { n: '20', i: 99 }]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/orders', { n: '20', i: 99 }]);
       });
     });
 

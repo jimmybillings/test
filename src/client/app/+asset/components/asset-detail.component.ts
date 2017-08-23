@@ -3,7 +3,7 @@ import { Collection } from '../../shared/interfaces/collection.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 import { AppStore } from '../../app.store';
@@ -29,6 +29,7 @@ export class AssetDetailComponent implements OnChanges {
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onShowSnackBar = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
+  @Output() markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
@@ -65,6 +66,10 @@ export class AssetDetailComponent implements OnChanges {
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
     this.subclipMarkers = newMarkers;
     this.showAssetSaveSubclip = this.markersAreDefined;
+    if (this.markersAreDefined) {
+      this.store.dispatch(factory => factory.asset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId));
+    }
+    this.markersChange.emit(newMarkers);
   }
 
   public get markersSaveButtonEnabled(): boolean {
@@ -120,11 +125,8 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   private parseNewAsset(asset: any) {
+
     this.usagePrice = null;
-    if (Object.keys(asset.currentValue.detailTypeMap.common).length > 0) {
-      this.asset = Object.assign({}, this.asset, asset.currentValue.detailTypeMap);
-      delete this.asset.detailTypeMap;
-    }
     if (this.asset.transcodeTargets) {
       this.selectedTarget = this.asset.transcodeTargets[0];
     }

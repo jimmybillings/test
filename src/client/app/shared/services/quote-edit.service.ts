@@ -15,7 +15,7 @@ import {
   FeeConfig,
   LicenseAgreements
 } from '../interfaces/commerce.interface';
-import { SubclipMarkers } from '../interfaces/subclip-markers.interface';
+import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 import { Frame } from 'wazee-frame-formatter';
 import { ActiveQuoteStore } from '../stores/active-quote.store';
 
@@ -170,8 +170,10 @@ export class QuoteEditService {
     ).subscribe(this.replaceQuote);
   }
 
-  public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkers): void {
-    Object.assign(lineItem.asset, { timeStart: this.timeStartFrom(newMarkers), timeEnd: this.timeEndFrom(newMarkers) });
+  public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkersInterface.SubclipMarkers): void {
+    const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(newMarkers);
+
+    Object.assign(lineItem.asset, duration);
 
     this.editLineItem(lineItem, {});
   }
@@ -247,17 +249,18 @@ export class QuoteEditService {
     return formatted;
   }
 
-  private formatLineItem(lineItem: any, markers: SubclipMarkers): any {
+  private formatLineItem(lineItem: any, markers: SubclipMarkersInterface.SubclipMarkers): any {
     return Object.assign({}, lineItem, { asset: this.formatAsset(lineItem.asset, markers) });
   }
 
-  private formatAsset(asset: any, markers: SubclipMarkers): any {
+  private formatAsset(asset: any, markers: SubclipMarkersInterface.SubclipMarkers): any {
     let timeStart: number;
     let timeEnd: number;
 
     if (markers) {
-      timeStart = this.timeStartFrom(markers);
-      timeEnd = this.timeEndFrom(markers);
+      const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(markers);
+      timeStart = duration.timeStart;
+      timeEnd = duration.timeEnd;
     } else {
       timeStart = asset.timeStart;
       timeEnd = asset.timeEnd;
@@ -285,17 +288,5 @@ export class QuoteEditService {
   private loadFeeConfig(): Observable<FeeConfig> {
     return this.api.get(Api.Identities, 'feeConfig/search', { loadingIndicator: true })
       .do((response: FeeConfig) => this.feeConfigStore.replaceFeeConfigWith(response));
-  }
-
-  private timeStartFrom(markers: SubclipMarkers): number {
-    return markers && markers.in ? this.toMilliseconds(markers.in) : -1;
-  }
-
-  private timeEndFrom(markers: SubclipMarkers): number {
-    return markers && markers.out ? this.toMilliseconds(markers.out) : -2;
-  }
-
-  private toMilliseconds(frame: Frame): number {
-    return frame.asSeconds(3) * 1000;
   }
 }

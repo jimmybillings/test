@@ -1,19 +1,16 @@
 import { CollectionTrayComponent } from './collection-tray.component';
 import { Asset } from '../../shared/interfaces/common.interface';
+import * as EnhancedMock from '../../shared/interfaces/enhanced-asset';
+import { mockAsset } from '../../shared/mocks/mock-asset';
 
 export function main() {
   describe('Collection Tray Component', () => {
     let componentUnderTest: CollectionTrayComponent;
-    let mockAsset: any;
-    let mockEnhancedAsset: any;
-    let mockAssetService: any;
+    let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
 
     beforeEach(() => {
-      mockAsset = { assetId: 1234, name: 'mockAsset' };
-      mockEnhancedAsset = {};
-      mockAssetService = { enhance: (asset: any): any => mockEnhancedAsset };
-
-      componentUnderTest = new CollectionTrayComponent(null, mockAssetService);
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset);
+      componentUnderTest = new CollectionTrayComponent(null);
       componentUnderTest.collection = { assets: { items: [mockAsset] } };
     });
 
@@ -37,29 +34,20 @@ export function main() {
 
     describe('routerLinkFor()', () => {
       it('returns the enhanced asset\'s router link array', () => {
-        mockEnhancedAsset.routerLink = ['/some', 'id', { some: 'parameters' }];
-
-        expect(componentUnderTest.routerLinkFor(mockAsset)).toEqual(['/some', 'id', { some: 'parameters' }]);
+        expect(componentUnderTest.routerLinkFor(mockAsset)).toEqual(mockEnhancedAsset.routerLink);
       });
     });
 
     describe('hasThumbnail()', () => {
       it('returns true if the asset has a thumbnail URL', () => {
-        mockEnhancedAsset.thumbnailUrl = 'some URL';
-
         expect(componentUnderTest.hasThumbnail(mockAsset)).toBe(true);
       });
 
-      it('returns false if the asset doesn\'t have a thumbnail URL', () => {
-        expect(componentUnderTest.hasThumbnail(mockAsset)).toBe(false);
-      });
     });
 
     describe('thumbnailUrlFor()', () => {
       it('returns the thumbnail URL for the asset', () => {
-        mockEnhancedAsset.thumbnailUrl = 'some URL';
-
-        expect(componentUnderTest.thumbnailUrlFor(mockAsset)).toEqual('some URL');
+        expect(componentUnderTest.thumbnailUrlFor(mockAsset)).toEqual(mockEnhancedAsset.thumbnailUrl);
       });
     });
   });

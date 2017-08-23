@@ -5,8 +5,7 @@ import { Collection } from '../../interfaces/collection.interface';
 import { Asset } from '../../interfaces/common.interface';
 import { Capabilities } from '../../services/capabilities.service';
 import { Frame } from 'wazee-frame-formatter';
-import { AssetService } from '../../../shared/services/asset.service';
-import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
+import { EnhancedAsset, enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 import { AppStore } from '../../../app.store';
 import { Metadatum } from '../../../shared/interfaces/commerce.interface';
 
@@ -24,7 +23,7 @@ export class WzAsset {
       const bestId: string | number = asset.uuid || asset.assetId;
 
       if (bestId) {
-        this.enhancedAssets[bestId] = this.assetService.enhance(asset);
+        this.enhancedAssets[bestId] = enhanceAsset(asset);
         this._assets.push(asset);
       }
     }
@@ -48,7 +47,7 @@ export class WzAsset {
   private enhancedAssets: { [lookupId: string]: EnhancedAsset } = {};
   private _activeCollection: Collection;
 
-  constructor(private assetService: AssetService, private store: AppStore) { }
+  constructor(private store: AppStore) { }
 
   public get assets(): Asset[] {
     return this._assets;

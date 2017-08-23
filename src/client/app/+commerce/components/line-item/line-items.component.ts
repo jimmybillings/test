@@ -1,8 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Project, AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
-import { AssetService } from '../../../shared/services/asset.service';
-import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
+import { enhanceAsset, EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -19,7 +18,7 @@ export class LineItemsComponent {
     if (items) {
       items.forEach((item: AssetLineItem, index: number) => {
         this.targets[index] = item.selectedTranscodeTarget;
-        this.enhancedAssets[item.id] = this.assetService.enhance(item.asset);
+        this.enhancedAssets[item.id] = enhanceAsset(item.asset);
       });
       this.items = items;
     }
@@ -30,8 +29,6 @@ export class LineItemsComponent {
   @Input() readOnly: boolean = false;
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   public selectedLineItem: AssetLineItem;
-
-  constructor(public assetService: AssetService) { }
 
   public onMoveTo(otherProject: Project, lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({

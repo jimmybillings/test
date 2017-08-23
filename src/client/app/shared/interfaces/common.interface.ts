@@ -61,6 +61,7 @@ export interface Asset extends Common {
   price?: number;
   common?: Array<{ value: string }>;
   clipThumbnailUrl?: string;
+  clipUrl?: string;
 }
 
 export interface AssetLoadParameters {

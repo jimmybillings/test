@@ -1,68 +1,39 @@
 import { AssetThumbnailComponent } from './asset-thumbnail.component';
-import { Frame } from 'wazee-frame-formatter';
-import { AssetService } from '../../../shared/services/asset.service';
-import { Asset } from '../../../shared/interfaces/commerce.interface';
-import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
+import * as EnhancedMock from '../../../shared/interfaces/enhanced-asset';
+import { mockCommerceAsset } from '../../../shared/mocks/mock-asset';
 
 export function main() {
   describe('Asset Thumbnail Component', () => {
     let componentUnderTest: AssetThumbnailComponent;
-    let mockAsset: any;
-    let mockEnhancedAsset: any;
-    let mockAssetService: any;
+    let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
 
     beforeEach(() => {
-      mockAsset = {};
-
-      mockEnhancedAsset = {
-        assetId: 47
-      };
-
-      mockAssetService = {
-        enhance: (asset: Asset): any => {
-          return mockEnhancedAsset;
-        }
-      };
-
-      componentUnderTest = new AssetThumbnailComponent(mockAssetService);
-      componentUnderTest.asset = mockAsset;
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAsset);
+      componentUnderTest = new AssetThumbnailComponent();
+      componentUnderTest.asset = mockCommerceAsset;
     });
 
     describe('routerLink()', () => {
       it('returns the enhanced asset\'s router link array', () => {
-        mockEnhancedAsset.routerLink = ['/some', 'id', { some: 'parameters' }];
-
-        expect(componentUnderTest.routerLink).toEqual(['/some', 'id', { some: 'parameters' }]);
+        expect(componentUnderTest.routerLink).toEqual(mockEnhancedAsset.routerLink);
       });
     });
 
     describe('durationFrame()', () => {
       it('returns the enhanced asset\'s subclip duration frame', () => {
-        mockEnhancedAsset.subclipDurationFrame = { some: 'frame' };
-
-        expect(componentUnderTest.durationFrame).toEqual({ some: 'frame' });
+        expect(componentUnderTest.durationFrame).toEqual(mockEnhancedAsset.durationFrame);
       });
     });
 
     describe('isImage()', () => {
       it('returns true for an image', () => {
-        mockEnhancedAsset.isImage = true;
-
-        expect(componentUnderTest.isImage).toBe(true);
-      });
-
-      it('returns false for a non-image', () => {
-        mockEnhancedAsset.isImage = false;
-
-        expect(componentUnderTest.isImage).toBe(false);
+        expect(componentUnderTest.isImage).toBe(mockEnhancedAsset.isImage);
       });
     });
 
     describe('thumbnailUrl()', () => {
       it('returns the enhanced asset\'s thumbnail URL', () => {
-        mockEnhancedAsset.thumbnailUrl = '/some/url';
-
-        expect(componentUnderTest.thumbnailUrl).toEqual('/some/url');
+        expect(componentUnderTest.thumbnailUrl).toEqual(mockEnhancedAsset.thumbnailUrl);
       });
     });
   });

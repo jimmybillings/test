@@ -57,7 +57,7 @@ export class CommerceConfirmTab extends Tab {
 
   public purchase(): void {
     this.commerceService.purchase().subscribe((orderId: Number) =>
-      this.router.navigate(['/commerce/orders', orderId])
+      this.router.navigate(['/orders', orderId])
       , (error: any) =>
         console.log(error)
     );

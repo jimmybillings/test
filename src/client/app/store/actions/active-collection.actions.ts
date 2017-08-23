@@ -4,7 +4,7 @@ import {
   CollectionPaginationParameters, Collection, CollectionItems, CollectionItemMarkersUpdater, CollectionItemsResponse
 } from '../../shared/interfaces/collection.interface';
 import { Asset } from '../../shared/interfaces/common.interface';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 
 const defaultPagination: CollectionPaginationParameters = { currentPage: 1, pageSize: 100 };
 

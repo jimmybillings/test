@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { CommerceComponent } from './commerce.component';
 import { CommerceCapabilities } from './services/commerce.capabilities';
 import { COMMERCE_ROUTES } from './commerce.routes';
 import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
@@ -67,7 +66,6 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
   declarations: [
-    CommerceComponent,
     CartComponent,
     CartTabComponent,
     CartBillingTabComponent,
@@ -102,7 +100,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuotePaymentTabComponent,
     QuoteConfirmTabComponent
   ],
-  exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
+  exports: [CartComponent, OrderShowComponent, OrdersComponent],
   providers: [
     CommerceCapabilities,
     CartResolver,

@@ -26,7 +26,7 @@ export function main() {
     describe('changePage()', () => {
       it('should call navigate on the router with the proper params', () => {
         componentUnderTest.changePage('3');
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes', { i: '3' }]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes', { i: '3' }]);
       });
     });
 
@@ -41,7 +41,7 @@ export function main() {
       });
 
       it('should call navigate on the router with the proper params', () => {
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes', { s: 'createdOn', d: true }]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes', { s: 'createdOn', d: true }]);
       });
     });
 
@@ -57,7 +57,7 @@ export function main() {
       });
 
       it('should call navigate on the router with the correct params', () => {
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes', { status: 'active', i: 1 }]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes', { status: 'active', i: 1 }]);
       });
     });
 
@@ -71,7 +71,7 @@ export function main() {
       it('should navigate', () => {
         componentUnderTest.onEditQuote(1);
 
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/activeQuote']);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/activeQuote']);
       });
     });
 
@@ -112,7 +112,7 @@ export function main() {
       });
 
       it('should navigate to /commerce/activeQuote', () => {
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/activeQuote']);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/activeQuote']);
       });
     });
   });

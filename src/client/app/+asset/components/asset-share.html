@@ -5,7 +5,7 @@
         *ngIf="assetLinkIsShowing"
         flex="100"
         [assetLink]="assetShareLink"
-        (close)="showShareLink()"
+        (close)="resetShareLinkShowing()"
         (onOpenSnackbar)="onOpenSnackBar.emit($event)">
       </asset-share-link>
       <div flex="100" layout="row">
@@ -13,14 +13,14 @@
           {{ 'ASSET.SHARING.DIALOG_HEADER_TITLE' | translate }}
         </h4>
         <div class="tools" flex="auto" layout-align="end center">
-          <button md-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK_BTN_TITLE' | translate }}" (click)="showShareLink(assetId)"><md-icon>link</md-icon></button>
+          <button md-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK_BTN_TITLE' | translate }}" (click)="showShareLink()"><md-icon>link</md-icon></button>
         </div>
       </div>
     </header>
     
     <div class="form-panel" layout="column">
       <div flex="none">
-        <span class="asset-name md-caption">{{assetName}}</span>
+        <span class="asset-name md-caption">{{enhancedAsset.assetName}}</span>
       </div>
       <div class="wz-form-card">
         <md-card-content>
@@ -29,8 +29,8 @@
             includeCancel="true"
             cancelLabel="ASSET.SHARING.FORM.CANCEL_BTN_LABEL"
             submitLabel="ASSET.SHARING.FORM.SUBMIT_BTN_LABEL"
-            (formCancel)="success()"
-            (formSubmit)="createShareLink($event,assetId)">
+            (formCancel)="formCancel()"
+            (formSubmit)="createShareLink($event)">
           </wz-form>
         </md-card-content>
       </div>

@@ -3,7 +3,7 @@ import {
   Collection, CollectionItems, CollectionItemsResponse, CollectionItemMarkersUpdater
 } from '../../shared/interfaces/collection.interface';
 import { Asset } from '../../shared/interfaces/common.interface';
-import { SerializedSubclipMarkers, serialize } from '../../shared/interfaces/subclip-markers.interface';
+import { SerializedSubclipMarkers, serialize } from '../../shared/interfaces/subclip-markers';
 
 export interface State {
   readonly loaded: boolean;

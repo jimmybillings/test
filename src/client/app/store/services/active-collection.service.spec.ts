@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ActiveCollectionService } from './active-collection.service';
 import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.service';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers.interface';
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { Api } from '../../shared/interfaces/api.interface';
 import { Frame } from 'wazee-frame-formatter';
 
@@ -418,46 +418,6 @@ export function main() {
             }
           });
         });
-      });
-    });
-
-    describe('timeStartFrom()', () => {
-      it('converts an in marker to milliseconds', () => {
-        const markers: SubclipMarkers = { in: new Frame(30).setFromFrameNumber(30), out: new Frame(30).setFromFrameNumber(60) };
-
-        expect(serviceUnderTest.timeStartFrom(markers)).toBe(1000);
-      });
-
-      it('converts a missing in marker to -1', () => {
-        const markers: SubclipMarkers = { out: new Frame(30).setFromFrameNumber(60) };
-
-        expect(serviceUnderTest.timeStartFrom(markers)).toBe(-1);
-      });
-
-      it('converts undefined markers to -1', () => {
-        const markers: SubclipMarkers = undefined;
-
-        expect(serviceUnderTest.timeStartFrom(markers)).toBe(-1);
-      });
-    });
-
-    describe('timeEndFrom()', () => {
-      it('converts an in marker to milliseconds', () => {
-        const markers: SubclipMarkers = { in: new Frame(30).setFromFrameNumber(30), out: new Frame(30).setFromFrameNumber(60) };
-
-        expect(serviceUnderTest.timeEndFrom(markers)).toBe(2000);
-      });
-
-      it('converts a missing in marker to -2', () => {
-        const markers: SubclipMarkers = { in: new Frame(30).setFromFrameNumber(30) };
-
-        expect(serviceUnderTest.timeEndFrom(markers)).toBe(-2);
-      });
-
-      it('converts undefined markers to -2', () => {
-        const markers: SubclipMarkers = undefined;
-
-        expect(serviceUnderTest.timeEndFrom(markers)).toBe(-2);
       });
     });
   });

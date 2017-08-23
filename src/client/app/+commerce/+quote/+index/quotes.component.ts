@@ -36,13 +36,13 @@ export class QuotesComponent {
 
   public changePage(i: string): void {
     this.buildRouteParams({ i });
-    this.router.navigate(['/commerce/quotes', this.params]);
+    this.router.navigate(['/quotes', this.params]);
   }
 
   public onSortResults(sort: any): void {
     this.currentSort = sort;
     this.buildRouteParams(sort.sort);
-    this.router.navigate(['/commerce/quotes', this.params]);
+    this.router.navigate(['/quotes', this.params]);
   }
 
   public onSearch(query: { q: string }): void {
@@ -59,12 +59,12 @@ export class QuotesComponent {
       this.buildRouteParams(newParams);
 
     }
-    this.router.navigate(['/commerce/quotes', this.params]);
+    this.router.navigate(['/quotes', this.params]);
   }
 
   public onEditQuote(quoteId: number): void {
     this.quotesService.setFocused(quoteId).subscribe((quote: Quote) => {
-      this.router.navigate(['/commerce/activeQuote']);
+      this.router.navigate(['/activeQuote']);
     });
   }
 
@@ -84,7 +84,7 @@ export class QuotesComponent {
 
   public createNewQuote(): void {
     this.quotesService.createEmpty().subscribe(() => {
-      this.router.navigate(['/commerce/activeQuote']);
+      this.router.navigate(['/activeQuote']);
     });
   }
 

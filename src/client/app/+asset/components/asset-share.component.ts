@@ -6,7 +6,9 @@ import { AssetService } from '../../shared/services/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component';
 import { User } from '../../shared/interfaces/user.interface';
+import { Pojo } from '../../shared/interfaces/common.interface';
 import { Subscription } from 'rxjs/Subscription';
+import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -18,14 +20,12 @@ import { Subscription } from 'rxjs/Subscription';
 export class AssetShareComponent {
   @Input() userEmail: string;
   @Input() config: any;
-  @Input() assetThumbnailUrl: any;
-  @Input() assetName: any;
-  @Input() assetId: any;
+  @Input() enhancedAsset: EnhancedAsset;
   @Output() close = new EventEmitter();
   @Output() onOpenSnackBar = new EventEmitter();
 
   public assetLinkIsShowing: boolean = false;
-  public assetShareLink: any = '';
+  public assetShareLink: string;
   public serverErrors: any;
   public formItems: Array<any> = [];
   public user: User;
@@ -41,41 +41,52 @@ export class AssetShareComponent {
     this.close.emit();
   }
 
-  public showShareLink(assetId: any) {
-    // we need to pass ISO formatted time stamps for the start and end time.
-    let shareLink: any = {};
-    let endDate = new Date();
-    endDate.setDate(endDate.getDate() + 10);
-    shareLink.accessEndDate = this.IsoFormatLocalDate(endDate);
-    shareLink.accessStartDate = this.IsoFormatLocalDate(new Date());
-    shareLink.accessInfo = assetId;
-    shareLink.type = 'asset';
-
-    this.asset.createShareLink(shareLink).take(1).subscribe((res) => {
-      this.assetShareLink = `${window.location.href};share_key=${res.apiKey}`;
-      this.changeDetector.markForCheck();
-    });
-    this.assetLinkIsShowing = !this.assetLinkIsShowing;
+  public showShareLink(): void {
+    this.asset.createShareLink(this.prepareShareLink())
+      .subscribe((res) => {
+        this.assetShareLink = `${window.location.href};share_key=${res.apiKey}`;
+        this.changeDetector.markForCheck();
+      });
+    this.assetLinkIsShowing = true;
   }
 
-  public createShareLink(shareLink: any, assetId: any): void {
+  public resetShareLinkShowing() {
+    this.assetLinkIsShowing = false;
+  }
+
+  public createShareLink(shareLink: Pojo): void {
+    this.asset.createShareLink(this.prepareShareLink(shareLink))
+      .subscribe((res) => {
+        this.resetForm();
+        this.onOpenSnackBar.emit({ key: 'ASSET.SHARING.SHARED_CONFIRMED_MESSAGE' });
+      }, this.error.bind(this));
+  }
+
+  public formCancel() { this.resetForm(); }
+
+  private prepareShareLink(shareLink: Pojo = {}): Pojo {
     let endDate = new Date();
     endDate.setDate(endDate.getDate() + 10);
-    shareLink.accessEndDate = this.IsoFormatLocalDate(endDate);
-    shareLink.accessStartDate = this.IsoFormatLocalDate(new Date());
-    shareLink.accessInfo = assetId;
-    shareLink.type = 'asset';
-    shareLink.recipientEmails = (shareLink.recipientEmails) ? shareLink.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [];
+
+    Object.assign(shareLink, {
+      accessEndDate: this.IsoFormatLocalDate(endDate),
+      accessStartDate: this.IsoFormatLocalDate(new Date()),
+      accessInfo: this.enhancedAsset.getMetadataValueFor('lsdkjf'),
+      type: 'asset',
+      recipientEmails: (shareLink.recipientEmails) ?
+        shareLink.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [],
+      timeStart: this.enhancedAsset.timeStart,
+      timeEnd: this.enhancedAsset.timeEnd,
+    });
+
     if (shareLink.copyMe) {
       shareLink.recipientEmails.push(this.userEmail);
     }
-    this.asset.createShareLink(shareLink).take(1).subscribe((res) => {
-      this.success();
-      this.onOpenSnackBar.emit({ key: 'ASSET.SHARING.SHARED_CONFIRMED_MESSAGE' });
-    }, this.error.bind(this));
+
+    return shareLink;
   }
 
-  public success(): void {
+  private resetForm(): void {
     this.formItems = this.clearForm();
     this.wzForm.resetForm();
     this.changeDetector.markForCheck();
@@ -91,13 +102,13 @@ export class AssetShareComponent {
       });
   }
 
-  private error(error: any) {
+  private error(error: Pojo) {
     this.serverErrors = error.json();
     this.changeDetector.markForCheck();
   }
 
   // we need to submit date/timestamps in ISO format. This does that.
-  private IsoFormatLocalDate(date: any) {
+  private IsoFormatLocalDate(date: Date) {
     var d = date,
       tzo = -d.getTimezoneOffset(),
       dif = tzo >= 0 ? '+' : '-',

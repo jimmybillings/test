@@ -31,7 +31,7 @@ export class OrdersComponent implements OnInit {
 
   public changePage(i: number): void {
     this.buildRouteParams({ i });
-    this.router.navigate(['/commerce/orders', this.params]);
+    this.router.navigate(['/orders', this.params]);
   }
 
   public onSearch(query: { q: string }) {

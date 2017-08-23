@@ -67,6 +67,7 @@ import { WindowRef } from './services/window-ref.service';
 import { QuoteService } from './services/quote.service';
 import { QuotesService } from './services/quotes.service';
 import { QuoteEditService } from './services/quote-edit.service';
+import { PricingService } from './services/pricing.service';
 
 import { FutureAssetService } from '../store/services/asset.service';
 import { ActiveCollectionService } from '../store/services/active-collection.service';
@@ -153,7 +154,8 @@ const WAZEE_SERVICES = [
   QuoteEditService,
   SnackbarService,
   CommentService,
-  SpeedPreviewService
+  SpeedPreviewService,
+  PricingService
 ];
 
 const WAZEE_STORE_INTERFACES = [

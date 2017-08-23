@@ -8,7 +8,7 @@ export function main() {
 
     function instantiator(): any {
       return new AssetEffects(
-        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
+        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService, {} as any, {} as any
       );
     }
 

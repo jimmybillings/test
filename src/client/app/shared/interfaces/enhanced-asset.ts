@@ -6,6 +6,10 @@ interface InternalCache {
   [index: string]: any;
 }
 
+export function enhanceAsset(asset: commerce.Asset | common.Asset): EnhancedAsset {
+  return Object.assign(new EnhancedAsset(), asset).normalize();
+}
+
 export class EnhancedAsset implements commerce.Asset, common.Asset {
   // defined in two or more of the following sources
   public readonly assetId: number;
@@ -186,6 +190,10 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
     // make 'primary' available as 'metadata'
     if (!this.metadata && !!this.primary) {
       Object.assign(this, { metadata: this.primary });
+    }
+
+    if (this.detailTypeMap && this.detailTypeMap.common && Object.keys(this.detailTypeMap.common).length > 0) {
+      Object.assign(this, this.detailTypeMap);
     }
 
     return this;

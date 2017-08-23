@@ -11,12 +11,13 @@ export function main() {
     beforeEach(() => {
       collection = { assets: { items: [{ assetId: 123 }, { assetId: 456 }, { assetId: 789 }, { assetId: 102 }, { assetId: 103 }] } };
       transcodeTargets = ['master_copy', '1080i', '1080p'];
-      detailTypeMap = { common: ['field'], filter: true, id: 13, name: 'Core Packages', primary: [], secondary: [], siteName: 'core' };
+      detailTypeMap = {
+        common: ['field'], filter: true, id: 13, name: 'Core Packages', primary: [], secondary: [], siteName: 'core'
+      };
 
       finalAsset = {
-        assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl', common: ['field'], filter: true,
-        id: 13, name: 'Core Packages', primary: [], secondary: [], siteName: 'core',
-        transcodeTargets: transcodeTargets
+        assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl',
+        transcodeTargets: ['master_copy', '1080i', '1080p']
       };
       asset = { assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl' };
       asset.detailTypeMap = detailTypeMap;
@@ -50,14 +51,6 @@ export function main() {
         it('Should set the selectedTranscodeTarget property to the first target in the array', () => {
           componentUnderTest.ngOnChanges({ asset: { currentValue: asset } });
           expect(componentUnderTest.selectedTarget).toEqual('master_copy');
-        });
-
-        it('Should move the properties of detailTypeMap to the root level of asset', () => {
-          componentUnderTest.ngOnChanges({ asset: { currentValue: asset } });
-          for (let item in detailTypeMap) {
-            expect((componentUnderTest.asset as any)[item])
-              .not.toBeUndefined();
-          }
         });
 
         it('Should delete the detailTypMap property from the asset object', () => {

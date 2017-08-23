@@ -1,20 +1,16 @@
 import { LineItemsComponent } from './line-items.component';
+import * as EnhancedMock from '../../../shared/interfaces/enhanced-asset';
+import { mockCommerceAssetLineItem } from '../../../shared/mocks/mock-asset';
 
 export function main() {
   describe('Line Items', () => {
     let classUnderTest: LineItemsComponent;
-    let mockAsset: any;
-    let mockEnhancedAsset: any;
-    let mockAssetService: any;
+    let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
 
     beforeEach(() => {
-      mockAsset = {};
-      mockEnhancedAsset = {};
-
-      mockAssetService = { enhance: (asset: any): any => mockEnhancedAsset };
-
-      classUnderTest = new LineItemsComponent(mockAssetService);
-      classUnderTest.lineItems = [{ id: '27', asset: mockAsset }];
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAssetLineItem.asset);
+      classUnderTest = new LineItemsComponent();
+      classUnderTest.lineItems = [mockCommerceAssetLineItem];
     });
 
     describe('onMoveTo()', () => {
@@ -149,15 +145,7 @@ export function main() {
 
     describe('isSubclipped()', () => {
       it('returns true when the enhanced asset is subclipped', () => {
-        mockEnhancedAsset.isSubclipped = true;
-
-        expect(classUnderTest.isSubclipped(classUnderTest.items[0])).toBe(true);
-      });
-
-      it('returns false when the enhanced asset is not subclipped', () => {
-        mockEnhancedAsset.isSubclipped = false;
-
-        expect(classUnderTest.isSubclipped(classUnderTest.items[0])).toBe(false);
+        expect(classUnderTest.isSubclipped(classUnderTest.items[0])).toBe(mockEnhancedAsset.isSubclipped);
       });
     });
   });
