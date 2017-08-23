@@ -45,18 +45,7 @@ collection-tray {
           padding: 1px 3px; 
         }
       }
-      button[md-icon-button] {
-        margin-top: -2px;
-        margin-right: 0;
-        margin-left: 0;
-        max-width: 40px;
-        min-width: 40px;
-      }
       button.close-tray[md-icon-button] .mat-icon {
-        font-size: 28px;
-        height: 28px;
-        width: 28px;
-        line-height: 1;
         opacity: .75;
       }
     }
