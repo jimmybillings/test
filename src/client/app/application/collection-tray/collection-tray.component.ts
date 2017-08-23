@@ -71,6 +71,7 @@ export class CollectionTrayComponent implements OnInit {
     this.uiConfig.get('collection').take(1).subscribe((config: any) => {
       this.dialogService.openComponentInDialog({
         componentType: CollectionFormComponent,
+        dialogConfig: { position: { top: '10%' } },
         inputOptions: {
           fields: config.config,
         },
