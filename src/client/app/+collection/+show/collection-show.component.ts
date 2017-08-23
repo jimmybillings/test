@@ -82,16 +82,18 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.activeCollectionSubscription =
-      this.store.select(state => state.activeCollection.collection).subscribe(collection => {
-        this.activeCollection = collection;
-        if (collection.id) { // We only want to do these things when there is a valid active collection
-          this.commentParentObject = { objectType: 'collection', objectId: collection.id };
-          this.store.dispatch(factory => factory.comment.getCounts(this.commentParentObject));
-        }
-        // The view needs to update whenever the activeCollection changes (including individual assets).  This is
-        // a direct store subscription, not an @Input(), so we have to trigger change detection ourselves.
-        this.changeDetectorRef.markForCheck();
-      });
+      this.store.select(state => state.activeCollection)
+        .filter(state => state.loaded)
+        .subscribe(state => {
+          this.activeCollection = state.collection;
+          if (state.collection.id) { // We only want to do these things when there is a valid active collection
+            this.commentParentObject = { objectType: 'collection', objectId: state.collection.id };
+            this.store.dispatch(factory => factory.comment.getCounts(this.commentParentObject));
+          }
+          // The view needs to update whenever the activeCollection changes (including individual assets).  This is
+          // a direct store subscription, not an @Input(), so we have to trigger change detection ourselves.
+          this.changeDetectorRef.markForCheck();
+        });
 
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
     this.uiConfig.get('collectionComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
