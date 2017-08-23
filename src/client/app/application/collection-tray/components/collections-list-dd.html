@@ -1,6 +1,16 @@
 <div class="collections-dd-menu">
   <div class="dd-menu-wrapper">
     <header>
+      <div flex="100" layout="row">
+        <h4 class="md-headline" flex="100" layout-align="start center">
+          {{ 'COLLECTION.DD_MENU.HEADING' | translate }}
+        </h4>
+        <div class="tools" flex="auto" layout-align="end center">
+          <button md-icon-button title="close" (click)="closeCollectionsList()"><md-icon>close</md-icon></button>
+        </div>
+      </div>
+    </header>
+    <section class="subhead" flex="100" layout="row">
       <wz-item-search-form
         *ngIf="collectionSearchIsShowing"
         [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
@@ -23,17 +33,12 @@
         (sort)="applySort($event)"
         (close)="showCollectionSort()">
       </collections-sort-dd>
-      <div flex="100" layout="row">
-        <h4 class="md-headline" flex="100" layout-align="start center">
-          {{ 'COLLECTION.DD_MENU.HEADING' | translate }}
-        </h4>
-        <div class="tools" flex="auto" layout-align="end center">
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollectionSearch()"><md-icon>search</md-icon></button>
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter()"><md-icon>filter_list</md-icon></button>
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort()"><md-icon>sort</md-icon></button>
-        </div>
+      <div class="tools" flex="auto" layout-align="end center">
+        <button color="primary" md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollectionSearch()"><md-icon>search</md-icon></button>
+        <button color="primary" md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter()"><md-icon>filter_list</md-icon></button>
+        <button color="primary" md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort()"><md-icon>sort</md-icon></button>
       </div>
-    </header>
+    </section>
     
     <div class="md-caption query-details" layout="column">
       <span *ngIf="options.currentSearchQuery.q" flex="100" class="search">
@@ -57,7 +62,7 @@
         </button>
       </md-list-item>
     </md-list>
-    <footer layout="row" layout-align="center center">
+    <!-- <footer layout="row" layout-align="center center">
       <div class="actions" flex="90" layout="row" layout-align="center center">
         <div flex="33" layout-align="center start">
           <button md-button type="button" (click)="onCreateCollection.emit();closeCollectionsList()" disableRipple="true"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
@@ -73,6 +78,6 @@
           </a>
         </div>
       </div>
-    </footer>
+    </footer> -->
   </div>
 </div>
