@@ -127,8 +127,7 @@ header.app-header + div.main-content orders-component,
 header.app-header + div.main-content order-show-component,
 header.app-header + div.main-content quote-edit-component,
 header.app-header + div.main-content quotes-component,
-header.app-header + div.main-content quote-show-component,
-{
+header.app-header + div.main-content quote-show-component {
   display: block;
   transition: border-top-width 200ms $swift-ease-in-out-timing-function 200ms;
   border-top: 158px solid mat-color($mat-grey, 900, .7);
