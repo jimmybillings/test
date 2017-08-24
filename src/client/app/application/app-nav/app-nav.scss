@@ -150,7 +150,7 @@ header.app-header.collection-tray-closed + div.main-content order-show-component
 header.app-header.collection-tray-closed + div.main-content quote-edit-component,
 header.app-header.collection-tray-closed + div.main-content quotes-component,
 header.app-header.collection-tray-closed + div.main-content quote-show-component {
-  transition: border-top-width 250ms linear 100ms;
+  transition: border-top-width 150ms linear 50ms;
   border-top-width: 106px;
   @media (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: 96px;
@@ -171,7 +171,7 @@ header.app-header.collection-tray-closed.search-closed + div.main-content order-
 header.app-header.collection-tray-closed.search-closed + div.main-content quote-edit-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content quotes-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content quote-show-component {
-  transition: border-top-width 250ms linear 100ms;
+  transition: border-top-width 150ms linear 50ms;
   border-top-width: 64px;
   @media (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: 56px;
@@ -192,7 +192,7 @@ header.app-header.search-closed + div.main-content order-show-component,
 header.app-header.search-closed + div.main-content quote-edit-component,
 header.app-header.search-closed + div.main-content quotes-component,
 header.app-header.search-closed + div.main-content quote-show-component {
-  transition: border-top-width 250ms linear 100ms;
+  transition: border-top-width 150ms linear 50ms;
   border-top-width: 116px;
   @media (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: 108px;

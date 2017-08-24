@@ -7,7 +7,7 @@
     <app-nav
       [uiState]="uiState"
       [currentUser]="currentUser"
-      [prefs]="userPreference"
+      [userPreference]="userPreference"
       [config]="(uiConfig.get('header') | async).config"
       [collection]="activeCollection | async"
       [userCan]="userCan"
@@ -19,13 +19,13 @@
       [uiState]="uiState"
       [uiConfig]="uiConfig"
       [collection]="activeCollection | async"
-      [prefs]="userPreference"
+      [userPreference]="userPreference"
       (onOpenSnackbar)="showSnackBar($event)">
     </collection-tray>
      <wz-autocomplete-search
       *ngIf="uiState.headerIsExpanded()| async"
       [currentUser]="currentUser"
-      [prefs]="userPreference"
+      [userPreference]="userPreference"
       [uiState]="uiState"
       [state]="state"
       [config]="(uiConfig.get('searchBox') | async).config"

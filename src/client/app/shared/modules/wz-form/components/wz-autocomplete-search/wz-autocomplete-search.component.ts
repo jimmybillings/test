@@ -12,7 +12,7 @@ import { WzInputSuggestionsComponent } from '../wz-input-suggestions/wz-input-su
 export class WzAutocompleteSearchComponent {
   @Input() public config: any;
   @Input() public currentUser: any;
-  @Input() prefs: any;
+  @Input() userPreference: any;
   @Input() public uiState: UiState;
   @Input()
   set state(value: string) {
@@ -51,7 +51,7 @@ export class WzAutocompleteSearchComponent {
   }
 
   public toggleSearch() {
-    this.prefs.toggleSearch();
+    this.userPreference.toggleSearch();
   }
 
   private updateSearchBoxValue(searchParams: any) {

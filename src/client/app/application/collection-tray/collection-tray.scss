@@ -54,24 +54,24 @@ collection-tray {
 
 header.app-header.collection-tray-closed collection-tray section {
   animation-name: slide-up-tray;
-  animation-duration: 250ms;
+  animation-duration: 150ms;
   animation-timing-function: linear;
   animation-iteration-count: 1;
   animation-direction: alternate;
   animation-fill-mode: backwards;
-  animation-delay: 100ms;
+  animation-delay: 50ms;
 }
 
 header.app-header collection-tray section {
   max-height: 0;
   overflow: hidden;
   animation-name: slide-down-tray;
-  animation-duration: 250ms;
+  animation-duration: 150ms;
   animation-timing-function: linear;
   animation-iteration-count: 1;
   animation-direction: alternate;
   animation-fill-mode: forwards;
-  animation-delay: 100ms;
+  animation-delay: 50ms;
 }
 
 .asset-carousel.grid ul.asset-list {

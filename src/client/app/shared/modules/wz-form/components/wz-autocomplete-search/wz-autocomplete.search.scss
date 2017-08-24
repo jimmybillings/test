@@ -195,24 +195,24 @@ header.app-header.search-closed wz-autocomplete-search {
 }
 header.app-header.search-closed wz-autocomplete-search > div {
   animation-name: slide-up-search;
-  animation-duration: 250ms;
+  animation-duration: 150ms;
   animation-timing-function: linear;
   animation-iteration-count: 1;
   animation-direction: alternate;
   animation-fill-mode: backwards;
-  animation-delay: 100ms;
+  animation-delay: 50ms;
 }
 
 header.app-header wz-autocomplete-search > div {
   max-height: 0;
   overflow: hidden;
   animation-name: slide-down-search;
-  animation-duration: 250ms;
+  animation-duration: 150ms;
   animation-timing-function: linear;
   animation-iteration-count: 1;
   animation-direction: alternate;
   animation-fill-mode: forwards;
-  animation-delay: 100ms;
+  animation-delay: 50ms;
 }
 
 @keyframes slide-down-search {
