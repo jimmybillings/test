@@ -50,7 +50,7 @@ export class WzAutocompleteSearchComponent {
     }
   }
 
-  public toggleSearch() {
+  public toggleSearch(): void {
     this.userPreference.toggleSearch();
   }
 

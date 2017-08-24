@@ -6,6 +6,7 @@ import { Asset, WzEvent } from '../../shared/interfaces/common.interface';
 import { AssetService } from '../../shared/services/asset.service';
 import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 
+
 @Component({
   moduleId: module.id,
   selector: 'collection-tray',
@@ -83,7 +84,7 @@ export class CollectionTrayComponent implements OnInit {
     });
   }
 
-  public toggleCollectionTray() {
+  public toggleCollectionTray(): void {
     this.userPreference.toggleCollectionTray();
   }
 
