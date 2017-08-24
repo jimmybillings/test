@@ -1,15 +1,15 @@
 quotes-component, orders-component {
   commerce-header section.header {
-    padding-left: rem(.4);
-    padding-right: rem(.4);
+    padding-left: 4px;
+    padding-right: 4px;
     header {
-      padding-top: rem(.6);
-      padding-bottom: rem(.5);
+      padding-top: 6px;
+      padding-bottom: 5px;
       position: relative;
       .md-display-1 {
         margin: 0;
         width: calc(100% - 120px);
-        font-size: rem(2.6);
+        font-size: 26px;
       }
     }
     .tools {
@@ -20,7 +20,10 @@ quotes-component, orders-component {
       }
     }
     header div[flex="100"] > button[md-icon-button] {
-      margin-right: rem(1.6);
+      margin-right: 16px;
     }
   }
+}
+quotes-component header wz-item-search-form {
+  right: 123px;
 }

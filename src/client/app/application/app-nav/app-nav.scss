@@ -13,36 +13,28 @@ header.app-header {
     top: 0;
     margin: 0;
     overflow: hidden;
-    width: rem(9.5);
-    height: rem(6.4);
+    width: 95px;
+    height: 64px;
     position: absolute;
     line-height: 0;
     &:hover {
       opacity: 1;
     }
     .logo img {
-      background-position: 0 rem(.9);
+      background-position: 0 9px;
       background-repeat: no-repeat;
-      background-size: rem(27.2);
-      width: rem(9.5);
-      height: rem(5.7);
+      background-size: 272px;
+      width: 95px;
+      height: 57px;
     }
-    // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape)  {
-    //   .logo img {
-    //     background-position: rem(-.5) rem(.6);
-    //     background-repeat: no-repeat;
-    //     background-size: rem(20.5);
-    //     height: rem(4.2);
-    //     width: rem(6.5);
-    //   }
-    // }
+
     @media (max-width: $layout-breakpoint-xs) and (orientation: portrait) {
       .logo img {
-        background-position: rem(-.3) rem(1.0);
+        background-position: -3px 10px;
         background-repeat: no-repeat;
-        background-size: rem(21);
-        height: rem(4.5);
-        width: rem(6.6);
+        background-size: 210px;
+        height: 45px;
+        width: 66px;
       }
     }
   }
@@ -64,7 +56,7 @@ header.app-header md-toolbar {
 }
 header.app-header [md-button],
 header.app-header [md-icon-button] {
-  margin-left: rem(.6);
+  margin-left: 6px;
   transition: $swift-ease-out;
   &:first-child{
     margin-left: 0;
@@ -75,9 +67,9 @@ button[md-icon-button].cart {
   .asset-count {
     position: absolute;
     top:0;
-    right: rem(-.2);
+    right: -2px;
     border-radius: 2px;
-    min-width: rem(1.4);
+    min-width: 14px;
     font-size: .8em;
     line-height: 1;
     margin-right: 0;
@@ -97,6 +89,10 @@ header.app-header.fixed [md-icon-button] {
   }
 }
 
+header.app-header app-nav button.open-collection-tray,
+header.app-header app-nav button.open-search {
+  display: none;
+}
 header.app-header.collection-tray-closed app-nav button.open-collection-tray,
 header.app-header.search-closed app-nav button.open-search {
   display: initial;
@@ -131,23 +127,13 @@ header.app-header + div.main-content orders-component,
 header.app-header + div.main-content order-show-component,
 header.app-header + div.main-content quote-edit-component,
 header.app-header + div.main-content quotes-component,
-header.app-header + div.main-content quote-show-component,
-{
+header.app-header + div.main-content quote-show-component {
   display: block;
-  transition: border-top-width 0.35s, $swift-ease-in-out-timing-function;
-  border-top: rem(16.6) solid mat-color($mat-grey, 900, .7);
-  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-  //   border-top-width: rem(14.4);
-  // }
+  transition: border-top-width 200ms $swift-ease-in-out-timing-function 200ms;
+  border-top: 158px solid mat-color($mat-grey, 900, .7);
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-    border-top-width: rem(15.2);
+    border-top-width: 148px;
   }
-  // wz-asset-list {
-  //   min-height: calc(100vh - 518px);
-  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-  //     min-height: calc(100vh - 799px);
-  //   }
-  // }
 }
 
 header.app-header.collection-tray-closed + div.main-content gallery-view-component,
@@ -164,19 +150,11 @@ header.app-header.collection-tray-closed + div.main-content order-show-component
 header.app-header.collection-tray-closed + div.main-content quote-edit-component,
 header.app-header.collection-tray-closed + div.main-content quotes-component,
 header.app-header.collection-tray-closed + div.main-content quote-show-component {
-  border-top-width: rem(11.0);
-  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-  //   border-top-width: rem(8.8);
-  // }
+  transition: border-top-width 150ms linear 50ms;
+  border-top-width: 106px;
   @media (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-    border-top-width: rem(9.6);
+    border-top-width: 96px;
   }
-  // wz-asset-list {
-  //   min-height: calc(100vh - 462px);
-  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-  //     min-height: calc(100vh - 791px);
-  //   }
-  // }
 }
 
 header.app-header.collection-tray-closed.search-closed + div.main-content gallery-view-component,
@@ -193,19 +171,11 @@ header.app-header.collection-tray-closed.search-closed + div.main-content order-
 header.app-header.collection-tray-closed.search-closed + div.main-content quote-edit-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content quotes-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content quote-show-component {
-  border-top-width: rem(6.4);
-  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-  //   border-top-width: rem(4.8);
-  // }
-  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-    border-top-width: rem(5.6);
+  transition: border-top-width 150ms linear 50ms;
+  border-top-width: 64px;
+  @media (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
+    border-top-width: 56px;
   }
-  // wz-asset-list {
-  //   min-height: calc(100vh - 416px);
-  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-  //     min-height: calc(100vh - 751px);
-  //   }
-  // }
 }
 
 header.app-header.search-closed + div.main-content gallery-view-component,
@@ -222,29 +192,21 @@ header.app-header.search-closed + div.main-content order-show-component,
 header.app-header.search-closed + div.main-content quote-edit-component,
 header.app-header.search-closed + div.main-content quotes-component,
 header.app-header.search-closed + div.main-content quote-show-component {
-  border-top-width: rem(12.0);
-  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-  //   border-top-width: rem(10.4);
-  // }
-  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-    border-top-width: rem(11.2);
+  transition: border-top-width 150ms linear 50ms;
+  border-top-width: 116px;
+  @media (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
+    border-top-width: 108px;
   }
-  // wz-asset-list {
-  //   min-height: calc(100vh - 472px);
-  //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
-  //     min-height: calc(100vh - 807px);
-  //   }
-  // }
 }
 
 // pages that do not have options to open and close search and bins with a bk hero image or video (user, home)
 // currently the latest material header toolbar does not change sizes for mobile. If it does, then used the media query
 header.app-header + div.main-content user-component .hero {
-  padding-top: rem(6.4);
+  padding-top: 64px;
   @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-    border-top-width: rem(4.8);
+    border-top-width: 48px;
   }
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-    padding-top: rem(5.6);
+    padding-top: 56px;
   }
 }
