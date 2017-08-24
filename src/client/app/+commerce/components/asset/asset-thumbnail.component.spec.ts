@@ -10,7 +10,7 @@ export function main() {
     beforeEach(() => {
       mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAsset);
       componentUnderTest = new AssetThumbnailComponent();
-      componentUnderTest.asset = mockCommerceAsset;
+      componentUnderTest.asset = EnhancedMock.enhanceAsset(mockCommerceAsset);
     });
 
     describe('routerLink()', () => {

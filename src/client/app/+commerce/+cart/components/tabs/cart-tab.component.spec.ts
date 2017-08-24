@@ -12,7 +12,8 @@ export function main() {
 
       mockCartService = {
         getPaymentOptions: jasmine.createSpy('createPaymentOptions'),
-        retrieveLicenseAgreements: jasmine.createSpy('retrieveLicenseAgreements').and.returnValue(Observable.of({}))
+        retrieveLicenseAgreements: jasmine.createSpy('retrieveLicenseAgreements').and.returnValue(Observable.of({})),
+        projects: Observable.of([])
       };
 
       mockDialogService = {

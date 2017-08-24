@@ -24,6 +24,7 @@ import { Pojo } from '../../../../shared/interfaces/common.interface';
 
 export class QuoteTabComponent extends Tab {
   public quote: Observable<Quote>;
+  public projects: Project[];
   private config: any;
 
   constructor(
@@ -37,6 +38,7 @@ export class QuoteTabComponent extends Tab {
     private translate: TranslateService) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
+    this.quoteService.projects.subscribe(projects => this.projects = projects);
     this.uiConfig.get('cart').take(1).subscribe((config: any) => this.config = config.config);
   }
 

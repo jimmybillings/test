@@ -281,7 +281,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
             dialogConfig: { width: '530px', position: { top: '14%' } },
             inputOptions: {
               window: this.window.nativeWindow,
-              enhancedAsset: enhanceAsset(lineItem.asset),
+              enhancedAsset: lineItem.asset,
               usagePrice: null
             },
             outputOptions: [

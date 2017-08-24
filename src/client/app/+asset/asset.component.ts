@@ -65,8 +65,6 @@ export class AssetComponent implements OnInit, OnDestroy {
       this.pageSize = config.config.pageSize.value;
     });
 
-    // Hopefully temporary:  Maintaining a subscription instead of an Observable<Asset> because we need the current asset's
-    // assetId in calculatePrice() below.
     this.assetSubscription = this.store.select(state => state.asset.activeAsset)
       .map(asset => enhanceAsset(asset))
       .subscribe(asset => {

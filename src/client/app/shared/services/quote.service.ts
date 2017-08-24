@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../../shared/services/api.service';
-import { CartService } from '../../shared/services/cart.service';
+import { ApiService } from './api.service';
+import { CartService } from './cart.service';
 import { UserService } from './user.service';
-import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
+import { Api, ApiResponse } from '../interfaces/api.interface';
 import { User } from '../interfaces/user.interface';
 import { Observable } from 'rxjs/Observable';
 import {
@@ -18,10 +18,12 @@ import {
   PurchaseOptions,
   PaymentOptions,
   Project,
-  LicenseAgreements
-} from '../../shared/interfaces/commerce.interface';
-import { QuoteStore } from '../../shared/stores/quote.store';
-import { CheckoutStore } from '../../shared/stores/checkout.store';
+  LicenseAgreements,
+  AssetLineItem
+} from '../interfaces/commerce.interface';
+import { QuoteStore } from '../stores/quote.store';
+import { CheckoutStore } from '../stores/checkout.store';
+import { enhanceAsset } from '../interfaces/enhanced-asset';
 
 @Injectable()
 export class QuoteService {
@@ -41,6 +43,24 @@ export class QuoteService {
 
   public get state(): QuoteState {
     return this.quoteStore.state;
+  }
+
+  public get quote(): Observable<Quote> {
+    return this.data.map((state: QuoteState) => state.data);
+  }
+
+  public get projects(): Observable<Project[]> {
+    return this.quote.map((data: Quote) => {
+      return data.projects.map((project: Project) => {
+        if (project.lineItems) {
+          project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
+            lineItem.asset = enhanceAsset(lineItem.asset);
+            return lineItem;
+          });
+        }
+        return project;
+      });
+    });
   }
 
   public get checkoutData(): Observable<CheckoutState> {

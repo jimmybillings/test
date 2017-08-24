@@ -1,7 +1,7 @@
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../../components/tabs/commerce-edit-tab';
-import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
+import { LicenseAgreements, Project } from '../../../../shared/interfaces/commerce.interface';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { MdSnackBar } from '@angular/material';
@@ -26,6 +26,7 @@ import { PricingService } from '../../../../shared/services/pricing.service';
 })
 
 export class CartTabComponent extends CommerceEditTab {
+  public projects: Project[];
   constructor(
     public userCan: CommerceCapabilities,
     public cartService: CartService,
@@ -47,6 +48,7 @@ export class CartTabComponent extends CommerceEditTab {
       userPreference, error, document, snackBar, translate, pricingStore,
       null, null, pricingService
     );
+    this.cartService.projects.subscribe(projects => this.projects = projects);
   }
 
   public checkout(): void {

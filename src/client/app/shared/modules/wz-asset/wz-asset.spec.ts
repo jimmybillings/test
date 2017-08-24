@@ -26,12 +26,12 @@ export function main() {
       mockStore.createStateElement('comment', 'counts', { 'abc-123': 3 });
 
       componentUnderTest = new WzAsset(mockStore);
-      componentUnderTest.assets = [mockAsset];
+      componentUnderTest.assets = [EnhancedMock.enhanceAsset(mockAsset)];
     });
 
     describe('assets getter', () => {
       it('returns the original input assets', () => {
-        expect(componentUnderTest.assets).toEqual([mockAsset]);
+        expect(componentUnderTest.assets).toEqual([mockEnhancedAsset]);
       });
     });
 
@@ -40,9 +40,9 @@ export function main() {
         const mockAsset: any = { some: 'asset' };
         const spy = mockStore.createActionFactoryMethod('activeCollection', 'addAsset');
 
-        componentUnderTest.addToActiveCollection(mockAsset);
+        componentUnderTest.addToActiveCollection(mockEnhancedAsset);
 
-        mockStore.expectDispatchFor(spy, mockAsset);
+        mockStore.expectDispatchFor(spy, mockEnhancedAsset);
       });
     });
 
@@ -51,30 +51,30 @@ export function main() {
         const mockAsset: any = { some: 'asset' };
         const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
 
-        componentUnderTest.removeFromActiveCollection(mockAsset);
+        componentUnderTest.removeFromActiveCollection(mockEnhancedAsset);
 
-        mockStore.expectDispatchFor(spy, mockAsset);
+        mockStore.expectDispatchFor(spy, mockEnhancedAsset);
       });
     });
 
     describe('addAssetToCart()', () => {
       it('Should set the new active asset', () => {
         spyOn(componentUnderTest, 'setAssetActiveId');
-        componentUnderTest.addAssetToCart(mockAsset);
-        expect(componentUnderTest.setAssetActiveId).toHaveBeenCalledWith(mockAsset);
+        componentUnderTest.addAssetToCart(mockEnhancedAsset);
+        expect(componentUnderTest.setAssetActiveId).toHaveBeenCalledWith(mockEnhancedAsset);
       });
 
       it('Should emit an event to add an asset to the cart', () => {
         spyOn(componentUnderTest.onAddToCart, 'emit');
-        componentUnderTest.addAssetToCart(mockAsset);
-        expect(componentUnderTest.onAddToCart.emit).toHaveBeenCalledWith(mockAsset);
+        componentUnderTest.addAssetToCart(mockEnhancedAsset);
+        expect(componentUnderTest.onAddToCart.emit).toHaveBeenCalledWith(mockEnhancedAsset);
       });
     });
 
     describe('downloadComp()', () => {
       it('Should emit an event to download a comp', () => {
         spyOn(componentUnderTest.onDownloadComp, 'emit');
-        componentUnderTest.setAssetActiveId(mockAsset);
+        componentUnderTest.setAssetActiveId(mockEnhancedAsset);
         componentUnderTest.downloadComp('clean');
         expect(componentUnderTest.onDownloadComp.emit).toHaveBeenCalledWith(
           { 'assetId': mockAsset.assetId, 'compType': 'clean' });
@@ -84,8 +84,8 @@ export function main() {
     describe('removeFromCollection()', () => {
       it('Should emit an event to edit an asset', () => {
         spyOn(componentUnderTest.onEditAsset, 'emit');
-        componentUnderTest.editAsset(mockAsset);
-        expect(componentUnderTest.onEditAsset.emit).toHaveBeenCalledWith(mockAsset);
+        componentUnderTest.editAsset(mockEnhancedAsset);
+        expect(componentUnderTest.onEditAsset.emit).toHaveBeenCalledWith(mockEnhancedAsset);
       });
     });
 
@@ -103,89 +103,89 @@ export function main() {
 
     describe('nameOf()', () => {
       it('returns the name of the enhanced asset', () => {
-        expect(componentUnderTest.nameOf(mockAsset)).toEqual(mockEnhancedAsset.name);
+        expect(componentUnderTest.nameOf(mockEnhancedAsset)).toEqual(mockEnhancedAsset.name);
       });
     });
 
     describe('routerLinkFor()', () => {
       it('returns the enhanced asset\'s router link array', () => {
-        expect(componentUnderTest.routerLinkFor(mockAsset)).toEqual(mockEnhancedAsset.routerLink);
+        expect(componentUnderTest.routerLinkFor(mockEnhancedAsset)).toEqual(mockEnhancedAsset.routerLink);
       });
     });
 
     describe('hasThumbnail()', () => {
       it('returns true if the asset has a thumbnail URL', () => {
 
-        expect(componentUnderTest.hasThumbnail(mockAsset)).toBe(true);
+        expect(componentUnderTest.hasThumbnail(mockEnhancedAsset)).toBe(true);
       });
 
     });
 
     describe('thumbnailUrlFor()', () => {
       it('returns the thumbnail URL for the asset', () => {
-        expect(componentUnderTest.thumbnailUrlFor(mockAsset)).toEqual(mockEnhancedAsset.thumbnailUrl);
+        expect(componentUnderTest.thumbnailUrlFor(mockEnhancedAsset)).toEqual(mockEnhancedAsset.thumbnailUrl);
       });
     });
 
     describe('hasTitle()', () => {
       it('returns true if the asset has a title', () => {
-        expect(componentUnderTest.hasTitle(mockAsset)).toBe(true);
+        expect(componentUnderTest.hasTitle(mockEnhancedAsset)).toBe(true);
       });
     });
 
     describe('titleOf()', () => {
       it('returns the title of the asset', () => {
-        expect(componentUnderTest.titleOf(mockAsset)).toEqual(mockEnhancedAsset.title);
+        expect(componentUnderTest.titleOf(mockEnhancedAsset)).toEqual(mockEnhancedAsset.title);
       });
     });
 
     describe('hasFormatType()', () => {
       it('returns true if the asset has a format type', () => {
-        expect(componentUnderTest.hasFormatType(mockAsset)).toBe(false);
+        expect(componentUnderTest.hasFormatType(mockEnhancedAsset)).toBe(false);
       });
     });
 
     describe('formatTypeOf()', () => {
       it('returns the format type for the asset', () => {
-        expect(componentUnderTest.formatTypeOf(mockAsset)).toEqual(mockEnhancedAsset.formatType);
+        expect(componentUnderTest.formatTypeOf(mockEnhancedAsset)).toEqual(mockEnhancedAsset.formatType);
       });
     });
 
     describe('formatClassNameFor()', () => {
 
       it('returns "hd" for "High Definition"', () => {
-        expect(componentUnderTest.formatClassNameFor(mockAsset)).toBe('hd');
+        expect(componentUnderTest.formatClassNameFor(mockEnhancedAsset)).toBe('hd');
       });
     });
 
     describe('hasDuration()', () => {
       it('returns true if the asset has a duration', () => {
-        expect(componentUnderTest.hasDuration(mockAsset)).toBe(false);
+        expect(componentUnderTest.hasDuration(mockEnhancedAsset)).toBe(false);
       });
     });
 
     describe('subclipDurationFrameFor()', () => {
       it('returns the duration frame object for the asset', () => {
-        expect(componentUnderTest.subclipDurationFrameFor(mockAsset)).toEqual(mockEnhancedAsset.subclipDurationFrame);
+        expect(componentUnderTest.subclipDurationFrameFor(mockEnhancedAsset)).toEqual(mockEnhancedAsset.subclipDurationFrame);
       });
     });
 
     describe('isImage()', () => {
       it('returns true if the asset is an image', () => {
-        expect(componentUnderTest.isImage(mockAsset)).toBe(false);
+        expect(componentUnderTest.isImage(mockEnhancedAsset)).toBe(false);
       });
     });
 
     describe('isSubclipped()', () => {
       it('returns true if the asset is subclipped', () => {
-        expect(componentUnderTest.isSubclipped(mockAsset)).toBe(true);
+        expect(componentUnderTest.isSubclipped(mockEnhancedAsset)).toBe(true);
       });
     });
 
     describe('subclipSegmentStylesFor()', () => {
       it('returns styles based on the asset', () => {
 
-        expect(componentUnderTest.subclipSegmentStylesFor(mockAsset))
+        expect(componentUnderTest.subclipSegmentStylesFor(mockEnhancedAsset))
           .toEqual({
             'margin-left.%': mockEnhancedAsset.inMarkerPercentage,
             'width.%': mockEnhancedAsset.subclipDurationPercentage,
@@ -196,25 +196,25 @@ export function main() {
 
     describe('hasDescription()', () => {
       it('returns true if the asset has a description', () => {
-        expect(componentUnderTest.hasDescription(mockAsset)).toBe(true);
+        expect(componentUnderTest.hasDescription(mockEnhancedAsset)).toBe(true);
       });
     });
 
     describe('descriptionOf()', () => {
       it('returns the description for the asset', () => {
-        expect(componentUnderTest.descriptionOf(mockAsset)).toEqual(mockEnhancedAsset.description);
+        expect(componentUnderTest.descriptionOf(mockEnhancedAsset)).toEqual(mockEnhancedAsset.description);
       });
     });
 
     describe('inMarkerFrameFor()', () => {
       it('returns the duration frame object for the asset', () => {
-        expect(componentUnderTest.inMarkerFrameFor(mockAsset)).toEqual(mockEnhancedAsset.inMarkerFrame);
+        expect(componentUnderTest.inMarkerFrameFor(mockEnhancedAsset)).toEqual(mockEnhancedAsset.inMarkerFrame);
       });
     });
 
     describe('outMarkerFrameFor()', () => {
       it('returns the duration frame object for the asset', () => {
-        expect(componentUnderTest.outMarkerFrameFor(mockAsset)).toEqual(mockEnhancedAsset.outMarkerFrame);
+        expect(componentUnderTest.outMarkerFrameFor(mockEnhancedAsset)).toEqual(mockEnhancedAsset.outMarkerFrame);
       });
     });
 

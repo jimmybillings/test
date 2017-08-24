@@ -52,4 +52,12 @@ export class Common {
     paramString = paramString.slice(0, -1);
     return paramString;
   }
+
+  public static clone<T>(object: T): T {
+    try {
+      return JSON.parse(JSON.stringify(object));
+    } catch (error) {
+      return object;
+    }
+  }
 }

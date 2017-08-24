@@ -22,6 +22,7 @@ import { ActiveQuoteStore } from '../stores/active-quote.store';
 import { FeeConfigStore } from '../stores/fee-config.store';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
 import { Common } from '../utilities/common.functions';
+import { enhanceAsset } from '../interfaces/enhanced-asset';
 
 @Injectable()
 export class QuoteEditService {
@@ -46,7 +47,17 @@ export class QuoteEditService {
   }
 
   public get projects(): Observable<Project[]> {
-    return this.quote.map((data: Quote) => data.projects);
+    return this.quote.map((data: Quote) => {
+      return data.projects.map((project: Project) => {
+        if (project.lineItems) {
+          project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
+            lineItem.asset = enhanceAsset(lineItem.asset);
+            return lineItem;
+          });
+        }
+        return project;
+      });
+    });
   }
 
   public get total(): Observable<Number> {

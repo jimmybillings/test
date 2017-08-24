@@ -39,8 +39,8 @@ import { AppStore } from '../../../../app.store';
 export class WzSpeedviewDirective implements OnDestroy, OnInit {
 
   @Input()
-  set wzSpeedview(value: Asset) {
-    this.enhancedAsset = Object.assign(new EnhancedAsset(), value).normalize();
+  set wzSpeedview(value: EnhancedAsset) {
+    this.enhancedAsset = value;
   }
 
   private config: OverlayState;

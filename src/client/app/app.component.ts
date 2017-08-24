@@ -32,10 +32,11 @@ import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { WindowRef } from './shared/services/window-ref.service';
 import { AppStore } from './app.store';
-
+import { enhanceAsset } from './shared/interfaces/enhanced-asset';
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
 import { Collection } from './shared/interfaces/collection.interface';
+import { Common } from './shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -47,6 +48,7 @@ export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
   public userCan: Capabilities;
+  public activeCollection: Collection;
   private bootStrapUserDataSubscription: Subscription;
 
   constructor(
@@ -71,6 +73,7 @@ export class AppComponent implements OnInit {
     private quoteEditService: QuoteEditService,
     private store: AppStore) {
     this.loadConfig();
+    this.loadActiveCollection();
     this.userCan = capabilities;
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
@@ -84,8 +87,17 @@ export class AppComponent implements OnInit {
     this.processUser();
   }
 
-  public get activeCollection(): Observable<Collection> {
-    return this.store.select(state => state.activeCollection.collection);
+  public loadActiveCollection(): void {
+    this.store.select(state => state.activeCollection)
+      .filter(state => state.collection !== undefined)
+      .map(state => {
+        let collection: Collection = Common.clone(state.collection);
+        if (collection.assets && collection.assets.items) {
+          collection.assets.items = collection.assets.items.map(item => enhanceAsset(item));
+        }
+        return collection;
+      })
+      .subscribe(collection => this.activeCollection = collection);
   }
 
   public get cartCount(): Observable<any> {

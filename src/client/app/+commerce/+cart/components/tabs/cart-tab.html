@@ -1,6 +1,6 @@
 <projects-component
   [quoteType]="quoteType"
-  [projects]="cartService.projects | async" 
+  [projects]="projects" 
   [config]="config" 
   [userCan]="userCan" 
   (projectsNotify)="onNotification($event)">

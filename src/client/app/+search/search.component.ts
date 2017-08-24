@@ -20,7 +20,7 @@ import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
 import { AppStore } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
-
+import { EnhancedAsset } from '../shared/interfaces/enhanced-asset';
 /**
  * Asset search page component - renders search page results
  */
@@ -37,6 +37,8 @@ export class SearchComponent implements OnDestroy {
   public userPreferences: UserPreferenceService;
   public search: SearchService;
   public sortDefinition: SortDefinitionsService;
+  public enhancedAssets: EnhancedAsset[];
+  public enhancedAssetsSubScription: Subscription;
   @ViewChild(WzSpeedviewComponent) public wzSpeedview: WzSpeedviewComponent;
 
   constructor(
@@ -62,6 +64,7 @@ export class SearchComponent implements OnDestroy {
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
     this.userPreferences = userPreferencesService;
     this.search = searchService;
+    this.enhancedAssetsSubScription = this.search.enhancedAssets.subscribe(enhancedAssets => this.enhancedAssets = enhancedAssets);
     this.sortDefinition = sortDefinitionService;
     this.router.events.subscribe(route => {
       this.path = (this.route.snapshot.params['gq']) ? JSON.parse(this.route.snapshot.params['gq']) : '';
@@ -71,6 +74,7 @@ export class SearchComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.search.clearAssets();
+    this.enhancedAssetsSubScription.unsubscribe();
   }
 
   public get activeCollection(): Observable<Collection> {

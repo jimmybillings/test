@@ -33,6 +33,7 @@ import { WzEvent, Coords } from '../../shared/interfaces/common.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { AppStore } from '../../app.store';
 import { enhanceAsset } from '../../shared/interfaces/enhanced-asset';
+import { Common } from '../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -84,10 +85,17 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.activeCollectionSubscription =
       this.store.select(state => state.activeCollection)
         .filter(state => state.loaded)
-        .subscribe(state => {
-          this.activeCollection = state.collection;
-          if (state.collection.id) { // We only want to do these things when there is a valid active collection
-            this.commentParentObject = { objectType: 'collection', objectId: state.collection.id };
+        .map(state => {
+          let collection: Collection = Common.clone(state.collection);
+          if (collection.assets && collection.assets.items) {
+            collection.assets.items = collection.assets.items.map(item => enhanceAsset(item));
+          }
+          return collection;
+        })
+        .subscribe(collection => {
+          this.activeCollection = collection;
+          if (collection.id) { // We only want to do these things when there is a valid active collection
+            this.commentParentObject = { objectType: 'collection', objectId: collection.id };
             this.store.dispatch(factory => factory.comment.getCounts(this.commentParentObject));
           }
           // The view needs to update whenever the activeCollection changes (including individual assets).  This is

@@ -34,6 +34,7 @@ export class QuoteEditComponent extends CommerceEditTab {
   public commentFormConfig: Array<FormFields>;
   public commentParentObject: CommentParentObject;
   public showComments: boolean = null;
+  public projects: Project[];
 
   constructor(
     public userCan: Capabilities,
@@ -60,6 +61,7 @@ export class QuoteEditComponent extends CommerceEditTab {
     );
     this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
+    this.quoteEditService.projects.subscribe(projects => this.projects = projects);
   }
 
   public onNotification(message: WzEvent): void {

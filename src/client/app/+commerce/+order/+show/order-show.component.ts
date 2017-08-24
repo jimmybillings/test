@@ -11,7 +11,11 @@ import { Order, AssetLineItem, Project } from '../../../shared/interfaces/commer
 })
 
 export class OrderShowComponent {
-  constructor(public window: WindowRef, public order: OrderService) { }
+  public projects: Project[];
+
+  constructor(public window: WindowRef, public order: OrderService) {
+    this.order.projects.subscribe(projects => this.projects = projects);
+  }
 
   public downloadMaster(masterUrl: string): void {
     this.window.nativeWindow.location.href = masterUrl;
