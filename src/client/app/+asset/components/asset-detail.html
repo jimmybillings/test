@@ -187,20 +187,6 @@
                 <md-icon>remove_circle</md-icon>
               </button>
             </ng-container>
-
-            <button md-icon-button disabled title="{{ 'ASSET.DETAIL.MORE_BTN_TITLE' | translate }}">
-              <md-icon>more_vert</md-icon>
-            </button>
-            <!--this might be used to more menu for btn above-->
-            <!--<md-menu class="more-collections-menu" x-position="before" #moreAssetOptionsMenu="mdMenu">
-              <button md-menu-item disabled><md-icon>timeline</md-icon>Show timeline data</button>
-              <button md-menu-item disabled><md-icon>timeline</md-icon>Show another view(theater vs white)</button>
-              <button md-menu-item disabled><md-icon>library_books</md-icon>Show ancillary docs</button>
-              <div class="divider"></div>
-              <button md-menu-item disabled><md-icon>link</md-icon>Copy share link</button>
-              <div class="divider"></div>
-              <button md-menu-item disabled><md-icon>mail_outline</md-icon>Contact me about this asset</button>
-            </md-menu>-->
           </nav>
         </header>
       </div>
@@ -213,10 +199,8 @@
         <wz-advanced-player
           [window]="window"
           [asset]="asset"
-          [markersSaveButtonEnabled]="markersSaveButtonEnabled"
           (markersInitialization)="onPlayerMarkersInitialization($event)"
-          (markerChange)="onPlayerMarkerChange($event)"
-          (markerSaveButtonClick)="onPlayerMarkerSaveButtonClick($event)">
+          (markerChange)="onPlayerMarkerChange($event)">
         </wz-advanced-player>
       </div>
       <div *ngIf="!userCan.createSubclips(asset)" flex-gt-xs="66" flex="100" class="responsive-video">

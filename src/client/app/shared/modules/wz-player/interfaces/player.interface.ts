@@ -59,10 +59,6 @@ export type PlayAtSpeedRequest = {
   direction: PlaybackDirection
 };
 
-export type SaveMarkersRequest = {
-  type: 'SAVE_MARKERS'
-};
-
 export type SeekToFrameRequest = {
   type: 'SEEK_TO_FRAME',
   frame: Frame
@@ -103,7 +99,6 @@ export type PlayerRequest =
   PlayerVolumeRequest |
   ClearMarkersRequest |
   PlayAtSpeedRequest |
-  SaveMarkersRequest |
   SetMarkerToCurrentFrameRequest |
   ToggleMarkersPlaybackRequest |
   TogglePlaybackRequest;
