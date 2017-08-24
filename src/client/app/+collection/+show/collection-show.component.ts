@@ -88,7 +88,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         .map(state => {
           let collection: Collection = Common.clone(state.collection);
           if (collection.assets && collection.assets.items) {
-            collection.assets.items = collection.assets.items.map(item => enhanceAsset(item));
+            collection.assets.items = collection.assets.items.map(item => enhanceAsset(item, 'collectionAsset'));
           }
           return collection;
         })
@@ -202,7 +202,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
             dialogConfig: { width: '544px' },
             inputOptions: {
               window: this.window.nativeWindow,
-              enhancedAsset: enhanceAsset(asset),
+              enhancedAsset: asset,
               usagePrice: null
             },
             outputOptions: [

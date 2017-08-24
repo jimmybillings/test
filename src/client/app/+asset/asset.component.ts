@@ -66,7 +66,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     });
 
     this.assetSubscription = this.store.select(state => state.asset.activeAsset)
-      .map(asset => enhanceAsset(asset))
+      .map(asset => enhanceAsset(asset, null))
       .subscribe(asset => {
         this.asset = asset;
         this.pricingStore.setPriceForDetails(this.asset.price);

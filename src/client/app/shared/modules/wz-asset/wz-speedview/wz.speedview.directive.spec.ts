@@ -98,7 +98,7 @@ export function main() {
           },
           'hasDownloadableComp': false
         };
-        directiveUnderTest.wzSpeedview = enhanceAsset(asset);
+        directiveUnderTest.wzSpeedview = enhanceAsset(asset, null);
         spy = mockAppStore.createActionFactoryMethod('speedPreview', 'load');
       });
 

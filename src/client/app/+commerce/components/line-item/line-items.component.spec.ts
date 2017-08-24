@@ -8,9 +8,9 @@ export function main() {
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
 
     beforeEach(() => {
-      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAssetLineItem.asset);
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAssetLineItem.asset, null);
       classUnderTest = new LineItemsComponent();
-      mockCommerceAssetLineItem.asset = EnhancedMock.enhanceAsset(mockCommerceAssetLineItem.asset);
+      mockCommerceAssetLineItem.asset = EnhancedMock.enhanceAsset(mockCommerceAssetLineItem.asset, null);
       classUnderTest.lineItems = [mockCommerceAssetLineItem];
     });
 

@@ -54,7 +54,7 @@ export class QuoteService {
       return data.projects.map((project: Project) => {
         if (project.lineItems) {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
-            lineItem.asset = enhanceAsset(lineItem.asset);
+            lineItem.asset = enhanceAsset(lineItem.asset, 'quoteShowAsset');
             return lineItem;
           });
         }

@@ -6,7 +6,10 @@ interface InternalCache {
   [index: string]: any;
 }
 
-export function enhanceAsset(asset: commerce.Asset | common.Asset): EnhancedAsset {
+export type AssetType = 'collectionAsset' | 'quoteEditAsset' | 'searchAsset' | 'quoteShowAsset' | 'orderAsset' | 'cartAsset';
+
+
+export function enhanceAsset(asset: commerce.Asset | common.Asset, type: AssetType): EnhancedAsset {
   return Object.assign(new EnhancedAsset(), asset).normalize();
 }
 

@@ -320,11 +320,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   protected calculatePrice(attributes: Pojo, lineItem: AssetLineItem): Observable<number> {
-    const enhancedAsset: EnhancedAsset = enhanceAsset(lineItem.asset);
-    const markers: SubclipMarkersInterface.SubclipMarkers = enhancedAsset.isSubclipped ? {
-      in: enhancedAsset.inMarkerFrame,
-      out: enhancedAsset.outMarkerFrame
+    const markers: SubclipMarkersInterface.SubclipMarkers = (lineItem.asset as EnhancedAsset).isSubclipped ? {
+      in: (lineItem.asset as EnhancedAsset).inMarkerFrame,
+      out: (lineItem.asset as EnhancedAsset).outMarkerFrame
     } : null;
-    return this.pricingService.getPriceFor(enhancedAsset, attributes, markers);
+    return this.pricingService.getPriceFor((lineItem.asset as EnhancedAsset), attributes, markers);
   }
 }
