@@ -76,10 +76,6 @@ export class AssetDetailComponent implements OnChanges {
     return !this.showAssetSaveSubclip && this.markersAreDefined;
   }
 
-  public onPlayerMarkerSaveButtonClick(): void {
-    this.showAssetSaveSubclip = true;
-  }
-
   public toggleAssetSaveSubclip(): void {
     this.showAssetSaveSubclip = !this.showAssetSaveSubclip;
   }

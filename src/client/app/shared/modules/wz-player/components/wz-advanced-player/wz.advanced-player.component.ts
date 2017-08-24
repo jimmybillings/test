@@ -30,7 +30,6 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
 
   @Output() markersInitialization: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
   @Output() markerChange: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
-  @Output() markerSaveButtonClick: EventEmitter<null> = new EventEmitter<null>();
 
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
@@ -72,9 +71,6 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
         break;
       case 'PLAY_AT_SPEED':
         this.player.playAtSpeed(request.speed, request.direction);
-        break;
-      case 'SAVE_MARKERS':
-        if (this.markersSaveButtonEnabled) this.markerSaveButtonClick.emit();
         break;
       case 'SEEK_TO_FRAME':
         if (request.frame) this.player.seekTo(request.frame.asSeconds());
