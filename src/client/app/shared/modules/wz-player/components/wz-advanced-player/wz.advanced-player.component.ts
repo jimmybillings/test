@@ -19,7 +19,6 @@ import { PlayerState, PlayerStateChanges, PlayerRequest } from '../../interfaces
 export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   @Input() window: any;
   @Input() displayAllControls: boolean = true;
-  @Input() markersSaveButtonEnabled: boolean = true;
   @Input()
   public set asset(newAsset: any) {
     this.playerStateService.reset();

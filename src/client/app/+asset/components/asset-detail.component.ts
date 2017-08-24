@@ -72,10 +72,6 @@ export class AssetDetailComponent implements OnChanges {
     this.markersChange.emit(newMarkers);
   }
 
-  public get markersSaveButtonEnabled(): boolean {
-    return !this.showAssetSaveSubclip && this.markersAreDefined;
-  }
-
   public toggleAssetSaveSubclip(): void {
     this.showAssetSaveSubclip = !this.showAssetSaveSubclip;
   }
