@@ -26,7 +26,6 @@ export function main() {
 
       componentUnderTest.markersInitialization.emit = jasmine.createSpy('markersInitialization emitter');
       componentUnderTest.markerChange.emit = jasmine.createSpy('markerChange emitter');
-      componentUnderTest.markerSaveButtonClick.emit = jasmine.createSpy('markerSaveButtonClick emitter');
 
       componentUnderTest.player = {
         clearMarkers: jasmine.createSpy('clearMarkers'),
@@ -295,22 +294,6 @@ export function main() {
           componentUnderTest.handle({ type: 'PLAY_AT_SPEED', speed: 42, direction: 'forward' });
 
           expect(componentUnderTest.player.playAtSpeed).toHaveBeenCalledWith(42, 'forward');
-        });
-      });
-
-      describe('SAVE_MARKERS', () => {
-        it('emits the proper event if markersSaveButtonEnabled is true', () => {
-          componentUnderTest.handle({ type: 'SAVE_MARKERS' });
-
-          expect(componentUnderTest.markerSaveButtonClick.emit).toHaveBeenCalled();
-        });
-
-        it('does not emit an event if markersSaveButtonEnabled is false', () => {
-          componentUnderTest.markersSaveButtonEnabled = false;
-
-          componentUnderTest.handle({ type: 'SAVE_MARKERS' });
-
-          expect(componentUnderTest.markerSaveButtonClick.emit).not.toHaveBeenCalled();
         });
       });
 
