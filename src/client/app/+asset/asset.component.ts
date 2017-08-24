@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUserService } from '../shared/services/current-user.service';
-import { AssetService } from '../shared/services/asset.service';
+import { AssetService } from '../store/services/asset.service';
 import { AddAssetParameters, PriceAttribute } from '../shared/interfaces/commerce.interface';
 import { WzEvent } from '../shared/interfaces/common.interface';
 import { UiConfig } from '../shared/services/ui.config';

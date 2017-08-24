@@ -11,7 +11,7 @@ import { UiConfig } from '../../../shared/services/ui.config';
 import { MdSnackBar, MdDialogRef } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
-import { AssetService } from '../../../shared/services/asset.service';
+import { AssetService } from '../../../store/services/asset.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { CurrentUserService } from '../../../shared/services/current-user.service';

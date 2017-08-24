@@ -3,7 +3,6 @@ import { CollectionLinkComponent } from '../../+collection/components/collection
 import { CollectionFormComponent } from './components/collection-form.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Asset, WzEvent } from '../../shared/interfaces/common.interface';
-import { AssetService } from '../../shared/services/asset.service';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 
 @Component({

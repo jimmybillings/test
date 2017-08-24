@@ -3,10 +3,11 @@ import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
+import * as common from '../../shared/interfaces/common.interface';
 import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
 
 @Injectable()
-export class FutureAssetService {
+export class AssetService {
   constructor(private apiService: ApiService) { }
 
   public load(parameters: AssetLoadParameters): Observable<Asset> {
@@ -15,6 +16,19 @@ export class FutureAssetService {
 
     return this.apiService.get(Api.Assets, `clip/${parameters.id}/clipDetail`, options)
       .map(response => this.merge(response as Asset, parameters));
+  }
+
+  public downloadComp(id: any, compType: any): Observable<any> {
+    return this.apiService.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
+  }
+
+  public createShareLink(shareLink: common.Pojo): Observable<any> {
+    return this.apiService.post(Api.Identities, 'accessInfo', { body: shareLink });
+  }
+
+  public getClipPreviewData(assetId: number): Observable<any> {
+    const viewType: ApiOptions = { parameters: { 'useType': 'clipPreview' } };
+    return this.apiService.get(Api.Assets, `renditionType/${assetId}`, viewType);
   }
 
   private merge(asset: Asset, parameters: AssetLoadParameters): Asset {

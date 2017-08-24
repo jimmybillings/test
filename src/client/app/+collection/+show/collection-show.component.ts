@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
-import { AssetService } from '../../shared/services/asset.service';
+import { AssetService } from '../../store/services/asset.service';
 import { ErrorStore } from '../../shared/stores/error.store';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';

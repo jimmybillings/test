@@ -1,17 +1,17 @@
-import { FutureAssetService } from './asset.service';
+import { AssetService } from './asset.service';
 import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
   describe('Future Asset Service', () => {
-    let serviceUnderTest: FutureAssetService;
+    let serviceUnderTest: AssetService;
     let mockApiService: MockApiService;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApiService = new MockApiService();
       mockApiService.getResponse = { some: 'asset' };
-      serviceUnderTest = new FutureAssetService(mockApiService.injector);
+      serviceUnderTest = new AssetService(mockApiService.injector);
     });
 
     describe('load()', () => {

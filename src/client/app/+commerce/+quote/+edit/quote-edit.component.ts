@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { MdSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { AssetService } from '../../../shared/services/asset.service';
+import { AssetService } from '../../../store/services/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../shared/stores/error.store';

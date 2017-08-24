@@ -2,7 +2,7 @@ import {
   Component, Input, Output, ViewChild,
   EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
-import { AssetService } from '../../shared/services/asset.service';
+import { AssetService } from '../../store/services/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component';
 import { User } from '../../shared/interfaces/user.interface';
