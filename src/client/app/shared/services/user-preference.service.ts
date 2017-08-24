@@ -13,7 +13,7 @@ const defaultPreferences: any = {
   sortId: 0,
   displayFilterTree: false,
   assetView: 'grid',
-  pricingPreferences: ''
+  pricingPreferences: {}
 };
 
 export function userPreferences(state = defaultPreferences, action: LegacyAction) {
