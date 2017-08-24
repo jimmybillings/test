@@ -8,7 +8,7 @@ export function main() {
     let mockCurrentUserService: any, mockCapabilities: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
       mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
-      mockPricingStore: any;
+      mockPricingStore: any, mockPricingService: any;
     let mockStore: MockAppStore;
     let componentUnderTest: AssetComponent;
 
@@ -22,8 +22,6 @@ export function main() {
       };
       mockAssetService = {
         downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
-        getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({ price: 10, some: 'data' })),
-        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({})),
         state: { asset: { assetId: 123456 } },
         priceForDetails: Observable.of(100)
       };
@@ -44,13 +42,18 @@ export function main() {
       mockPricingStore = {
         priceForDialog: Observable.of(1000),
         priceForDetails: Observable.of(100),
+        setPriceForDetails: jasmine.createSpy('setPriceForDetails'),
         state: { priceForDetails: 100, priceForDialog: 1000 }
+      };
+      mockPricingService = {
+        getPriceFor: jasmine.createSpy('getPriceFor').and.returnValue(Observable.of({ price: 10, some: 'data' })),
+        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({}))
       };
       mockStore = new MockAppStore();
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockErrorStore, mockCart,
-        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
+        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
       );
     });
 
@@ -80,7 +83,7 @@ export function main() {
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockUiState,
           mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockErrorStore,
-          mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
+          mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
         );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
@@ -124,14 +127,14 @@ export function main() {
       it('should call the getPriceAttributes on the assetService if there is not rights reproduction cached', () => {
         componentUnderTest.getPricingAttributes('Rights Managed');
 
-        expect(mockAssetService.getPriceAttributes).toHaveBeenCalledWith('Rights Managed');
+        expect(mockPricingService.getPriceAttributes).toHaveBeenCalledWith('Rights Managed');
       });
 
       it('should get the price if the rights reproduction doesnt match the cache', () => {
         componentUnderTest.rightsReproduction = 'Rights Managed';
         componentUnderTest.getPricingAttributes('Rights Managed');
 
-        expect(mockAssetService.getPriceAttributes).not.toHaveBeenCalled();
+        expect(mockPricingService.getPriceAttributes).not.toHaveBeenCalled();
       });
     });
 
@@ -139,6 +142,15 @@ export function main() {
       it('should call the back method on the window api', () => {
         componentUnderTest.previousPage();
         expect(mockWindow.nativeWindow.history.back).toHaveBeenCalled();
+      });
+    });
+
+    describe('onMarkersChange', () => {
+      describe('when there are no selected attributes', () => {
+        it('calls getPriceFor() on the asset service', () => {
+          componentUnderTest.onMarkersChange({ in: {}, out: {} } as any);
+          expect(mockPricingService.getPriceFor).not.toHaveBeenCalled();
+        });
       });
     });
   });

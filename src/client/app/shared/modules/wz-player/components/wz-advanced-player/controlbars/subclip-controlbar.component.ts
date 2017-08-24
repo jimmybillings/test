@@ -12,7 +12,6 @@ import { PlayerState, PlayerRequest } from '../../../interfaces/player.interface
 export class SubclipControlbarComponent {
   @Input() playerState: PlayerState;
   @Input() displayAllControls: boolean = true;
-  @Input() markersSaveButtonEnabled: boolean = true;
   @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
 
   public forward(request: PlayerRequest): void {

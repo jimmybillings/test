@@ -17,14 +17,15 @@ import { UserPreferenceService } from '../../../shared/services/user-preference.
 import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
-import { SubclipMarkers } from '../../../shared/interfaces/subclip-markers';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 import { SelectedPriceAttributes, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
+import { PricingService } from '../../../shared/services/pricing.service';
 import { AppStore } from '../../../app.store';
-import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
+import { EnhancedAsset, enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
+import * as SubclipMarkersInterface from '../../../shared/interfaces/subclip-markers';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public cart: Observable<any>;
@@ -50,7 +51,8 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     protected translate: TranslateService,
     protected pricingStore: PricingStore,
     protected currentUserService: CurrentUserService,
-    protected appStore: AppStore) {
+    protected appStore: AppStore,
+    protected pricingService: PricingService) {
     super();
   }
 
@@ -154,7 +156,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     if (this.priceAttributes) {
       this.openProjectPricingDialog(this.priceAttributes, preferences, project);
     } else {
-      this.assetService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
+      this.pricingService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
         this.priceAttributes = priceAttributes;
         this.openProjectPricingDialog(priceAttributes, preferences, project);
       });
@@ -166,7 +168,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     if (this.priceAttributes) {
       this.openPricingDialog(this.priceAttributes, preferences, lineItem);
     } else {
-      this.assetService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
+      this.pricingService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
         this.priceAttributes = priceAttributes;
         this.openPricingDialog(priceAttributes, preferences, lineItem);
       });
@@ -290,7 +292,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
               },
               {
                 event: 'save',
-                callback: (newMarkers: SubclipMarkers) => {
+                callback: (newMarkers: SubclipMarkersInterface.SubclipMarkers) => {
                   this.commerceService.editLineItemMarkers(lineItem, newMarkers);
                 },
                 closeOnEvent: true
@@ -318,6 +320,11 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   protected calculatePrice(attributes: Pojo, lineItem: AssetLineItem): Observable<number> {
-    return this.assetService.getPriceFor(lineItem.asset, attributes);
+    const enhancedAsset: EnhancedAsset = enhanceAsset(lineItem.asset);
+    const markers: SubclipMarkersInterface.SubclipMarkers = enhancedAsset.isSubclipped ? {
+      in: enhancedAsset.inMarkerFrame,
+      out: enhancedAsset.outMarkerFrame
+    } : null;
+    return this.pricingService.getPriceFor(enhancedAsset, attributes, markers);
   }
 }

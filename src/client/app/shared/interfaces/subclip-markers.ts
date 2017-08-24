@@ -20,6 +20,11 @@ export interface SerializedSubclipMarkers {
   out?: SerializedSubclipMarker;
 }
 
+export interface Duration {
+  timeStart: number; // in milliseconds
+  timeEnd: number; // in milliseconds
+}
+
 export function serialize(markers: SubclipMarkers): SerializedSubclipMarkers {
   if (!markers) return null;
 
@@ -40,16 +45,11 @@ export function deserialize(serializedMarkers: SerializedSubclipMarkers): Subcli
   return markers;
 }
 
-export function timeStartFrom(markers: SubclipMarkers): number {
-  return markers && markers.in ? toMilliseconds(markers.in) : -1;
-}
-
-export function timeEndFrom(markers: SubclipMarkers): number {
-  return markers && markers.out ? toMilliseconds(markers.out) : -2;
-}
-
-function toMilliseconds(frame: Frame): number {
-  return frame.asSeconds(3) * 1000;
+export function durationFrom(markers: SubclipMarkers): Duration {
+  return {
+    timeStart: timeStartFrom(markers),
+    timeEnd: timeEndFrom(markers)
+  };
 }
 
 function serializeSingle(marker: Frame): SerializedSubclipMarker {
@@ -58,4 +58,16 @@ function serializeSingle(marker: Frame): SerializedSubclipMarker {
 
 function deserializeSingle(serializedMarker: SerializedSubclipMarker): Frame {
   return new Frame(serializedMarker.framesPerSecond).setFromFrameNumber(serializedMarker.frameNumber);
+}
+
+function timeStartFrom(markers: SubclipMarkers): number {
+  return markers && markers.in ? toMilliseconds(markers.in) : -1;
+}
+
+function timeEndFrom(markers: SubclipMarkers): number {
+  return markers && markers.out ? toMilliseconds(markers.out) : -2;
+}
+
+function toMilliseconds(frame: Frame): number {
+  return frame.asSeconds(3) * 1000;
 }

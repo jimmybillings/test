@@ -11,10 +11,9 @@
     (getPriceAttributes)="getPricingAttributes($event)"
     (onShowSnackBar)="showSnackBar($event)"
     (onPreviousPage)="previousPage()"
-  >
+    (markersChange)="onMarkersChange($event)">
   </asset-detail>
   <asset-data
-    [asset]="asset"
-  >
+    [asset]="asset">
   </asset-data>
 

@@ -29,6 +29,7 @@ export class AssetDetailComponent implements OnChanges {
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onShowSnackBar = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
+  @Output() markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
@@ -68,14 +69,7 @@ export class AssetDetailComponent implements OnChanges {
     if (this.markersAreDefined) {
       this.store.dispatch(factory => factory.asset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId));
     }
-  }
-
-  public get markersSaveButtonEnabled(): boolean {
-    return !this.showAssetSaveSubclip && this.markersAreDefined;
-  }
-
-  public onPlayerMarkerSaveButtonClick(): void {
-    this.showAssetSaveSubclip = true;
+    this.markersChange.emit(newMarkers);
   }
 
   public toggleAssetSaveSubclip(): void {

@@ -18,7 +18,7 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: [{ some: 'item' }] } } }))
       };
       mockStore = new MockAppStore();
-      mockStore.createStateElement('activeCollection', 'collection', { id: 123 });
+      mockStore.createStateSection('activeCollection', { 'collection': { id: 123 }, loaded: true });
       mockStore.createStateElement('comment', 'count', { 'abc-123': 5 });
       getCountsSpy = mockStore.createActionFactoryMethod('comment', 'getCounts');
 

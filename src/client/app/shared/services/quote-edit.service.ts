@@ -171,10 +171,9 @@ export class QuoteEditService {
   }
 
   public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkersInterface.SubclipMarkers): void {
-    Object.assign(lineItem.asset, {
-      timeStart: SubclipMarkersInterface.timeStartFrom(newMarkers),
-      timeEnd: SubclipMarkersInterface.timeEndFrom(newMarkers)
-    });
+    const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(newMarkers);
+
+    Object.assign(lineItem.asset, duration);
 
     this.editLineItem(lineItem, {});
   }
@@ -259,8 +258,9 @@ export class QuoteEditService {
     let timeEnd: number;
 
     if (markers) {
-      timeStart = SubclipMarkersInterface.timeStartFrom(markers);
-      timeEnd = SubclipMarkersInterface.timeEndFrom(markers);
+      const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(markers);
+      timeStart = duration.timeStart;
+      timeEnd = duration.timeEnd;
     } else {
       timeStart = asset.timeStart;
       timeEnd = asset.timeEnd;
