@@ -6,6 +6,7 @@ import { Asset, WzEvent } from '../../shared/interfaces/common.interface';
 import { AssetService } from '../../shared/services/asset.service';
 import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 
+
 @Component({
   moduleId: module.id,
   selector: 'collection-tray',
@@ -24,9 +25,8 @@ export class CollectionTrayComponent implements OnInit {
       this.enhancedAssets[asset.uuid] = enhanceAsset(asset);
     }
   };
-
+  @Input() userPreference: any;
   @Output() onOpenSnackbar = new EventEmitter();
-
   public pageSize: string;
 
   public get collection(): any {
@@ -71,6 +71,7 @@ export class CollectionTrayComponent implements OnInit {
     this.uiConfig.get('collection').take(1).subscribe((config: any) => {
       this.dialogService.openComponentInDialog({
         componentType: CollectionFormComponent,
+        dialogConfig: { position: { top: '10%' } },
         inputOptions: {
           fields: config.config,
         },
@@ -81,6 +82,10 @@ export class CollectionTrayComponent implements OnInit {
         }]
       });
     });
+  }
+
+  public toggleCollectionTray(): void {
+    this.userPreference.toggleCollectionTray();
   }
 
   private enhancedAssetFor(asset: Asset): EnhancedAsset {

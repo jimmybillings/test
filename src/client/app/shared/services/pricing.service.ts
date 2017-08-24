@@ -5,6 +5,7 @@ import { ApiService } from './api.service';
 import { EnhancedAsset } from '../interfaces/enhanced-asset';
 import { PriceAttribute } from '../interfaces/commerce.interface';
 import { Api, ApiParameters } from '../interfaces/api.interface';
+import { Pojo } from '../interfaces/common.interface';
 import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 
 @Injectable()

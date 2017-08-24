@@ -5,6 +5,7 @@ import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
 import { CurrentUserService } from './current-user.service';
 import { LegacyAction } from '../interfaces/common.interface';
+import { UserPreferences } from '../../shared/interfaces/user-preferences.interface';
 
 const defaultPreferences: any = {
   displayFilterCounts: false,
@@ -13,7 +14,7 @@ const defaultPreferences: any = {
   sortId: 0,
   displayFilterTree: false,
   assetView: 'grid',
-  pricingPreferences: ''
+  pricingPreferences: {}
 };
 
 export function userPreferences(state = defaultPreferences, action: LegacyAction) {
@@ -27,7 +28,7 @@ export function userPreferences(state = defaultPreferences, action: LegacyAction
 
 @Injectable()
 export class UserPreferenceService {
-  public data: Observable<any>;
+  public data: Observable<UserPreferences>;
 
   constructor(
     public currentUser: CurrentUserService,
@@ -36,7 +37,7 @@ export class UserPreferenceService {
     this.data = this.store.select('userPreferences');
   }
 
-  public get state(): any {
+  public get state(): UserPreferences {
     let s: any;
     this.data.take(1).subscribe(state => s = state);
     return s;

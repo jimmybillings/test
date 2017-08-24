@@ -16,17 +16,13 @@
           linear-gradient(mat-color($primary, 800, .06), mat-color($primary, 800, .06)),
           linear-gradient(rgba(mat-color($background, status-bar), 1), rgba(mat-color($background, status-bar), 1));
         .focused {
-          button.is-dd[md-button] {
+          button[md-button] {
             color: rgba(mat-color($foreground, secondary-text), .6);
           }
           .asset-count {
-            background-color: rgba(mat-color($foreground, secondary-text), .4);
-            
+            background-color: rgba(mat-color($foreground, secondary-text), .3);
             .count {
               @include text-contrast(mat-color($foreground, secondary-text));
-            }
-            &:hover {
-              background-color: rgba(mat-color($foreground, secondary-text), .4);
             }
           }
         }

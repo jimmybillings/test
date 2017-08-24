@@ -15,7 +15,7 @@ export class AppNavComponent {
   @Input() supportedLanguages: any;
   @Input() collection: Collection;
   @Input() uiState: any;
-  @Input() prefs: any;
+  @Input() userPreference: any;
   @Input() cartSize: any;
   @Input() userCan: any;
   @Output() onLogOut = new EventEmitter();
@@ -29,11 +29,11 @@ export class AppNavComponent {
   }
 
   public toggleSearch() {
-    this.prefs.toggleSearch();
+    this.userPreference.toggleSearch();
   }
 
   public toggleCollectionTray() {
-    this.prefs.toggleCollectionTray();
+    this.userPreference.toggleCollectionTray();
   }
 
   public showNewCollection() {

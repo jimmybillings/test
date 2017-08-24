@@ -14,11 +14,11 @@ export function main() {
       componentUnderTest.pricingEvent = new EventEmitter();
     });
 
-    describe('ngOnInit()', () => {
+    describe('pricingPreferences setter', () => {
       it('should build the form properly with no preferences', () => {
-        componentUnderTest.ngOnInit();
+        componentUnderTest.pricingPreferences = {};
 
-        expect(componentUnderTest.form.value).toEqual({ A: '' });
+        expect(componentUnderTest.form.value).toEqual({ A: '' }); // disabled fields don't have a value
       });
 
       it('should build the form properly with preferences', () => {
@@ -28,7 +28,6 @@ export function main() {
           C: 'X',
           D: 'S'
         };
-        componentUnderTest.ngOnInit();
 
         expect(componentUnderTest.form.value).toEqual({ A: 'S', B: 'M', C: 'X', D: 'S' });
       });
@@ -37,7 +36,6 @@ export function main() {
         componentUnderTest.pricingPreferences = {
           invalid: 'preference'
         };
-        componentUnderTest.ngOnInit();
         expect(componentUnderTest.form.value).toEqual({ A: '' });
       });
     });
@@ -50,7 +48,6 @@ export function main() {
           C: 'X',
           D: 'S'
         };
-        componentUnderTest.ngOnInit();
         spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.usagePrice = Observable.of(10);
         componentUnderTest.onSubmit();
@@ -64,7 +61,7 @@ export function main() {
 
     describe('parentIsEmpty()', () => {
       beforeEach(() => {
-        componentUnderTest.ngOnInit();
+        componentUnderTest.pricingPreferences = {};
       });
 
       it('should return false if the attribute is the parent of all other attribute', () => {
@@ -95,20 +92,20 @@ export function main() {
 
     describe('validOptionsFor()', () => {
       it('should return if the attributes parent is empty', () => {
-        componentUnderTest.ngOnInit();
+        componentUnderTest.pricingPreferences = {};
         let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[1]);
         expect(result).toBeUndefined();
       });
 
       it('should return valid options for the primary attribute', () => {
-        componentUnderTest.ngOnInit();
+        componentUnderTest.pricingPreferences = {};
         let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[0]);
 
         expect(result).toEqual(mockPriceAttributes()[0].attributeList);
       });
 
       it('should return valid options for a non-primary attribute', () => {
-        componentUnderTest.ngOnInit();
+        componentUnderTest.pricingPreferences = {};
         componentUnderTest.form = mockFormBuilder.group({
           A: ['R'],
           B: [''],
@@ -119,26 +116,6 @@ export function main() {
         let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[1]);
 
         expect(result).toEqual([{ name: 'J', value: 'J' }, { name: 'K', value: 'K' }, { name: 'L', value: 'L' }]);
-      });
-
-      it('should set the form value if there is only 1 valid child option', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.form = mockFormBuilder.group({
-          A: ['T'],
-          B: [''],
-          C: [''],
-          D: ['']
-        });
-
-        let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[1]);
-
-        expect(result).toEqual([{ name: 'N', value: 'N' }]);
-        expect(componentUnderTest.form.value).toEqual({
-          A: 'T',
-          B: 'N',
-          C: '',
-          D: ''
-        });
       });
 
       it('should should emit an error and clear the form if there are no valid options', () => {
@@ -164,7 +141,7 @@ export function main() {
 
     describe('handleSelect()', () => {
       beforeEach(() => {
-        componentUnderTest.ngOnInit();
+        componentUnderTest.pricingPreferences = {};
         componentUnderTest.form = mockFormBuilder.group({
           A: ['R'],
           B: ['J'],
