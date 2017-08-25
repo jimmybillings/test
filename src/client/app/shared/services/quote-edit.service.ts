@@ -51,7 +51,10 @@ export class QuoteEditService {
       return data.projects.map((project: Project) => {
         if (project.lineItems) {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
-            lineItem.asset = enhanceAsset(lineItem.asset, { type: 'quoteEditAsset' });
+            lineItem.asset = enhanceAsset(
+              Object.assign(lineItem.asset, { uuid: lineItem.id }),
+              { type: 'quoteEditAsset' }
+            );
             return lineItem;
           });
         }
