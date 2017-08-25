@@ -17,20 +17,28 @@ import { UserPreferenceService } from '../../shared/services/user-preference.ser
 export class ActiveCollectionEffects {
   @Effect()
   public load: Observable<Action> = this.actions.ofType(ActiveCollectionActions.Load.Type)
-    .switchMap((action: ActiveCollectionActions.Load) => this.service.load(action.pagination))
-    .map((collection: Collection) => this.store.create(factory => factory.activeCollection.loadSuccess(collection)));
+    .switchMap((action: ActiveCollectionActions.Load) =>
+      this.service.load(action.pagination)
+        .map((collection: Collection) => this.store.create(factory => factory.activeCollection.loadSuccess(collection)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   @Effect()
   public set: Observable<Action> = this.actions.ofType(ActiveCollectionActions.Set.Type)
-    .switchMap((action: ActiveCollectionActions.Set) => this.service.set(action.collectionId, action.pagination))
-    .map((collection: Collection) => this.store.create(factory => factory.activeCollection.setSuccess(collection)));
+    .switchMap((action: ActiveCollectionActions.Set) =>
+      this.service.set(action.collectionId, action.pagination)
+        .map((collection: Collection) => this.store.create(factory => factory.activeCollection.setSuccess(collection)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   @Effect()
   public loadPage: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadPage.Type)
     .withLatestFrom(this.store.select(state => state.activeCollection.collection.id))
     .switchMap(([action, collectionId]: [ActiveCollectionActions.LoadPage, number]) =>
       this.service.loadPage(collectionId, action.pagination)
-    ).map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.loadPageSuccess(assets)));
+        .map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.loadPageSuccess(assets)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   // TODO: After user preference service has been replaced, this will map to a user preference action instead of calling do().
   @Effect({ dispatch: false })
@@ -43,13 +51,15 @@ export class ActiveCollectionEffects {
     .withLatestFrom(this.store.select(state => state.activeCollection.collection))
     .switchMap(([action, collection]: [ActiveCollectionActions.AddAsset, Collection]) =>
       this.service.addAssetTo(collection, action.asset, action.markers)
-    ).map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.addAssetSuccess(assets)));
+        .map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.addAssetSuccess(assets)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   @Effect()
   public showSnackBarOnAddSuccess: Observable<Action> = this.actions.ofType(ActiveCollectionActions.AddAssetSuccess.Type)
-    .switchMap(() => this.store.select(state => state.activeCollection.collection.name))
-    .map((name: string) =>
-      this.store.create(factory => factory.snackbar.display('COLLECTION.ADD_TO_COLLECTION_TOAST', { collectionName: name }))
+    .switchMap(() => this.store.select(state => state.activeCollection.collection.name)
+      .map((name: string) =>
+        this.store.create(factory => factory.snackbar.display('COLLECTION.ADD_TO_COLLECTION_TOAST', { collectionName: name })))
     );
 
   @Effect({ dispatch: false })
@@ -85,13 +95,18 @@ export class ActiveCollectionEffects {
     .withLatestFrom(this.store.select(state => state.activeCollection.collection))
     .switchMap(([action, collection]: [ActiveCollectionActions.RemoveAsset, Collection]) =>
       this.service.removeAssetFrom(collection, action.asset)
-    ).map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.removeAssetSuccess(assets)));
+        .map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.removeAssetSuccess(assets)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   @Effect()
   public showSnackBarOnRemoveSuccess: Observable<Action> = this.actions.ofType(ActiveCollectionActions.RemoveAssetSuccess.Type)
-    .switchMap(() => this.store.select(state => state.activeCollection.collection.name))
-    .map((name: string) =>
-      this.store.create(factory => factory.snackbar.display('COLLECTION.REMOVE_FROM_COLLECTION_TOAST', { collectionName: name }))
+    .switchMap(() => this.store.select(state => state.activeCollection.collection.name)
+      .map((name: string) =>
+        this.store.create(factory => factory.snackbar.display(
+          'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
+          { collectionName: name }))
+      )
     );
 
   @Effect({ dispatch: false })
@@ -118,7 +133,10 @@ export class ActiveCollectionEffects {
     .withLatestFrom(this.store.select(state => state.activeCollection.collection))
     .switchMap(([action, collection]: [ActiveCollectionActions.UpdateAssetMarkers, Collection]) =>
       this.service.updateAssetMarkers(collection, action.asset, action.markers)
-    ).map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.updateAssetMarkersSuccess(assets)));
+        .map((assets: CollectionItems) =>
+          this.store.create(factory => factory.activeCollection.updateAssetMarkersSuccess(assets)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   constructor(
     private actions: Actions,

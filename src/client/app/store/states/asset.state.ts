@@ -4,22 +4,26 @@ import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
   readonly activeAsset: Asset;
-  readonly loaded: boolean;
+  readonly loading: boolean;
 };
 
 export const initialState: State = {
   activeAsset: { assetId: 0, name: '' },
-  loaded: false
+  loading: false
 };
 
 export function reducer(state: State = initialState, action: AssetActions.Any): State {
   switch (action.type) {
     case AssetActions.Load.Type: {
-      return { ...Common.clone(state), loaded: false };
+      return { ...JSON.parse(JSON.stringify(state)), loading: true };
     }
 
     case AssetActions.LoadSuccess.Type: {
-      return { activeAsset: action.activeAsset, loaded: true };
+      return { activeAsset: action.activeAsset, loading: false };
+    }
+
+    case AssetActions.LoadFailure.Type: {
+      return { ...JSON.parse(JSON.stringify(state)), loading: false };
     }
 
     default: {

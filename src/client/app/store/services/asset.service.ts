@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { ApiService } from '../../shared/services/api.service';
+import { FutureApiService } from './api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import * as common from '../../shared/interfaces/common.interface';
 import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
 
 @Injectable()
 export class AssetService {
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: FutureApiService) { }
 
   public load(parameters: AssetLoadParameters): Observable<Asset> {
     const options: ApiOptions = { loadingIndicator: true };

@@ -19,10 +19,11 @@ export class SpeedPreviewEffects {
       !this.store.snapshot(state => state.speedPreview[action.asset.assetId]))
 
     .switchMap((action: SpeedPreviewActions.Load) =>
-      this.service.load(action.asset))
-
-    .map((speedPreviewData: SpeedviewData) =>
-      this.store.create(factory => factory.speedPreview.loadSuccess(speedPreviewData)));
+      this.service.load(action.asset)
+        .map((speedPreviewData: SpeedviewData) =>
+          this.store.create(factory => factory.speedPreview.loadSuccess(speedPreviewData)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   constructor(
     private actions: Actions,

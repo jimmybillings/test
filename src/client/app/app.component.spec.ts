@@ -63,7 +63,6 @@ export function main() {
         toggleFilterTree: jasmine.createSpy('toggleFilterTree'),
         updateSortPreference: jasmine.createSpy('updateSortPreference')
       };
-      mockNotification = { check: jasmine.createSpy('check'), initialize: jasmine.createSpy('initialize') };
       mockApiConfig = {
         getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal'),
         baseUrl: () => jasmine.createSpy('baseUrl')
@@ -79,7 +78,7 @@ export function main() {
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
         mockCollections, mockUiState, mockUserPreference,
-        mockNotification, mockApiConfig, mockUserCan,
+        mockApiConfig, mockUserCan,
         mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore);
     });
 
@@ -185,7 +184,7 @@ export function main() {
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
           mockCollections, mockUiState, mockUserPreference,
-          mockNotification, mockApiConfig, mockUserCan,
+          mockApiConfig, mockUserCan,
           mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore);
 
         expect(mockRouter.initialNavigation).toHaveBeenCalled();
@@ -198,7 +197,7 @@ export function main() {
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
           mockCollections, mockUiState, mockUserPreference,
-          mockNotification, mockApiConfig, mockUserCan,
+          mockApiConfig, mockUserCan,
           mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore);
 
         expect(mockUiConfig.load).toHaveBeenCalled();

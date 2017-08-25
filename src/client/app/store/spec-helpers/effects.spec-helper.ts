@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
 import { MockAppStore } from './mock-app.store';
 
@@ -16,6 +17,7 @@ export interface EffectTestState {
 
 export interface EffectServiceMethod {
   name: string;
+  callsApiService?: boolean; // default = true
   expectedArguments?: any[];
   returnsObservableOf?: any;
   expectToHaveBeenCalled?: boolean;
@@ -23,114 +25,273 @@ export interface EffectServiceMethod {
 
 export interface HelperServiceMethod {
   name: string;
+  expectedArguments?: any[];
   returns: any;
 }
 
+export interface SuccessActionFactory {
+  sectionName: string;
+  methodName: string;
+  expectedArguments: any[];
+}
+
+export interface FailureActionFactory {
+  sectionName: string;
+  methodName: string;
+}
+
+export interface OutputActionFactories {
+  success: SuccessActionFactory | SuccessActionFactory[];
+  failure?: FailureActionFactory;
+}
+
+export interface CustomTest {
+  it: string;
+  stateOverrider?: (originalState: EffectTestState | EffectTestState[]) => EffectTestState | EffectTestState[];
+  serviceMethodOverrider?: (originalServiceMethod: EffectServiceMethod) => EffectServiceMethod;
+  helperServiceMethodsOverrider?: (originalHelperServiceMethods: HelperServiceMethod[]) => HelperServiceMethod[];
+  beforeInstantiation?: () => void;
+  expectation: () => void;
+}
+
 export interface EffectTestParameters {
+  fdescribe?: boolean;
   effectName: string;
+  comment?: string;
   effectsInstantiator: () => any;
   inputAction: ParameterizedAction;
   state?: EffectTestState | EffectTestState[];
   serviceMethod?: EffectServiceMethod;
   helperServiceMethods?: HelperServiceMethod[];
-  outputActionFactory?: {
-    sectionName: string;
-    methodName: string;
-    expectedArguments: any[];
-  };
-  expectToEmitValue?: boolean;
+  outputActionFactories?: OutputActionFactories;
+  expectToEmitAction?: boolean;
+  customTests?: CustomTest[];
 }
 
 export class EffectsSpecHelper {
-  public mockNgrxEffectsActions: any;
   public mockStore: MockAppStore;
+  public mockNgrxEffectsActions: any;
   public mockService: any;
+
+  public effect: any;
+  public effectSubscription: Subscription;
+  public effectSubscriptionCallback: jasmine.Spy;
+  public successActionFactoryMethods: jasmine.Spy[];
+  public failureActionFactoryMethod: jasmine.Spy;
 
   private mockNgrxEffectsActionSubject: Subject<ParameterizedAction>;
 
-  constructor() {
+  public generateTestsFor(parameters: EffectTestParameters): void {
+    const description = `${parameters.effectName}${parameters.comment ? ` (${parameters.comment})` : ''}`;
+    const describeOrFdescribe = (parameters.fdescribe !== true ? describe : fdescribe);
+
+    describeOrFdescribe(description, () => {
+      describe('standard effect tests', () => {
+        beforeEach(() => {
+          this.setupMocksFor(parameters);
+        });
+
+        afterEach(() => {
+          if (this.effectSubscription) this.effectSubscription.unsubscribe();
+        });
+
+        if (parameters.serviceMethod) {
+          if (parameters.serviceMethod.expectToHaveBeenCalled !== false) {
+            it('calls the expected service method with the expected arguments', () => {
+              this.simulateInputAction(parameters.inputAction);
+
+              expect(this.mockService[parameters.serviceMethod.name])
+                .toHaveBeenCalledWith(...parameters.serviceMethod.expectedArguments);
+            });
+          } else {
+            it('doesn\'t call the service method', () => {
+              this.simulateInputAction(parameters.inputAction);
+
+              expect(this.mockService[parameters.serviceMethod.name]).not.toHaveBeenCalled();
+            });
+          }
+        }
+
+        if (parameters.helperServiceMethods) {
+          parameters.helperServiceMethods.forEach(method => {
+            if (method.expectedArguments) {
+              it(`calls the ${method.name}() service method with the expected arguments`, () => {
+                this.simulateInputAction(parameters.inputAction);
+
+                expect(this.mockService[method.name]).toHaveBeenCalledWith(...method.expectedArguments);
+              });
+            }
+          });
+        }
+
+        if (parameters.expectToEmitAction === false) {
+          it('does not emit an action', () => {
+            this.simulateInputAction(parameters.inputAction);
+
+            expect(this.effectSubscriptionCallback).not.toHaveBeenCalled();
+          });
+        } else if (parameters.outputActionFactories) {
+          describe('for success', () => {
+            it(`calls the expected action factory method(s) with the expected arguments`, () => {
+              this.simulateInputAction(parameters.inputAction);
+
+              const factories = parameters.outputActionFactories;
+
+              (Array.isArray(factories.success) ? factories.success : [factories.success])
+                .forEach((successFactory, index) =>
+                  expect(this.successActionFactoryMethods[index]).toHaveBeenCalledWith(...successFactory.expectedArguments)
+                );
+            });
+
+            it('emits the expected action', () => {
+              this.simulateInputAction(parameters.inputAction);
+
+              this.successActionFactoryMethods.forEach(method =>
+                expect(this.effectSubscriptionCallback).toHaveBeenCalledWith(this.mockStore.getActionCreatedBy(method))
+              );
+            });
+          });
+
+          if (parameters.serviceMethod && parameters.serviceMethod.callsApiService !== false) {
+            describe('for failure', () => {
+              beforeEach(() => {
+                this.createMockServiceMethod(parameters.serviceMethod.name, () => Observable.throw({ some: 'error' }));
+              });
+
+              it('calls the expected action factory method with the expected arguments', () => {
+                this.simulateInputAction(parameters.inputAction);
+
+                expect(this.failureActionFactoryMethod)
+                  .toHaveBeenCalledWith({ some: 'error' });
+              });
+
+              it('emits the expected action', () => {
+                this.simulateInputAction(parameters.inputAction);
+
+                expect(this.effectSubscriptionCallback)
+                  .toHaveBeenCalledWith(this.mockStore.getActionCreatedBy(this.failureActionFactoryMethod));
+              });
+            });
+          }
+        } else {
+          // TODO: Properly interpret @Effect({dispatch: false}).
+          it('emits the expected action', () => {
+            this.simulateInputAction(parameters.inputAction);
+
+            expect(this.effectSubscriptionCallback).toHaveBeenCalledWith(parameters.inputAction);
+          });
+        }
+      });
+
+      if (parameters.customTests) {
+        describe('custom tests', () => {
+          parameters.customTests.forEach((customTest: CustomTest) => {
+            it(customTest.it, () => {
+              if (customTest.beforeInstantiation) customTest.beforeInstantiation();
+              this.setupCustomMocksFor(customTest, parameters);
+
+              this.simulateInputAction(parameters.inputAction);
+
+              customTest.expectation();
+            });
+          });
+        });
+      }
+    });
+  }
+
+  public initializeMocks(): void {
+    this.mockStore = new MockAppStore();
     this.mockNgrxEffectsActionSubject = new Subject<ParameterizedAction>();
     this.mockNgrxEffectsActions = {
       ofType: (...types: string[]): Observable<Action> =>
-        this.mockNgrxEffectsActionSubject.filter(action => types.some(type => type === action.type))
+        this.mockNgrxEffectsActionSubject.filter(action => types.some(type => type === action.type)),
+      filter: (filterFunction: () => boolean): Observable<Action> =>
+        this.mockNgrxEffectsActionSubject.filter(filterFunction)
     };
-    this.mockStore = new MockAppStore();
     this.mockService = {};
+    this.effectSubscriptionCallback = jasmine.createSpy('effect subscription callback');
   }
 
-  public generateStandardTestFor(parameters: EffectTestParameters): void {
-    if (parameters.state) {
-      this.createMockStateInfoFrom(parameters.state);
+  public subscribeTo(effectsInstantiator: Function, effectName: string): void {
+    this.effect = effectsInstantiator()[effectName];
+    this.effectSubscription = this.effect.subscribe(this.effectSubscriptionCallback);
+  }
+
+  public createMockServiceMethod(methodName: string, fakeImplementation: Function): void {
+    this.mockService[methodName] = jasmine.createSpy(`'${methodName} service method'`).and.callFake(fakeImplementation);
+  }
+
+  public simulateInputAction(inputAction: ParameterizedAction): void {
+    this.mockNgrxEffectsActionSubject.next(inputAction);
+  }
+
+  private setupMocksFor(activeParameters: EffectTestParameters, originalParameters: EffectTestParameters = activeParameters) {
+    this.initializeMocks();
+
+    if (activeParameters.state) {
+      this.createMockStateInfoFrom(activeParameters.state);
     }
 
-    if (parameters.serviceMethod) {
-      this.createMockServiceMethod(parameters.serviceMethod.name, Observable.of(parameters.serviceMethod.returnsObservableOf));
-    }
-
-    if (parameters.helperServiceMethods) {
-      parameters.helperServiceMethods.forEach(method => {
-        this.createMockServiceMethod(method.name, method.returns);
-      });
-    }
-
-    let internalActionFactoryMethod: jasmine.Spy;
-    if (parameters.outputActionFactory) {
-      internalActionFactoryMethod = this.mockStore.createInternalActionFactoryMethod(
-        parameters.outputActionFactory.sectionName,
-        parameters.outputActionFactory.methodName
+    if (activeParameters.serviceMethod) {
+      this.createMockServiceMethod(
+        activeParameters.serviceMethod.name, () => Observable.of(activeParameters.serviceMethod.returnsObservableOf)
       );
     }
 
-    const effect: Observable<Action> = parameters.effectsInstantiator()[parameters.effectName];
-
-    if (parameters.expectToEmitValue !== false) {
-      this.checkForEmittedValue(effect, parameters.effectName, parameters.inputAction);
-    }
-
-    effect.take(1).subscribe((mappedAction: any) => {
-
-      if (parameters.serviceMethod) {
-
-        if (parameters.serviceMethod.expectToHaveBeenCalled !== false) {
-          expect(this.mockService[parameters.serviceMethod.name])
-            .toHaveBeenCalledWith(...parameters.serviceMethod.expectedArguments);
-        }
-
-        if (parameters.expectToEmitValue === false) {
-          fail(`Expected effect '${parameters.effectName}' not to emit a value.`);
-        }
-      }
-
-      expect(internalActionFactoryMethod).toHaveBeenCalledWith(...parameters.outputActionFactory.expectedArguments);
-      expect(mappedAction).toEqual(this.mockStore.getActionCreatedBy(internalActionFactoryMethod));
-    });
-
-    if (parameters.serviceMethod && parameters.serviceMethod.expectToHaveBeenCalled === false) {
-      expect(this.mockService[parameters.serviceMethod.name])
-        .not.toHaveBeenCalled();
-    }
-
-    this.simulateInputAction(parameters.inputAction);
-  }
-
-  public generateCustomTestFor(parameters: EffectTestParameters, test: (action: Action) => void): void {
-    if (parameters.state) {
-      this.createMockStateInfoFrom(parameters.state);
-    }
-
-    if (parameters.helperServiceMethods) {
-      parameters.helperServiceMethods.forEach(method => {
-        this.createMockServiceMethod(method.name, method.returns);
+    if (activeParameters.helperServiceMethods) {
+      activeParameters.helperServiceMethods.forEach(method => {
+        this.createMockServiceMethod(method.name, () => method.returns);
       });
     }
 
-    const effect: Observable<Action> = parameters.effectsInstantiator()[parameters.effectName];
-    this.checkForEmittedValue(effect, parameters.effectName, parameters.inputAction);
+    if (activeParameters.outputActionFactories) {
+      const factories = activeParameters.outputActionFactories;
+      const successFactories = Array.isArray(factories.success) ? factories.success : [factories.success];
+      const failureFactory = factories.failure;
 
-    effect.take(1).subscribe(test);
+      this.successActionFactoryMethods =
+        successFactories.map(successFactory =>
+          this.mockStore.createInternalActionFactoryMethod(successFactory.sectionName, successFactory.methodName)
+        );
 
-    this.simulateInputAction(parameters.inputAction);
+      this.failureActionFactoryMethod = this.mockStore.createInternalActionFactoryMethod(
+        failureFactory ? failureFactory.sectionName : 'error',
+        failureFactory ? failureFactory.methodName : 'handle'
+      );
+    }
+
+    this.subscribeTo(originalParameters.effectsInstantiator, originalParameters.effectName);
+    expect(this.effectSubscriptionCallback).not.toHaveBeenCalled();  // Not yet, anyway!
   }
+
+  private setupCustomMocksFor(customTest: CustomTest, originalParameters: EffectTestParameters): void {
+    let overriddenParameters = JSON.parse(JSON.stringify(originalParameters));
+
+    if (customTest.stateOverrider) {
+      overriddenParameters = {
+        ...overriddenParameters,
+        state: customTest.stateOverrider(originalParameters.state)
+      };
+    }
+
+    if (customTest.serviceMethodOverrider) {
+      overriddenParameters = {
+        ...overriddenParameters,
+        serviceMethod: customTest.serviceMethodOverrider(originalParameters.serviceMethod)
+      };
+    }
+
+    if (customTest.helperServiceMethodsOverrider) {
+      overriddenParameters = {
+        ...overriddenParameters,
+        helperServiceMethods: customTest.helperServiceMethodsOverrider(originalParameters.helperServiceMethods)
+      };
+    }
+
+    this.setupMocksFor(overriddenParameters, originalParameters);
+  }
+
 
   private createMockStateInfoFrom(oneOrMoreStateParameters: EffectTestState | EffectTestState[]) {
     (Array.isArray(oneOrMoreStateParameters) ? oneOrMoreStateParameters : [oneOrMoreStateParameters])
@@ -141,34 +302,5 @@ export class EffectsSpecHelper {
           this.mockStore.createStateSection(stateParameter.storeSectionName, stateParameter.value);
         }
       });
-  }
-
-  private createMockServiceMethod(methodName: string, returnValue: any): void {
-    this.mockService[methodName] = jasmine.createSpy(`'${methodName} service method'`).and.returnValue(returnValue);
-  }
-
-  private checkForEmittedValue(effect: Observable<Action>, effectName: string, inputAction: ParameterizedAction): void {
-    const expectedExceptionMessage: string = 'Expected exception message';
-
-    try {
-      effect.take(1).subscribe(action => { throw new Error(expectedExceptionMessage); });
-      this.simulateInputAction(inputAction);
-
-      // Uh-oh.  We shouldn't have made it here because we threw an exception inside the subscription.
-      fail(`Expected effect '${effectName}' to emit a value.
-        1. Expecting it to have been triggered by an action with type '${inputAction.type}' -- was it?
-        2. Is one of the effect's mapping methods not emitting a value?`);
-    } catch (exception) {
-      if (exception.message !== expectedExceptionMessage) {
-        // Uh-oh.  We caught an exception, but not the one we expected.  Rethrow it so it shows up in the test output.
-        throw exception;
-      }
-
-      // Good.  We caught the expected exception, which means the effect was triggered by the expected action.
-    }
-  }
-
-  private simulateInputAction(inputAction: ParameterizedAction): void {
-    this.mockNgrxEffectsActionSubject.next(inputAction);
   }
 }
