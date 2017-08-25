@@ -15,7 +15,7 @@ export const initialState: State = {
 export function reducer(state: State = initialState, action: AssetActions.Any): State {
   switch (action.type) {
     case AssetActions.Load.Type: {
-      return { ...JSON.parse(JSON.stringify(state)), loading: true };
+      return { ...Common.clone(state), loading: true };
     }
 
     case AssetActions.LoadSuccess.Type: {
@@ -23,7 +23,7 @@ export function reducer(state: State = initialState, action: AssetActions.Any): 
     }
 
     case AssetActions.LoadFailure.Type: {
-      return { ...JSON.parse(JSON.stringify(state)), loading: false };
+      return { ...Common.clone(state), loading: false };
     }
 
     default: {

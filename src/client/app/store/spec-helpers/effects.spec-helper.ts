@@ -4,6 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { MockAppStore } from './mock-app.store';
+import { Common } from '../../shared/utilities/common.functions';
 
 export interface ParameterizedAction extends Action {
   [parameterName: string]: any;
@@ -266,7 +267,7 @@ export class EffectsSpecHelper {
   }
 
   private setupCustomMocksFor(customTest: CustomTest, originalParameters: EffectTestParameters): void {
-    let overriddenParameters = JSON.parse(JSON.stringify(originalParameters));
+    let overriddenParameters = Common.clone(originalParameters);
 
     if (customTest.stateOverrider) {
       overriddenParameters = {
