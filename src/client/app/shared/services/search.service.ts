@@ -31,7 +31,7 @@ export class SearchService {
     return this.data
       .filter(state => state.items)
       .map(state => {
-        state.items = state.items.map((item: Asset) => enhanceAsset(item, 'searchAsset'));
+        state.items = state.items.map((item: Asset) => enhanceAsset(item, { type: 'searchAsset' }));
         return state.items;
       });
   }
