@@ -1,12 +1,12 @@
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../../components/tabs/commerce-edit-tab';
-import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
+import { LicenseAgreements, Project } from '../../../../shared/interfaces/commerce.interface';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { MdSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { AssetService } from '../../../../shared/services/asset.service';
+import { AssetService } from '../../../../store/services/asset.service';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../../shared/stores/error.store';
@@ -17,6 +17,8 @@ import { FeatureStore } from '../../../../shared/stores/feature.store';
 import { Feature } from '../../../../shared/interfaces/feature.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 import { PricingService } from '../../../../shared/services/pricing.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Common } from '../../../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -25,7 +27,10 @@ import { PricingService } from '../../../../shared/services/pricing.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CartTabComponent extends CommerceEditTab {
+export class CartTabComponent extends CommerceEditTab implements OnDestroy {
+  public projects: Project[];
+  private projectSubscription: Subscription;
+
   constructor(
     public userCan: CommerceCapabilities,
     public cartService: CartService,
@@ -47,7 +52,13 @@ export class CartTabComponent extends CommerceEditTab {
       userPreference, error, document, snackBar, translate, pricingStore,
       null, null, pricingService
     );
+    this.projectSubscription = this.cartService.projects.subscribe(projects => this.projects = projects);
   }
+
+  public ngOnDestroy() {
+    this.projectSubscription.unsubscribe();
+  }
+
 
   public checkout(): void {
     this.goToNextTab();
@@ -65,7 +76,7 @@ export class CartTabComponent extends CommerceEditTab {
           componentType: LicenseAgreementComponent,
           dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
           inputOptions: {
-            licenses: JSON.parse(JSON.stringify(agreements)),
+            licenses: Common.clone(agreements),
           },
         }
       );

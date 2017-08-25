@@ -14,7 +14,8 @@ export function main() {
         clearAssets: jasmine.createSpy('clearAssets'),
         data: Observable.of([{ asset: 'mockAsset1' }, { asset: 'mockAsset2' }]),
         downloadComp: jasmine.createSpy('downloadComp').and.returnValue(
-          Observable.of({ url: 'mockUrl' }))
+          Observable.of({ url: 'mockUrl' })),
+        enhancedAssets: Observable.of([])
       };
       mockUiConfig = {
         get: jasmine.createSpy('get').and.returnValue(
@@ -218,7 +219,8 @@ export function main() {
         mockAssetData = {
           clearAssets: jasmine.createSpy('clearAssets'),
           data: Observable.of([{ asset: 'mockAsset1' }, { asset: 'mockAsset2' }]),
-          downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({}))
+          downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
+          enhancedAssets: Observable.of([])
         };
         componentUnderTest = new SearchComponent(null, mockUserCan, mockFilter,
           mockCart, mockSortDefinition, mockErrorStore, mockSearchContext,

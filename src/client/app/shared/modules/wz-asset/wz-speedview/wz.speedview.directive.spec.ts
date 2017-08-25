@@ -12,7 +12,7 @@ import {
 } from '@angular/material';
 import { WzSpeedviewComponent } from './wz.speedview.component';
 import { MockAppStore } from '../../../../store/spec-helpers/mock-app.store';
-import { EnhancedAsset } from '../../../interfaces/enhanced-asset';
+import { EnhancedAsset, enhanceAsset } from '../../../interfaces/enhanced-asset';
 import { Coords, Viewport } from '../../../interfaces/common.interface';
 
 export function main() {
@@ -98,7 +98,7 @@ export function main() {
           },
           'hasDownloadableComp': false
         };
-        directiveUnderTest.wzSpeedview = asset;
+        directiveUnderTest.wzSpeedview = enhanceAsset(asset, null);
         spy = mockAppStore.createActionFactoryMethod('speedPreview', 'load');
       });
 

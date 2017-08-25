@@ -47,7 +47,6 @@ import { CurrentUserService } from './services/current-user.service';
 import { UserService } from './services/user.service';
 import { UiConfig } from './services/ui.config';
 import { WzNotificationService } from './services/wz.notification.service';
-import { AssetService } from './services/asset.service';
 import { SearchContext } from './services/search-context.service';
 import { CollectionsService } from './services/collections.service';
 import { UiState } from './services/ui.state';
@@ -69,7 +68,7 @@ import { QuotesService } from './services/quotes.service';
 import { QuoteEditService } from './services/quote-edit.service';
 import { PricingService } from './services/pricing.service';
 
-import { FutureAssetService } from '../store/services/asset.service';
+import { AssetService } from '../store/services/asset.service';
 import { ActiveCollectionService } from '../store/services/active-collection.service';
 import { SnackbarService } from '../store/services/snackbar.service';
 import { CommentService } from '../store/services/comment.service';
@@ -126,7 +125,6 @@ const WAZEE_SERVICES = [
   CurrentUserService,
   UiConfig,
   AssetService,
-  FutureAssetService,
   WzNotificationService,
   CollectionsService,
   ActiveCollectionService,

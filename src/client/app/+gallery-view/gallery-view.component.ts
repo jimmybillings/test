@@ -5,6 +5,7 @@ import { SearchContext } from '../shared/services/search-context.service';
 import { GalleryViewService } from '../shared/services/gallery-view.service';
 import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from '../shared/interfaces/gallery-view.interface';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
+import { Common } from '../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -26,14 +27,14 @@ export class GalleryViewComponent implements OnInit {
   }
 
   public onClickBreadcrumb(index: number): void {
-    let path: GalleryPath = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
+    let path: GalleryPath = Common.clone(this.galleryViewService.state.path);
     path = path.slice(0, index);
 
     this.changeRouteFor(path);
   }
 
   public onNavigate(event: GalleryNavigationEvent): void {
-    const path = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
+    const path = Common.clone(this.galleryViewService.state.path);
     path.push(event.pathSegment);
 
     if (event.method === 'nextLevel') {

@@ -9,7 +9,8 @@ export function main() {
 
     beforeEach(() => {
       mockOrderService = {
-        data: Observable.of({ someData: 'SOME_VALUE' })
+        data: Observable.of({ someData: 'SOME_VALUE' }),
+        projects: Observable.of([])
       };
       mockWindow = {
         nativeWindow: {
@@ -65,13 +66,13 @@ export function main() {
       let mockOrder: any;
       it('return an observable of true if the order is a refund', () => {
         mockOrder = { creditMemoForOrderId: 12345 };
-        mockOrderService = { data: Observable.of(mockOrder) };
+        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
         new OrderShowComponent(null, mockOrderService).isRefund.subscribe(is => expect(is).toBe(true));
       });
 
       it('return an observable of false if the order is not a refund', () => {
         mockOrder = { id: 1 };
-        mockOrderService = { data: Observable.of(mockOrder) };
+        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
         new OrderShowComponent(null, mockOrderService).isRefund.subscribe(is => expect(is).toBe(false));
       });
     });
@@ -80,13 +81,13 @@ export function main() {
       let mockOrder: any;
       it('should return the creditMemoForOrderId if the order has one', () => {
         mockOrder = { creditMemoForOrderId: 12345 };
-        mockOrderService = { data: Observable.of(mockOrder) };
+        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
         new OrderShowComponent(null, mockOrderService).creditMemoForOrderId.subscribe(id => expect(id).toBe(12345));
       });
 
       it('should return the creditMemoForOrderId if the order has one', () => {
         mockOrder = { id: 1 };
-        mockOrderService = { data: Observable.of(mockOrder) };
+        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
         new OrderShowComponent(null, mockOrderService).creditMemoForOrderId.subscribe(id => expect(id).toBe(undefined));
       });
     });
@@ -95,22 +96,22 @@ export function main() {
       let mockOrder: any;
       it('return an observable of true if the order has a discount value greater than zero', () => {
         mockOrder = { discount: 16 };
-        mockOrderService = { data: Observable.of(mockOrder) };
+        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
         new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(true));
       });
       it('return an observable of false if the order has a discount value of zero', () => {
         mockOrder = { discount: 0 };
-        mockOrderService = { data: Observable.of(mockOrder) };
+        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
         new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(false));
       });
       it('return an observable of false if the order has a discount value greater than zero, but is a refund', () => {
         mockOrder = { discount: 16, creditMemoForOrderId: 12345 };
-        mockOrderService = { data: Observable.of(mockOrder) };
+        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
         new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(false));
       });
       it('return an observable of false if the order has a no discount value', () => {
         mockOrder = { id: 16 };
-        mockOrderService = { data: Observable.of(mockOrder) };
+        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
         new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(false));
       });
     });

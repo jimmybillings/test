@@ -1,9 +1,9 @@
 import { Action } from '@ngrx/store';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 import { SpeedviewData } from '../../shared/interfaces/asset.interface';
 
 export class ActionFactory {
-  public load(asset: Asset): Load {
+  public load(asset: EnhancedAsset): Load {
     return new Load(asset);
   }
 }
@@ -17,7 +17,7 @@ export class InternalActionFactory extends ActionFactory {
 export class Load implements Action {
   public static readonly Type = '[SpeedPreview] Load';
   public readonly type = Load.Type;
-  constructor(public readonly asset: Asset) { }
+  constructor(public readonly asset: EnhancedAsset) { }
 }
 
 export class LoadSuccess implements Action {

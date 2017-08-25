@@ -3,8 +3,7 @@ import { CollectionLinkComponent } from '../../+collection/components/collection
 import { CollectionFormComponent } from './components/collection-form.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Asset, WzEvent } from '../../shared/interfaces/common.interface';
-import { AssetService } from '../../shared/services/asset.service';
-import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
+import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 
 
 @Component({
@@ -19,11 +18,7 @@ export class CollectionTrayComponent implements OnInit {
   @Input() uiConfig: any;
 
   @Input() public set collection(collection: any) {
-    this._collection = collection;
-
-    for (const asset of collection.assets.items) {
-      this.enhancedAssets[asset.uuid] = enhanceAsset(asset);
-    }
+    if (collection) this._collection = collection;
   };
   @Input() userPreference: any;
   @Output() onOpenSnackbar = new EventEmitter();
@@ -44,20 +39,24 @@ export class CollectionTrayComponent implements OnInit {
     });
   }
 
-  public hasId(asset: Asset): boolean {
+  public toggleCollectionTray(): void {
+    this.userPreference.toggleCollectionTray();
+  }
+
+  public hasId(asset: EnhancedAsset): boolean {
     return !!asset && !!(asset.assetId);
   }
 
-  public routerLinkFor(asset: Asset): any[] {
-    return this.enhancedAssetFor(asset).routerLink;
+  public routerLinkFor(asset: EnhancedAsset): any[] {
+    return asset.routerLink;
   }
 
-  public hasThumbnail(asset: Asset): boolean {
-    return !!this.thumbnailUrlFor(asset);
+  public hasThumbnail(asset: EnhancedAsset): boolean {
+    return !!asset.thumbnailUrl;
   }
 
-  public thumbnailUrlFor(asset: Asset): string {
-    return this.enhancedAssetFor(asset).thumbnailUrl;
+  public thumbnailUrlFor(asset: EnhancedAsset): string {
+    return asset.thumbnailUrl;
   }
 
   public getAssetsForLink(): void {
@@ -82,13 +81,5 @@ export class CollectionTrayComponent implements OnInit {
         }]
       });
     });
-  }
-
-  public toggleCollectionTray(): void {
-    this.userPreference.toggleCollectionTray();
-  }
-
-  private enhancedAssetFor(asset: Asset): EnhancedAsset {
-    return this.enhancedAssets[asset.uuid];
   }
 }

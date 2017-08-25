@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-// import { Validators } from '@angular/common';
 import { FormFields } from '../../interfaces/forms.interface';
-// import { WzCollectionValidator } from './wz-validators/wz.collection-validator';
-// import { WzTestValidator } from './wz-validators/wz.test-validator';
 
 /**
  * Service that creates a dynamic model to drive a form.
@@ -95,8 +92,6 @@ export class FormModel {
   }
 
   private _getCollectionValidator(): Validators {
-    // return [Validators.required, WzTestValidator.startsWithNumber];
-    // return Validators.required, WzCollectionValidator.checkCollectionName;
     return Validators.required;
   }
 

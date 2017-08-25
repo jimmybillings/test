@@ -8,9 +8,9 @@ export function main() {
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
 
     beforeEach(() => {
-      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAsset);
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAsset, null);
       componentUnderTest = new AssetThumbnailComponent();
-      componentUnderTest.asset = mockCommerceAsset;
+      componentUnderTest.asset = EnhancedMock.enhanceAsset(mockCommerceAsset, null);
     });
 
     describe('routerLink()', () => {

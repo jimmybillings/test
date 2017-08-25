@@ -33,4 +33,31 @@ export class Common {
     });
     return object;
   }
+
+  public static urlStringToParamsObject(url: string): Pojo {
+    var hashes: string | string[] = url.split(/;(.+)/)[1];
+    hashes = (hashes) ? hashes.split(';') : [];
+    return hashes.reduce((urlObj: Pojo, hash: string) => {
+      let param: string[] = hash.split('=');
+      urlObj[param[0]] = param[1];
+      return urlObj;
+    }, {});
+  }
+
+  public static urlParamsObjectToUrlStringParams(urlObj: Pojo): string {
+    let paramString: string = ';';
+    Object.keys(urlObj).forEach((param) => {
+      paramString = paramString + param + '=' + urlObj[param] + ';';
+    });
+    paramString = paramString.slice(0, -1);
+    return paramString;
+  }
+
+  public static clone<T>(object: T): T {
+    try {
+      return JSON.parse(JSON.stringify(object));
+    } catch (error) {
+      return object;
+    }
+  }
 }

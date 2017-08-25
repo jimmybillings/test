@@ -1,8 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-
 import { Frame } from 'wazee-frame-formatter';
-import { Asset } from '../../../shared/interfaces/commerce.interface';
-import { enhanceAsset, EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
+import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -25,8 +23,8 @@ import { enhanceAsset, EnhancedAsset } from '../../../shared/interfaces/enhanced
 export class AssetThumbnailComponent {
   private enhancedAsset: EnhancedAsset;
 
-  @Input() public set asset(asset: Asset) {
-    this.enhancedAsset = enhanceAsset(asset);
+  @Input() public set asset(asset: EnhancedAsset) {
+    this.enhancedAsset = asset;
   }
 
   public get routerLink(): any[] {

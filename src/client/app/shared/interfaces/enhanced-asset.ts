@@ -6,13 +6,21 @@ interface InternalCache {
   [index: string]: any;
 }
 
-export function enhanceAsset(asset: commerce.Asset | common.Asset): EnhancedAsset {
-  return Object.assign(new EnhancedAsset(), asset).normalize();
+export type AssetType = 'collectionAsset' | 'quoteEditAsset' | 'searchAsset' | 'quoteShowAsset' | 'orderAsset' | 'cartAsset';
+
+export interface AssetTypeAndParent {
+  type: AssetType;
+  parentId?: number;
+}
+
+export function enhanceAsset(asset: commerce.Asset | common.Asset, assetTypeAndParent: AssetTypeAndParent): EnhancedAsset {
+  return Object.assign(new EnhancedAsset(), asset, assetTypeAndParent).normalize();
 }
 
 export class EnhancedAsset implements commerce.Asset, common.Asset {
   // defined in two or more of the following sources
   public readonly assetId: number;
+  public readonly parentId?: number;
   public readonly uuid?: string;
   public readonly timeStart?: number;
   public readonly timeEnd?: number;

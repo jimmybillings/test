@@ -23,13 +23,13 @@ export function main() {
 
       it('should build the form properly with preferences', () => {
         componentUnderTest.pricingPreferences = {
-          A: 'S',
-          B: 'M',
-          C: 'X',
-          D: 'S'
+          A: 's',
+          B: 'm',
+          C: 'x',
+          D: 's'
         };
 
-        expect(componentUnderTest.form.value).toEqual({ A: 'S', B: 'M', C: 'X', D: 'S' });
+        expect(componentUnderTest.form.value).toEqual({ A: 's', B: 'm', C: 'x', D: 's' });
       });
 
       it('should build a blank form if the preferences are invalid', () => {
@@ -43,10 +43,10 @@ export function main() {
     describe('onSubmit()', () => {
       it('should emit the calculatePricing event with the form', () => {
         componentUnderTest.pricingPreferences = {
-          A: 'S',
-          B: 'M',
-          C: 'X',
-          D: 'S'
+          A: 's',
+          B: 'm',
+          C: 'x',
+          D: 's'
         };
         spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.usagePrice = Observable.of(10);
@@ -54,7 +54,7 @@ export function main() {
 
         expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
           type: 'APPLY_PRICE',
-          payload: { price: 10, attributes: { A: 'S', B: 'M', C: 'X', D: 'S' } }
+          payload: { price: 10, attributes: { A: 's', B: 'm', C: 'x', D: 's' } }
         });
       });
     });
@@ -78,8 +78,8 @@ export function main() {
 
       it('should return false if the parent is not empty', () => {
         componentUnderTest.form = mockFormBuilder.group({
-          A: ['S'],
-          B: ['M'],
+          A: ['s'],
+          B: ['m'],
           C: [''],
           D: ['']
         });
@@ -107,7 +107,7 @@ export function main() {
       it('should return valid options for a non-primary attribute', () => {
         componentUnderTest.pricingPreferences = {};
         componentUnderTest.form = mockFormBuilder.group({
-          A: ['R'],
+          A: ['r'],
           B: [''],
           C: [''],
           D: ['']
@@ -115,15 +115,15 @@ export function main() {
 
         let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[1]);
 
-        expect(result).toEqual([{ name: 'J', value: 'J' }, { name: 'K', value: 'K' }, { name: 'L', value: 'L' }]);
+        expect(result).toEqual([{ name: 'J', value: 'j' }, { name: 'K', value: 'k' }, { name: 'L', value: 'l' }]);
       });
 
       it('should should emit an error and clear the form if there are no valid options', () => {
         spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.form = mockFormBuilder.group({
-          A: ['T'],
-          B: ['N'],
-          C: ['Z'],
+          A: ['t'],
+          B: ['n'],
+          C: ['z'],
           D: ['']
         });
 
@@ -143,10 +143,10 @@ export function main() {
       beforeEach(() => {
         componentUnderTest.pricingPreferences = {};
         componentUnderTest.form = mockFormBuilder.group({
-          A: ['R'],
-          B: ['J'],
-          C: ['V'],
-          D: ['Q']
+          A: ['r'],
+          B: ['j'],
+          C: ['v'],
+          D: ['q']
         });
       });
 
@@ -155,7 +155,7 @@ export function main() {
         componentUnderTest.handleSelect({ isUserInput: true } as any, attribute);
 
         expect(componentUnderTest.form.value).toEqual({
-          A: 'R',
+          A: 'r',
           B: ''
         });
       });
@@ -170,14 +170,14 @@ export function main() {
         'name': 'A',
         'displayName': 'A',
         'attributeList': [
-          { name: 'R', value: 'R' },
-          { name: 'S', value: 'S' },
-          { name: 'T', value: 'T' }
+          { name: 'R', value: 'r' },
+          { name: 'S', value: 's' },
+          { name: 'T', value: 't' }
         ],
         'validChildChoicesMap': {
-          'R': ['J', 'K', 'L'],
-          'S': ['K', 'L', 'M'],
-          'T': ['N']
+          'r': ['j', 'k', 'l'],
+          's': ['k', 'l', 'm'],
+          't': ['n']
         },
         'childId': 1
       },
@@ -186,18 +186,18 @@ export function main() {
         'name': 'B',
         'displayName': 'B',
         'attributeList': [
-          { name: 'J', value: 'J' },
-          { name: 'K', value: 'K' },
-          { name: 'L', value: 'L' },
-          { name: 'M', value: 'M' },
-          { name: 'N', value: 'N' }
+          { name: 'J', value: 'j' },
+          { name: 'K', value: 'k' },
+          { name: 'L', value: 'l' },
+          { name: 'M', value: 'm' },
+          { name: 'N', value: 'n' }
         ],
         'validChildChoicesMap': {
-          'J': ['U', 'V'],
-          'K': ['V', 'W'],
-          'L': ['W', 'X'],
-          'M': ['X', 'Y'],
-          'N': ['Y', 'Z']
+          'j': ['u', 'v'],
+          'k': ['v', 'w'],
+          'l': ['w', 'x'],
+          'm': ['x', 'y'],
+          'n': ['y', 'z']
         },
         'childId': 2
       },
@@ -206,17 +206,17 @@ export function main() {
         'name': 'C',
         'displayName': 'C',
         'attributeList': [
-          { name: 'V', value: 'V' },
-          { name: 'W', value: 'W' },
-          { name: 'X', value: 'X' },
-          { name: 'Y', value: 'Y' },
-          { name: 'Z', value: 'Z' }
+          { name: 'V', value: 'v' },
+          { name: 'W', value: 'w' },
+          { name: 'X', value: 'x' },
+          { name: 'Y', value: 'y' },
+          { name: 'Z', value: 'z' }
         ],
         'validChildChoicesMap': {
-          'V': ['Q'],
-          'W': ['R'],
-          'X': ['S'],
-          'Y': ['T']
+          'v': ['q'],
+          'w': ['r'],
+          'x': ['s'],
+          'y': ['t']
         },
         'childId': 3
       },
@@ -225,10 +225,10 @@ export function main() {
         'name': 'D',
         'displayName': 'D',
         'attributeList': [
-          { name: 'Q', value: 'Q' },
-          { name: 'R', value: 'R' },
-          { name: 'S', value: 'S' },
-          { name: 'T', value: 'T' }
+          { name: 'Q', value: 'q' },
+          { name: 'R', value: 'r' },
+          { name: 'S', value: 's' },
+          { name: 'T', value: 't' }
         ]
       }
     ];

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Project, AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
-import { enhanceAsset, EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
+import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -15,13 +15,7 @@ export class LineItemsComponent {
   public items: AssetLineItem[];
 
   @Input() set lineItems(items: AssetLineItem[]) {
-    if (items) {
-      items.forEach((item: AssetLineItem, index: number) => {
-        this.targets[index] = item.selectedTranscodeTarget;
-        this.enhancedAssets[item.id] = enhanceAsset(item.asset);
-      });
-      this.items = items;
-    }
+    if (items) this.items = items;
   };
   @Input() quoteType: QuoteType;
   @Input() otherProjects: Project[];
@@ -85,7 +79,7 @@ export class LineItemsComponent {
     this.lineItemsNotify.emit({ type: 'REMOVE_COST_MULTIPLIER', payload: lineItem });
   }
 
-  public isSubclipped(lineItem: AssetLineItem): boolean {
-    return this.enhancedAssets[lineItem.id].isSubclipped;
+  public isSubclipped(asset: EnhancedAsset): boolean {
+    return asset.isSubclipped;
   }
 }

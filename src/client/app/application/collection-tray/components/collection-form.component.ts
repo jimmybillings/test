@@ -12,6 +12,7 @@ import { CollectionsService } from '../../../shared/services/collections.service
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { UiState } from '../../../shared/services/ui.state';
 import { AppStore } from '../../../app.store';
+import { Common } from '../../../shared/utilities/common.functions';
 
 /**
  * Directive that renders a list of collections
@@ -116,7 +117,7 @@ export class CollectionFormComponent implements OnInit {
   }
 
   private setForm() {
-    this.fields = JSON.parse(JSON.stringify(this.fields));
+    this.fields = Common.clone(this.fields);
     return this.fields.form.items.map((item: any) => {
       if (item.name === 'name' && this.collection) item.value = this.collection.name;
       if (item.type === 'tags') {

@@ -53,7 +53,7 @@ export class WzPricingComponent implements OnDestroy {
     if (currentAttribute.primary) {
       return false;
     } else {
-      // Find the parent attribute of the currentAttribute
+      // Find the parent attribute of the currentAttribute and check that its value is not empty
       const parent: PriceAttribute = this.findParentOf(currentAttribute);
       return this.form.controls[parent.name].value === '';
     }
@@ -78,10 +78,10 @@ export class WzPricingComponent implements OnDestroy {
         this.pricingEvent.emit({ type: 'ERROR', payload: 'PRICING.ERROR' });
         return;
       }
-      // The raw options is just an array of strings, we need to map them back to the attributeList
-      // of the option to get the name, value, multiplier, etc;
-      const options: Array<PriceOption> = rawOptions.map((option: string) => {
-        return this.findOption(option, currentAttribute.attributeList);
+      // The raw options is just an array of strings that represent attribute values
+      // we need to map them back to the attributeList of the option to get the name, value, multiplier, etc;
+      const options: Array<PriceOption> = rawOptions.map((optionValue: string) => {
+        return this.findOption(optionValue, currentAttribute.attributeList);
       });
       // Finally, return the valid options
       return options;
@@ -103,8 +103,8 @@ export class WzPricingComponent implements OnDestroy {
     return this.attributes.find((attribute: PriceAttribute) => attribute.childId === currentAttribute.id);
   }
 
-  private findOption(optionName: string, options: Array<PriceOption>): PriceOption {
-    return options.find((attribute: PriceOption) => attribute.name === optionName);
+  private findOption(optionValue: string, options: Array<PriceOption>): PriceOption {
+    return options.find((attribute: PriceOption) => attribute.value === optionValue);
   }
 
   private buildForm(): void {

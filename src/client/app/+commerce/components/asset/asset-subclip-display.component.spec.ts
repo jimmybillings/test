@@ -8,9 +8,9 @@ export function main() {
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
 
     beforeEach(() => {
-      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAsset);
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAsset, null);
       componentUnderTest = new AssetSubclipDisplayComponent();
-      componentUnderTest.asset = mockCommerceAsset;
+      componentUnderTest.asset = EnhancedMock.enhanceAsset(mockCommerceAsset, null);
     });
 
     describe('isSubclipped getter', () => {

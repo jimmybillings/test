@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUserService } from '../shared/services/current-user.service';
-import { AssetService } from '../shared/services/asset.service';
+import { AssetService } from '../store/services/asset.service';
 import { AddAssetParameters, PriceAttribute } from '../shared/interfaces/commerce.interface';
 import { WzEvent } from '../shared/interfaces/common.interface';
 import { UiConfig } from '../shared/services/ui.config';
@@ -65,10 +65,8 @@ export class AssetComponent implements OnInit, OnDestroy {
       this.pageSize = config.config.pageSize.value;
     });
 
-    // Hopefully temporary:  Maintaining a subscription instead of an Observable<Asset> because we need the current asset's
-    // assetId in calculatePrice() below.
     this.assetSubscription = this.store.select(state => state.asset.activeAsset)
-      .map(asset => enhanceAsset(asset))
+      .map(asset => enhanceAsset(asset, null))
       .subscribe(asset => {
         this.asset = asset;
         this.pricingStore.setPriceForDetails(this.asset.price);

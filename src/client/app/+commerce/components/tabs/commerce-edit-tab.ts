@@ -11,7 +11,7 @@ import { UiConfig } from '../../../shared/services/ui.config';
 import { MdSnackBar, MdDialogRef } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
-import { AssetService } from '../../../shared/services/asset.service';
+import { AssetService } from '../../../store/services/asset.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { CurrentUserService } from '../../../shared/services/current-user.service';
@@ -281,7 +281,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
             dialogConfig: { width: '530px', position: { top: '14%' } },
             inputOptions: {
               window: this.window.nativeWindow,
-              enhancedAsset: enhanceAsset(lineItem.asset),
+              enhancedAsset: lineItem.asset,
               usagePrice: null
             },
             outputOptions: [
@@ -320,11 +320,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   protected calculatePrice(attributes: Pojo, lineItem: AssetLineItem): Observable<number> {
-    const enhancedAsset: EnhancedAsset = enhanceAsset(lineItem.asset);
-    const markers: SubclipMarkersInterface.SubclipMarkers = enhancedAsset.isSubclipped ? {
-      in: enhancedAsset.inMarkerFrame,
-      out: enhancedAsset.outMarkerFrame
+    const markers: SubclipMarkersInterface.SubclipMarkers = (lineItem.asset as EnhancedAsset).isSubclipped ? {
+      in: (lineItem.asset as EnhancedAsset).inMarkerFrame,
+      out: (lineItem.asset as EnhancedAsset).outMarkerFrame
     } : null;
-    return this.pricingService.getPriceFor(enhancedAsset, attributes, markers);
+    return this.pricingService.getPriceFor((lineItem.asset as EnhancedAsset), attributes, markers);
   }
 }

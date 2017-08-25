@@ -14,6 +14,7 @@ export function main() {
       mockData = { id: 1, quoteStatus: quoteStatus };
       mockQuoteService = {
         data: Observable.of({ data: mockData }),
+        projects: Observable.of([]),
         state: { data: mockData },
         getPaymentOptions: jasmine.createSpy('getPaymentOptions'),
         hasAssetLineItems: quoteHasAssets,
@@ -282,6 +283,7 @@ export function main() {
         mockQuoteService = {
           data: Observable.of({ data: {} }),
           state: mockState,
+          projects: Observable.of([])
         };
         componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockUiConfig,
           mockQuoteEditService, mockSnackBar, mockTranslate);

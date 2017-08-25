@@ -20,7 +20,7 @@
 				[otherProjects]="otherProjects"
 				[userCanCreateSubclips]="userCan.createSubclips(lineItem)"
 				[userCanAdministerQuotes]="userCan.administerQuotes()"
-				[assetIsSubclipped]="isSubclipped(lineItem)"
+				[assetIsSubclipped]="isSubclipped(lineItem.asset)"
 				[quoteType]="quoteType"
 				[hasMultiplier]="lineItem.multiplier > 1"
 				(showPricingDialog)="onShowPricingDialog(lineItem)"
