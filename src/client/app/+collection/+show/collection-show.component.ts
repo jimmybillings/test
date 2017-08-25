@@ -88,7 +88,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         .map(state => {
           let collection: Collection = Common.clone(state.collection);
           if (collection.assets && collection.assets.items) {
-            collection.assets.items = collection.assets.items.map(item => enhanceAsset(item, 'collectionAsset'));
+            collection.assets.items = collection.assets.items
+              .map(item => enhanceAsset(item, { type: 'collectionAsset', parentId: collection.id }));
           }
           return collection;
         })
@@ -149,7 +150,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         componentType: CollectionDeleteComponent,
         dialogConfig: { position: { top: '14%' } },
         inputOptions: {
-          collection: JSON.parse(JSON.stringify(this.activeCollection)),
+          collection: Common.clone(this.activeCollection),
         },
         outputOptions: [{
           event: 'deleteEvent',
@@ -232,7 +233,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         {
           componentType: CollectionFormComponent,
           inputOptions: {
-            collection: JSON.parse(JSON.stringify(this.activeCollection)),
+            collection: Common.clone(this.activeCollection),
             fields: config.config,
             isEdit: true
           },

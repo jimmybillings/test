@@ -51,7 +51,7 @@ export class QuoteEditService {
       return data.projects.map((project: Project) => {
         if (project.lineItems) {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
-            lineItem.asset = enhanceAsset(lineItem.asset, 'quoteEditAsset');
+            lineItem.asset = enhanceAsset(lineItem.asset, { type: 'quoteEditAsset' });
             return lineItem;
           });
         }
@@ -95,7 +95,7 @@ export class QuoteEditService {
   }
 
   public cloneQuote(quote: Quote): Observable<Quote> {
-    let clonedQuote: Quote = JSON.parse(JSON.stringify(quote));
+    let clonedQuote: Quote = Common.clone(quote);
     Common.deletePropertiesFromObject(
       clonedQuote,
       ['id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus']

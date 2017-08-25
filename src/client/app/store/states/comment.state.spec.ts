@@ -4,6 +4,7 @@ import * as CommentState from './comment.state';
 import * as CommentActions from '../actions/comment.actions';
 import { Comment } from '../../shared/interfaces/comment.interface';
 import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
+import { Common } from '../../shared/utilities/common.functions';
 
 export function main() {
   const stateSpecHelper: StateSpecHelper = new StateSpecHelper();
@@ -98,7 +99,7 @@ export function main() {
           it: 'merges the counts into the state',
           actionParameters: { counts: { 'abc': 4, 'def': 2 } },
           previousState: CommentState.initialState,
-          expectedNextState: { ...JSON.parse(JSON.stringify(CommentState.initialState)), counts: { 'abc': 4, 'def': 2 } }
+          expectedNextState: { ...Common.clone(CommentState.initialState), counts: { 'abc': 4, 'def': 2 } }
         }
       ]
     });

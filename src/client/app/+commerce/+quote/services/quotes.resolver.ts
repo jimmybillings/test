@@ -3,6 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs/Observable';
 import { QuotesService } from '../../../shared/services/quotes.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
+import { Common } from '../../../shared/utilities/common.functions';
 
 @Injectable()
 export class QuotesResolver implements Resolve<any> {
@@ -10,9 +11,9 @@ export class QuotesResolver implements Resolve<any> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     if (this.userCan.administerQuotes()) {
-      return this.quotesService.getQuotes(true, JSON.parse(JSON.stringify(route.params)));
+      return this.quotesService.getQuotes(true, Common.clone(route.params));
     } else {
-      return this.quotesService.getQuotes(false, JSON.parse(JSON.stringify(route.params)));
+      return this.quotesService.getQuotes(false, Common.clone(route.params));
     }
   }
 }

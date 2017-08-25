@@ -1,5 +1,6 @@
 import * as AssetActions from '../actions/asset.actions';
 import { Asset } from '../../shared/interfaces/common.interface';
+import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
   readonly activeAsset: Asset;
@@ -14,7 +15,7 @@ export const initialState: State = {
 export function reducer(state: State = initialState, action: AssetActions.Any): State {
   switch (action.type) {
     case AssetActions.Load.Type: {
-      return { ...JSON.parse(JSON.stringify(state)), loaded: false };
+      return { ...Common.clone(state), loaded: false };
     }
 
     case AssetActions.LoadSuccess.Type: {

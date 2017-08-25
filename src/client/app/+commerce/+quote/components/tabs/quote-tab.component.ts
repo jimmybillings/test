@@ -16,6 +16,7 @@ import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Pojo } from '../../../../shared/interfaces/common.interface';
 import { Subscription } from 'rxjs/Subscription';
+import { Common } from '../../../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -99,7 +100,7 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
           componentType: LicenseAgreementComponent,
           dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
           inputOptions: {
-            licenses: JSON.parse(JSON.stringify(agreements)),
+            licenses: Common.clone(agreements),
           },
         }
       );

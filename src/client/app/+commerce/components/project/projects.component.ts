@@ -6,6 +6,7 @@ import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.d
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
+import { Common } from '../../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -113,7 +114,7 @@ export class ProjectsComponent {
     // (Though it's no more bogus than expecting "this.config.addQuoteFee.items" to be present...)
     // We'll at least check to make sure the fields are found before we try to manipulate them.
 
-    const fields: FormFields[] = JSON.parse(JSON.stringify(this.config.addQuoteFee.items));
+    const fields: FormFields[] = Common.clone(this.config.addQuoteFee.items);
     const feeTypeField: FormFields = fields.find(field => field.name === 'feeType');
 
     if (feeTypeField) {

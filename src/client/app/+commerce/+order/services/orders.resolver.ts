@@ -3,6 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs/Observable';
 import { OrdersService } from '../../../shared/services/orders.service';
 import { OrdersApiResponse } from '../../../shared/interfaces/commerce.interface';
+import { Common } from '../../../shared/utilities/common.functions';
 
 @Injectable()
 export class OrdersResolver implements Resolve<OrdersApiResponse> {
@@ -10,6 +11,6 @@ export class OrdersResolver implements Resolve<OrdersApiResponse> {
     private ordersService: OrdersService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<OrdersApiResponse> {
-    return this.ordersService.getOrders(JSON.parse(JSON.stringify(route.params)));
+    return this.ordersService.getOrders(Common.clone(route.params));
   }
 }
