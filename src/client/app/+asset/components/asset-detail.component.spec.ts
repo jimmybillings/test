@@ -6,7 +6,7 @@ export function main() {
     let componentUnderTest: AssetDetailComponent;
     let mockStore: MockAppStore;
     let asset: any, collection: any;
-    let transcodeTargets: any, detailTypeMap: any, finalAsset: any, mockUserCan: any;
+    let transcodeTargets: any, detailTypeMap: any, finalAsset: any;
 
     beforeEach(() => {
       collection = { assets: { items: [{ assetId: 123 }, { assetId: 456 }, { assetId: 789 }, { assetId: 102 }, { assetId: 103 }] } };
