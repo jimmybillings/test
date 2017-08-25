@@ -11,7 +11,7 @@ export interface State {
   readonly collection: Collection;
   readonly latestAddition: {
     readonly asset: Asset;
-    readonly markers: SerializedSubclipMarkers
+    readonly markers?: SerializedSubclipMarkers
   };
   readonly latestRemoval: Asset;
 };
@@ -89,7 +89,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
 
     case ActiveCollectionActions.AddAsset.Type: {
       return {
-        ...Common.clone(state) as any,
+        ...Common.clone(state),
         loaded: false,
         latestAddition: action.markers ? { asset: action.asset, markers: serialize(action.markers) } : { asset: action.asset }
       };
