@@ -118,10 +118,10 @@ export class AssetDetailComponent implements OnChanges {
     // This is referenced in the template, but did not exist.  Assuming this is for future implementation.
   }
 
-  public get AddToCartBtnLabel(): string {
-    return this.userCan.administerQuotes() ?
-      (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL') :
-      (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
+  public get addToCartBtnLabel(): string {
+    return this.userCan.administerQuotes()
+      ? (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL')
+      : (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
   }
 
   private get markersAreDefined(): boolean {

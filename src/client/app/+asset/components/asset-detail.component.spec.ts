@@ -123,35 +123,35 @@ export function main() {
       it('Should emit an event to add an asset to the cart/quote with subclipping', () => {
         // Gotta do both of these to set the asset as expected.
         componentUnderTest.asset = { assetId: 1234, transcodeTargets: transcodeTargets } as any;
-        componentUnderTest.subclipMarkers = { 'in': {}, 'out': {} } as any;
+        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
         componentUnderTest.ngOnChanges({ asset: { assetId: 1234, currentValue: asset } });
 
         spyOn(componentUnderTest.addToCart, 'emit');
         componentUnderTest.addAssetToCart();
         expect(componentUnderTest.addToCart.emit)
           .toHaveBeenCalledWith({
-            assetId: 1234, markers: { 'in': {}, 'out': {} }, selectedTranscodeTarget: 'master_copy'
+            assetId: 1234, markers: { in: {}, out: {} }, selectedTranscodeTarget: 'master_copy'
           });
       });
     });
 
-    describe('AddToCartBtnLabel()', () => {
+    describe('addToCartBtnLabel()', () => {
       it('Should return translatable string based on on generic user and subclip markers exist.', () => {
-        componentUnderTest.subclipMarkers = { 'in': {}, 'out': {} } as any;
-        expect(componentUnderTest.AddToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE');
+        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
+        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE');
       });
       it('Should return translatable string based on subclip markers exist and user is sales person.', () => {
         componentUnderTest.userCan = { administerQuotes: () => true } as any;
-        componentUnderTest.subclipMarkers = { 'in': {}, 'out': {} } as any;
-        expect(componentUnderTest.AddToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE');
+        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
+        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE');
       });
       it('Should return translatable string based on generic user and not a subclip.', () => {
-        expect(componentUnderTest.AddToCartBtnLabel).toBe('ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
+        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
       });
       it('Should return translatable string based on sales user and subclip markers are present', () => {
         componentUnderTest.userCan = { administerQuotes: () => true } as any;
-        componentUnderTest.subclipMarkers = { 'in': {}, 'out': {} } as any;
-        expect(componentUnderTest.AddToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE');
+        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
+        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE');
       });
     });
 
