@@ -31,6 +31,8 @@ export function main() {
       } as any;
 
       componentUnderTest.window = window;
+
+      componentUnderTest.subclipMarkers = undefined;
     });
 
     describe('ngOnChanges()', () => {
@@ -53,7 +55,7 @@ export function main() {
           expect(componentUnderTest.selectedTarget).toEqual('master_copy');
         });
 
-        it('Should delete the detailTypMap property from the asset object', () => {
+        it('Should delete the detailTypeMap property from the asset object', () => {
           componentUnderTest.ngOnChanges({ asset: { currentValue: asset } });
           expect(componentUnderTest.asset.detailTypeMap)
             .toBeUndefined();
@@ -108,15 +110,28 @@ export function main() {
     });
 
     describe('addAssetToCart()', () => {
-      it('Should emit an event to add an asset to the cart with the correct parameters', () => {
+      it('Should emit an event to add an asset to the cart/quote without subclipping', () => {
         // Gotta do both of these to set the asset as expected.
         componentUnderTest.asset = { assetId: 1234, transcodeTargets: transcodeTargets } as any;
-        componentUnderTest.ngOnChanges({ asset: { assetId: 1234, currentValue: asset }, subclipMarkers: null });
-
+        componentUnderTest.ngOnChanges({ asset: { assetId: 1234, currentValue: asset } });
         spyOn(componentUnderTest.addToCart, 'emit');
         componentUnderTest.addAssetToCart();
         expect(componentUnderTest.addToCart.emit)
           .toHaveBeenCalledWith({ assetId: 1234, markers: null, selectedTranscodeTarget: 'master_copy' });
+      });
+
+      it('Should emit an event to add an asset to the cart/quote with subclipping', () => {
+        // Gotta do both of these to set the asset as expected.
+        componentUnderTest.asset = { assetId: 1234, transcodeTargets: transcodeTargets } as any;
+        componentUnderTest.subclipMarkers = { 'in': {}, 'out': {} } as any;
+        componentUnderTest.ngOnChanges({ asset: { assetId: 1234, currentValue: asset } });
+
+        spyOn(componentUnderTest.addToCart, 'emit');
+        componentUnderTest.addAssetToCart();
+        expect(componentUnderTest.addToCart.emit)
+          .toHaveBeenCalledWith({
+            assetId: 1234, markers: { 'in': {}, 'out': {} }, selectedTranscodeTarget: 'master_copy'
+          });
       });
     });
 

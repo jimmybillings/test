@@ -65,7 +65,9 @@ export class AssetDetailComponent implements OnChanges {
 
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
     this.subclipMarkers = newMarkers;
-    this.showAssetSaveSubclip = this.markersAreDefined;
+    // temporarily turn off the subclip pop-up. It will be going away eventually
+    this.showAssetSaveSubclip = false;
+    // this.showAssetSaveSubclip = this.markersAreDefined;
     if (this.markersAreDefined) {
       this.store.dispatch(factory => factory.asset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId));
     }
@@ -116,7 +118,7 @@ export class AssetDetailComponent implements OnChanges {
     // This is referenced in the template, but did not exist.  Assuming this is for future implementation.
   }
 
-  public get calculateAddBtnLabel(): string {
+  public get AddToCartBtnLabel(): string {
     return this.userCan.administerQuotes() ?
       (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL') :
       (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
