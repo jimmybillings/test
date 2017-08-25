@@ -8,6 +8,8 @@ import { UserPreferenceService } from '../../shared/services/user-preference.ser
 import { GalleryViewService } from '../../shared/services/gallery-view.service';
 import { enhanceAsset, EnhancedAsset } from '../interfaces/enhanced-asset';
 import { Asset } from '../interfaces/common.interface';
+import { Common } from '../utilities/common.functions';
+
 /**
  * Service that provides access to the search api
  * and returns search results
@@ -60,7 +62,7 @@ export class SearchService {
   }
 
   private normalizeParams(params: any): any {
-    let cloneParams = JSON.parse(JSON.stringify(params));
+    let cloneParams = Common.clone(params);
     if (!cloneParams.q) cloneParams.q = 'itemType:clip';
     if (cloneParams.gq) cloneParams.gq = this.galleryViewService.stringifyPathForSearch(JSON.parse(cloneParams.gq));
     cloneParams['i'] = (parseFloat(cloneParams['i']) - 1).toString();

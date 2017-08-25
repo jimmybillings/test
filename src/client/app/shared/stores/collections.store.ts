@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-
+import { Common } from '../utilities/common.functions';
 import { Collection, CollectionsStoreI } from '../interfaces/collection.interface';
 import { LegacyAction } from '../interfaces/common.interface';
 
@@ -15,7 +15,7 @@ export function collections(state: CollectionsStoreI = initialState(), action: L
       return Object.assign({}, action.payload ? action.payload : initialState());
 
     case 'ADD_COLLECTION':
-      updatedItems = state.items ? JSON.parse(JSON.stringify(state.items)) : [];
+      updatedItems = state.items ? Common.clone(state.items) : [];
       if (action.payload) updatedItems.push(action.payload);
 
       return Object.assign({}, state, { items: updatedItems });

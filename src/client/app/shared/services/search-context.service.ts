@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-
+import { Common } from '../utilities/common.functions';
 import { LegacyAction } from '../interfaces/common.interface';
 
 const initSearchContext: any = {
@@ -67,7 +67,7 @@ export class SearchContext {
 
   private decodeParams(params: any) {
     let decodedParams: any = {};
-    let d: any = JSON.parse(JSON.stringify(params));
+    let d: any = Common.clone(params);
     for (let param in d) {
       if (d[param] === '' || params[param] === 'true') {
         delete d[param];
