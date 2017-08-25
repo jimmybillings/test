@@ -1,4 +1,4 @@
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../../components/tabs/commerce-edit-tab';
 import { LicenseAgreements, Project } from '../../../../shared/interfaces/commerce.interface';
@@ -17,6 +17,7 @@ import { FeatureStore } from '../../../../shared/stores/feature.store';
 import { Feature } from '../../../../shared/interfaces/feature.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 import { PricingService } from '../../../../shared/services/pricing.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,
@@ -25,8 +26,10 @@ import { PricingService } from '../../../../shared/services/pricing.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CartTabComponent extends CommerceEditTab {
+export class CartTabComponent extends CommerceEditTab implements OnDestroy {
   public projects: Project[];
+  private projectSubscription: Subscription;
+
   constructor(
     public userCan: CommerceCapabilities,
     public cartService: CartService,
@@ -48,8 +51,13 @@ export class CartTabComponent extends CommerceEditTab {
       userPreference, error, document, snackBar, translate, pricingStore,
       null, null, pricingService
     );
-    this.cartService.projects.subscribe(projects => this.projects = projects);
+    this.projectSubscription = this.cartService.projects.subscribe(projects => this.projects = projects);
   }
+
+  public ngOnDestroy() {
+    this.projectSubscription.unsubscribe();
+  }
+
 
   public checkout(): void {
     this.goToNextTab();
