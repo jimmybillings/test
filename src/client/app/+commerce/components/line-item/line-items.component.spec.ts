@@ -8,8 +8,9 @@ export function main() {
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
 
     beforeEach(() => {
-      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAssetLineItem.asset);
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAssetLineItem.asset, null);
       classUnderTest = new LineItemsComponent();
+      mockCommerceAssetLineItem.asset = EnhancedMock.enhanceAsset(mockCommerceAssetLineItem.asset, null);
       classUnderTest.lineItems = [mockCommerceAssetLineItem];
     });
 
@@ -145,7 +146,8 @@ export function main() {
 
     describe('isSubclipped()', () => {
       it('returns true when the enhanced asset is subclipped', () => {
-        expect(classUnderTest.isSubclipped(classUnderTest.items[0])).toBe(mockEnhancedAsset.isSubclipped);
+        expect(classUnderTest.isSubclipped(classUnderTest.items[0].asset as EnhancedMock.EnhancedAsset))
+          .toBe(mockEnhancedAsset.isSubclipped);
       });
     });
   });

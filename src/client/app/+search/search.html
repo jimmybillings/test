@@ -28,7 +28,7 @@
 
 				<content *ngIf="(search.data | async).items">
 					<wz-asset-grid *ngIf="(userPreferences.data | async).assetView =='grid'" class="grid" 
-						[assets]="(search.data | async).items" 
+						[assets]="enhancedAssets" 
 						[userCan]="userCan" 
 						[assetType]="'search'"
 						[activeCollection]="activeCollection | async"
@@ -37,7 +37,7 @@
 					</wz-asset-grid>
 				
 					<wz-asset-list *ngIf="(userPreferences.data | async).assetView =='list'" class="list" 
-						[assets]="(search.data | async).items" 
+						[assets]="enhancedAssets" 
 						[userCan]="userCan"
 						[assetType]="'search'"
 						[activeCollection]="activeCollection | async"

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuoteService } from '../../../../shared/services/quote.service';
 import { Quote, QuoteState, Project, AssetLineItem, FeeLineItem } from '../../../../shared/interfaces/commerce.interface';
@@ -15,6 +15,7 @@ import { QuoteEditService } from '../../../../shared/services/quote-edit.service
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Pojo } from '../../../../shared/interfaces/common.interface';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,
@@ -22,10 +23,11 @@ import { Pojo } from '../../../../shared/interfaces/common.interface';
   templateUrl: 'quote-tab.html'
 })
 
-export class QuoteTabComponent extends Tab {
+export class QuoteTabComponent extends Tab implements OnDestroy {
   public quote: Observable<Quote>;
+  public projects: Project[];
   private config: any;
-
+  private projectSubscription: Subscription;
   constructor(
     public quoteService: QuoteService,
     public userCan: CommerceCapabilities,
@@ -37,7 +39,12 @@ export class QuoteTabComponent extends Tab {
     private translate: TranslateService) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
+    this.projectSubscription = this.quoteService.projects.subscribe(projects => this.projects = projects);
     this.uiConfig.get('cart').take(1).subscribe((config: any) => this.config = config.config);
+  }
+
+  ngOnDestroy() {
+    this.projectSubscription.unsubscribe();
   }
 
   public get hasDiscount(): boolean {

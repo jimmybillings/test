@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { OrderService } from '../../../shared/services/order.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { Observable } from 'rxjs/Observable';
 import { Order, AssetLineItem, Project } from '../../../shared/interfaces/commerce.interface';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,
@@ -10,8 +11,17 @@ import { Order, AssetLineItem, Project } from '../../../shared/interfaces/commer
   templateUrl: 'order-show.html'
 })
 
-export class OrderShowComponent {
-  constructor(public window: WindowRef, public order: OrderService) { }
+export class OrderShowComponent implements OnDestroy {
+  public projects: Project[];
+  private projectSubscription: Subscription;
+
+  constructor(public window: WindowRef, public order: OrderService) {
+    this.projectSubscription = this.order.projects.subscribe(projects => this.projects = projects);
+  }
+
+  public ngOnDestroy() {
+    this.projectSubscription.unsubscribe();
+  }
 
   public downloadMaster(masterUrl: string): void {
     this.window.nativeWindow.location.href = masterUrl;

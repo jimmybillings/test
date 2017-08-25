@@ -1,11 +1,11 @@
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 import { Router } from '@angular/router';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { MdSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { AssetService } from '../../../shared/services/asset.service';
+import { AssetService } from '../../../store/services/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../shared/stores/error.store';
@@ -22,6 +22,7 @@ import { CommentParentObject } from '../../../shared/interfaces/comment.interfac
 import { AppStore } from '../../../app.store';
 import { PricingService } from '../../../shared/services/pricing.service';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,
@@ -30,10 +31,12 @@ import { Observable } from 'rxjs/Observable';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class QuoteEditComponent extends CommerceEditTab {
+export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   public commentFormConfig: Array<FormFields>;
   public commentParentObject: CommentParentObject;
   public showComments: boolean = null;
+  public projects: Project[];
+  private projectSubscription: Subscription;
 
   constructor(
     public userCan: Capabilities,
@@ -60,6 +63,11 @@ export class QuoteEditComponent extends CommerceEditTab {
     );
     this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
+    this.projectSubscription = this.quoteEditService.projects.subscribe(projects => this.projects = projects);
+  }
+
+  ngOnDestroy() {
+    this.projectSubscription.unsubscribe();
   }
 
   public onNotification(message: WzEvent): void {

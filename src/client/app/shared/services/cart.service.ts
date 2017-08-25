@@ -26,6 +26,7 @@ import {
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
 import { Frame } from 'wazee-frame-formatter';
+import { enhanceAsset } from '../interfaces/enhanced-asset';
 
 @Injectable()
 export class CartService {
@@ -57,7 +58,17 @@ export class CartService {
   }
 
   public get projects(): Observable<Project[]> {
-    return this.cart.map((data: Cart) => data.projects);
+    return this.cart.map((data: Cart) => {
+      return data.projects.map((project: Project) => {
+        if (project.lineItems) {
+          project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
+            lineItem.asset = enhanceAsset(lineItem.asset, 'cartAsset');
+            return lineItem;
+          });
+        }
+        return project;
+      });
+    });
   }
 
   public get total(): Observable<Number> {

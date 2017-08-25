@@ -17,6 +17,7 @@ export function main() {
       mockQuoteEditService = {
         state: { data: 'store' },
         data: { store: 'test data' },
+        projects: Observable.of([]),
         quoteId: 1,
         addFeeTo: jasmine.createSpy('addFeeTo'),
         removeFee: jasmine.createSpy('removeFee'),
@@ -80,6 +81,7 @@ export function main() {
     // This gets used down below for some tedious setup in the editBulkId and editDiscount blocks
     let setupFor = (propertyInQuestion: any) => {
       mockQuoteEditService = {
+        projects: Observable.of([]),
         hasProperty: jasmine.createSpy('hasProperty').and.returnValue(Observable.of(propertyInQuestion)),
         updateQuoteField: jasmine.createSpy('updateQuoteField'),
         quoteId: 1
