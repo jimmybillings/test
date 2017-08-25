@@ -34,6 +34,12 @@
       button[type="submit"] {
         background-color: mat-color($primary, 700, .45);
       }
+      div.close-search {
+        background: mat-color($background, app-bar);
+        button[md-icon-button] {
+          color: rgba(mat-color($foreground, secondary-text), .6);
+        }
+      }
     }
     button.filter-toggle {
       background-image:

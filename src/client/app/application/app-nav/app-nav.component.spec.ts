@@ -7,7 +7,7 @@ export function main() {
     beforeEach(() => {
       componentUnderTest = new AppNavComponent();
       componentUnderTest.trigger = { closeMenu: jasmine.createSpy('closeMenu') } as any;
-      componentUnderTest.prefs = {
+      componentUnderTest.userPreference = {
         toggleSearch: jasmine.createSpy('toggleSearch'),
         toggleCollectionTray: jasmine.createSpy('toggleCollectionTray')
       };
@@ -30,14 +30,14 @@ export function main() {
     describe('toggleSearch', () => {
       it('should call toggleSearch() on the user preference object', () => {
         componentUnderTest.toggleSearch();
-        expect(componentUnderTest.prefs.toggleSearch).toHaveBeenCalled();
+        expect(componentUnderTest.userPreference.toggleSearch).toHaveBeenCalled();
       });
     });
 
     describe('toggleCollectionTray', () => {
       it('should call toggleCollectionTray() on the user preference object', () => {
         componentUnderTest.toggleCollectionTray();
-        expect(componentUnderTest.prefs.toggleCollectionTray).toHaveBeenCalled();
+        expect(componentUnderTest.userPreference.toggleCollectionTray).toHaveBeenCalled();
       });
     });
 

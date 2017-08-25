@@ -147,7 +147,7 @@ export function main() {
 
     describe('onMarkersChange', () => {
       describe('when there are no selected attributes', () => {
-        it('calls getPriceFor() on the asset service', () => {
+        it('does not call getPriceFor() on the asset service', () => {
           componentUnderTest.onMarkersChange({ in: {}, out: {} } as any);
           expect(mockPricingService.getPriceFor).not.toHaveBeenCalled();
         });
