@@ -17,6 +17,7 @@ export class WzAsset {
   @Output() onEditAsset = new EventEmitter();
 
   @Input() public set assets(assets: EnhancedAsset[]) {
+    console.log(assets);
     this._assets = assets;
   }
 

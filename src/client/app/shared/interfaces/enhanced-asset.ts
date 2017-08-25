@@ -14,13 +14,13 @@ export interface AssetTypeAndParent {
 }
 
 export function enhanceAsset(asset: commerce.Asset | common.Asset, assetTypeAndParent: AssetTypeAndParent): EnhancedAsset {
-  return Object.assign(new EnhancedAsset(), asset, assetTypeAndParent).normalize();
+  return Object.assign(new EnhancedAsset(), asset, { assetTypeAndParent: assetTypeAndParent }).normalize();
 }
 
 export class EnhancedAsset implements commerce.Asset, common.Asset {
   // defined in two or more of the following sources
   public readonly assetId: number;
-  public readonly parentId?: number;
+  public readonly assetTypeAndParent?: AssetTypeAndParent;
   public readonly uuid?: string;
   public readonly timeStart?: number;
   public readonly timeEnd?: number;
@@ -256,7 +256,7 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
           : undefined;
 
       case 'routerLink':
-        return ['/asset', this.assetId, this.routerParameters];
+        return this.createRouterLink();
 
       case 'subclipDurationFrame':
         return this.framesPerSecond && this.inMarkerFrame && this.outMarkerFrame
@@ -271,6 +271,29 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
 
       default:
         throw new Error(`Value calculation for '${key}' is missing.`);
+    }
+  }
+
+
+  private createRouterLink(): any[] {
+    switch (this.assetTypeAndParent.type) {
+      case 'collectionAsset':
+        return [`/collections/${this.assetTypeAndParent.parentId}/asset/${this.uuid}`];
+
+      case 'quoteEditAsset':
+        return [`/activeQuote/asset/${this.uuid}`];
+
+      case 'searchAsset':
+        return [`/seach/asset/${this.assetId}`];
+
+      case 'quoteShowAsset':
+        return [`/quotes/${this.assetTypeAndParent.parentId}/asset/${this.uuid}`];
+
+      case 'orderAsset':
+        return [`/orders/${this.assetTypeAndParent.parentId}/asset/${this.uuid}`];
+
+      case 'cartAsset':
+        return [`/cart/asset/${this.uuid}`];
     }
   }
 
