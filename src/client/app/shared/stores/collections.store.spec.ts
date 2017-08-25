@@ -2,6 +2,7 @@ import { collections, CollectionsStore } from './collections.store';
 import { Collection, CollectionsStoreI } from '../interfaces/collection.interface';
 import { addStandardReducerTestsFor } from '../tests/reducer';
 import { Observable } from 'rxjs/Observable';
+import { Common } from '../utilities/common.functions';
 
 export function main() {
   const initialState: CollectionsStoreI = {
@@ -53,7 +54,7 @@ export function main() {
     });
 
     it('returns initial state merged with payload when current state is not passed in', () => {
-      const expectedResult = JSON.parse(JSON.stringify(initialState));
+      const expectedResult = Common.clone(initialState) as any;
       expectedResult.items = [{ collection: '42' }];
 
       expect(collections(undefined, { type: 'ADD_COLLECTION', payload: { collection: '42' } }))

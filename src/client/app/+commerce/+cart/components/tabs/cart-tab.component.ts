@@ -18,6 +18,7 @@ import { Feature } from '../../../../shared/interfaces/feature.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 import { PricingService } from '../../../../shared/services/pricing.service';
 import { Subscription } from 'rxjs/Subscription';
+import { Common } from '../../../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -75,7 +76,7 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
           componentType: LicenseAgreementComponent,
           dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
           inputOptions: {
-            licenses: JSON.parse(JSON.stringify(agreements)),
+            licenses: Common.clone(agreements),
           },
         }
       );

@@ -95,7 +95,7 @@ export class QuoteEditService {
   }
 
   public cloneQuote(quote: Quote): Observable<Quote> {
-    let clonedQuote: Quote = JSON.parse(JSON.stringify(quote));
+    let clonedQuote: Quote = Common.clone(quote);
     Common.deletePropertiesFromObject(
       clonedQuote,
       ['id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus']

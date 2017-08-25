@@ -6,12 +6,13 @@ import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { ActiveFilters } from '../interfaces/filters.interface';
 import { LegacyAction } from '../interfaces/common.interface';
+import { Common } from '../utilities/common.functions';
 
 const initFilters: any = {};
 export function filters(state: Array<any> = initFilters, action: LegacyAction) {
   switch (action.type) {
     case 'FILTERS.SET_FILTERS':
-      return Object.assign({}, JSON.parse(JSON.stringify(action.payload)));
+      return Object.assign({}, Common.clone(action.payload));
     default:
       return state;
   }
@@ -26,7 +27,7 @@ export class FilterService {
   }
 
   public load(params: any, counted: boolean): Observable<any> {
-    let options = JSON.parse(JSON.stringify(Object.assign({}, params, { counted })));
+    let options = Common.clone(Object.assign({}, params, { counted }));
     if (!options.q) options.q = 'itemType:clip';
     return this.api.get(
       Api.Assets,

@@ -11,6 +11,7 @@ import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { LicenseAgreements } from '../../../shared/interfaces/commerce.interface';
 import { LicenseAgreementComponent } from '../../components/license-agreement/license-agreement.component';
+import { Common } from '../../../shared/utilities/common.functions';
 
 export class CommerceConfirmTab extends Tab {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
@@ -89,7 +90,7 @@ export class CommerceConfirmTab extends Tab {
           componentType: LicenseAgreementComponent,
           dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
           inputOptions: {
-            licenses: JSON.parse(JSON.stringify(agreements)),
+            licenses: Common.clone(agreements),
           },
         }
       );

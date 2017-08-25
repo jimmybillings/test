@@ -3,6 +3,8 @@ import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api } from '../interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
 import { Quote } from '../../shared/interfaces/commerce.interface';
+import { Common } from '../utilities/common.functions';
+
 export function main() {
   describe('Quote Service', () => {
     let serviceUnderTest: QuoteService, mockApi: MockApiService, mockCartService: any,
@@ -88,7 +90,7 @@ export function main() {
     describe('load()', () => {
 
       beforeEach(() => {
-        mockApi.getResponse = JSON.parse(JSON.stringify(mockQuoteResponse));
+        mockApi.getResponse = Common.clone(mockQuoteResponse);
       });
 
       describe('Admin user', () => {
@@ -106,7 +108,7 @@ export function main() {
 
         it('should set the quote in the quote store with the user added to the quote response', () => {
           serviceUnderTest.load(1, true).take(1).subscribe();
-          let testResponse: Quote = JSON.parse(JSON.stringify(mockQuoteResponse));
+          let testResponse: Quote = Common.clone(mockQuoteResponse) as any;
           testResponse = Object.assign(testResponse, {
             createdUserFullName: 'best tester',
             createdUserEmailAddress: 'test@gmail.com'
@@ -131,7 +133,7 @@ export function main() {
         it('should set the quote in the quote store', () => {
           serviceUnderTest.load(1, false).take(1).subscribe();
           expect(mockQuoteStore.updateQuote)
-            .toHaveBeenCalledWith(JSON.parse(JSON.stringify(mockQuoteResponse)));
+            .toHaveBeenCalledWith(Common.clone(mockQuoteResponse));
         });
       });
 
@@ -203,7 +205,7 @@ export function main() {
 
     describe('extendExpiration()', () => {
       beforeEach(() => {
-        mockApi.putResponse = JSON.parse(JSON.stringify(mockQuoteResponse));
+        mockApi.putResponse = Common.clone(mockQuoteResponse);
       });
       it('should call the api service correctly', () => {
         serviceUnderTest.extendExpirationDate('2017-01-01');
@@ -223,7 +225,7 @@ export function main() {
 
       it('should set the quote in the quote store with the user added to the quote response', () => {
         serviceUnderTest.extendExpirationDate('2017-01-01').subscribe();
-        let testResponse: Quote = JSON.parse(JSON.stringify(mockQuoteResponse));
+        let testResponse: Quote = Common.clone(mockQuoteResponse) as any;
         testResponse = Object.assign(testResponse, {
           createdUserFullName: 'best tester',
           createdUserEmailAddress: 'test@gmail.com'

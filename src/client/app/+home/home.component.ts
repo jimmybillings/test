@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { GalleryViewService } from '../shared/services/gallery-view.service';
 import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from '../shared/interfaces/gallery-view.interface';
 import { HomeVideoService } from './services/home.video.service';
+import { Common } from '../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -65,7 +66,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public onNavigate(event: GalleryNavigationEvent): void {
-    const path = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
+    const path = Common.clone(this.galleryViewService.state.path);
     path.push(event.pathSegment);
 
     if (event.method === 'nextLevel') {
