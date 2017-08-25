@@ -243,8 +243,8 @@
                     md-raised-button
                     [disabled]="!userCan.addToCart()"
                     (click)="addAssetToCart()"
-                    class="mat-primary mat-hue-7">
-                    {{ (userCan.administerQuotes() ? 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL') | translate }}
+                    color="primary">
+                    {{ addToCartBtnLabel | translate }}
                     </button>
                 </ng-container>
               </md-card-actions>
@@ -268,9 +268,12 @@
                   <button *ngIf="userCan.calculatePrice()" md-button (click)="getPricingAttributes()" class="is-outlined">
                     {{ 'PRICING.CALCULATE_HEADING' | translate }}
                   </button>
-                  <button [disabled]="!userCan.addToCart()" md-raised-button (click)="addAssetToCart()"
-                    class="md-primary md-hue-7" color="primary">
-                    {{ (userCan.administerQuotes() ? 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL') | translate}}
+                  <button 
+                    md-raised-button 
+                    [disabled]="!userCan.addToCart()" 
+                    (click)="addAssetToCart()"
+                    color="primary">
+                    {{ addToCartBtnLabel | translate }}
                   </button>
                 </md-card-actions>
               </ng-container>
