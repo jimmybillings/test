@@ -21,12 +21,12 @@ export function main() {
         }
       };
 
-      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, null);
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, { type: 'cartAsset' });
       mockStore = new MockAppStore();
       mockStore.createStateElement('comment', 'counts', { 'abc-123': 3 });
 
       componentUnderTest = new WzAsset(mockStore);
-      componentUnderTest.assets = [EnhancedMock.enhanceAsset(mockAsset, null)];
+      componentUnderTest.assets = [EnhancedMock.enhanceAsset(mockAsset, { type: 'cartAsset' })];
     });
 
     describe('assets getter', () => {

@@ -374,84 +374,73 @@ export function main() {
     });
 
     describe('routerLink()', () => {
-      it('has the correct base path', () => {
-        expect(assetUnderTest.routerLink[0]).toEqual('/asset');
+
+      it('Returns correct path for a collection asset', () => {
+        Object.assign(
+          assetUnderTest,
+          {
+            assetId: 47,
+            uuid: 'aabb-ccdd-eeff-gghh',
+            assetTypeAndParent: { type: 'collectionAsset', parentId: 1 }
+          }
+        );
+        expect(assetUnderTest.routerLink).toEqual([`/collections/1/asset/aabb-ccdd-eeff-gghh`]);
       });
 
-      it('adds the assetId', () => {
-        Object.assign(assetUnderTest, { assetId: 47 });
-
-        expect(assetUnderTest.routerLink[1]).toEqual(47);
+      it('Returns correct path for a quote edit asset', () => {
+        Object.assign(
+          assetUnderTest,
+          {
+            assetId: 47,
+            uuid: 'aabb-ccdd-eeff-gghh',
+            assetTypeAndParent: { type: 'quoteEditAsset' }
+          }
+        );
+        expect(assetUnderTest.routerLink).toEqual([`/activeQuote/asset/aabb-ccdd-eeff-gghh`]);
       });
 
-      it('adds an empty parameters object by default', () => {
-        expect(assetUnderTest.routerLink[2]).toEqual({});
+      it('Returns correct path for a search asset', () => {
+        Object.assign(
+          assetUnderTest,
+          { assetId: 47, assetTypeAndParent: { type: 'searchAsset' } }
+        );
+        expect(assetUnderTest.routerLink).toEqual([`/search/asset/47`]);
       });
 
-      it('adds a full parameters object when everything is proper', () => {
-        Object.assign(assetUnderTest, { uuid: 'some UUID', timeStart: 1, timeEnd: 2 });
-
-        expect(assetUnderTest.routerLink[2]).toEqual({ uuid: 'some UUID', timeStart: 1, timeEnd: 2 });
+      it('Returns correct path for a quote show asset', () => {
+        Object.assign(
+          assetUnderTest,
+          {
+            assetId: 47,
+            uuid: 'aabb-ccdd-eeff-gghh',
+            assetTypeAndParent: { type: 'quoteShowAsset', parentId: 1 }
+          }
+        );
+        expect(assetUnderTest.routerLink).toEqual([`/quotes/1/asset/aabb-ccdd-eeff-gghh`]);
       });
 
-      describe('UUID', () => {
-        it('gets added when it is defined', () => {
-          Object.assign(assetUnderTest, { uuid: 'some UUID' });
-
-          expect(assetUnderTest.routerLink[2]).toEqual({ uuid: 'some UUID' });
-        });
-
-        it('does not get added when it is undefined', () => {
-          expect(assetUnderTest.routerLink[2]).toEqual({});
-        });
+      it('Returns correct path for a order asset', () => {
+        Object.assign(
+          assetUnderTest,
+          {
+            assetId: 47,
+            uuid: 'aabb-ccdd-eeff-gghh',
+            assetTypeAndParent: { type: 'orderAsset', parentId: 1 }
+          }
+        );
+        expect(assetUnderTest.routerLink).toEqual([`/orders/1/asset/aabb-ccdd-eeff-gghh`]);
       });
 
-      describe('timeStart', () => {
-        it('gets added when it is positive', () => {
-          Object.assign(assetUnderTest, { timeStart: 1 });
-
-          expect(assetUnderTest.routerLink[2]).toEqual({ timeStart: 1 });
-        });
-
-        it('gets added when it is zero', () => {
-          Object.assign(assetUnderTest, { timeStart: 0 });
-
-          expect(assetUnderTest.routerLink[2]).toEqual({ timeStart: 0 });
-        });
-
-        it('does not get added when it is negative', () => {
-          Object.assign(assetUnderTest, { timeStart: -1 });
-
-          expect(assetUnderTest.routerLink[2]).toEqual({});
-        });
-
-        it('does not get added when it is undefined', () => {
-          expect(assetUnderTest.routerLink[2]).toEqual({});
-        });
-      });
-
-      describe('timeEnd', () => {
-        it('gets added when it is positive', () => {
-          Object.assign(assetUnderTest, { timeEnd: 1 });
-
-          expect(assetUnderTest.routerLink[2]).toEqual({ timeEnd: 1 });
-        });
-
-        it('gets added when it is zero', () => {
-          Object.assign(assetUnderTest, { timeEnd: 0 });
-
-          expect(assetUnderTest.routerLink[2]).toEqual({ timeEnd: 0 });
-        });
-
-        it('does not get added when it is negative', () => {
-          Object.assign(assetUnderTest, { timeEnd: -1 });
-
-          expect(assetUnderTest.routerLink[2]).toEqual({});
-        });
-
-        it('does not get added when it is undefined', () => {
-          expect(assetUnderTest.routerLink[2]).toEqual({});
-        });
+      it('Returns correct path for a cart asset', () => {
+        Object.assign(
+          assetUnderTest,
+          {
+            assetId: 47,
+            uuid: 'aabb-ccdd-eeff-gghh',
+            assetTypeAndParent: { type: 'cartAsset' }
+          }
+        );
+        expect(assetUnderTest.routerLink).toEqual([`/cart/asset/aabb-ccdd-eeff-gghh`]);
       });
     });
 
