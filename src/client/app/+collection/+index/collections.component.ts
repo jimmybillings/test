@@ -17,6 +17,7 @@ import { CollectionFormComponent } from '../../application/collection-tray/compo
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { AppStore } from '../../app.store';
+import { Common } from '../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -171,7 +172,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
         componentType: CollectionDeleteComponent,
         dialogConfig: { position: { top: '14%' } },
         inputOptions: {
-          collection: JSON.parse(JSON.stringify(collection)),
+          collection: Common.clone(collection),
         },
         outputOptions: [{
           event: 'deleteEvent',
@@ -223,7 +224,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
         {
           componentType: CollectionFormComponent,
           inputOptions: {
-            collection: JSON.parse(JSON.stringify(collection)),
+            collection: Common.clone(collection),
             fields: config.config,
             isEdit: true
           },

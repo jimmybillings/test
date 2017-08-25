@@ -3,6 +3,7 @@ import {
   Comment, Comments, ObjectType, CommentFormMode, CommentCountsApiResponse, CommentCounts
 } from '../../shared/interfaces/comment.interface';
 import { Pagination } from '../../shared/interfaces/common.interface';
+import { Common } from '../../shared/utilities/common.functions';
 
 // I would love to take advantage of our ObjectType type here, but currently can't find a way to do it (R.E. 08/10/2017)
 // for the time being, manually add to this interface when adding comments to cart, quote, etc.
@@ -37,7 +38,7 @@ export function reducer(state: State = initialState, action: CommentActions.Any)
   switch (action.type) {
     case CommentActions.ChangeFormModeToEdit.Type: {
       return {
-        ...JSON.parse(JSON.stringify(state)),
+        ...Common.clone(state),
         formMode: 'EDIT',
         formSubmitLabel: 'COMMENTS.SAVE_BTN_LABEL',
         commentBeingEdited: action.commentBeingEdited
@@ -46,7 +47,7 @@ export function reducer(state: State = initialState, action: CommentActions.Any)
 
     case CommentActions.ChangeFormModeToAdd.Type: {
       return {
-        ...JSON.parse(JSON.stringify(state)),
+        ...Common.clone(state),
         formMode: 'ADD',
         formSubmitLabel: 'COMMENTS.SUBMIT_BTN_LABEL',
         commentBeingEdited: null
@@ -56,7 +57,7 @@ export function reducer(state: State = initialState, action: CommentActions.Any)
     case CommentActions.Load.Type:
     case CommentActions.Remove.Type: {
       return {
-        ...JSON.parse(JSON.stringify(state)),
+        ...Common.clone(state),
         activeObjectType: action.parentObject.objectType
       };
     }
@@ -64,7 +65,7 @@ export function reducer(state: State = initialState, action: CommentActions.Any)
     case CommentActions.FormSubmitSuccess.Type:
     case CommentActions.RemoveSuccess.Type:
     case CommentActions.LoadSuccess.Type: {
-      const stateClone: State = JSON.parse(JSON.stringify(state));
+      const stateClone: State = Common.clone(state);
       return {
         ...stateClone,
         [stateClone.activeObjectType]: {
@@ -78,13 +79,13 @@ export function reducer(state: State = initialState, action: CommentActions.Any)
 
     case CommentActions.GetCountsSuccess.Type: {
       return {
-        ...JSON.parse(JSON.stringify(state)),
+        ...Common.clone(state),
         counts: action.counts
       };
     }
 
     case CommentActions.FormSubmit.Type: {
-      const stateClone: State = JSON.parse(JSON.stringify(state));
+      const stateClone: State = Common.clone(state);
 
       return {
         ...stateClone,

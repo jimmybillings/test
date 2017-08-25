@@ -4,6 +4,7 @@ import {
 } from '../../shared/interfaces/collection.interface';
 import { Asset } from '../../shared/interfaces/common.interface';
 import { SerializedSubclipMarkers, serialize } from '../../shared/interfaces/subclip-markers';
+import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
   readonly loaded: boolean;
@@ -58,7 +59,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     case ActiveCollectionActions.LoadPage.Type:
     case ActiveCollectionActions.UpdateAssetMarkers.Type: {
       return {
-        ...JSON.parse(JSON.stringify(state)),
+        ...Common.clone(state),
         loaded: false
       };
     }
@@ -66,7 +67,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     case ActiveCollectionActions.LoadSuccess.Type:
     case ActiveCollectionActions.SetSuccess.Type: {
       return {
-        ...JSON.parse(JSON.stringify(initialState)),
+        ...Common.clone(initialState),
         collection: action.activeCollection,
         loaded: true
       };
@@ -74,7 +75,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
 
     case ActiveCollectionActions.LoadPageSuccess.Type:
     case ActiveCollectionActions.UpdateAssetMarkersSuccess.Type: {
-      const stateClone: State = JSON.parse(JSON.stringify(state));
+      const stateClone: State = Common.clone(state);
 
       return {
         ...stateClone,
@@ -88,14 +89,14 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
 
     case ActiveCollectionActions.AddAsset.Type: {
       return {
-        ...JSON.parse(JSON.stringify(state)),
+        ...Common.clone(state) as any,
         loaded: false,
         latestAddition: action.markers ? { asset: action.asset, markers: serialize(action.markers) } : { asset: action.asset }
       };
     }
 
     case ActiveCollectionActions.AddAssetSuccess.Type: {
-      const stateClone: State = JSON.parse(JSON.stringify(state));
+      const stateClone: State = Common.clone(state);
 
       return {
         ...stateClone,
@@ -110,14 +111,14 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
 
     case ActiveCollectionActions.RemoveAsset.Type: {
       return {
-        ...JSON.parse(JSON.stringify(state)),
+        ...Common.clone(state),
         loaded: false,
         latestRemoval: action.asset
       };
     }
 
     case ActiveCollectionActions.RemoveAssetSuccess.Type: {
-      const stateClone: State = JSON.parse(JSON.stringify(state));
+      const stateClone: State = Common.clone(state);
 
       return {
         ...stateClone,
@@ -131,7 +132,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     }
 
     case ActiveCollectionActions.Reset.Type: {
-      return JSON.parse(JSON.stringify(initialState));
+      return Common.clone(initialState);
     }
 
     default: {
