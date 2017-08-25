@@ -1,12 +1,12 @@
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
-import { AssetResolver } from './asset.resolver';
+import { SearchAssetResolver } from './search-asset.resolver';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Asset Resolver', () => {
-    let resolverUnderTest: AssetResolver;
+    let resolverUnderTest: SearchAssetResolver;
     let mockStore: MockAppStore;
 
     const relevantParameters = {
@@ -16,7 +16,7 @@ export function main() {
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      resolverUnderTest = new AssetResolver(mockStore);
+      resolverUnderTest = new SearchAssetResolver(mockStore);
     });
 
     describe('resolve()', () => {

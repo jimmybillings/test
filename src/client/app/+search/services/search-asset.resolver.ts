@@ -6,7 +6,7 @@ import { AppStore } from '../../app.store';
 import { AssetLoadParameters } from '../../shared/interfaces/common.interface';
 
 @Injectable()
-export class AssetResolver implements Resolve<boolean> {
+export class SearchAssetResolver implements Resolve<boolean> {
   constructor(private store: AppStore) { }
 
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {

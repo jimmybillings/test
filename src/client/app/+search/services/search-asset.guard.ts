@@ -5,7 +5,7 @@ import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ErrorStore } from '../../shared/stores/error.store';
 
 @Injectable()
-export class AssetGuard implements CanActivate {
+export class SearchAssetGuard implements CanActivate {
   constructor(
     private userCan: Capabilities,
     private currentUser: CurrentUserService,

@@ -1,11 +1,11 @@
-import { AssetGuard } from './asset.guard';
+import { SearchAssetGuard } from './search-asset.guard';
 
 export function main() {
   xdescribe('Asset Guard', () => {
-    let guardUnderTest: AssetGuard;
+    let guardUnderTest: SearchAssetGuard;
 
     beforeEach(() => {
-      guardUnderTest = new AssetGuard(null, null, null, null);
+      guardUnderTest = new SearchAssetGuard(null, null, null, null);
     });
 
     xit('has no tests!', () => {
