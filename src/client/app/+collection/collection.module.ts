@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { COLLECTION_ROUTES } from './collection.routes';
 import { CollectionShowResolver } from '../+collection/services/collection-show.resolver';
+import { CollectionAssetResolver } from '../+collection/services/collection-asset.resolver';
 import { CollectionGuard } from './services/collection-guard';
 import { WzCollectionItemListComponent } from './components/wz.collection-item-list.component';
 import { CollectionDeleteComponent } from './components/collection-delete.component';
@@ -20,7 +21,7 @@ import { CollectionComponent } from './collection.component';
     CollectionDeleteComponent
   ],
   exports: [CollectionComponent, CollectionsComponent, CollectionShowComponent],
-  providers: [CollectionShowResolver, CollectionGuard],
+  providers: [CollectionShowResolver, CollectionGuard, CollectionAssetResolver],
   entryComponents: [CollectionDeleteComponent]
 })
 

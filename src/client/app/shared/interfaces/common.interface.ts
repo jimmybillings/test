@@ -72,6 +72,10 @@ export interface AssetLoadParameters {
   readonly timeEnd?: string;
 }
 
+export interface CollectionAssetLoadParameters {
+  readonly uuid: string;
+}
+
 export interface AssetUrls {
   http?: string;
   https?: string;

@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 import * as AssetActions from '../actions/asset.actions';
 import { AppStore } from '../../app.store';
 import { AssetService } from '../services/asset.service';
-import { Asset, Pojo } from '../../shared/interfaces/common.interface';
+import { Asset, Pojo, AssetLoadParameters } from '../../shared/interfaces/common.interface';
+import { Collection } from '../../shared/interfaces/collection.interface';
 import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 import { Location } from '@angular/common';
 import { Common } from '../../shared/utilities/common.functions';
@@ -16,6 +17,16 @@ export class AssetEffects {
   @Effect()
   public load: Observable<Action> = this.actions.ofType(AssetActions.Load.Type)
     .switchMap((action: AssetActions.Load) => this.service.load(action.loadParameters))
+    .map((asset: Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)));
+
+  @Effect()
+  public loadCollectionAsset: Observable<Action> = this.actions.ofType(AssetActions.LoadCollectionAsset.Type)
+    .withLatestFrom(this.store.select(state => state.activeCollection.collection.assets.items))
+    .switchMap(([action, assets]: [AssetActions.Load, Array<Asset>]) => {
+      const asset: Asset = assets.find(asset => asset.uuid === action.loadParameters.uuid);
+      const extraLoadParams: AssetLoadParameters = this.extraLoadParametersFrom(asset);
+      return this.service.load({ ...action.loadParameters, ...extraLoadParams });
+    })
     .map((asset: Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)));
 
   @Effect({ dispatch: false })
@@ -41,5 +52,13 @@ export class AssetEffects {
     params.timeStart = updatedTimeStart;
     params.timeEnd = updatedTimeEnd;
     this.location.go(`/asset/${assetId}${Common.urlParamsObjectToUrlStringParams(params)}`);
+  }
+
+  private extraLoadParametersFrom(asset: Asset): AssetLoadParameters {
+    return {
+      id: String(asset.assetId),
+      timeStart: String(asset.timeStart),
+      timeEnd: String(asset.timeEnd)
+    };
   }
 }

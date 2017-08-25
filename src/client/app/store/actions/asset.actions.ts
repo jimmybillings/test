@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
+import { Asset, AssetLoadParameters, CollectionAssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 
 export class ActionFactory {
@@ -9,6 +9,10 @@ export class ActionFactory {
 
   public updateMarkersInUrl(markers: SubclipMarkers, assetId: number) {
     return new UpdateMarkersInUrl(markers, assetId);
+  }
+
+  public loadCollectionAsset(parameters: CollectionAssetLoadParameters): LoadCollectionAsset {
+    return new LoadCollectionAsset(parameters);
   }
 }
 
@@ -37,4 +41,10 @@ export class UpdateMarkersInUrl implements Action {
   }
 }
 
-export type Any = Load | LoadSuccess | UpdateMarkersInUrl;
+export class LoadCollectionAsset implements Action {
+  public static readonly Type = '[Asset] Load Collection Asset';
+  public readonly type = LoadCollectionAsset.Type;
+  constructor(public readonly loadParameters: CollectionAssetLoadParameters) { }
+}
+
+export type Any = Load | LoadSuccess | UpdateMarkersInUrl | LoadCollectionAsset;
