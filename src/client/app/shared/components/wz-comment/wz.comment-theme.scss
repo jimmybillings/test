@@ -16,18 +16,21 @@
         .comment-head {
           border-bottom: 1px solid mat-color($foreground, divider);
           .avatar {
-            background-color: mat-color($background, selected-button);
+            background-color: mat-color($background, card);
             strong {
-              color: mat-color($foreground, hint-text);
+              color: mat-color($foreground, text, .4);
               font-weight: 200;
             }
           }
         }
         &.odd {
-          background-color: mat-color($mat-grey, 200, .1);
+          background-color: mat-color($mat-grey, 400, .13);
+          .avatar {
+            background-color: mat-color($background, status-bar, .8);
+          }
         }
         &.even {
-          background-color: mat-color($primary, darker, .3);
+          background-color: mat-color($primary, darker, .15);
         }
       }
     }

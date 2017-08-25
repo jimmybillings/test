@@ -10,4 +10,14 @@
         <button type="submit" tabindex="-1">Search<md-icon>search</md-icon></button>
     </wz-input-suggestions>
   </form>
+<div class="close-search" flex="none"> 
+    <button
+      flex="none"
+      md-icon-button
+      class="close-btn"
+      (click)="toggleSearch()"
+      title="close search">
+      <md-icon>close</md-icon>
+    </button>
+  </div>
 </div>

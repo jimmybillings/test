@@ -52,6 +52,15 @@ export function durationFrom(markers: SubclipMarkers): Duration {
   };
 }
 
+
+export function bothMarkersAreSet(markers: SubclipMarkers): boolean {
+  return !!markers.in && !!markers.out;
+}
+
+export function neitherMarkersAreSet(markers: SubclipMarkers): boolean {
+  return !markers.in && !markers.out;
+}
+
 function serializeSingle(marker: Frame): SerializedSubclipMarker {
   return { frameNumber: marker.frameNumber, framesPerSecond: marker.framesPerSecond };
 }

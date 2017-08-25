@@ -5,6 +5,7 @@ import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dial
 import { Asset, WzEvent } from '../../shared/interfaces/common.interface';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 
+
 @Component({
   moduleId: module.id,
   selector: 'collection-tray',
@@ -19,9 +20,8 @@ export class CollectionTrayComponent implements OnInit {
   @Input() public set collection(collection: any) {
     if (collection) this._collection = collection;
   };
-
+  @Input() userPreference: any;
   @Output() onOpenSnackbar = new EventEmitter();
-
   public pageSize: string;
 
   public get collection(): any {
@@ -37,6 +37,10 @@ export class CollectionTrayComponent implements OnInit {
     this.uiConfig.get('global').take(1).subscribe((config: any) => {
       this.pageSize = config.config.pageSize.value;
     });
+  }
+
+  public toggleCollectionTray(): void {
+    this.userPreference.toggleCollectionTray();
   }
 
   public hasId(asset: EnhancedAsset): boolean {
@@ -66,6 +70,7 @@ export class CollectionTrayComponent implements OnInit {
     this.uiConfig.get('collection').take(1).subscribe((config: any) => {
       this.dialogService.openComponentInDialog({
         componentType: CollectionFormComponent,
+        dialogConfig: { position: { top: '10%' } },
         inputOptions: {
           fields: config.config,
         },

@@ -38,7 +38,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
   private assetSubscription: Subscription;
-  private selectedAttrbutes: Pojo;
+  private selectedAttributes: Pojo;
   private pageSize: number = 50;
 
   constructor(
@@ -70,7 +70,7 @@ export class AssetComponent implements OnInit, OnDestroy {
       .subscribe(asset => {
         this.asset = asset;
         this.pricingStore.setPriceForDetails(this.asset.price);
-        this.selectedAttrbutes = null;
+        this.selectedAttributes = null;
       });
   }
 
@@ -120,7 +120,7 @@ export class AssetComponent implements OnInit, OnDestroy {
           asset: { assetId: parameters.assetId }
         },
         markers: parameters.markers,
-        attributes: this.pricingStore.state.priceForDetails ? this.selectedAttrbutes : null
+        attributes: this.pricingStore.state.priceForDetails ? this.selectedAttributes : null
       };
       this.userCan.administerQuotes() ?
         this.quoteEditService.addAssetToProjectInQuote(options) :
@@ -145,8 +145,16 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   public onMarkersChange(markers: SubclipMarkersInterface.SubclipMarkers): void {
-    if (this.selectedAttrbutes && markers.out && markers.in) {
-      this.calculatePrice(this.selectedAttrbutes, markers).subscribe((price: number) => {
+    const updatePrice: boolean =
+      !!this.selectedAttributes && (
+        SubclipMarkersInterface.bothMarkersAreSet(markers) ||
+        SubclipMarkersInterface.neitherMarkersAreSet(markers)
+      );
+
+    markers = SubclipMarkersInterface.bothMarkersAreSet(markers) ? markers : null;
+
+    if (updatePrice) {
+      this.calculatePrice(this.selectedAttributes, markers).subscribe((price: number) => {
         this.pricingStore.setPriceForDetails(price);
       });
     }
@@ -192,7 +200,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   private calculatePrice(attributes: Pojo, markers?: SubclipMarkersInterface.SubclipMarkers): Observable<number> {
-    this.selectedAttrbutes = attributes;
+    this.selectedAttributes = attributes;
     return this.pricingService.getPriceFor(this.asset, attributes, markers);
   }
 }

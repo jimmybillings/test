@@ -34,7 +34,7 @@ export function main() {
         {
           displayFilterCounts: false, collectionTrayIsOpen: false,
           searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid',
-          pricingPreferences: ''
+          pricingPreferences: {}
         });
     });
 
@@ -113,7 +113,7 @@ export function main() {
         {
           displayFilterCounts: false, collectionTrayIsOpen: false,
           searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid',
-          pricingPreferences: ''
+          pricingPreferences: {}
         });
       serviceUnderTest.toggleCollectionTray();
       serviceUnderTest.toggleSearch();
@@ -123,14 +123,14 @@ export function main() {
         {
           displayFilterCounts: false, collectionTrayIsOpen: true,
           searchIsOpen: false, sortId: 100, displayFilterTree: false, assetView: 'list',
-          pricingPreferences: ''
+          pricingPreferences: {}
         });
       serviceUnderTest.reset();
       expect(serviceUnderTest.state).toEqual(
         {
           displayFilterCounts: false, collectionTrayIsOpen: false,
           searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid',
-          pricingPreferences: ''
+          pricingPreferences: {}
         });
     });
   });

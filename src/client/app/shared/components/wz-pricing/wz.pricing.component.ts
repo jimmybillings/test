@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MdOption, MdOptionSelectionChange } from '@angular/material';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, AbstractControl, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { PriceAttribute, PriceOption } from '../../interfaces/commerce.interface';
@@ -13,26 +13,24 @@ import { Pojo, WzEvent } from '../../interfaces/common.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class WzPricingComponent implements OnInit, OnDestroy {
+export class WzPricingComponent implements OnDestroy {
   public form: FormGroup;
+  @Output() pricingEvent: EventEmitter<WzEvent> = new EventEmitter<WzEvent>();
   @Input() attributes: Array<PriceAttribute>;
   @Input() usagePrice: Observable<number>;
-  @Input() pricingPreferences: Pojo;
-  @Output() pricingEvent: EventEmitter<WzEvent> = new EventEmitter<WzEvent>();
-  private formSubscription: Subscription;
-  constructor(private fb: FormBuilder) { }
-
-  ngOnInit() {
-    if (this.pricingPreferences && !this.priceBookChanged) {
-      this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: this.pricingPreferences });
-      this.form = this.prePopulatedForm;
-    } else {
-      this.form = this.blankForm;
+  @Input()
+  set pricingPreferences(preferences: Pojo) {
+    this._pricingPreferences = preferences;
+    if (!this.form) {
+      this.buildForm();
     }
-    this.formSubscription = this.form.valueChanges.subscribe((value: any) => {
-      if (this.form.valid) this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: value });
-    });
+    if (this.pricingPreferences !== {} && !this.priceBookChanged) {
+      setTimeout(() => { this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: this._pricingPreferences }); }, 0);
+    }
   }
+  private formSubscription: Subscription;
+  private _pricingPreferences: Pojo;
+  constructor(private fb: FormBuilder) { }
 
   ngOnDestroy() {
     this.formSubscription.unsubscribe();
@@ -55,8 +53,8 @@ export class WzPricingComponent implements OnInit, OnDestroy {
     if (currentAttribute.primary) {
       return false;
     } else {
-      // Find the parent attribute of the currentAttribute
-      let parent: PriceAttribute = this.findParentOf(currentAttribute);
+      // Find the parent attribute of the currentAttribute and check that its value is not empty
+      const parent: PriceAttribute = this.findParentOf(currentAttribute);
       return this.form.controls[parent.name].value === '';
     }
   }
@@ -69,26 +67,22 @@ export class WzPricingComponent implements OnInit, OnDestroy {
       return currentAttribute.attributeList;
     } else {
       // Find the parent attribute of the currentAttribute
-      let parent: PriceAttribute = this.findParentOf(currentAttribute);
+      const parent: PriceAttribute = this.findParentOf(currentAttribute);
       // Use the parent attribute's name to find its current form value
-      let parentFormValue: string = this.form.controls[parent.name].value;
+      const parentFormValue: string = this.form.controls[parent.name].value;
       // Find the valid choices array that corresponds to the previous option the user selected
-      let rawOptions: Array<string> = parent.validChildChoicesMap[parentFormValue];
+      const rawOptions: Array<string> = parent.validChildChoicesMap[parentFormValue];
       // There should always be options, however if there aren't we need to alert the user the calculation went wrong
       if (!rawOptions) {
         this.clearForm(Object.keys(this.form.controls));
         this.pricingEvent.emit({ type: 'ERROR', payload: 'PRICING.ERROR' });
         return;
       }
-      // The raw options is just an array of strings, we need to map them back to the attributeList
-      // of the option to get the name, value, multiplier, etc;
-      let options: Array<PriceOption> = rawOptions.map((option: string) => {
-        return this.findOption(option, currentAttribute.attributeList);
+      // The raw options is just an array of strings that represent attribute values
+      // we need to map them back to the attributeList of the option to get the name, value, multiplier, etc;
+      const options: Array<PriceOption> = rawOptions.map((optionValue: string) => {
+        return this.findOption(optionValue, currentAttribute.attributeList);
       });
-      // If there is only 1 option, update the form value for that attribute
-      if (options.length === 1) {
-        this.form.controls[currentAttribute.name].setValue(options[0].name);
-      }
       // Finally, return the valid options
       return options;
     }
@@ -96,12 +90,12 @@ export class WzPricingComponent implements OnInit, OnDestroy {
 
   public handleSelect(event: MdOptionSelectionChange, attribute: PriceAttribute): void {
     if (event.isUserInput) {
-      let controlNames: Array<string> = Object.keys(this.form.controls);
-      let currentControlIndex: number = controlNames.indexOf(attribute.name);
-      let controlNamesToClear: Array<string> = controlNames.slice(currentControlIndex + 1);
-      let controlNamesToDisable: Array<string> = controlNames.slice(currentControlIndex + 2);
-      if (controlNamesToClear.length) this.clearForm(controlNamesToClear);
-      if (controlNamesToDisable.length) this.disableForm(controlNamesToDisable);
+      const controlNames: Array<string> = Object.keys(this.form.controls);
+      const currentControlIndex: number = controlNames.indexOf(attribute.name);
+      const controlNamesToClear: Array<string> = controlNames.slice(currentControlIndex + 1);
+      const controlNamesToDisable: Array<string> = controlNames.slice(currentControlIndex + 2);
+      if (controlNamesToClear.length > 0) this.clearForm(controlNamesToClear);
+      if (controlNamesToDisable.length > 0) this.disableForm(controlNamesToDisable);
     }
   }
 
@@ -109,33 +103,35 @@ export class WzPricingComponent implements OnInit, OnDestroy {
     return this.attributes.find((attribute: PriceAttribute) => attribute.childId === currentAttribute.id);
   }
 
-  private findOption(optionName: string, options: Array<PriceOption>): PriceOption {
-    return options.find((attribute: PriceOption) => attribute.name === optionName);
+  private findOption(optionValue: string, options: Array<PriceOption>): PriceOption {
+    return options.find((attribute: PriceOption) => attribute.value === optionValue);
   }
 
-  private get prePopulatedForm(): FormGroup {
+  private buildForm(): void {
     let form: Pojo = {};
-    this.attributes.forEach((attribute: PriceAttribute) => {
-      form[attribute.name] = new FormControl(
-        { value: this.pricingPreferences[attribute.name], disabled: false },
-        Validators.required
-      );
-    });
-    return this.fb.group(form);
-  }
 
-  private get blankForm(): FormGroup {
-    let form: Pojo = {};
     this.attributes.forEach((attribute: PriceAttribute, index: number) => {
-      form[attribute.name] = new FormControl({ value: '', disabled: index !== 0 }, Validators.required);
+      const value: string = this._pricingPreferences[attribute.name] || '';
+      form[attribute.name] = new FormControl({
+        value: value || '',
+        disabled: value ? false : index !== 0
+      }, Validators.required);
     });
-    return this.fb.group(form);
+
+    this.form = this.fb.group(form);
+
+    this.formSubscription = this.form.valueChanges.subscribe((value: string) => {
+      if (this.form.valid) {
+        this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: value });
+      }
+    });
   }
 
   private clearForm(controlNames: Array<string>): void {
-    for (let control of controlNames) {
-      this.form.controls[control].setValue('');
-      this.form.controls[control].enable();
+    for (let controlName of controlNames) {
+      const control: AbstractControl = this.form.controls[controlName];
+      control.setValue('');
+      control.enable();
     }
   }
 
@@ -147,10 +143,10 @@ export class WzPricingComponent implements OnInit, OnDestroy {
 
   // this does a comparison of the user's preferences and the current price attributes to make sure
   // that the price book hasn't changed drastically - i.e. should we prepopulate the form. It ignores order
-  // NOTE: ['a', 'b', 'c'] === ['b', 'c', 'a']
-  private get priceBookChanged(): boolean {
-    let attributeNames: Array<string> = this.attributes.map((attr: PriceAttribute) => attr.name).sort();
-    let prefNames: Array<string> = Object.keys(this.pricingPreferences).sort();
+  // NOTE: ['a', 'b', 'c'] === ['b', 'c', 'a'] // => true
+  public get priceBookChanged(): boolean {
+    const attributeNames: Array<string> = this.attributes.map((attr: PriceAttribute) => attr.name).sort();
+    const prefNames: Array<string> = Object.keys(this._pricingPreferences).sort();
     return !prefNames.every((pref: string, index: number) => pref === attributeNames[index]);
   }
 }

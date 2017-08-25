@@ -208,6 +208,7 @@ export interface PriceOption {
 }
 
 export interface ValidChildChoicesMap {
+  // both the keys and the array of strings are PriceAttribute values!
   [key: string]: Array<string>;
 }
 
