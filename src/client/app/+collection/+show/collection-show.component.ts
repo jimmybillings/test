@@ -82,7 +82,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activeCollectionSubscription =
       this.store.select(state => state.activeCollection)
-        .filter(state => state.loaded)
+        .filter(state => !state.loading)
         .map(state => {
           let collection: Collection = Common.clone(state.collection);
           if (collection.assets && collection.assets.items) {

@@ -7,7 +7,7 @@ import { SerializedSubclipMarkers, serialize } from '../../shared/interfaces/sub
 import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
-  readonly loaded: boolean;
+  readonly loading: boolean;
   readonly collection: Collection;
   readonly latestAddition: {
     readonly asset: Asset;
@@ -17,7 +17,7 @@ export interface State {
 };
 
 export const initialState: State = {
-  loaded: false,
+  loading: false,
   collection: {
     createdOn: null,
     lastUpdated: null,
@@ -60,7 +60,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     case ActiveCollectionActions.UpdateAssetMarkers.Type: {
       return {
         ...Common.clone(state),
-        loaded: false
+        loading: true
       };
     }
 
@@ -69,7 +69,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
       return {
         ...Common.clone(initialState),
         collection: action.activeCollection,
-        loaded: true
+        loading: false
       };
     }
 
@@ -83,14 +83,14 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
           ...stateClone.collection,
           assets: action.currentPageItems
         },
-        loaded: true
+        loading: false
       };
     }
 
     case ActiveCollectionActions.AddAsset.Type: {
       return {
         ...Common.clone(state),
-        loaded: false,
+        loading: true,
         latestAddition: action.markers ? { asset: action.asset, markers: serialize(action.markers) } : { asset: action.asset }
       };
     }
@@ -105,14 +105,14 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
           assets: action.currentPageItems,
           assetsCount: stateClone.collection.assetsCount + 1
         },
-        loaded: true
+        loading: false
       };
     }
 
     case ActiveCollectionActions.RemoveAsset.Type: {
       return {
         ...Common.clone(state),
-        loaded: false,
+        loading: true,
         latestRemoval: action.asset
       };
     }
@@ -127,7 +127,20 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
           assets: action.currentPageItems,
           assetsCount: stateClone.collection.assetsCount - 1
         },
-        loaded: true
+        loading: false
+      };
+    }
+
+    case ActiveCollectionActions.LoadFailure.Type:
+    case ActiveCollectionActions.SetFailure.Type:
+    case ActiveCollectionActions.LoadPageFailure.Type:
+    case ActiveCollectionActions.RemoveAssetFailure.Type:
+    case ActiveCollectionActions.AddAssetFailure.Type:
+    case ActiveCollectionActions.RemoveAssetFailure.Type:
+    case ActiveCollectionActions.UpdateAssetMarkersFailure.Type: {
+      return {
+        ...Common.clone(state),
+        loading: false
       };
     }
 

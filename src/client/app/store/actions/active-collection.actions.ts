@@ -5,6 +5,7 @@ import {
 } from '../../shared/interfaces/collection.interface';
 import { Asset } from '../../shared/interfaces/common.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
+import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 const defaultPagination: CollectionPaginationParameters = { currentPage: 1, pageSize: 100 };
 
@@ -43,24 +44,48 @@ export class InternalActionFactory extends ActionFactory {
     return new LoadSuccess(activeCollection);
   }
 
+  public loadFailure(error: ApiErrorResponse): LoadFailure {
+    return new LoadFailure(error);
+  }
+
   public setSuccess(activeCollection: Collection): SetSuccess {
     return new SetSuccess(activeCollection);
+  }
+
+  public setFailure(error: ApiErrorResponse): SetFailure {
+    return new SetFailure(error);
   }
 
   public loadPageSuccess(currentPageItems: CollectionItems): LoadPageSuccess {
     return new LoadPageSuccess(currentPageItems);
   }
 
+  public loadPageFailure(error: ApiErrorResponse): LoadPageFailure {
+    return new LoadPageFailure(error);
+  }
+
   public addAssetSuccess(currentPageItems: CollectionItems): AddAssetSuccess {
     return new AddAssetSuccess(currentPageItems);
+  }
+
+  public addAssetFailure(error: ApiErrorResponse): AddAssetFailure {
+    return new AddAssetFailure(error);
   }
 
   public removeAssetSuccess(currentPageItems: CollectionItems): RemoveAssetSuccess {
     return new RemoveAssetSuccess(currentPageItems);
   }
 
+  public removeAssetFailure(error: ApiErrorResponse): RemoveAssetFailure {
+    return new RemoveAssetFailure(error);
+  }
+
   public updateAssetMarkersSuccess(currentPageItems: CollectionItems): UpdateAssetMarkersSuccess {
     return new UpdateAssetMarkersSuccess(currentPageItems);
+  }
+
+  public updateAssetMarkersFailure(error: ApiErrorResponse): UpdateAssetMarkersFailure {
+    return new UpdateAssetMarkersFailure(error);
   }
 };
 
@@ -76,6 +101,12 @@ export class LoadSuccess implements Action {
   constructor(public readonly activeCollection: Collection) { }
 }
 
+export class LoadFailure implements Action {
+  public static readonly Type = '[Active Collection] Load Failure';
+  public readonly type = LoadFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
+
 export class Set implements Action {
   public static readonly Type = '[Active Collection] Set';
   public readonly type = Set.Type;
@@ -86,6 +117,12 @@ export class SetSuccess implements Action {
   public static readonly Type = '[Active Collection] Set Success';
   public readonly type = SetSuccess.Type;
   constructor(public readonly activeCollection: Collection) { }
+}
+
+export class SetFailure implements Action {
+  public static readonly Type = '[Active Collection] Set Failure';
+  public readonly type = SetFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
 }
 
 export class LoadPage implements Action {
@@ -100,6 +137,12 @@ export class LoadPageSuccess implements Action {
   constructor(public readonly currentPageItems: CollectionItems) { }
 }
 
+export class LoadPageFailure implements Action {
+  public static readonly Type = '[Active Collection] Load Page Failure';
+  public readonly type = LoadPageFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
+
 export class AddAsset implements Action {
   public static readonly Type = '[Active Collection] Add Asset';
   public readonly type = AddAsset.Type;
@@ -110,6 +153,12 @@ export class AddAssetSuccess implements Action {
   public static readonly Type = '[Active Collection] Add Asset Success';
   public readonly type = AddAssetSuccess.Type;
   constructor(public readonly currentPageItems: CollectionItems) { }
+}
+
+export class AddAssetFailure implements Action {
+  public static readonly Type = '[Active Collection] Add Asset Failure';
+  public readonly type = AddAssetFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
 }
 
 export class RemoveAsset implements Action {
@@ -124,6 +173,12 @@ export class RemoveAssetSuccess implements Action {
   constructor(public readonly currentPageItems: CollectionItems) { }
 }
 
+export class RemoveAssetFailure implements Action {
+  public static readonly Type = '[Active Collection] Remove Asset Failure';
+  public readonly type = RemoveAssetFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
+
 export class UpdateAssetMarkers implements Action {
   public static readonly Type = '[Active Collection] Update Asset Markers';
   public readonly type = UpdateAssetMarkers.Type;
@@ -136,10 +191,22 @@ export class UpdateAssetMarkersSuccess implements Action {
   constructor(public readonly currentPageItems: CollectionItems) { }
 }
 
+export class UpdateAssetMarkersFailure implements Action {
+  public static readonly Type = '[Active Collection] Update Asset Markers Failure';
+  public readonly type = UpdateAssetMarkersFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
+
 export class Reset implements Action {
   public static readonly Type = '[Active Collection] Reset';
   public readonly type = Reset.Type;
 }
 
-export type Any = Load | LoadSuccess | Set | SetSuccess | LoadPage | LoadPageSuccess | AddAsset | AddAssetSuccess | RemoveAsset
-  | RemoveAssetSuccess | UpdateAssetMarkers | UpdateAssetMarkersSuccess | Reset;
+export type Any =
+  Load | LoadSuccess | LoadFailure |
+  Set | SetSuccess | SetFailure |
+  LoadPage | LoadPageSuccess | LoadPageFailure |
+  AddAsset | AddAssetSuccess | AddAssetFailure |
+  RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure |
+  UpdateAssetMarkers | UpdateAssetMarkersSuccess | UpdateAssetMarkersFailure |
+  Reset;

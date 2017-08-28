@@ -156,7 +156,7 @@ export class AppComponent implements OnInit {
     if (this.userCan.viewCollections()) {
       this.store.dispatch(factory => factory.activeCollection.load());
 
-      this.store.blockUntil(state => state.activeCollection.loaded).subscribe(() => {
+      this.store.blockUntil(state => !state.activeCollection.loading).subscribe(() => {
         this.collections.load().subscribe();
       });
     }
