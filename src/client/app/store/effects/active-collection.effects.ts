@@ -57,9 +57,9 @@ export class ActiveCollectionEffects {
 
   @Effect()
   public showSnackBarOnAddSuccess: Observable<Action> = this.actions.ofType(ActiveCollectionActions.AddAssetSuccess.Type)
-    .switchMap(() => this.store.select(state => state.activeCollection.collection.name)
-      .map((name: string) =>
-        this.store.create(factory => factory.snackbar.display('COLLECTION.ADD_TO_COLLECTION_TOAST', { collectionName: name })))
+    .withLatestFrom(this.store.select(state => state.activeCollection.collection.name))
+    .map(([action, name]: [ActiveCollectionActions.AddAssetSuccess, string]) =>
+      this.store.create(factory => factory.snackbar.display('COLLECTION.ADD_TO_COLLECTION_TOAST', { collectionName: name }))
     );
 
   @Effect({ dispatch: false })
@@ -101,12 +101,9 @@ export class ActiveCollectionEffects {
 
   @Effect()
   public showSnackBarOnRemoveSuccess: Observable<Action> = this.actions.ofType(ActiveCollectionActions.RemoveAssetSuccess.Type)
-    .switchMap(() => this.store.select(state => state.activeCollection.collection.name)
-      .map((name: string) =>
-        this.store.create(factory => factory.snackbar.display(
-          'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
-          { collectionName: name }))
-      )
+    .withLatestFrom(this.store.select(state => state.activeCollection.collection.name))
+    .map(([action, name]: [ActiveCollectionActions.RemoveAssetSuccess, string]) =>
+      this.store.create(factory => factory.snackbar.display('COLLECTION.REMOVE_FROM_COLLECTION_TOAST', { collectionName: name }))
     );
 
   @Effect({ dispatch: false })
