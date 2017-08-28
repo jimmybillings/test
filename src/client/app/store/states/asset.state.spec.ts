@@ -52,13 +52,13 @@ export function main() {
         {
           it: 'without previous state, returns inital state with the loadParameters',
           actionParameters: { loadParameters: { uuid: 'abc-123' } },
-          expectedNextState: { activeAsset: { assetId: 0, name: '' }, loading: false, loadParameters: { uuid: 'abc-123' } }
+          expectedNextState: { activeAsset: { assetId: 0, name: '' }, loading: true, loadParameters: { uuid: 'abc-123' } }
         },
         {
           it: 'with previous state, returns the state with the loadParameters',
           previousState: { activeAsset: 'previous', loading: false },
           actionParameters: { loadParameters: { uuid: 'abc-123' } },
-          expectedNextState: { activeAsset: 'previous', loading: false, loadParameters: { uuid: 'abc-123' } }
+          expectedNextState: { activeAsset: 'previous', loading: true, loadParameters: { uuid: 'abc-123' } }
         }
       ]
     });

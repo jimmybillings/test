@@ -25,7 +25,7 @@ export function reducer(state: State = initialState, action: AssetActions.Any): 
     }
 
     case AssetActions.LoadCollectionAsset.Type: {
-      return { ...Common.clone(state), loadParameters: action.loadParameters };
+      return { ...Common.clone(state), loading: true, loadParameters: action.loadParameters };
     }
 
     case AssetActions.LoadFailure.Type: {
