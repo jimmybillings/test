@@ -16,10 +16,14 @@ import { QuoteEditGuard } from './+quote/services/quote-edit.guard';
 
 export const COMMERCE_ROUTES: Routes = [
   { path: 'cart', component: CartComponent, resolve: { cart: CartResolver } },
+  { path: 'cart/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
   { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },
   { path: 'orders/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
+  { path: 'orders/orderId:/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
   { path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver } },
   { path: 'quotes/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
-  { path: 'activeQuote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard] }
+  { path: 'quotes/orderId:/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
+  { path: 'activeQuote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard] },
+  { path: 'activeQuote/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
 ];
 
