@@ -12,6 +12,7 @@ export function main() {
     let localStorageSetSpy: jasmine.Spy;
     let localStorageGetSpy: jasmine.Spy;
     let localStorageRemoveSpy: jasmine.Spy;
+    let mockCurrentPath: string;
 
     beforeEach(() => {
       mockRouter = {
@@ -20,7 +21,7 @@ export function main() {
       };
 
       mockLocation = {
-        path: () => 'SOME URL'
+        path: () => mockCurrentPath
       };
 
       localStorageSetSpy = spyOn(localStorage, 'setItem').and.stub();
@@ -48,26 +49,56 @@ export function main() {
       ]
     });
 
-    effectsSpecHelper.generateTestsFor({
-      effectName: 'goToLoginWithRedirect',
-      effectsInstantiator: instantiator,
-      inputAction: {
-        type: RouterActions.GoToLoginWithRedirect.Type
-      },
-      customTests: [
-        {
-          it: 'stores the current location in local storage',
-          expectation: () => {
-            expect(localStorageSetSpy).toHaveBeenCalledWith('RouterEffects.RedirectUrl', 'SOME URL');
-          }
-        },
-        {
-          it: 'navigates to /user/login',
-          expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/user/login']);
-          }
-        }
-      ]
+    describe('goToLoginWithRedirect', () => {
+      describe('from any path except /user/login', () => {
+        beforeEach(() => {
+          mockCurrentPath = 'SOME URL';
+        });
+
+        effectsSpecHelper.generateTestsFor({
+          effectName: 'goToLoginWithRedirect',
+          effectsInstantiator: instantiator,
+          inputAction: {
+            type: RouterActions.GoToLoginWithRedirect.Type
+          },
+          customTests: [
+            {
+              it: 'stores the current location in local storage',
+              expectation: () => {
+                expect(localStorageSetSpy).toHaveBeenCalledWith('RouterEffects.RedirectUrl', 'SOME URL');
+              }
+            },
+            {
+              it: 'navigates to /user/login',
+              expectation: () => {
+                expect(mockRouter.navigate).toHaveBeenCalledWith(['/user/login']);
+              }
+            }
+          ]
+        });
+      });
+
+      describe('from /user/login', () => {
+        beforeEach(() => {
+          mockCurrentPath = '/user/login';
+        });
+
+        effectsSpecHelper.generateTestsFor({
+          effectName: 'goToLoginWithRedirect',
+          effectsInstantiator: instantiator,
+          inputAction: {
+            type: RouterActions.GoToLoginWithRedirect.Type
+          },
+          customTests: [
+            {
+              it: 'doesn\'t navigate to /user/login',
+              expectation: () => {
+                expect(mockRouter.navigate).not.toHaveBeenCalled();
+              }
+            }
+          ]
+        });
+      });
     });
 
     effectsSpecHelper.generateTestsFor({
