@@ -41,7 +41,7 @@ export class AssetDetailComponent implements OnChanges {
   ngOnChanges(changes: any): void {
     if (changes.asset) this.parseNewAsset(changes.asset);
     if (changes.activeCollection) {
-      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((x: any) => x.assetId);
+      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((x: any) => x.uuid);
     }
   }
 
@@ -53,10 +53,15 @@ export class AssetDetailComponent implements OnChanges {
     this.onPreviousPage.emit();
   }
 
-  public alreadyInCollection(assetId: any): boolean {
-    assetId = parseInt(assetId);
-    return this.assetsArr.indexOf(assetId) > -1;
+  public alreadyInCollection(uuid: any): boolean {
+    // assetId = parseInt(assetId);
+    return this.showAssetSaveSubclip ? false : this.assetsArr.indexOf(uuid) > -1;
+    // return this.assetsArr.indexOf(uuid) > -1;
   }
+  // public alreadyInCollection(assetId: any): boolean {
+  //   assetId = parseInt(assetId);
+  //   return this.assetsArr.indexOf(assetId) > -1;
+  // }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
     this.subclipMarkers = initialMarkers;
@@ -64,10 +69,9 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
+    console.log(this.markersAreDefined);
     this.subclipMarkers = newMarkers;
-    // temporarily turn off the subclip pop-up. It will be going away eventually
-    this.showAssetSaveSubclip = false;
-    // this.showAssetSaveSubclip = this.markersAreDefined;
+    this.showAssetSaveSubclip = this.markersAreDefined;
     if (this.markersAreDefined) {
       this.store.dispatch(factory => factory.asset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId));
     }
@@ -79,7 +83,8 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public addAssetToActiveCollection(): void {
-    this.store.dispatch(factory => factory.activeCollection.addAsset(this.asset));
+    this.store.dispatch(factory => factory.activeCollection.addAsset(this.asset, this.subclipMarkers ? this.subclipMarkers : null));
+    this.showAssetSaveSubclip = false;
   }
 
   public removeAssetFromActiveCollection(): void {
@@ -98,13 +103,13 @@ export class AssetDetailComponent implements OnChanges {
     });
   }
 
-  public addSubclipToCart(): void {
-    this.addToCart.emit({
-      assetId: this.asset.assetId,
-      markers: this.subclipMarkers,
-      selectedTranscodeTarget: this.selectedTarget
-    });
-  }
+  // public addSubclipToCart(): void {
+  //   this.addToCart.emit({
+  //     assetId: this.asset.assetId,
+  //     markers: this.subclipMarkers,
+  //     selectedTranscodeTarget: this.selectedTarget
+  //   });
+  // }
 
   public getPricingAttributes(): void {
     this.getPriceAttributes.emit(this.asset.primary[3].value);
