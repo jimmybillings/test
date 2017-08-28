@@ -36,12 +36,12 @@ export function main() {
           it: 'with previous state, returns new state with updated asset and loading: false',
           previousState: { activeAsset: 'previous', loading: true },
           actionParameters: { activeAsset: 'new' },
-          expectedNextState: { activeAsset: 'new', loading: true, loadParameters: null }
+          expectedNextState: { activeAsset: 'new', loading: false, loadParameters: null }
         },
         {
           it: 'without previous state, returns new state with updated asset and loading: false',
           actionParameters: { activeAsset: 'new' },
-          expectedNextState: { activeAsset: 'new', loading: true, loadParameters: null }
+          expectedNextState: { activeAsset: 'new', loading: false, loadParameters: null }
         }
       ]
     });

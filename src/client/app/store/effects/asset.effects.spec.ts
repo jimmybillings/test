@@ -40,7 +40,7 @@ export function main() {
 
     describe('loadCollectionAsset', () => {
       it('works as expected when the active collection is loaded', () => {
-        effectsSpecHelper.generateStandardTestFor({
+        effectsSpecHelper.generateTestsFor({
           effectName: 'loadCollectionAsset',
           effectsInstantiator: instantiator,
           state: [
@@ -59,16 +59,18 @@ export function main() {
             type: AssetActions.LoadCollectionAsset.Type,
             loadParameters: { uuid: 'abc-123' }
           },
-          outputActionFactory: {
-            sectionName: 'asset',
-            methodName: 'load',
-            expectedArguments: [{ id: '456', timeStart: '100', timeEnd: '1000' }]
+          outputActionFactories: {
+            success: {
+              sectionName: 'asset',
+              methodName: 'load',
+              expectedArguments: [{ id: '456', timeStart: '100', timeEnd: '1000' }]
+            }
           }
         });
       });
 
       it('works as expected when the active collection is NOT loaded', () => {
-        effectsSpecHelper.generateStandardTestFor({
+        effectsSpecHelper.generateTestsFor({
           effectName: 'loadCollectionAsset',
           effectsInstantiator: instantiator,
           state: {
@@ -80,10 +82,12 @@ export function main() {
             type: AssetActions.LoadCollectionAsset.Type,
             loadParameters: { uuid: 'abc-123' }
           },
-          outputActionFactory: {
-            sectionName: 'activeCollection',
-            methodName: 'load',
-            expectedArguments: []
+          outputActionFactories: {
+            success: {
+              sectionName: 'activeCollection',
+              methodName: 'load',
+              expectedArguments: []
+            }
           }
         });
       });
@@ -91,7 +95,7 @@ export function main() {
 
     describe('ensureActiveCollectionIsLoaded', () => {
       it('works as expected', () => {
-        effectsSpecHelper.generateStandardTestFor({
+        effectsSpecHelper.generateTestsFor({
           effectName: 'ensureActiveCollectionIsLoaded',
           effectsInstantiator: instantiator,
           state: [
@@ -109,10 +113,12 @@ export function main() {
           inputAction: {
             type: ActiveCollectionActions.LoadSuccess.Type
           },
-          outputActionFactory: {
-            sectionName: 'asset',
-            methodName: 'load',
-            expectedArguments: [{ id: '456', timeStart: '100', timeEnd: '1000' }]
+          outputActionFactories: {
+            success: {
+              sectionName: 'asset',
+              methodName: 'load',
+              expectedArguments: [{ id: '456', timeStart: '100', timeEnd: '1000' }]
+            }
           }
         });
       });

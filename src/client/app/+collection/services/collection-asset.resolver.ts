@@ -11,6 +11,6 @@ export class CollectionAssetResolver implements Resolve<boolean> {
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
     this.store.dispatch(factory => factory.asset.loadCollectionAsset({ uuid: route.params.uuid }));
 
-    return this.store.blockUntil(state => state.asset.loaded);
+    return this.store.blockUntil(state => !state.asset.loading);
   }
 }

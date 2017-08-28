@@ -36,11 +36,11 @@ export class AssetEffects {
     .withLatestFrom(this.store.select(state => state))
     .map(([action, state]: [AssetActions.LoadCollectionAsset, AppState]) => {
       let mapper: InternalActionFactoryMapper;
-      if (state.activeCollection.loaded) {
+      if (state.activeCollection.loading) {
+        mapper = (factory) => factory.activeCollection.load();
+      } else {
         const extraLoadParams: AssetLoadParameters = this.mergeAssetWithLoadParameters(state, action.loadParameters);
         mapper = (factory) => factory.asset.load(extraLoadParams);
-      } else {
-        mapper = (factory) => factory.activeCollection.load();
       }
       return this.store.create(mapper);
     });
