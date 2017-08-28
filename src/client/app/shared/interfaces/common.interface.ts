@@ -65,15 +65,11 @@ export interface Asset extends Common {
 }
 
 export interface AssetLoadParameters {
-  readonly id: string;
+  readonly id?: string;
   readonly share_key?: string;
   readonly uuid?: string;
   readonly timeStart?: string;
   readonly timeEnd?: string;
-}
-
-export interface CollectionAssetLoadParameters {
-  readonly uuid: string;
 }
 
 export interface AssetUrls {

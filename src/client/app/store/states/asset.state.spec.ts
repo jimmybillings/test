@@ -36,12 +36,29 @@ export function main() {
           it: 'with previous state, returns new state with updated asset and loaded: true',
           previousState: { activeAsset: 'previous', loaded: false },
           actionParameters: { activeAsset: 'new' },
-          expectedNextState: { activeAsset: 'new', loaded: true }
+          expectedNextState: { activeAsset: 'new', loaded: true, loadParameters: null }
         },
         {
           it: 'without previous state, returns new state with updated asset and loaded: true',
           actionParameters: { activeAsset: 'new' },
-          expectedNextState: { activeAsset: 'new', loaded: true }
+          expectedNextState: { activeAsset: 'new', loaded: true, loadParameters: null }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'LoadCollectionAsset',
+      customTests: [
+        {
+          it: 'without previous state, returns inital state with the loadParameters',
+          actionParameters: { loadParameters: { uuid: 'abc-123' } },
+          expectedNextState: { activeAsset: { assetId: 0, name: '' }, loaded: false, loadParameters: { uuid: 'abc-123' } }
+        },
+        {
+          it: 'with previous state, returns the state with the loadParameters',
+          previousState: { activeAsset: 'previous', loaded: false },
+          actionParameters: { loadParameters: { uuid: 'abc-123' } },
+          expectedNextState: { activeAsset: 'previous', loaded: false, loadParameters: { uuid: 'abc-123' } }
         }
       ]
     });

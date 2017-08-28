@@ -4,7 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
 import { Router } from '@angular/router';
 import * as AssetActions from '../actions/asset.actions';
-import { AppStore } from '../../app.store';
+import * as ActiveCollectionActions from '../actions/active-collection.actions';
+import { AppStore, AppState, InternalActionFactoryMapper } from '../../app.store';
 import { AssetService } from '../services/asset.service';
 import { Asset, Pojo, AssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { Collection } from '../../shared/interfaces/collection.interface';
@@ -19,15 +20,27 @@ export class AssetEffects {
     .switchMap((action: AssetActions.Load) => this.service.load(action.loadParameters))
     .map((asset: Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)));
 
+  @Effect() ensureActiveCollectionIsLoaded: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadSuccess.Type)
+    .withLatestFrom(this.store.select(state => state))
+    .filter(([action, state]: [ActiveCollectionActions.LoadSuccess, AppState]) => state.asset.loadParameters !== null)
+    .map(([action, state]: [ActiveCollectionActions.LoadSuccess, AppState]) => {
+      const extraLoadParams: AssetLoadParameters = this.mergeAssetWithLoadParameters(state, state.asset.loadParameters);
+      return this.store.create(factory => factory.asset.load(extraLoadParams));
+    });
+
   @Effect()
   public loadCollectionAsset: Observable<Action> = this.actions.ofType(AssetActions.LoadCollectionAsset.Type)
-    .withLatestFrom(this.store.select(state => state.activeCollection.collection.assets.items))
-    .switchMap(([action, assets]: [AssetActions.Load, Array<Asset>]) => {
-      const asset: Asset = assets.find(asset => asset.uuid === action.loadParameters.uuid);
-      const extraLoadParams: AssetLoadParameters = this.extraLoadParametersFrom(asset);
-      return this.service.load({ ...action.loadParameters, ...extraLoadParams });
-    })
-    .map((asset: Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)));
+    .withLatestFrom(this.store.select(state => state))
+    .map(([action, state]: [AssetActions.LoadCollectionAsset, AppState]) => {
+      let mapper: InternalActionFactoryMapper;
+      if (state.activeCollection.loaded) {
+        const extraLoadParams: AssetLoadParameters = this.mergeAssetWithLoadParameters(state, action.loadParameters);
+        mapper = (factory) => factory.asset.load(extraLoadParams);
+      } else {
+        mapper = (factory) => factory.activeCollection.load();
+      }
+      return this.store.create(mapper);
+    });
 
   @Effect({ dispatch: false })
   public updateMarkersInUrl: Observable<Action> = this.actions.ofType(AssetActions.UpdateMarkersInUrl.Type)
@@ -52,6 +65,12 @@ export class AssetEffects {
     params.timeStart = updatedTimeStart;
     params.timeEnd = updatedTimeEnd;
     this.location.go(`/asset/${assetId}${Common.urlParamsObjectToUrlStringParams(params)}`);
+  }
+
+  private mergeAssetWithLoadParameters(state: AppState, loadParameters: AssetLoadParameters): AssetLoadParameters {
+    const asset: Asset = state.activeCollection.collection.assets.items
+      .find(asset => asset.uuid === loadParameters.uuid);
+    return this.extraLoadParametersFrom(asset);
   }
 
   private extraLoadParametersFrom(asset: Asset): AssetLoadParameters {

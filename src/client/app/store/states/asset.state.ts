@@ -1,15 +1,17 @@
 import * as AssetActions from '../actions/asset.actions';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
   readonly activeAsset: Asset;
   readonly loaded: boolean;
+  readonly loadParameters: AssetLoadParameters;
 };
 
 export const initialState: State = {
   activeAsset: { assetId: 0, name: '' },
-  loaded: false
+  loaded: false,
+  loadParameters: null
 };
 
 export function reducer(state: State = initialState, action: AssetActions.Any): State {
@@ -19,7 +21,11 @@ export function reducer(state: State = initialState, action: AssetActions.Any): 
     }
 
     case AssetActions.LoadSuccess.Type: {
-      return { activeAsset: action.activeAsset, loaded: true };
+      return { activeAsset: action.activeAsset, loaded: true, loadParameters: null };
+    }
+
+    case AssetActions.LoadCollectionAsset.Type: {
+      return { ...Common.clone(state), loadParameters: action.loadParameters };
     }
 
     default: {
