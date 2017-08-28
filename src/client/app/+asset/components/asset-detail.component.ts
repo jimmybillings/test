@@ -54,7 +54,7 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public alreadyInCollection(uuid: any): boolean {
-    return (this.showAssetSaveSubclip) ? false : this.assetsArr.indexOf(uuid) > -1;
+    return this.showAssetSaveSubclip ? false : this.assetsArr.indexOf(uuid) > -1;
   }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
