@@ -11,9 +11,11 @@ import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dial
 export class DialogEffects {
   @Effect()
   public showConfirmation: Observable<Action> = this.actions.ofType(DialogActions.ShowConfirmation.Type)
-    .switchMap((action: DialogActions.ShowConfirmation) => this.service.openConfirmationDialog(
-      action.confirmationDialogOptions, action.onAccept, action.onDecline
-    )).map(result => this.store.create(factory => factory.dialog.showConfirmationSuccess()));
+    .switchMap((action: DialogActions.ShowConfirmation) =>
+      this.service.openConfirmationDialog(action.confirmationDialogOptions, action.onAccept, action.onDecline)
+        .map(() => this.store.create(factory => factory.dialog.showConfirmationSuccess()))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   constructor(private actions: Actions, private store: AppStore, private service: WzDialogService) { }
 }

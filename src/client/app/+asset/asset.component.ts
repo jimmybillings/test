@@ -5,7 +5,6 @@ import { AddAssetParameters, PriceAttribute } from '../shared/interfaces/commerc
 import { WzEvent } from '../shared/interfaces/common.interface';
 import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
-import { WzNotificationService } from '../shared/services/wz.notification.service';
 import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { UiState } from '../shared/services/ui.state';
@@ -15,7 +14,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { MdDialogRef } from '@angular/material';
 import { WzDialogService } from '../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
-import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { PricingStore } from '../shared/stores/pricing.store';
@@ -40,6 +38,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   private assetSubscription: Subscription;
   private selectedAttributes: Pojo;
   private pageSize: number = 50;
+  private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
 
   constructor(
     public currentUser: CurrentUserService,
@@ -50,7 +49,6 @@ export class AssetComponent implements OnInit, OnDestroy {
     public window: WindowRef,
     private store: AppStore,
     private userPreference: UserPreferenceService,
-    private error: ErrorStore,
     private cart: CartService,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
@@ -106,7 +104,7 @@ export class AssetComponent implements OnInit, OnDestroy {
       if (res.url && res.url !== '') {
         this.window.nativeWindow.location.href = res.url;
       } else {
-        this.error.dispatch({ status: 'COMPS.NO_COMP' });
+        this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
       }
     });
   }
@@ -151,11 +149,12 @@ export class AssetComponent implements OnInit, OnDestroy {
         SubclipMarkersInterface.neitherMarkersAreSet(markers)
       );
 
-    markers = SubclipMarkersInterface.bothMarkersAreSet(markers) ? markers : null;
+    this.subclipMarkers = SubclipMarkersInterface.bothMarkersAreSet(markers) ? markers : null;
 
     if (updatePrice) {
-      this.calculatePrice(this.selectedAttributes, markers).subscribe((price: number) => {
+      this.calculatePrice(this.selectedAttributes).subscribe((price: number) => {
         this.pricingStore.setPriceForDetails(price);
+        this.pricingStore.setPriceForDialog(price);
       });
     }
   }
@@ -192,15 +191,15 @@ export class AssetComponent implements OnInit, OnDestroy {
         dialogRef.close();
         break;
       case 'ERROR':
-        this.error.dispatch({ status: event.payload });
+        this.store.dispatch(factory => factory.error.handleCustomError(event.payload));
         break;
       default:
         break;
     }
   }
 
-  private calculatePrice(attributes: Pojo, markers?: SubclipMarkersInterface.SubclipMarkers): Observable<number> {
+  private calculatePrice(attributes: Pojo): Observable<number> {
     this.selectedAttributes = attributes;
-    return this.pricingService.getPriceFor(this.asset, attributes, markers);
+    return this.pricingService.getPriceFor(this.asset, attributes, this.subclipMarkers);
   }
 }

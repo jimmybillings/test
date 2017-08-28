@@ -6,7 +6,7 @@ export function main() {
   describe('Asset Component', () => {
 
     let mockCurrentUserService: any, mockCapabilities: any, mockSearchContext: any, mockUiState: any;
-    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
+    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockCart: any,
       mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
       mockPricingStore: any, mockPricingService: any;
     let mockStore: MockAppStore;
@@ -26,7 +26,6 @@ export function main() {
         priceForDetails: Observable.of(100)
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
-      mockErrorStore = { dispatch: jasmine.createSpy('dispatch') };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
       mockTranslate = {
@@ -52,7 +51,7 @@ export function main() {
       mockStore = new MockAppStore();
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockUiState,
-        mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockErrorStore, mockCart,
+        mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockCart,
         mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
       );
     });
@@ -65,6 +64,12 @@ export function main() {
     });
 
     describe('downloadComp()', () => {
+      let errorSpy: jasmine.Spy;
+
+      beforeEach(() => {
+        errorSpy = mockStore.createActionFactoryMethod('error', 'handleCustomError');
+      });
+
       it('Should call the service with the correct params to download a comp', () => {
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockAssetService.downloadComp).toHaveBeenCalledWith('123123', 'New Comp');
@@ -72,18 +77,18 @@ export function main() {
 
       it('Should show a notification if the server reponds that no comp is available', () => {
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
-        expect(mockErrorStore.dispatch).toHaveBeenCalledWith({ status: 'COMPS.NO_COMP' });
+        mockStore.expectDispatchFor(errorSpy, 'COMPS.NO_COMP');
       });
 
-      it('Should set the window.href.url to the location of the comp url if the server responsds with a downloadable comp url', () => {
+      it('Should set window.href.url to the location of the comp url if the server responds with a downloadable comp url', () => {
         mockAssetService = {
           downloadComp: jasmine.createSpy('downloadComp').and.returnValue(
             Observable.of({ url: 'http://downloadcomp.url' }))
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockUiState,
-          mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockErrorStore,
-          mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
+          mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockCart,
+          mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
         );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');

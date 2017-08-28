@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
-import { ErrorStore } from '../../../shared/stores/error.store';
+import { AppStore } from '../../../app.store';
 
 @Injectable()
 export class QuoteEditGuard implements CanActivate {
   constructor(
     private userCan: CommerceCapabilities,
-    private error: ErrorStore) { }
+    private store: AppStore) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.userCan.administerQuotes()) {
       return true;
     } else {
-      this.error.dispatch({ status: 403 });
+      this.store.dispatch(factory => factory.error.handle403Forbidden());
       return false;
     }
   }

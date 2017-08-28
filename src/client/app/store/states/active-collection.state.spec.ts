@@ -17,17 +17,17 @@ export function main() {
     stateSpecHelper.generateTestsFor({
       actionClassName: ['Load', 'Set', 'LoadPage', 'UpdateAssetMarkers'],
       mutationTestData: {
-        previousState: { loaded: true }
+        previousState: { loading: false }
       },
       customTests: [
         {
-          it: 'with previous state, returns previous state but with loaded: false',
-          previousState: { some: 'stuff', loaded: true },
-          expectedNextState: { some: 'stuff', loaded: false }
+          it: 'with previous state, returns previous state but with loading: true',
+          previousState: { some: 'stuff', loading: false },
+          expectedNextState: { some: 'stuff', loading: true }
         },
         {
-          it: 'without previous state, returns initial state but with loaded: false',
-          expectedNextState: { ...ActiveCollectionState.initialState, loaded: false }
+          it: 'without previous state, returns initial state but with loading: true',
+          expectedNextState: { ...ActiveCollectionState.initialState, loading: true }
         }
       ]
     });
@@ -36,15 +36,15 @@ export function main() {
       actionClassName: ['LoadSuccess', 'SetSuccess'],
       customTests: [
         {
-          it: 'with previous state, returns initial state but with new collection and loaded: true',
-          previousState: { some: 'stuff', collection: 'previous', loaded: false },
+          it: 'with previous state, returns initial state but with new collection and loading: false',
+          previousState: { some: 'stuff', collection: 'previous', loading: true },
           actionParameters: { activeCollection: 'new' },
-          expectedNextState: { ...ActiveCollectionState.initialState, collection: 'new', loaded: true }
+          expectedNextState: { ...ActiveCollectionState.initialState, collection: 'new', loading: false }
         },
         {
-          it: 'without previous state, returns initial state but with new collection and loaded: true',
+          it: 'without previous state, returns initial state but with new collection and loading: false',
           actionParameters: { activeCollection: 'new' },
-          expectedNextState: { ...ActiveCollectionState.initialState, collection: 'new', loaded: true }
+          expectedNextState: { ...ActiveCollectionState.initialState, collection: 'new', loading: false }
         }
       ]
     });
@@ -53,18 +53,18 @@ export function main() {
       actionClassName: ['LoadPageSuccess', 'UpdateAssetMarkersSuccess'],
       customTests: [
         {
-          it: 'with previous state, returns previous state but with new page items and loaded: true',
-          previousState: { some: 'stuff', collection: { some: 'collectionStuff', assets: 'previous' }, loaded: false },
+          it: 'with previous state, returns previous state but with new page items and loading: false',
+          previousState: { some: 'stuff', collection: { some: 'collectionStuff', assets: 'previous' }, loading: true },
           actionParameters: { currentPageItems: 'new' },
-          expectedNextState: { some: 'stuff', collection: { some: 'collectionStuff', assets: 'new' }, loaded: true }
+          expectedNextState: { some: 'stuff', collection: { some: 'collectionStuff', assets: 'new' }, loading: false }
         },
         {
-          it: 'without previous state, returns initial state but with new page items and loaded: true',
+          it: 'without previous state, returns initial state but with new page items and loading: false',
           actionParameters: { currentPageItems: 'new' },
           expectedNextState: {
             ...ActiveCollectionState.initialState,
             collection: { ...ActiveCollectionState.initialState.collection, assets: 'new' },
-            loaded: true
+            loading: false
           }
         }
       ]
@@ -74,8 +74,8 @@ export function main() {
       actionClassName: 'AddAsset',
       customTests: [
         {
-          it: 'with previous state and markers, returns previous state but with latest addition and loaded: false',
-          previousState: { some: 'stuff', loaded: true },
+          it: 'with previous state and markers, returns previous state but with latest addition and loading: true',
+          previousState: { some: 'stuff', loading: false },
           actionParameters: {
             asset: { some: 'asset' },
             markers: { in: { frameNumber: 123, framesPerSecond: 29.97 }, out: { frameNumber: 456, framesPerSecond: 29.97 } }
@@ -86,17 +86,17 @@ export function main() {
               asset: { some: 'asset' },
               markers: { in: { frameNumber: 123, framesPerSecond: 29.97 }, out: { frameNumber: 456, framesPerSecond: 29.97 } }
             },
-            loaded: false
+            loading: true
           }
         },
         {
-          it: 'with previous state and no markers, returns previous state but with latest addition and loaded: false',
-          previousState: { some: 'stuff', loaded: true },
+          it: 'with previous state and no markers, returns previous state but with latest addition and loading: true',
+          previousState: { some: 'stuff', loading: false },
           actionParameters: { asset: { some: 'asset' } },
-          expectedNextState: { some: 'stuff', latestAddition: { asset: { some: 'asset' } }, loaded: false }
+          expectedNextState: { some: 'stuff', latestAddition: { asset: { some: 'asset' } }, loading: true }
         },
         {
-          it: 'without previous state and with markers, returns initial state but with latest addition and loaded: false',
+          it: 'without previous state and with markers, returns initial state but with latest addition and loading: true',
           actionParameters: {
             asset: { some: 'asset' },
             markers: { in: { frameNumber: 123, framesPerSecond: 29.97 }, out: { frameNumber: 456, framesPerSecond: 29.97 } }
@@ -107,16 +107,16 @@ export function main() {
               asset: { some: 'asset' },
               markers: { in: { frameNumber: 123, framesPerSecond: 29.97 }, out: { frameNumber: 456, framesPerSecond: 29.97 } }
             },
-            loaded: false
+            loading: true
           }
         },
         {
-          it: 'without previous state and no markers, returns initial state but with latest addition and loaded: false',
+          it: 'without previous state and no markers, returns initial state but with latest addition and loading: true',
           actionParameters: { asset: { some: 'asset' } },
           expectedNextState: {
             ...ActiveCollectionState.initialState,
             latestAddition: { asset: { some: 'asset' } },
-            loaded: false
+            loading: true
           }
         },
       ]
@@ -126,26 +126,26 @@ export function main() {
       actionClassName: 'AddAssetSuccess',
       customTests: [
         {
-          it: 'with previous state, returns previous state but with asset updates and loaded: true',
+          it: 'with previous state, returns previous state but with asset updates and loading: false',
           previousState: {
             some: 'stuff',
             collection: { some: 'collectionStuff', assets: 'previous', assetsCount: 99 },
-            loaded: false
+            loading: true
           },
           actionParameters: { currentPageItems: 'new' },
           expectedNextState: {
             some: 'stuff',
             collection: { some: 'collectionStuff', assets: 'new', assetsCount: 100 },
-            loaded: true
+            loading: false
           }
         },
         {
-          it: 'without previous state, returns initial state but with asset updates and loaded: true',
+          it: 'without previous state, returns initial state but with asset updates and loading: false',
           actionParameters: { currentPageItems: 'new' },
           expectedNextState: {
             ...ActiveCollectionState.initialState,
             collection: { ...ActiveCollectionState.initialState.collection, assets: 'new', assetsCount: 1 },
-            loaded: true
+            loading: false
           }
         }
       ]
@@ -155,25 +155,25 @@ export function main() {
       actionClassName: 'RemoveAsset',
       customTests: [
         {
-          it: 'with previous state, returns previous state but with latest removal and loaded: false',
+          it: 'with previous state, returns previous state but with latest removal and loading: true',
           previousState: {
             some: 'stuff',
-            loaded: true
+            loading: false
           },
           actionParameters: { asset: { some: 'asset' } },
           expectedNextState: {
             some: 'stuff',
             latestRemoval: { some: 'asset' },
-            loaded: false
+            loading: true
           }
         },
         {
-          it: 'without previous state, returns initial state but with latest removal and loaded: false',
+          it: 'without previous state, returns initial state but with latest removal and loading: true',
           actionParameters: { asset: { some: 'asset' } },
           expectedNextState: {
             ...ActiveCollectionState.initialState,
             latestRemoval: { some: 'asset' },
-            loaded: false
+            loading: true
           }
         }
       ]
@@ -183,26 +183,26 @@ export function main() {
       actionClassName: 'RemoveAssetSuccess',
       customTests: [
         {
-          it: 'with previous state, returns previous state but with asset updates and loaded: true',
+          it: 'with previous state, returns previous state but with asset updates and loading: false',
           previousState: {
             some: 'stuff',
             collection: { some: 'collectionStuff', assets: 'previous', assetsCount: 99 },
-            loaded: false
+            loading: true
           },
           actionParameters: { currentPageItems: 'new' },
           expectedNextState: {
             some: 'stuff',
             collection: { some: 'collectionStuff', assets: 'new', assetsCount: 98 },
-            loaded: true
+            loading: false
           }
         },
         {
-          it: 'without previous state, returns initial state but with asset updates and loaded: true',
+          it: 'without previous state, returns initial state but with asset updates and loading: false',
           actionParameters: { currentPageItems: 'new' },
           expectedNextState: {
             ...ActiveCollectionState.initialState,
             collection: { ...ActiveCollectionState.initialState.collection, assets: 'new', assetsCount: -1 },
-            loaded: true
+            loading: false
           }
         }
       ]
@@ -211,12 +211,12 @@ export function main() {
     stateSpecHelper.generateTestsFor({
       actionClassName: 'Reset',
       mutationTestData: {
-        previousState: { loaded: true }
+        previousState: { loading: false }
       },
       customTests: [
         {
           it: 'with previous state, returns initial state',
-          previousState: { some: 'stuff', loaded: false },
+          previousState: { some: 'stuff', loading: true },
           expectedNextState: ActiveCollectionState.initialState
         },
         {

@@ -2,13 +2,14 @@ import { Observable } from 'rxjs/Observable';
 import { CommerceEditTab } from './commerce-edit-tab';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Commerce Edit tab', () => {
     let componentUnderTest: CommerceEditTab, mockCartService: any, mockUiConfig: any, mockDialogService: any,
       mockAssetService: any, mockUserPreference: any, mockDocument: any, mockWindow: any, mockState: any,
       mockQuoteService: any, mockTranslateService: any, mockSnackbar: any, mockPricingStore: any, mockCurrentUserService: any,
-      mockPricingService: any;
+      mockPricingService: any, mockAppStore: MockAppStore;
 
     beforeEach(() => {
       mockState = {
@@ -87,13 +88,11 @@ export function main() {
         getPriceFor: jasmine.createSpy('getPriceFor').and.returnValue(Observable.of({ price: 100 }))
       };
 
-      mockCurrentUserService = { data: Observable.of({ id: 10 }) };
+      mockAppStore = new MockAppStore();
 
       componentUnderTest = new CommerceEditTab(
-        null, mockCartService, mockUiConfig, mockDialogService,
-        mockAssetService, mockWindow, mockUserPreference,
-        null, mockDocument, mockSnackbar,
-        mockTranslateService, mockPricingStore, mockCurrentUserService, null, mockPricingService
+        null, mockCartService, mockUiConfig, mockDialogService, mockAssetService, mockWindow, mockUserPreference,
+        mockDocument, mockSnackbar, mockTranslateService, mockPricingStore, mockAppStore, mockPricingService
       );
     });
 
@@ -119,9 +118,8 @@ export function main() {
         mockUiConfig = { get: () => mockObservable };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, mockUiConfig, mockDialogService,
-          null, mockWindow, mockUserPreference, null, null, null, null,
-          null, null, null, mockPricingService
+          null, mockCartService, mockUiConfig, mockDialogService, mockAssetService, mockWindow, mockUserPreference,
+          mockDocument, mockSnackbar, mockTranslateService, mockPricingStore, mockAppStore, mockPricingService
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
@@ -155,7 +153,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -169,7 +167,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -188,7 +186,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(true);
@@ -202,7 +200,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(false);
@@ -220,7 +218,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -245,7 +243,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(true);
@@ -270,7 +268,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);

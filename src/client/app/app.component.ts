@@ -1,5 +1,6 @@
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
@@ -23,7 +24,6 @@ import { FilterService } from './shared/services/filter.service';
 import { SortDefinitionsService } from './shared/services/sort-definitions.service';
 import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
-import { WzNotificationService } from './shared/services/wz.notification.service';
 import { CartService } from './shared/services/cart.service';
 import { QuoteEditService } from './shared/services/quote-edit.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
@@ -60,7 +60,6 @@ export class AppComponent implements OnInit {
     public collections: CollectionsService,
     public uiState: UiState,
     public userPreference: UserPreferenceService,
-    private notification: WzNotificationService,
     private apiConfig: ApiConfig,
     private capabilities: Capabilities,
     private cartService: CartService,
@@ -157,7 +156,7 @@ export class AppComponent implements OnInit {
     if (this.userCan.viewCollections()) {
       this.store.dispatch(factory => factory.activeCollection.load());
 
-      this.store.blockUntil(state => state.activeCollection.loaded).subscribe(() => {
+      this.store.blockUntil(state => !state.activeCollection.loading).subscribe(() => {
         this.collections.load().subscribe();
       });
     }

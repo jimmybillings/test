@@ -46,7 +46,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { CurrentUserService } from './services/current-user.service';
 import { UserService } from './services/user.service';
 import { UiConfig } from './services/ui.config';
-import { WzNotificationService } from './services/wz.notification.service';
 import { SearchContext } from './services/search-context.service';
 import { CollectionsService } from './services/collections.service';
 import { UiState } from './services/ui.state';
@@ -67,8 +66,8 @@ import { QuoteService } from './services/quote.service';
 import { QuotesService } from './services/quotes.service';
 import { QuoteEditService } from './services/quote-edit.service';
 import { PricingService } from './services/pricing.service';
-
 import { AssetService } from '../store/services/asset.service';
+import { FutureApiService } from '../store/services/api.service';
 import { ActiveCollectionService } from '../store/services/active-collection.service';
 import { SnackbarService } from '../store/services/snackbar.service';
 import { CommentService } from '../store/services/comment.service';
@@ -89,7 +88,6 @@ import * as CommentState from '../store/states/comment.state';
 import { searchStore, SearchStore } from './stores/search.store';
 import { cart, CartStore } from './stores/cart.store';
 import { collections, CollectionsStore } from './stores/collections.store';
-import { errorStore, ErrorStore } from './stores/error.store';
 import { order, OrderStore } from './stores/order.store';
 import { orders, OrdersStore } from './stores/orders.store';
 import { features, FeatureStore } from './stores/feature.store';
@@ -115,17 +113,19 @@ import { sortDefinitions } from './services/sort-definitions.service';
 // WAZEE EFFECTS
 import { ActiveCollectionEffects } from '../store/effects/active-collection.effects';
 import { AssetEffects } from '../store/effects/asset.effects';
-import { SnackbarEffects } from '../store/effects/snackbar.effects';
-import { SpeedPreviewEffects } from '../store/effects/speed-preview.effects';
 import { CommentEffects } from '../store/effects/comment.effects';
 import { DialogEffects } from '../store/effects/dialog.effects';
+import { ErrorEffects } from '../store/effects/error.effects';
+import { NotifierEffects } from '../store/effects/notifier.effects';
+import { RouterEffects } from '../store/effects/router.effects';
+import { SnackbarEffects } from '../store/effects/snackbar.effects';
+import { SpeedPreviewEffects } from '../store/effects/speed-preview.effects';
 
 const WAZEE_SERVICES = [
   ApiConfig,
   CurrentUserService,
   UiConfig,
   AssetService,
-  WzNotificationService,
   CollectionsService,
   ActiveCollectionService,
   SearchContext,
@@ -134,6 +134,7 @@ const WAZEE_SERVICES = [
   UserPreferenceService,
   CollectionContextService,
   ApiService,
+  FutureApiService,
   SortDefinitionsService,
   Capabilities,
   FilterService,
@@ -157,7 +158,6 @@ const WAZEE_SERVICES = [
 ];
 
 const WAZEE_STORE_INTERFACES = [
-  ErrorStore,
   CollectionsStore,
   CartStore,
   FeatureStore,
@@ -191,7 +191,6 @@ const WAZEE_STORES: any = {
   userPreferences: userPreferences,
   collectionOptions: collectionOptions,
   i18n: multilingualActionReducer,
-  errorStore: errorStore,
   cart: cart,
   sortDefinitions: sortDefinitions,
   order: order,
@@ -215,10 +214,13 @@ const WAZEE_STORES: any = {
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
   AssetEffects,
-  SnackbarEffects,
-  SpeedPreviewEffects,
   CommentEffects,
-  DialogEffects
+  DialogEffects,
+  ErrorEffects,
+  NotifierEffects,
+  RouterEffects,
+  SnackbarEffects,
+  SpeedPreviewEffects
 ]);
 
 // Shared pipes

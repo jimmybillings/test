@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 
 import { LegacyAction } from '../interfaces/common.interface';
-import { ErrorStore } from '../stores/error.store';
 
 export function currentUser(state = {}, action: LegacyAction) {
 
@@ -26,10 +25,8 @@ export class CurrentUserService {
   public permissions: any;
   public data: Observable<User>;
 
-  constructor(
-    private store: Store<User>, private error: ErrorStore) {
+  constructor(private store: Store<User>) {
     this.data = this.store.select('currentUser');
-    error.data.subscribe((error) => { if (error.status === 401 || error.status === 419) this.destroy(); });
   }
 
   public get state(): User {

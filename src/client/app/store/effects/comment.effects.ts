@@ -13,24 +13,31 @@ export class CommentEffects {
   @Effect()
   public getComments: Observable<Action> = this.actions.ofType(CommentActions.Load.Type)
     .switchMap((action: CommentActions.Load) =>
-      this.service.getCommentsFor(action.parentObject))
-    .map((comments: Comments) => this.store.create(factory => factory.comment.loadSuccess(comments)));
+      this.service.getCommentsFor(action.parentObject)
+        .map((comments: Comments) => this.store.create(factory => factory.comment.loadSuccess(comments)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   @Effect()
   public formSubmit: Observable<Action> = this.actions.ofType(CommentActions.FormSubmit.Type)
     .withLatestFrom(this.store.select(state => state.comment))
     .switchMap(([action, state]: [CommentActions.FormSubmit, CommentState]) => {
-      return state.formMode === 'ADD' ?
+      const serviceResult: Observable<Comments> = state.formMode === 'ADD' ?
         this.service.addCommentTo(action.parentObject, action.comment) :
         this.service.editComment(action.parentObject, state.commentBeingEdited);
-    })
-    .map((comments: Comments) => this.store.create(factory => factory.comment.formSubmitSuccess(comments)));
+
+      return serviceResult
+        .map((comments: Comments) => this.store.create(factory => factory.comment.formSubmitSuccess(comments)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))));
+    });
 
   @Effect()
   public removeComment: Observable<Action> = this.actions.ofType(CommentActions.Remove.Type)
     .switchMap((action: CommentActions.Remove) =>
-      this.service.removeComment(action.parentObject, action.commentId))
-    .map((comments: Comments) => this.store.create(factory => factory.comment.removeSuccess(comments)));
+      this.service.removeComment(action.parentObject, action.commentId)
+        .map((comments: Comments) => this.store.create(factory => factory.comment.removeSuccess(comments)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   @Effect()
   public showSnackBarOnRemoveSuccess: Observable<Action> = this.actions.ofType(CommentActions.RemoveSuccess.Type)
@@ -38,8 +45,10 @@ export class CommentEffects {
 
   @Effect()
   public getCounts: Observable<Action> = this.actions.ofType(CommentActions.GetCounts.Type)
-    .switchMap((action: CommentActions.GetCounts) => this.service.getCountsFor(action.parentObject))
-    .map((counts: CommentCounts) => this.store.create(factory => factory.comment.getCountsSuccess(counts)));
+    .switchMap((action: CommentActions.GetCounts) => this.service.getCountsFor(action.parentObject)
+      .map((counts: CommentCounts) => this.store.create(factory => factory.comment.getCountsSuccess(counts)))
+      .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
 
   constructor(
     private actions: Actions,

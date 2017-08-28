@@ -4,7 +4,7 @@ import { EffectsSpecHelper, EffectTestParameters } from '../spec-helpers/effects
 
 export function main() {
   describe('Dialog Effects', () => {
-    let effectsSpecHelper: EffectsSpecHelper;
+    const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
 
     function instantiator(): DialogEffects {
       return new DialogEffects(
@@ -12,33 +12,27 @@ export function main() {
       );
     }
 
-    beforeEach(() => {
-      effectsSpecHelper = new EffectsSpecHelper();
-    });
-
-    describe('showConfirmation', () => {
-      it('works as expected', () => {
-        effectsSpecHelper.generateStandardTestFor({
-          effectName: 'showConfirmation',
-          effectsInstantiator: instantiator,
-          inputAction: {
-            type: DialogActions.ShowConfirmation.Type,
-            confirmationDialogOptions: { some: 'option' },
-            onAccept: () => { },
-            onDecline: () => { }
-          },
-          serviceMethod: {
-            name: 'openConfirmationDialog',
-            expectedArguments: [{ some: 'option' }, jasmine.any(Function), jasmine.any(Function)],
-            returnsObservableOf: '',
-          },
-          outputActionFactory: {
-            sectionName: 'dialog',
-            methodName: 'showConfirmationSuccess',
-            expectedArguments: []
-          }
-        });
-      });
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'showConfirmation',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: DialogActions.ShowConfirmation.Type,
+        confirmationDialogOptions: { some: 'option' },
+        onAccept: () => { },
+        onDecline: () => { }
+      },
+      serviceMethod: {
+        name: 'openConfirmationDialog',
+        expectedArguments: [{ some: 'option' }, jasmine.any(Function), jasmine.any(Function)],
+        returnsObservableOf: '',
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'dialog',
+          methodName: 'showConfirmationSuccess',
+          expectedArguments: []
+        }
+      }
     });
   });
 }

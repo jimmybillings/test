@@ -14,8 +14,6 @@ import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-
 import { AssetService } from '../../../store/services/asset.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
-import { CurrentUserService } from '../../../shared/services/current-user.service';
-import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
@@ -45,13 +43,11 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     protected assetService: AssetService,
     protected window: WindowRef,
     protected userPreference: UserPreferenceService,
-    protected error: ErrorStore,
     protected document: any,
     protected snackBar: MdSnackBar,
     protected translate: TranslateService,
     protected pricingStore: PricingStore,
-    protected currentUserService: CurrentUserService,
-    protected appStore: AppStore,
+    protected store: AppStore,
     protected pricingService: PricingService) {
     super();
   }
@@ -222,7 +218,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         dialogRef.close();
         break;
       case 'ERROR':
-        this.error.dispatch({ status: event.payload });
+        this.store.dispatch(factory => factory.error.handleCustomError(event.payload));
         break;
       default:
         break;
@@ -263,7 +259,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         dialogRef.close();
         break;
       case 'ERROR':
-        this.error.dispatch({ status: event.payload });
+        this.store.dispatch(factory => factory.error.handleCustomError(event.payload));
         break;
       default:
         break;

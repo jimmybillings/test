@@ -33,8 +33,8 @@ export function main() {
           mockStore.createActionFactoryMethod('asset', 'load');
         });
 
-        it('does not emit when the asset has not been loaded yet', () => {
-          mockStore.createStateElement('asset', 'loaded', false);
+        it('does not emit when the asset is still loading', () => {
+          mockStore.createStateElement('asset', 'loading', true);
 
           expect(() => {
             resolverUnderTest.resolve(mockRoute as any).subscribe(() => {
@@ -43,8 +43,8 @@ export function main() {
           }).not.toThrow();
         });
 
-        it('emits when the asset has been loaded', () => {
-          mockStore.createStateElement('asset', 'loaded', true);
+        it('emits when the asset is done loading', () => {
+          mockStore.createStateElement('asset', 'loading', false);
 
           expect(() => {
             resolverUnderTest.resolve(mockRoute as any).subscribe(() => {

@@ -1,13 +1,14 @@
 import { Observable } from 'rxjs/Observable';
 import { LoginComponent } from './login.component';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
 
   describe('Login Component', () => {
     (<any>window).pendo = { initialize: jasmine.createSpy('initialize') };
     let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUserService: any,
-      mockUserService: any, mockPendo: any, mockDialog: any, mockFeatureStore: any;
+      mockUserService: any, mockPendo: any, mockDialog: any, mockFeatureStore: any, mockStore: MockAppStore;
     let componentUnderTest: LoginComponent;
 
     beforeEach(() => {
@@ -47,8 +48,9 @@ export function main() {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({}))
       };
       mockFeatureStore = { set: jasmine.createSpy('set'), setInLocalStorage: jasmine.createSpy('setInLocalStorage') };
+      mockStore = new MockAppStore();
       componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-        mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore);
+        mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
     });
 
     describe('ngOnInit()', () => {
@@ -69,13 +71,17 @@ export function main() {
           }
         };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore);
+          mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.firstTimeUser).toBe(true);
       });
     });
 
     describe('onSubmit()', () => {
+      beforeEach(() => {
+        mockStore.createActionFactoryMethod('router', 'followRedirect');
+      });
+
       it('Submits a new login request', () => {
         componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
         expect(mockAuthentication.create).toHaveBeenCalledWith({ 'userId': 'james', 'password': 'testPassword' });
@@ -111,7 +117,7 @@ export function main() {
           }))
         };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore);
+          mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
         componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
         expect(mockFeatureStore.set).not.toHaveBeenCalled();
       });
@@ -128,7 +134,7 @@ export function main() {
               }))
           };
           componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-            mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore);
+            mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
         });
 
         it('Calls the API form the terms content to pass to the dialog', () => {
@@ -158,26 +164,14 @@ export function main() {
       });
 
       describe('redirectUserAppropriately()', () => {
-        it('Navigates to the home page if no redirect url in localStorage', () => {
-          componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
-          expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
-        });
+        it('dispatches a followRedirect action', () => {
+          const spy = mockStore.createActionFactoryMethod('router', 'followRedirect');
 
-        it('Navigates to the page the user was previously trying to access before logging in', () => {
-          localStorage.setItem('redirectUrl', '/search?searchTerm=animals');
           componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
-          expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/search?searchTerm=animals');
-        });
 
-        it('When using a redirect url from localStorage it deletes it after being used', () => {
-          localStorage.setItem('redirectUrl', '/search?searchTerm=animals');
-          componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
-          expect(localStorage.getItem('redirectUrl')).toEqual(null);
+          mockStore.expectDispatchFor(spy);
         });
       });
-
-
-
     });
 
     describe('ngOnDestroy()', () => {
@@ -186,7 +180,7 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore);
+          mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();

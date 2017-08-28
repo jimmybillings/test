@@ -23,7 +23,7 @@ export function main() {
       getCountsSpy = mockStore.createActionFactoryMethod('comment', 'getCounts');
 
       componentUnderTest = new CollectionShowComponent(
-        mockCapabilitiesService, null, null, null, null, null, null, null, mockUiConfig,
+        mockCapabilitiesService, null, null, null, null, null, null, mockUiConfig,
         null, null, mockRoute, null, null, mockWindow, null, null, null, mockStore, mockChangeDetectorRef
       );
     });

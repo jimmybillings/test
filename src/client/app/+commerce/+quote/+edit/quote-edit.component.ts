@@ -8,7 +8,6 @@ import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.d
 import { AssetService } from '../../../store/services/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
-import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteOptions, Project, FeeLineItem, Quote, AssetLineItem, QuoteState } from '../../../shared/interfaces/commerce.interface';
@@ -46,20 +45,18 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public assetService: AssetService,
     public window: WindowRef,
     public userPreference: UserPreferenceService,
-    public error: ErrorStore,
     @Inject(DOCUMENT) public document: any,
     public snackBar: MdSnackBar,
     public translate: TranslateService,
     public pricingStore: PricingStore,
     public router: Router,
     public currentUserService: CurrentUserService,
-    public appStore: AppStore,
+    protected store: AppStore,
     public pricingService: PricingService
   ) {
     super(
       userCan, quoteEditService, uiConfig, dialogService, assetService, window,
-      userPreference, error, document, snackBar, translate, pricingStore, currentUserService,
-      appStore, pricingService
+      userPreference, document, snackBar, translate, pricingStore, store, pricingService
     );
     this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
@@ -134,7 +131,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   }
 
   public get commentCount(): Observable<number> {
-    return this.appStore.select(state => state.comment.quote.pagination.totalCount);
+    return this.store.select(state => state.comment.quote.pagination.totalCount);
   }
 
   public get currentUserId(): Observable<number> {
