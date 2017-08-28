@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
+import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 export class ActionFactory {
   public load(parameters: AssetLoadParameters): Load {
@@ -16,6 +17,10 @@ export class InternalActionFactory extends ActionFactory {
   public loadSuccess(activeAsset: Asset): LoadSuccess {
     return new LoadSuccess(activeAsset);
   }
+
+  public loadFailure(error: ApiErrorResponse): LoadFailure {
+    return new LoadFailure(error);
+  }
 }
 
 export class Load implements Action {
@@ -30,6 +35,12 @@ export class LoadSuccess implements Action {
   constructor(public readonly activeAsset: Asset) { }
 }
 
+export class LoadFailure implements Action {
+  public static readonly Type = '[Asset] Load Failure';
+  public readonly type = LoadFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
+
 export class UpdateMarkersInUrl implements Action {
   public static readonly Type = '[Asset] Update Markers In URL';
   public readonly type = UpdateMarkersInUrl.Type;
@@ -37,4 +48,4 @@ export class UpdateMarkersInUrl implements Action {
   }
 }
 
-export type Any = Load | LoadSuccess | UpdateMarkersInUrl;
+export type Any = Load | LoadSuccess | LoadFailure | UpdateMarkersInUrl;

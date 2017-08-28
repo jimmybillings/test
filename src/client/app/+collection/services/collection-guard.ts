@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CurrentUserService } from '../../shared/services/current-user.service';
-import { ErrorStore } from '../../shared/stores/error.store';
+import { AppStore } from '../../app.store';
 
 @Injectable()
 export class CollectionGuard implements CanActivate {
@@ -10,16 +10,16 @@ export class CollectionGuard implements CanActivate {
     private userCan: Capabilities,
     private currentUser: CurrentUserService,
     private router: Router,
-    private error: ErrorStore) { }
+    private store: AppStore) { }
 
   canActivate() {
     if (this.currentUser.loggedIn() && this.userCan.viewCollections()) {
       return true;
     } else {
       if (this.currentUser.loggedIn() && !this.userCan.viewCollections()) {
-        this.error.dispatch({ status: 403 });
+        this.store.dispatch(factory => factory.error.handle403Forbidden());
       } else {
-        this.error.dispatch({ status: 401 });
+        this.store.dispatch(factory => factory.error.handle401Unauthorized());
       }
       return false;
     }

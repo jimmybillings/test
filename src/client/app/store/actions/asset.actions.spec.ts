@@ -28,5 +28,17 @@ export function main() {
         activeAsset: { some: 'asset' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'loadFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Asset] Load Failure',
+        error: { some: 'error' }
+      }
+    });
   });
 }

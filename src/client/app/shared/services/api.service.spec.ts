@@ -5,13 +5,14 @@ import { ApiService } from './api.service';
 import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
 import { UiState } from './ui.state';
-import { ErrorStore } from '../stores/error.store';
+import { AppStore } from '../../app.store';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Api Service', () => {
     let mockApiConfig: any;
     let mockUiState: any;
-    let mockErrorService: any;
+    let mockStore: MockAppStore;
     let connection: any;
 
     const mockBackEnd: MockBackend = new MockBackend();
@@ -26,9 +27,10 @@ export function main() {
       };
 
       mockUiState = jasmine.createSpyObj('mockUiState', ['loadingIndicator']);
-      mockErrorService = jasmine.createSpyObj('mockErrorService', ['dispatch']);
 
       mockBackEnd.connections.subscribe((c: any) => connection = c);
+
+      mockStore = new MockAppStore();
 
       TestBed.configureTestingModule({
         providers: [
@@ -43,9 +45,9 @@ export function main() {
           MockBackend,
           BaseRequestOptions,
           { provide: ApiConfig, useValue: mockApiConfig },
-          { provide: ErrorStore, useValue: mockErrorService },
           { provide: MockBackend, useValue: mockBackEnd },
-          { provide: UiState, useValue: mockUiState }
+          { provide: UiState, useValue: mockUiState },
+          { provide: AppStore, useValue: mockStore }
         ]
       });
     });
@@ -143,7 +145,12 @@ export function main() {
 
         describe('result', () => {
           let mockHandlers: any;
-          beforeEach(() => mockHandlers = jasmine.createSpyObj('mockHandlers', ['response', 'error']));
+          let errorSpy: jasmine.Spy;
+
+          beforeEach(() => {
+            mockHandlers = jasmine.createSpyObj('mockHandlers', ['response', 'error']);
+            errorSpy = mockStore.createActionFactoryMethod('error', 'handle');
+          });
 
           it('is as expected when the request succeeds', () => {
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(
@@ -155,7 +162,7 @@ export function main() {
               () => {
                 expect(mockHandlers.response).toHaveBeenCalled();
                 expect(mockHandlers.error).not.toHaveBeenCalled();
-                expect(mockErrorService.dispatch).not.toHaveBeenCalled();
+                expect(errorSpy).not.toHaveBeenCalled();
               });
             connection.mockRespond(successResponse);
           });
@@ -170,7 +177,7 @@ export function main() {
               () => {
                 expect(mockHandlers.response).toHaveBeenCalled();
                 expect(mockHandlers.error).not.toHaveBeenCalled();
-                expect(mockErrorService.dispatch).not.toHaveBeenCalled();
+                expect(errorSpy).not.toHaveBeenCalled();
               });
             connection.mockRespond('Non-JSON!  Ick!');
           });
@@ -185,7 +192,7 @@ export function main() {
               () => {
                 expect(mockHandlers.response).not.toHaveBeenCalled();
                 expect(mockHandlers.error).toHaveBeenCalled();
-                expect(mockErrorService.dispatch).toHaveBeenCalledWith({ status: 401 });
+                mockStore.expectDispatchFor(errorSpy, { status: 401 });
               }
             );
             connection.mockError(errorResponse);

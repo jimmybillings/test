@@ -12,7 +12,6 @@ import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../store/services/asset.service';
-import { ErrorStore } from '../../shared/stores/error.store';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
@@ -64,7 +63,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public collectionsStore: Store<CollectionsStoreI>,
     public currentUser: CurrentUserService,
     public uiState: UiState,
-    public error: ErrorStore,
     public uiConfig: UiConfig,
     public cart: CartService,
     public userPreference: UserPreferenceService,
@@ -84,7 +82,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activeCollectionSubscription =
       this.store.select(state => state.activeCollection)
-        .filter(state => state.loaded)
+        .filter(state => !state.loading)
         .map(state => {
           let collection: Collection = Common.clone(state.collection);
           if (collection.assets && collection.assets.items) {
@@ -139,7 +137,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       if (res.url && res.url !== '') {
         this.window.nativeWindow.location.href = res.url;
       } else {
-        this.error.dispatch({ status: 'COMPS.NO_COMP' });
+        this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
       }
     });
   }

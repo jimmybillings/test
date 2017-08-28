@@ -12,7 +12,7 @@ interface MockInternalActionFactory extends InternalActionFactory, Indexable { }
 interface MockAppState extends AppState, Indexable { }
 
 export class MockAppStore extends AppStore {
-  private _ngrxDispatch: jasmine.Spy = jasmine.createSpy('ngrx dispatch');
+  private _ngrxDispatch: jasmine.Spy;
   private _actionFactory: MockActionFactory;
   private _internalActionFactory: MockInternalActionFactory;
   private _state: MockAppState;
@@ -23,19 +23,25 @@ export class MockAppStore extends AppStore {
     this._actionFactory = {
       activeCollection: {} as any,
       asset: {} as any,
+      comment: {} as any,
+      dialog: {} as any,
+      error: {} as any,
+      notifier: {} as any,
+      router: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
-      comment: {} as any,
-      dialog: {} as any
     };
 
     this._internalActionFactory = {
       activeCollection: {} as any,
       asset: {} as any,
+      comment: {} as any,
+      dialog: {} as any,
+      error: {} as any,
+      notifier: {} as any,
+      router: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
-      comment: {} as any,
-      dialog: {} as any
     };
 
     this._state = {
@@ -46,9 +52,10 @@ export class MockAppStore extends AppStore {
       comment: {} as any
     };
 
-    spyOn(this, 'dispatch').and.callFake((actionFactoryMapper: ActionFactoryMapper) =>
-      this._ngrxDispatch(actionFactoryMapper(this._actionFactory))
-    );
+    spyOn(this, 'dispatch').and.callFake((actionFactoryMapper: ActionFactoryMapper) => {
+      if (!this._ngrxDispatch) this._ngrxDispatch = jasmine.createSpy('ngrx dispatch');
+      this._ngrxDispatch(actionFactoryMapper(this._actionFactory));
+    });
 
     spyOn(this, 'create').and.callFake((internalActionFactoryMapper: InternalActionFactoryMapper) =>
       internalActionFactoryMapper(this._internalActionFactory)
