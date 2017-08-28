@@ -40,6 +40,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   private assetSubscription: Subscription;
   private selectedAttributes: Pojo;
   private pageSize: number = 50;
+  private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
 
   constructor(
     public currentUser: CurrentUserService,
@@ -151,11 +152,12 @@ export class AssetComponent implements OnInit, OnDestroy {
         SubclipMarkersInterface.neitherMarkersAreSet(markers)
       );
 
-    markers = SubclipMarkersInterface.bothMarkersAreSet(markers) ? markers : null;
+    this.subclipMarkers = SubclipMarkersInterface.bothMarkersAreSet(markers) ? markers : null;
 
     if (updatePrice) {
-      this.calculatePrice(this.selectedAttributes, markers).subscribe((price: number) => {
+      this.calculatePrice(this.selectedAttributes).subscribe((price: number) => {
         this.pricingStore.setPriceForDetails(price);
+        this.pricingStore.setPriceForDialog(price);
       });
     }
   }
@@ -199,8 +201,8 @@ export class AssetComponent implements OnInit, OnDestroy {
     }
   }
 
-  private calculatePrice(attributes: Pojo, markers?: SubclipMarkersInterface.SubclipMarkers): Observable<number> {
+  private calculatePrice(attributes: Pojo): Observable<number> {
     this.selectedAttributes = attributes;
-    return this.pricingService.getPriceFor(this.asset, attributes, markers);
+    return this.pricingService.getPriceFor(this.asset, attributes, this.subclipMarkers);
   }
 }

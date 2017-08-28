@@ -29,11 +29,11 @@ export class AssetDetailComponent implements OnChanges {
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onShowSnackBar = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
-  @Output() markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
   public subclipMarkers: SubclipMarkers;
+  @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   private assetsArr: Array<number> = [];
 
   constructor(private store: AppStore) { }
@@ -61,6 +61,7 @@ export class AssetDetailComponent implements OnChanges {
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
     this.subclipMarkers = initialMarkers;
     this.showAssetSaveSubclip = false;
+    this.markersChange.emit(initialMarkers);
   }
 
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
