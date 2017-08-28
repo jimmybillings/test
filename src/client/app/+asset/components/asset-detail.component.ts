@@ -34,7 +34,7 @@ export class AssetDetailComponent implements OnChanges {
   public showAssetSaveSubclip: boolean = false;
   public subclipMarkers: SubclipMarkers;
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
-  private assetsArr: Array<number> = [];
+  private assetsArr: Array<string> = [];
 
   constructor(private store: AppStore) { }
 
@@ -54,14 +54,8 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public alreadyInCollection(uuid: any): boolean {
-    // assetId = parseInt(assetId);
-    return this.showAssetSaveSubclip ? false : this.assetsArr.indexOf(uuid) > -1;
-    // return this.assetsArr.indexOf(uuid) > -1;
+    return (this.showAssetSaveSubclip) ? false : this.assetsArr.indexOf(uuid) > -1;
   }
-  // public alreadyInCollection(assetId: any): boolean {
-  //   assetId = parseInt(assetId);
-  //   return this.assetsArr.indexOf(assetId) > -1;
-  // }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
     this.subclipMarkers = initialMarkers;
@@ -70,7 +64,6 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
-    console.log(this.markersAreDefined);
     this.subclipMarkers = newMarkers;
     this.showAssetSaveSubclip = this.markersAreDefined;
     if (this.markersAreDefined) {
@@ -103,14 +96,6 @@ export class AssetDetailComponent implements OnChanges {
       selectedTranscodeTarget: this.selectedTarget
     });
   }
-
-  // public addSubclipToCart(): void {
-  //   this.addToCart.emit({
-  //     assetId: this.asset.assetId,
-  //     markers: this.subclipMarkers,
-  //     selectedTranscodeTarget: this.selectedTarget
-  //   });
-  // }
 
   public getPricingAttributes(): void {
     this.getPriceAttributes.emit(this.asset.primary[3].value);
