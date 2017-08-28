@@ -10,6 +10,18 @@ import * as AssetActions from './store/actions/asset.actions';
 import * as AssetState from './store/states/asset.state';
 export type AssetState = AssetState.State;
 
+import * as CommentActions from './store/actions/comment.actions';
+import * as CommentState from './store/states/comment.state';
+export type CommentState = CommentState.State;
+
+import * as DialogActions from './store/actions/dialog.actions';
+
+import * as ErrorActions from './store/actions/error.actions';
+
+import * as NotifierActions from './store/actions/notifier.actions';
+
+import * as RouterActions from './store/actions/router.actions';
+
 import * as SnackbarActions from './store/actions/snackbar.actions';
 import * as SnackbarState from './store/states/snackbar.state';
 export type SnackbarState = SnackbarState.State;
@@ -18,28 +30,28 @@ import * as SpeedPreviewActions from './store/actions/speed-preview.actions';
 import * as SpeedPreviewState from './store/states/speed-preview.state';
 export type SpeedPreviewState = SpeedPreviewState.State;
 
-import * as CommentActions from './store/actions/comment.actions';
-import * as CommentState from './store/states/comment.state';
-export type CommentState = CommentState.State;
-
-import * as DialogActions from './store/actions/dialog.actions';
-
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly asset: AssetActions.ActionFactory;
-  readonly snackbar: SnackbarActions.ActionFactory;
-  readonly speedPreview: SpeedPreviewActions.ActionFactory;
   readonly comment: CommentActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
+  readonly error: ErrorActions.ActionFactory;
+  readonly router: RouterActions.ActionFactory;
+  readonly notifier: NotifierActions.ActionFactory;
+  readonly snackbar: SnackbarActions.ActionFactory;
+  readonly speedPreview: SpeedPreviewActions.ActionFactory;
 };
 
 export interface InternalActionFactory {
   readonly activeCollection: ActiveCollectionActions.InternalActionFactory;
   readonly asset: AssetActions.InternalActionFactory;
-  readonly snackbar: SnackbarActions.InternalActionFactory;
-  readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
   readonly comment: CommentActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
+  readonly error: ErrorActions.InternalActionFactory;
+  readonly notifier: NotifierActions.InternalActionFactory;
+  readonly router: RouterActions.InternalActionFactory;
+  readonly snackbar: SnackbarActions.InternalActionFactory;
+  readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
 };
 
 export interface AppState {
@@ -72,19 +84,25 @@ export class AppStore {
   private readonly actionFactory: ActionFactory = {
     activeCollection: new ActiveCollectionActions.ActionFactory(),
     asset: new AssetActions.ActionFactory(),
-    snackbar: new SnackbarActions.ActionFactory(),
-    speedPreview: new SpeedPreviewActions.ActionFactory(),
     comment: new CommentActions.ActionFactory(),
-    dialog: new DialogActions.ActionFactory()
+    dialog: new DialogActions.ActionFactory(),
+    error: new ErrorActions.ActionFactory(),
+    notifier: new NotifierActions.ActionFactory(),
+    router: new RouterActions.ActionFactory(),
+    snackbar: new SnackbarActions.ActionFactory(),
+    speedPreview: new SpeedPreviewActions.ActionFactory()
   };
 
   private readonly internalActionFactory: InternalActionFactory = {
     activeCollection: new ActiveCollectionActions.InternalActionFactory(),
     asset: new AssetActions.InternalActionFactory(),
-    snackbar: new SnackbarActions.InternalActionFactory(),
-    speedPreview: new SpeedPreviewActions.InternalActionFactory(),
     comment: new CommentActions.InternalActionFactory(),
-    dialog: new DialogActions.InternalActionFactory()
+    dialog: new DialogActions.InternalActionFactory(),
+    error: new ErrorActions.InternalActionFactory(),
+    notifier: new NotifierActions.InternalActionFactory(),
+    router: new RouterActions.InternalActionFactory(),
+    snackbar: new SnackbarActions.InternalActionFactory(),
+    speedPreview: new SpeedPreviewActions.InternalActionFactory()
   };
 
   constructor(private ngrxStore: Store<AppState>) { }

@@ -14,17 +14,17 @@ export function main() {
     stateSpecHelper.generateTestsFor({
       actionClassName: 'Load',
       mutationTestData: {
-        previousState: { loaded: true }
+        previousState: { loading: false }
       },
       customTests: [
         {
-          it: 'with previous state, returns previous state but with loaded: false',
-          previousState: { some: 'stuff', loaded: true },
-          expectedNextState: { some: 'stuff', loaded: false }
+          it: 'with previous state, returns previous state but with loading: true',
+          previousState: { some: 'stuff', loading: false },
+          expectedNextState: { some: 'stuff', loading: true }
         },
         {
-          it: 'without previous state, returns initialState but with loaded: false',
-          expectedNextState: { ...AssetState.initialState, loaded: false }
+          it: 'without previous state, returns initialState but with loading: true',
+          expectedNextState: { ...AssetState.initialState, loading: true }
         }
       ]
     });
@@ -33,15 +33,15 @@ export function main() {
       actionClassName: 'LoadSuccess',
       customTests: [
         {
-          it: 'with previous state, returns new state with updated asset and loaded: true',
-          previousState: { activeAsset: 'previous', loaded: false },
+          it: 'with previous state, returns new state with updated asset and loading: false',
+          previousState: { activeAsset: 'previous', loading: true },
           actionParameters: { activeAsset: 'new' },
-          expectedNextState: { activeAsset: 'new', loaded: true, loadParameters: null }
+          expectedNextState: { activeAsset: 'new', loading: true, loadParameters: null }
         },
         {
-          it: 'without previous state, returns new state with updated asset and loaded: true',
+          it: 'without previous state, returns new state with updated asset and loading: false',
           actionParameters: { activeAsset: 'new' },
-          expectedNextState: { activeAsset: 'new', loaded: true, loadParameters: null }
+          expectedNextState: { activeAsset: 'new', loading: true, loadParameters: null }
         }
       ]
     });
@@ -52,13 +52,33 @@ export function main() {
         {
           it: 'without previous state, returns inital state with the loadParameters',
           actionParameters: { loadParameters: { uuid: 'abc-123' } },
-          expectedNextState: { activeAsset: { assetId: 0, name: '' }, loaded: false, loadParameters: { uuid: 'abc-123' } }
+          expectedNextState: { activeAsset: { assetId: 0, name: '' }, loading: false, loadParameters: { uuid: 'abc-123' } }
         },
         {
           it: 'with previous state, returns the state with the loadParameters',
-          previousState: { activeAsset: 'previous', loaded: false },
+          previousState: { activeAsset: 'previous', loading: false },
           actionParameters: { loadParameters: { uuid: 'abc-123' } },
-          expectedNextState: { activeAsset: 'previous', loaded: false, loadParameters: { uuid: 'abc-123' } }
+          expectedNextState: { activeAsset: 'previous', loading: false, loadParameters: { uuid: 'abc-123' } }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'LoadFailure',
+      mutationTestData: {
+        previousState: { loading: true }
+      },
+      customTests: [
+        {
+          it: 'with previous state, returns previous state but with loading: false',
+          previousState: { some: 'stuff', loading: true },
+          actionParameters: { error: { some: 'error' } },
+          expectedNextState: { some: 'stuff', loading: false }
+        },
+        {
+          it: 'without previous state, returns initial state',
+          actionParameters: { error: { some: 'error' } },
+          expectedNextState: AssetState.initialState
         }
       ]
     });

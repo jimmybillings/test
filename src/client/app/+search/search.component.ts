@@ -12,7 +12,6 @@ import { CartService } from '../shared/services/cart.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
-import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { UiState } from '../shared/services/ui.state';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -47,7 +46,6 @@ export class SearchComponent implements OnDestroy {
     public filter: FilterService,
     private cart: CartService,
     private sortDefinitionService: SortDefinitionsService,
-    private error: ErrorStore,
     private searchContext: SearchContext,
     private uiConfig: UiConfig,
     private searchService: SearchService,
@@ -112,7 +110,7 @@ export class SearchComponent implements OnDestroy {
       if (res.url && res.url !== '') {
         this.window.nativeWindow.location.href = res.url;
       } else {
-        this.error.dispatch({ status: 'COMPS.NO_COMP' });
+        this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
       }
     });
   }

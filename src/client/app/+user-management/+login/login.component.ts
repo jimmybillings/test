@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
 import { FeatureStore } from '../../shared/stores/feature.store';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -33,7 +34,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private uiConfig: UiConfig,
     private pendo: PendoService,
     private dialogService: WzDialogService,
-    private feature: FeatureStore) { }
+    private feature: FeatureStore,
+    private store: AppStore) { }
 
   ngOnInit(): void {
     this.firstTimeUser = this.router.routerState.snapshot.url.indexOf('newUser=true') > -1;
@@ -75,13 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private redirectUserAppropriately(): void {
-    const redirectUrl: string = localStorage.getItem('redirectUrl');
-    if (redirectUrl) {
-      this.router.navigateByUrl(redirectUrl);
-      localStorage.removeItem('redirectUrl');
-    } else {
-      this.router.navigate(['/']);
-    }
+    this.store.dispatch(factory => factory.router.followRedirect());
     this.uiConfig.load().subscribe((_: any) => _);
   }
 

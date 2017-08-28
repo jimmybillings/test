@@ -7,7 +7,7 @@ export function main() {
   describe('Quote Edit Component', () => {
     let componentUnderTest: QuoteEditComponent, mockCapabilities: any, mockQuoteEditService: any, mockUiConfig: any,
       mockDialogService: any, mockAssetService: any, mockWindow: any, mockUserPreference: any, mockRouter: any,
-      mockErrorStore: any, mockDocument: any, mockSnackbar: any, mockTranslateService: any, mockAppStore: MockAppStore,
+      mockDocument: any, mockSnackbar: any, mockTranslateService: any, mockStore: MockAppStore,
       mockCurrentUserService: any, mockPricingService: any;
 
     beforeEach(() => {
@@ -68,13 +68,13 @@ export function main() {
         getPriceAttributes: jasmine.createSpy('getPricingAttributes')
       };
 
-      mockAppStore = new MockAppStore();
+      mockStore = new MockAppStore();
 
       componentUnderTest =
         new QuoteEditComponent(
           mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
-          mockWindow, mockUserPreference, mockErrorStore, mockDocument, mockSnackbar, mockTranslateService,
-          null, mockRouter, mockCurrentUserService, mockAppStore, mockPricingService
+          mockWindow, mockUserPreference, mockDocument, mockSnackbar, mockTranslateService,
+          null, mockRouter, mockCurrentUserService, mockStore, mockPricingService
         );
     });
 
@@ -87,8 +87,9 @@ export function main() {
         quoteId: 1
       };
       componentUnderTest = new QuoteEditComponent(
-        null, mockQuoteEditService, mockUiConfig, mockDialogService, null, null,
-        mockUserPreference, null, null, null, null, null, mockRouter, mockCurrentUserService, mockAppStore, mockPricingService
+        mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
+        mockWindow, mockUserPreference, mockDocument, mockSnackbar, mockTranslateService,
+        null, mockRouter, mockCurrentUserService, mockStore, mockPricingService
       );
       return componentUnderTest;
     };
@@ -367,7 +368,7 @@ export function main() {
 
     describe('commentCount', () => {
       it('should get the count from the correct part of the store', () => {
-        mockAppStore.createStateSection('comment', { quote: { pagination: { totalCount: 10 } } });
+        mockStore.createStateSection('comment', { quote: { pagination: { totalCount: 10 } } });
 
         componentUnderTest.commentCount.take(1).subscribe(count => expect(count).toBe(10));
       });

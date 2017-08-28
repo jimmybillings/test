@@ -1,14 +1,12 @@
 import { Observable } from 'rxjs/Observable';
 import { CurrentUserService } from './current-user.service';
 import { User } from '../interfaces/user.interface';
-import { ErrorStore } from '../stores/error.store';
 
 export function main() {
   describe('Current User Service', () => {
     let mockUser: any;
     let mockData: any;
     let mockStore: any;
-    let mockErrorStore: any = { data: Observable.of({}) };
     let serviceUnderTest: any;
 
     beforeEach(() => {
@@ -43,7 +41,7 @@ export function main() {
         select: (_: string) => Observable.of(mockUser),
         dispatch: () => true
       };
-      serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
+      serviceUnderTest = new CurrentUserService(mockStore);
     });
 
     describe('get state()', () => {
@@ -84,7 +82,7 @@ export function main() {
           select: (_: string) => Observable.of(mockUser),
           dispatch: () => true
         };
-        serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
+        serviceUnderTest = new CurrentUserService(mockStore);
         expect(serviceUnderTest.hasPermission('DeleteCollections')).toBe(false);
       });
 
@@ -115,7 +113,7 @@ export function main() {
           select: (_: string) => Observable.of(mockUser),
           dispatch: () => true
         };
-        serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
+        serviceUnderTest = new CurrentUserService(mockStore);
         expect(serviceUnderTest.hasPermission('DeleteCollections')).toBe(false);
       });
     });
@@ -127,7 +125,6 @@ export function main() {
 
       let mockData: any;
       let mockStore: any;
-      let mockErrorStore: any = { data: Observable.of({ status: 401 }) };
       let serviceUnderTest: any;
 
       beforeEach(() => {
@@ -136,28 +133,7 @@ export function main() {
           select: (_: string) => Observable.of(setLoggedInUser()),
           dispatch: () => true
         };
-        serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
-      });
-
-      it('should call destroy if error code is 419', () => {
-        let mockErrorStore: any = { data: Observable.of({ status: 419 }) };
-        spyOn(localStorage, 'removeItem');
-        serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
-        expect(localStorage.removeItem).toHaveBeenCalled();
-      });
-
-      it('should call destroy if error code is 401', () => {
-        let mockErrorStore: any = { data: Observable.of({ status: 401 }) };
-        spyOn(localStorage, 'removeItem');
-        serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
-        expect(localStorage.removeItem).toHaveBeenCalled();
-      });
-
-      it('should not call destroy if error code is not either 401 or 419', () => {
-        let mockErrorStore: any = { data: Observable.of({ status: 420 }) };
-        spyOn(localStorage, 'removeItem');
-        serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
-        expect(localStorage.removeItem).not.toHaveBeenCalled();
+        serviceUnderTest = new CurrentUserService(mockStore);
       });
 
       it('should set a object for a logged in user', () => {
@@ -181,7 +157,7 @@ export function main() {
           select: (_: string) => Observable.of(setLoggedOutUser()),
           dispatch: () => true
         };
-        serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
+        serviceUnderTest = new CurrentUserService(mockStore);
         localStorage.clear();
         serviceUnderTest.set();
         serviceUnderTest.data.subscribe((user: User) => {
@@ -245,7 +221,7 @@ export function main() {
           select: (_: string) => Observable.of(setLoggedOutUser()),
           dispatch: () => true
         };
-        serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
+        serviceUnderTest = new CurrentUserService(mockStore);
         expect(serviceUnderTest.loggedIn()).toBe(false);
       });
 
@@ -259,7 +235,6 @@ export function main() {
     describe('Current User model - hasPurchaseOnCredit()', () => {
       let mockData: any;
       let mockStore: any;
-      let mockErrorStore: any = { data: Observable.of({}) };
 
       beforeEach(() => {
         mockData = {};
@@ -272,19 +247,19 @@ export function main() {
       it('returns true when the store defines purchaseOnCredit=true', () => {
         mockData = { purchaseOnCredit: true };
 
-        expect(new CurrentUserService(mockStore, mockErrorStore).hasPurchaseOnCredit()).toBe(true);
+        expect(new CurrentUserService(mockStore).hasPurchaseOnCredit()).toBe(true);
       });
 
       it('returns false when the store defines purchaseOnCredit=false', () => {
         mockData = { purchaseOnCredit: false };
 
-        expect(new CurrentUserService(mockStore, mockErrorStore).hasPurchaseOnCredit()).toBe(false);
+        expect(new CurrentUserService(mockStore).hasPurchaseOnCredit()).toBe(false);
       });
 
       it('returns false when the store does not define purchaseOnCredit', () => {
         mockData = {};
 
-        expect(new CurrentUserService(mockStore, mockErrorStore).hasPurchaseOnCredit()).toBe(false);
+        expect(new CurrentUserService(mockStore).hasPurchaseOnCredit()).toBe(false);
       });
     });
   });

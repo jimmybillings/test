@@ -161,12 +161,36 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
+        name: 'loadFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Load Failure',
+        error: { some: 'error' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
         name: 'setSuccess',
         parameters: [{ some: 'collection' }]
       },
       expectedAction: {
         type: '[Active Collection] Set Success',
         activeCollection: { some: 'collection' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'setFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Set Failure',
+        error: { some: 'error' }
       }
     });
 
@@ -185,12 +209,36 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
+        name: 'loadPageFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Load Page Failure',
+        error: { some: 'error' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
         name: 'addAssetSuccess',
         parameters: [{ some: 'assets' }]
       },
       expectedAction: {
         type: '[Active Collection] Add Asset Success',
         currentPageItems: { some: 'assets' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'addAssetFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Add Asset Failure',
+        error: { some: 'error' }
       }
     });
 
@@ -209,12 +257,36 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
+        name: 'removeAssetFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Remove Asset Failure',
+        error: { some: 'error' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
         name: 'updateAssetMarkersSuccess',
         parameters: [{ some: 'assets' }]
       },
       expectedAction: {
         type: '[Active Collection] Update Asset Markers Success',
         currentPageItems: { some: 'assets' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'updateAssetMarkersFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Update Asset Markers Failure',
+        error: { some: 'error' }
       }
     });
   });

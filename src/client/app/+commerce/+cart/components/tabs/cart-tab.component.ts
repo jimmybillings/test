@@ -9,7 +9,6 @@ import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/w
 import { AssetService } from '../../../../store/services/asset.service';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
-import { ErrorStore } from '../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PricingStore } from '../../../../shared/stores/pricing.store';
@@ -19,6 +18,7 @@ import { LicenseAgreementComponent } from '../../../components/license-agreement
 import { PricingService } from '../../../../shared/services/pricing.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Common } from '../../../../shared/utilities/common.functions';
+import { AppStore } from '../../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -39,18 +39,18 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
     public assetService: AssetService,
     public window: WindowRef,
     public userPreference: UserPreferenceService,
-    public error: ErrorStore,
     @Inject(DOCUMENT) public document: any,
     public snackBar: MdSnackBar,
     public translate: TranslateService,
     public pricingStore: PricingStore,
     public featureStore: FeatureStore,
-    public pricingService: PricingService
+    public pricingService: PricingService,
+    protected store: AppStore
   ) {
     super(
       userCan, cartService, uiConfig, dialogService, assetService, window,
-      userPreference, error, document, snackBar, translate, pricingStore,
-      null, null, pricingService
+      userPreference, document, snackBar, translate, pricingStore,
+      store, pricingService
     );
     this.projectSubscription = this.cartService.projects.subscribe(projects => this.projects = projects);
   }

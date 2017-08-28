@@ -50,7 +50,7 @@ export class CollectionsService {
         if (this.store.match(collectionId, state => state.activeCollection.collection.id)) {
           this.store.dispatch(factory => factory.activeCollection.load());
 
-          return this.store.blockUntil(state => state.activeCollection.loaded).switchMap(() => this.load());
+          return this.store.blockUntil(state => !state.activeCollection.loading).switchMap(() => this.load());
         } else {
           return this.load();
         }
@@ -72,7 +72,7 @@ export class CollectionsService {
 
   private staySyncedWithActiveCollection(): void {
     this.store.select(state => state.activeCollection).subscribe((activeCollectionState: ActiveCollectionState) => {
-      if (this.state.items && this.state.items.length > 0 && activeCollectionState.loaded) {
+      if (this.state.items && this.state.items.length > 0 && !activeCollectionState.loading) {
         this.collectionsStore.update(activeCollectionState.collection);
       }
     });

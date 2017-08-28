@@ -3,7 +3,7 @@ import { Order } from '../../interfaces/commerce.interface';
 import { ApiService } from '../../services/api.service';
 import { Api, ApiOptions } from '../../interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
-import { ErrorStore } from '../../stores/error.store';
+import { AppStore } from '../../../app.store';
 
 declare var AW4: any;
 
@@ -24,10 +24,10 @@ export class WzAsperaDownloadDirective {
         .filter(res => res.asperaSpec)
         .subscribe((res: any) =>
           this.initConnect(res.asperaSpec)
-        , () => this.error.dispatch({ status: 'COMPS.NO_COMP' }));
+        , () => this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP')));
   }
 
-  constructor(private api: ApiService, private error: ErrorStore) { }
+  constructor(private api: ApiService, private store: AppStore) { }
 
   private initConnect(asperaSpec = this.asperaSpec) {
     const id = Math.floor((Math.random() * 10000) + 1);

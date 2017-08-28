@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CurrentUserService } from '../../shared/services/current-user.service';
-import { ErrorStore } from '../../shared/stores/error.store';
+import { AppStore } from '../../app.store';
 
 @Injectable()
 export class SearchAssetGuard implements CanActivate {
@@ -10,7 +10,7 @@ export class SearchAssetGuard implements CanActivate {
     private userCan: Capabilities,
     private currentUser: CurrentUserService,
     private router: Router,
-    private error: ErrorStore) { }
+    private store: AppStore) { }
 
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -26,7 +26,7 @@ export class SearchAssetGuard implements CanActivate {
       return true;
     } else {
       // user is logged in but doesn't have permission
-      this.error.dispatch({ status: 403 });
+      this.store.dispatch(factory => factory.error.handle403Forbidden());
       return false;
     }
   }

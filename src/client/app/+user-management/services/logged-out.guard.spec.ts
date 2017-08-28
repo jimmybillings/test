@@ -1,26 +1,32 @@
 import { LoggedOutGuard } from './logged-out.guard';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Logged Out Guard', () => {
     let serviceUnderTest: LoggedOutGuard;
-    let mockCurrentUserService: any, mockErrorActions: any;
+    let mockCurrentUserService: any;
+    let mockStore: MockAppStore;
+    let errorSpy: jasmine.Spy;
+
     beforeEach(() => {
-      mockErrorActions = { dispatch: jasmine.createSpy('dispatch') };
+      mockStore = new MockAppStore();
+      errorSpy = mockStore.createActionFactoryMethod('error', 'handle401Unauthorized');
     });
 
     describe('canActivate()', () => {
       it('Should return true if the user is logged in', () => {
         mockCurrentUserService = { loggedIn: jasmine.createSpy('loggedIn').and.returnValue(true) };
-        serviceUnderTest = new LoggedOutGuard(mockCurrentUserService, mockErrorActions);
+        serviceUnderTest = new LoggedOutGuard(mockCurrentUserService, mockStore);
         let action = serviceUnderTest.canActivate();
         expect(action).toEqual(true);
+        expect(errorSpy).not.toHaveBeenCalled();
       });
 
       it('Should return false and pass a 401 to the error.handle method', () => {
         mockCurrentUserService = { loggedIn: jasmine.createSpy('loggedIn').and.returnValue(false) };
-        serviceUnderTest = new LoggedOutGuard(mockCurrentUserService, mockErrorActions);
+        serviceUnderTest = new LoggedOutGuard(mockCurrentUserService, mockStore);
         let action = serviceUnderTest.canActivate();
-        expect(mockErrorActions.dispatch).toHaveBeenCalledWith({ status: 401 });
+        mockStore.expectDispatchFor(errorSpy);
         expect(action).toEqual(false);
       });
     });

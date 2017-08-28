@@ -13,7 +13,7 @@ export class CollectionShowResolver {
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
     this.store.dispatch(factory => this.createAppropriateActionFor(route.params, factory));
 
-    return this.store.blockUntil(state => state.activeCollection.loaded);
+    return this.store.blockUntil(state => !state.activeCollection.loading);
   }
 
   private createAppropriateActionFor(routeParameters: { [key: string]: any }, factory: ActionFactory): Action {
@@ -23,7 +23,7 @@ export class CollectionShowResolver {
       currentPage: routeParameters['i'], pageSize: routeParameters['n']
     };
 
-    if (state.loaded) {
+    if (!state.loading) {
       if (state.collection.id === routeId) {
         return factory.activeCollection.loadPage(actionParameters);
       }

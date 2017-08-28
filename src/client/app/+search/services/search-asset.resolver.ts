@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
 import { AppStore } from '../../app.store';
-import { AssetLoadParameters } from '../../shared/interfaces/common.interface';
+import { Pojo, AssetLoadParameters } from '../../shared/interfaces/common.interface';
 
 @Injectable()
 export class SearchAssetResolver implements Resolve<boolean> {
@@ -12,10 +12,10 @@ export class SearchAssetResolver implements Resolve<boolean> {
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
     this.store.dispatch(factory => factory.asset.load(this.convertToLoadParameters(route.params)));
 
-    return this.store.blockUntil(state => state.asset.loaded);
+    return this.store.blockUntil(state => !state.asset.loading);
   }
 
-  private convertToLoadParameters(routeParameters: { [key: string]: any }): AssetLoadParameters {
+  private convertToLoadParameters(routeParameters: Pojo): AssetLoadParameters {
     return {
       id: routeParameters['id'],
       share_key: routeParameters['share_key'],

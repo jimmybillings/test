@@ -17,8 +17,11 @@ import { Common } from '../../shared/utilities/common.functions';
 export class AssetEffects {
   @Effect()
   public load: Observable<Action> = this.actions.ofType(AssetActions.Load.Type)
-    .switchMap((action: AssetActions.Load) => this.service.load(action.loadParameters))
-    .map((asset: Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)));
+    .switchMap((action: AssetActions.Load) =>
+      this.service.load(action.loadParameters)
+        .map((asset: Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)))
+        .catch(error => Observable.of(this.store.create(factory => factory.asset.loadFailure(error))))
+    );
 
   @Effect() ensureActiveCollectionIsLoaded: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))

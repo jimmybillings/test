@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { ErrorStore } from '../stores/error.store';
 import { ApiConfig } from './api.config';
 import { Api, ApiOptions, ApiParameters, ApiBody, ApiErrorResponse } from '../interfaces/api.interface';
 import { UiState } from './ui.state';
+import { AppStore } from '../../app.store';
 
 @Injectable()
 export class ApiService {
+  // NOTE that all "private" properties and methods are temporarily "protected" to allow FutureApiService to
+  // override/access them as needed.
+
   constructor(
-    private http: Http,
-    private error: ErrorStore,
-    private apiConfig: ApiConfig,
-    private uiState: UiState
+    protected http: Http,
+    protected apiConfig: ApiConfig,
+    protected uiState: UiState,
+    protected store: AppStore
   ) {
   }
 
@@ -33,7 +36,8 @@ export class ApiService {
   }
 
   // //// END OF PUBLIC INTERFACE
-  private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<any> {
+  // NOTE that all "private" methods are temporarily "protected" to allow FutureApiService to override/access as necessary.
+  protected call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<any> {
     options = this.combineDefaultOptionsWith(options);
 
     this.showLoadingIf(options.loadingIndicator === 'onBeforeRequest' || options.loadingIndicator === true);
@@ -50,12 +54,12 @@ export class ApiService {
         this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
       }, (error: ApiErrorResponse) => {
         this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
-        try { return error.json(); } catch (exception) { this.error.dispatch(error); }
+        try { return error.json(); } catch (exception) { this.store.dispatch(factory => factory.error.handle(error)); }
         return error;
       });
   }
 
-  private combineDefaultOptionsWith(options: ApiOptions): ApiOptions {
+  protected combineDefaultOptionsWith(options: ApiOptions): ApiOptions {
     return Object.assign(
       {},
       { parameters: {}, body: {}, loadingIndicator: false, overridingToken: '' },
@@ -63,23 +67,23 @@ export class ApiService {
     );
   }
 
-  private showLoadingIf(loadingOption: boolean) {
+  protected showLoadingIf(loadingOption: boolean) {
     if (loadingOption) this.uiState.loadingIndicator(true);
   }
 
-  private hideLoadingIf(loadingOption: boolean) {
+  protected hideLoadingIf(loadingOption: boolean) {
     if (loadingOption) this.uiState.loadingIndicator(false);
   }
 
-  private urlFor(api: Api, endpoint: string) {
+  protected urlFor(api: Api, endpoint: string) {
     return `${this.apiConfig.baseUrl}${this.pathSegmentFor(api)}-api/${this.versionFor(api)}/${endpoint}`;
   }
 
-  private pathSegmentFor(api: Api): string {
+  protected pathSegmentFor(api: Api): string {
     return (Api[api] || '?').toLowerCase();
   }
 
-  private versionFor(api: Api): string {
+  protected versionFor(api: Api): string {
     switch (api) {
       case Api.Identities: return 'v1';
       case Api.Assets: return 'v1';
@@ -88,13 +92,13 @@ export class ApiService {
     };
   }
 
-  private bodyJsonFrom(bodyObject: ApiBody): string {
+  protected bodyJsonFrom(bodyObject: ApiBody): string {
     bodyObject = Object.assign({}, bodyObject, { siteName: this.apiConfig.portal });
 
     return JSON.stringify(bodyObject);
   }
 
-  private requestOptionsArgsFrom(options: ApiOptions): RequestOptionsArgs {
+  protected requestOptionsArgsFrom(options: ApiOptions): RequestOptionsArgs {
     let [search, searchWasSet] = this.searchParametersFrom(options.parameters);
     const requestOptionsArgs: RequestOptionsArgs = {};
 
@@ -104,7 +108,7 @@ export class ApiService {
     return requestOptionsArgs;
   }
 
-  private searchParametersFrom(parameters: ApiParameters): Array<any> {
+  protected searchParametersFrom(parameters: ApiParameters): Array<any> {
     const search: URLSearchParams = new URLSearchParams();
 
     if (parameters['siteName']) console.error('Cannot set siteName externally.');
