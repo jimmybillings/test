@@ -68,7 +68,6 @@ export class AssetShareComponent {
 
   public get shareAssetDialogTitle(): string {
     return this.markersAreDefined ? 'ASSET.SHARING.SUBCLIP_DIALOG_HEADER_TITLE' : 'ASSET.SHARING.DIALOG_HEADER_TITLE';
-    // return this.enhancedAsset.isSubclipped ? 'ASSET.SHARING.SUBCLIP_DIALOG_HEADER_TITLE' : 'ASSET.SHARING.DIALOG_HEADER_TITLE';
   }
 
   public get markersAreDefined(): boolean {
@@ -88,8 +87,6 @@ export class AssetShareComponent {
         shareLink.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [],
       timeStart: this.subclipMarkers.in,
       timeEnd: this.subclipMarkers.out,
-      // timeStart: this.enhancedAsset.timeStart,
-      // timeEnd: this.enhancedAsset.timeEnd,
     });
 
     if (shareLink.copyMe) {
