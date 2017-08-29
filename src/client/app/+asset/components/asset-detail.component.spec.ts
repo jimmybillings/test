@@ -9,7 +9,7 @@ export function main() {
     let transcodeTargets: any, detailTypeMap: any, finalAsset: any;
 
     beforeEach(() => {
-      collection = { assets: { items: [{ assetId: 123 }, { assetId: 456 }, { assetId: 789 }, { assetId: 102 }, { assetId: 103 }] } };
+      collection = { assets: { items: [{ uuid: 123 }, { uuid: 456 }, { uuid: 789 }, { uuid: 102 }, { uuid: 103 }] } };
       transcodeTargets = ['master_copy', '1080i', '1080p'];
       detailTypeMap = {
         common: ['field'], filter: true, id: 13, name: 'Core Packages', primary: [], secondary: [], siteName: 'core'
@@ -83,19 +83,21 @@ export function main() {
     describe('addAssetToActiveCollection()', () => {
       it('dispatches the expected action', () => {
         const spy = mockStore.createActionFactoryMethod('activeCollection', 'addAsset');
-
         componentUnderTest.addAssetToActiveCollection();
-
-        mockStore.expectDispatchFor(spy, componentUnderTest.asset);
+        mockStore.expectDispatchFor(spy, componentUnderTest.asset, null);
+      });
+      it('with subclipping defined dispatches the expected action', () => {
+        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'addAsset');
+        componentUnderTest.addAssetToActiveCollection();
+        mockStore.expectDispatchFor(spy, componentUnderTest.asset, { in: {}, out: {} });
       });
     });
 
     describe('removeAssetFromActiveCollection()', () => {
       it('dispatches the expected action', () => {
         const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
-
         componentUnderTest.removeAssetFromActiveCollection();
-
         mockStore.expectDispatchFor(spy, componentUnderTest.asset);
       });
     });
