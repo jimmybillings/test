@@ -38,14 +38,6 @@ export function main() {
             sectionName: 'router',
             methodName: 'goToLoginWithRedirect',
             expectedArguments: []
-          },
-          {
-            sectionName: 'notifier',
-            methodName: 'notify',
-            expectedArguments: [
-              { title: 'NOTIFICATION.REQUIRE_LOGIN', message: 'NOTIFICATION.REQUIRE_LOGIN_MESSAGE' },
-              jasmine.any(Function)
-            ]
           }
         ]
       }

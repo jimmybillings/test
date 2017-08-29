@@ -77,8 +77,7 @@ export class ErrorEffects {
     this.currentUserService.destroy();  // TODO: When AppStore has currentUser, this will be an action in the returned array.
 
     return [
-      this.createGoToLoginAction(),
-      this.createNotifierActionWith('NOTIFICATION.REQUIRE_LOGIN', 'NOTIFICATION.REQUIRE_LOGIN_MESSAGE')
+      this.createGoToLoginAction()
     ];
   }
 
