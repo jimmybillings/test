@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Location } from '@angular/common';
 import { Effect, Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -42,7 +43,12 @@ export class ErrorEffects {
     451: this.registrationDisallowed
   };
 
-  constructor(private actions: Actions, private store: AppStore, private currentUserService: CurrentUserService) { }
+  constructor(
+    private actions: Actions,
+    private store: AppStore,
+    private currentUserService: CurrentUserService,
+    private location: Location
+  ) { }
 
   private canHandleErrorIn(action: Action): boolean {
     if (this.awaitingPreviousNotificationDismissal || !action) return false;
@@ -79,10 +85,11 @@ export class ErrorEffects {
   private unauthorized(): Action[] {
     this.currentUserService.destroy();  // TODO: When AppStore has currentUser, this will be an action in the returned array.
 
-    return [
-      this.createGoToLoginAction(),
-      this.createNotifierActionWith('NOTIFICATION.ERROR', 'NOTIFICATION.INVALID_CREDENTIALS')
-    ];
+    const actionsArray = [this.createGoToLoginAction()];
+
+    return this.location.path() === '/user/login'
+      ? actionsArray.concat(this.createNotifierActionWith('NOTIFICATION.ERROR', 'NOTIFICATION.INVALID_CREDENTIALS'))
+      : actionsArray;
   }
 
   private forbidden(): Action[] {

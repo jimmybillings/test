@@ -5,10 +5,17 @@ import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
 export function main() {
   describe('Error Effects', () => {
     const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
+    let mockLocation: any, mockCurrentPath: string;
+
+    beforeEach(() => {
+      mockLocation = {
+        path: () => mockCurrentPath
+      };
+    });
 
     function instantiator(): any {
       return new ErrorEffects(
-        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
+        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService, mockLocation
       );
     }
 
@@ -44,36 +51,72 @@ export function main() {
       }
     });
 
-    effectsSpecHelper.generateTestsFor({
-      effectName: 'handle',
-      comment: 'with a 401 error status',
-      effectsInstantiator: instantiator,
-      inputAction: {
-        type: 'whatever',
-        error: { status: 401 }
-      },
-      helperServiceMethods: [{
-        name: 'destroy',
-        expectedArguments: [],
-        returns: null
-      }],
-      outputActionFactories: {
-        success: [
-          {
-            sectionName: 'router',
-            methodName: 'goToLoginWithRedirect',
-            expectedArguments: []
-          },
-          {
-            sectionName: 'notifier',
-            methodName: 'notify',
-            expectedArguments: [
-              { title: 'NOTIFICATION.ERROR', message: 'NOTIFICATION.INVALID_CREDENTIALS' },
-              jasmine.any(Function)
-            ]
-          }
-        ]
-      }
+    describe('handle - when user is NOT on /user/login', () => {
+      beforeEach(() => {
+        mockCurrentPath = 'SOME URL';
+      });
+
+      effectsSpecHelper.generateTestsFor({
+        effectName: 'handle',
+        comment: 'with a 401 error status on any route except /user/login',
+        effectsInstantiator: instantiator,
+        inputAction: {
+          type: 'whatever',
+          error: { status: 401 }
+        },
+        helperServiceMethods: [{
+          name: 'destroy',
+          expectedArguments: [],
+          returns: null
+        }],
+        outputActionFactories: {
+          success: [
+            {
+              sectionName: 'router',
+              methodName: 'goToLoginWithRedirect',
+              expectedArguments: []
+            }
+          ]
+        },
+      });
+    });
+
+    describe('handle - when user IS on /user/login', () => {
+      beforeEach(() => {
+        mockCurrentPath = '/user/login';
+      });
+
+      effectsSpecHelper.generateTestsFor({
+        effectName: 'handle',
+        comment: 'with a 401 error status - on /user/login',
+        effectsInstantiator: instantiator,
+        inputAction: {
+          type: 'whatever',
+          error: { status: 401 }
+        },
+        helperServiceMethods: [{
+          name: 'destroy',
+          expectedArguments: [],
+          returns: null
+        }],
+        outputActionFactories: {
+          success: [
+            {
+              sectionName: 'router',
+              methodName: 'goToLoginWithRedirect',
+              expectedArguments: []
+            },
+            {
+              sectionName: 'notifier',
+              methodName: 'notify',
+              expectedArguments: [
+                { title: 'NOTIFICATION.ERROR', message: 'NOTIFICATION.INVALID_CREDENTIALS' },
+                jasmine.any(Function)
+              ]
+            }
+          ]
+        },
+      });
     });
 
     effectsSpecHelper.generateTestsFor({
@@ -279,34 +322,68 @@ export function main() {
       });
     });
 
-    effectsSpecHelper.generateTestsFor({
-      effectName: 'handle401Unauthorized',
-      effectsInstantiator: instantiator,
-      inputAction: {
-        type: ErrorActions.Handle401Unauthorized.Type
-      },
-      helperServiceMethods: [{
-        name: 'destroy',
-        expectedArguments: [],
-        returns: null
-      }],
-      outputActionFactories: {
-        success: [
-          {
-            sectionName: 'router',
-            methodName: 'goToLoginWithRedirect',
-            expectedArguments: []
-          },
-          {
-            sectionName: 'notifier',
-            methodName: 'notify',
-            expectedArguments: [
-              { title: 'NOTIFICATION.ERROR', message: 'NOTIFICATION.INVALID_CREDENTIALS' },
-              jasmine.any(Function)
-            ]
-          }
-        ]
-      }
+    describe('handle401Unauthorized - while the user is NOT on /user/login', () => {
+      beforeEach(() => {
+        mockCurrentPath = 'SOME URL';
+      });
+
+      effectsSpecHelper.generateTestsFor({
+        effectName: 'handle401Unauthorized',
+        effectsInstantiator: instantiator,
+        inputAction: {
+          type: ErrorActions.Handle401Unauthorized.Type
+        },
+        helperServiceMethods: [{
+          name: 'destroy',
+          expectedArguments: [],
+          returns: null
+        }],
+        outputActionFactories: {
+          success: [
+            {
+              sectionName: 'router',
+              methodName: 'goToLoginWithRedirect',
+              expectedArguments: []
+            }
+          ]
+        }
+      });
+    });
+
+    describe('handle401Unauthorized - while the user IS on /user/login', () => {
+      beforeEach(() => {
+        mockCurrentPath = '/user/login';
+      });
+
+      effectsSpecHelper.generateTestsFor({
+        effectName: 'handle401Unauthorized',
+        effectsInstantiator: instantiator,
+        inputAction: {
+          type: ErrorActions.Handle401Unauthorized.Type
+        },
+        helperServiceMethods: [{
+          name: 'destroy',
+          expectedArguments: [],
+          returns: null
+        }],
+        outputActionFactories: {
+          success: [
+            {
+              sectionName: 'router',
+              methodName: 'goToLoginWithRedirect',
+              expectedArguments: []
+            },
+            {
+              sectionName: 'notifier',
+              methodName: 'notify',
+              expectedArguments: [
+                { title: 'NOTIFICATION.ERROR', message: 'NOTIFICATION.INVALID_CREDENTIALS' },
+                jasmine.any(Function)
+              ]
+            }
+          ]
+        }
+      });
     });
 
     effectsSpecHelper.generateTestsFor({

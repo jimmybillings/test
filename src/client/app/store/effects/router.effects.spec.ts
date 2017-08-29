@@ -71,7 +71,7 @@ export function main() {
             {
               it: 'navigates to /user/login',
               expectation: () => {
-                expect(mockRouter.navigate).toHaveBeenCalledWith(['/user/login']);
+                expect(mockRouter.navigate).toHaveBeenCalledWith(['/user/login', { requireLogin: true }]);
               }
             }
           ]

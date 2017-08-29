@@ -19,7 +19,7 @@ export class RouterEffects {
       const currentPath: string = this.location.path();
       if (currentPath !== this.LoginPath) {
         localStorage.setItem(this.RedirectUrlKey, currentPath);
-        this.router.navigate([this.LoginPath]);
+        this.router.navigate([this.LoginPath, { requireLogin: true }]);
       }
     });
 
