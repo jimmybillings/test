@@ -1,6 +1,7 @@
 @import '../+asset/components/asset-data-theme';
 @import '../+asset/components/asset-detail-theme';
 @import '../+asset/components/asset-save-subclip-theme';
+@import '../+asset/components/asset-share-theme';
 @import '../+asset/components/asset-share-link-theme';
 
 @import '../+collection/+index/collections-theme';
@@ -69,6 +70,7 @@
   @include wz-asset-data-theme($theme);
   @include wz-asset-detail-theme($theme);
   @include wz-asset-save-subclip-theme($theme);
+  @include wz-asset-share-theme($theme);
   @include wz-asset-share-link-theme($theme);
 
   @include wz-collections-theme($theme);

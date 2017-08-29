@@ -10,18 +10,35 @@
       </asset-share-link>
       <div flex="100" layout="row">
         <h4 class="md-headline" flex="100" layout-align="start center">
-          {{ 'ASSET.SHARING.DIALOG_HEADER_TITLE' | translate }}
+            {{ shareAssetDialogTitle | translate}}
         </h4>
         <div class="tools" flex="auto" layout-align="end center">
           <button md-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK_BTN_TITLE' | translate }}" (click)="showShareLink()"><md-icon>link</md-icon></button>
         </div>
       </div>
     </header>
-    
+    <!-- <div class="subclip-info" *ngIf="enhancedAsset.isSubclipped" layout="column" layout-align="center">
+      <p class="in-out-markers" flex>
+        <strong>{{ 'ASSET.SHARING.SUBCLIP_IN_LABEL' | translate}}</strong>
+        <span>{{ enhancedAsset.inMarkerFrame | timecode }}</span>
+        <strong>{{ 'ASSET.SHARING.SUBCLIP_OUT_LABEL' | translate}}</strong>
+        <span>{{ enhancedAsset.outMarkerFrame | timecode }}</span>
+        <strong>/</strong>
+        <span class="duration">{{ enhancedAsset.subclipDurationFrame | timecode }}</span>
+      </p>
+    </div> -->
+    <div class="subclip-info" *ngIf="markersAreDefined" layout="column" layout-align="center">
+      <p class="in-out-markers" flex>
+        <strong>{{ 'ASSET.SHARING.SUBCLIP_IN_LABEL' | translate}}</strong>
+        <span>{{ subclipMarkers.in | timecode }}</span>
+        <strong>{{ 'ASSET.SHARING.SUBCLIP_OUT_LABEL' | translate}}</strong>
+        <span>{{ subclipMarkers.out | timecode }}</span>
+      </p>
+    </div>
+    <div class="asset-name" layout="column" layout-align="center">
+      <span flex>{{ enhancedAsset.primary[1].value }}</span>
+    </div>
     <div class="form-panel" layout="column">
-      <div flex="none">
-        <span class="asset-name md-caption">{{enhancedAsset.assetName}}</span>
-      </div>
       <div class="wz-form-card">
         <md-card-content>
           <wz-form 
