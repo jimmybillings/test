@@ -73,7 +73,7 @@ export function main() {
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
           mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
         componentUnderTest.ngOnInit();
-        expect(componentUnderTest.firstTimeUser).toBe(true);
+        expect(componentUnderTest.displayWelcomeMessage).toBe(true);
       });
     });
 

@@ -1,7 +1,12 @@
 <section class="login hero" #target *ngIf="config">
-  <div *ngIf="firstTimeUser" layout="row" md-scroll-y="" layout-align="center center">
-    <div flex-gt-lg="50" flex-gt-md="60" flex-gt-sm="75" flex="95" class="first-time-user">
+  <div *ngIf="displayWelcomeMessage" layout="row" md-scroll-y="" layout-align="center center">
+    <div flex-gt-lg="50" flex-gt-md="60" flex-gt-sm="75" flex="95" class="user-message">
       <p>{{ 'LOGIN.NEW_USER' | translate }}</p>
+    </div> 
+  </div>
+  <div *ngIf="displayErrorMessage" layout="row" md-scroll-y="" layout-align="center center">
+    <div flex-gt-lg="50" flex-gt-md="60" flex-gt-sm="75" flex="95" class="user-message">
+      <p>{{ 'NOTIFICATION.REQUIRE_LOGIN' | translate }}</p>
     </div> 
   </div>
   <div layout="row" md-scroll-y="" layout-align="center start">
