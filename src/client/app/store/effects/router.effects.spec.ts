@@ -99,6 +99,29 @@ export function main() {
           ]
         });
       });
+
+      describe('from /user/login with query params', () => {
+        beforeEach(() => {
+          mockCurrentPath = '/user/login;requireLogin=true';
+        });
+
+        effectsSpecHelper.generateTestsFor({
+          effectName: 'goToLoginWithRedirect',
+          effectsInstantiator: instantiator,
+          inputAction: {
+            type: RouterActions.GoToLoginWithRedirect.Type
+          },
+          customTests: [
+            {
+              it: 'doesn\'t navigate to /user/login',
+              expectation: () => {
+                expect(mockRouter.navigate).not.toHaveBeenCalled();
+              }
+            }
+          ]
+        });
+      });
+
     });
 
     effectsSpecHelper.generateTestsFor({
