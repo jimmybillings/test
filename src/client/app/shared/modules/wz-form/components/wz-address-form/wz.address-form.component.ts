@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Address, FormattedGoogleAddress } from '../../../../interfaces/user.interface';
 import { RowFormFields, FormRow, FormFields } from '../../../../interfaces/forms.interface';
 import { GooglePlacesService } from '../../services/google-places.service';
+import { Common } from '../../../../utilities/common.functions';
 import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
@@ -45,7 +46,7 @@ export class WzAddressFormComponent {
   }
 
   public geolocate(): void {
-    this.setAutocompleteMarginTop();
+    Common.setMarginTop('pac-container', this.document)
     if (navigator.geolocation) {
       this.google.geolocate();
     }
@@ -95,12 +96,6 @@ export class WzAddressFormComponent {
 
   private loadGooglePlaces(): void {
     this.google.loadPlacesLibrary(this.fillInAddress);
-  }
-
-  private setAutocompleteMarginTop() {
-    let scrollTopMargin: number = -1 * this.document.body.getBoundingClientRect().top;
-    let autocompleteContainer = this.document.getElementsByClassName('pac-container');
-    autocompleteContainer[autocompleteContainer.length - 1].setAttribute('style', `margin-top: ${scrollTopMargin}px`);
   }
 
   // ------------------------------------------------------- //
