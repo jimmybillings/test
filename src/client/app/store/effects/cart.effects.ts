@@ -6,7 +6,8 @@ import { Action } from '@ngrx/store';
 import * as CartActions from '../actions/cart.actions';
 import { AppStore, AppState, InternalActionFactoryMapper } from '../../app.store';
 import { Cart } from '../../shared/interfaces/commerce.interface';
-import { AssetLoadParameters, Asset } from '../../shared/interfaces/common.interface';
+import { AssetLoadParameters } from '../../shared/interfaces/common.interface';
+import { AssetLineItem, Asset } from '../../shared/interfaces/commerce.interface';
 import { FutureCartService } from '../services/cart.service';
 
 @Injectable()
@@ -18,9 +19,7 @@ export class CartEffects {
 
   @Effect() ensureCartIsLoaded: Observable<Action> = this.actions.ofType(CartActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
-    .filter(([action, state]: [CartActions.LoadSuccess, AppState]) => {
-      return state.asset.loadParameters !== null;
-    })
+    .filter(([action, state]: [CartActions.LoadSuccess, AppState]) => state.asset.loadParameters !== null)
     .map(([action, state]: [CartActions.LoadSuccess, AppState]) => {
       const extraLoadParams: AssetLoadParameters = this.mergeCartAssetWithLoadParameters(state, state.asset.loadParameters);
       return this.store.create(factory => factory.asset.load(extraLoadParams));
@@ -43,11 +42,11 @@ export class CartEffects {
   constructor(private actions: Actions, private store: AppStore, private service: FutureCartService) { }
 
   private mergeCartAssetWithLoadParameters(state: AppState, loadParameters: AssetLoadParameters): AssetLoadParameters {
-    const assets: Asset[] = state.cart.data.projects
-      .reduce((assetsArr, project) => assetsArr.concat(project.lineItems.map(lineItem => lineItem.asset)), []);
+    const lineItems: AssetLineItem[] = state.cart.data.projects
+      .reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
 
-    const asset: Asset = assets
-      .find(asset => asset.uuid === loadParameters.uuid);
+    const asset: Asset = lineItems
+      .find(lineItem => lineItem.id === loadParameters.uuid).asset;
 
     return this.extraLoadParametersFrom(asset);
   }
