@@ -28,6 +28,7 @@ export class MockAppStore extends AppStore {
       dialog: {} as any,
       error: {} as any,
       notifier: {} as any,
+      order: {} as any,
       router: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
@@ -41,6 +42,7 @@ export class MockAppStore extends AppStore {
       dialog: {} as any,
       error: {} as any,
       notifier: {} as any,
+      order: {} as any,
       router: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
@@ -50,6 +52,7 @@ export class MockAppStore extends AppStore {
       activeCollection: {} as any,
       asset: {} as any,
       cart: {} as any,
+      order: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
       comment: {} as any

@@ -1,33 +1,40 @@
-import { OrderResolver } from './order.resolver';
 import { Observable } from 'rxjs/Observable';
+
+import { OrderResolver } from './order.resolver';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Order Resolver', () => {
     let resolverUnderTest: OrderResolver;
     let mockRoute: any;
-    const mockOrderService: any = { getOrder: jasmine.createSpy('getOrder') };
-    const mockOrderStore: any = { data: Observable.of({ id: 1234 }), state: { id: 1234 } };
-    const mockState: any = null;
+    let mockStore: MockAppStore;
+    const mockOrderService: any = { getOrder: jasmine.createSpy('getOrder').and.returnValue(Observable.of({ some: 'order' })) };
 
     beforeEach(() => {
-      resolverUnderTest = new OrderResolver(mockOrderService, mockOrderStore);
+      mockRoute = { params: { orderId: '1234' } };
+      mockStore = new MockAppStore();
+      resolverUnderTest = new OrderResolver(mockOrderService, mockStore);
     });
 
-    describe('Resolve()', () => {
-      it('should hit the store if the order is already there', () => {
-        mockRoute = { params: { orderId: '1234' } };
-        let result: Observable<any> = resolverUnderTest.resolve(mockRoute, mockState);
+    describe('resolve()', () => {
+      it('just returns Observable of true if the order is already in the store', () => {
+        mockStore.createStateElement('order', 'activeOrder', { id: 1234 });
+        const subscriptionFunction = jasmine.createSpy('subscription function');
 
-        result.subscribe((data: any) => {
-          expect(data).toEqual({});
-        });
+        resolverUnderTest.resolve(mockRoute).subscribe(subscriptionFunction);
+
+        expect(mockOrderService.getOrder).not.toHaveBeenCalled();
+        expect(subscriptionFunction).toHaveBeenCalledWith(true);
       });
 
       it('should hit the service if the order is not already there', () => {
-        mockRoute = { params: { orderId: '12345' } };
-        resolverUnderTest.resolve(mockRoute, mockState);
+        mockStore.createStateElement('order', 'activeOrder', { id: 0 });
+        const subscriptionFunction = jasmine.createSpy('subscription function');
 
-        expect(mockOrderService.getOrder).toHaveBeenCalledWith('12345');
+        resolverUnderTest.resolve(mockRoute).subscribe(subscriptionFunction);
+
+        expect(mockOrderService.getOrder).toHaveBeenCalledWith(1234);
+        expect(subscriptionFunction).toHaveBeenCalledWith(true);
       });
     });
   });

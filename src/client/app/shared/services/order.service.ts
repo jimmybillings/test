@@ -3,20 +3,16 @@ import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from '../services/api.service';
 import { Api } from '../interfaces/api.interface';
-import { OrderStore } from '../stores/order.store';
+import { AppStore } from '../../app.store';
 import { enhanceAsset } from '../interfaces/enhanced-asset';
-import {
-  Project,
-  Order,
-  AssetLineItem
-} from '../interfaces/commerce.interface';
+import { Project, Order, AssetLineItem } from '../interfaces/commerce.interface';
 
 @Injectable()
 export class OrderService {
-  constructor(private api: ApiService, private store: OrderStore) { }
+  constructor(private api: ApiService, private store: AppStore) { }
 
   public get data(): Observable<Order> {
-    return this.store.data;
+    return this.store.select(state => state.order.activeOrder);
   }
 
   public get projects(): Observable<Project[]> {
@@ -36,8 +32,8 @@ export class OrderService {
     });
   }
 
-  public getOrder(orderId: number): Observable<any> {
+  public getOrder(orderId: number): Observable<Order> {
     return this.api.get(Api.Orders, `order/${orderId}`)
-      .do(response => this.store.update(response));
+      .do(response => this.store.dispatch(factory => factory.order.loadSuccess(response)));
   }
 }
