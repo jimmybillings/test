@@ -81,14 +81,14 @@ import {
 } from '../app.store';
 import * as ActiveCollectionState from '../store/states/active-collection.state';
 import * as AssetState from '../store/states/asset.state';
+import * as CommentState from '../store/states/comment.state';
+import * as OrderState from '../store/states/order.state';
 import * as SnackbarState from '../store/states/snackbar.state';
 import * as SpeedPreviewState from '../store/states/speed-preview.state';
-import * as CommentState from '../store/states/comment.state';
 
 import { searchStore, SearchStore } from './stores/search.store';
 import { cart, CartStore } from './stores/cart.store';
 import { collections, CollectionsStore } from './stores/collections.store';
-import { order, OrderStore } from './stores/order.store';
 import { orders, OrdersStore } from './stores/orders.store';
 import { features, FeatureStore } from './stores/feature.store';
 import { gallery, GalleryViewStore } from './stores/gallery-view.store';
@@ -163,7 +163,6 @@ const WAZEE_STORE_INTERFACES = [
   FeatureStore,
   SearchStore,
   OrdersStore,
-  OrderStore,
   GalleryViewStore,
   QuoteStore,
   QuotesStore,
@@ -193,7 +192,6 @@ const WAZEE_STORES: any = {
   i18n: multilingualActionReducer,
   cart: cart,
   sortDefinitions: sortDefinitions,
-  order: order,
   orders: orders,
   features: features,
   gallery: gallery,
@@ -206,6 +204,7 @@ const WAZEE_STORES: any = {
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,
+  order: OrderState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
   comment: CommentState.reducer

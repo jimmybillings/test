@@ -20,6 +20,10 @@ import * as ErrorActions from './store/actions/error.actions';
 
 import * as NotifierActions from './store/actions/notifier.actions';
 
+import * as OrderActions from './store/actions/order.actions';
+import * as OrderState from './store/states/order.state';
+export type OrderState = OrderState.State;
+
 import * as RouterActions from './store/actions/router.actions';
 
 import * as SnackbarActions from './store/actions/snackbar.actions';
@@ -36,6 +40,7 @@ export interface ActionFactory {
   readonly comment: CommentActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
   readonly error: ErrorActions.ActionFactory;
+  readonly order: OrderActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
   readonly notifier: NotifierActions.ActionFactory;
   readonly snackbar: SnackbarActions.ActionFactory;
@@ -49,6 +54,7 @@ export interface InternalActionFactory {
   readonly dialog: DialogActions.InternalActionFactory;
   readonly error: ErrorActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
+  readonly order: OrderActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
@@ -57,6 +63,7 @@ export interface InternalActionFactory {
 export interface AppState {
   readonly activeCollection: ActiveCollectionState;
   readonly asset: AssetState;
+  readonly order: OrderState;
   readonly snackbar: SnackbarState;
   readonly speedPreview: SpeedPreviewState;
   readonly comment: CommentState;
@@ -70,6 +77,7 @@ export interface AppReducers {
 export const reducers: AppReducers = {
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,
+  order: OrderState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
   comment: CommentState.reducer
@@ -88,6 +96,7 @@ export class AppStore {
     dialog: new DialogActions.ActionFactory(),
     error: new ErrorActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
+    order: new OrderActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
     speedPreview: new SpeedPreviewActions.ActionFactory()
@@ -100,6 +109,7 @@ export class AppStore {
     dialog: new DialogActions.InternalActionFactory(),
     error: new ErrorActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
+    order: new OrderActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
     speedPreview: new SpeedPreviewActions.InternalActionFactory()
