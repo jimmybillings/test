@@ -3,6 +3,22 @@ import { Common } from './common.functions';
 export function main() {
   describe('Common Functions', () => {
 
+    describe('setMarginTop', () => {
+      it('Should calculate a new marginTop that is offset by page scroll and set it to the element', () => {
+        let mockElement = {
+          setAttribute: jasmine.createSpy('setAttribute')
+        };
+
+        let mockDocument = {
+          body: { getBoundingClientRect: () => ({ top: '-50' }) },
+          getElementsByClassName: (string: string) => [mockElement]
+        };
+
+        Common.setMarginTop('testClass', mockDocument);
+        expect(mockElement.setAttribute).toHaveBeenCalledWith('style', `margin-top: 50px`);
+      });
+    });
+
     describe('deletePropertiesFromObject', () => {
 
       it('Should remove the provided properties from a flat object', () => {

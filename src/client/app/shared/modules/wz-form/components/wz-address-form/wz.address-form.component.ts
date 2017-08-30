@@ -46,7 +46,7 @@ export class WzAddressFormComponent {
   }
 
   public geolocate(): void {
-    Common.setMarginTop('pac-container', this.document)
+    Common.setMarginTop('pac-container', this.document);
     if (navigator.geolocation) {
       this.google.geolocate();
     }

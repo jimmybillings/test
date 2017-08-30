@@ -62,8 +62,8 @@ export class Common {
   }
 
   public static setMarginTop(className: string, document: Pojo): void {
-    let target = document.getElementsByClassName(className)
+    let target = document.getElementsByClassName(className);
     let scrollTopMargin: number = -1 * document.body.getBoundingClientRect().top;
-    target[target.length - 1].setAttribute('style', `margin-top: ${scrollTopMargin}px`)
+    target[target.length - 1].setAttribute('style', `margin-top: ${scrollTopMargin}px`);
   }
 }
