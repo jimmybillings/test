@@ -85,8 +85,7 @@ export class ErrorEffects {
     this.currentUserService.destroy();  // TODO: When AppStore has currentUser, this will be an action in the returned array.
 
     const actionsArray = [this.createGoToLoginAction()];
-
-    return this.location.path() === '/user/login'
+    return this.location.path().split(';')[0] === '/user/login'
       ? actionsArray.concat(this.createNotifierActionWith('NOTIFICATION.ERROR', 'NOTIFICATION.INVALID_CREDENTIALS'))
       : actionsArray;
   }
