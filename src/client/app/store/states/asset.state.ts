@@ -1,4 +1,6 @@
 import * as AssetActions from '../actions/asset.actions';
+import * as CartActions from '../actions/cart.actions';
+import * as ActiveCollectionActions from '../actions/active-collection.actions';
 import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
 
@@ -14,7 +16,9 @@ export const initialState: State = {
   loadParameters: null
 };
 
-export function reducer(state: State = initialState, action: AssetActions.Any): State {
+export type AllowedActions = AssetActions.Any | CartActions.LoadAsset | ActiveCollectionActions.LoadAsset;
+
+export function reducer(state: State = initialState, action: AllowedActions): State {
   switch (action.type) {
     case AssetActions.Load.Type: {
       return { ...Common.clone(state), loading: true };
@@ -24,8 +28,8 @@ export function reducer(state: State = initialState, action: AssetActions.Any): 
       return { activeAsset: action.activeAsset, loading: false, loadParameters: null };
     }
 
-    case AssetActions.LoadCartAsset.Type:
-    case AssetActions.LoadCollectionAsset.Type: {
+    case CartActions.LoadAsset.Type:
+    case ActiveCollectionActions.LoadAsset.Type: {
       return { ...Common.clone(state), loading: true, loadParameters: action.loadParameters };
     }
 

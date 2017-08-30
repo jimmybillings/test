@@ -11,14 +11,6 @@ export class ActionFactory {
   public updateMarkersInUrl(markers: SubclipMarkers, assetId: number) {
     return new UpdateMarkersInUrl(markers, assetId);
   }
-
-  public loadCollectionAsset(parameters: AssetLoadParameters): LoadCollectionAsset {
-    return new LoadCollectionAsset(parameters);
-  }
-
-  public loadCartAsset(loadParameters: AssetLoadParameters): LoadCartAsset {
-    return new LoadCartAsset(loadParameters);
-  }
 }
 
 export class InternalActionFactory extends ActionFactory {
@@ -56,16 +48,4 @@ export class UpdateMarkersInUrl implements Action {
   }
 }
 
-export class LoadCollectionAsset implements Action {
-  public static readonly Type = '[Asset] Load Collection Asset';
-  public readonly type = LoadCollectionAsset.Type;
-  constructor(public readonly loadParameters: AssetLoadParameters) { }
-}
-
-export class LoadCartAsset implements Action {
-  public static readonly Type = '[Asset] Load Cart Asset';
-  public readonly type = LoadCartAsset.Type;
-  constructor(public readonly loadParameters: AssetLoadParameters) { }
-}
-
-export type Any = Load | LoadSuccess | LoadFailure | UpdateMarkersInUrl | LoadCollectionAsset | LoadCartAsset;
+export type Any = Load | LoadSuccess | LoadFailure | UpdateMarkersInUrl;

@@ -6,9 +6,9 @@ import { Observable } from 'rxjs/Observable';
 
 import * as ActiveCollectionActions from '../actions/active-collection.actions';
 import { ActiveCollectionService } from '../services/active-collection.service';
-import { AppStore, AppState } from '../../app.store';
+import { AppStore, AppState, InternalActionFactoryMapper } from '../../app.store';
 import { Collection, CollectionItems } from '../../shared/interfaces/collection.interface';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
 import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 import { Frame } from 'wazee-frame-formatter';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
@@ -135,6 +135,28 @@ export class ActiveCollectionEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
+  @Effect()
+  public loadAsset: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadAsset.Type)
+    .withLatestFrom(this.store.select(state => state))
+    .map(([action, state]: [ActiveCollectionActions.LoadAsset, AppState]) => {
+      let mapper: InternalActionFactoryMapper;
+      if (state.activeCollection.collection.id === null) {
+        mapper = (factory) => factory.activeCollection.load();
+      } else {
+        const extraLoadParams: AssetLoadParameters = this.mergeCollectionAssetWithLoadParameters(state, action.loadParameters);
+        mapper = (factory) => factory.asset.load(extraLoadParams);
+      }
+      return this.store.create(mapper);
+    });
+
+  @Effect() ensureActiveCollectionIsLoaded: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadSuccess.Type)
+    .withLatestFrom(this.store.select(state => state))
+    .filter(([action, state]: [ActiveCollectionActions.LoadSuccess, AppState]) => state.asset.loadParameters !== null)
+    .map(([action, state]: [ActiveCollectionActions.LoadSuccess, AppState]) => {
+      const extraLoadParams: AssetLoadParameters = this.mergeCollectionAssetWithLoadParameters(state, state.asset.loadParameters);
+      return this.store.create(factory => factory.asset.load(extraLoadParams));
+    });
+
   constructor(
     private actions: Actions,
     private store: AppStore,
@@ -163,5 +185,20 @@ export class ActiveCollectionEffects {
     }
 
     return parameters;
+  }
+
+  private mergeCollectionAssetWithLoadParameters(state: AppState, loadParameters: AssetLoadParameters): AssetLoadParameters {
+    const asset: Asset = state.activeCollection.collection.assets.items
+      .find(asset => asset.uuid === loadParameters.uuid);
+
+    return this.extraLoadParametersFrom(asset);
+  }
+
+  private extraLoadParametersFrom(asset: Asset): AssetLoadParameters {
+    return {
+      id: String(asset.assetId),
+      timeStart: String(asset.timeStart),
+      timeEnd: String(asset.timeEnd)
+    };
   }
 }

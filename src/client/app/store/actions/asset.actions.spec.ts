@@ -32,18 +32,6 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
-        name: 'loadCollectionAsset',
-        parameters: [{ some: 'params' }]
-      },
-      expectedAction: {
-        type: '[Asset] Load Collection Asset',
-        loadParameters: { some: 'params' }
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: InternalActionFactory,
         name: 'loadFailure',
         parameters: [{ some: 'error' }]
       },

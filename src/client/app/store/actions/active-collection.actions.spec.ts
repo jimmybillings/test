@@ -138,6 +138,18 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
+        name: 'loadAsset',
+        parameters: [{ some: 'params' }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Load Asset',
+        loadParameters: { some: 'params' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
         name: 'reset',
         parameters: []
       },

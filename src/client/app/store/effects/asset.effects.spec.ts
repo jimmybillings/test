@@ -38,61 +38,6 @@ export function main() {
       }
     });
 
-    describe('loadCollectionAsset', () => {
-      it('works as expected when the active collection is loaded', () => {
-        effectsSpecHelper.generateTestsFor({
-          effectName: 'loadCollectionAsset',
-          effectsInstantiator: instantiator,
-          state: [
-            {
-              storeSectionName: 'activeCollection',
-              propertyName: 'collection',
-              value: { assets: { items: [{ uuid: 'abc-123', assetId: 456, timeStart: 100, timeEnd: 1000 }] } }
-            },
-            {
-              storeSectionName: 'activeCollection',
-              propertyName: 'loaded',
-              value: true
-            }
-          ],
-          inputAction: {
-            type: AssetActions.LoadCollectionAsset.Type,
-            loadParameters: { uuid: 'abc-123' }
-          },
-          outputActionFactories: {
-            success: {
-              sectionName: 'asset',
-              methodName: 'load',
-              expectedArguments: [{ id: '456', timeStart: '100', timeEnd: '1000' }]
-            }
-          }
-        });
-      });
-
-      it('works as expected when the active collection is NOT loaded', () => {
-        effectsSpecHelper.generateTestsFor({
-          effectName: 'loadCollectionAsset',
-          effectsInstantiator: instantiator,
-          state: {
-            storeSectionName: 'activeCollection',
-            propertyName: 'loaded',
-            value: false
-          },
-          inputAction: {
-            type: AssetActions.LoadCollectionAsset.Type,
-            loadParameters: { uuid: 'abc-123' }
-          },
-          outputActionFactories: {
-            success: {
-              sectionName: 'activeCollection',
-              methodName: 'load',
-              expectedArguments: []
-            }
-          }
-        });
-      });
-    });
-
     describe('ensureActiveCollectionIsLoaded', () => {
       it('works as expected', () => {
         effectsSpecHelper.generateTestsFor({

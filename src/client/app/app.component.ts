@@ -162,7 +162,7 @@ export class AppComponent implements OnInit {
     if (this.userCan.administerQuotes()) {
       this.quoteEditService.getFocusedQuote().subscribe();
     } else {
-      // this.store.dispatch(factory => factory.cart.load());
+      this.store.dispatch(factory => factory.cart.load());
     }
 
     this.sortDefinition.getSortDefinitions().subscribe((data: any) => {

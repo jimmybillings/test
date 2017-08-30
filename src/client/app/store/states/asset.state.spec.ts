@@ -1,4 +1,6 @@
 import * as AssetActions from '../actions/asset.actions';
+import * as CartActions from '../actions/cart.actions';
+import * as ActiveCollectionActions from '../actions/active-collection.actions';
 import * as AssetState from './asset.state';
 import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 
@@ -47,18 +49,13 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'LoadCollectionAsset',
+      actionTypes: [ActiveCollectionActions.LoadAsset.Type, CartActions.LoadAsset.Type],
       customTests: [
         {
-          it: 'without previous state, returns inital state with the loadParameters',
-          actionParameters: { loadParameters: { uuid: 'abc-123' } },
-          expectedNextState: { activeAsset: { assetId: 0, name: '' }, loading: true, loadParameters: { uuid: 'abc-123' } }
-        },
-        {
-          it: 'with previous state, returns the state with the loadParameters',
-          previousState: { activeAsset: 'previous', loading: false },
-          actionParameters: { loadParameters: { uuid: 'abc-123' } },
-          expectedNextState: { activeAsset: 'previous', loading: true, loadParameters: { uuid: 'abc-123' } }
+          it: 'returns state with updated loadParams and loading: true',
+          previousState: { activeAsset: 'previous', loading: true },
+          actionParameters: { loadParameters: { some: 'loadParams' } },
+          expectedNextState: { activeAsset: 'previous', loading: true, loadParameters: { some: 'loadParams' } }
         }
       ]
     });
