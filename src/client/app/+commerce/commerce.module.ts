@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CommerceCapabilities } from './services/commerce.capabilities';
 import { COMMERCE_ROUTES } from './commerce.routes';
 import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
+import { CartAssetResolver } from '../+commerce/+cart/services/cart-asset.resolver';
 import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
 import { QuoteResolver } from '../+commerce/+quote/services/quote.resolver';
@@ -104,6 +105,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
   providers: [
     CommerceCapabilities,
     CartResolver,
+    CartAssetResolver,
     OrderResolver,
     OrdersResolver,
     QuoteResolver,

@@ -10,6 +10,10 @@ import * as AssetActions from './store/actions/asset.actions';
 import * as AssetState from './store/states/asset.state';
 export type AssetState = AssetState.State;
 
+import * as CartActions from './store/actions/cart.actions';
+import * as CartState from './store/states/cart.state';
+export type CartState = CartState.State;
+
 import * as CommentActions from './store/actions/comment.actions';
 import * as CommentState from './store/states/comment.state';
 export type CommentState = CommentState.State;
@@ -33,6 +37,7 @@ export type SpeedPreviewState = SpeedPreviewState.State;
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly asset: AssetActions.ActionFactory;
+  readonly cart: CartActions.ActionFactory;
   readonly comment: CommentActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
   readonly error: ErrorActions.ActionFactory;
@@ -45,6 +50,7 @@ export interface ActionFactory {
 export interface InternalActionFactory {
   readonly activeCollection: ActiveCollectionActions.InternalActionFactory;
   readonly asset: AssetActions.InternalActionFactory;
+  readonly cart: CartActions.InternalActionFactory;
   readonly comment: CommentActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
   readonly error: ErrorActions.InternalActionFactory;
@@ -57,9 +63,10 @@ export interface InternalActionFactory {
 export interface AppState {
   readonly activeCollection: ActiveCollectionState;
   readonly asset: AssetState;
+  readonly cart: CartState;
+  readonly comment: CommentState;
   readonly snackbar: SnackbarState;
   readonly speedPreview: SpeedPreviewState;
-  readonly comment: CommentState;
 }
 
 export interface AppReducers {
@@ -70,9 +77,10 @@ export interface AppReducers {
 export const reducers: AppReducers = {
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,
+  cart: CartState.reducer,
+  comment: CommentState.reducer,
   snackbar: SnackbarState.reducer,
-  speedPreview: SpeedPreviewState.reducer,
-  comment: CommentState.reducer
+  speedPreview: SpeedPreviewState.reducer
 };
 
 export type ActionFactoryMapper = (factory: ActionFactory) => Action;
@@ -84,6 +92,7 @@ export class AppStore {
   private readonly actionFactory: ActionFactory = {
     activeCollection: new ActiveCollectionActions.ActionFactory(),
     asset: new AssetActions.ActionFactory(),
+    cart: new CartActions.ActionFactory(),
     comment: new CommentActions.ActionFactory(),
     dialog: new DialogActions.ActionFactory(),
     error: new ErrorActions.ActionFactory(),
@@ -96,6 +105,7 @@ export class AppStore {
   private readonly internalActionFactory: InternalActionFactory = {
     activeCollection: new ActiveCollectionActions.InternalActionFactory(),
     asset: new AssetActions.InternalActionFactory(),
+    cart: new CartActions.InternalActionFactory(),
     comment: new CommentActions.InternalActionFactory(),
     dialog: new DialogActions.InternalActionFactory(),
     error: new ErrorActions.InternalActionFactory(),

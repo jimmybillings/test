@@ -15,6 +15,10 @@ export class ActionFactory {
   public loadCollectionAsset(parameters: AssetLoadParameters): LoadCollectionAsset {
     return new LoadCollectionAsset(parameters);
   }
+
+  public loadCartAsset(loadParameters: AssetLoadParameters): LoadCartAsset {
+    return new LoadCartAsset(loadParameters);
+  }
 }
 
 export class InternalActionFactory extends ActionFactory {
@@ -58,4 +62,10 @@ export class LoadCollectionAsset implements Action {
   constructor(public readonly loadParameters: AssetLoadParameters) { }
 }
 
-export type Any = Load | LoadSuccess | LoadFailure | UpdateMarkersInUrl | LoadCollectionAsset;
+export class LoadCartAsset implements Action {
+  public static readonly Type = '[Asset] Load Cart Asset';
+  public readonly type = LoadCartAsset.Type;
+  constructor(public readonly loadParameters: AssetLoadParameters) { }
+}
+
+export type Any = Load | LoadSuccess | LoadFailure | UpdateMarkersInUrl | LoadCollectionAsset | LoadCartAsset;

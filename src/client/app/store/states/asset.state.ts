@@ -24,6 +24,7 @@ export function reducer(state: State = initialState, action: AssetActions.Any): 
       return { activeAsset: action.activeAsset, loading: false, loadParameters: null };
     }
 
+    case AssetActions.LoadCartAsset.Type:
     case AssetActions.LoadCollectionAsset.Type: {
       return { ...Common.clone(state), loading: true, loadParameters: action.loadParameters };
     }
