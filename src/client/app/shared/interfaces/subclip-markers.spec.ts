@@ -41,12 +41,16 @@ export function main() {
         expect(SubclipMarkers.bothMarkersAreSet({ in: { some: 'frame' }, out: undefined } as any)).toBe(false);
       });
 
-      it('returns false if out is not set', () => {
+      it('returns false if in is not set', () => {
         expect(SubclipMarkers.bothMarkersAreSet({ out: { some: 'frame' }, in: undefined } as any)).toBe(false);
       });
 
       it('returns false if neither are set', () => {
         expect(SubclipMarkers.bothMarkersAreSet({ out: undefined, in: undefined } as any)).toBe(false);
+      });
+
+      it('returns false if markers are undefined', () => {
+        expect(SubclipMarkers.bothMarkersAreSet(undefined as any)).toBe(false);
       });
     });
 

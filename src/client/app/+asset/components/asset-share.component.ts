@@ -9,7 +9,7 @@ import { User } from '../../shared/interfaces/user.interface';
 import { Pojo } from '../../shared/interfaces/common.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 
 @Component({
   moduleId: module.id,
@@ -22,7 +22,7 @@ export class AssetShareComponent {
   @Input() userEmail: string;
   @Input() config: any;
   @Input() enhancedAsset: EnhancedAsset;
-  @Input() subclipMarkers: SubclipMarkers;
+  @Input() subclipMarkers: SubclipMarkersInterface.SubclipMarkers;
   @Output() close = new EventEmitter();
   @Output() onOpenSnackBar = new EventEmitter();
 
@@ -67,13 +67,14 @@ export class AssetShareComponent {
   public formCancel() { this.resetForm(); }
 
   public get shareAssetDialogTitle(): string {
-    return this.markersAreDefined ? 'ASSET.SHARING.SUBCLIP_DIALOG_HEADER_TITLE' : 'ASSET.SHARING.DIALOG_HEADER_TITLE';
+    return SubclipMarkersInterface.bothMarkersAreSet(this.subclipMarkers)
+      ? 'ASSET.SHARING.SUBCLIP_DIALOG_HEADER_TITLE'
+      : 'ASSET.SHARING.DIALOG_HEADER_TITLE';
   }
 
-  public get markersAreDefined(): boolean {
-    return !!this.subclipMarkers && !!this.subclipMarkers.in && !!this.subclipMarkers.out;
+  public get showSubclippingInfo(): boolean {
+    return SubclipMarkersInterface.bothMarkersAreSet(this.subclipMarkers);
   }
-
 
   private prepareShareLink(shareLink: Pojo = {}): Pojo {
     let endDate = new Date();

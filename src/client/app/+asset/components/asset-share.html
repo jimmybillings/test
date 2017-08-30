@@ -18,7 +18,7 @@
       </div>
     </header>
 
-    <div class="subclip-info" *ngIf="markersAreDefined" layout="column" layout-align="center">
+    <div class="subclip-info" *ngIf="showSubclippingInfo" layout="column" layout-align="center">
       <p class="in-out-markers" flex>
         <strong>{{ 'ASSET.SHARING.SUBCLIP_IN_LABEL' | translate}}</strong>
         <span>{{ subclipMarkers.in | timecode }}</span>

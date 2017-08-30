@@ -54,7 +54,7 @@ export function durationFrom(markers: SubclipMarkers): Duration {
 
 
 export function bothMarkersAreSet(markers: SubclipMarkers): boolean {
-  return !!markers.in && !!markers.out;
+  return !!markers && !!markers.in && !!markers.out;
 }
 
 export function neitherMarkersAreSet(markers: SubclipMarkers): boolean {
