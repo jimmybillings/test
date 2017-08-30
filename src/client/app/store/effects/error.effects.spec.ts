@@ -111,6 +111,45 @@ export function main() {
       });
     });
 
+    describe('handle - when user IS on /user/login with query params', () => {
+      beforeEach(() => {
+        mockCurrentPath = '/user/login;requireLogin=true';
+      });
+
+      effectsSpecHelper.generateTestsFor({
+        effectName: 'handle',
+        comment: 'with a 401 error status - on /user/login with query params',
+        effectsInstantiator: instantiator,
+        inputAction: {
+          type: 'whatever',
+          error: { status: 401 }
+        },
+        helperServiceMethods: [{
+          name: 'destroy',
+          expectedArguments: [],
+          returns: null
+        }],
+        outputActionFactories: {
+          success: [
+            {
+              sectionName: 'router',
+              methodName: 'goToLoginWithRedirect',
+              expectedArguments: []
+            },
+            {
+              sectionName: 'notifier',
+              methodName: 'notify',
+              expectedArguments: [
+                { title: 'NOTIFICATION.ERROR', message: 'NOTIFICATION.INVALID_CREDENTIALS' },
+                jasmine.any(Function)
+              ]
+            }
+          ]
+        },
+      });
+    });
+
+
     effectsSpecHelper.generateTestsFor({
       effectName: 'handle',
       comment: 'with a 403 error status',
@@ -377,6 +416,43 @@ export function main() {
         }
       });
     });
+
+    describe('handle401Unauthorized - while the user IS on /user/login with query params', () => {
+      beforeEach(() => {
+        mockCurrentPath = '/user/login;requireLogin=true';
+      });
+
+      effectsSpecHelper.generateTestsFor({
+        effectName: 'handle401Unauthorized',
+        effectsInstantiator: instantiator,
+        inputAction: {
+          type: ErrorActions.Handle401Unauthorized.Type
+        },
+        helperServiceMethods: [{
+          name: 'destroy',
+          expectedArguments: [],
+          returns: null
+        }],
+        outputActionFactories: {
+          success: [
+            {
+              sectionName: 'router',
+              methodName: 'goToLoginWithRedirect',
+              expectedArguments: []
+            },
+            {
+              sectionName: 'notifier',
+              methodName: 'notify',
+              expectedArguments: [
+                { title: 'NOTIFICATION.ERROR', message: 'NOTIFICATION.INVALID_CREDENTIALS' },
+                jasmine.any(Function)
+              ]
+            }
+          ]
+        }
+      });
+    });
+
 
     effectsSpecHelper.generateTestsFor({
       effectName: 'handle403Forbidden',
