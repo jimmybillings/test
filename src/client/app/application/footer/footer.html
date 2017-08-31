@@ -87,13 +87,7 @@
         <li><a href="{{'FOOTER.SOCIAL_URL_LINKEDIN' | translate }}" target="_blank" class="linkedin"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li>
         <li><a href="{{'FOOTER.SOCIAL_URL_YOUTUBE' | translate }}" target="_blank" class="youtube"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-youtube fa-stack-1x fa-inverse"></i></span></a></li>
       </ul>
-      <form class="language-selector">
-        <md-select [(ngModel)]="lang" name="lang" (change)="selectLang($event)">
-          <md-option *ngFor="let l of supportedLanguages" [value]="l.code">
-            {{l.title}}
-          </md-option>
-        </md-select>
-      </form>
+
     </div>
   </div>
   <div flex=""></div>
