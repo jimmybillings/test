@@ -1,10 +1,14 @@
 import { WzAddressFormComponent } from './wz.address-form.component';
 import { FormBuilder } from '@angular/forms';
 import { Address } from '../../../../interfaces/user.interface';
+import { Common } from '../../../../utilities/common.functions';
 
 export function main() {
   describe('Address Form Component', () => {
-    let componentUnderTest: WzAddressFormComponent, fb: FormBuilder = new FormBuilder(), mockGoogleService: any;
+    let componentUnderTest: WzAddressFormComponent,
+      fb: FormBuilder = new FormBuilder(),
+      mockGoogleService: any,
+      mockDocument: any;
 
     const mockAddress: Address = {
       address: '123 Oak Street',
@@ -23,7 +27,7 @@ export function main() {
           addListener: jasmine.createSpy('addListener')
         }
       };
-      componentUnderTest = new WzAddressFormComponent(fb, mockGoogleService, null, null);
+      componentUnderTest = new WzAddressFormComponent(fb, mockGoogleService, null, mockDocument);
     });
 
     describe('address setter', () => {
@@ -35,6 +39,17 @@ export function main() {
         expect(componentUnderTest.addressForm).toBeUndefined();
         componentUnderTest.address = mockAddress;
         expect(componentUnderTest.addressForm.value).toEqual(mockAddress);
+      });
+    });
+
+    describe('geolocate', () => {
+      beforeEach(() => {
+        spyOn(Common, 'setMarginTop');
+        componentUnderTest.geolocate();
+      });
+
+      it('sets the margin top', () => {
+        expect(Common.setMarginTop).toHaveBeenCalledWith('pac-container', mockDocument);
       });
     });
 
