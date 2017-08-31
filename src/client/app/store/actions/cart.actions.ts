@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import { Cart } from '../../shared/interfaces/commerce.interface';
 import { AssetLoadParameters } from '../../shared/interfaces/common.interface';
+import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 export class ActionFactory {
   public load(): Load {
@@ -16,6 +17,10 @@ export class ActionFactory {
 export class InternalActionFactory extends ActionFactory {
   public loadSuccess(cart: Cart): LoadSuccess {
     return new LoadSuccess(cart);
+  }
+
+  public loadFailure(error: ApiErrorResponse): LoadFailure {
+    return new LoadFailure(error);
   }
 }
 
@@ -36,4 +41,10 @@ export class LoadSuccess implements Action {
   constructor(public readonly cart: Cart) { }
 }
 
-export type Any = Load | LoadAsset | LoadSuccess;
+export class LoadFailure implements Action {
+  public static readonly Type = '[Cart] Load Failure';
+  public readonly type = LoadFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
+
+export type Any = Load | LoadAsset | LoadSuccess | LoadFailure;

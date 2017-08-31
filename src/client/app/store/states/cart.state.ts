@@ -36,6 +36,13 @@ export function reducer(state: State = initialState, action: CartActions.Any) {
       };
     }
 
+    case CartActions.LoadFailure.Type: {
+      return {
+        ...Common.clone(state),
+        loading: false
+      };
+    }
+
     default: {
       return state;
     }

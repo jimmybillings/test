@@ -15,7 +15,8 @@ export class CartEffects {
   @Effect()
   public load: Observable<Action> = this.actions.ofType(CartActions.Load.Type)
     .switchMap(action => this.service.load())
-    .map(cart => this.store.create(factory => factory.cart.loadSuccess(cart)));
+    .map(cart => this.store.create(factory => factory.cart.loadSuccess(cart)))
+    .catch(error => Observable.of(this.store.create(factory => factory.cart.loadFailure(error))));
 
   @Effect() ensureCartIsLoaded: Observable<Action> = this.actions.ofType(CartActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
@@ -26,7 +27,7 @@ export class CartEffects {
     });
 
   @Effect()
-  public loadCartAsset: Observable<Action> = this.actions.ofType(CartActions.LoadAsset.Type)
+  public loadAsset: Observable<Action> = this.actions.ofType(CartActions.LoadAsset.Type)
     .withLatestFrom(this.store.select(state => state))
     .map(([action, state]: [CartActions.LoadAsset, AppState]) => {
       let mapper: InternalActionFactoryMapper;

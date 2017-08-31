@@ -455,59 +455,79 @@ export function main() {
       }
     });
 
-    describe('loadCollectionAsset', () => {
-      it('works as expected when the active collection is loaded', () => {
-        effectsSpecHelper.generateTestsFor({
-          effectName: 'loadCollectionAsset',
-          effectsInstantiator: instantiator,
-          state: [
-            {
-              storeSectionName: 'activeCollection',
-              propertyName: 'collection',
-              value: { assets: { items: [{ uuid: 'abc-123', assetId: 456, timeStart: 100, timeEnd: 1000 }] } }
-            },
-            {
-              storeSectionName: 'activeCollection',
-              propertyName: 'loaded',
-              value: true
-            }
-          ],
-          inputAction: {
-            type: ActiveCollectionActions.LoadAsset.Type,
-            loadParameters: { uuid: 'abc-123' }
-          },
-          outputActionFactories: {
-            success: {
-              sectionName: 'asset',
-              methodName: 'load',
-              expectedArguments: [{ id: '456', timeStart: '100', timeEnd: '1000' }]
-            }
-          }
-        });
-      });
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'loadAsset',
+      comment: 'when the collection is loaded',
+      effectsInstantiator: instantiator,
+      state: [
+        {
+          storeSectionName: 'activeCollection',
+          propertyName: 'collection',
+          value: { id: 1, assets: { items: [{ uuid: 'abc-123', assetId: 456, timeStart: 100, timeEnd: 1000 }] } }
+        }
+      ],
+      inputAction: {
+        type: ActiveCollectionActions.LoadAsset.Type,
+        loadParameters: { uuid: 'abc-123' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'asset',
+          methodName: 'load',
+          expectedArguments: [{ id: '456', timeStart: '100', timeEnd: '1000' }]
+        }
+      }
+    });
 
-      it('works as expected when the active collection is NOT loaded', () => {
-        effectsSpecHelper.generateTestsFor({
-          effectName: 'loadCollectionAsset',
-          effectsInstantiator: instantiator,
-          state: {
-            storeSectionName: 'activeCollection',
-            propertyName: 'loaded',
-            value: false
-          },
-          inputAction: {
-            type: ActiveCollectionActions.LoadAsset.Type,
-            loadParameters: { uuid: 'abc-123' }
-          },
-          outputActionFactories: {
-            success: {
-              sectionName: 'activeCollection',
-              methodName: 'load',
-              expectedArguments: []
-            }
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'loadAsset',
+      comment: 'when the collection is NOT loaded',
+      effectsInstantiator: instantiator,
+      state: {
+        storeSectionName: 'activeCollection',
+        propertyName: 'collection',
+        value: { id: null }
+      },
+      inputAction: {
+        type: ActiveCollectionActions.LoadAsset.Type,
+        loadParameters: { uuid: 'abc-123' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'activeCollection',
+          methodName: 'load',
+          expectedArguments: []
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'ensureActiveCollectionIsLoaded',
+      comment: 'when the asset store HAS load parameters',
+      effectsInstantiator: instantiator,
+      state: [
+        {
+          storeSectionName: 'asset',
+          value: { loadParameters: { uuid: 'abc-123' } }
+        },
+        {
+          storeSectionName: 'activeCollection',
+          propertyName: 'collection',
+          value: {
+            assets: { items: [{ uuid: 'abc-123', assetId: 456, timeStart: 100, timeEnd: 1000 }] }
           }
-        });
-      });
+        }
+      ],
+      inputAction: {
+        type: ActiveCollectionActions.LoadSuccess.Type
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'asset',
+          methodName: 'load',
+          expectedArguments: [{ id: '456', timeStart: '100', timeEnd: '1000' }]
+        }
+      }
     });
   });
 }
