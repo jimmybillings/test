@@ -82,10 +82,12 @@ import {
   // reducers
 } from '../app.store';
 import * as ActiveCollectionState from '../store/states/active-collection.state';
-import * as AssetState from '../store/states/asset.state';
 import * as CartState from '../store/states/cart.state';
+import * as CartAssetState from '../store/states/cart-asset.state';
+import * as ActiveCollectionAssetActions from '../store/states/active-collection-asset.state';
 import * as CommentState from '../store/states/comment.state';
 import * as OrderState from '../store/states/order.state';
+import * as SearchAssetState from '../store/states/search-asset.state';
 import * as SnackbarState from '../store/states/snackbar.state';
 import * as SpeedPreviewState from '../store/states/speed-preview.state';
 
@@ -114,8 +116,10 @@ import { sortDefinitions } from './services/sort-definitions.service';
 
 // WAZEE EFFECTS
 import { ActiveCollectionEffects } from '../store/effects/active-collection.effects';
-import { AssetEffects } from '../store/effects/asset.effects';
+import { SearchAssetEffects } from '../store/effects/search-asset.effects';
 import { CartEffects } from '../store/effects/cart.effects';
+import { CartAssetEffects } from '../store/effects/cart-asset.effects';
+import { ActiveCollectionAssetEffects } from '../store/effects/active-collection-asset.effects';
 import { CommentEffects } from '../store/effects/comment.effects';
 import { DialogEffects } from '../store/effects/dialog.effects';
 import { ErrorEffects } from '../store/effects/error.effects';
@@ -205,18 +209,22 @@ const WAZEE_STORES: any = {
   paymentReducer: pricingReducer,
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
-  asset: AssetState.reducer,
+  activeCollectionAsset: ActiveCollectionAssetActions.reducer,
   cart: CartState.reducer,
+  cartAsset: CartAssetState.reducer,
   comment: CommentState.reducer,
   order: OrderState.reducer,
+  searchAsset: SearchAssetState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer
 };
 
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
-  AssetEffects,
+  SearchAssetEffects,
   CartEffects,
+  CartAssetEffects,
+  ActiveCollectionAssetEffects,
   CommentEffects,
   DialogEffects,
   ErrorEffects,

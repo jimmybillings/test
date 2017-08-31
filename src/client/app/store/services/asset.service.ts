@@ -15,7 +15,7 @@ export class AssetService {
     if (parameters.share_key) options.overridingToken = parameters.share_key;
 
     return this.apiService.get(Api.Assets, `clip/${parameters.id}/clipDetail`, options)
-      .map(response => this.merge(response as Asset, parameters));
+      .map(asset => this.merge(asset, parameters));
   }
 
   public downloadComp(id: any, compType: any): Observable<any> {

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { OrdersComponent } from './+order/+index/orders.component';
 import { OrderShowComponent } from './+order/+show/order-show.component';
 import { CartComponent } from './+cart/cart.component';
+import { CartAssetComponent } from './+cart/components/cart-asset.component';
 import { CartGuard } from './+cart/services/cart.guard';
 import { CartResolver } from './+cart/services/cart.resolver';
 import { CartAssetResolver } from './+cart/services/cart-asset.resolver';
@@ -15,11 +16,10 @@ import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 import { QuoteEditResolver } from './+quote/services/quote-edit.resolver';
 import { QuoteEditGuard } from './+quote/services/quote-edit.guard';
 
-import { AssetComponent } from '../+asset/asset.component';
 
 export const COMMERCE_ROUTES: Routes = [
   { path: 'cart', component: CartComponent, resolve: { cart: CartResolver } },
-  { path: 'cart/asset/:uuid', component: AssetComponent, resolve: { asset: CartAssetResolver } },
+  { path: 'cart/asset/:uuid', component: CartAssetComponent, resolve: { asset: CartAssetResolver } },
   { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },
   { path: 'orders/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
   { path: 'orders/orderId:/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },

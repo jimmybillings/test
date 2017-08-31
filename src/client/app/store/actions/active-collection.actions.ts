@@ -3,7 +3,7 @@ import { Action } from '@ngrx/store';
 import {
   CollectionPaginationParameters, Collection, CollectionItems, CollectionItemMarkersUpdater, CollectionItemsResponse
 } from '../../shared/interfaces/collection.interface';
-import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
+import { Asset } from '../../shared/interfaces/common.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
@@ -32,10 +32,6 @@ export class ActionFactory {
 
   public updateAssetMarkers(asset: Asset, markers: SubclipMarkers): UpdateAssetMarkers {
     return new UpdateAssetMarkers(asset, markers);
-  }
-
-  public loadAsset(parameters: AssetLoadParameters): LoadAsset {
-    return new LoadAsset(parameters);
   }
 
   public reset(): Reset {
@@ -201,12 +197,6 @@ export class UpdateAssetMarkersFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export class LoadAsset implements Action {
-  public static readonly Type = '[Active Collection] Load Asset';
-  public readonly type = LoadAsset.Type;
-  constructor(public readonly loadParameters: AssetLoadParameters) { }
-}
-
 export class Reset implements Action {
   public static readonly Type = '[Active Collection] Reset';
   public readonly type = Reset.Type;
@@ -219,5 +209,4 @@ export type Any =
   AddAsset | AddAssetSuccess | AddAssetFailure |
   RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure |
   UpdateAssetMarkers | UpdateAssetMarkersSuccess | UpdateAssetMarkersFailure |
-  LoadAsset |
   Reset;

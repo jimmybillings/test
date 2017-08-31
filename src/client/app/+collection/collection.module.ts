@@ -10,15 +10,18 @@ import { CollectionGuard } from './services/collection-guard';
 import { WzCollectionItemListComponent } from './components/wz.collection-item-list.component';
 import { CollectionDeleteComponent } from './components/collection-delete.component';
 import { CollectionComponent } from './collection.component';
+import { CollectionAssetComponent } from './components/collection-asset.component';
+import { AssetModule } from '../+asset/asset.module';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(COLLECTION_ROUTES)],
+  imports: [SharedModule, AssetModule, RouterModule.forChild(COLLECTION_ROUTES)],
   declarations: [
     CollectionComponent,
     CollectionsComponent,
     CollectionShowComponent,
     WzCollectionItemListComponent,
-    CollectionDeleteComponent
+    CollectionDeleteComponent,
+    CollectionAssetComponent
   ],
   exports: [CollectionComponent, CollectionsComponent, CollectionShowComponent],
   providers: [CollectionShowResolver, CollectionGuard, CollectionAssetResolver],

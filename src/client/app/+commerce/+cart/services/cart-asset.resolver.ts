@@ -9,8 +9,8 @@ export class CartAssetResolver implements Resolve<boolean> {
   constructor(private store: AppStore) { }
 
   public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    this.store.dispatch(factory => factory.cart.loadAsset({ uuid: route.params.uuid }));
+    this.store.dispatch(factory => factory.cartAsset.load({ uuid: route.params.uuid }));
 
-    return this.store.blockUntil(state => !state.asset.loading);
+    return this.store.blockUntil(state => !state.cartAsset.loading);
   }
 }

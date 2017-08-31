@@ -3,14 +3,14 @@ import { Router } from '@angular/router';
 import { Effect, Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { Frame } from 'wazee-frame-formatter';
 
 import * as ActiveCollectionActions from '../actions/active-collection.actions';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { AppStore, AppState, InternalActionFactoryMapper } from '../../app.store';
 import { Collection, CollectionItems } from '../../shared/interfaces/collection.interface';
-import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
-import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
-import { Frame } from 'wazee-frame-formatter';
+import { Asset } from '../../shared/interfaces/common.interface';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
 @Injectable()
@@ -69,7 +69,7 @@ export class ActiveCollectionEffects {
       if (!this.assetRouteActivated()) return;
 
       const state: AppState = this.store.completeSnapshot();
-      const currentAsset: Asset = state.asset.activeAsset;
+      const currentAsset: Asset = state.activeCollectionAsset.activeAsset;
       const addedAsset: Asset = state.activeCollection.latestAddition.asset;
       if (currentAsset.assetId !== addedAsset.assetId) return;
 
@@ -87,7 +87,7 @@ export class ActiveCollectionEffects {
           asset.assetId === addedAsset.assetId && asset.timeStart === addedTimeStart && asset.timeEnd === addedTimeEnd
         );
 
-      this.activateAssetRouteFor(currentAsset.assetId, newAsset);
+      this.activateAssetRouteFor(state.activeCollection.collection.id, currentAsset.assetId, newAsset);
     });
 
   @Effect()
@@ -113,7 +113,7 @@ export class ActiveCollectionEffects {
       if (!this.assetRouteActivated()) return;
 
       const state: AppState = this.store.completeSnapshot();
-      const currentAsset: Asset = state.asset.activeAsset;
+      const currentAsset: Asset = state.activeCollectionAsset.activeAsset;
       const removedAsset: Asset = state.activeCollection.latestRemoval;
       if (currentAsset.assetId !== removedAsset.assetId || currentAsset.uuid !== removedAsset.uuid) return;
 
@@ -122,7 +122,7 @@ export class ActiveCollectionEffects {
           asset.assetId === currentAsset.assetId && asset.uuid !== currentAsset.uuid
         );
 
-      this.activateAssetRouteFor(currentAsset.assetId, otherAsset);
+      this.activateAssetRouteFor(state.activeCollection.collection.id, currentAsset.assetId, otherAsset);
     });
 
   @Effect()
@@ -135,28 +135,6 @@ export class ActiveCollectionEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
-  @Effect()
-  public loadAsset: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadAsset.Type)
-    .withLatestFrom(this.store.select(state => state))
-    .map(([action, state]: [ActiveCollectionActions.LoadAsset, AppState]) => {
-      let mapper: InternalActionFactoryMapper;
-      if (state.activeCollection.collection.id === null) {
-        mapper = (factory) => factory.activeCollection.load();
-      } else {
-        const extraLoadParams: AssetLoadParameters = this.mergeCollectionAssetWithLoadParameters(state, action.loadParameters);
-        mapper = (factory) => factory.asset.load(extraLoadParams);
-      }
-      return this.store.create(mapper);
-    });
-
-  @Effect() ensureActiveCollectionIsLoaded: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadSuccess.Type)
-    .withLatestFrom(this.store.select(state => state))
-    .filter(([action, state]: [ActiveCollectionActions.LoadSuccess, AppState]) => state.asset.loadParameters !== null)
-    .map(([action, state]: [ActiveCollectionActions.LoadSuccess, AppState]) => {
-      const extraLoadParams: AssetLoadParameters = this.mergeCollectionAssetWithLoadParameters(state, state.asset.loadParameters);
-      return this.store.create(factory => factory.asset.load(extraLoadParams));
-    });
-
   constructor(
     private actions: Actions,
     private store: AppStore,
@@ -168,11 +146,11 @@ export class ActiveCollectionEffects {
   private assetRouteActivated(): boolean {
     // Hacky.  But one cannot inject ActivatedRoute here and get any meaningful information.
     // See https://github.com/ngrx/effects/issues/78#issuecomment-299108842
-    return this.router.routerState.snapshot.url.startsWith('/asset');
+    return this.router.routerState.snapshot.url.includes('/asset');
   }
 
-  private activateAssetRouteFor(currentAssetId: number, nextAsset: Asset) {
-    this.router.navigate([`/asset/${currentAssetId}`, this.routerParametersFor(nextAsset)]);
+  private activateAssetRouteFor(collectionId: number, currentAssetId: number, nextAsset: Asset) {
+    this.router.navigate([`/collections/${collectionId}/asset/${currentAssetId}`, this.routerParametersFor(nextAsset)]);
   }
 
   private routerParametersFor(asset: Asset): object {
@@ -185,20 +163,5 @@ export class ActiveCollectionEffects {
     }
 
     return parameters;
-  }
-
-  private mergeCollectionAssetWithLoadParameters(state: AppState, loadParameters: AssetLoadParameters): AssetLoadParameters {
-    const asset: Asset = state.activeCollection.collection.assets.items
-      .find(asset => asset.uuid === loadParameters.uuid);
-
-    return this.extraLoadParametersFrom(asset);
-  }
-
-  private extraLoadParametersFrom(asset: Asset): AssetLoadParameters {
-    return {
-      id: String(asset.assetId),
-      timeStart: String(asset.timeStart),
-      timeEnd: String(asset.timeEnd)
-    };
   }
 }

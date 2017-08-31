@@ -6,8 +6,8 @@ import { MdMenuTrigger } from '@angular/material';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
-import { AppStore } from '../../app.store';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { AppStore, ActionFactoryMapper } from '../../app.store';
+import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -17,7 +17,7 @@ import { Asset } from '../../shared/interfaces/common.interface';
 })
 
 export class AssetDetailComponent implements OnChanges {
-  @Input() public asset: Asset;
+  @Input() public asset: EnhancedAsset;
   @Input() public userEmail: Observable<string>;
   @Input() public userCan: Capabilities;
   @Input() public uiConfig: UiConfig;
@@ -70,7 +70,7 @@ export class AssetDetailComponent implements OnChanges {
     this.showAssetSaveSubclip = false;
     // this.showAssetSaveSubclip = this.markersAreDefined;
     if (this.markersAreDefined) {
-      this.store.dispatch(factory => factory.asset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId));
+      this.store.dispatch(this.updateMarkersActionMapper);
     }
     this.markersChange.emit(newMarkers);
   }
@@ -115,10 +115,6 @@ export class AssetDetailComponent implements OnChanges {
     this.selectedTarget = target.value;
   }
 
-  public showComments(event: any): void {
-    // This is referenced in the template, but did not exist.  Assuming this is for future implementation.
-  }
-
   public get addToCartBtnLabel(): string {
     return this.userCan.administerQuotes()
       ? (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL')
@@ -130,10 +126,24 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   private parseNewAsset(asset: any) {
-
     this.usagePrice = null;
     if (this.asset.transcodeTargets) {
       this.selectedTarget = this.asset.transcodeTargets[0];
+    }
+  }
+
+  private get updateMarkersActionMapper(): ActionFactoryMapper {
+    switch (this.asset.assetTypeAndParent.type) {
+      case 'collectionAsset': {
+        return (factory) => factory.activeCollectionAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId);
+      }
+
+      case 'searchAsset': {
+        return (factory) => factory.searchAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId);
+      }
+
+      default:
+        return (factory) => factory.cartAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId);
     }
   }
 }

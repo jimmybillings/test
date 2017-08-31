@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 
 import { Cart } from '../../shared/interfaces/commerce.interface';
-import { AssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 export class ActionFactory {
@@ -9,16 +8,13 @@ export class ActionFactory {
     return new Load();
   }
 
-  public loadAsset(loadParameters: AssetLoadParameters): LoadAsset {
-    return new LoadAsset(loadParameters);
+  // Move this to internal action factory when cart is fully "effected"
+  public loadSuccess(cart: Cart): LoadSuccess {
+    return new LoadSuccess(cart);
   }
 }
 
 export class InternalActionFactory extends ActionFactory {
-  public loadSuccess(cart: Cart): LoadSuccess {
-    return new LoadSuccess(cart);
-  }
-
   public loadFailure(error: ApiErrorResponse): LoadFailure {
     return new LoadFailure(error);
   }
@@ -27,12 +23,6 @@ export class InternalActionFactory extends ActionFactory {
 export class Load implements Action {
   public static readonly Type = '[Cart] Load';
   public readonly type = Load.Type;
-}
-
-export class LoadAsset implements Action {
-  public static readonly Type = '[Cart] Load Asset';
-  public readonly type = LoadAsset.Type;
-  constructor(public readonly loadParameters: AssetLoadParameters) { }
 }
 
 export class LoadSuccess implements Action {
@@ -47,4 +37,4 @@ export class LoadFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export type Any = Load | LoadAsset | LoadSuccess | LoadFailure;
+export type Any = Load | LoadSuccess | LoadFailure;

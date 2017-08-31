@@ -9,7 +9,7 @@ export function main() {
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      loadSpy = mockStore.createActionFactoryMethod('cart', 'loadAsset');
+      loadSpy = mockStore.createActionFactoryMethod('cartAsset', 'load');
       resolverUnderTest = new CartAssetResolver(mockStore);
     });
 
@@ -20,8 +20,8 @@ export function main() {
         expect(loadSpy).toHaveBeenCalledWith({ uuid: 'abc-123' });
       });
 
-      it('Should not resolve if the Asset store has no data from the server', () => {
-        mockStore.createStateSection('asset', { loading: true });
+      it('Should not resolve if the Cart Asset store has no data from the server', () => {
+        mockStore.createStateSection('cartAsset', { loading: true });
 
         expect(() => {
           resolverUnderTest.resolve(mockRoute, mockState).take(1).subscribe((data) => {
@@ -30,8 +30,8 @@ export function main() {
         }).not.toThrow();
       });
 
-      it('Should resolve if the Asset store already has data from the server', () => {
-        mockStore.createStateSection('asset', { loading: false });
+      it('Should resolve if the Cart Asset store already has data from the server', () => {
+        mockStore.createStateSection('cartAsset', { loading: false });
 
         resolverUnderTest.resolve(mockRoute, mockState).take(1).subscribe((data) => {
           expect(data).toEqual(true);

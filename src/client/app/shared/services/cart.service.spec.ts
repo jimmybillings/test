@@ -45,7 +45,7 @@ export function main() {
 
       mockStore = new MockAppStore();
 
-      loadSuccessSpy = mockStore.createInternalActionFactoryMethod('cart', 'loadSuccess');
+      loadSuccessSpy = mockStore.createActionFactoryMethod('cart', 'loadSuccess');
       mockStore.createStateSection('cart', { data: { some: 'data' } });
 
       mockCurrentUserServiceService = {
@@ -70,7 +70,6 @@ export function main() {
     describe('addAssetToProjectInCart()', () => {
       beforeEach(() => {
         mockStore.createStateSection('cart', { data: { projects: [mockProjectB] } });
-        mockStore.createActionFactoryMethod('cart', 'loadSuccess');
       });
 
       it('calls the api service correctly', () => {

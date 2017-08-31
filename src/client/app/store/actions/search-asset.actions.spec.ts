@@ -1,4 +1,4 @@
-import { ActionFactory, InternalActionFactory } from './asset.actions';
+import { ActionFactory, InternalActionFactory } from './search-asset.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
 export function main() {
@@ -12,7 +12,7 @@ export function main() {
         parameters: [{ some: 'load parameters' }]
       },
       expectedAction: {
-        type: '[Asset] Load',
+        type: '[Search Asset] Load',
         loadParameters: { some: 'load parameters' }
       }
     });
@@ -24,7 +24,7 @@ export function main() {
         parameters: [{ some: 'asset' }]
       },
       expectedAction: {
-        type: '[Asset] Load Success',
+        type: '[Search Asset] Load Success',
         activeAsset: { some: 'asset' }
       }
     });
@@ -36,7 +36,7 @@ export function main() {
         parameters: [{ some: 'error' }]
       },
       expectedAction: {
-        type: '[Asset] Load Failure',
+        type: '[Search Asset] Load Failure',
         error: { some: 'error' }
       }
     });

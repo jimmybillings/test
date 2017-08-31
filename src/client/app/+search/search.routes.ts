@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { AssetComponent } from '../+asset/asset.component';
+import { SearchAssetComponent } from './search-asset.component';
 import { SearchAssetResolver } from './services/search-asset.resolver';
 import { SearchAssetGuard } from './services/search-asset.guard';
 import { SearchComponent } from './search.component';
@@ -11,7 +11,12 @@ export const SEARCH_ROUTES: Routes = [
     path: 'search',
     children: [
       { path: '', component: SearchComponent, resolve: { search: SearchResolver } },
-      { path: 'asset/:id', component: AssetComponent, resolve: { asset: SearchAssetResolver }, canActivate: [SearchAssetGuard] }
+      {
+        path: 'asset/:id',
+        component: SearchAssetComponent,
+        resolve: { asset: SearchAssetResolver },
+        canActivate: [SearchAssetGuard]
+      }
     ]
   }
 ];

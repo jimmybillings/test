@@ -12,9 +12,11 @@ import { QuotesResolver } from '../+commerce/+quote/services/quotes.resolver';
 import { QuoteEditResolver } from '../+commerce/+quote/services/quote-edit.resolver';
 import { CartGuard } from './+cart/services/cart.guard';
 import { QuoteEditGuard } from './+quote/services/quote-edit.guard';
+import { AssetModule } from '../+asset/asset.module';
 
 // Cart Stuff
 import { CartComponent } from './+cart/cart.component';
+import { CartAssetComponent } from './+cart/components/cart-asset.component';
 
 // tabs
 import { CartTabComponent } from './+cart/components/tabs/cart-tab.component';
@@ -65,10 +67,11 @@ import { AssetInfoComponent } from './components/asset/asset-info.component';
 import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-display.component';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
+  imports: [SharedModule, AssetModule, RouterModule.forChild(COMMERCE_ROUTES)],
   declarations: [
     CartComponent,
     CartTabComponent,
+    CartAssetComponent,
     CartBillingTabComponent,
     CartPaymentTabComponent,
     CartConfirmTabComponent,

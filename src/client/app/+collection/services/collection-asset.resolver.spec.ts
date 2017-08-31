@@ -8,7 +8,7 @@ export function main() {
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      loadSpy = mockStore.createActionFactoryMethod('activeCollection', 'loadAsset');
+      loadSpy = mockStore.createActionFactoryMethod('activeCollectionAsset', 'load');
       resolverUnderTest = new CollectionAssetResolver(mockStore);
     });
 
@@ -19,8 +19,8 @@ export function main() {
         expect(loadSpy).toHaveBeenCalledWith({ uuid: 'abc-123' });
       });
 
-      it('Should not resolve if the Asset store has no data from the server', () => {
-        mockStore.createStateSection('asset', { loading: true });
+      it('Should not resolve if the Collection Asset store has no data from the server', () => {
+        mockStore.createStateSection('activeCollectionAsset', { loading: true });
 
         expect(() => {
           resolverUnderTest.resolve(mockRoute).take(1).subscribe((data) => {
@@ -29,8 +29,8 @@ export function main() {
         }).not.toThrow();
       });
 
-      it('Should resolve if the Asset store already has data from the server', () => {
-        mockStore.createStateSection('asset', { loading: false });
+      it('Should resolve if the Collection Asset store already has data from the server', () => {
+        mockStore.createStateSection('activeCollectionAsset', { loading: false });
 
         resolverUnderTest.resolve(mockRoute).take(1).subscribe((data) => {
           expect(data).toEqual(true);

@@ -2,7 +2,7 @@ import { ActionFactory, InternalActionFactory } from './cart.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
 export function main() {
-  describe('Comment Action Factory', () => {
+  describe('Cart Action Factory', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
     actionsSpecHelper.generateTestFor({
@@ -13,18 +13,6 @@ export function main() {
       },
       expectedAction: {
         type: '[Cart] Load'
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: ActionFactory,
-        name: 'loadAsset',
-        parameters: [{ uuid: 'abc-123' }]
-      },
-      expectedAction: {
-        type: '[Cart] Load Asset',
-        loadParameters: { uuid: 'abc-123' }
       }
     });
 

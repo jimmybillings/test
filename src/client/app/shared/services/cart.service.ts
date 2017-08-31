@@ -278,7 +278,8 @@ export class CartService {
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
   private replaceCartWith = (wholeCartResponse: any): void => {
-    this.store.create(factory => factory.cart.loadSuccess(wholeCartResponse));
+    // dispatching a loadSuccess here.. eventually, we can refactor this when the whole cart is migrated to effects
+    this.store.dispatch(factory => factory.cart.loadSuccess(wholeCartResponse));
   }
 
   private get purchaseOptions(): PurchaseOptions {

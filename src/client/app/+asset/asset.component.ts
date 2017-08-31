@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../store/services/asset.service';
 import { AddAssetParameters, PriceAttribute } from '../shared/interfaces/commerce.interface';
@@ -18,10 +18,10 @@ import { WindowRef } from '../shared/services/window-ref.service';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { PricingStore } from '../shared/stores/pricing.store';
 import { Subscription } from 'rxjs/Subscription';
-import { EnhancedAsset, enhanceAsset } from '../shared/interfaces/enhanced-asset';
+import { EnhancedAsset, enhanceAsset, AssetType } from '../shared/interfaces/enhanced-asset';
 import { Asset, Pojo } from '../shared/interfaces/common.interface';
 import * as SubclipMarkersInterface from '../shared/interfaces/subclip-markers';
-import { AppStore } from '../app.store';
+import { AppStore, StateMapper } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { PricingService } from '../shared/services/pricing.service';
 
@@ -32,10 +32,22 @@ import { PricingService } from '../shared/services/pricing.service';
 })
 
 export class AssetComponent implements OnInit, OnDestroy {
+  @Input() assetType: AssetType;
+  @Input()
+  set stateMapper(stateMapper: StateMapper<Asset>) {
+    this.assetSubscription = this.store.select(stateMapper)
+      .map(asset => enhanceAsset(asset, { type: this.assetType }))
+      .subscribe(asset => {
+        this.asset = asset;
+        this.pricingStore.setPriceForDetails(this.asset.price);
+        this.selectedAttributes = null;
+      });
+  }
   public pricingAttributes: Array<PriceAttribute>;
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
   private assetSubscription: Subscription;
+  private routerSubscription: Subscription;
   private selectedAttributes: Pojo;
   private pageSize: number = 50;
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
@@ -55,25 +67,18 @@ export class AssetComponent implements OnInit, OnDestroy {
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
     private pricingStore: PricingStore,
-    private pricingService: PricingService) {
-  }
+    private pricingService: PricingService
+  ) { }
 
   public ngOnInit(): void {
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
-
-    this.assetSubscription = this.store.select(state => state.asset.activeAsset)
-      .map(asset => enhanceAsset(asset, null))
-      .subscribe(asset => {
-        this.asset = asset;
-        this.pricingStore.setPriceForDetails(this.asset.price);
-        this.selectedAttributes = null;
-      });
   }
 
   public ngOnDestroy(): void {
     if (this.assetSubscription) this.assetSubscription.unsubscribe();
+    if (this.routerSubscription) this.routerSubscription.unsubscribe();
   }
 
   public previousPage() {

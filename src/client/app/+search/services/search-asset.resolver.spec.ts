@@ -5,12 +5,12 @@ import { SearchAssetResolver } from './search-asset.resolver';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
-  describe('Asset Resolver', () => {
+  describe('Search Asset Resolver', () => {
     let resolverUnderTest: SearchAssetResolver;
     let mockStore: MockAppStore;
 
     const relevantParameters = {
-      id: 'some id', share_key: 'some share_key', uuid: 'some uuid', timeEnd: 'some timeEnd', timeStart: 'some timeStart'
+      id: 'some id', share_key: 'some share_key', timeEnd: 'some timeEnd', timeStart: 'some timeStart'
     };
     const mockRoute = { params: { ...relevantParameters, other: 'useless stuff' } };
 
@@ -21,7 +21,8 @@ export function main() {
 
     describe('resolve()', () => {
       it('dispatches the expected action', () => {
-        const spy = mockStore.createActionFactoryMethod('asset', 'load');
+        mockStore.createStateElement('searchAsset', 'activeAsset', { assetId: 1 });
+        const spy = mockStore.createActionFactoryMethod('searchAsset', 'load');
 
         resolverUnderTest.resolve(mockRoute as any);
 
@@ -30,11 +31,11 @@ export function main() {
 
       describe('returns an Observable that', () => {
         beforeEach(() => {
-          mockStore.createActionFactoryMethod('asset', 'load');
+          mockStore.createActionFactoryMethod('searchAsset', 'load');
         });
 
         it('does not emit when the asset is still loading', () => {
-          mockStore.createStateElement('asset', 'loading', true);
+          mockStore.createStateElement('searchAsset', 'activeAsset', { assetId: 0 });
 
           expect(() => {
             resolverUnderTest.resolve(mockRoute as any).subscribe(() => {
@@ -44,7 +45,7 @@ export function main() {
         });
 
         it('emits when the asset is done loading', () => {
-          mockStore.createStateElement('asset', 'loading', false);
+          mockStore.createStateElement('searchAsset', 'activeAsset', { assetId: 1 });
 
           expect(() => {
             resolverUnderTest.resolve(mockRoute as any).subscribe(() => {

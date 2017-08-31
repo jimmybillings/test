@@ -19,7 +19,7 @@ export function main() {
       mockUserPreferenceService = { openCollectionTray: jasmine.createSpy('openCollectionTray') };
       mockRouter = {
         navigate: jasmine.createSpy('navigate'),
-        routerState: { snapshot: { url: '/asset/blahblahblah' } }
+        routerState: { snapshot: { url: '/blahblahblah/asset/blahblahblah' } }
       };
     });
 
@@ -176,7 +176,7 @@ export function main() {
       },
       state: [
         {
-          storeSectionName: 'asset',
+          storeSectionName: 'activeCollectionAsset',
           propertyName: 'activeAsset',
           value: { assetId: 123 }
         },
@@ -191,6 +191,7 @@ export function main() {
               }
             },
             collection: {
+              id: 555,
               assets: {
                 items: [
                   {
@@ -211,7 +212,7 @@ export function main() {
       ],
       customTests: [
         {
-          it: 'does nothing if the active route is not /asset',
+          it: 'does nothing if the active route does not contain /asset',
           beforeInstantiation: () => {
             mockRouter.routerState.snapshot.url = '/something/else';
           },
@@ -242,7 +243,9 @@ export function main() {
         {
           it: 'otherwise activates a route for a newly added asset',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'ABCD', timeStart: '1000', timeEnd: '2000' }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(
+              ['/collections/555/asset/123', { uuid: 'ABCD', timeStart: '1000', timeEnd: '2000' }]
+            );
           }
         },
         {
@@ -262,7 +265,7 @@ export function main() {
             ];
           },
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'EFGH' }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections/555/asset/123', { uuid: 'EFGH' }]);
           }
         }
       ]
@@ -323,7 +326,7 @@ export function main() {
       },
       state: [
         {
-          storeSectionName: 'asset',
+          storeSectionName: 'activeCollectionAsset',
           propertyName: 'activeAsset',
           value: { assetId: 123, uuid: 'ABCD' }
         },
@@ -335,6 +338,7 @@ export function main() {
               uuid: 'ABCD'
             },
             collection: {
+              id: 555,
               assets: {
                 items: [
                   {
@@ -353,7 +357,7 @@ export function main() {
       ],
       customTests: [
         {
-          it: 'does nothing if the active route is not /asset',
+          it: 'does nothing if the active route does not contain /asset',
           beforeInstantiation: () => {
             mockRouter.routerState.snapshot.url = '/something/else';
           },
@@ -404,7 +408,7 @@ export function main() {
         {
           it: 'otherwise activates a route for the first collection asset it finds with the same asset ID',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'EFGH' }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections/555/asset/123', { uuid: 'EFGH' }]);
           }
         },
         {
@@ -416,13 +420,13 @@ export function main() {
                 ...originalState[1],
                 value: {
                   ...originalState[1].value,
-                  collection: { assets: { items: [] } }
+                  collection: { id: 555, assets: { items: [] } }
                 }
               }
             ];
           },
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', {}]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections/555/asset/123', {}]);
           }
         },
       ]
@@ -451,81 +455,6 @@ export function main() {
           sectionName: 'activeCollection',
           methodName: 'updateAssetMarkersSuccess',
           expectedArguments: [{ some: 'assets' }]
-        }
-      }
-    });
-
-    effectsSpecHelper.generateTestsFor({
-      effectName: 'loadAsset',
-      comment: 'when the collection is loaded',
-      effectsInstantiator: instantiator,
-      state: [
-        {
-          storeSectionName: 'activeCollection',
-          propertyName: 'collection',
-          value: { id: 1, assets: { items: [{ uuid: 'abc-123', assetId: 456, timeStart: 100, timeEnd: 1000 }] } }
-        }
-      ],
-      inputAction: {
-        type: ActiveCollectionActions.LoadAsset.Type,
-        loadParameters: { uuid: 'abc-123' }
-      },
-      outputActionFactories: {
-        success: {
-          sectionName: 'asset',
-          methodName: 'load',
-          expectedArguments: [{ id: '456', timeStart: '100', timeEnd: '1000' }]
-        }
-      }
-    });
-
-    effectsSpecHelper.generateTestsFor({
-      effectName: 'loadAsset',
-      comment: 'when the collection is NOT loaded',
-      effectsInstantiator: instantiator,
-      state: {
-        storeSectionName: 'activeCollection',
-        propertyName: 'collection',
-        value: { id: null }
-      },
-      inputAction: {
-        type: ActiveCollectionActions.LoadAsset.Type,
-        loadParameters: { uuid: 'abc-123' }
-      },
-      outputActionFactories: {
-        success: {
-          sectionName: 'activeCollection',
-          methodName: 'load',
-          expectedArguments: []
-        }
-      }
-    });
-
-    effectsSpecHelper.generateTestsFor({
-      effectName: 'ensureActiveCollectionIsLoaded',
-      comment: 'when the asset store HAS load parameters',
-      effectsInstantiator: instantiator,
-      state: [
-        {
-          storeSectionName: 'asset',
-          value: { loadParameters: { uuid: 'abc-123' } }
-        },
-        {
-          storeSectionName: 'activeCollection',
-          propertyName: 'collection',
-          value: {
-            assets: { items: [{ uuid: 'abc-123', assetId: 456, timeStart: 100, timeEnd: 1000 }] }
-          }
-        }
-      ],
-      inputAction: {
-        type: ActiveCollectionActions.LoadSuccess.Type
-      },
-      outputActionFactories: {
-        success: {
-          sectionName: 'asset',
-          methodName: 'load',
-          expectedArguments: [{ id: '456', timeStart: '100', timeEnd: '1000' }]
         }
       }
     });
