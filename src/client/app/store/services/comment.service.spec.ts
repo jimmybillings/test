@@ -91,10 +91,10 @@ export function main() {
       it('calls the api service correctly', () => {
         serviceUnderTest.editComment({ objectType: 'collection', objectId: 123 }, { some: 'comment', id: 123 } as any);
 
-        expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Identities);
-        expect(mockApiService.put).toHaveBeenCalledWithEndpoint('comment/123');
-        expect(mockApiService.put).toHaveBeenCalledWithBody({ some: 'comment', id: 123 });
-        expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApiService.post).toHaveBeenCalledWithEndpoint('comment/edit/123');
+        expect(mockApiService.post).toHaveBeenCalledWithBody({ some: 'comment', id: 123 });
+        expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
       });
 
       it('calls getCommentsFor() with the correct objectType and objectId', () => {
