@@ -9,8 +9,8 @@ export class CollectionAssetResolver implements Resolve<boolean> {
   constructor(private store: AppStore) { }
 
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-    this.store.dispatch(factory => factory.asset.loadCollectionAsset({ uuid: route.params.uuid }));
+    this.store.dispatch(factory => factory.activeCollectionAsset.load({ uuid: route.params.uuid }));
 
-    return this.store.blockUntil(state => !state.asset.loading);
+    return this.store.blockUntil(state => !state.activeCollectionAsset.loading);
   }
 }

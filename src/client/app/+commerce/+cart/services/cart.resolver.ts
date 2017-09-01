@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { CartService } from '../../../shared/services/cart.service';
-import { CartState } from '../../../shared/interfaces/commerce.interface';
+
+import { AppStore } from '../../../app.store';
 
 @Injectable()
-export class CartResolver implements Resolve<CartState> {
-  constructor(private cartService: CartService) { }
+export class CartResolver implements Resolve<boolean> {
+  constructor(private store: AppStore) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CartState> {
-    return this.cartService.data.filter((cart: CartState) => this.cartService.loaded).take(1);
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    this.store.dispatch(factory => factory.cart.load());
+
+    return this.store.blockUntil(state => !state.cart.loading);
   }
 }

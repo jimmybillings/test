@@ -6,8 +6,8 @@ import { MdMenuTrigger } from '@angular/material';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
-import { AppStore } from '../../app.store';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { AppStore, ActionFactoryMapper } from '../../app.store';
+import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -17,7 +17,7 @@ import { Asset } from '../../shared/interfaces/common.interface';
 })
 
 export class AssetDetailComponent implements OnChanges {
-  @Input() public asset: Asset;
+  @Input() public asset: EnhancedAsset;
   @Input() public userEmail: Observable<string>;
   @Input() public userCan: Capabilities;
   @Input() public uiConfig: UiConfig;
@@ -34,14 +34,14 @@ export class AssetDetailComponent implements OnChanges {
   public showAssetSaveSubclip: boolean = false;
   public subclipMarkers: SubclipMarkers;
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
-  private assetsArr: Array<number> = [];
+  private assetsArr: Array<string> = [];
 
   constructor(private store: AppStore) { }
 
   ngOnChanges(changes: any): void {
     if (changes.asset) this.parseNewAsset(changes.asset);
     if (changes.activeCollection) {
-      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((x: any) => x.assetId);
+      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((x: any) => x.uuid);
     }
   }
 
@@ -53,9 +53,8 @@ export class AssetDetailComponent implements OnChanges {
     this.onPreviousPage.emit();
   }
 
-  public alreadyInCollection(assetId: any): boolean {
-    assetId = parseInt(assetId);
-    return this.assetsArr.indexOf(assetId) > -1;
+  public alreadyInCollection(uuid: any): boolean {
+    return this.showAssetSaveSubclip ? false : this.assetsArr.indexOf(uuid) > -1;
   }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
@@ -66,11 +65,9 @@ export class AssetDetailComponent implements OnChanges {
 
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
     this.subclipMarkers = newMarkers;
-    // temporarily turn off the subclip pop-up. It will be going away eventually
-    this.showAssetSaveSubclip = false;
-    // this.showAssetSaveSubclip = this.markersAreDefined;
+    this.showAssetSaveSubclip = this.markersAreDefined;
     if (this.markersAreDefined) {
-      this.store.dispatch(factory => factory.asset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId));
+      this.store.dispatch(this.updateMarkersActionMapper);
     }
     this.markersChange.emit(newMarkers);
   }
@@ -80,7 +77,8 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public addAssetToActiveCollection(): void {
-    this.store.dispatch(factory => factory.activeCollection.addAsset(this.asset));
+    this.store.dispatch(factory => factory.activeCollection.addAsset(this.asset, this.subclipMarkers ? this.subclipMarkers : null));
+    this.showAssetSaveSubclip = false;
   }
 
   public removeAssetFromActiveCollection(): void {
@@ -99,24 +97,12 @@ export class AssetDetailComponent implements OnChanges {
     });
   }
 
-  public addSubclipToCart(): void {
-    this.addToCart.emit({
-      assetId: this.asset.assetId,
-      markers: this.subclipMarkers,
-      selectedTranscodeTarget: this.selectedTarget
-    });
-  }
-
   public getPricingAttributes(): void {
     this.getPriceAttributes.emit(this.asset.primary[3].value);
   }
 
   public onSelectTarget(target: any): void {
     this.selectedTarget = target.value;
-  }
-
-  public showComments(event: any): void {
-    // This is referenced in the template, but did not exist.  Assuming this is for future implementation.
   }
 
   public get addToCartBtnLabel(): string {
@@ -130,10 +116,24 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   private parseNewAsset(asset: any) {
-
     this.usagePrice = null;
     if (this.asset.transcodeTargets) {
       this.selectedTarget = this.asset.transcodeTargets[0];
+    }
+  }
+
+  private get updateMarkersActionMapper(): ActionFactoryMapper {
+    switch (this.asset.assetTypeAndParent.type) {
+      case 'collectionAsset': {
+        return (factory) => factory.activeCollectionAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId);
+      }
+
+      case 'searchAsset': {
+        return (factory) => factory.searchAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId);
+      }
+
+      default:
+        return (factory) => factory.cartAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId);
     }
   }
 }

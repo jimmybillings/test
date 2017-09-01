@@ -24,7 +24,6 @@ import { FilterService } from './shared/services/filter.service';
 import { SortDefinitionsService } from './shared/services/sort-definitions.service';
 import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
-import { CartService } from './shared/services/cart.service';
 import { QuoteEditService } from './shared/services/quote-edit.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
@@ -62,7 +61,6 @@ export class AppComponent implements OnInit {
     public userPreference: UserPreferenceService,
     private apiConfig: ApiConfig,
     private capabilities: Capabilities,
-    private cartService: CartService,
     private window: WindowRef,
     private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
@@ -104,7 +102,7 @@ export class AppComponent implements OnInit {
     if (this.userCan.administerQuotes()) {
       return this.quoteEditService.data.map((state) => state.data.itemCount);
     } else {
-      return this.cartService.data.map((state) => state.data.itemCount);
+      return this.store.select(state => state.cart.data.itemCount);
     }
   }
 
@@ -164,7 +162,7 @@ export class AppComponent implements OnInit {
     if (this.userCan.administerQuotes()) {
       this.quoteEditService.getFocusedQuote().subscribe();
     } else {
-      this.cartService.initializeData().subscribe();
+      this.store.dispatch(factory => factory.cart.load());
     }
 
     this.sortDefinition.getSortDefinitions().subscribe((data: any) => {

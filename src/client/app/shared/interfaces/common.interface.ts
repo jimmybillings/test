@@ -64,13 +64,44 @@ export interface Asset extends Common {
   clipUrl?: string;
 }
 
+// ---------------------------------------------------- //
+// Deprecate when all assets have load param interfaces
+// ---------------------------------------------------- //
 export interface AssetLoadParameters {
   readonly id?: string;
-  readonly share_key?: string;
   readonly uuid?: string;
+  readonly share_key?: string;
   readonly timeStart?: string;
   readonly timeEnd?: string;
 }
+
+export interface SearchAssetUrlLoadParameters {
+  readonly id: string;
+  readonly share_key?: string;
+  readonly timeStart?: string;
+  readonly timeEnd?: string;
+}
+
+export interface SearchAssetApiLoadParameters {
+  readonly id: string;
+  readonly share_key?: string;
+  readonly timeStart?: string;
+  readonly timeEnd?: string;
+}
+
+export interface CollectionAssetUrlLoadParameters {
+  readonly uuid: string;
+}
+
+export interface CollectionAssetApiLoadParameters {
+  readonly id: string;
+  readonly uuid: string;
+  readonly timeStart?: string;
+  readonly timeEnd?: string;
+}
+
+export interface CartAssetUrlLoadParameters extends CollectionAssetUrlLoadParameters { }
+export interface CartAssetApiLoadParameters extends CollectionAssetApiLoadParameters { }
 
 export interface AssetUrls {
   http?: string;

@@ -66,12 +66,14 @@ import { QuoteService } from './services/quote.service';
 import { QuotesService } from './services/quotes.service';
 import { QuoteEditService } from './services/quote-edit.service';
 import { PricingService } from './services/pricing.service';
+// New-ish services
 import { AssetService } from '../store/services/asset.service';
+import { FutureCartService } from '../store/services/cart.service';
+import { CommentService } from '../store/services/comment.service';
 import { FutureApiService } from '../store/services/api.service';
 import { ActiveCollectionService } from '../store/services/active-collection.service';
 import { FutureOrderService } from '../store/services/order.service';
 import { SnackbarService } from '../store/services/snackbar.service';
-import { CommentService } from '../store/services/comment.service';
 import { SpeedPreviewService } from '../store/services/speed-preview.service';
 
 
@@ -81,14 +83,16 @@ import {
   // reducers
 } from '../app.store';
 import * as ActiveCollectionState from '../store/states/active-collection.state';
-import * as AssetState from '../store/states/asset.state';
+import * as CartState from '../store/states/cart.state';
+import * as CartAssetState from '../store/states/cart-asset.state';
+import * as ActiveCollectionAssetActions from '../store/states/active-collection-asset.state';
 import * as CommentState from '../store/states/comment.state';
 import * as OrderState from '../store/states/order.state';
+import * as SearchAssetState from '../store/states/search-asset.state';
 import * as SnackbarState from '../store/states/snackbar.state';
 import * as SpeedPreviewState from '../store/states/speed-preview.state';
 
 import { searchStore, SearchStore } from './stores/search.store';
-import { cart, CartStore } from './stores/cart.store';
 import { collections, CollectionsStore } from './stores/collections.store';
 import { orders, OrdersStore } from './stores/orders.store';
 import { features, FeatureStore } from './stores/feature.store';
@@ -113,7 +117,10 @@ import { sortDefinitions } from './services/sort-definitions.service';
 
 // WAZEE EFFECTS
 import { ActiveCollectionEffects } from '../store/effects/active-collection.effects';
-import { AssetEffects } from '../store/effects/asset.effects';
+import { SearchAssetEffects } from '../store/effects/search-asset.effects';
+import { CartEffects } from '../store/effects/cart.effects';
+import { CartAssetEffects } from '../store/effects/cart-asset.effects';
+import { ActiveCollectionAssetEffects } from '../store/effects/active-collection-asset.effects';
 import { CommentEffects } from '../store/effects/comment.effects';
 import { DialogEffects } from '../store/effects/dialog.effects';
 import { ErrorEffects } from '../store/effects/error.effects';
@@ -156,13 +163,13 @@ const WAZEE_SERVICES = [
   QuoteEditService,
   SnackbarService,
   CommentService,
+  FutureCartService,
   SpeedPreviewService,
   PricingService
 ];
 
 const WAZEE_STORE_INTERFACES = [
   CollectionsStore,
-  CartStore,
   FeatureStore,
   SearchStore,
   OrdersStore,
@@ -193,7 +200,6 @@ const WAZEE_STORES: any = {
   userPreferences: userPreferences,
   collectionOptions: collectionOptions,
   i18n: multilingualActionReducer,
-  cart: cart,
   sortDefinitions: sortDefinitions,
   orders: orders,
   features: features,
@@ -206,16 +212,22 @@ const WAZEE_STORES: any = {
   paymentReducer: pricingReducer,
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
-  asset: AssetState.reducer,
+  activeCollectionAsset: ActiveCollectionAssetActions.reducer,
+  cart: CartState.reducer,
+  cartAsset: CartAssetState.reducer,
+  comment: CommentState.reducer,
   order: OrderState.reducer,
+  searchAsset: SearchAssetState.reducer,
   snackbar: SnackbarState.reducer,
-  speedPreview: SpeedPreviewState.reducer,
-  comment: CommentState.reducer
+  speedPreview: SpeedPreviewState.reducer
 };
 
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
-  AssetEffects,
+  SearchAssetEffects,
+  CartEffects,
+  CartAssetEffects,
+  ActiveCollectionAssetEffects,
   CommentEffects,
   DialogEffects,
   ErrorEffects,

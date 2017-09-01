@@ -22,34 +22,46 @@ export class MockAppStore extends AppStore {
 
     this._actionFactory = {
       activeCollection: {} as any,
+      activeCollectionAsset: {} as any,
       asset: {} as any,
+      cart: {} as any,
+      cartAsset: {} as any,
       comment: {} as any,
       dialog: {} as any,
       error: {} as any,
       notifier: {} as any,
       order: {} as any,
       router: {} as any,
+      searchAsset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
     };
 
     this._internalActionFactory = {
       activeCollection: {} as any,
+      activeCollectionAsset: {} as any,
       asset: {} as any,
+      cart: {} as any,
+      cartAsset: {} as any,
       comment: {} as any,
       dialog: {} as any,
       error: {} as any,
       notifier: {} as any,
       order: {} as any,
       router: {} as any,
+      searchAsset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
     };
 
     this._state = {
       activeCollection: {} as any,
+      activeCollectionAsset: {} as any,
       asset: {} as any,
+      cart: {} as any,
+      cartAsset: {} as any,
       order: {} as any,
+      searchAsset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
       comment: {} as any

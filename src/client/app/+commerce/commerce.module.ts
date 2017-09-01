@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CommerceCapabilities } from './services/commerce.capabilities';
 import { COMMERCE_ROUTES } from './commerce.routes';
 import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
+import { CartAssetResolver } from '../+commerce/+cart/services/cart-asset.resolver';
 import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
 import { QuoteResolver } from '../+commerce/+quote/services/quote.resolver';
@@ -11,9 +12,11 @@ import { QuotesResolver } from '../+commerce/+quote/services/quotes.resolver';
 import { QuoteEditResolver } from '../+commerce/+quote/services/quote-edit.resolver';
 import { CartGuard } from './+cart/services/cart.guard';
 import { QuoteEditGuard } from './+quote/services/quote-edit.guard';
+import { AssetModule } from '../+asset/asset.module';
 
 // Cart Stuff
 import { CartComponent } from './+cart/cart.component';
+import { CartAssetComponent } from './+cart/components/cart-asset.component';
 
 // tabs
 import { CartTabComponent } from './+cart/components/tabs/cart-tab.component';
@@ -64,10 +67,11 @@ import { AssetInfoComponent } from './components/asset/asset-info.component';
 import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-display.component';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
+  imports: [SharedModule, AssetModule, RouterModule.forChild(COMMERCE_ROUTES)],
   declarations: [
     CartComponent,
     CartTabComponent,
+    CartAssetComponent,
     CartBillingTabComponent,
     CartPaymentTabComponent,
     CartConfirmTabComponent,
@@ -104,6 +108,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
   providers: [
     CommerceCapabilities,
     CartResolver,
+    CartAssetResolver,
     OrderResolver,
     OrdersResolver,
     QuoteResolver,

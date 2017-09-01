@@ -4,7 +4,7 @@ import { CollectionsComponent } from './+index/collections.component';
 import { CollectionShowComponent } from './+show/collection-show.component';
 import { CollectionGuard } from './services/collection-guard';
 import { CollectionComponent } from './collection.component';
-import { AssetComponent } from '../+asset/asset.component';
+import { CollectionAssetComponent } from './components/collection-asset.component';
 import { CollectionAssetResolver } from './services/collection-asset.resolver';
 
 export const COLLECTION_ROUTES: Routes = [
@@ -24,7 +24,7 @@ export const COLLECTION_ROUTES: Routes = [
       },
       {
         path: ':id/asset/:uuid',
-        component: AssetComponent,
+        component: CollectionAssetComponent,
         canActivate: [CollectionGuard],
         resolve: { asset: CollectionAssetResolver }
       },
