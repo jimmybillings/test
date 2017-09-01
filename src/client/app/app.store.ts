@@ -174,4 +174,8 @@ export class AppStore {
   public blockUntil(stateMapper: StateMapper<boolean>): Observable<boolean> {
     return this.select(stateMapper).filter((selectedValue: boolean) => selectedValue).take(1);
   }
+
+  public blockUntilMatch<T>(value: T, stateMapper: StateMapper<T>): Observable<null> {
+    return this.select(stateMapper).filter((selectedValue: T) => value === selectedValue).take(1).map((value: T) => null);
+  }
 }

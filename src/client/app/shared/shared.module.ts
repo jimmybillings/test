@@ -72,6 +72,7 @@ import { FutureCartService } from '../store/services/cart.service';
 import { CommentService } from '../store/services/comment.service';
 import { FutureApiService } from '../store/services/api.service';
 import { ActiveCollectionService } from '../store/services/active-collection.service';
+import { FutureOrderService } from '../store/services/order.service';
 import { SnackbarService } from '../store/services/snackbar.service';
 import { SpeedPreviewService } from '../store/services/speed-preview.service';
 
@@ -124,6 +125,7 @@ import { CommentEffects } from '../store/effects/comment.effects';
 import { DialogEffects } from '../store/effects/dialog.effects';
 import { ErrorEffects } from '../store/effects/error.effects';
 import { NotifierEffects } from '../store/effects/notifier.effects';
+import { OrderEffects } from '../store/effects/order.effects';
 import { RouterEffects } from '../store/effects/router.effects';
 import { SnackbarEffects } from '../store/effects/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/effects/speed-preview.effects';
@@ -151,6 +153,7 @@ const WAZEE_SERVICES = [
   SearchService,
   UserService,
   OrderService,
+  FutureOrderService,
   OrdersService,
   TranslateService,
   GalleryViewService,
@@ -229,6 +232,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   DialogEffects,
   ErrorEffects,
   NotifierEffects,
+  OrderEffects,
   RouterEffects,
   SnackbarEffects,
   SpeedPreviewEffects

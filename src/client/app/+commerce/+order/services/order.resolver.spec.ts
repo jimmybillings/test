@@ -1,40 +1,48 @@
 import { Observable } from 'rxjs/Observable';
 
-import { OrderResolver } from './order.resolver';
 import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
+import { OrderResolver } from './order.resolver';
 
 export function main() {
   describe('Order Resolver', () => {
-    let resolverUnderTest: OrderResolver;
-    let mockRoute: any;
     let mockStore: MockAppStore;
-    const mockOrderService: any = { getOrder: jasmine.createSpy('getOrder').and.returnValue(Observable.of({ some: 'order' })) };
+    let resolverUnderTest: OrderResolver;
 
     beforeEach(() => {
-      mockRoute = { params: { orderId: '1234' } };
       mockStore = new MockAppStore();
-      resolverUnderTest = new OrderResolver(mockOrderService, mockStore);
+      resolverUnderTest = new OrderResolver(mockStore);
     });
 
     describe('resolve()', () => {
-      it('just returns Observable of true if the order is already in the store', () => {
-        mockStore.createStateElement('order', 'activeOrder', { id: 1234 });
-        const subscriptionFunction = jasmine.createSpy('subscription function');
+      let mockRoute: any;
+      let loadSpy: jasmine.Spy;
+      let resolverSubscriptionFunction: jasmine.Spy;
 
-        resolverUnderTest.resolve(mockRoute).subscribe(subscriptionFunction);
-
-        expect(mockOrderService.getOrder).not.toHaveBeenCalled();
-        expect(subscriptionFunction).toHaveBeenCalledWith(true);
+      beforeEach(() => {
+        mockRoute = { params: { orderId: '1234' } };
+        loadSpy = mockStore.createActionFactoryMethod('order', 'load');
+        resolverSubscriptionFunction = jasmine.createSpy('resolver subscription function');
+        mockStore.createStateSection('order', { activeOrder: { id: 5678 }, loading: true });
       });
 
-      it('should hit the service if the order is not already there', () => {
-        mockStore.createStateElement('order', 'activeOrder', { id: 0 });
-        const subscriptionFunction = jasmine.createSpy('subscription function');
+      it('dispatches an action', () => {
+        resolverUnderTest.resolve(mockRoute).subscribe(resolverSubscriptionFunction);
 
-        resolverUnderTest.resolve(mockRoute).subscribe(subscriptionFunction);
+        mockStore.expectDispatchFor(loadSpy, 1234);
+      });
 
-        expect(mockOrderService.getOrder).toHaveBeenCalledWith(1234);
-        expect(subscriptionFunction).toHaveBeenCalledWith(true);
+      it('doesn\'t return when the loading flag is true', () => {
+        resolverUnderTest.resolve(mockRoute).subscribe(resolverSubscriptionFunction);
+
+        expect(resolverSubscriptionFunction).not.toHaveBeenCalled();
+      });
+
+      it('returns when the loading flag is false', () => {
+        mockStore.createStateSection('order', { activeOrder: { id: 5678 }, loading: false });
+
+        resolverUnderTest.resolve(mockRoute).subscribe(resolverSubscriptionFunction);
+
+        expect(resolverSubscriptionFunction).toHaveBeenCalledWith(true);
       });
     });
   });

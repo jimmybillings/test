@@ -67,8 +67,9 @@ export class MockAppStore extends AppStore {
       comment: {} as any
     };
 
+    this._ngrxDispatch = jasmine.createSpy('ngrx dispatch');
+
     spyOn(this, 'dispatch').and.callFake((actionFactoryMapper: ActionFactoryMapper) => {
-      if (!this._ngrxDispatch) this._ngrxDispatch = jasmine.createSpy('ngrx dispatch');
       this._ngrxDispatch(actionFactoryMapper(this._actionFactory));
     });
 
@@ -94,6 +95,10 @@ export class MockAppStore extends AppStore {
 
     spyOn(this, 'blockUntil').and.callFake((stateMapper: StateMapper<boolean>) =>
       stateMapper(this._state) === true ? Observable.of(true) : Observable.empty()
+    );
+
+    spyOn(this, 'blockUntilMatch').and.callFake((value: any, stateMapper: StateMapper<any>) =>
+      stateMapper(this._state) === value ? Observable.of(null) : Observable.empty()
     );
   }
 
@@ -124,6 +129,10 @@ export class MockAppStore extends AppStore {
   public expectDispatchFor(actionFactoryMethod: jasmine.Spy, ...expectedParameters: any[]): void {
     expect(actionFactoryMethod).toHaveBeenCalledWith(...expectedParameters);
     expect(this._ngrxDispatch).toHaveBeenCalledWith(this.getActionCreatedBy(actionFactoryMethod));
+  }
+
+  public expectNoDispatchFor(actionFactoryMethod: jasmine.Spy): void {
+    expect(this._ngrxDispatch).not.toHaveBeenCalledWith(this.getActionCreatedBy(actionFactoryMethod));
   }
 
   public getActionCreatedBy(actionFactoryMethod: jasmine.Spy): any {

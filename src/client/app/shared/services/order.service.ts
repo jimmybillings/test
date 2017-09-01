@@ -31,9 +31,4 @@ export class OrderService {
       });
     });
   }
-
-  public getOrder(orderId: number): Observable<Order> {
-    return this.api.get(Api.Orders, `order/${orderId}`)
-      .do(response => this.store.dispatch(factory => factory.order.loadSuccess(response)));
-  }
 }
