@@ -27,9 +27,9 @@ export class CommentService {
   }
 
   public editComment(parentObject: CommentParentObject, comment: Comment): Observable<Comments> {
-    return this.apiService.put(
+    return this.apiService.post(
       Api.Identities,
-      `comment/${comment.id}`,
+      `comment/edit/${comment.id}`,
       { body: comment, loadingIndicator: true }
     ).flatMap(() => this.getCommentsFor(parentObject));
   }
