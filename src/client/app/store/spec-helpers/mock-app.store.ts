@@ -96,6 +96,10 @@ export class MockAppStore extends AppStore {
     spyOn(this, 'blockUntil').and.callFake((stateMapper: StateMapper<boolean>) =>
       stateMapper(this._state) === true ? Observable.of(true) : Observable.empty()
     );
+
+    spyOn(this, 'blockUntilMatch').and.callFake((value: any, stateMapper: StateMapper<any>) =>
+      stateMapper(this._state) === value ? Observable.of(null) : Observable.empty()
+    );
   }
 
   public createStateSection(stateSectionName: string, value: any): void {
