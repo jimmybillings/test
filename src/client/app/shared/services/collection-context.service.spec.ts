@@ -1,7 +1,7 @@
 import { CollectionContextService } from './collection-context.service';
 
 export function main() {
-  xdescribe('Collection Context Service', () => {
+  describe('Collection Context Service', () => {
     let serviceUnderTest: CollectionContextService;
     let mockStore: any;
 
@@ -13,7 +13,7 @@ export function main() {
       serviceUnderTest = new CollectionContextService(mockStore);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

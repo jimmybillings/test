@@ -1,14 +1,14 @@
 import { UiConfig } from './ui.config';
 
 export function main() {
-  xdescribe('Ui Config', () => {
+  describe('Ui Config', () => {
     let configUnderTest: UiConfig;
 
     beforeEach(() => {
       configUnderTest = new UiConfig(null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

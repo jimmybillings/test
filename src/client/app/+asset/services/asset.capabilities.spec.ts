@@ -1,14 +1,14 @@
 import { AssetCapabilities } from './asset.capabilities';
 
 export function main() {
-  xdescribe('Asset Capabilities', () => {
+  describe('Asset Capabilities', () => {
     let capabilitiesUnderTest: AssetCapabilities;
 
     beforeEach(() => {
       capabilitiesUnderTest = new AssetCapabilities(null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

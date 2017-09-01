@@ -1,14 +1,14 @@
 import { CollectionGuard } from './collection-guard';
 
 export function main() {
-  xdescribe('Collection Guard', () => {
+  describe('Collection Guard', () => {
     let guardUnderTest: CollectionGuard;
 
     beforeEach(() => {
       guardUnderTest = new CollectionGuard(null, null, null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

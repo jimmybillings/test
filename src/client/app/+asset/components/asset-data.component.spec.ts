@@ -1,14 +1,14 @@
 import { AssetDataComponent } from './asset-data.component';
 
 export function main() {
-  xdescribe('Asset Data Component', () => {
+  describe('Asset Data Component', () => {
     let componentUnderTest: AssetDataComponent;
 
     beforeEach(() => {
       componentUnderTest = new AssetDataComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

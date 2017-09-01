@@ -1,14 +1,14 @@
 import { WindowRef } from './window-ref.service';
 
 export function main() {
-  xdescribe('Window Ref', () => {
+  describe('Window Ref', () => {
     let serviceUnderTest: WindowRef;
 
     beforeEach(() => {
       serviceUnderTest = new WindowRef();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

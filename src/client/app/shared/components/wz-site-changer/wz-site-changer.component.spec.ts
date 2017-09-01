@@ -1,14 +1,14 @@
 import { WzSiteChangerComponent } from './wz-site-changer.component';
 
 export function main() {
-  xdescribe('Wz Site Changer Component', () => {
+  describe('Wz Site Changer Component', () => {
     let componentUnderTest: WzSiteChangerComponent;
 
     beforeEach(() => {
       componentUnderTest = new WzSiteChangerComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

@@ -1,14 +1,14 @@
 import { ValuesPipe } from './values.pipe';
 
 export function main() {
-  xdescribe('Values Pipe', () => {
+  describe('Values Pipe', () => {
     let pipeUnderTest: ValuesPipe;
 
     beforeEach(() => {
       pipeUnderTest = new ValuesPipe();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

@@ -1,14 +1,14 @@
 import { AssetGuard } from './asset.guard';
 
 export function main() {
-  xdescribe('Asset Guard', () => {
+  describe('Asset Guard', () => {
     let guardUnderTest: AssetGuard;
 
     beforeEach(() => {
       guardUnderTest = new AssetGuard(null, null, null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

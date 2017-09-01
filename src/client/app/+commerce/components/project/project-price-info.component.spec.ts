@@ -1,14 +1,14 @@
 import { ProjectPriceInfoComponent } from './project-price-info.component';
 
 export function main() {
-  xdescribe('Project Price Info Component', () => {
+  describe('Project Price Info Component', () => {
     let componentUnderTest: ProjectPriceInfoComponent;
 
     beforeEach(() => {
       componentUnderTest = new ProjectPriceInfoComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

@@ -1,14 +1,14 @@
 import { WzComingSoonComponent } from './wz-coming-soon.component';
 
 export function main() {
-  xdescribe('Wz Coming Soon Component', () => {
+  describe('Wz Coming Soon Component', () => {
     let componentUnderTest: WzComingSoonComponent;
 
     beforeEach(() => {
       componentUnderTest = new WzComingSoonComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

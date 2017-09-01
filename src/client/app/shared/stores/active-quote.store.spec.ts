@@ -1,14 +1,14 @@
 import { ActiveQuoteStore } from './active-quote.store';
 
 export function main() {
-  xdescribe('Active Quote Store', () => {
+  describe('Active Quote Store', () => {
     let storeUnderTest: ActiveQuoteStore;
 
     beforeEach(() => {
       storeUnderTest = new ActiveQuoteStore(null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

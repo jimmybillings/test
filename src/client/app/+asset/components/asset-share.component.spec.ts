@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { AssetShareComponent } from './asset-share.component';
 
 export function main() {
-  xdescribe('Asset Share Component', () => {
+  describe('Asset Share Component', () => {
     let componentUnderTest: AssetShareComponent;
     let mockCurrentUserService: any;
 
@@ -15,7 +15,7 @@ export function main() {
       componentUnderTest = new AssetShareComponent(null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

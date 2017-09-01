@@ -1,14 +1,14 @@
 import { CollectionSortDdComponent } from './collections-sort-dd.component';
 
 export function main() {
-  xdescribe('Collection Sort Dd Component', () => {
+  describe('Collection Sort Dd Component', () => {
     let componentUnderTest: CollectionSortDdComponent;
 
     beforeEach(() => {
       componentUnderTest = new CollectionSortDdComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

@@ -1,14 +1,14 @@
 import { SearchCapabilities } from './search.capabilities';
 
 export function main() {
-  xdescribe('Search Capabilities', () => {
+  describe('Search Capabilities', () => {
     let capabilitiesUnderTest: SearchCapabilities;
 
     beforeEach(() => {
       capabilitiesUnderTest = new SearchCapabilities(null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });
