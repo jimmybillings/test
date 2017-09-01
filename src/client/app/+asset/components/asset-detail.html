@@ -296,6 +296,7 @@
   <asset-share layout="row" layout-align="end start" class="revealed"
     [userEmail]="userEmail | async" 
     [enhancedAsset]="asset" 
+    [subclipMarkers]="subclipMarkers"
     [config]="(uiConfig.get('assetSharing') | async).config" 
     (close)="sharing.close()" 
     (onOpenSnackBar)="onShowSnackBar.emit($event)">

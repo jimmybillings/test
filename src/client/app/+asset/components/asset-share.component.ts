@@ -9,6 +9,7 @@ import { User } from '../../shared/interfaces/user.interface';
 import { Pojo } from '../../shared/interfaces/common.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 
 @Component({
   moduleId: module.id,
@@ -21,6 +22,7 @@ export class AssetShareComponent {
   @Input() userEmail: string;
   @Input() config: any;
   @Input() enhancedAsset: EnhancedAsset;
+  @Input() subclipMarkers: SubclipMarkersInterface.SubclipMarkers;
   @Output() close = new EventEmitter();
   @Output() onOpenSnackBar = new EventEmitter();
 
@@ -64,19 +66,28 @@ export class AssetShareComponent {
 
   public formCancel() { this.resetForm(); }
 
+  public get shareAssetDialogTitle(): string {
+    return SubclipMarkersInterface.bothMarkersAreSet(this.subclipMarkers)
+      ? 'ASSET.SHARING.SUBCLIP_DIALOG_HEADER_TITLE'
+      : 'ASSET.SHARING.DIALOG_HEADER_TITLE';
+  }
+
+  public get showSubclippingInfo(): boolean {
+    return SubclipMarkersInterface.bothMarkersAreSet(this.subclipMarkers);
+  }
+
   private prepareShareLink(shareLink: Pojo = {}): Pojo {
     let endDate = new Date();
     endDate.setDate(endDate.getDate() + 10);
-
     Object.assign(shareLink, {
       accessEndDate: this.IsoFormatLocalDate(endDate),
       accessStartDate: this.IsoFormatLocalDate(new Date()),
-      accessInfo: this.enhancedAsset.getMetadataValueFor('lsdkjf'),
+      accessInfo: this.enhancedAsset.assetId,
       type: 'asset',
       recipientEmails: (shareLink.recipientEmails) ?
         shareLink.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [],
-      timeStart: this.enhancedAsset.timeStart,
-      timeEnd: this.enhancedAsset.timeEnd,
+      timeStart: this.subclipMarkers.in,
+      timeEnd: this.subclipMarkers.out,
     });
 
     if (shareLink.copyMe) {
