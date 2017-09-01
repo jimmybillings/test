@@ -1,8 +1,8 @@
-import { ActionFactory, InternalActionFactory } from './search-asset.actions';
-import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
+import { ActionFactory, InternalActionFactory } from './cart-asset.actions';
+import { ActionsSpecHelper } from '../../store/spec-helpers/actions.spec-helper';
 
 export function main() {
-  describe('Asset Action Factory', () => {
+  describe('Action Factory', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
     actionsSpecHelper.generateTestFor({
@@ -12,7 +12,7 @@ export function main() {
         parameters: [{ some: 'load parameters' }]
       },
       expectedAction: {
-        type: '[Search Asset] Load',
+        type: '[Cart Asset] Load',
         loadParameters: { some: 'load parameters' }
       }
     });
@@ -24,9 +24,21 @@ export function main() {
         parameters: [{ some: 'markers' }, 1]
       },
       expectedAction: {
-        type: '[Search Asset] Update Markers In URL',
+        type: '[Cart Asset] Update Markers In URL',
         markers: { some: 'markers' },
         assetId: 1
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'loadAfterCartAvailable',
+        parameters: [{ some: 'load parameters' }]
+      },
+      expectedAction: {
+        type: '[Cart Asset] Load After Cart Available',
+        loadParameters: { some: 'load parameters' }
       }
     });
 
@@ -37,7 +49,7 @@ export function main() {
         parameters: [{ some: 'asset' }]
       },
       expectedAction: {
-        type: '[Search Asset] Load Success',
+        type: '[Cart Asset] Load Success',
         activeAsset: { some: 'asset' }
       }
     });
@@ -49,7 +61,7 @@ export function main() {
         parameters: [{ some: 'error' }]
       },
       expectedAction: {
-        type: '[Search Asset] Load Failure',
+        type: '[Cart Asset] Load Failure',
         error: { some: 'error' }
       }
     });

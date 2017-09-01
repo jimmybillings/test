@@ -106,11 +106,17 @@ export class MockAppStore extends AppStore {
   }
 
   public createActionFactoryMethod(sectionName: string, methodName: string): jasmine.Spy {
+    if (!this._actionFactory.hasOwnProperty(sectionName)) {
+      throw new Error(`Section '${sectionName}' does not exist in the ActionFactory`);
+    }
     return this._actionFactory[sectionName][methodName] =
       jasmine.createSpy(`'${methodName} action creator'`).and.returnValue(this.mockActionFrom(methodName));
   }
 
   public createInternalActionFactoryMethod(sectionName: string, methodName: string): jasmine.Spy {
+    if (!this._internalActionFactory.hasOwnProperty(sectionName)) {
+      throw new Error(`Section '${sectionName}' does not exist in the InternalActionFactory`);
+    }
     return this._internalActionFactory[sectionName][methodName] =
       jasmine.createSpy(`'${methodName} internal action creator'`).and.returnValue(this.mockActionFrom(methodName));
   }

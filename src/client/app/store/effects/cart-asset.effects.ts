@@ -20,25 +20,25 @@ export class CartAssetEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.cartAsset.loadFailure(error))))
     );
 
-  @Effect() ensureCartIsLoaded: Observable<Action> = this.actions.ofType(CartActions.LoadSuccess.Type)
+  @Effect() loadAssetOnCartLoadSuccess: Observable<Action> = this.actions.ofType(CartActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
     .filter(([action, state]: [CartActions.LoadSuccess, AppState]) => state.cartAsset.loadParameters !== null)
     .map(([action, state]: [CartActions.LoadSuccess, AppState]) => {
       const extraLoadParams: Common.CartAssetApiLoadParameters
-        = this.mergeCartAssetWithLoadParameters(state, state.cartAsset.loadParameters);
+        = this.mergeCartAssetWithLoadParameters(state.cart.data, state.cartAsset.loadParameters);
       return this.store.create(factory => factory.cartAsset.loadAfterCartAvailable(extraLoadParams));
     });
 
   @Effect()
   public load: Observable<Action> = this.actions.ofType(CartAssetActions.Load.Type)
-    .withLatestFrom(this.store.select(state => state))
-    .map(([action, state]: [CartAssetActions.Load, AppState]) => {
+    .withLatestFrom(this.store.select(state => state.cart.data))
+    .map(([action, cart]: [CartAssetActions.Load, Commerce.Cart]) => {
       let mapper: InternalActionFactoryMapper;
-      if (state.cart.data.id === null) {
+      if (cart.id === null) {
         mapper = (factory) => factory.cart.load();
       } else {
         const extraLoadParams: Common.CartAssetApiLoadParameters
-          = this.mergeCartAssetWithLoadParameters(state, action.loadParameters);
+          = this.mergeCartAssetWithLoadParameters(cart, action.loadParameters);
         mapper = (factory) => factory.cartAsset.loadAfterCartAvailable(extraLoadParams);
       }
       return this.store.create(mapper);
@@ -51,10 +51,10 @@ export class CartAssetEffects {
   ) { }
 
   private mergeCartAssetWithLoadParameters(
-    state: AppState,
+    cart: Commerce.Cart,
     loadParameters: Common.CartAssetUrlLoadParameters
   ): Common.CartAssetApiLoadParameters {
-    const lineItems: Commerce.AssetLineItem[] = state.cart.data.projects
+    const lineItems: Commerce.AssetLineItem[] = cart.projects
       .reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
 
     const asset: Commerce.Asset = lineItems

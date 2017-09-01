@@ -28,31 +28,31 @@ export class InternalActionFactory extends ActionFactory {
 }
 
 export class Load implements Action {
-  public static readonly Type = '[Collection Asset] Load';
+  public static readonly Type = '[Active Collection Asset] Load';
   public readonly type = Load.Type;
   constructor(public readonly loadParameters: CollectionAssetUrlLoadParameters) { }
 }
 
 export class LoadAfterCollectionAvailable implements Action {
-  public static readonly Type = '[Collection Asset] Load After Collection Available';
+  public static readonly Type = '[Active Collection Asset] Load After Collection Available';
   public readonly type = LoadAfterCollectionAvailable.Type;
   constructor(public readonly loadParameters: CollectionAssetUrlLoadParameters) { }
 }
 
 export class LoadSuccess implements Action {
-  public static readonly Type = '[Collection Asset] Load Success';
+  public static readonly Type = '[Active Collection Asset] Load Success';
   public readonly type = LoadSuccess.Type;
   constructor(public readonly activeAsset: Asset) { }
 }
 
 export class LoadFailure implements Action {
-  public static readonly Type = '[Collection Asset] Load Failure';
+  public static readonly Type = '[Active Collection Asset] Load Failure';
   public readonly type = LoadFailure.Type;
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
 export class UpdateMarkersInUrl implements Action {
-  public static readonly Type = '[Collection Asset] Update Markers In URL';
+  public static readonly Type = '[Active Collection Asset] Update Markers In URL';
   public readonly type = UpdateMarkersInUrl.Type;
   constructor(public readonly markers: SubclipMarkers, public readonly assetId: number) {
   }

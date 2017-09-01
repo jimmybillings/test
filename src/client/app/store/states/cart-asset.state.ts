@@ -25,7 +25,7 @@ export function reducer(state: State = initialState, action: CartAssetActions.An
     }
 
     case CartAssetActions.LoadFailure.Type: {
-      return { ...Common.clone(state), loading: false };
+      return { ...Common.clone(state), loading: false, loadParameters: null };
     }
 
     default: {

@@ -1,8 +1,8 @@
-import { ActionFactory, InternalActionFactory } from './search-asset.actions';
-import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
+import { ActionFactory, InternalActionFactory } from './active-collection-asset.actions';
+import { ActionsSpecHelper } from '../../store/spec-helpers/actions.spec-helper';
 
 export function main() {
-  describe('Asset Action Factory', () => {
+  describe('Active Collection Asset Action Factory', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
     actionsSpecHelper.generateTestFor({
@@ -12,7 +12,7 @@ export function main() {
         parameters: [{ some: 'load parameters' }]
       },
       expectedAction: {
-        type: '[Search Asset] Load',
+        type: '[Active Collection Asset] Load',
         loadParameters: { some: 'load parameters' }
       }
     });
@@ -24,9 +24,21 @@ export function main() {
         parameters: [{ some: 'markers' }, 1]
       },
       expectedAction: {
-        type: '[Search Asset] Update Markers In URL',
+        type: '[Active Collection Asset] Update Markers In URL',
         markers: { some: 'markers' },
         assetId: 1
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'loadAfterCollectionAvailable',
+        parameters: [{ some: 'load parameters' }]
+      },
+      expectedAction: {
+        type: '[Active Collection Asset] Load After Collection Available',
+        loadParameters: { some: 'load parameters' }
       }
     });
 
@@ -37,7 +49,7 @@ export function main() {
         parameters: [{ some: 'asset' }]
       },
       expectedAction: {
-        type: '[Search Asset] Load Success',
+        type: '[Active Collection Asset] Load Success',
         activeAsset: { some: 'asset' }
       }
     });
@@ -49,7 +61,7 @@ export function main() {
         parameters: [{ some: 'error' }]
       },
       expectedAction: {
-        type: '[Search Asset] Load Failure',
+        type: '[Active Collection Asset] Load Failure',
         error: { some: 'error' }
       }
     });
