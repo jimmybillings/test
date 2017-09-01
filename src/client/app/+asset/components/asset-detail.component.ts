@@ -34,14 +34,14 @@ export class AssetDetailComponent implements OnChanges {
   public showAssetSaveSubclip: boolean = false;
   public subclipMarkers: SubclipMarkers;
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
-  private assetsArr: Array<number> = [];
+  private assetsArr: Array<string> = [];
 
   constructor(private store: AppStore) { }
 
   ngOnChanges(changes: any): void {
     if (changes.asset) this.parseNewAsset(changes.asset);
     if (changes.activeCollection) {
-      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((x: any) => x.assetId);
+      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((x: any) => x.uuid);
     }
   }
 
@@ -53,9 +53,8 @@ export class AssetDetailComponent implements OnChanges {
     this.onPreviousPage.emit();
   }
 
-  public alreadyInCollection(assetId: any): boolean {
-    assetId = parseInt(assetId);
-    return this.assetsArr.indexOf(assetId) > -1;
+  public alreadyInCollection(uuid: any): boolean {
+    return this.showAssetSaveSubclip ? false : this.assetsArr.indexOf(uuid) > -1;
   }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
@@ -66,9 +65,7 @@ export class AssetDetailComponent implements OnChanges {
 
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
     this.subclipMarkers = newMarkers;
-    // temporarily turn off the subclip pop-up. It will be going away eventually
-    this.showAssetSaveSubclip = false;
-    // this.showAssetSaveSubclip = this.markersAreDefined;
+    this.showAssetSaveSubclip = this.markersAreDefined;
     if (this.markersAreDefined) {
       this.store.dispatch(this.updateMarkersActionMapper);
     }
@@ -80,7 +77,8 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public addAssetToActiveCollection(): void {
-    this.store.dispatch(factory => factory.activeCollection.addAsset(this.asset));
+    this.store.dispatch(factory => factory.activeCollection.addAsset(this.asset, this.subclipMarkers ? this.subclipMarkers : null));
+    this.showAssetSaveSubclip = false;
   }
 
   public removeAssetFromActiveCollection(): void {
@@ -95,14 +93,6 @@ export class AssetDetailComponent implements OnChanges {
     this.addToCart.emit({
       assetId: this.asset.assetId,
       markers: this.markersAreDefined ? this.subclipMarkers : null,
-      selectedTranscodeTarget: this.selectedTarget
-    });
-  }
-
-  public addSubclipToCart(): void {
-    this.addToCart.emit({
-      assetId: this.asset.assetId,
-      markers: this.subclipMarkers,
       selectedTranscodeTarget: this.selectedTarget
     });
   }

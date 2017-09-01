@@ -22,7 +22,8 @@ import { AppStore } from '../../app.store';
 
 export class LoginComponent implements OnInit, OnDestroy {
   public config: any;
-  public firstTimeUser: boolean;
+  public displayWelcomeMessage: boolean;
+  public displayErrorMessage: boolean;
   private configSubscription: Subscription;
   private routeSubscription: Subscription;
 
@@ -38,7 +39,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private store: AppStore) { }
 
   ngOnInit(): void {
-    this.firstTimeUser = this.router.routerState.snapshot.url.indexOf('newUser=true') > -1;
+    this.displayWelcomeMessage = this.router.routerState.snapshot.url.includes('newUser=true');
+    this.displayErrorMessage = this.router.routerState.snapshot.url.includes('requireLogin=true');
 
     this.configSubscription =
       this.uiConfig.get('login').subscribe((config: any) =>
