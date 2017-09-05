@@ -1,8 +1,8 @@
 
 export function main() {
-  xdescribe('Some Class', () => {
+  describe('Some Class', () => {
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

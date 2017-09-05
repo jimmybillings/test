@@ -1,14 +1,14 @@
 import { HomeHeroComponent } from './home-hero.component';
 
 export function main() {
-  xdescribe('Home Hero Component', () => {
+  describe('Home Hero Component', () => {
     let componentUnderTest: HomeHeroComponent;
 
     beforeEach(() => {
       componentUnderTest = new HomeHeroComponent(null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

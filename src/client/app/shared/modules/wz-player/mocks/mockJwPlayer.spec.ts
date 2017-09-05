@@ -1,14 +1,14 @@
 import { MockJwPlayer } from './mockJwPlayer';
 
 export function main() {
-  xdescribe('Mock Jw Player', () => {
+  describe('Mock Jw Player', () => {
     let mockJwPlayerUnderTest: MockJwPlayer;
 
     beforeEach(() => {
       mockJwPlayerUnderTest = new MockJwPlayer();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

@@ -23,14 +23,14 @@ export const createSpec: Function = (sourceFilename: string, specFilename: strin
   const output: string = `import { ${className} } from './${importFilename}';
 
 export function main() {
-  xdescribe('${classNameWithSpaces}', () => {
+  describe('${classNameWithSpaces}', () => {
     let ${underTestVariableName}: ${className};
 
     beforeEach(() => {
       ${underTestVariableName} = new ${className}(${nullConstructorArguments});
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\\\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

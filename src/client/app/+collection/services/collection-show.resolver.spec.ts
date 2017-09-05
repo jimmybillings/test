@@ -1,14 +1,14 @@
 import { CollectionShowResolver } from './collection-show.resolver';
 
 export function main() {
-  xdescribe('Collection Show Resolver', () => {
+  describe('Collection Show Resolver', () => {
     let resolverUnderTest: CollectionShowResolver;
 
     beforeEach(() => {
       resolverUnderTest = new CollectionShowResolver(null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

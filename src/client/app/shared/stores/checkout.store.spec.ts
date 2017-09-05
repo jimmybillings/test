@@ -1,14 +1,14 @@
 import { CheckoutStore } from './checkout.store';
 
 export function main() {
-  xdescribe('Checkout Store', () => {
+  describe('Checkout Store', () => {
     let storeUnderTest: CheckoutStore;
 
     beforeEach(() => {
       storeUnderTest = new CheckoutStore(null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

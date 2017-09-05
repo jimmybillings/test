@@ -1,14 +1,14 @@
 import { WzDropdownPortalDirective } from './wz.dropdown.component';
 
 export function main() {
-  xdescribe('Wz Dropdown Portal Directive', () => {
+  describe('Wz Dropdown Portal Directive', () => {
     let componentUnderTest: WzDropdownPortalDirective;
 
     beforeEach(() => {
       componentUnderTest = new WzDropdownPortalDirective(null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

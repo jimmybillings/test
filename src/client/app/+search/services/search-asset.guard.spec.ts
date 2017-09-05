@@ -1,14 +1,14 @@
 import { SearchAssetGuard } from './search-asset.guard';
 
 export function main() {
-  xdescribe('Asset Guard', () => {
+  describe('Search Asset Guard', () => {
     let guardUnderTest: SearchAssetGuard;
 
     beforeEach(() => {
       guardUnderTest = new SearchAssetGuard(null, null, null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

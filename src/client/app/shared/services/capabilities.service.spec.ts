@@ -1,14 +1,14 @@
 import { Capabilities } from './capabilities.service';
 
 export function main() {
-  xdescribe('Capabilities', () => {
+  describe('Capabilities', () => {
     let serviceUnderTest: Capabilities;
 
     beforeEach(() => {
       serviceUnderTest = new Capabilities(null, null, null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

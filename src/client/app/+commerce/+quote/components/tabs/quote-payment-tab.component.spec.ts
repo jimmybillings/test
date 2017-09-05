@@ -1,14 +1,14 @@
 import { QuotePaymentTabComponent } from './quote-payment-tab.component';
 
 export function main() {
-  xdescribe('Quote Payment Tab Component', () => {
+  describe('Quote Payment Tab Component', () => {
     let componentUnderTest: QuotePaymentTabComponent;
 
     beforeEach(() => {
       componentUnderTest = new QuotePaymentTabComponent(null, null, null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });
