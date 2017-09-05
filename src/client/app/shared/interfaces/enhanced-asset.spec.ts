@@ -396,7 +396,7 @@ export function main() {
             assetTypeAndParent: { type: 'quoteEditAsset' }
           }
         );
-        expect(assetUnderTest.routerLink).toEqual([`/activeQuote/asset/aabb-ccdd-eeff-gghh`]);
+        expect(assetUnderTest.routerLink).toEqual([`/active-quote/asset/aabb-ccdd-eeff-gghh`]);
       });
 
       it('Returns correct path for a search asset', () => {

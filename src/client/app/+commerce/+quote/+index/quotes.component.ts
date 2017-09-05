@@ -64,7 +64,7 @@ export class QuotesComponent {
 
   public onEditQuote(quoteId: number): void {
     this.quotesService.setFocused(quoteId).subscribe((quote: Quote) => {
-      this.router.navigate(['/activeQuote']);
+      this.router.navigate(['/active-quote']);
     });
   }
 
@@ -84,7 +84,7 @@ export class QuotesComponent {
 
   public createNewQuote(): void {
     this.quotesService.createEmpty().subscribe(() => {
-      this.router.navigate(['/activeQuote']);
+      this.router.navigate(['/active-quote']);
     });
   }
 

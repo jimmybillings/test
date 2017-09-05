@@ -28,7 +28,7 @@ export const COMMERCE_ROUTES: Routes = [
   { path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver } },
   { path: 'quotes/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
   { path: 'quotes/orderId:/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
-  { path: 'activeQuote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard] },
-  { path: 'activeQuote/asset/:uuid', component: QuoteAssetComponent, resolve: { cart: QuoteAssetResolver } },
+  { path: 'active-quote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard] },
+  { path: 'active-quote/asset/:uuid', component: QuoteAssetComponent, resolve: { cart: QuoteAssetResolver } },
 ];
 

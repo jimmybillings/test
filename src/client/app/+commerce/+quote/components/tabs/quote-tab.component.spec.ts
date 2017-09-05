@@ -90,7 +90,7 @@ export function main() {
 
       it('Should navigate to active quote page after cloning a quote', () => {
         componentUnderTest.onCloneQuote();
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/activeQuote']);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/active-quote']);
       });
 
       it('Should call the translate service with the correct translate key | value', () => {

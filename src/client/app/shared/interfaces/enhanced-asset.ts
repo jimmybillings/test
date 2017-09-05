@@ -281,7 +281,7 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
         return [`/collections/${this.assetTypeAndParent.parentId}/asset/${this.uuid}`];
 
       case 'quoteEditAsset':
-        return [`/activeQuote/asset/${this.uuid}`];
+        return [`/active-quote/asset/${this.uuid}`];
 
       case 'searchAsset':
         return [`/search/asset/${this.assetId}`];
