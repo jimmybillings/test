@@ -1,8 +1,8 @@
-import { ActionFactory, InternalActionFactory } from './cart-asset.actions';
+import { ActionFactory, InternalActionFactory } from './quote-asset.actions';
 import { ActionsSpecHelper } from '../../store/spec-helpers/actions.spec-helper';
 
 export function main() {
-  describe('Cart Action Factory', () => {
+  describe('Quote Action Factory', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
     actionsSpecHelper.generateTestFor({
@@ -12,7 +12,7 @@ export function main() {
         parameters: [{ some: 'load parameters' }]
       },
       expectedAction: {
-        type: '[Cart Asset] Load',
+        type: '[Quote Asset] Load',
         loadParameters: { some: 'load parameters' }
       }
     });
@@ -24,7 +24,7 @@ export function main() {
         parameters: [{ some: 'markers' }, 1]
       },
       expectedAction: {
-        type: '[Cart Asset] Update Markers In URL',
+        type: '[Quote Asset] Update Markers In URL',
         markers: { some: 'markers' },
         assetId: 1
       }
@@ -33,11 +33,11 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
-        name: 'loadAfterCartAvailable',
+        name: 'loadAfterQuoteAvailable',
         parameters: [{ some: 'load parameters' }]
       },
       expectedAction: {
-        type: '[Cart Asset] Load After Cart Available',
+        type: '[Quote Asset] Load After Quote Available',
         loadParameters: { some: 'load parameters' }
       }
     });
@@ -49,7 +49,7 @@ export function main() {
         parameters: [{ some: 'asset' }]
       },
       expectedAction: {
-        type: '[Cart Asset] Load Success',
+        type: '[Quote Asset] Load Success',
         activeAsset: { some: 'asset' }
       }
     });
@@ -61,7 +61,7 @@ export function main() {
         parameters: [{ some: 'error' }]
       },
       expectedAction: {
-        type: '[Cart Asset] Load Failure',
+        type: '[Quote Asset] Load Failure',
         error: { some: 'error' }
       }
     });

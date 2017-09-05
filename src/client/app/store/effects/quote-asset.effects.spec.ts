@@ -1,23 +1,23 @@
-import { CartAssetEffects } from './cart-asset.effects';
-import * as CartAssetActions from '../actions/cart-asset.actions';
-import * as CartActions from '../actions/cart.actions';
+import { QuoteAssetEffects } from './quote-asset.effects';
+import * as QuoteAssetActions from '../actions/quote-asset.actions';
+import * as QuoteActions from '../actions/quote.actions';
 import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
 
 export function main() {
-  describe('Cart Asset Effects', () => {
+  describe('Quote Asset Effects', () => {
     const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
 
     function instantiator(): any {
-      return new CartAssetEffects(
+      return new QuoteAssetEffects(
         effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
       );
     }
 
     effectsSpecHelper.generateTestsFor({
-      effectName: 'loadAfterCartAvailable',
+      effectName: 'loadAfterQuoteAvailable',
       effectsInstantiator: instantiator,
       inputAction: {
-        type: CartAssetActions.LoadAfterCartAvailable.Type,
+        type: QuoteAssetActions.LoadAfterQuoteAvailable.Type,
         loadParameters: { id: '50', uuid: 'abc-123' }
       },
       serviceMethod: {
@@ -27,12 +27,12 @@ export function main() {
       },
       outputActionFactories: {
         success: {
-          sectionName: 'cartAsset',
+          sectionName: 'quoteAsset',
           methodName: 'loadSuccess',
           expectedArguments: [{ assetId: '50' }]
         },
         failure: {
-          sectionName: 'cartAsset',
+          sectionName: 'quoteAsset',
           methodName: 'loadFailure'
         }
       }
@@ -40,19 +40,19 @@ export function main() {
 
     effectsSpecHelper.generateTestsFor({
       effectName: 'load',
-      comment: 'when the cart is NOT yet loaded',
+      comment: 'when the quote is NOT yet loaded',
       effectsInstantiator: instantiator,
       state: {
-        storeSectionName: 'cart',
-        value: { data: { id: null } }
+        storeSectionName: 'quote',
+        value: { data: { id: 0 } }
       },
       inputAction: {
-        type: CartAssetActions.Load.Type,
+        type: QuoteAssetActions.Load.Type,
         loadParameters: { uuid: 'abc-123' }
       },
       outputActionFactories: {
         success: {
-          sectionName: 'cart',
+          sectionName: 'quote',
           methodName: 'load',
           expectedArguments: []
         }
@@ -61,10 +61,10 @@ export function main() {
 
     effectsSpecHelper.generateTestsFor({
       effectName: 'load',
-      comment: 'when the cart IS loaded',
+      comment: 'when the quote IS loaded',
       effectsInstantiator: instantiator,
       state: {
-        storeSectionName: 'cart',
+        storeSectionName: 'quote',
         value: {
           data: {
             id: 1,
@@ -75,29 +75,29 @@ export function main() {
         }
       },
       inputAction: {
-        type: CartAssetActions.Load.Type,
+        type: QuoteAssetActions.Load.Type,
         loadParameters: { uuid: 'abc-123' }
       },
       outputActionFactories: {
         success: {
-          sectionName: 'cartAsset',
-          methodName: 'loadAfterCartAvailable',
+          sectionName: 'quoteAsset',
+          methodName: 'loadAfterQuoteAvailable',
           expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }]
         }
       }
     });
 
     effectsSpecHelper.generateTestsFor({
-      effectName: 'loadAssetOnCartLoadSuccess',
+      effectName: 'loadAssetOnQuoteLoadSuccess',
       comment: 'when the asset store HAS load parameters',
       effectsInstantiator: instantiator,
       state: [
         {
-          storeSectionName: 'cartAsset',
+          storeSectionName: 'quoteAsset',
           value: { loadParameters: { uuid: 'abc-123' } }
         },
         {
-          storeSectionName: 'cart',
+          storeSectionName: 'quote',
           value: {
             data: {
               id: 1,
@@ -109,12 +109,12 @@ export function main() {
         }
       ],
       inputAction: {
-        type: CartActions.LoadSuccess.Type
+        type: QuoteActions.LoadSuccess.Type
       },
       outputActionFactories: {
         success: {
-          sectionName: 'cartAsset',
-          methodName: 'loadAfterCartAvailable',
+          sectionName: 'quoteAsset',
+          methodName: 'loadAfterQuoteAvailable',
           expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }]
         }
       }
