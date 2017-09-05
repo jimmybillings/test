@@ -24,7 +24,6 @@ import { FilterService } from './shared/services/filter.service';
 import { SortDefinitionsService } from './shared/services/sort-definitions.service';
 import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
-import { QuoteEditService } from './shared/services/quote-edit.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
 import { MdSnackBar } from '@angular/material';
@@ -67,7 +66,6 @@ export class AppComponent implements OnInit {
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private zone: NgZone,
-    private quoteEditService: QuoteEditService,
     private store: AppStore) {
     this.loadConfig();
     this.loadActiveCollection();
@@ -100,7 +98,7 @@ export class AppComponent implements OnInit {
 
   public get cartCount(): Observable<any> {
     if (this.userCan.administerQuotes()) {
-      return this.quoteEditService.data.map((state) => state.data.itemCount);
+      return this.store.select(state => state.quote.data.itemCount);
     } else {
       return this.store.select(state => state.cart.data.itemCount);
     }
@@ -160,7 +158,7 @@ export class AppComponent implements OnInit {
     }
 
     if (this.userCan.administerQuotes()) {
-      this.quoteEditService.getFocusedQuote().subscribe();
+      this.store.dispatch(factory => factory.quote.load());
     } else {
       this.store.dispatch(factory => factory.cart.load());
     }

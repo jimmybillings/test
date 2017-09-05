@@ -9,7 +9,6 @@ import {
   FeeLineItem,
   AddAssetParameters,
   Quote,
-  QuoteState,
   QuoteOptions,
   EditableQuoteFields,
   FeeConfig,
@@ -17,8 +16,7 @@ import {
 } from '../interfaces/commerce.interface';
 import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 import { Frame } from 'wazee-frame-formatter';
-import { ActiveQuoteStore } from '../stores/active-quote.store';
-
+import { AppStore, QuoteState } from '../../app.store';
 import { FeeConfigStore } from '../stores/fee-config.store';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
 import { Common } from '../utilities/common.functions';
@@ -27,7 +25,7 @@ import { enhanceAsset } from '../interfaces/enhanced-asset';
 @Injectable()
 export class QuoteEditService {
   constructor(
-    private store: ActiveQuoteStore,
+    private store: AppStore,
     private feeConfigStore: FeeConfigStore,
     private api: ApiService
   ) { }
@@ -35,15 +33,15 @@ export class QuoteEditService {
   // Store Accessors
 
   public get data(): Observable<QuoteState> {
-    return this.store.data;
+    return this.store.select(state => state.quote);
   }
 
   public get state(): QuoteState {
-    return this.store.state;
+    return this.store.snapshot(state => state.quote);
   }
 
   public get quote(): Observable<Quote> {
-    return this.data.map((state: QuoteState) => state.data);
+    return this.store.select(state => state.quote.data);
   }
 
   public get projects(): Observable<Project[]> {
@@ -109,10 +107,6 @@ export class QuoteEditService {
         body: clonedQuote
       })
       .do(this.replaceQuote);
-  }
-
-  public getFocusedQuote(): Observable<Quote> {
-    return this.api.get(Api.Orders, 'quote/focused', { loadingIndicator: true }).do(this.replaceQuote);
   }
 
   public addProject(): void {
@@ -207,8 +201,6 @@ export class QuoteEditService {
     ).subscribe(this.replaceQuote);
   }
 
-  // this does the send request and then takes user to the review page of the active quote.
-  // But it does not make another focused, or create a new focused quote.
   public sendQuote(options: QuoteOptions): Observable<any> {
     return this.api.put(
       Api.Orders,
@@ -296,7 +288,7 @@ export class QuoteEditService {
   }
 
   private replaceQuote = (quote: Quote): void => {
-    this.store.replaceQuote(quote);
+    this.store.dispatch(factory => factory.quote.loadSuccess(quote));
   }
 
   private loadFeeConfig(): Observable<FeeConfig> {

@@ -4,9 +4,7 @@ import { Effect, Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import * as CartActions from '../actions/cart.actions';
-import { AppStore, AppState, InternalActionFactoryMapper } from '../../app.store';
-import { Cart } from '../../shared/interfaces/commerce.interface';
-import { AssetLineItem, Asset } from '../../shared/interfaces/commerce.interface';
+import { AppStore } from '../../app.store';
 import { FutureCartService } from '../services/cart.service';
 
 @Injectable()

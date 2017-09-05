@@ -6,6 +6,10 @@ import * as ActiveCollectionActions from './store/actions/active-collection.acti
 import * as ActiveCollectionState from './store/states/active-collection.state';
 export type ActiveCollectionState = ActiveCollectionState.State;
 
+import * as QuoteActions from './store/actions/quote.actions';
+import * as QuoteState from './store/states/quote.state';
+export type QuoteState = QuoteState.State;
+
 import * as SearchAssetActions from './store/actions/search-asset.actions';
 import * as SearchAssetState from './store/states/search-asset.state';
 export type SearchAssetState = SearchAssetState.State;
@@ -55,6 +59,7 @@ export interface ActionFactory {
   readonly dialog: DialogActions.ActionFactory;
   readonly error: ErrorActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
+  readonly quote: QuoteActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
   readonly notifier: NotifierActions.ActionFactory;
   readonly searchAsset: SearchAssetActions.ActionFactory;
@@ -72,6 +77,7 @@ export interface InternalActionFactory {
   readonly error: ErrorActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
+  readonly quote: QuoteActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
   readonly searchAsset: SearchAssetActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
@@ -85,6 +91,7 @@ export interface AppState {
   readonly cartAsset: CartAssetState;
   readonly comment: CommentState;
   readonly order: OrderState;
+  readonly quote: QuoteState;
   readonly snackbar: SnackbarState;
   readonly searchAsset: SearchAssetState;
   readonly speedPreview: SpeedPreviewState;
@@ -101,6 +108,7 @@ export const reducers: AppReducers = {
   cart: CartState.reducer,
   comment: CommentState.reducer,
   order: OrderState.reducer,
+  quote: QuoteState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer
 };
@@ -121,6 +129,7 @@ export class AppStore {
     error: new ErrorActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
+    quote: new QuoteActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
     searchAsset: new SearchAssetActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
@@ -137,6 +146,7 @@ export class AppStore {
     error: new ErrorActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
+    quote: new QuoteActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),
     searchAsset: new SearchAssetActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),

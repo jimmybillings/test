@@ -5,14 +5,12 @@ import { Api } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
 import { Quote, Quotes, QuotesApiResponse } from '../../shared/interfaces/commerce.interface';
 import { QuotesStore } from '../../shared/stores/quotes.store';
-import { ActiveQuoteStore } from '../../shared/stores/active-quote.store';
 
 @Injectable()
 export class QuotesService {
   constructor(private api: ApiService,
     private cart: CartService,
-    private store: QuotesStore,
-    private activeQuoteStore: ActiveQuoteStore) { }
+    private store: QuotesStore) { }
 
 
   public get data(): Observable<Quotes> {
@@ -37,22 +35,21 @@ export class QuotesService {
   }
 
   public getFocused(): Observable<Quote> {
-    return this.api.get(Api.Orders, 'quote/focused') as Observable<Quote>;
+    return this.api.get(Api.Orders, 'quote/focused');
   }
 
   public setFocused(quoteId: number): Observable<Quote> {
     return this.api.put(Api.Orders, `quote/focused/${quoteId}`).do((quote: Quote) => {
       this.updateNewFocusedQuote(quote.id);
-      this.activeQuoteStore.replaceQuote(quote);
-    }) as Observable<Quote>;
+    });
   }
 
   public rejectQuote(quoteId: number): Observable<Quote> {
-    return this.api.put(Api.Orders, `quote/reject/${quoteId}`) as Observable<Quote>;
+    return this.api.put(Api.Orders, `quote/reject/${quoteId}`);
   }
 
   public createEmpty(): Observable<Quote> {
-    return this.api.post(Api.Orders, 'quote') as Observable<Quote>;
+    return this.api.post(Api.Orders, 'quote');
   }
 
   private findNewFocused(quotes: Quote[], activeQuoteId: number): Quote[] {

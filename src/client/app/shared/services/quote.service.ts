@@ -9,7 +9,6 @@ import {
   Quote,
   Order,
   QuoteOptions,
-  QuoteState,
   CheckoutState,
   OrderType,
   QuoteType,
@@ -21,7 +20,7 @@ import {
   LicenseAgreements,
   AssetLineItem
 } from '../interfaces/commerce.interface';
-import { QuoteStore } from '../stores/quote.store';
+import { AppStore, QuoteState } from '../../app.store';
 import { CheckoutStore } from '../stores/checkout.store';
 import { enhanceAsset } from '../interfaces/enhanced-asset';
 
@@ -30,7 +29,7 @@ export class QuoteService {
   constructor(
     private api: ApiService,
     private cartService: CartService,
-    private quoteStore: QuoteStore,
+    private store: AppStore,
     private checkoutStore: CheckoutStore,
     private userService: UserService
   ) { }
@@ -38,15 +37,15 @@ export class QuoteService {
   // Store Accessors
 
   public get data(): Observable<QuoteState> {
-    return this.quoteStore.data;
+    return this.store.select(state => state.quote);
   }
 
   public get state(): QuoteState {
-    return this.quoteStore.state;
+    return this.store.snapshot(state => state.quote);
   }
 
   public get quote(): Observable<Quote> {
-    return this.data.map((state: QuoteState) => state.data);
+    return this.store.select(state => state.quote.data);
   }
 
   public get projects(): Observable<Project[]> {
@@ -190,7 +189,7 @@ export class QuoteService {
 
   private loadForNonAdminUser(quoteId: number): Observable<Quote> {
     return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-      .do((quote: Quote) => this.quoteStore.updateQuote(quote));
+      .do((quote: Quote) => this.store.dispatch(factory => factory.quote.loadSuccess(quote)));
   }
 
   private purchaseWithCreditCard(): Observable<number> {
@@ -225,7 +224,8 @@ export class QuoteService {
       createdUserEmailAddress: user.emailAddress,
       createdUserFullName: `${user.firstName} ${user.lastName}`
     });
-    this.quoteStore.updateQuote(quote);
+
+    this.store.dispatch(factory => factory.quote.loadSuccess(quote));
   }
 
   private get purchaseOptions(): PurchaseOptions {

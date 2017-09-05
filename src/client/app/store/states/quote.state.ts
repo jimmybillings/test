@@ -1,42 +1,44 @@
-import * as CartActions from '../actions/cart.actions';
+import * as QuoteActions from '../actions/quote.actions';
 import { Common } from '../../shared/utilities/common.functions';
-import { Cart } from '../../shared/interfaces/commerce.interface';
+import { Quote } from '../../shared/interfaces/commerce.interface';
 
 export interface State {
-  data: Cart;
+  data: Quote;
   loading: boolean;
 }
 
 export const initialState: State = {
   data: {
-    id: null,
-    userId: null,
-    total: null
+    id: 0,
+    total: 0,
+    createdUserId: 0,
+    ownerUserId: 0,
+    quoteStatus: 'PENDING'
   },
   loading: false
 };
 
-export function reducer(state: State = initialState, action: CartActions.Any): State {
+export function reducer(state: State = initialState, action: QuoteActions.Any): State {
   if (state === null) state = initialState;
 
   switch (action.type) {
-    case CartActions.Load.Type: {
+    case QuoteActions.Load.Type: {
       return {
         ...Common.clone(state),
         loading: true
       };
     }
 
-    case CartActions.LoadSuccess.Type: {
+    case QuoteActions.LoadSuccess.Type: {
       return {
         loading: false,
         data: {
-          ...action.cart
+          ...action.quote
         }
       };
     }
 
-    case CartActions.LoadFailure.Type: {
+    case QuoteActions.LoadFailure.Type: {
       return {
         ...Common.clone(state),
         loading: false
@@ -46,6 +48,5 @@ export function reducer(state: State = initialState, action: CartActions.Any): S
     default: {
       return state;
     }
-
   }
 }

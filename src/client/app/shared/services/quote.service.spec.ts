@@ -4,11 +4,14 @@ import { Api } from '../interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
 import { Quote } from '../../shared/interfaces/commerce.interface';
 import { Common } from '../utilities/common.functions';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Quote Service', () => {
     let serviceUnderTest: QuoteService, mockApi: MockApiService, mockCartService: any,
-      mockQuoteStore: any, mockCheckoutStore: any, mockPaymentOptions: any, mockUserService: any;
+      mockStore: MockAppStore, mockCheckoutStore: any, mockPaymentOptions: any, mockUserService: any,
+      quoteLoadSuccessSpy: jasmine.Spy;
+
     const mockQuoteResponse = {
       'createdUserId': 1,
       'lastUpdated': '2017-07-23T18:41:21Z',
@@ -35,6 +38,7 @@ export function main() {
         }
       ]
     };
+
     function setupFor(options: Array<PaymentOptions> = null) {
       mockPaymentOptions = options ? {
         paymentOptions: options,
@@ -48,23 +52,24 @@ export function main() {
 
     beforeEach(() => {
       mockApi = new MockApiService();
+      jasmine.addMatchers(mockApiMatchers);
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('quote', { data: { id: 3, ownerUserId: 10, itemCount: 1 } });
+      quoteLoadSuccessSpy = mockStore.createActionFactoryMethod('quote', 'loadSuccess');
+
       mockCartService = {
         data: Observable.of({ cart: { projects: [] } }),
         state: { cart: { projects: [] } }
       };
-      mockQuoteStore = {
-        data: Observable.of({ data: { id: 3, ownerUserId: 10, itemCount: 1 } }),
-        state: { data: { id: 3, ownerUserId: 10, itemCount: 1 } },
-        updateQuote: jasmine.createSpy('updateQuote'),
-        addToQuote: jasmine.createSpy('addToQuote')
-      };
+
       mockUserService = {
         getById: jasmine.createSpy('getById').and.returnValue(Observable.of(
           { emailAddress: 'test@gmail.com', firstName: 'best', lastName: 'tester' }))
       };
+
       mockCheckoutStore = { updateOrderInProgress: jasmine.createSpy('updateOrderInProgress') };
-      jasmine.addMatchers(mockApiMatchers);
-      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockQuoteStore, mockCheckoutStore, mockUserService);
+
+      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockStore, mockCheckoutStore, mockUserService);
     });
 
     describe('data getter', () => {
@@ -88,7 +93,6 @@ export function main() {
     });
 
     describe('load()', () => {
-
       beforeEach(() => {
         mockApi.getResponse = Common.clone(mockQuoteResponse);
       });
@@ -113,7 +117,7 @@ export function main() {
             createdUserFullName: 'best tester',
             createdUserEmailAddress: 'test@gmail.com'
           });
-          expect(mockQuoteStore.updateQuote).toHaveBeenCalledWith(testResponse);
+          expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(testResponse);
         });
       });
 
@@ -132,11 +136,10 @@ export function main() {
 
         it('should set the quote in the quote store', () => {
           serviceUnderTest.load(1, false).take(1).subscribe();
-          expect(mockQuoteStore.updateQuote)
+          expect(quoteLoadSuccessSpy)
             .toHaveBeenCalledWith(Common.clone(mockQuoteResponse));
         });
       });
-
     });
 
 
@@ -230,7 +233,7 @@ export function main() {
           createdUserFullName: 'best tester',
           createdUserEmailAddress: 'test@gmail.com'
         });
-        expect(mockQuoteStore.updateQuote).toHaveBeenCalledWith(testResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(testResponse);
       });
     });
   });

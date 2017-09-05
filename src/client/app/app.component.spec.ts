@@ -10,7 +10,8 @@ export function main() {
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUserService: any,
       mockCollections: any, mockUiState: any, mockUserPreference: any, mockNotification: any, mockApiConfig: any,
       mockUserCan: any, mockWindow: any, mockNgZone: any, componentUnderTest: AppComponent, mockStore: MockAppStore,
-      mockFilter: any, mockSortDefinition: any, cartLoadSpy: jasmine.Spy, collectionLoadSpy: jasmine.Spy;
+      mockFilter: any, mockSortDefinition: any, cartLoadSpy: jasmine.Spy, collectionLoadSpy: jasmine.Spy,
+      quoteLoadSpy: jasmine.Spy;
 
     let loggedInState: boolean = false, canViewCollections: boolean = true;
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
@@ -78,11 +79,12 @@ export function main() {
 
       collectionLoadSpy = mockStore.createActionFactoryMethod('activeCollection', 'load');
       cartLoadSpy = mockStore.createActionFactoryMethod('cart', 'load');
+      quoteLoadSpy = mockStore.createActionFactoryMethod('quote', 'load');
 
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
         mockCollections, mockUiState, mockUserPreference, mockApiConfig, mockUserCan, mockWindow,
-        mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore
+        mockFilter, mockSortDefinition, null, null, mockNgZone, mockStore
       );
     });
 
@@ -188,7 +190,7 @@ export function main() {
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
           mockCollections, mockUiState, mockUserPreference, mockApiConfig, mockUserCan,
-          mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore
+          mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, mockStore
         );
 
         expect(mockRouter.initialNavigation).toHaveBeenCalled();
@@ -201,7 +203,7 @@ export function main() {
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
           mockCollections, mockUiState, mockUserPreference, mockApiConfig, mockUserCan,
-          mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore
+          mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, mockStore
         );
 
         expect(mockUiConfig.load).toHaveBeenCalled();
