@@ -6,7 +6,7 @@ import { Api } from '../../shared/interfaces/api.interface';
 import { Order } from '../../shared/interfaces/commerce.interface';
 
 @Injectable()
-export class FutureOrderService {
+export class OrderService {
   constructor(private apiService: FutureApiService) { }
 
   public load(orderId: number): Observable<Order> {

@@ -1,118 +1,119 @@
 import { Observable } from 'rxjs/Observable';
 
 import { OrderShowComponent } from './order-show.component';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
-  describe('Order Show', () => {
+  describe('Order Show Component', () => {
     let componentUnderTest: OrderShowComponent;
+    let mockAppStore: MockAppStore;
     let mockOrderService: any, mockWindow: any;
 
     beforeEach(() => {
-      mockOrderService = {
-        data: Observable.of({ someData: 'SOME_VALUE' }),
-        projects: Observable.of([])
-      };
       mockWindow = {
         nativeWindow: {
           location: { href: '' }
         }
       };
-      componentUnderTest = new OrderShowComponent(mockWindow, mockOrderService);
+
+      mockAppStore = new MockAppStore();
+      componentUnderTest = new OrderShowComponent(mockWindow, mockAppStore);
+    });
+
+    describe('orderObservable property', () => {
+      it('represents the store\'s active order', () => {
+        mockAppStore.createStateElement('order', 'activeOrder', { some: 'order', projects: [] });
+        componentUnderTest = new OrderShowComponent(mockWindow, mockAppStore);
+
+        expect(componentUnderTest.orderObservable).toEqual(Observable.of({ some: 'order', projects: [] }));
+      });
+
+      it('contains enhanced assets', () => {
+        mockAppStore.createStateElement(
+          'order',
+          'activeOrder',
+          {
+            some: 'order',
+            id: 42,
+            projects: [{ lineItems: [{ asset: {} }] }]
+          }
+        );
+
+        new OrderShowComponent(mockWindow, mockAppStore).orderObservable.subscribe(order => {
+          const asset: any = order.projects[0].lineItems[0].asset;
+
+          expect(asset.assetTypeAndParent.type).toEqual('orderAsset');
+          expect(asset.assetTypeAndParent.parentId).toEqual(42);
+        });
+      });
     });
 
     describe('downloadMaster()', () => {
-      it('changes the windows location', () => {
+      it('changes the window\'s location', () => {
         componentUnderTest.downloadMaster('https://this-is-a-url.com');
         expect(mockWindow.nativeWindow.location.href).toBe('https://this-is-a-url.com');
       });
     });
 
-
-    describe('displayOrderAssetCount()', () => {
-      it('should return pluralized translatable string based on asset count. If count is 0 return no assets', () => {
-        expect(componentUnderTest.displayOrderAssetCount(0)).toBe('ORDER.SHOW.PROJECTS.NO_ASSETS');
+    describe('assetCountLabelKeyFor()', () => {
+      it('returns pluralized translatable string based on asset count. If count is 0 return no assets', () => {
+        expect(componentUnderTest.assetCountLabelKeyFor(0)).toBe('ORDER.SHOW.PROJECTS.NO_ASSETS');
       });
 
-      it('should return 1 asset if asset count is 1', () => {
-        expect(componentUnderTest.displayOrderAssetCount(1)).toBe('ORDER.SHOW.PROJECTS.ONLY_ONE_ASSET');
+      it('returns 1 asset if asset count is 1', () => {
+        expect(componentUnderTest.assetCountLabelKeyFor(1)).toBe('ORDER.SHOW.PROJECTS.ONLY_ONE_ASSET');
       });
 
-      it('should return x assets if asset count is more than 1', () => {
-        expect(componentUnderTest.displayOrderAssetCount(20)).toBe('ORDER.SHOW.PROJECTS.MORE_THAN_ONE_ASSET');
+      it('returns x assets if asset count is more than 1', () => {
+        expect(componentUnderTest.assetCountLabelKeyFor(20)).toBe('ORDER.SHOW.PROJECTS.MORE_THAN_ONE_ASSET');
       });
     });
 
     describe('isRefundedLineItem()', () => {
-      it('return false if the price is > 0', () => {
+      it('returns false if the price is > 0', () => {
         expect(componentUnderTest.isRefundedLineItem({ price: 100 })).toBe(false);
       });
 
-      it('return true if the price is < 0', () => {
+      it('returns true if the price is < 0', () => {
         expect(componentUnderTest.isRefundedLineItem({ price: -100 })).toBe(true);
       });
     });
 
     describe('isRefundedProject()', () => {
-      it('return false if there is no creditMemoForProjectId', () => {
+      it('returns false if there is no creditMemoForProjectId', () => {
         expect(componentUnderTest.isRefundedProject({} as any)).toBe(false);
       });
 
-      it('return true if there is a creditMemoForProjectId', () => {
+      it('returns true if there is a creditMemoForProjectId', () => {
         expect(componentUnderTest.isRefundedProject({ creditMemoForProjectId: 12345 } as any)).toBe(true);
       });
     });
 
-    describe('get isRefund()', () => {
-      let mockOrder: any;
-      it('return an observable of true if the order is a refund', () => {
-        mockOrder = { creditMemoForOrderId: 12345 };
-        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
-        new OrderShowComponent(null, mockOrderService).isRefund.subscribe(is => expect(is).toBe(true));
+    describe('isRefundedOrder()', () => {
+      it('returns true if the order has a corresponding credit memo', () => {
+        expect(componentUnderTest.isRefundedOrder({ creditMemoForOrderId: 12345 } as any)).toBe(true);
       });
 
-      it('return an observable of false if the order is not a refund', () => {
-        mockOrder = { id: 1 };
-        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
-        new OrderShowComponent(null, mockOrderService).isRefund.subscribe(is => expect(is).toBe(false));
+      it('returns false if the order doesn\'t have a corresponding credit memo', () => {
+        expect(componentUnderTest.isRefundedOrder({} as any)).toBe(false);
       });
     });
 
-    describe('get creditMemoForOrderId()', () => {
-      let mockOrder: any;
-      it('should return the creditMemoForOrderId if the order has one', () => {
-        mockOrder = { creditMemoForOrderId: 12345 };
-        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
-        new OrderShowComponent(null, mockOrderService).creditMemoForOrderId.subscribe(id => expect(id).toBe(12345));
+    describe('shouldShowDiscountFor()', () => {
+      it('returns true if the order has a discount value greater than zero', () => {
+        expect(componentUnderTest.shouldShowDiscountFor({ discount: 16 } as any)).toBe(true);
       });
 
-      it('should return the creditMemoForOrderId if the order has one', () => {
-        mockOrder = { id: 1 };
-        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
-        new OrderShowComponent(null, mockOrderService).creditMemoForOrderId.subscribe(id => expect(id).toBe(undefined));
+      it('returns false if the order has a discount value of zero', () => {
+        expect(componentUnderTest.shouldShowDiscountFor({ discount: 0 } as any)).toBe(false);
       });
-    });
 
-    describe('get showDiscount()', () => {
-      let mockOrder: any;
-      it('return an observable of true if the order has a discount value greater than zero', () => {
-        mockOrder = { discount: 16 };
-        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
-        new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(true));
+      it('returns false if the order has a discount value greater than zero, but is a refund', () => {
+        expect(componentUnderTest.shouldShowDiscountFor({ discount: 16, creditMemoForOrderId: 12345 } as any)).toBe(false);
       });
-      it('return an observable of false if the order has a discount value of zero', () => {
-        mockOrder = { discount: 0 };
-        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
-        new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(false));
-      });
-      it('return an observable of false if the order has a discount value greater than zero, but is a refund', () => {
-        mockOrder = { discount: 16, creditMemoForOrderId: 12345 };
-        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
-        new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(false));
-      });
-      it('return an observable of false if the order has a no discount value', () => {
-        mockOrder = { id: 16 };
-        mockOrderService = { data: Observable.of(mockOrder), projects: Observable.of([]) };
-        new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(false));
+
+      it('returns false if the order has a no discount value', () => {
+        expect(componentUnderTest.shouldShowDiscountFor({} as any)).toBe(false);
       });
     });
   });

@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs/Observable';
 
-import { FutureOrderService } from './order.service';
+import { OrderService } from './order.service';
 import { MockApiService, mockApiMatchers } from '../spec-helpers/mock-api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
-  xdescribe('Order Service', () => {
-    let serviceUnderTest: FutureOrderService;
+  describe('Order Service', () => {
+    let serviceUnderTest: OrderService;
     let mockApiService: MockApiService;
 
     beforeEach(() => {
@@ -14,7 +14,7 @@ export function main() {
       mockApiService = new MockApiService();
       mockApiService.getResponse = { some: 'order' };
 
-      serviceUnderTest = new FutureOrderService(mockApiService.injector);
+      serviceUnderTest = new OrderService(mockApiService.injector);
     });
 
     describe('load()', () => {

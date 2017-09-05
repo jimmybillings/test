@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import * as OrderActions from '../actions/order.actions';
 import { AppStore } from '../../app.store';
-import { FutureOrderService } from '../services/order.service';
+import { OrderService } from '../services/order.service';
 import { Order } from '../../shared/interfaces/commerce.interface';
 
 @Injectable()
@@ -19,5 +19,5 @@ export class OrderEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.order.loadFailure(error))))
     );
 
-  constructor(private actions: Actions, private store: AppStore, private service: FutureOrderService) { }
+  constructor(private actions: Actions, private store: AppStore, private service: OrderService) { }
 }
