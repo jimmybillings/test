@@ -5,7 +5,7 @@ import { MockApiService, mockApiMatchers } from '../spec-helpers/mock-api.servic
 import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
-  xdescribe('Order Service', () => {
+  describe('Order Service', () => {
     let serviceUnderTest: FutureOrderService;
     let mockApiService: MockApiService;
 

@@ -8,7 +8,7 @@ export class ActionFactory {
     return new Load();
   }
 
-  // Move this to internal action factory when active quote is fully "effected"
+  // Move this to internal action factory when quote is fully "effected"
   public loadSuccess(quote: Quote): LoadSuccess {
     return new LoadSuccess(quote);
   }
