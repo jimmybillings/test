@@ -44,5 +44,6 @@ export class WzPikaDayDirective {
   private onSelect(date: any): void {
     Common.setMarginTop('pika-single', this.document);
     this.pikadayChange.emit({ value: this.picker.toString() });
+    this.picker.hide();
   }
 }
