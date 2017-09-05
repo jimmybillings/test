@@ -6,13 +6,9 @@ import * as ActiveCollectionActions from './store/actions/active-collection.acti
 import * as ActiveCollectionState from './store/states/active-collection.state';
 export type ActiveCollectionState = ActiveCollectionState.State;
 
-import * as QuoteActions from './store/actions/quote.actions';
-import * as QuoteState from './store/states/quote.state';
-export type QuoteState = QuoteState.State;
-
-import * as SearchAssetActions from './store/actions/search-asset.actions';
-import * as SearchAssetState from './store/states/search-asset.state';
-export type SearchAssetState = SearchAssetState.State;
+import * as ActiveCollectionAssetActions from './store/actions/active-collection-asset.actions';
+import * as ActiveCollectionAssetState from './store/states/active-collection-asset.state';
+export type ActiveCollectionAssetState = ActiveCollectionAssetState.State;
 
 import * as CartActions from './store/actions/cart.actions';
 import * as CartState from './store/states/cart.state';
@@ -21,10 +17,6 @@ export type CartState = CartState.State;
 import * as CartAssetActions from './store/actions/cart-asset.actions';
 import * as CartAssetState from './store/states/cart-asset.state';
 export type CartAssetState = CartAssetState.State;
-
-import * as ActiveCollectionAssetActions from './store/actions/active-collection-asset.actions';
-import * as ActiveCollectionAssetState from './store/states/active-collection-asset.state';
-export type ActiveCollectionAssetState = ActiveCollectionAssetState.State;
 
 import * as CommentActions from './store/actions/comment.actions';
 import * as CommentState from './store/states/comment.state';
@@ -40,7 +32,19 @@ import * as OrderActions from './store/actions/order.actions';
 import * as OrderState from './store/states/order.state';
 export type OrderState = OrderState.State;
 
+import * as QuoteActions from './store/actions/quote.actions';
+import * as QuoteState from './store/states/quote.state';
+export type QuoteState = QuoteState.State;
+
+import * as QuoteAssetActions from './store/actions/quote-asset.actions';
+import * as QuoteAssetState from './store/states/quote-asset.state';
+export type QuoteAssetState = QuoteAssetState.State;
+
 import * as RouterActions from './store/actions/router.actions';
+
+import * as SearchAssetActions from './store/actions/search-asset.actions';
+import * as SearchAssetState from './store/states/search-asset.state';
+export type SearchAssetState = SearchAssetState.State;
 
 import * as SnackbarActions from './store/actions/snackbar.actions';
 import * as SnackbarState from './store/states/snackbar.state';
@@ -60,6 +64,7 @@ export interface ActionFactory {
   readonly error: ErrorActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
   readonly quote: QuoteActions.ActionFactory;
+  readonly quoteAsset: QuoteAssetActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
   readonly notifier: NotifierActions.ActionFactory;
   readonly searchAsset: SearchAssetActions.ActionFactory;
@@ -78,6 +83,7 @@ export interface InternalActionFactory {
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
   readonly quote: QuoteActions.InternalActionFactory;
+  readonly quoteAsset: QuoteAssetActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
   readonly searchAsset: SearchAssetActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
@@ -92,6 +98,7 @@ export interface AppState {
   readonly comment: CommentState;
   readonly order: OrderState;
   readonly quote: QuoteState;
+  readonly quoteAsset: QuoteAssetState;
   readonly snackbar: SnackbarState;
   readonly searchAsset: SearchAssetState;
   readonly speedPreview: SpeedPreviewState;
@@ -130,6 +137,7 @@ export class AppStore {
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
     quote: new QuoteActions.ActionFactory(),
+    quoteAsset: new QuoteAssetActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
     searchAsset: new SearchAssetActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
@@ -147,6 +155,7 @@ export class AppStore {
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
     quote: new QuoteActions.InternalActionFactory(),
+    quoteAsset: new QuoteAssetActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),
     searchAsset: new SearchAssetActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),

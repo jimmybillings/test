@@ -9,8 +9,10 @@ import { CartAssetResolver } from './+cart/services/cart-asset.resolver';
 import { OrderResolver } from './+order/services/order.resolver';
 import { OrdersResolver } from './+order/services/orders.resolver';
 import { QuoteShowComponent } from './+quote/+show/quote-show.component';
+import { QuoteAssetComponent } from './+quote/components/quote-asset.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
 import { QuoteResolver } from './+quote/services/quote.resolver';
+import { QuoteAssetResolver } from './+quote/services/quote-asset.resolver';
 import { QuotesResolver } from './+quote/services/quotes.resolver';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 import { QuoteEditResolver } from './+quote/services/quote-edit.resolver';
@@ -27,6 +29,6 @@ export const COMMERCE_ROUTES: Routes = [
   { path: 'quotes/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
   { path: 'quotes/orderId:/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
   { path: 'activeQuote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard] },
-  { path: 'activeQuote/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
+  { path: 'activeQuote/asset/:uuid', component: QuoteAssetComponent, resolve: { cart: QuoteAssetResolver } },
 ];
 

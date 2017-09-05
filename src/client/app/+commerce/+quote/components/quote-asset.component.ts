@@ -5,10 +5,10 @@ import { Asset } from '../../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
-  selector: 'cart-asset',
-  template: `<asset-component [stateMapper]="stateMapper" [assetType]="'cartAsset'"></asset-component>`,
+  selector: 'quote-asset',
+  template: `<asset-component [stateMapper]="stateMapper" [assetType]="'quoteAsset'"></asset-component>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CartAssetComponent {
-  public stateMapper: StateMapper<Asset> = (state) => state.cartAsset.activeAsset;
+export class QuoteAssetComponent {
+  public stateMapper: StateMapper<Asset> = (state) => state.quoteAsset.activeAsset;
 }

@@ -5,7 +5,7 @@ import { Asset } from '../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
-  selector: 'search-asset',
+  selector: 'collection-asset',
   template: `<asset-component [stateMapper]="stateMapper" [assetType]="'collectionAsset'"></asset-component>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

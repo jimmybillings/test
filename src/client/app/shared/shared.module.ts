@@ -90,6 +90,7 @@ import * as CartAssetState from '../store/states/cart-asset.state';
 import * as CommentState from '../store/states/comment.state';
 import * as OrderState from '../store/states/order.state';
 import * as QuoteState from '../store/states/quote.state';
+import * as QuoteAssetState from '../store/states/quote-asset.state';
 import * as SearchAssetState from '../store/states/search-asset.state';
 import * as SnackbarState from '../store/states/snackbar.state';
 import * as SpeedPreviewState from '../store/states/speed-preview.state';
@@ -126,6 +127,7 @@ import { ErrorEffects } from '../store/effects/error.effects';
 import { NotifierEffects } from '../store/effects/notifier.effects';
 import { OrderEffects } from '../store/effects/order.effects';
 import { QuoteEffects } from '../store/effects/quote.effects';
+import { QuoteAssetEffects } from '../store/effects/quote-asset.effects';
 import { RouterEffects } from '../store/effects/router.effects';
 import { SearchAssetEffects } from '../store/effects/search-asset.effects';
 import { SnackbarEffects } from '../store/effects/snackbar.effects';
@@ -216,6 +218,7 @@ const WAZEE_STORES: any = {
   comment: CommentState.reducer,
   order: OrderState.reducer,
   quote: QuoteState.reducer,
+  quoteAsset: QuoteAssetState.reducer,
   searchAsset: SearchAssetState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer
@@ -224,7 +227,6 @@ const WAZEE_STORES: any = {
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
   ActiveCollectionAssetEffects,
-  QuoteEffects,
   CartEffects,
   CartAssetEffects,
   CommentEffects,
@@ -232,6 +234,8 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   ErrorEffects,
   NotifierEffects,
   OrderEffects,
+  QuoteEffects,
+  QuoteAssetEffects,
   RouterEffects,
   SearchAssetEffects,
   SnackbarEffects,
