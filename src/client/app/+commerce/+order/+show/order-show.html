@@ -21,175 +21,178 @@
 	</header>
 </section>
 
-<section class="order-summary">
-	<div layout="row" flex="100" layout-align="center center">
-		<div layout="column" layout-gt-xs="row" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout-align-gt-xs="space-between end">
-			<div flex-gt-xs="40" flex="100" class="details">
-				<div class="md-caption order-info">
-					<span class="order-number">
-						<strong>{{ 'ORDER.SHOW.ORDER_NUMBER_LABEL' | translate }}</strong>
-						<span class="number">{{ (order.data | async).id }}</span>
-					</span>
-					<span>
-						<strong>{{ 'ORDER.CREATED_ON_LABEL' | translate }} </strong>{{ (order.data | async).createdOn | date:'short' }}
-					</span>
-					<span *ngIf="(order.data | async).bulkOrderId">
-						<strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>{{ (order.data | async).bulkOrderId }}
-					</span>
-					<span>
-						<strong>{{ 'ORDER.PURCHASE_TYPE_LABEL' | translate }} </strong>{{ (order.data | async).orderType }}
-					</span>
-					<a *ngIf="isRefund | async" class="indicate-refund" [routerLink]="['/orders/', creditMemoForOrderId | async]">
-						<strong>{{ 'ORDER.SHOW.REFUND_FOR_ORDER' | translate }}</strong> {{ creditMemoForOrderId | async }}
-					</a>
-				</div>
-			</div>
-			<div class="cart-total" flex-gt-xs="60" flex="100">
-				<div 
-					*ngIf="isRefund | async" 
-					class="total md-headline indicate-refund" 
-					flex="auto" 
-					layout="row" 
-					layout-align="end center">
-					<span class="total-label">
-						{{ 'ORDER.INDEX.INDICATE_REFUND' | translate }}
-					</span>
-					<span class="total-amount">
-						{{ (order.data | async).total | currency:'USD':true:'1.2-2' | slice:1 }}
-					</span>
-				</div>
-				<div *ngIf="showDiscount | async" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
-					<span class="total-label" flex="100">
-						{{ 'CART.CART_SUBTOTAL' | translate }} 
-					</span>
-					<span class="total-amount" flex="nogrow">
-						{{ (order.data | async).subTotal | currency:'USD':true:'1.2-2' }}
-					</span>
-				</div>
-				<div *ngIf="showDiscount | async" flex="100" layout="row" layout-align="end center" class="discount md-headline">
-					<span class="total-label" flex="100">
-						{{ 'CART.CART_DISCOUNT' | translate }} 
-					</span>
-					<span class="total-amount" flex="nogrow">{{ (order.data | async).discount }}</span>
-				</div> 
-				
-				<div *ngIf="!(isRefund | async)" class="total md-headline" flex="auto" layout="row" layout-align="end center">
-					<span class="total-label">
-							{{ 'ORDER.INDEX.ORDER_TOTAL_LABEL' | translate }}
-					</span>
-					<span class="total-amount">
-							{{ (order.data | async).total | currency:'USD':true:'1.2-2' }}
-					</span>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+<ng-container *ngIf="orderObservable | async as order">
+  <section class="order-summary">
+    <div layout="row" flex="100" layout-align="center center">
+      <div layout="column" layout-gt-xs="row" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" 
+          layout-align-gt-xs="space-between end">
+        <div flex-gt-xs="40" flex="100" class="details">
+          <div class="md-caption order-info">
+            <span class="order-number">
+              <strong>{{ 'ORDER.SHOW.ORDER_NUMBER_LABEL' | translate }}</strong>
+              <span class="number">{{ order.id }}</span>
+            </span>
+            <span>
+              <strong>{{ 'ORDER.CREATED_ON_LABEL' | translate }} </strong>{{ order.createdOn | date:'short' }}
+            </span>
+            <span *ngIf="order.bulkOrderId">
+              <strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>{{ order.bulkOrderId }}
+            </span>
+            <span>
+              <strong>{{ 'ORDER.PURCHASE_TYPE_LABEL' | translate }} </strong>{{ order.orderType }}
+            </span>
+            <a *ngIf="isRefundedOrder(order)" class="indicate-refund" [routerLink]="['/orders/', order.creditMemoForOrderId]">
+              <strong>{{ 'ORDER.SHOW.REFUND_FOR_ORDER' | translate }}</strong> {{ order.creditMemoForOrderId }}
+            </a>
+          </div>
+        </div>
+        <div class="cart-total" flex-gt-xs="60" flex="100">
+          <div 
+            *ngIf="isRefundedOrder(order)" 
+            class="total md-headline indicate-refund" 
+            flex="auto" 
+            layout="row" 
+            layout-align="end center">
+            <span class="total-label">
+              {{ 'ORDER.INDEX.INDICATE_REFUND' | translate }}
+            </span>
+            <span class="total-amount">
+              {{ order.total | currency:'USD':true:'1.2-2' | slice:1 }}
+            </span>
+          </div>
+          <div *ngIf="shouldShowDiscountFor(order)" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+            <span class="total-label" flex="100">
+              {{ 'CART.CART_SUBTOTAL' | translate }} 
+            </span>
+            <span class="total-amount" flex="nogrow">
+              {{ order.subTotal | currency:'USD':true:'1.2-2' }}
+            </span>
+          </div>
+          <div *ngIf="shouldShowDiscountFor(order)" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+            <span class="total-label" flex="100">
+              {{ 'CART.CART_DISCOUNT' | translate }} 
+            </span>
+            <span class="total-amount" flex="nogrow">{{ order.discount }}</span>
+          </div> 
+          
+          <div *ngIf="!(isRefundedOrder(order))" class="total md-headline" flex="auto" layout="row" layout-align="end center">
+            <span class="total-label">
+                {{ 'ORDER.INDEX.ORDER_TOTAL_LABEL' | translate }}
+            </span>
+            <span class="total-amount">
+                {{ order.total | currency:'USD':true:'1.2-2' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section class="project">
-  <div layout="row" flex="100" layout-align="center start">
-		<div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-			<section class="projects">
-				<div class="project" *ngFor="let project of projects">
-					<header class="project-info" layout-gt-xs="row" layout="column">
-						<div flex="100" flex-gt-sm="70" flex-order-xs="2">
-							<h5 md-display-1>
-								<span class="project-label md-caption">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
-								<span class="project-name">{{ project.name }}</span>
-							</h5>
-							<span class="project-client md-caption">
-								<strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> 
-								{{ project.clientName }}
-							</span>
-						</div>
-						<div flex="100" flex-gt-sm="30" flex-order-xs="-1" layout-padding>
-							<div class="project-subtotal md-caption">
-								<strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
-								<span>{{ project.subTotal | currency:'USD':true:'1.2-2' }}</span>
-							</div>
-							<div class="project-asset-count">
-								<span>
-									{{ displayOrderAssetCount(project.lineItems.length) | translate:{count:project.lineItems.length} }}
-								</span>
-							</div>
-						</div>
-					</header>
+  <section class="project">
+    <div layout="row" flex="100" layout-align="center start">
+      <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
+        <section class="projects">
+          <div class="project" *ngFor="let project of order.projects">
+            <header class="project-info" layout-gt-xs="row" layout="column">
+              <div flex="100" flex-gt-sm="70" flex-order-xs="2">
+                <h5 md-display-1>
+                  <span class="project-label md-caption">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
+                  <span class="project-name">{{ project.name }}</span>
+                </h5>
+                <span class="project-client md-caption">
+                  <strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> 
+                  {{ project.clientName }}
+                </span>
+              </div>
+              <div flex="100" flex-gt-sm="30" flex-order-xs="-1" layout-padding>
+                <div class="project-subtotal md-caption">
+                  <strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
+                  <span>{{ project.subTotal | currency:'USD':true:'1.2-2' }}</span>
+                </div>
+                <div class="project-asset-count">
+                  <span>
+                    {{ assetCountLabelKeyFor(project.lineItems.length) | translate:{count:project.lineItems.length} }}
+                  </span>
+                </div>
+              </div>
+            </header>
 
-					<section class="assets" layout="column">
-						<ul class="asset-list">
-							<li 
-								*ngFor="let lineItem of project.lineItems"
-								class="cart-asset" 
-								flex="100" 
-								layout="row" 
-								layout-xs="column">
-								<div flex="100" flex-gt-xs="60">
-									<cart-asset-component [asset]="lineItem.asset"></cart-asset-component>
-								</div>
-								<div flex-gt-xs="40" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
-									<div class="tools" flex="100" layout-padding>
-										<button
-											[disabled]="!lineItem.asset.masterDownloadUrl"
-											(click)="downloadMaster(lineItem.asset.masterDownloadUrl)"
-											md-button
-											color="primary"
-											class="is-outlined download">
-											<md-icon class="transcode-icon" [ngClass]="{'spinner': lineItem.transcodeStatus === 'Submitted'}">
-												{{ 'ORDER.SHOW.TRANSCODE_ICON.' + lineItem.transcodeStatus | translate }}
-											</md-icon>
-											<span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.' +  lineItem.transcodeStatus | translate }}</span>
-										</button>
-										<button 
-											title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
-											wzAsperaDownload 
-											[disabled]="!lineItem.asperaSpec" 
-											[asperaSpec]="lineItem.asperaSpec" 
-											md-button>
-											<md-icon>whatshot</md-icon>
-											{{ 'ORDER.SHOW.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}
-										</button>
-									</div>
-									<div *ngIf="isRefundedLineItem(lineItem)" class="price indicate-refund" >
-										{{ lineItem.price | currency:'USD':true:'1.2-2' | slice:1 }}
-									</div>
-									<div *ngIf="!isRefundedLineItem(lineItem)" class="price" >
-										{{ lineItem.price | currency:'USD':true:'1.2-2' }}
-									</div>
-								</div>
-							</li>
-						</ul>
-					</section>
-					<section class="fees" layout="column" *ngIf="project.feeLineItems">
-						<ul class="fee-list">
-							<li *ngFor="let feeLineItem of project.feeLineItems" class="fee-item" flex="100" layout="row" layout-xs="column">
-								<div flex="100" flex-gt-xs="70">
-									<div layout-align="start stretch" layout-gt-xs="row">
-										<div flex-gt-sm="30" flex-sm="40" flex="100" layout-padding>
-											<div class="fee-indicator" layout="column">
-												<span flex class="fee-title">{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.HEADING' | translate }}</span>
-												<span flex class="fee-type md-caption">{{feeLineItem.feeType}}</span>
-											</div>
-										</div>
-										<div flex-gt-sm="80" flex-sm="75" flex="100" layout-padding>
-											<div class="md-caption fee-type">
-												{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.TITLE' | translate:{type:feeLineItem.feeType} }}
-											</div>
-											<p class="fee-notes">{{ feeLineItem.notes }}</p>
-										</div>
-									</div>
-								</div>
-								<div flex="100" flex-gt-xs="25" layout-padding></div>
-								<div flex-gt-xs="15" flex-sm="15" flex="auto" class="tools actions" flex-order-xs="-3">
-									<div flex="100" layout="row" layout-xs="column" class="divider"></div>
-									<div class="amount">
-										{{ feeLineItem.amount | currency:'USD':true:'1.2-2' }}
-									</div>
-								</div>
-							</li>
-						</ul>
-					</section>
-				</div>
-			</section>
-		</div>
-	</div>
-</section>
+            <section class="assets" layout="column">
+              <ul class="asset-list">
+                <li 
+                  *ngFor="let lineItem of project.lineItems"
+                  class="cart-asset" 
+                  flex="100" 
+                  layout="row" 
+                  layout-xs="column">
+                  <div flex="100" flex-gt-xs="60">
+                    <cart-asset-component [asset]="lineItem.asset"></cart-asset-component>
+                  </div>
+                  <div flex-gt-xs="40" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
+                    <div class="tools" flex="100" layout-padding>
+                      <button
+                        [disabled]="!lineItem.asset.masterDownloadUrl"
+                        (click)="downloadMaster(lineItem.asset.masterDownloadUrl)"
+                        md-button
+                        color="primary"
+                        class="is-outlined download">
+                        <md-icon class="transcode-icon" [ngClass]="{'spinner': lineItem.transcodeStatus === 'Submitted'}">
+                          {{ 'ORDER.SHOW.TRANSCODE_ICON.' + lineItem.transcodeStatus | translate }}
+                        </md-icon>
+                        <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.' +  lineItem.transcodeStatus | translate }}</span>
+                      </button>
+                      <button 
+                        title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
+                        wzAsperaDownload 
+                        [disabled]="!lineItem.asperaSpec" 
+                        [asperaSpec]="lineItem.asperaSpec" 
+                        md-button>
+                        <md-icon>whatshot</md-icon>
+                        {{ 'ORDER.SHOW.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}
+                      </button>
+                    </div>
+                    <div *ngIf="isRefundedLineItem(lineItem)" class="price indicate-refund" >
+                      {{ lineItem.price | currency:'USD':true:'1.2-2' | slice:1 }}
+                    </div>
+                    <div *ngIf="!isRefundedLineItem(lineItem)" class="price" >
+                      {{ lineItem.price | currency:'USD':true:'1.2-2' }}
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </section>
+            <section class="fees" layout="column" *ngIf="project.feeLineItems">
+              <ul class="fee-list">
+                <li *ngFor="let feeLineItem of project.feeLineItems" class="fee-item" flex="100" layout="row" layout-xs="column">
+                  <div flex="100" flex-gt-xs="70">
+                    <div layout-align="start stretch" layout-gt-xs="row">
+                      <div flex-gt-sm="30" flex-sm="40" flex="100" layout-padding>
+                        <div class="fee-indicator" layout="column">
+                          <span flex class="fee-title">{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.HEADING' | translate }}</span>
+                          <span flex class="fee-type md-caption">{{feeLineItem.feeType}}</span>
+                        </div>
+                      </div>
+                      <div flex-gt-sm="80" flex-sm="75" flex="100" layout-padding>
+                        <div class="md-caption fee-type">
+                          {{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.TITLE' | translate:{type:feeLineItem.feeType} }}
+                        </div>
+                        <p class="fee-notes">{{ feeLineItem.notes }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div flex="100" flex-gt-xs="25" layout-padding></div>
+                  <div flex-gt-xs="15" flex-sm="15" flex="auto" class="tools actions" flex-order-xs="-3">
+                    <div flex="100" layout="row" layout-xs="column" class="divider"></div>
+                    <div class="amount">
+                      {{ feeLineItem.amount | currency:'USD':true:'1.2-2' }}
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </section>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</ng-container>

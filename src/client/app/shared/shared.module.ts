@@ -57,7 +57,6 @@ import { Authentication } from './services/authentication.data.service';
 import { PendoService } from './services/pendo.service';
 import { CartService } from './services/cart.service';
 import { SearchService } from './services/search.service';
-import { OrderService } from './services/order.service';
 import { OrdersService } from './services/orders.service';
 import { CollectionContextService } from './services/collection-context.service';
 import { GalleryViewService } from './services/gallery-view.service';
@@ -72,8 +71,8 @@ import { ActiveCollectionService } from '../store/services/active-collection.ser
 import { CommentService } from '../store/services/comment.service';
 import { FutureApiService } from '../store/services/api.service';
 import { FutureCartService } from '../store/services/cart.service';
-import { FutureOrderService } from '../store/services/order.service';
 import { FutureQuoteEditService } from '../store/services/quote-edit.service';
+import { OrderService } from '../store/services/order.service';
 import { SnackbarService } from '../store/services/snackbar.service';
 import { SpeedPreviewService } from '../store/services/speed-preview.service';
 
@@ -156,7 +155,6 @@ const WAZEE_SERVICES = [
   SearchService,
   UserService,
   OrderService,
-  FutureOrderService,
   OrdersService,
   TranslateService,
   GalleryViewService,
