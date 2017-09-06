@@ -12,9 +12,11 @@ import { OrderAssetResolver } from './+order/services/order-asset.resolver';
 import { OrdersResolver } from './+order/services/orders.resolver';
 import { QuoteShowComponent } from './+quote/+show/quote-show.component';
 import { QuoteAssetComponent } from './+quote/components/quote-asset.component';
+import { QuoteShowAssetComponent } from './+quote/components/quote-show-asset.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
 import { QuoteResolver } from './+quote/services/quote.resolver';
 import { QuoteAssetResolver } from './+quote/services/quote-asset.resolver';
+import { QuoteShowAssetResolver } from './+quote/services/quote-show-asset.resolver';
 import { QuotesResolver } from './+quote/services/quotes.resolver';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 import { QuoteEditResolver } from './+quote/services/quote-edit.resolver';
@@ -22,31 +24,15 @@ import { QuoteEditGuard } from './+quote/services/quote-edit.guard';
 
 
 export const COMMERCE_ROUTES: Routes = [
-  {
-    path: 'cart', component: CartComponent, resolve: { cart: CartResolver },
-    children: [
-      { path: 'asset/:uuid', component: CartAssetComponent, resolve: { asset: CartAssetResolver } }
-    ]
-  },
-  {
-    path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver },
-    children: [
-      { path: ':orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
-      { path: ':orderId/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
-    ]
-  },
-  {
-    path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver },
-    children: [
-      { path: ':quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
-      { path: ':quoteId/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
-    ]
-  },
-  {
-    path: 'active-quote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard],
-    children: [
-      { path: 'asset/:uuid', component: QuoteAssetComponent, resolve: { cart: QuoteAssetResolver } }
-    ]
-  }
+  { path: 'cart', component: CartComponent, resolve: { cart: CartResolver } },
+  { path: 'cart/asset/:uuid', component: CartAssetComponent, resolve: { asset: CartAssetResolver } },
+  { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },
+  { path: 'orders/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
+  { path: 'orders/:orderId/asset/:uuid', component: OrderAssetComponent, resolve: { orderAsset: OrderAssetResolver } },
+  { path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver } },
+  { path: 'quotes/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
+  { path: 'quotes/:quoteId/asset/:uuid', component: QuoteShowAssetComponent, resolve: { quoteAsset: QuoteShowAssetResolver } },
+  { path: 'active-quote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard] },
+  { path: 'active-quote/asset/:uuid', component: QuoteAssetComponent, resolve: { quoteAsset: QuoteAssetResolver } }
 ];
 

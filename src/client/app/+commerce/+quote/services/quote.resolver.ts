@@ -4,12 +4,15 @@ import { Observable } from 'rxjs/Observable';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { Quote } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
+import { AppStore } from '../../../app.store';
 
 @Injectable()
-export class QuoteResolver implements Resolve<Quote> {
-  constructor(private quoteService: QuoteService, private userCan: CommerceCapabilities) { }
+export class QuoteResolver implements Resolve<boolean> {
+  constructor(private quoteService: QuoteService, private userCan: CommerceCapabilities, private store: AppStore) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Quote> {
-    return this.quoteService.load(parseInt(route.params['quoteId']), this.userCan.administerQuotes());
+  resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
+    this.store.dispatch(factory => factory.quoteShow.load(parseInt(route.params['quoteId']), this.userCan.administerQuotes()));
+
+    return this.store.blockUntil(state => !state.quoteShow.loading);
   }
 }

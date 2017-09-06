@@ -72,6 +72,7 @@ import { CommentService } from '../store/services/comment.service';
 import { FutureApiService } from '../store/services/api.service';
 import { FutureCartService } from '../store/services/cart.service';
 import { FutureQuoteEditService } from '../store/services/quote-edit.service';
+import { FutureQuoteShowService } from '../store/services/quote-show.service';
 import { OrderService } from '../store/services/order.service';
 import { SnackbarService } from '../store/services/snackbar.service';
 import { SpeedPreviewService } from '../store/services/speed-preview.service';
@@ -90,7 +91,9 @@ import * as CommentState from '../store/states/comment.state';
 import * as OrderState from '../store/states/order.state';
 import * as OrderAssetState from '../store/states/order-asset.state';
 import * as QuoteState from '../store/states/quote.state';
+import * as QuoteShowState from '../store/states/quote-show.state';
 import * as QuoteAssetState from '../store/states/quote-asset.state';
+import * as QuoteShowAssetState from '../store/states/quote-show-asset.state';
 import * as SearchAssetState from '../store/states/search-asset.state';
 import * as SnackbarState from '../store/states/snackbar.state';
 import * as SpeedPreviewState from '../store/states/speed-preview.state';
@@ -128,7 +131,9 @@ import { NotifierEffects } from '../store/effects/notifier.effects';
 import { OrderEffects } from '../store/effects/order.effects';
 import { OrderAssetEffects } from '../store/effects/order-asset.effects';
 import { QuoteEffects } from '../store/effects/quote.effects';
+import { QuoteShowEffects } from '../store/effects/quote-show.effects';
 import { QuoteAssetEffects } from '../store/effects/quote-asset.effects';
+import { QuoteShowAssetEffects } from '../store/effects/quote-show-asset.effects';
 import { RouterEffects } from '../store/effects/router.effects';
 import { SearchAssetEffects } from '../store/effects/search-asset.effects';
 import { SnackbarEffects } from '../store/effects/snackbar.effects';
@@ -162,6 +167,7 @@ const WAZEE_SERVICES = [
   GalleryViewService,
   WindowRef,
   FutureQuoteEditService,
+  FutureQuoteShowService,
   QuoteService,
   QuotesService,
   QuoteEditService,
@@ -219,7 +225,9 @@ const WAZEE_STORES: any = {
   order: OrderState.reducer,
   orderAsset: OrderAssetState.reducer,
   quote: QuoteState.reducer,
+  quoteShow: QuoteShowState.reducer,
   quoteAsset: QuoteAssetState.reducer,
+  quoteShowAsset: QuoteShowAssetState.reducer,
   searchAsset: SearchAssetState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer
@@ -237,7 +245,9 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   OrderEffects,
   OrderAssetEffects,
   QuoteEffects,
+  QuoteShowEffects,
   QuoteAssetEffects,
+  QuoteShowAssetEffects,
   RouterEffects,
   SearchAssetEffects,
   SnackbarEffects,

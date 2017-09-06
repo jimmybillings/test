@@ -24,7 +24,7 @@ import * as SubclipMarkersInterface from '../shared/interfaces/subclip-markers';
 import { AppStore, StateMapper } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { PricingService } from '../shared/services/pricing.service';
-
+import { Common } from '../shared/utilities/common.functions';
 @Component({
   moduleId: module.id,
   selector: 'asset-component',
@@ -36,8 +36,11 @@ export class AssetComponent implements OnInit, OnDestroy {
   @Input()
   set stateMapper(stateMapper: StateMapper<Asset>) {
     this.assetSubscription = this.store.select(stateMapper)
-      .map(asset => enhanceAsset(asset, this.assetType))
-      .subscribe(asset => {
+      .map(asset => {
+        const clonedAsset: Asset = Common.clone(asset);
+        return enhanceAsset(clonedAsset, this.assetType);
+      }).subscribe(asset => {
+        console.log(asset);
         this.asset = asset;
         this.pricingStore.setPriceForDetails(this.asset.price);
         this.selectedAttributes = null;

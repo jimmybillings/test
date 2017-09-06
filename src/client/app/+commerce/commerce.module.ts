@@ -10,6 +10,7 @@ import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
 import { OrderAssetResolver } from '../+commerce/+order/services/order-asset.resolver';
 import { QuoteResolver } from '../+commerce/+quote/services/quote.resolver';
 import { QuoteAssetResolver } from '../+commerce/+quote/services/quote-asset.resolver';
+import { QuoteShowAssetResolver } from '../+commerce/+quote/services/quote-show-asset.resolver';
 import { QuotesResolver } from '../+commerce/+quote/services/quotes.resolver';
 import { QuoteEditResolver } from '../+commerce/+quote/services/quote-edit.resolver';
 import { CartGuard } from './+cart/services/cart.guard';
@@ -37,6 +38,7 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
 import { AdministerQuoteComponent } from './+quote/components/administer-quote.component';
 import { QuotePurchaseTypeComponent } from './+quote/components/quote-purchase-type.component';
 import { QuoteAssetComponent } from './+quote/components/quote-asset.component';
+import { QuoteShowAssetComponent } from './+quote/components/quote-show-asset.component';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 
 // tabs
@@ -105,6 +107,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuotePurchaseTypeComponent,
     QuoteEditComponent,
     QuoteAssetComponent,
+    QuoteShowAssetComponent,
     QuoteTabComponent,
     QuoteBillingTabComponent,
     QuotePaymentTabComponent,
@@ -124,6 +127,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuoteEditResolver,
     CartGuard,
     QuoteEditGuard,
+    QuoteShowAssetResolver
   ],
   entryComponents: [LicenseAgreementComponent]
 })

@@ -37,15 +37,15 @@ export class QuoteService {
   // Store Accessors
 
   public get data(): Observable<QuoteState> {
-    return this.store.select(state => state.quote);
+    return this.store.select(state => state.quoteShow);
   }
 
   public get state(): QuoteState {
-    return this.store.snapshot(state => state.quote);
+    return this.store.snapshot(state => state.quoteShow);
   }
 
   public get quote(): Observable<Quote> {
-    return this.store.select(state => state.quote.data);
+    return this.store.select(state => state.quoteShow.data);
   }
 
   public get projects(): Observable<Project[]> {
@@ -98,10 +98,10 @@ export class QuoteService {
   }
 
   // Public Interface
-  public load(quoteId: number, canAdministerQuotes: boolean): Observable<Quote> {
-    return (canAdministerQuotes) ?
-      this.loadForAdminUser(quoteId) : this.loadForNonAdminUser(quoteId);
-  }
+  // public load(quoteId: number, canAdministerQuotes: boolean): Observable<Quote> {
+  //   return (canAdministerQuotes) ?
+  //     this.loadForAdminUser(quoteId) : this.loadForNonAdminUser(quoteId);
+  // }
 
   public updateOrderInProgress(type: string, data: any): void {
     this.checkoutStore.updateOrderInProgress(type, data);
@@ -175,22 +175,22 @@ export class QuoteService {
     return this.api.put(Api.Orders, `quote/${id}`, { body: quote, loadingIndicator: 'onBeforeRequest' });
   }
 
-  private loadForAdminUser(quoteId: number): Observable<Quote> {
-    let quote: Quote;
-    return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-      .flatMap((quoteResponse: Quote) => {
-        quote = quoteResponse;
-        return this.userService.getById(quote.createdUserId);
-      })
-      .do((user: User) => {
-        this.addRecipientToQuote(quote, user);
-      });
-  }
+  // private loadForAdminUser(quoteId: number): Observable<Quote> {
+  //   let quote: Quote;
+  //   return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
+  //     .flatMap((quoteResponse: Quote) => {
+  //       quote = quoteResponse;
+  //       return this.userService.getById(quote.createdUserId);
+  //     })
+  //     .do((user: User) => {
+  //       this.addRecipientToQuote(quote, user);
+  //     });
+  // }
 
-  private loadForNonAdminUser(quoteId: number): Observable<Quote> {
-    return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-      .do((quote: Quote) => this.store.dispatch(factory => factory.quote.loadSuccess(quote)));
-  }
+  // private loadForNonAdminUser(quoteId: number): Observable<Quote> {
+  //   return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
+  //     .do((quote: Quote) => this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote)));
+  // }
 
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;
@@ -219,13 +219,13 @@ export class QuoteService {
     ).map((order: Order) => order.id);
   }
 
-  private addRecipientToQuote(quote: Quote, user: User) {
+  private addRecipientToQuote(quote: Quote, user: User): void {
     quote = Object.assign(quote, {
       createdUserEmailAddress: user.emailAddress,
       createdUserFullName: `${user.firstName} ${user.lastName}`
     });
 
-    this.store.dispatch(factory => factory.quote.loadSuccess(quote));
+    this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote));
   }
 
   private get purchaseOptions(): PurchaseOptions {

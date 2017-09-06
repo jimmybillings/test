@@ -40,9 +40,17 @@ import * as QuoteActions from './store/actions/quote.actions';
 import * as QuoteState from './store/states/quote.state';
 export type QuoteState = QuoteState.State;
 
+import * as QuoteShowActions from './store/actions/quote-show.actions';
+import * as QuoteShowState from './store/states/quote-show.state';
+export type QuoteShowState = QuoteShowState.State;
+
 import * as QuoteAssetActions from './store/actions/quote-asset.actions';
 import * as QuoteAssetState from './store/states/quote-asset.state';
 export type QuoteAssetState = QuoteAssetState.State;
+
+import * as QuoteShowAssetActions from './store/actions/quote-show-asset.actions';
+import * as QuoteShowAssetState from './store/states/quote-show-asset.state';
+export type QuoteShowAssetState = QuoteShowAssetState.State;
 
 import * as RouterActions from './store/actions/router.actions';
 
@@ -69,7 +77,9 @@ export interface ActionFactory {
   readonly order: OrderActions.ActionFactory;
   readonly orderAsset: OrderAssetActions.ActionFactory;
   readonly quote: QuoteActions.ActionFactory;
+  readonly quoteShow: QuoteShowActions.ActionFactory;
   readonly quoteAsset: QuoteAssetActions.ActionFactory;
+  readonly quoteShowAsset: QuoteShowAssetActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
   readonly notifier: NotifierActions.ActionFactory;
   readonly searchAsset: SearchAssetActions.ActionFactory;
@@ -89,7 +99,9 @@ export interface InternalActionFactory {
   readonly order: OrderActions.InternalActionFactory;
   readonly orderAsset: OrderAssetActions.InternalActionFactory;
   readonly quote: QuoteActions.InternalActionFactory;
+  readonly quoteShow: QuoteShowActions.InternalActionFactory;
   readonly quoteAsset: QuoteAssetActions.InternalActionFactory;
+  readonly quoteShowAsset: QuoteShowAssetActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
   readonly searchAsset: SearchAssetActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
@@ -105,7 +117,9 @@ export interface AppState {
   readonly order: OrderState;
   readonly orderAsset: OrderAssetState;
   readonly quote: QuoteState;
+  readonly quoteShow: QuoteShowState;
   readonly quoteAsset: QuoteAssetState;
+  readonly quoteShowAsset: QuoteShowAssetState;
   readonly snackbar: SnackbarState;
   readonly searchAsset: SearchAssetState;
   readonly speedPreview: SpeedPreviewState;
@@ -124,6 +138,9 @@ export const reducers: AppReducers = {
   order: OrderState.reducer,
   orderState: OrderAssetState.reducer,
   quote: QuoteState.reducer,
+  quoteShow: QuoteShowState.reducer,
+  quoteAsset: QuoteAssetState.reducer,
+  quoteShowAsset: QuoteShowAssetState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer
 };
@@ -146,7 +163,9 @@ export class AppStore {
     order: new OrderActions.ActionFactory(),
     orderAsset: new OrderAssetActions.ActionFactory(),
     quote: new QuoteActions.ActionFactory(),
+    quoteShow: new QuoteShowActions.ActionFactory(),
     quoteAsset: new QuoteAssetActions.ActionFactory(),
+    quoteShowAsset: new QuoteShowAssetActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
     searchAsset: new SearchAssetActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
@@ -165,7 +184,9 @@ export class AppStore {
     order: new OrderActions.InternalActionFactory(),
     orderAsset: new OrderAssetActions.InternalActionFactory(),
     quote: new QuoteActions.InternalActionFactory(),
+    quoteShow: new QuoteShowActions.InternalActionFactory(),
     quoteAsset: new QuoteAssetActions.InternalActionFactory(),
+    quoteShowAsset: new QuoteShowAssetActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),
     searchAsset: new SearchAssetActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
