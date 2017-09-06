@@ -102,6 +102,8 @@ export interface CollectionAssetApiLoadParameters {
 
 export interface CartAssetUrlLoadParameters extends CollectionAssetUrlLoadParameters { }
 export interface CartAssetApiLoadParameters extends CollectionAssetApiLoadParameters { }
+export interface OrderAssetUrlLoadParameters extends CollectionAssetUrlLoadParameters { }
+export interface OrderAssetApiLoadParameters extends CollectionAssetApiLoadParameters { }
 export interface QuoteAssetUrlLoadParameters extends CollectionAssetUrlLoadParameters { }
 export interface QuoteAssetApiLoadParameters extends CollectionAssetApiLoadParameters { }
 

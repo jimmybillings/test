@@ -7,6 +7,7 @@ import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
 import { CartAssetResolver } from '../+commerce/+cart/services/cart-asset.resolver';
 import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
+import { OrderAssetResolver } from '../+commerce/+order/services/order-asset.resolver';
 import { QuoteResolver } from '../+commerce/+quote/services/quote.resolver';
 import { QuoteAssetResolver } from '../+commerce/+quote/services/quote-asset.resolver';
 import { QuotesResolver } from '../+commerce/+quote/services/quotes.resolver';
@@ -28,6 +29,7 @@ import { CartConfirmTabComponent } from './+cart/components/tabs/cart-confirm-ta
 // Order Stuff
 import { OrdersComponent } from './+order/+index/orders.component';
 import { OrderShowComponent } from './+order/+show/order-show.component';
+import { OrderAssetComponent } from './+order/components/order-asset.component';
 
 // Quote Stuff
 import { QuoteShowComponent } from './+quote/+show/quote-show.component';
@@ -93,6 +95,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     AssetSubclipDisplayComponent,
     OrderShowComponent,
     OrdersComponent,
+    OrderAssetComponent,
     CommerceListComponent,
     CommerceHeaderComponent,
     LicenseAgreementComponent,
@@ -114,6 +117,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     CartAssetResolver,
     OrderResolver,
     OrdersResolver,
+    OrderAssetResolver,
     QuoteResolver,
     QuoteAssetResolver,
     QuotesResolver,
