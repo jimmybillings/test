@@ -77,6 +77,7 @@ export class AssetShareComponent {
   }
 
   private prepareShareLink(shareLink: Pojo = {}): Pojo {
+    const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(this.subclipMarkers);
     let endDate = new Date();
     endDate.setDate(endDate.getDate() + 10);
     Object.assign(shareLink, {
@@ -86,8 +87,10 @@ export class AssetShareComponent {
       type: 'asset',
       recipientEmails: (shareLink.recipientEmails) ?
         shareLink.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [],
-      timeStart: this.subclipMarkers.in,
-      timeEnd: this.subclipMarkers.out,
+      properties: {
+        timeStart: duration.timeStart,
+        timeEnd: duration.timeEnd
+      }
     });
 
     if (shareLink.copyMe) {
