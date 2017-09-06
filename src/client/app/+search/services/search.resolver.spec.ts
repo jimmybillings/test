@@ -1,14 +1,14 @@
 import { SearchResolver } from './search.resolver';
 
 export function main() {
-  xdescribe('Search Resolver', () => {
+  describe('Search Resolver', () => {
     let resolverUnderTest: SearchResolver;
 
     beforeEach(() => {
       resolverUnderTest = new SearchResolver(null, null, null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

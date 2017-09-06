@@ -1,14 +1,14 @@
 import { WzBreadcrumbComponent } from './wz.breadcrumb.component';
 
 export function main() {
-  xdescribe('Wz Breadcrumb Component', () => {
+  describe('Wz Breadcrumb Component', () => {
     let componentUnderTest: WzBreadcrumbComponent;
 
     beforeEach(() => {
       componentUnderTest = new WzBreadcrumbComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

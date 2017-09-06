@@ -60,4 +60,11 @@ export class Common {
       return object;
     }
   }
+
+  public static setMarginTop(className: string, document: Document): void {
+    const elements = document.getElementsByClassName(className);
+    if (elements.length === 0) return;
+    const scrollTopMargin: number = -1 * document.body.getBoundingClientRect().top;
+    elements[elements.length - 1].setAttribute('style', `margin-top: ${scrollTopMargin}px`);
+  }
 }

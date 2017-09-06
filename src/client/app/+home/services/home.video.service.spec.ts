@@ -3,7 +3,7 @@ import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.ser
 import { Observable } from 'rxjs/Observable';
 
 export function main() {
-  xdescribe('Home Video Service', () => {
+  describe('Home Video Service', () => {
     let serviceUnderTest: HomeVideoService, mockApi: MockApiService;
 
     beforeEach(() => {
@@ -19,7 +19,7 @@ export function main() {
     });
 
     describe('data getter', () => {
-      xit('has no tests!', () => {
+      it('***** HASN\'T BEEN TESTED YET! *****', () => {
         expect(true).toBe(true);
       });
     });

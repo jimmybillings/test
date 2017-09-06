@@ -2,6 +2,31 @@ import { Common } from './common.functions';
 
 export function main() {
   describe('Common Functions', () => {
+    describe('setMarginTop', () => {
+      let mockElement: any, mockDocument: any;
+
+      beforeEach(() => {
+        mockElement = {
+          setAttribute: jasmine.createSpy('setAttribute')
+        };
+
+        mockDocument = {
+          body: { getBoundingClientRect: () => ({ top: '-50' }) },
+          getElementsByClassName: (string: string) => (string === 'invalidClass') ? [] : [mockElement]
+        };
+      });
+
+      it('Should calculate a new marginTop that is offset by page scroll and set it to the element', () => {
+        Common.setMarginTop('testClass', mockDocument);
+        expect(mockElement.setAttribute).toHaveBeenCalledWith('style', 'margin-top: 50px');
+      });
+
+      it('Should not do anything if className element is not found on the page', () => {
+        Common.setMarginTop('invalidClass', mockDocument);
+        expect(mockElement.setAttribute).not.toHaveBeenCalled();
+      });
+    });
+
 
     describe('deletePropertiesFromObject', () => {
 

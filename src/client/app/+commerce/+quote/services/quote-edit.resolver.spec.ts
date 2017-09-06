@@ -1,14 +1,14 @@
 import { QuoteEditResolver } from './quote-edit.resolver';
 
 export function main() {
-  xdescribe('Quote Edit Resolver', () => {
+  describe('Quote Edit Resolver', () => {
     let resolverUnderTest: QuoteEditResolver;
 
     beforeEach(() => {
       resolverUnderTest = new QuoteEditResolver(null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

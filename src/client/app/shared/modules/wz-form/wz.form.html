@@ -241,6 +241,7 @@
 		<div *ngIf="field.type == 'select'">
 			<div class="md-group">
 				<md-select
+          style="margin-top: 1rem;"
           class="md-block"
           [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
           placeholder="{{field.label | translate}}"

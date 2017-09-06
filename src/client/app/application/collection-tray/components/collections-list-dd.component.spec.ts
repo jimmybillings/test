@@ -2,14 +2,14 @@ import { CollectionListDdComponent } from './collections-list-dd.component';
 import { Observable } from 'rxjs/Observable';
 
 export function main() {
-  xdescribe('Quotes Component', () => {
+  describe('Quotes Component', () => {
     let componentUnderTest: CollectionListDdComponent;
 
     beforeEach(() => {
       componentUnderTest = new CollectionListDdComponent(null, null, null, null, null);
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

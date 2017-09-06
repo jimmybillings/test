@@ -2,14 +2,14 @@
 import { AssetShareLinkComponent } from './asset-share-link.component';
 
 export function main() {
-  xdescribe('Asset Share Link Component', () => {
+  describe('Asset Share Link Component', () => {
     let componentUnderTest: AssetShareLinkComponent;
 
     beforeEach(() => {
       componentUnderTest = new AssetShareLinkComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

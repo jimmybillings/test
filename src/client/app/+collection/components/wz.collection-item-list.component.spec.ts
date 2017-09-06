@@ -1,14 +1,14 @@
 import { WzCollectionItemListComponent } from './wz.collection-item-list.component';
 
 export function main() {
-  xdescribe('Wz Collection Item List Component', () => {
+  describe('Wz Collection Item List Component', () => {
     let componentUnderTest: WzCollectionItemListComponent;
 
     beforeEach(() => {
       componentUnderTest = new WzCollectionItemListComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

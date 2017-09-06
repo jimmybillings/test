@@ -1,14 +1,14 @@
 import { CollectionFilterDdComponent } from './collections-filter-dd.component';
 
 export function main() {
-  xdescribe('Collection Filter Dd Component', () => {
+  describe('Collection Filter Dd Component', () => {
     let componentUnderTest: CollectionFilterDdComponent;
 
     beforeEach(() => {
       componentUnderTest = new CollectionFilterDdComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

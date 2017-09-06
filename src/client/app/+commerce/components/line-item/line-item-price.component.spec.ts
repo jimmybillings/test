@@ -1,14 +1,14 @@
 import { LineItemPriceComponent } from './line-item-price.component';
 
 export function main() {
-  xdescribe('Line Item Price Component', () => {
+  describe('Line Item Price Component', () => {
     let componentUnderTest: LineItemPriceComponent;
 
     beforeEach(() => {
       componentUnderTest = new LineItemPriceComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });

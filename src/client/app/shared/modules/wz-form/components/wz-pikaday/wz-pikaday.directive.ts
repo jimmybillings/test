@@ -1,4 +1,6 @@
-import { Directive, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Directive, ElementRef, Input, Output, EventEmitter, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
+import { Common } from '../../../../utilities/common.functions';
 declare var Pikaday: any;
 
 @Directive({
@@ -10,7 +12,7 @@ export class WzPikaDayDirective {
 
   private picker: any;
 
-  constructor(public element: ElementRef) {
+  constructor(public element: ElementRef, @Inject(DOCUMENT) private document: Document) {
     this.picker = new Pikaday({ field: this.element.nativeElement, onSelect: this.onSelect.bind(this) });
   }
 
@@ -40,6 +42,8 @@ export class WzPikaDayDirective {
   }
 
   private onSelect(date: any): void {
+    Common.setMarginTop('pika-single', this.document);
     this.pikadayChange.emit({ value: this.picker.toString() });
+    this.picker.hide();
   }
 }

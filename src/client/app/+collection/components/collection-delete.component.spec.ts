@@ -1,14 +1,14 @@
 import { CollectionDeleteComponent } from './collection-delete.component';
 
 export function main() {
-  xdescribe('Collection Delete Component', () => {
+  describe('Collection Delete Component', () => {
     let componentUnderTest: CollectionDeleteComponent;
 
     beforeEach(() => {
       componentUnderTest = new CollectionDeleteComponent();
     });
 
-    xit('has no tests!', () => {
+    it('***** HASN\'T BEEN TESTED YET! *****', () => {
       expect(true).toBe(true);
     });
   });
