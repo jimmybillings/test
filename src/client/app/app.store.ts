@@ -32,6 +32,10 @@ import * as OrderActions from './store/actions/order.actions';
 import * as OrderState from './store/states/order.state';
 export type OrderState = OrderState.State;
 
+import * as OrderAssetActions from './store/actions/order-asset.actions';
+import * as OrderAssetState from './store/states/order-asset.state';
+export type OrderAssetState = OrderAssetState.State;
+
 import * as QuoteActions from './store/actions/quote.actions';
 import * as QuoteState from './store/states/quote.state';
 export type QuoteState = QuoteState.State;
@@ -63,6 +67,7 @@ export interface ActionFactory {
   readonly dialog: DialogActions.ActionFactory;
   readonly error: ErrorActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
+  readonly orderAsset: OrderAssetActions.ActionFactory;
   readonly quote: QuoteActions.ActionFactory;
   readonly quoteAsset: QuoteAssetActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
@@ -82,6 +87,7 @@ export interface InternalActionFactory {
   readonly error: ErrorActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
+  readonly orderAsset: OrderAssetActions.InternalActionFactory;
   readonly quote: QuoteActions.InternalActionFactory;
   readonly quoteAsset: QuoteAssetActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
@@ -97,6 +103,7 @@ export interface AppState {
   readonly cartAsset: CartAssetState;
   readonly comment: CommentState;
   readonly order: OrderState;
+  readonly orderAsset: OrderAssetState;
   readonly quote: QuoteState;
   readonly quoteAsset: QuoteAssetState;
   readonly snackbar: SnackbarState;
@@ -115,6 +122,7 @@ export const reducers: AppReducers = {
   cart: CartState.reducer,
   comment: CommentState.reducer,
   order: OrderState.reducer,
+  orderState: OrderAssetState.reducer,
   quote: QuoteState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer
@@ -136,6 +144,7 @@ export class AppStore {
     error: new ErrorActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
+    orderAsset: new OrderAssetActions.ActionFactory(),
     quote: new QuoteActions.ActionFactory(),
     quoteAsset: new QuoteAssetActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
@@ -154,6 +163,7 @@ export class AppStore {
     error: new ErrorActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
+    orderAsset: new OrderAssetActions.InternalActionFactory(),
     quote: new QuoteActions.InternalActionFactory(),
     quoteAsset: new QuoteAssetActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),

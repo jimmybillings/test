@@ -31,6 +31,7 @@ export class MockAppStore extends AppStore {
       error: {} as any,
       notifier: {} as any,
       order: {} as any,
+      orderAsset: {} as any,
       quote: {} as any,
       quoteAsset: {} as any,
       router: {} as any,
@@ -50,6 +51,7 @@ export class MockAppStore extends AppStore {
       error: {} as any,
       notifier: {} as any,
       order: {} as any,
+      orderAsset: {} as any,
       quote: {} as any,
       quoteAsset: {} as any,
       router: {} as any,
@@ -64,13 +66,14 @@ export class MockAppStore extends AppStore {
       asset: {} as any,
       cart: {} as any,
       cartAsset: {} as any,
+      comment: {} as any,
       order: {} as any,
+      orderAsset: {} as any,
       quote: {} as any,
       quoteAsset: {} as any,
       searchAsset: {} as any,
       snackbar: {} as any,
-      speedPreview: {} as any,
-      comment: {} as any
+      speedPreview: {} as any
     };
 
     this._ngrxDispatch = jasmine.createSpy('ngrx dispatch');

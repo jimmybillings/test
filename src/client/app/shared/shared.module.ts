@@ -88,6 +88,7 @@ import * as CartState from '../store/states/cart.state';
 import * as CartAssetState from '../store/states/cart-asset.state';
 import * as CommentState from '../store/states/comment.state';
 import * as OrderState from '../store/states/order.state';
+import * as OrderAssetState from '../store/states/order-asset.state';
 import * as QuoteState from '../store/states/quote.state';
 import * as QuoteAssetState from '../store/states/quote-asset.state';
 import * as SearchAssetState from '../store/states/search-asset.state';
@@ -125,6 +126,7 @@ import { DialogEffects } from '../store/effects/dialog.effects';
 import { ErrorEffects } from '../store/effects/error.effects';
 import { NotifierEffects } from '../store/effects/notifier.effects';
 import { OrderEffects } from '../store/effects/order.effects';
+import { OrderAssetEffects } from '../store/effects/order-asset.effects';
 import { QuoteEffects } from '../store/effects/quote.effects';
 import { QuoteAssetEffects } from '../store/effects/quote-asset.effects';
 import { RouterEffects } from '../store/effects/router.effects';
@@ -215,6 +217,7 @@ const WAZEE_STORES: any = {
   cartAsset: CartAssetState.reducer,
   comment: CommentState.reducer,
   order: OrderState.reducer,
+  orderAsset: OrderAssetState.reducer,
   quote: QuoteState.reducer,
   quoteAsset: QuoteAssetState.reducer,
   searchAsset: SearchAssetState.reducer,
@@ -232,6 +235,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   ErrorEffects,
   NotifierEffects,
   OrderEffects,
+  OrderAssetEffects,
   QuoteEffects,
   QuoteAssetEffects,
   RouterEffects,
