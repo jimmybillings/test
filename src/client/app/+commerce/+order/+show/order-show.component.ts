@@ -28,7 +28,7 @@ export class OrderShowComponent {
         project.lineItems.forEach((lineItem: AssetLineItem) => {
           lineItem.asset = enhanceAsset(
             Object.assign(lineItem.asset, { uuid: lineItem.id }),
-            { type: 'orderAsset', parentId: order.id }
+            'orderAsset', order.id
           );
         });
       });

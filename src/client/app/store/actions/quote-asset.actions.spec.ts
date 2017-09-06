@@ -2,7 +2,7 @@ import { ActionFactory, InternalActionFactory } from './quote-asset.actions';
 import { ActionsSpecHelper } from '../../store/spec-helpers/actions.spec-helper';
 
 export function main() {
-  describe('Quote Action Factory', () => {
+  describe('Quote Asset Action Factory', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
     actionsSpecHelper.generateTestFor({
@@ -19,20 +19,7 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
-        class: ActionFactory,
-        name: 'updateMarkersInUrl',
-        parameters: [{ some: 'markers' }, 1]
-      },
-      expectedAction: {
-        type: '[Quote Asset] Update Markers In URL',
-        markers: { some: 'markers' },
-        assetId: 1
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: ActionFactory,
+        class: InternalActionFactory,
         name: 'loadAfterQuoteAvailable',
         parameters: [{ some: 'load parameters' }]
       },

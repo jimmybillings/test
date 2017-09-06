@@ -7,19 +7,15 @@ export class ActionFactory {
   public load(parameters: CartAssetUrlLoadParameters): Load {
     return new Load(parameters);
   }
-
-  public updateMarkersInUrl(markers: SubclipMarkers, assetId: number) {
-    return new UpdateMarkersInUrl(markers, assetId);
-  }
-
-  public loadAfterCartAvailable(loadParameters: CartAssetUrlLoadParameters): LoadAfterCartAvailable {
-    return new LoadAfterCartAvailable(loadParameters);
-  }
 }
 
 export class InternalActionFactory extends ActionFactory {
   public loadSuccess(activeAsset: Asset): LoadSuccess {
     return new LoadSuccess(activeAsset);
+  }
+
+  public loadAfterCartAvailable(loadParameters: CartAssetUrlLoadParameters): LoadAfterCartAvailable {
+    return new LoadAfterCartAvailable(loadParameters);
   }
 
   public loadFailure(error: ApiErrorResponse): LoadFailure {
@@ -51,11 +47,4 @@ export class LoadFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export class UpdateMarkersInUrl implements Action {
-  public static readonly Type = '[Cart Asset] Update Markers In URL';
-  public readonly type = UpdateMarkersInUrl.Type;
-  constructor(public readonly markers: SubclipMarkers, public readonly assetId: number) {
-  }
-}
-
-export type Any = Load | LoadAfterCartAvailable | LoadSuccess | LoadFailure | UpdateMarkersInUrl;
+export type Any = Load | LoadAfterCartAvailable | LoadSuccess | LoadFailure;

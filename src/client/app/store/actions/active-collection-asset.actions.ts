@@ -7,19 +7,15 @@ export class ActionFactory {
   public load(parameters: CollectionAssetUrlLoadParameters): Load {
     return new Load(parameters);
   }
-
-  public updateMarkersInUrl(markers: SubclipMarkers, assetId: number) {
-    return new UpdateMarkersInUrl(markers, assetId);
-  }
-
-  public loadAfterCollectionAvailable(loadParameters: CollectionAssetUrlLoadParameters): LoadAfterCollectionAvailable {
-    return new LoadAfterCollectionAvailable(loadParameters);
-  }
 }
 
 export class InternalActionFactory extends ActionFactory {
   public loadSuccess(activeAsset: Asset): LoadSuccess {
     return new LoadSuccess(activeAsset);
+  }
+
+  public loadAfterCollectionAvailable(loadParameters: CollectionAssetUrlLoadParameters): LoadAfterCollectionAvailable {
+    return new LoadAfterCollectionAvailable(loadParameters);
   }
 
   public loadFailure(error: ApiErrorResponse): LoadFailure {
@@ -51,11 +47,4 @@ export class LoadFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export class UpdateMarkersInUrl implements Action {
-  public static readonly Type = '[Active Collection Asset] Update Markers In URL';
-  public readonly type = UpdateMarkersInUrl.Type;
-  constructor(public readonly markers: SubclipMarkers, public readonly assetId: number) {
-  }
-}
-
-export type Any = LoadAfterCollectionAvailable | Load | LoadSuccess | LoadFailure | UpdateMarkersInUrl;
+export type Any = LoadAfterCollectionAvailable | Load | LoadSuccess | LoadFailure;

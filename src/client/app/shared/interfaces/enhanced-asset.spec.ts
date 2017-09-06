@@ -381,7 +381,8 @@ export function main() {
           {
             assetId: 47,
             uuid: 'aabb-ccdd-eeff-gghh',
-            assetTypeAndParent: { type: 'collectionAsset', parentId: 1 }
+            type: 'collectionAsset',
+            parentId: 1
           }
         );
         expect(assetUnderTest.routerLink).toEqual([`/collections/1/asset/aabb-ccdd-eeff-gghh`]);
@@ -393,7 +394,7 @@ export function main() {
           {
             assetId: 47,
             uuid: 'aabb-ccdd-eeff-gghh',
-            assetTypeAndParent: { type: 'quoteEditAsset' }
+            type: 'quoteEditAsset'
           }
         );
         expect(assetUnderTest.routerLink).toEqual([`/active-quote/asset/aabb-ccdd-eeff-gghh`]);
@@ -402,7 +403,7 @@ export function main() {
       it('Returns correct path for a search asset', () => {
         Object.assign(
           assetUnderTest,
-          { assetId: 47, assetTypeAndParent: { type: 'searchAsset' } }
+          { assetId: 47, type: 'searchAsset' }
         );
         expect(assetUnderTest.routerLink).toEqual([`/search/asset/47`]);
       });
@@ -413,7 +414,8 @@ export function main() {
           {
             assetId: 47,
             uuid: 'aabb-ccdd-eeff-gghh',
-            assetTypeAndParent: { type: 'quoteShowAsset', parentId: 1 }
+            type: 'quoteShowAsset',
+            parentId: 1
           }
         );
         expect(assetUnderTest.routerLink).toEqual([`/quotes/1/asset/aabb-ccdd-eeff-gghh`]);
@@ -425,7 +427,8 @@ export function main() {
           {
             assetId: 47,
             uuid: 'aabb-ccdd-eeff-gghh',
-            assetTypeAndParent: { type: 'orderAsset', parentId: 1 }
+            type: 'orderAsset',
+            parentId: 1
           }
         );
         expect(assetUnderTest.routerLink).toEqual([`/orders/1/asset/aabb-ccdd-eeff-gghh`]);
@@ -437,7 +440,7 @@ export function main() {
           {
             assetId: 47,
             uuid: 'aabb-ccdd-eeff-gghh',
-            assetTypeAndParent: { type: 'cartAsset' }
+            type: 'cartAsset'
           }
         );
         expect(assetUnderTest.routerLink).toEqual([`/cart/asset/aabb-ccdd-eeff-gghh`]);

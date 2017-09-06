@@ -36,7 +36,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   @Input()
   set stateMapper(stateMapper: StateMapper<Asset>) {
     this.assetSubscription = this.store.select(stateMapper)
-      .map(asset => enhanceAsset(asset, { type: this.assetType }))
+      .map(asset => enhanceAsset(asset, this.assetType))
       .subscribe(asset => {
         this.asset = asset;
         this.pricingStore.setPriceForDetails(this.asset.price);
