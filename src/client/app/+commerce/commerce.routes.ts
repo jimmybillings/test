@@ -20,15 +20,31 @@ import { QuoteEditGuard } from './+quote/services/quote-edit.guard';
 
 
 export const COMMERCE_ROUTES: Routes = [
-  { path: 'cart', component: CartComponent, resolve: { cart: CartResolver } },
-  { path: 'cart/asset/:uuid', component: CartAssetComponent, resolve: { asset: CartAssetResolver } },
-  { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },
-  { path: 'orders/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
-  { path: 'orders/orderId:/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
-  { path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver } },
-  { path: 'quotes/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
-  { path: 'quotes/orderId:/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
-  { path: 'active-quote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard] },
-  { path: 'active-quote/asset/:uuid', component: QuoteAssetComponent, resolve: { cart: QuoteAssetResolver } },
+  {
+    path: 'cart', component: CartComponent, resolve: { cart: CartResolver },
+    children: [
+      { path: 'asset/:uuid', component: CartAssetComponent, resolve: { asset: CartAssetResolver } }
+    ]
+  },
+  {
+    path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver },
+    children: [
+      { path: ':orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
+      { path: ':orderId/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
+    ]
+  },
+  {
+    path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver },
+    children: [
+      { path: ':quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
+      { path: ':quoteId/asset/:uuid', component: CartComponent, resolve: { cart: CartResolver } },
+    ]
+  },
+  {
+    path: 'active-quote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard],
+    children: [
+      { path: 'asset/:uuid', component: QuoteAssetComponent, resolve: { cart: QuoteAssetResolver } }
+    ]
+  }
 ];
 
