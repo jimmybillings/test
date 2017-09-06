@@ -7,15 +7,15 @@ export class ActionFactory {
   public load(parameters: CollectionAssetUrlLoadParameters): Load {
     return new Load(parameters);
   }
-
-  public loadAfterCollectionAvailable(loadParameters: CollectionAssetUrlLoadParameters): LoadAfterCollectionAvailable {
-    return new LoadAfterCollectionAvailable(loadParameters);
-  }
 }
 
 export class InternalActionFactory extends ActionFactory {
   public loadSuccess(activeAsset: Asset): LoadSuccess {
     return new LoadSuccess(activeAsset);
+  }
+
+  public loadAfterCollectionAvailable(loadParameters: CollectionAssetUrlLoadParameters): LoadAfterCollectionAvailable {
+    return new LoadAfterCollectionAvailable(loadParameters);
   }
 
   public loadFailure(error: ApiErrorResponse): LoadFailure {

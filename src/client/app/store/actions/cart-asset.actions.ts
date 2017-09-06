@@ -7,15 +7,15 @@ export class ActionFactory {
   public load(parameters: CartAssetUrlLoadParameters): Load {
     return new Load(parameters);
   }
-
-  public loadAfterCartAvailable(loadParameters: CartAssetUrlLoadParameters): LoadAfterCartAvailable {
-    return new LoadAfterCartAvailable(loadParameters);
-  }
 }
 
 export class InternalActionFactory extends ActionFactory {
   public loadSuccess(activeAsset: Asset): LoadSuccess {
     return new LoadSuccess(activeAsset);
+  }
+
+  public loadAfterCartAvailable(loadParameters: CartAssetUrlLoadParameters): LoadAfterCartAvailable {
+    return new LoadAfterCartAvailable(loadParameters);
   }
 
   public loadFailure(error: ApiErrorResponse): LoadFailure {

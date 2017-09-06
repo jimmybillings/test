@@ -19,7 +19,7 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
-        class: ActionFactory,
+        class: InternalActionFactory,
         name: 'loadAfterQuoteAvailable',
         parameters: [{ some: 'load parameters' }]
       },
