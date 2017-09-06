@@ -8,10 +8,6 @@ export class ActionFactory {
     return new Load(parameters);
   }
 
-  public updateMarkersInUrl(markers: SubclipMarkers, assetId: number) {
-    return new UpdateMarkersInUrl(markers, assetId);
-  }
-
   public loadAfterQuoteAvailable(loadParameters: QuoteAssetUrlLoadParameters): LoadAfterQuoteAvailable {
     return new LoadAfterQuoteAvailable(loadParameters);
   }
@@ -51,11 +47,4 @@ export class LoadFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export class UpdateMarkersInUrl implements Action {
-  public static readonly Type = '[Quote Asset] Update Markers In URL';
-  public readonly type = UpdateMarkersInUrl.Type;
-  constructor(public readonly markers: SubclipMarkers, public readonly assetId: number) {
-  }
-}
-
-export type Any = Load | LoadAfterQuoteAvailable | LoadSuccess | LoadFailure | UpdateMarkersInUrl;
+export type Any = Load | LoadAfterQuoteAvailable | LoadSuccess | LoadFailure;

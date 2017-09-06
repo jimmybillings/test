@@ -66,8 +66,8 @@ export class AssetDetailComponent implements OnChanges {
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
     this.subclipMarkers = newMarkers;
     this.showAssetSaveSubclip = this.markersAreDefined;
-    if (this.markersAreDefined) {
-      this.store.dispatch(this.updateMarkersActionMapper);
+    if (this.markersAreDefined && this.asset.type === 'searchAsset') {
+      this.store.dispatch((factory) => factory.searchAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId));
     }
     this.markersChange.emit(newMarkers);
   }
@@ -119,21 +119,6 @@ export class AssetDetailComponent implements OnChanges {
     this.usagePrice = null;
     if (this.asset.transcodeTargets) {
       this.selectedTarget = this.asset.transcodeTargets[0];
-    }
-  }
-
-  private get updateMarkersActionMapper(): ActionFactoryMapper {
-    switch (this.asset.assetTypeAndParent.type) {
-      case 'collectionAsset': {
-        return (factory) => factory.activeCollectionAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId);
-      }
-
-      case 'searchAsset': {
-        return (factory) => factory.searchAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId);
-      }
-
-      default:
-        return (factory) => factory.cartAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId);
     }
   }
 }

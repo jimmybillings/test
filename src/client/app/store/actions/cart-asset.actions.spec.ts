@@ -2,7 +2,7 @@ import { ActionFactory, InternalActionFactory } from './cart-asset.actions';
 import { ActionsSpecHelper } from '../../store/spec-helpers/actions.spec-helper';
 
 export function main() {
-  describe('Cart Action Factory', () => {
+  describe('Cart Asset Action Factory', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
     actionsSpecHelper.generateTestFor({
@@ -14,19 +14,6 @@ export function main() {
       expectedAction: {
         type: '[Cart Asset] Load',
         loadParameters: { some: 'load parameters' }
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: ActionFactory,
-        name: 'updateMarkersInUrl',
-        parameters: [{ some: 'markers' }, 1]
-      },
-      expectedAction: {
-        type: '[Cart Asset] Update Markers In URL',
-        markers: { some: 'markers' },
-        assetId: 1
       }
     });
 

@@ -20,19 +20,6 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
-        name: 'updateMarkersInUrl',
-        parameters: [{ some: 'markers' }, 1]
-      },
-      expectedAction: {
-        type: '[Active Collection Asset] Update Markers In URL',
-        markers: { some: 'markers' },
-        assetId: 1
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: ActionFactory,
         name: 'loadAfterCollectionAvailable',
         parameters: [{ some: 'load parameters' }]
       },

@@ -8,19 +8,15 @@ interface InternalCache {
 
 export type AssetType = 'collectionAsset' | 'quoteEditAsset' | 'searchAsset' | 'quoteShowAsset' | 'orderAsset' | 'cartAsset';
 
-export interface AssetTypeAndParent {
-  type: AssetType;
-  parentId?: number;
-}
-
-export function enhanceAsset(asset: commerce.Asset | common.Asset, assetTypeAndParent: AssetTypeAndParent): EnhancedAsset {
-  return Object.assign(new EnhancedAsset(), asset, { assetTypeAndParent: assetTypeAndParent }).normalize();
+export function enhanceAsset(asset: commerce.Asset | common.Asset, type: AssetType, parentId?: Number): EnhancedAsset {
+  return Object.assign(new EnhancedAsset(), asset, { type, parentId }).normalize();
 }
 
 export class EnhancedAsset implements commerce.Asset, common.Asset {
   // defined in two or more of the following sources
   public readonly assetId: number;
-  public readonly assetTypeAndParent?: AssetTypeAndParent;
+  public readonly type?: AssetType;
+  public readonly parentId?: number;
   public readonly uuid?: string;
   public readonly timeStart?: number;
   public readonly timeEnd?: number;
@@ -276,9 +272,9 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
 
 
   private createRouterLink(): any[] {
-    switch (this.assetTypeAndParent.type) {
+    switch (this.type) {
       case 'collectionAsset':
-        return [`/collections/${this.assetTypeAndParent.parentId}/asset/${this.uuid}`];
+        return [`/collections/${this.parentId}/asset/${this.uuid}`];
 
       case 'quoteEditAsset':
         return [`/active-quote/asset/${this.uuid}`];
@@ -287,10 +283,10 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
         return [`/search/asset/${this.assetId}`];
 
       case 'quoteShowAsset':
-        return [`/quotes/${this.assetTypeAndParent.parentId}/asset/${this.uuid}`];
+        return [`/quotes/${this.parentId}/asset/${this.uuid}`];
 
       case 'orderAsset':
-        return [`/orders/${this.assetTypeAndParent.parentId}/asset/${this.uuid}`];
+        return [`/orders/${this.parentId}/asset/${this.uuid}`];
 
       case 'cartAsset':
         return [`/cart/asset/${this.uuid}`];

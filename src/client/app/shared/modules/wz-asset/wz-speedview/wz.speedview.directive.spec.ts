@@ -98,7 +98,7 @@ export function main() {
           },
           'hasDownloadableComp': false
         };
-        directiveUnderTest.wzSpeedview = enhanceAsset(asset, { type: 'searchAsset' });
+        directiveUnderTest.wzSpeedview = enhanceAsset(asset, 'searchAsset');
         spy = mockAppStore.createActionFactoryMethod('speedPreview', 'load');
       });
 
@@ -150,14 +150,14 @@ export function main() {
         });
 
         it('Should dispatch the correct action to load speedview data', () => {
-          const enhancedAssetUnderTest = enhanceAsset(asset, { type: 'searchAsset' });
+          const enhancedAssetUnderTest = enhanceAsset(asset, 'searchAsset');
           directiveUnderTest.onMouseEnter($event);
 
           mockAppStore.expectDispatchFor(spy, enhancedAssetUnderTest);
         });
 
         it('Should merge the new speedview data into the component when loaded', () => {
-          const enhancedAssetUnderTest = enhanceAsset(asset, { type: 'searchAsset' });
+          const enhancedAssetUnderTest = enhanceAsset(asset, 'searchAsset');
           mockAppStore.createStateElement('speedPreview', 35634858, enhancedAssetUnderTest);
           directiveUnderTest.onMouseEnter($event);
           expect(componentInstance.merge.calls.allArgs())
@@ -167,7 +167,7 @@ export function main() {
 
       describe('destroySpeedView()', () => {
         beforeEach(() => {
-          const enhancedAssetUnderTest = enhanceAsset(asset, { type: 'searchAsset' });
+          const enhancedAssetUnderTest = enhanceAsset(asset, 'searchAsset');
           mockAppStore.createStateElement('speedPreview', 35634858, enhancedAssetUnderTest);
           directiveUnderTest.onMouseEnter($event);
         });
