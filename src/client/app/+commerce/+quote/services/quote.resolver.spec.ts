@@ -4,7 +4,7 @@ import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 import { QuoteResolver } from './quote.resolver';
 
 export function main() {
-  fdescribe('Quote Resolver', () => {
+  describe('Quote Resolver', () => {
     let mockStore: MockAppStore;
     let resolverUnderTest: QuoteResolver;
 
