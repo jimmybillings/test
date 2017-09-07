@@ -23,19 +23,19 @@ export class FutureQuoteShowService {
   }
 
   private loadForAdminUser(quoteId: number): Observable<Quote> {
-    return this.loadForNonAdminUser(quoteId).switchMap(quote => this.updateRecipientIn(quote));
+    return this.loadForNonAdminUser(quoteId).switchMap(quote => this.updateOwnerInformationIn(quote));
   }
 
   private loadForNonAdminUser(quoteId: number): Observable<Quote> {
     return this.apiService.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true });
   }
 
-  private updateRecipientIn(quote: Quote): Observable<Quote> {
+  private updateOwnerInformationIn(quote: Quote): Observable<Quote> {
     return this.userService.getById(quote.ownerUserId)
-      .map((user: User) => ({
+      .map((quoteOwner: User) => ({
         ...quote,
-        createdUserEmailAddress: user.emailAddress,
-        createdUserFullName: `${user.firstName} ${user.lastName}`
+        createdUserEmailAddress: quoteOwner.emailAddress,
+        createdUserFullName: `${quoteOwner.firstName} ${quoteOwner.lastName}`
       }));
   }
 }

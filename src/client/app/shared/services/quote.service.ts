@@ -150,24 +150,47 @@ export class QuoteService {
   }
 
   public extendExpirationDate(newDate: string): Observable<Quote> {
-    let newQuote: Quote = Object.assign({}, this.state.data, {
-      expirationDate: new Date(newDate).toISOString(),
-      quoteStatus: 'ACTIVE'
-    });
-    let quote: Quote;
+    const newQuote: Quote = Object.assign(
+      {},
+      this.state.data,
+      { expirationDate: new Date(newDate).toISOString(), quoteStatus: 'ACTIVE' }
+    );
+
     return this.update(this.state.data.id, newQuote)
-      .map((quote: Quote) => {
-        let user: User;
-        this.userService.getById(quote.ownerUserId).subscribe(u => user = u);
-        this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote));
-        return this.addRecipientToQuote(quote, user);
-      });
+      .switchMap(quote => this.updateOwnerInformationIn(quote))
+      .do(quote => this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote)));
   }
 
   // Private Methods
   private update(id: number, quote: Quote): Observable<Quote> {
     return this.api.put(Api.Orders, `quote/${id}`, { body: quote, loadingIndicator: 'onBeforeRequest' });
   }
+
+  private updateOwnerInformationIn(quote: Quote): Observable<Quote> {
+    return this.userService.getById(quote.ownerUserId)
+      .map((quoteOwner: User) => ({
+        ...quote,
+        createdUserEmailAddress: quoteOwner.emailAddress,
+        createdUserFullName: `${quoteOwner.firstName} ${quoteOwner.lastName}`
+      }));
+  }
+
+  // private loadForAdminUser(quoteId: number): Observable<Quote> {
+  //   let quote: Quote;
+  //   return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
+  //     .flatMap((quoteResponse: Quote) => {
+  //       quote = quoteResponse;
+  //       return this.userService.getById(quote.createdUserId);
+  //     })
+  //     .do((user: User) => {
+  //       this.addRecipientToQuote(quote, user);
+  //     });
+  // }
+
+  // private loadForNonAdminUser(quoteId: number): Observable<Quote> {
+  //   return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
+  //     .do((quote: Quote) => this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote)));
+  // }
 
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;
@@ -196,12 +219,12 @@ export class QuoteService {
     ).map((order: Order) => order.id);
   }
 
-  private addRecipientToQuote(quote: Quote, user: User): Quote {
-    return Object.assign(quote, {
-      createdUserEmailAddress: user.emailAddress,
-      createdUserFullName: `${user.firstName} ${user.lastName}`
-    });
-  }
+  // private addRecipientToQuote(quote: Quote, user: User): Quote {
+  //   return Object.assign(quote, {
+  //     createdUserEmailAddress: user.emailAddress,
+  //     createdUserFullName: `${user.firstName} ${user.lastName}`
+  //   });
+  // }
 
   private get purchaseOptions(): PurchaseOptions {
     return Object.assign({}, this.addressPurchaseOptions, this.creditCardPurchaseOptions) as PurchaseOptions;
