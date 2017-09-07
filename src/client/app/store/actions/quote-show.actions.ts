@@ -4,8 +4,8 @@ import { Quote } from '../../shared/interfaces/commerce.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 export class ActionFactory {
-  public load(quoteId: number, userCanAdministerQuotes: boolean): Load {
-    return new Load(quoteId, userCanAdministerQuotes);
+  public load(quoteId: number): Load {
+    return new Load(quoteId);
   }
 
   // Move this to internal action factory when quote is fully "effected"
@@ -23,7 +23,7 @@ export class InternalActionFactory extends ActionFactory {
 export class Load implements Action {
   public static readonly Type = '[Quote Show] Load';
   public readonly type = Load.Type;
-  constructor(public readonly quoteId: number, public readonly userCanAdministerQuotes: boolean) { }
+  constructor(public readonly quoteId: number) { }
 }
 
 export class LoadSuccess implements Action {

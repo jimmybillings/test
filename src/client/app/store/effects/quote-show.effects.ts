@@ -12,7 +12,7 @@ export class QuoteShowEffects {
   @Effect()
   public load: Observable<Action> = this.actions.ofType(QuoteShowActions.Load.Type)
     .switchMap((action: QuoteShowActions.Load) =>
-      this.service.load(action.quoteId, action.userCanAdministerQuotes)
+      this.service.load(action.quoteId)
         .map(quote => this.store.create(factory => factory.quoteShow.loadSuccess(quote)))
         .catch(error => Observable.of(this.store.create(factory => factory.quoteShow.loadFailure(error))))
     );

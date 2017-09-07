@@ -92,57 +92,6 @@ export function main() {
       });
     });
 
-    describe('load()', () => {
-      beforeEach(() => {
-        mockApi.getResponse = Common.clone(mockQuoteResponse);
-      });
-
-      describe('Admin user', () => {
-        it('should call the api service correctly to get a quote', () => {
-          serviceUnderTest.load(1, true).take(1).subscribe();
-          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
-          expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/1');
-          expect(mockApi.get).toHaveBeenCalledWithLoading(true);
-        });
-
-        it('Should call the user service getById() with the createdUserId', () => {
-          serviceUnderTest.load(1, true).take(1).subscribe();
-          expect(mockUserService.getById).toHaveBeenCalledWith(1);
-        });
-
-        it('should set the quote in the quote store with the user added to the quote response', () => {
-          serviceUnderTest.load(1, true).take(1).subscribe();
-          let testResponse: Quote = Common.clone(mockQuoteResponse) as any;
-          testResponse = Object.assign(testResponse, {
-            createdUserFullName: 'best tester',
-            createdUserEmailAddress: 'test@gmail.com'
-          });
-          expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(testResponse);
-        });
-      });
-
-      describe('End User', () => {
-        it('should call the api service correctly to get a quote', () => {
-          serviceUnderTest.load(1, false).take(1).subscribe();
-          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
-          expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/1');
-          expect(mockApi.get).toHaveBeenCalledWithLoading(true);
-        });
-
-        it('Should not call the user service getById() with the createdUserId', () => {
-          serviceUnderTest.load(1, false).take(1).subscribe();
-          expect(mockUserService.getById).not.toHaveBeenCalled();
-        });
-
-        it('should set the quote in the quote store', () => {
-          serviceUnderTest.load(1, false).take(1).subscribe();
-          expect(quoteLoadSuccessSpy)
-            .toHaveBeenCalledWith(Common.clone(mockQuoteResponse));
-        });
-      });
-    });
-
-
     describe('paymentOptionsEqual()', () => {
       describe('returns false', () => {
         it('when the store\'s paymentOptions don\'t contain the option to check', () => {

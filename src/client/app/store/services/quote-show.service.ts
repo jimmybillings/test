@@ -7,14 +7,19 @@ import { Api } from '../../shared/interfaces/api.interface';
 import { AppStore } from '../../app.store';
 import { UserService } from '../../shared/services/user.service';
 import { User } from '../../shared/interfaces/user.interface';
+import { CommerceCapabilities } from '../../+commerce/services/commerce.capabilities';
 
 @Injectable()
 export class FutureQuoteShowService {
-  constructor(private apiService: FutureApiService, private store: AppStore, private userService: UserService) { }
+  constructor(
+    private apiService: FutureApiService,
+    private store: AppStore,
+    private userService: UserService,
+    private userCan: CommerceCapabilities
+  ) { }
 
-  public load(quoteId: number, canAdministerQuotes: boolean): Observable<Quote> {
-    return (canAdministerQuotes) ?
-      this.loadForAdminUser(quoteId) : this.loadForNonAdminUser(quoteId);
+  public load(quoteId: number): Observable<Quote> {
+    return this.userCan.administerQuotes ? this.loadForAdminUser(quoteId) : this.loadForNonAdminUser(quoteId);
   }
 
   private loadForAdminUser(quoteId: number): Observable<Quote> {

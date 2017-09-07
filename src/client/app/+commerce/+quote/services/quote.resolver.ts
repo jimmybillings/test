@@ -8,10 +8,10 @@ import { AppStore } from '../../../app.store';
 
 @Injectable()
 export class QuoteResolver implements Resolve<boolean> {
-  constructor(private quoteService: QuoteService, private userCan: CommerceCapabilities, private store: AppStore) { }
+  constructor(private store: AppStore) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-    this.store.dispatch(factory => factory.quoteShow.load(parseInt(route.params['quoteId']), this.userCan.administerQuotes()));
+    this.store.dispatch(factory => factory.quoteShow.load(parseInt(route.params.quoteId)));
 
     return this.store.blockUntil(state => !state.quoteShow.loading);
   }

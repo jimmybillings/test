@@ -44,11 +44,7 @@ export class QuoteShowAssetEffects {
       return this.store.create(mapper);
     });
 
-  constructor(
-    private actions: Actions,
-    private store: AppStore,
-    private service: AssetService
-  ) { }
+  constructor(private actions: Actions, private store: AppStore, private service: AssetService) { }
 
   private mergeQuoteShowAssetWithLoadParameters(
     quote: Commerce.Quote,
