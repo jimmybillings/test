@@ -1,11 +1,11 @@
-import { QuoteAssetComponent } from './quote-asset.component';
+import { QuoteEditAssetComponent } from './quote-edit-asset.component';
 
 export function main() {
   describe('Quote Asset Component', () => {
-    let componentUnderTest: QuoteAssetComponent;
+    let componentUnderTest: QuoteEditAssetComponent;
 
     beforeEach(() => {
-      componentUnderTest = new QuoteAssetComponent();
+      componentUnderTest = new QuoteEditAssetComponent();
     });
 
     it('has no testable functionality!', () => {

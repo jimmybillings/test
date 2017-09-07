@@ -1,14 +1,14 @@
-import { QuoteAssetEffects } from './quote-asset.effects';
-import * as QuoteAssetActions from '../actions/quote-asset.actions';
-import * as QuoteActions from '../actions/quote.actions';
+import { QuoteEditAssetEffects } from './quote-edit-asset.effects';
+import * as QuoteEditAssetActions from '../actions/quote-edit-asset.actions';
+import * as QuoteEditActions from '../actions/quote-edit.actions';
 import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
 
 export function main() {
-  describe('Quote Asset Effects', () => {
+  describe('Quote Edit Asset Effects', () => {
     const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
 
     function instantiator(): any {
-      return new QuoteAssetEffects(
+      return new QuoteEditAssetEffects(
         effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
       );
     }
@@ -17,7 +17,7 @@ export function main() {
       effectName: 'loadAfterQuoteAvailable',
       effectsInstantiator: instantiator,
       inputAction: {
-        type: QuoteAssetActions.LoadAfterQuoteAvailable.Type,
+        type: QuoteEditAssetActions.LoadAfterQuoteAvailable.Type,
         loadParameters: { id: '50', uuid: 'abc-123' }
       },
       serviceMethod: {
@@ -27,12 +27,12 @@ export function main() {
       },
       outputActionFactories: {
         success: {
-          sectionName: 'quoteAsset',
+          sectionName: 'quoteEditAsset',
           methodName: 'loadSuccess',
           expectedArguments: [{ assetId: '50' }]
         },
         failure: {
-          sectionName: 'quoteAsset',
+          sectionName: 'quoteEditAsset',
           methodName: 'loadFailure'
         }
       }
@@ -43,16 +43,16 @@ export function main() {
       comment: 'when the quote is NOT yet loaded',
       effectsInstantiator: instantiator,
       state: {
-        storeSectionName: 'quote',
+        storeSectionName: 'quoteEdit',
         value: { data: { id: 0 } }
       },
       inputAction: {
-        type: QuoteAssetActions.Load.Type,
+        type: QuoteEditAssetActions.Load.Type,
         loadParameters: { uuid: 'abc-123' }
       },
       outputActionFactories: {
         success: {
-          sectionName: 'quote',
+          sectionName: 'quoteEdit',
           methodName: 'load',
           expectedArguments: []
         }
@@ -64,7 +64,7 @@ export function main() {
       comment: 'when the quote IS loaded',
       effectsInstantiator: instantiator,
       state: {
-        storeSectionName: 'quote',
+        storeSectionName: 'quoteEdit',
         value: {
           data: {
             id: 1,
@@ -75,12 +75,12 @@ export function main() {
         }
       },
       inputAction: {
-        type: QuoteAssetActions.Load.Type,
+        type: QuoteEditAssetActions.Load.Type,
         loadParameters: { uuid: 'abc-123' }
       },
       outputActionFactories: {
         success: {
-          sectionName: 'quoteAsset',
+          sectionName: 'quoteEditAsset',
           methodName: 'loadAfterQuoteAvailable',
           expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }]
         }
@@ -93,11 +93,11 @@ export function main() {
       effectsInstantiator: instantiator,
       state: [
         {
-          storeSectionName: 'quoteAsset',
+          storeSectionName: 'quoteEditAsset',
           value: { loadParameters: { uuid: 'abc-123' } }
         },
         {
-          storeSectionName: 'quote',
+          storeSectionName: 'quoteEdit',
           value: {
             data: {
               id: 1,
@@ -109,11 +109,11 @@ export function main() {
         }
       ],
       inputAction: {
-        type: QuoteActions.LoadSuccess.Type
+        type: QuoteEditActions.LoadSuccess.Type
       },
       outputActionFactories: {
         success: {
-          sectionName: 'quoteAsset',
+          sectionName: 'quoteEditAsset',
           methodName: 'loadAfterQuoteAvailable',
           expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }]
         }

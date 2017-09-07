@@ -16,7 +16,7 @@ import {
 } from '../interfaces/commerce.interface';
 import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 import { Frame } from 'wazee-frame-formatter';
-import { AppStore, QuoteState } from '../../app.store';
+import { AppStore, QuoteEditState } from '../../app.store';
 import { FeeConfigStore } from '../stores/fee-config.store';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
 import { Common } from '../utilities/common.functions';
@@ -32,16 +32,16 @@ export class QuoteEditService {
 
   // Store Accessors
 
-  public get data(): Observable<QuoteState> {
-    return this.store.select(state => state.quote);
+  public get data(): Observable<QuoteEditState> {
+    return this.store.select(state => state.quoteEdit);
   }
 
-  public get state(): QuoteState {
-    return this.store.snapshot(state => state.quote);
+  public get state(): QuoteEditState {
+    return this.store.snapshot(state => state.quoteEdit);
   }
 
   public get quote(): Observable<Quote> {
-    return this.store.select(state => state.quote.data);
+    return this.store.select(state => state.quoteEdit.data);
   }
 
   public get projects(): Observable<Project[]> {
@@ -79,7 +79,7 @@ export class QuoteEditService {
   }
 
   public get hasAssetLineItems(): Observable<boolean> {
-    return this.data.map((state: QuoteState) => {
+    return this.data.map((state: QuoteEditState) => {
       return state.data.projects.reduce((previous: number, current: Project) => {
         return current.lineItems ? previous += current.lineItems.length : 0;
       }, 0) > 0;
@@ -285,7 +285,7 @@ export class QuoteEditService {
   }
 
   private replaceQuote = (quote: Quote): void => {
-    this.store.dispatch(factory => factory.quote.loadSuccess(quote));
+    this.store.dispatch(factory => factory.quoteEdit.loadSuccess(quote));
   }
 
   private loadFeeConfig(): Observable<FeeConfig> {

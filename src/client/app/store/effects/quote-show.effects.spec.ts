@@ -1,15 +1,40 @@
+import * as QuoteShowActions from '../actions/quote-show.actions';
 import { QuoteShowEffects } from './quote-show.effects';
+import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
 
 export function main() {
   describe('Quote Show Effects', () => {
-    let effectsUnderTest: QuoteShowEffects;
+    const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
 
-    beforeEach(() => {
-      effectsUnderTest = new QuoteShowEffects(null, null, null);
-    });
+    function instantiator(): any {
+      return new QuoteShowEffects(
+        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
+      );
+    }
 
-    it('***** HASN\'T BEEN TESTED YET! *****', () => {
-      expect(true).toBe(true);
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'load',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteShowActions.Load.Type,
+        quoteId: 47
+      },
+      serviceMethod: {
+        name: 'load',
+        expectedArguments: [47],
+        returnsObservableOf: { some: 'quote' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteShow',
+          methodName: 'loadSuccess',
+          expectedArguments: [{ some: 'quote' }]
+        },
+        failure: {
+          sectionName: 'quoteShow',
+          methodName: 'loadFailure'
+        }
+      }
     });
   });
 }

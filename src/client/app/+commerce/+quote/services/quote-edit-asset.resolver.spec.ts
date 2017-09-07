@@ -1,17 +1,17 @@
-import { QuoteAssetResolver } from './quote-asset.resolver';
+import { QuoteEditAssetResolver } from './quote-edit-asset.resolver';
 import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Quote Asset Resolver', () => {
     const mockRoute: any = { params: { uuid: 'abc-123' } };
     const mockState: any = undefined;
-    let resolverUnderTest: QuoteAssetResolver, mockStore: MockAppStore, loadSpy: jasmine.Spy, resolved: jasmine.Spy;
+    let resolverUnderTest: QuoteEditAssetResolver, mockStore: MockAppStore, loadSpy: jasmine.Spy, resolved: jasmine.Spy;
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      loadSpy = mockStore.createActionFactoryMethod('quoteAsset', 'load');
+      loadSpy = mockStore.createActionFactoryMethod('quoteEditAsset', 'load');
       resolved = jasmine.createSpy('resolved');
-      resolverUnderTest = new QuoteAssetResolver(mockStore);
+      resolverUnderTest = new QuoteEditAssetResolver(mockStore);
     });
 
     describe('resolve()', () => {
@@ -22,7 +22,7 @@ export function main() {
       });
 
       it('Should not resolve if the Quote Asset store has no data from the server', () => {
-        mockStore.createStateSection('quoteAsset', { loading: true });
+        mockStore.createStateSection('quoteEditAsset', { loading: true });
 
         resolverUnderTest.resolve(mockRoute).subscribe(resolved);
 
@@ -30,7 +30,7 @@ export function main() {
       });
 
       it('Should resolve if the Quote Asset store already has data from the server', () => {
-        mockStore.createStateSection('quoteAsset', { loading: false });
+        mockStore.createStateSection('quoteEditAsset', { loading: false });
 
         resolverUnderTest.resolve(mockRoute).subscribe(resolved);
 

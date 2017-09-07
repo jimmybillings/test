@@ -1,4 +1,4 @@
-import { ActionFactory, InternalActionFactory } from './quote.actions';
+import { ActionFactory, InternalActionFactory } from './quote-edit.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
 export function main() {
@@ -12,7 +12,7 @@ export function main() {
         parameters: []
       },
       expectedAction: {
-        type: '[Quote] Load'
+        type: '[Quote Edit] Load'
       }
     });
 
@@ -23,7 +23,7 @@ export function main() {
         parameters: [{ some: 'quote' }]
       },
       expectedAction: {
-        type: '[Quote] Load Success',
+        type: '[Quote Edit] Load Success',
         quote: { some: 'quote' }
       }
     });
@@ -35,7 +35,7 @@ export function main() {
         parameters: [{ some: 'error' }]
       },
       expectedAction: {
-        type: '[Quote] Load Failure',
+        type: '[Quote Edit] Load Failure',
         error: { some: 'error' }
       }
     });

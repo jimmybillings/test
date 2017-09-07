@@ -36,21 +36,21 @@ import * as OrderAssetActions from './store/actions/order-asset.actions';
 import * as OrderAssetState from './store/states/order-asset.state';
 export type OrderAssetState = OrderAssetState.State;
 
-import * as QuoteActions from './store/actions/quote.actions';
-import * as QuoteState from './store/states/quote.state';
-export type QuoteState = QuoteState.State;
+import * as QuoteEditAssetActions from './store/actions/quote-edit-asset.actions';
+import * as QuoteEditAssetState from './store/states/quote-edit-asset.state';
+export type QuoteEditAssetState = QuoteEditAssetState.State;
 
-import * as QuoteShowActions from './store/actions/quote-show.actions';
-import * as QuoteShowState from './store/states/quote-show.state';
-export type QuoteShowState = QuoteShowState.State;
-
-import * as QuoteAssetActions from './store/actions/quote-asset.actions';
-import * as QuoteAssetState from './store/states/quote-asset.state';
-export type QuoteAssetState = QuoteAssetState.State;
+import * as QuoteEditActions from './store/actions/quote-edit.actions';
+import * as QuoteEditState from './store/states/quote-edit.state';
+export type QuoteEditState = QuoteEditState.State;
 
 import * as QuoteShowAssetActions from './store/actions/quote-show-asset.actions';
 import * as QuoteShowAssetState from './store/states/quote-show-asset.state';
 export type QuoteShowAssetState = QuoteShowAssetState.State;
+
+import * as QuoteShowActions from './store/actions/quote-show.actions';
+import * as QuoteShowState from './store/states/quote-show.state';
+export type QuoteShowState = QuoteShowState.State;
 
 import * as RouterActions from './store/actions/router.actions';
 
@@ -76,9 +76,9 @@ export interface ActionFactory {
   readonly error: ErrorActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
   readonly orderAsset: OrderAssetActions.ActionFactory;
-  readonly quote: QuoteActions.ActionFactory;
+  readonly quoteEdit: QuoteEditActions.ActionFactory;
+  readonly quoteEditAsset: QuoteEditAssetActions.ActionFactory;
   readonly quoteShow: QuoteShowActions.ActionFactory;
-  readonly quoteAsset: QuoteAssetActions.ActionFactory;
   readonly quoteShowAsset: QuoteShowAssetActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
   readonly notifier: NotifierActions.ActionFactory;
@@ -98,9 +98,9 @@ export interface InternalActionFactory {
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
   readonly orderAsset: OrderAssetActions.InternalActionFactory;
-  readonly quote: QuoteActions.InternalActionFactory;
+  readonly quoteEdit: QuoteEditActions.InternalActionFactory;
+  readonly quoteEditAsset: QuoteEditAssetActions.InternalActionFactory;
   readonly quoteShow: QuoteShowActions.InternalActionFactory;
-  readonly quoteAsset: QuoteAssetActions.InternalActionFactory;
   readonly quoteShowAsset: QuoteShowAssetActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
   readonly searchAsset: SearchAssetActions.InternalActionFactory;
@@ -116,9 +116,9 @@ export interface AppState {
   readonly comment: CommentState;
   readonly order: OrderState;
   readonly orderAsset: OrderAssetState;
-  readonly quote: QuoteState;
+  readonly quoteEdit: QuoteEditState;
+  readonly quoteEditAsset: QuoteEditAssetState;
   readonly quoteShow: QuoteShowState;
-  readonly quoteAsset: QuoteAssetState;
   readonly quoteShowAsset: QuoteShowAssetState;
   readonly snackbar: SnackbarState;
   readonly searchAsset: SearchAssetState;
@@ -137,9 +137,9 @@ export const reducers: AppReducers = {
   comment: CommentState.reducer,
   order: OrderState.reducer,
   orderState: OrderAssetState.reducer,
-  quote: QuoteState.reducer,
+  quoteEdit: QuoteEditState.reducer,
+  quoteEditAsset: QuoteEditAssetState.reducer,
   quoteShow: QuoteShowState.reducer,
-  quoteAsset: QuoteAssetState.reducer,
   quoteShowAsset: QuoteShowAssetState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer
@@ -162,9 +162,9 @@ export class AppStore {
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
     orderAsset: new OrderAssetActions.ActionFactory(),
-    quote: new QuoteActions.ActionFactory(),
+    quoteEdit: new QuoteEditActions.ActionFactory(),
+    quoteEditAsset: new QuoteEditAssetActions.ActionFactory(),
     quoteShow: new QuoteShowActions.ActionFactory(),
-    quoteAsset: new QuoteAssetActions.ActionFactory(),
     quoteShowAsset: new QuoteShowAssetActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
     searchAsset: new SearchAssetActions.ActionFactory(),
@@ -183,9 +183,9 @@ export class AppStore {
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
     orderAsset: new OrderAssetActions.InternalActionFactory(),
-    quote: new QuoteActions.InternalActionFactory(),
+    quoteEdit: new QuoteEditActions.InternalActionFactory(),
+    quoteEditAsset: new QuoteEditAssetActions.InternalActionFactory(),
     quoteShow: new QuoteShowActions.InternalActionFactory(),
-    quoteAsset: new QuoteAssetActions.InternalActionFactory(),
     quoteShowAsset: new QuoteShowAssetActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),
     searchAsset: new SearchAssetActions.InternalActionFactory(),

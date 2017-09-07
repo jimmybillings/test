@@ -8,8 +8,8 @@ import { CartAssetResolver } from '../+commerce/+cart/services/cart-asset.resolv
 import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
 import { OrderAssetResolver } from '../+commerce/+order/services/order-asset.resolver';
-import { QuoteResolver } from '../+commerce/+quote/services/quote.resolver';
-import { QuoteAssetResolver } from '../+commerce/+quote/services/quote-asset.resolver';
+import { QuoteShowResolver } from '../+commerce/+quote/services/quote-show.resolver';
+import { QuoteEditAssetResolver } from '../+commerce/+quote/services/quote-edit-asset.resolver';
 import { QuoteShowAssetResolver } from '../+commerce/+quote/services/quote-show-asset.resolver';
 import { QuotesResolver } from '../+commerce/+quote/services/quotes.resolver';
 import { QuoteEditResolver } from '../+commerce/+quote/services/quote-edit.resolver';
@@ -37,7 +37,7 @@ import { QuoteShowComponent } from './+quote/+show/quote-show.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
 import { AdministerQuoteComponent } from './+quote/components/administer-quote.component';
 import { QuotePurchaseTypeComponent } from './+quote/components/quote-purchase-type.component';
-import { QuoteAssetComponent } from './+quote/components/quote-asset.component';
+import { QuoteEditAssetComponent } from './+quote/components/quote-edit-asset.component';
 import { QuoteShowAssetComponent } from './+quote/components/quote-show-asset.component';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 
@@ -106,7 +106,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     AdministerQuoteComponent,
     QuotePurchaseTypeComponent,
     QuoteEditComponent,
-    QuoteAssetComponent,
+    QuoteEditAssetComponent,
     QuoteShowAssetComponent,
     QuoteTabComponent,
     QuoteBillingTabComponent,
@@ -121,8 +121,8 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     OrderResolver,
     OrdersResolver,
     OrderAssetResolver,
-    QuoteResolver,
-    QuoteAssetResolver,
+    QuoteShowResolver,
+    QuoteEditAssetResolver,
     QuotesResolver,
     QuoteEditResolver,
     CartGuard,

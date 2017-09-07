@@ -1,16 +1,16 @@
 import { Observable } from 'rxjs/Observable';
 
 import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
-import { QuoteResolver } from './quote.resolver';
+import { QuoteShowResolver } from './quote-show.resolver';
 
 export function main() {
-  describe('Quote Resolver', () => {
+  describe('Quote Show Resolver', () => {
     let mockStore: MockAppStore;
-    let resolverUnderTest: QuoteResolver;
+    let resolverUnderTest: QuoteShowResolver;
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      resolverUnderTest = new QuoteResolver(mockStore);
+      resolverUnderTest = new QuoteShowResolver(mockStore);
     });
 
     describe('resolve()', () => {
@@ -22,7 +22,7 @@ export function main() {
         mockRoute = { params: { quoteId: '1234' } };
         loadSpy = mockStore.createActionFactoryMethod('quoteShow', 'load');
         resolved = jasmine.createSpy('resolved');
-        mockStore.createStateSection('quoteShow', { activeQuote: { id: 5678 }, loading: true });
+        mockStore.createStateSection('quoteShow', { data: { id: 5678 }, loading: true });
       });
 
       it('dispatches an action', () => {
@@ -38,7 +38,7 @@ export function main() {
       });
 
       it('returns when the loading flag is false', () => {
-        mockStore.createStateSection('quoteShow', { activeQuote: { id: 5678 }, loading: false });
+        mockStore.createStateSection('quoteShow', { data: { id: 5678 }, loading: false });
 
         resolverUnderTest.resolve(mockRoute).subscribe(resolved);
 

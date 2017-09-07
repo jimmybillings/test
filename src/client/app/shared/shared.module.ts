@@ -90,9 +90,9 @@ import * as CartAssetState from '../store/states/cart-asset.state';
 import * as CommentState from '../store/states/comment.state';
 import * as OrderState from '../store/states/order.state';
 import * as OrderAssetState from '../store/states/order-asset.state';
-import * as QuoteState from '../store/states/quote.state';
+import * as QuoteEditState from '../store/states/quote-edit.state';
 import * as QuoteShowState from '../store/states/quote-show.state';
-import * as QuoteAssetState from '../store/states/quote-asset.state';
+import * as QuoteEditAssetState from '../store/states/quote-edit-asset.state';
 import * as QuoteShowAssetState from '../store/states/quote-show-asset.state';
 import * as SearchAssetState from '../store/states/search-asset.state';
 import * as SnackbarState from '../store/states/snackbar.state';
@@ -130,9 +130,9 @@ import { ErrorEffects } from '../store/effects/error.effects';
 import { NotifierEffects } from '../store/effects/notifier.effects';
 import { OrderEffects } from '../store/effects/order.effects';
 import { OrderAssetEffects } from '../store/effects/order-asset.effects';
-import { QuoteEffects } from '../store/effects/quote.effects';
+import { QuoteEditEffects } from '../store/effects/quote-edit.effects';
 import { QuoteShowEffects } from '../store/effects/quote-show.effects';
-import { QuoteAssetEffects } from '../store/effects/quote-asset.effects';
+import { QuoteEditAssetEffects } from '../store/effects/quote-edit-asset.effects';
 import { QuoteShowAssetEffects } from '../store/effects/quote-show-asset.effects';
 import { RouterEffects } from '../store/effects/router.effects';
 import { SearchAssetEffects } from '../store/effects/search-asset.effects';
@@ -224,9 +224,9 @@ const WAZEE_STORES: any = {
   comment: CommentState.reducer,
   order: OrderState.reducer,
   orderAsset: OrderAssetState.reducer,
-  quote: QuoteState.reducer,
+  quoteEdit: QuoteEditState.reducer,
+  quoteEditAsset: QuoteEditAssetState.reducer,
   quoteShow: QuoteShowState.reducer,
-  quoteAsset: QuoteAssetState.reducer,
   quoteShowAsset: QuoteShowAssetState.reducer,
   searchAsset: SearchAssetState.reducer,
   snackbar: SnackbarState.reducer,
@@ -244,9 +244,9 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   NotifierEffects,
   OrderEffects,
   OrderAssetEffects,
-  QuoteEffects,
+  QuoteEditEffects,
   QuoteShowEffects,
-  QuoteAssetEffects,
+  QuoteEditAssetEffects,
   QuoteShowAssetEffects,
   RouterEffects,
   SearchAssetEffects,

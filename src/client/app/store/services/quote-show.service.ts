@@ -19,26 +19,23 @@ export class FutureQuoteShowService {
   ) { }
 
   public load(quoteId: number): Observable<Quote> {
-    return this.userCan.administerQuotes ? this.loadForAdminUser(quoteId) : this.loadForNonAdminUser(quoteId);
+    return this.userCan.administerQuotes() ? this.loadForAdminUser(quoteId) : this.loadForNonAdminUser(quoteId);
   }
 
   private loadForAdminUser(quoteId: number): Observable<Quote> {
-    return this.apiService.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-      .map((quote: Quote) => {
-        let user: User;
-        this.userService.getById(quote.ownerUserId).subscribe(u => user = u);
-        return this.addRecipientToQuote(quote, user);
-      });
+    return this.loadForNonAdminUser(quoteId).switchMap(quote => this.updateRecipientIn(quote));
   }
 
   private loadForNonAdminUser(quoteId: number): Observable<Quote> {
     return this.apiService.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true });
   }
 
-  private addRecipientToQuote(quote: Quote, user: User): Quote {
-    return Object.assign(quote, {
-      createdUserEmailAddress: user.emailAddress,
-      createdUserFullName: `${user.firstName} ${user.lastName}`
-    });
+  private updateRecipientIn(quote: Quote): Observable<Quote> {
+    return this.userService.getById(quote.ownerUserId)
+      .map((user: User) => ({
+        ...quote,
+        createdUserEmailAddress: user.emailAddress,
+        createdUserFullName: `${user.firstName} ${user.lastName}`
+      }));
   }
 }

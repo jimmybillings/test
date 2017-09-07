@@ -5,12 +5,12 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { AppStore } from '../../../app.store';
 
 @Injectable()
-export class QuoteAssetResolver implements Resolve<boolean> {
+export class QuoteEditAssetResolver implements Resolve<boolean> {
   constructor(private store: AppStore) { }
 
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-    this.store.dispatch(factory => factory.quoteAsset.load({ uuid: route.params.uuid }));
+    this.store.dispatch(factory => factory.quoteEditAsset.load({ uuid: route.params.uuid }));
 
-    return this.store.blockUntil(state => !state.quoteAsset.loading);
+    return this.store.blockUntil(state => !state.quoteEditAsset.loading);
   }
 }

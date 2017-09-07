@@ -79,7 +79,7 @@ export function main() {
 
       collectionLoadSpy = mockStore.createActionFactoryMethod('activeCollection', 'load');
       cartLoadSpy = mockStore.createActionFactoryMethod('cart', 'load');
-      quoteLoadSpy = mockStore.createActionFactoryMethod('quote', 'load');
+      quoteLoadSpy = mockStore.createActionFactoryMethod('quoteEdit', 'load');
 
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,

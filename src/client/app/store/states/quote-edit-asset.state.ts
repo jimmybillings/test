@@ -1,11 +1,11 @@
-import * as QuoteAssetActions from '../actions/quote-asset.actions';
+import * as QuoteEditAssetActions from '../actions/quote-edit-asset.actions';
 import { Asset, QuoteAssetUrlLoadParameters } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
-  activeAsset: Asset;
-  loading: boolean;
-  loadParameters: QuoteAssetUrlLoadParameters;
+  readonly activeAsset: Asset;
+  readonly loading: boolean;
+  readonly loadParameters: QuoteAssetUrlLoadParameters;
 };
 
 export const initialState: State = {
@@ -14,17 +14,17 @@ export const initialState: State = {
   loadParameters: null
 };
 
-export function reducer(state: State = initialState, action: QuoteAssetActions.Any): State {
+export function reducer(state: State = initialState, action: QuoteEditAssetActions.Any): State {
   switch (action.type) {
-    case QuoteAssetActions.Load.Type: {
+    case QuoteEditAssetActions.Load.Type: {
       return { ...Common.clone(state), loading: true, loadParameters: action.loadParameters };
     }
 
-    case QuoteAssetActions.LoadSuccess.Type: {
+    case QuoteEditAssetActions.LoadSuccess.Type: {
       return { activeAsset: action.activeAsset, loading: false, loadParameters: null };
     }
 
-    case QuoteAssetActions.LoadFailure.Type: {
+    case QuoteEditAssetActions.LoadFailure.Type: {
       return { ...Common.clone(state), loading: false, loadParameters: null };
     }
 

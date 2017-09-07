@@ -20,7 +20,7 @@ import {
   LicenseAgreements,
   AssetLineItem
 } from '../interfaces/commerce.interface';
-import { AppStore, QuoteState } from '../../app.store';
+import { AppStore, QuoteShowState } from '../../app.store';
 import { CheckoutStore } from '../stores/checkout.store';
 import { enhanceAsset } from '../interfaces/enhanced-asset';
 
@@ -36,11 +36,11 @@ export class QuoteService {
 
   // Store Accessors
 
-  public get data(): Observable<QuoteState> {
+  public get data(): Observable<QuoteShowState> {
     return this.store.select(state => state.quoteShow);
   }
 
-  public get state(): QuoteState {
+  public get state(): QuoteShowState {
     return this.store.snapshot(state => state.quoteShow);
   }
 
@@ -74,7 +74,7 @@ export class QuoteService {
   }
 
   public get total(): Observable<number> {
-    return this.data.map((state: QuoteState) => state.data.total);
+    return this.data.map((state: QuoteShowState) => state.data.total);
   }
 
   public get paymentType(): Observable<OrderType> {
@@ -86,11 +86,11 @@ export class QuoteService {
   }
 
   public get hasAssets(): Observable<boolean> {
-    return this.data.map((state: QuoteState) => (state.data.itemCount || 0) > 0);
+    return this.data.map((state: QuoteShowState) => (state.data.itemCount || 0) > 0);
   }
 
   public get hasAssetLineItems(): Observable<boolean> {
-    return this.data.map((state: QuoteState) => {
+    return this.data.map((state: QuoteShowState) => {
       return state.data.projects.reduce((previous: number, current: Project) => {
         return current.lineItems ? previous += current.lineItems.length : 0;
       }, 0) > 0;
@@ -98,11 +98,6 @@ export class QuoteService {
   }
 
   // Public Interface
-  // public load(quoteId: number, canAdministerQuotes: boolean): Observable<Quote> {
-  //   return (canAdministerQuotes) ?
-  //     this.loadForAdminUser(quoteId) : this.loadForNonAdminUser(quoteId);
-  // }
-
   public updateOrderInProgress(type: string, data: any): void {
     this.checkoutStore.updateOrderInProgress(type, data);
   }
@@ -161,12 +156,11 @@ export class QuoteService {
     });
     let quote: Quote;
     return this.update(this.state.data.id, newQuote)
-      .flatMap((quoteResponse: Quote) => {
-        quote = quoteResponse;
-        return this.userService.getById(quote.createdUserId);
-      })
-      .do((user: User) => {
-        this.addRecipientToQuote(quote, user);
+      .map((quote: Quote) => {
+        let user: User;
+        this.userService.getById(quote.ownerUserId).subscribe(u => user = u);
+        this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote));
+        return this.addRecipientToQuote(quote, user);
       });
   }
 
@@ -174,23 +168,6 @@ export class QuoteService {
   private update(id: number, quote: Quote): Observable<Quote> {
     return this.api.put(Api.Orders, `quote/${id}`, { body: quote, loadingIndicator: 'onBeforeRequest' });
   }
-
-  // private loadForAdminUser(quoteId: number): Observable<Quote> {
-  //   let quote: Quote;
-  //   return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-  //     .flatMap((quoteResponse: Quote) => {
-  //       quote = quoteResponse;
-  //       return this.userService.getById(quote.createdUserId);
-  //     })
-  //     .do((user: User) => {
-  //       this.addRecipientToQuote(quote, user);
-  //     });
-  // }
-
-  // private loadForNonAdminUser(quoteId: number): Observable<Quote> {
-  //   return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-  //     .do((quote: Quote) => this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote)));
-  // }
 
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;
@@ -219,13 +196,11 @@ export class QuoteService {
     ).map((order: Order) => order.id);
   }
 
-  private addRecipientToQuote(quote: Quote, user: User): void {
-    quote = Object.assign(quote, {
+  private addRecipientToQuote(quote: Quote, user: User): Quote {
+    return Object.assign(quote, {
       createdUserEmailAddress: user.emailAddress,
       createdUserFullName: `${user.firstName} ${user.lastName}`
     });
-
-    this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote));
   }
 
   private get purchaseOptions(): PurchaseOptions {

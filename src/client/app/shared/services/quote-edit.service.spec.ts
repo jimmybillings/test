@@ -16,8 +16,8 @@ export function main() {
     beforeEach(() => {
       mockApi = new MockApiService();
       mockStore = new MockAppStore();
-      mockStore.createStateSection('quote', mockState);
-      quoteLoadSuccessSpy = mockStore.createActionFactoryMethod('quote', 'loadSuccess');
+      mockStore.createStateSection('quoteEdit', mockState);
+      quoteLoadSuccessSpy = mockStore.createActionFactoryMethod('quoteEdit', 'loadSuccess');
       mockFeeConfigStore = {};
       jasmine.addMatchers(mockApiMatchers);
       mockRouter = { navigate: jasmine.createSpy('navigate') };
@@ -64,19 +64,19 @@ export function main() {
 
       describe('get hasAssets', () => {
         it('should return false if the quote does not have the itemCount property', () => {
-          mockStore.createStateSection('quote', { data: {} });
+          mockStore.createStateSection('quoteEdit', { data: {} });
 
           new QuoteEditService(mockStore, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
         });
 
         it('should return false if the quote itemCount is 0', () => {
-          mockStore.createStateSection('quote', { data: { itemCount: 0 } });
+          mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
 
           new QuoteEditService(mockStore, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
         });
 
         it('should return true if the quote itemCount is greater than 0', () => {
-          mockStore.createStateSection('quote', { data: { itemCount: 1 } });
+          mockStore.createStateSection('quoteEdit', { data: { itemCount: 1 } });
 
           new QuoteEditService(mockStore, null, null).hasAssets.subscribe(d => expect(d).toBe(true));
         });
@@ -369,7 +369,7 @@ export function main() {
 
       it('should call the API service correctly - remove', () => {
         mockStore = new MockAppStore();
-        mockStore.createStateSection('quote', {
+        mockStore.createStateSection('quoteEdit', {
           data: { id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }] }
         });
 

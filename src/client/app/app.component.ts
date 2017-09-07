@@ -98,7 +98,7 @@ export class AppComponent implements OnInit {
 
   public get cartCount(): Observable<any> {
     if (this.userCan.administerQuotes()) {
-      return this.store.select(state => state.quote.data.itemCount);
+      return this.store.select(state => state.quoteEdit.data.itemCount);
     } else {
       return this.store.select(state => state.cart.data.itemCount);
     }
@@ -158,7 +158,7 @@ export class AppComponent implements OnInit {
     }
 
     if (this.userCan.administerQuotes()) {
-      this.store.dispatch(factory => factory.quote.load());
+      this.store.dispatch(factory => factory.quoteEdit.load());
     } else {
       this.store.dispatch(factory => factory.cart.load());
     }

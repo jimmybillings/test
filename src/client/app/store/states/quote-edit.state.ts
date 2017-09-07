@@ -1,4 +1,4 @@
-import * as QuoteActions from '../actions/quote.actions';
+import * as QuoteEditActions from '../actions/quote-edit.actions';
 import { Common } from '../../shared/utilities/common.functions';
 import { Quote } from '../../shared/interfaces/commerce.interface';
 
@@ -18,18 +18,18 @@ export const initialState: State = {
   loading: false
 };
 
-export function reducer(state: State = initialState, action: QuoteActions.Any): State {
+export function reducer(state: State = initialState, action: QuoteEditActions.Any): State {
   if (state === null) state = initialState;
 
   switch (action.type) {
-    case QuoteActions.Load.Type: {
+    case QuoteEditActions.Load.Type: {
       return {
         ...Common.clone(state),
         loading: true
       };
     }
 
-    case QuoteActions.LoadSuccess.Type: {
+    case QuoteEditActions.LoadSuccess.Type: {
       return {
         loading: false,
         data: {
@@ -38,7 +38,7 @@ export function reducer(state: State = initialState, action: QuoteActions.Any): 
       };
     }
 
-    case QuoteActions.LoadFailure.Type: {
+    case QuoteEditActions.LoadFailure.Type: {
       return {
         ...Common.clone(state),
         loading: false

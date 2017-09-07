@@ -11,11 +11,11 @@ import { OrderResolver } from './+order/services/order.resolver';
 import { OrderAssetResolver } from './+order/services/order-asset.resolver';
 import { OrdersResolver } from './+order/services/orders.resolver';
 import { QuoteShowComponent } from './+quote/+show/quote-show.component';
-import { QuoteAssetComponent } from './+quote/components/quote-asset.component';
+import { QuoteEditAssetComponent } from './+quote/components/quote-edit-asset.component';
 import { QuoteShowAssetComponent } from './+quote/components/quote-show-asset.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
-import { QuoteResolver } from './+quote/services/quote.resolver';
-import { QuoteAssetResolver } from './+quote/services/quote-asset.resolver';
+import { QuoteShowResolver } from './+quote/services/quote-show.resolver';
+import { QuoteEditAssetResolver } from './+quote/services/quote-edit-asset.resolver';
 import { QuoteShowAssetResolver } from './+quote/services/quote-show-asset.resolver';
 import { QuotesResolver } from './+quote/services/quotes.resolver';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
@@ -30,9 +30,13 @@ export const COMMERCE_ROUTES: Routes = [
   { path: 'orders/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
   { path: 'orders/:orderId/asset/:uuid', component: OrderAssetComponent, resolve: { orderAsset: OrderAssetResolver } },
   { path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver } },
-  { path: 'quotes/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
-  { path: 'quotes/:quoteId/asset/:uuid', component: QuoteShowAssetComponent, resolve: { quoteAsset: QuoteShowAssetResolver } },
+  { path: 'quotes/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteShowResolver } },
+  {
+    path: 'quotes/:quoteId/asset/:uuid',
+    component: QuoteShowAssetComponent,
+    resolve: { quoteShowAsset: QuoteShowAssetResolver }
+  },
   { path: 'active-quote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard] },
-  { path: 'active-quote/asset/:uuid', component: QuoteAssetComponent, resolve: { quoteAsset: QuoteAssetResolver } }
+  { path: 'active-quote/asset/:uuid', component: QuoteEditAssetComponent, resolve: { quoteEditAsset: QuoteEditAssetResolver } }
 ];
 

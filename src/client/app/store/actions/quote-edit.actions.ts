@@ -21,18 +21,18 @@ export class InternalActionFactory extends ActionFactory {
 }
 
 export class Load implements Action {
-  public static readonly Type = '[Quote] Load';
+  public static readonly Type = '[Quote Edit] Load';
   public readonly type = Load.Type;
 }
 
 export class LoadSuccess implements Action {
-  public static readonly Type = '[Quote] Load Success';
+  public static readonly Type = '[Quote Edit] Load Success';
   public readonly type = LoadSuccess.Type;
   constructor(public readonly quote: Quote) { }
 }
 
 export class LoadFailure implements Action {
-  public static readonly Type = '[Quote] Load Failure';
+  public static readonly Type = '[Quote Edit] Load Failure';
   public readonly type = LoadFailure.Type;
   constructor(public readonly error: ApiErrorResponse) { }
 }

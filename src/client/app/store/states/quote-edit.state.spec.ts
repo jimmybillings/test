@@ -1,5 +1,5 @@
-import * as QuoteActions from '../actions/quote.actions';
-import * as QuoteState from './quote.state';
+import * as QuoteEditActions from '../actions/quote-edit.actions';
+import * as QuoteState from './quote-edit.state';
 import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 
 export function main() {
@@ -8,7 +8,7 @@ export function main() {
   describe('Quote Reducer', () => {
     stateSpecHelper.setReducerTestModules({
       state: QuoteState,
-      actions: QuoteActions
+      actions: QuoteEditActions
     });
 
     stateSpecHelper.generateTestsFor({

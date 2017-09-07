@@ -9,8 +9,8 @@ export class QuoteEditResolver implements Resolve<boolean> {
   constructor(private store: AppStore) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    this.store.dispatch(factory => factory.quote.load());
+    this.store.dispatch(factory => factory.quoteEdit.load());
 
-    return this.store.blockUntil(state => !state.quote.loading);
+    return this.store.blockUntil(state => !state.quoteEdit.loading);
   }
 }

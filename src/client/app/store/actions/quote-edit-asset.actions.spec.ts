@@ -1,4 +1,4 @@
-import { ActionFactory, InternalActionFactory } from './quote-asset.actions';
+import { ActionFactory, InternalActionFactory } from './quote-edit-asset.actions';
 import { ActionsSpecHelper } from '../../store/spec-helpers/actions.spec-helper';
 
 export function main() {

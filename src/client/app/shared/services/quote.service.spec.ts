@@ -14,6 +14,7 @@ export function main() {
 
     const mockQuoteResponse = {
       'createdUserId': 1,
+      'ownerUserId': 2,
       'lastUpdated': '2017-07-23T18:41:21Z',
       'createdOn': '2017-07-23T18:20:00Z',
       'id': 282,
@@ -54,8 +55,8 @@ export function main() {
       mockApi = new MockApiService();
       jasmine.addMatchers(mockApiMatchers);
       mockStore = new MockAppStore();
-      mockStore.createStateSection('quote', { data: { id: 3, ownerUserId: 10, itemCount: 1 } });
-      quoteLoadSuccessSpy = mockStore.createActionFactoryMethod('quote', 'loadSuccess');
+      mockStore.createStateSection('quoteShow', { data: { id: 3, ownerUserId: 10, itemCount: 1 } });
+      quoteLoadSuccessSpy = mockStore.createActionFactoryMethod('quoteShow', 'loadSuccess');
 
       mockCartService = {
         data: Observable.of({ cart: { projects: [] } }),
@@ -159,6 +160,7 @@ export function main() {
       beforeEach(() => {
         mockApi.putResponse = Common.clone(mockQuoteResponse);
       });
+
       it('should call the api service correctly', () => {
         serviceUnderTest.extendExpirationDate('2017-01-01');
 
@@ -172,7 +174,7 @@ export function main() {
 
       it('Should call the user service getById() with the createdUserId', () => {
         serviceUnderTest.extendExpirationDate('2017-01-01').subscribe();
-        expect(mockUserService.getById).toHaveBeenCalledWith(1);
+        expect(mockUserService.getById).toHaveBeenCalledWith(2);
       });
 
       it('should set the quote in the quote store with the user added to the quote response', () => {
