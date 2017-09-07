@@ -19,7 +19,7 @@ export function main() {
       let resolved: jasmine.Spy;
 
       beforeEach(() => {
-        mockRoute = { params: { quoteId: 1234, uuid: 'ABCD' } };
+        mockRoute = { params: { quoteId: '1234', uuid: 'ABCD' } };
         loadSpy = mockStore.createActionFactoryMethod('quoteShowAsset', 'load');
         resolved = jasmine.createSpy('resolver subscription function');
         mockStore.createStateSection('quoteShowAsset', { activeAsset: { id: 5678 }, loading: true });
