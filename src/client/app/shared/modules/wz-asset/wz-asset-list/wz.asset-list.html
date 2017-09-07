@@ -162,21 +162,26 @@
           </md-list>
         </md-menu>
 
-        <!-- ADD / REMOVE FROM COLLECTION -->
+          <!-- ADD / ADD_AGAIN / REMOVE FROM COLLECTION -->
         <ng-container *ngIf="userCan.haveCollections()">
-          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="inCollection(asset)"
+          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="canBeRemoved(asset)"
             title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
             (click)="removeFromActiveCollection(asset)">
             <md-icon>remove_circle</md-icon>
           </button>
-          <button md-icon-button class="add-to-collection-btn" 
-            [disabled]="!userCan.editCollections()"
+          <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button 
             *ngIf="!inCollection(asset)"
             title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
+            (click)="addToActiveCollection(asset)">
+            <md-icon>add_box</md-icon>
+          </button>
+          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="canBeAddedAgain(asset)"
+            title="{{ 'COLLECTION.ADD_AGAIN_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
             (click)="addToActiveCollection(asset)">
             <md-icon>library_add</md-icon>
           </button>
         </ng-container>
+
 
         <button md-icon-button 
           *ngIf="assetType === 'collection' && userCan.createSubclips(asset)"
