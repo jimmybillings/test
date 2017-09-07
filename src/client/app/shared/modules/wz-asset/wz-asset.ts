@@ -168,4 +168,12 @@ export class WzAsset {
   public commentCountFor(asset: EnhancedAsset): Observable<number> {
     return this.store.select(factory => factory.comment.counts[asset.uuid]);
   }
+
+  public canBeRemoved(asset: EnhancedAsset) {
+    return this.inCollection(asset) && this.assetType === 'collection';
+  }
+
+  public canBeAddedAgain(asset: EnhancedAsset) {
+    return this.inCollection(asset) && this.assetType !== 'collection';
+  }
 }

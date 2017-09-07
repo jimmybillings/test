@@ -261,6 +261,66 @@ export function main() {
         componentUnderTest.commentCountFor({ uuid: 'abc-123' } as any).take(1).subscribe(count => expect(count).toBe(3));
       });
     });
+
+    describe('canBeRemoved()', () => {
+      it('Should be false if assetType IS NOT collection and the asset IS NOT in the collection', () => {
+        componentUnderTest.assetType = 'search';
+        componentUnderTest.activeCollection = mockCollection;
+        expect(componentUnderTest.canBeRemoved(mockEnhancedAsset)).toBe(false);
+      });
+
+      it('Should be false if assetType IS NOT collection and the asset IS in the collection', () => {
+        componentUnderTest.assetType = 'search';
+        mockCollection.assets.items.push(mockEnhancedAsset);
+        componentUnderTest.activeCollection = mockCollection;
+        expect(componentUnderTest.canBeRemoved(mockEnhancedAsset)).toBe(false);
+      });
+
+      it('Should be false if assetType IS collection and the asset IS NOT in the collection', () => {
+        componentUnderTest.assetType = 'collection';
+        componentUnderTest.activeCollection = mockCollection;
+        expect(componentUnderTest.canBeRemoved(mockEnhancedAsset)).toBe(false);
+      });
+
+      it('Should be true if assetType IS collection and the asset IS in the collection', () => {
+        componentUnderTest.assetType = 'collection';
+        mockCollection.assets.items.push(mockEnhancedAsset);
+        componentUnderTest.activeCollection = mockCollection;
+        expect(componentUnderTest.canBeRemoved(mockEnhancedAsset)).toBe(true);
+      });
+    });
+
+    describe('canBeAddedAgain()', () => {
+      it('Should be false if assetType IS NOT collection and the asset IS NOT in the collection', () => {
+        componentUnderTest.assetType = 'search';
+        componentUnderTest.activeCollection = mockCollection;
+        expect(componentUnderTest.canBeAddedAgain(mockEnhancedAsset)).toBe(false);
+      });
+
+      it('Should be true if assetType IS NOT collection and the asset IS in the collection', () => {
+        componentUnderTest.assetType = 'search';
+        mockCollection.assets.items.push(mockEnhancedAsset);
+        componentUnderTest.activeCollection = mockCollection;
+        expect(componentUnderTest.canBeAddedAgain(mockEnhancedAsset)).toBe(true);
+      });
+
+      it('Should be false if assetType IS collection and the asset IS NOT in the collection', () => {
+        componentUnderTest.assetType = 'collection';
+        componentUnderTest.activeCollection = mockCollection;
+        expect(componentUnderTest.canBeAddedAgain(mockEnhancedAsset)).toBe(false);
+      });
+
+      it('Should be false if assetType IS collection and the asset IS in the collection', () => {
+        componentUnderTest.assetType = 'collection';
+        mockCollection.assets.items.push(mockEnhancedAsset);
+        componentUnderTest.activeCollection = mockCollection;
+        expect(componentUnderTest.canBeAddedAgain(mockEnhancedAsset)).toBe(false);
+      });
+    });
+
+
+
+
   });
 }
 
