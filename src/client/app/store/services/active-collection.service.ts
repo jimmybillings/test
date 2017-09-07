@@ -36,7 +36,8 @@ export class ActiveCollectionService {
   public addAssetTo(
     activeCollection: Collection,
     asset: Asset,
-    markers: SubclipMarkersInterface.SubclipMarkers): Observable<CollectionItems> {
+    markers: SubclipMarkersInterface.SubclipMarkers
+  ): Observable<CollectionItems> {
     const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(markers);
     const assetInfo: object = {
       assetId: asset.assetId,
@@ -46,8 +47,9 @@ export class ActiveCollectionService {
 
     return this.apiService.post(
       Api.Identities, 'collection/focused/addAssets', { body: { list: [assetInfo] }, loadingIndicator: true }
-    ).flatMap(() =>
-      this.loadPage(activeCollection.id, { currentPage: 1, pageSize: activeCollection.assets.pagination.pageSize })
+    ).flatMap(res => res.list
+      ? this.loadPage(activeCollection.id, { currentPage: 1, pageSize: activeCollection.assets.pagination.pageSize })
+      : Observable.of({ items: [] as Asset[], pagination: {} as Pagination })
       );
   }
 
