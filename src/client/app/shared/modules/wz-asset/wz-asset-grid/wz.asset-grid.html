@@ -51,7 +51,7 @@
 
           <!-- ADD / ADD_AGAIN / REMOVE FROM COLLECTION -->
           <ng-container *ngIf="userCan.haveCollections()">
-            <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="assetType === 'collection' && inCollection(asset)"
+            <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="canBeRemoved(asset)"
               title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="removeFromActiveCollection(asset)">
               <md-icon>remove_circle</md-icon>
@@ -62,7 +62,7 @@
               (click)="addToActiveCollection(asset)">
               <md-icon>add_box</md-icon>
             </button>
-            <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="assetType !== 'collection' && inCollection(asset)"
+            <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="canBeAddedAgain(asset)"
               title="{{ 'COLLECTION.ADD_AGAIN_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="addToActiveCollection(asset)">
               <md-icon>library_add</md-icon>
