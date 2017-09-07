@@ -12,7 +12,7 @@ export function main() {
         parameters: [{ some: 'load parameters' }]
       },
       expectedAction: {
-        type: '[Quote Asset] Load',
+        type: '[Quote Edit Asset] Load',
         loadParameters: { some: 'load parameters' }
       }
     });
@@ -24,7 +24,7 @@ export function main() {
         parameters: [{ some: 'load parameters' }]
       },
       expectedAction: {
-        type: '[Quote Asset] Load After Quote Available',
+        type: '[Quote Edit Asset] Load After Quote Available',
         loadParameters: { some: 'load parameters' }
       }
     });
@@ -36,7 +36,7 @@ export function main() {
         parameters: [{ some: 'asset' }]
       },
       expectedAction: {
-        type: '[Quote Asset] Load Success',
+        type: '[Quote Edit Asset] Load Success',
         activeAsset: { some: 'asset' }
       }
     });
@@ -48,7 +48,7 @@ export function main() {
         parameters: [{ some: 'error' }]
       },
       expectedAction: {
-        type: '[Quote Asset] Load Failure',
+        type: '[Quote Edit Asset] Load Failure',
         error: { some: 'error' }
       }
     });

@@ -24,25 +24,25 @@ export class InternalActionFactory extends ActionFactory {
 }
 
 export class Load implements Action {
-  public static readonly Type = '[Quote Asset] Load';
+  public static readonly Type = '[Quote Edit Asset] Load';
   public readonly type = Load.Type;
   constructor(public readonly loadParameters: QuoteAssetUrlLoadParameters) { }
 }
 
 export class LoadAfterQuoteAvailable implements Action {
-  public static readonly Type = '[Quote Asset] Load After Quote Available';
+  public static readonly Type = '[Quote Edit Asset] Load After Quote Available';
   public readonly type = LoadAfterQuoteAvailable.Type;
   constructor(public readonly loadParameters: QuoteAssetUrlLoadParameters) { }
 }
 
 export class LoadSuccess implements Action {
-  public static readonly Type = '[Quote Asset] Load Success';
+  public static readonly Type = '[Quote Edit Asset] Load Success';
   public readonly type = LoadSuccess.Type;
   constructor(public readonly activeAsset: Asset) { }
 }
 
 export class LoadFailure implements Action {
-  public static readonly Type = '[Quote Asset] Load Failure';
+  public static readonly Type = '[Quote Edit Asset] Load Failure';
   public readonly type = LoadFailure.Type;
   constructor(public readonly error: ApiErrorResponse) { }
 }

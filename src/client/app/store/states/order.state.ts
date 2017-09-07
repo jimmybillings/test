@@ -1,5 +1,5 @@
 import * as OrderActions from '../actions/order.actions';
-import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
+import { Asset } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
 import { Order } from '../../shared/interfaces/commerce.interface';
 

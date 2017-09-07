@@ -16,33 +16,33 @@ export function main() {
     describe('resolve()', () => {
       let mockRoute: any;
       let loadSpy: jasmine.Spy;
-      let resolverSubscriptionFunction: jasmine.Spy;
+      let resolved: jasmine.Spy;
 
       beforeEach(() => {
         mockRoute = { params: { orderId: '1234' } };
         loadSpy = mockStore.createActionFactoryMethod('order', 'load');
-        resolverSubscriptionFunction = jasmine.createSpy('resolver subscription function');
+        resolved = jasmine.createSpy('resolved');
         mockStore.createStateSection('order', { activeOrder: { id: 5678 }, loading: true });
       });
 
       it('dispatches an action', () => {
-        resolverUnderTest.resolve(mockRoute).subscribe(resolverSubscriptionFunction);
+        resolverUnderTest.resolve(mockRoute).subscribe(resolved);
 
         mockStore.expectDispatchFor(loadSpy, 1234);
       });
 
       it('doesn\'t return when the loading flag is true', () => {
-        resolverUnderTest.resolve(mockRoute).subscribe(resolverSubscriptionFunction);
+        resolverUnderTest.resolve(mockRoute).subscribe(resolved);
 
-        expect(resolverSubscriptionFunction).not.toHaveBeenCalled();
+        expect(resolved).not.toHaveBeenCalled();
       });
 
       it('returns when the loading flag is false', () => {
         mockStore.createStateSection('order', { activeOrder: { id: 5678 }, loading: false });
 
-        resolverUnderTest.resolve(mockRoute).subscribe(resolverSubscriptionFunction);
+        resolverUnderTest.resolve(mockRoute).subscribe(resolved);
 
-        expect(resolverSubscriptionFunction).toHaveBeenCalledWith(true);
+        expect(resolved).toHaveBeenCalledWith(true);
       });
     });
   });

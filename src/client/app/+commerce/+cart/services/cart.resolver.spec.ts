@@ -7,8 +7,6 @@ import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 export function main() {
   describe('Cart Resolver', () => {
     const mockObservable = Observable.of({ userId: 123 });
-    const mockRoute: ActivatedRouteSnapshot = undefined;
-    const mockState: RouterStateSnapshot = undefined;
     let resolverUnderTest: CartResolver, mockStore: MockAppStore, loadSpy: jasmine.Spy;
 
     beforeEach(() => {
@@ -19,7 +17,7 @@ export function main() {
 
     describe('resolve()', () => {
       it('should dispatch the proper action', () => {
-        resolverUnderTest.resolve(mockRoute, mockState);
+        resolverUnderTest.resolve();
 
         expect(loadSpy).toHaveBeenCalled();
       });
@@ -28,7 +26,7 @@ export function main() {
         mockStore.createStateSection('cart', { loading: true });
 
         expect(() => {
-          resolverUnderTest.resolve(mockRoute, mockState).take(1).subscribe((data) => {
+          resolverUnderTest.resolve().take(1).subscribe((data) => {
             throw new Error();
           });
         }).not.toThrow();
@@ -37,7 +35,7 @@ export function main() {
       it('Should resolve if the Cart store already has data from the server', () => {
         mockStore.createStateSection('cart', { loading: false });
 
-        resolverUnderTest.resolve(mockRoute, mockState).take(1).subscribe((data) => {
+        resolverUnderTest.resolve().take(1).subscribe((data) => {
           expect(data).toEqual(true);
         });
       });

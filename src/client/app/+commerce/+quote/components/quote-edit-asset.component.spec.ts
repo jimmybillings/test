@@ -1,7 +1,7 @@
 import { QuoteEditAssetComponent } from './quote-edit-asset.component';
 
 export function main() {
-  describe('Quote Asset Component', () => {
+  describe('Quote Edit Asset Component', () => {
     let componentUnderTest: QuoteEditAssetComponent;
 
     beforeEach(() => {

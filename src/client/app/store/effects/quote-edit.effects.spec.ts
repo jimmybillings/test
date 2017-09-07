@@ -3,7 +3,7 @@ import { QuoteEditEffects } from './quote-edit.effects';
 import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
 
 export function main() {
-  describe('Quote Effects', () => {
+  describe('Quote Edit Effects', () => {
     const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
 
     function instantiator(): any {

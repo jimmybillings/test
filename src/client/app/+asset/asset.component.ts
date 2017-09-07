@@ -25,6 +25,7 @@ import { AppStore, StateMapper } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { PricingService } from '../shared/services/pricing.service';
 import { Common } from '../shared/utilities/common.functions';
+
 @Component({
   moduleId: module.id,
   selector: 'asset-component',
@@ -40,7 +41,6 @@ export class AssetComponent implements OnInit, OnDestroy {
         const clonedAsset: Asset = Common.clone(asset);
         return enhanceAsset(clonedAsset, this.assetType);
       }).subscribe(asset => {
-        console.log(asset);
         this.asset = asset;
         this.pricingStore.setPriceForDetails(this.asset.price);
         this.selectedAttributes = null;
@@ -50,7 +50,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
   private assetSubscription: Subscription;
-  private routerSubscription: Subscription;
   private selectedAttributes: Pojo;
   private pageSize: number = 50;
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
@@ -81,7 +80,6 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     if (this.assetSubscription) this.assetSubscription.unsubscribe();
-    if (this.routerSubscription) this.routerSubscription.unsubscribe();
   }
 
   public previousPage() {

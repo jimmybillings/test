@@ -1,11 +1,5 @@
 import { Asset, Pagination, Pojo, Coords } from './common.interface';
 
-// export interface SearchAssetState {
-//   asset: Asset;
-//   priceForDialog: number;
-//   priceForDetails: number;
-// }
-
 export interface SearchResult extends Pagination {
   items?: Array<Asset>;
 }

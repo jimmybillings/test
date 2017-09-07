@@ -175,23 +175,6 @@ export class QuoteService {
       }));
   }
 
-  // private loadForAdminUser(quoteId: number): Observable<Quote> {
-  //   let quote: Quote;
-  //   return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-  //     .flatMap((quoteResponse: Quote) => {
-  //       quote = quoteResponse;
-  //       return this.userService.getById(quote.createdUserId);
-  //     })
-  //     .do((user: User) => {
-  //       this.addRecipientToQuote(quote, user);
-  //     });
-  // }
-
-  // private loadForNonAdminUser(quoteId: number): Observable<Quote> {
-  //   return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-  //     .do((quote: Quote) => this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote)));
-  // }
-
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;
     return this.api.post(
@@ -218,13 +201,6 @@ export class QuoteService {
       { body: { options }, loadingIndicator: true }
     ).map((order: Order) => order.id);
   }
-
-  // private addRecipientToQuote(quote: Quote, user: User): Quote {
-  //   return Object.assign(quote, {
-  //     createdUserEmailAddress: user.emailAddress,
-  //     createdUserFullName: `${user.firstName} ${user.lastName}`
-  //   });
-  // }
 
   private get purchaseOptions(): PurchaseOptions {
     return Object.assign({}, this.addressPurchaseOptions, this.creditCardPurchaseOptions) as PurchaseOptions;

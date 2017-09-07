@@ -5,7 +5,7 @@ import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 export function main() {
   const stateSpecHelper: StateSpecHelper = new StateSpecHelper();
 
-  describe('Quote Reducer', () => {
+  describe('Quote Edit Reducer', () => {
     stateSpecHelper.setReducerTestModules({
       state: QuoteState,
       actions: QuoteEditActions

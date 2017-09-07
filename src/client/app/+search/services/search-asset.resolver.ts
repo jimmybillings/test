@@ -12,7 +12,7 @@ export class SearchAssetResolver implements Resolve<boolean> {
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
     this.store.dispatch(factory => factory.searchAsset.load(this.convertToLoadParameters(route.params)));
 
-    return this.store.blockUntil(state => state.searchAsset.activeAsset.assetId !== 0);
+    return this.store.blockUntil(state => !state.searchAsset.loading);
   }
 
   private convertToLoadParameters(routeParameters: Pojo): SearchAssetUrlLoadParameters {

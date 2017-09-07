@@ -2,9 +2,8 @@ import { QuoteEditAssetResolver } from './quote-edit-asset.resolver';
 import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
-  describe('Quote Asset Resolver', () => {
+  describe('Quote Edit Asset Resolver', () => {
     const mockRoute: any = { params: { uuid: 'abc-123' } };
-    const mockState: any = undefined;
     let resolverUnderTest: QuoteEditAssetResolver, mockStore: MockAppStore, loadSpy: jasmine.Spy, resolved: jasmine.Spy;
 
     beforeEach(() => {
