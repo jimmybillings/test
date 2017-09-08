@@ -9,7 +9,6 @@ import {
   Quote,
   Order,
   QuoteOptions,
-  QuoteState,
   CheckoutState,
   OrderType,
   QuoteType,
@@ -21,7 +20,7 @@ import {
   LicenseAgreements,
   AssetLineItem
 } from '../interfaces/commerce.interface';
-import { QuoteStore } from '../stores/quote.store';
+import { AppStore, QuoteShowState } from '../../app.store';
 import { CheckoutStore } from '../stores/checkout.store';
 import { enhanceAsset } from '../interfaces/enhanced-asset';
 
@@ -30,23 +29,23 @@ export class QuoteService {
   constructor(
     private api: ApiService,
     private cartService: CartService,
-    private quoteStore: QuoteStore,
+    private store: AppStore,
     private checkoutStore: CheckoutStore,
     private userService: UserService
   ) { }
 
   // Store Accessors
 
-  public get data(): Observable<QuoteState> {
-    return this.quoteStore.data;
+  public get data(): Observable<QuoteShowState> {
+    return this.store.select(state => state.quoteShow);
   }
 
-  public get state(): QuoteState {
-    return this.quoteStore.state;
+  public get state(): QuoteShowState {
+    return this.store.snapshot(state => state.quoteShow);
   }
 
   public get quote(): Observable<Quote> {
-    return this.data.map((state: QuoteState) => state.data);
+    return this.store.select(state => state.quoteShow.data);
   }
 
   public get projects(): Observable<Project[]> {
@@ -54,7 +53,10 @@ export class QuoteService {
       return data.projects.map((project: Project) => {
         if (project.lineItems) {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
-            lineItem.asset = enhanceAsset(lineItem.asset, { type: 'quoteShowAsset', parentId: data.id });
+            lineItem.asset = enhanceAsset(Object.assign(
+              lineItem.asset, { uuid: lineItem.id }),
+              'quoteShowAsset', data.id
+            );
             return lineItem;
           });
         }
@@ -72,7 +74,7 @@ export class QuoteService {
   }
 
   public get total(): Observable<number> {
-    return this.data.map((state: QuoteState) => state.data.total);
+    return this.data.map((state: QuoteShowState) => state.data.total);
   }
 
   public get paymentType(): Observable<OrderType> {
@@ -84,11 +86,11 @@ export class QuoteService {
   }
 
   public get hasAssets(): Observable<boolean> {
-    return this.data.map((state: QuoteState) => (state.data.itemCount || 0) > 0);
+    return this.data.map((state: QuoteShowState) => (state.data.itemCount || 0) > 0);
   }
 
   public get hasAssetLineItems(): Observable<boolean> {
-    return this.data.map((state: QuoteState) => {
+    return this.data.map((state: QuoteShowState) => {
       return state.data.projects.reduce((previous: number, current: Project) => {
         return current.lineItems ? previous += current.lineItems.length : 0;
       }, 0) > 0;
@@ -96,11 +98,6 @@ export class QuoteService {
   }
 
   // Public Interface
-  public load(quoteId: number, canAdministerQuotes: boolean): Observable<Quote> {
-    return (canAdministerQuotes) ?
-      this.loadForAdminUser(quoteId) : this.loadForNonAdminUser(quoteId);
-  }
-
   public updateOrderInProgress(type: string, data: any): void {
     this.checkoutStore.updateOrderInProgress(type, data);
   }
@@ -153,19 +150,15 @@ export class QuoteService {
   }
 
   public extendExpirationDate(newDate: string): Observable<Quote> {
-    let newQuote: Quote = Object.assign({}, this.state.data, {
-      expirationDate: new Date(newDate).toISOString(),
-      quoteStatus: 'ACTIVE'
-    });
-    let quote: Quote;
+    const newQuote: Quote = Object.assign(
+      {},
+      this.state.data,
+      { expirationDate: new Date(newDate).toISOString(), quoteStatus: 'ACTIVE' }
+    );
+
     return this.update(this.state.data.id, newQuote)
-      .flatMap((quoteResponse: Quote) => {
-        quote = quoteResponse;
-        return this.userService.getById(quote.createdUserId);
-      })
-      .do((user: User) => {
-        this.addRecipientToQuote(quote, user);
-      });
+      .switchMap(quote => this.updateOwnerInformationIn(quote))
+      .do(quote => this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote)));
   }
 
   // Private Methods
@@ -173,21 +166,13 @@ export class QuoteService {
     return this.api.put(Api.Orders, `quote/${id}`, { body: quote, loadingIndicator: 'onBeforeRequest' });
   }
 
-  private loadForAdminUser(quoteId: number): Observable<Quote> {
-    let quote: Quote;
-    return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-      .flatMap((quoteResponse: Quote) => {
-        quote = quoteResponse;
-        return this.userService.getById(quote.createdUserId);
-      })
-      .do((user: User) => {
-        this.addRecipientToQuote(quote, user);
-      });
-  }
-
-  private loadForNonAdminUser(quoteId: number): Observable<Quote> {
-    return this.api.get(Api.Orders, `quote/${quoteId}`, { loadingIndicator: true })
-      .do((quote: Quote) => this.quoteStore.updateQuote(quote));
+  private updateOwnerInformationIn(quote: Quote): Observable<Quote> {
+    return this.userService.getById(quote.ownerUserId)
+      .map((quoteOwner: User) => ({
+        ...quote,
+        createdUserEmailAddress: quoteOwner.emailAddress,
+        createdUserFullName: `${quoteOwner.firstName} ${quoteOwner.lastName}`
+      }));
   }
 
   private purchaseWithCreditCard(): Observable<number> {
@@ -215,14 +200,6 @@ export class QuoteService {
       `quote/${this.state.data.id}/checkout/convertToOrder`,
       { body: { options }, loadingIndicator: true }
     ).map((order: Order) => order.id);
-  }
-
-  private addRecipientToQuote(quote: Quote, user: User) {
-    quote = Object.assign(quote, {
-      createdUserEmailAddress: user.emailAddress,
-      createdUserFullName: `${user.firstName} ${user.lastName}`
-    });
-    this.quoteStore.updateQuote(quote);
   }
 
   private get purchaseOptions(): PurchaseOptions {

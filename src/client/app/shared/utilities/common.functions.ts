@@ -2,7 +2,6 @@ import { Pojo } from '../interfaces/common.interface';
 
 export class Common {
   public static deletePropertiesFromObject(object: Pojo, propertiesToDelete: Array<string>) {
-
     Object.keys(object).forEach((item: string) => {
 
       // Delete any properties on the object if

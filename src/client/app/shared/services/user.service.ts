@@ -17,7 +17,7 @@ export class UserService {
     return this.api.get(Api.Identities, 'user/currentUser');
   }
 
-  public getById(id: number): Observable<any> {
+  public getById(id: number): Observable<User> {
     return this.api.get(Api.Identities, 'user/' + id);
   }
 

@@ -8,18 +8,14 @@ interface InternalCache {
 
 export type AssetType = 'collectionAsset' | 'quoteEditAsset' | 'searchAsset' | 'quoteShowAsset' | 'orderAsset' | 'cartAsset';
 
-export interface AssetTypeAndParent {
-  type: AssetType;
-  parentId?: number;
-}
-
-export function enhanceAsset(asset: commerce.Asset | common.Asset, assetTypeAndParent: AssetTypeAndParent): EnhancedAsset {
-  return Object.assign(new EnhancedAsset(), asset, assetTypeAndParent).normalize();
+export function enhanceAsset(asset: commerce.Asset | common.Asset, type: AssetType, parentId?: Number): EnhancedAsset {
+  return Object.assign(new EnhancedAsset(), asset, { type, parentId }).normalize();
 }
 
 export class EnhancedAsset implements commerce.Asset, common.Asset {
   // defined in two or more of the following sources
   public readonly assetId: number;
+  public readonly type?: AssetType;
   public readonly parentId?: number;
   public readonly uuid?: string;
   public readonly timeStart?: number;
@@ -256,7 +252,7 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
           : undefined;
 
       case 'routerLink':
-        return ['/asset', this.assetId, this.routerParameters];
+        return this.createRouterLink();
 
       case 'subclipDurationFrame':
         return this.framesPerSecond && this.inMarkerFrame && this.outMarkerFrame
@@ -271,6 +267,29 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
 
       default:
         throw new Error(`Value calculation for '${key}' is missing.`);
+    }
+  }
+
+
+  private createRouterLink(): any[] {
+    switch (this.type) {
+      case 'collectionAsset':
+        return [`/collections/${this.parentId}/asset/${this.uuid}`];
+
+      case 'quoteEditAsset':
+        return [`/active-quote/asset/${this.uuid}`];
+
+      case 'searchAsset':
+        return [`/search/asset/${this.assetId}`];
+
+      case 'quoteShowAsset':
+        return [`/quotes/${this.parentId}/asset/${this.uuid}`];
+
+      case 'orderAsset':
+        return [`/orders/${this.parentId}/asset/${this.uuid}`];
+
+      case 'cartAsset':
+        return [`/cart/asset/${this.uuid}`];
     }
   }
 

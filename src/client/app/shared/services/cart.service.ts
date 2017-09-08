@@ -6,12 +6,11 @@ import { Api, ApiBody } from '../interfaces/api.interface';
 import { CurrentUserService } from '../services/current-user.service';
 import { Address, ViewAddress } from '../interfaces/user.interface';
 import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
-import { CartStore } from '../stores/cart.store';
+import { AppStore, CartState } from '../../app.store';
 import { CheckoutStore } from '../stores/checkout.store';
 import {
   Order,
   Cart,
-  CartState,
   Project,
   AssetLineItem,
   AddAssetParameters,
@@ -31,18 +30,18 @@ import { enhanceAsset } from '../interfaces/enhanced-asset';
 @Injectable()
 export class CartService {
   constructor(
-    private cartStore: CartStore,
+    private store: AppStore,
     private checkoutStore: CheckoutStore,
     private api: ApiService,
     private currentUser: CurrentUserService
   ) { }
 
   public get data(): Observable<CartState> {
-    return this.cartStore.data;
+    return this.store.select(state => state.cart);
   }
 
   public get state(): CartState {
-    return this.cartStore.state;
+    return this.store.snapshot(state => state.cart);
   }
 
   public get checkoutState(): CheckoutState {
@@ -62,7 +61,7 @@ export class CartService {
       return data.projects.map((project: Project) => {
         if (project.lineItems) {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
-            lineItem.asset = enhanceAsset(lineItem.asset, { type: 'cartAsset' });
+            lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'cartAsset');
             return lineItem;
           });
         }
@@ -97,23 +96,6 @@ export class CartService {
         return current.lineItems ? previous += current.lineItems.length : 0;
       }, 0) > 0;
     });
-  }
-
-  // Loads the cart and returns just the observable's termination notification,
-  // because our subscribers care about the fact that we are complete, but they
-  // should be getting the data elsewhere.  Also, we take a detour to add a project
-  // if one doesn't exist, which creates a second HTTP call (or just returns
-  // a synchronous observable).  Either way, we flatMap() that second call's observable
-  // to this one, and the termination notification is delayed until both observables
-  // are terminated.  We take the last emitted value only, and map the data out of it.
-  // Finally, we call share() to ensure that the do() call happens exactly once instead
-  // of once per subscriber.
-  public initializeData(): Observable<Cart> {
-    return this.api.get(Api.Orders, 'cart', { loadingIndicator: true })
-      .do(this.replaceCartWith)
-      .takeLast(1)
-      .map(_ => { return {}; })
-      .share();
   }
 
   public purchase(): Observable<number> {
@@ -227,13 +209,13 @@ export class CartService {
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;
     return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options }, loadingIndicator: true })
-      .do(() => this.initializeData().subscribe());
+      .do(() => this.store.dispatch(factory => factory.cart.load()));
   }
 
   private purchaseOnCredit(): Observable<number> {
     const options: AddressPurchaseOptions = this.addressPurchaseOptions;
     return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { body: { options }, loadingIndicator: true })
-      .do(() => this.initializeData().subscribe())
+      .do(() => this.store.dispatch(factory => factory.cart.load()))
       .map((order: Order) => order.id);
   }
 
@@ -293,7 +275,8 @@ export class CartService {
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
   private replaceCartWith = (wholeCartResponse: any): void => {
-    this.cartStore.replaceCartWith(wholeCartResponse);
+    // dispatching a loadSuccess here.. eventually, we can refactor this when the whole cart is migrated to effects
+    this.store.dispatch(factory => factory.cart.loadSuccess(wholeCartResponse));
   }
 
   private get purchaseOptions(): PurchaseOptions {

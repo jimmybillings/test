@@ -46,7 +46,7 @@
       md-icon-button
       class="cart"
       title="{{ 'HEADER.USER_DD_MENU.QUOTE_LINK'| translate}}"
-      [routerLink]="['/activeQuote']">
+      [routerLink]="['/active-quote']">
       <md-icon>work</md-icon>
       <span class="asset-count" *ngIf="cartSize && cartSize > 0">
           <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
@@ -65,7 +65,7 @@
     <a md-menu-item *ngIf="userCan.addToCart() && !userCan.administerQuotes()" [routerLink]="['/cart']">
         <md-icon>shopping_cart</md-icon>{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}
     </a>
-    <a md-menu-item *ngIf="userCan.addToCart() && userCan.administerQuotes()" [routerLink]="['/activeQuote']">
+    <a md-menu-item *ngIf="userCan.addToCart() && userCan.administerQuotes()" [routerLink]="['/active-quote']">
         <md-icon>work</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTE_LINK' | translate}}
     </a>
     <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/quotes']">

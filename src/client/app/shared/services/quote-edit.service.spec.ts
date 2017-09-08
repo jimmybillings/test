@@ -4,25 +4,25 @@ import { Api } from '../interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 import { Common } from '../utilities/common.functions';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Quote Edit Service', () => {
-    let serviceUnderTest: QuoteEditService, mockApi: MockApiService, mockQuoteStore: any, mockFeeConfigStore: any, mockRouter: any;
-    let mockState: any = { data: { id: 3, ownerUserId: 10, total: 90, subTotal: 100, projects: [{ name: 'Project A' }] } };
+    let serviceUnderTest: QuoteEditService, mockApi: MockApiService, mockStore: MockAppStore, mockFeeConfigStore: any,
+      mockRouter: any, quoteLoadSuccessSpy: jasmine.Spy;
+
+    const mockState: any = { data: { id: 3, ownerUserId: 10, total: 90, subTotal: 100, projects: [{ name: 'Project A' }] } };
 
     beforeEach(() => {
       mockApi = new MockApiService();
-      mockQuoteStore = {
-        data: Observable.of(mockState),
-        state: mockState,
-        replaceQuote: jasmine.createSpy('replaceQuote'),
-        updateQuote: jasmine.createSpy('updateQuote')
-      };
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('quoteEdit', mockState);
+      quoteLoadSuccessSpy = mockStore.createActionFactoryMethod('quoteEdit', 'loadSuccess');
       mockFeeConfigStore = {};
       jasmine.addMatchers(mockApiMatchers);
       mockRouter = { navigate: jasmine.createSpy('navigate') };
 
-      serviceUnderTest = new QuoteEditService(mockQuoteStore, mockFeeConfigStore, mockApi.injector);
+      serviceUnderTest = new QuoteEditService(mockStore, mockFeeConfigStore, mockApi.injector);
     });
 
     describe('Store Accessors', () => {
@@ -62,20 +62,23 @@ export function main() {
         });
       });
 
-      describe('get hasHAssets', () => {
+      describe('get hasAssets', () => {
         it('should return false if the quote does not have the itemCount property', () => {
-          mockQuoteStore = { data: Observable.of({ data: {} }) };
-          new QuoteEditService(mockQuoteStore, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
+          mockStore.createStateSection('quoteEdit', { data: {} });
+
+          new QuoteEditService(mockStore, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
         });
 
         it('should return false if the quote itemCount is 0', () => {
-          mockQuoteStore = { data: Observable.of({ data: { itemCount: 0 } }) };
-          new QuoteEditService(mockQuoteStore, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
+          mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
+
+          new QuoteEditService(mockStore, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
         });
 
         it('should return true if the quote itemCount is greater than 0', () => {
-          mockQuoteStore = { data: Observable.of({ data: { itemCount: 1 } }) };
-          new QuoteEditService(mockQuoteStore, null, null).hasAssets.subscribe(d => expect(d).toBe(true));
+          mockStore.createStateSection('quoteEdit', { data: { itemCount: 1 } });
+
+          new QuoteEditService(mockStore, null, null).hasAssets.subscribe(d => expect(d).toBe(true));
         });
       });
 
@@ -96,22 +99,6 @@ export function main() {
       });
     });
 
-    describe('getFocusedQuote()', () => {
-      it('should call the API service correctly', () => {
-        serviceUnderTest.getFocusedQuote();
-
-        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/focused');
-        expect(mockApi.get).toHaveBeenCalledWithLoading(true);
-      });
-
-      it('should replace the quote store with the response', () => {
-        serviceUnderTest.getFocusedQuote().subscribe();
-
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.getResponse);
-      });
-    });
-
     describe('addProject()', () => {
       it('calls the API service correctly', () => {
         serviceUnderTest.addProject();
@@ -124,7 +111,7 @@ export function main() {
       it('replaces the quote store with the response', () => {
         serviceUnderTest.addProject();
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.postResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.postResponse);
       });
     });
 
@@ -139,7 +126,7 @@ export function main() {
 
       it('replaces the quote store with the response of the newly created quote', () => {
         serviceUnderTest.createQuote().subscribe(() => {
-          expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.postResponse);
+          expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.postResponse);
         });
       });
     });
@@ -171,7 +158,7 @@ export function main() {
 
       it('replaces the quote store with the response of the newly created quote', () => {
         serviceUnderTest.cloneQuote(mockState).subscribe(() => {
-          expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.postResponse);
+          expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.postResponse);
         });
       });
     });
@@ -188,7 +175,7 @@ export function main() {
       it('replace the quote store with the response', () => {
         serviceUnderTest.removeProject({ id: '123' } as any);
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.deleteResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.deleteResponse);
       });
     });
 
@@ -251,7 +238,7 @@ export function main() {
       it('replace the quote store with the response', () => {
         serviceUnderTest.addAssetToProjectInQuote({ lineItem: { id: '123', asset: { assetId: 456 } } });
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 
@@ -268,7 +255,7 @@ export function main() {
       it('replace the quote store with the response', () => {
         serviceUnderTest.updateProject({ name: 'New Project Name' } as any);
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 
@@ -293,7 +280,7 @@ export function main() {
           { id: '123', name: 'Project A', clientName: 'Ross Edfort', subtotal: 100 }
         );
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 
@@ -310,7 +297,7 @@ export function main() {
       it('replace the quote store with the response', () => {
         serviceUnderTest.moveLineItemTo({ id: '123' } as any, { id: '456' } as any);
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 
@@ -327,7 +314,7 @@ export function main() {
       it('replace the quote store with the response', () => {
         serviceUnderTest.cloneLineItem({ id: '123' });
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 
@@ -343,7 +330,7 @@ export function main() {
       it('should replace the store with the response', () => {
         serviceUnderTest.removeLineItem({ id: '123' });
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.deleteResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.deleteResponse);
       });
     });
 
@@ -362,7 +349,7 @@ export function main() {
       it('should replace the quote store with the response', () => {
         serviceUnderTest.editLineItem({ id: '123' }, { pricingAttributes: { Distribution: 'Online Streaming' } });
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 
@@ -381,9 +368,10 @@ export function main() {
       });
 
       it('should call the API service correctly - remove', () => {
-        mockQuoteStore.state = {
+        mockStore = new MockAppStore();
+        mockStore.createStateSection('quoteEdit', {
           data: { id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }] }
-        };
+        });
 
         serviceUnderTest.updateQuoteField({ bulkOrderId: '' });
 
@@ -397,7 +385,7 @@ export function main() {
       it('should replace the quote store with the response', () => {
         serviceUnderTest.updateQuoteField({ bulkOrderId: 'abc-123' });
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 
@@ -432,7 +420,7 @@ export function main() {
       it('replaces the current quote', () => {
         serviceUnderTest.addFeeTo({ some: 'project', name: 'projectName' } as any, { some: 'fee' } as any);
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalled();
+        expect(quoteLoadSuccessSpy).toHaveBeenCalled();
       });
     });
 
@@ -449,7 +437,7 @@ export function main() {
       it('replaces the current quote', () => {
         serviceUnderTest.removeFee({ some: 'fee', id: 47 } as any);
 
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalled();
+        expect(quoteLoadSuccessSpy).toHaveBeenCalled();
       });
     });
 

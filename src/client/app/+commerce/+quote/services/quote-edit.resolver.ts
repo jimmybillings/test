@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { QuoteEditService } from '../../../shared/services/quote-edit.service';
-import { Quote } from '../../../shared/interfaces/commerce.interface';
+
+import { AppStore } from '../../../app.store';
 
 @Injectable()
-export class QuoteEditResolver implements Resolve<Quote> {
-  constructor(private quoteEditService: QuoteEditService) { }
+export class QuoteEditResolver implements Resolve<boolean> {
+  constructor(private store: AppStore) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Quote> {
-    return this.quoteEditService.getFocusedQuote();
+  resolve(): Observable<boolean> {
+    this.store.dispatch(factory => factory.quoteEdit.load());
+
+    return this.store.blockUntil(state => !state.quoteEdit.loading);
   }
 }

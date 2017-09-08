@@ -134,7 +134,6 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     case ActiveCollectionActions.LoadFailure.Type:
     case ActiveCollectionActions.SetFailure.Type:
     case ActiveCollectionActions.LoadPageFailure.Type:
-    case ActiveCollectionActions.RemoveAssetFailure.Type:
     case ActiveCollectionActions.AddAssetFailure.Type:
     case ActiveCollectionActions.RemoveAssetFailure.Type:
     case ActiveCollectionActions.UpdateAssetMarkersFailure.Type: {

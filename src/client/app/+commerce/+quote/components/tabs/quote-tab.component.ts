@@ -60,7 +60,7 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
   public onCloneQuote() {
     this.quoteEditService.cloneQuote(this.quoteService.state.data)
       .do(() => {
-        this.router.navigate(['/activeQuote']);
+        this.router.navigate(['/active-quote']);
         this.showSnackBar({
           key: 'QUOTE.CLONE_SUCCESS',
           value: null

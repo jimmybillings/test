@@ -64,10 +64,27 @@ export interface Asset extends Common {
   clipUrl?: string;
 }
 
-export interface AssetLoadParameters {
+// For assets that have no parent, like Search
+export interface SearchAssetLoadParameters {
   readonly id: string;
   readonly share_key?: string;
+  readonly timeStart?: string;
+  readonly timeEnd?: string;
+}
+
+// For assets that are UUID'd children of other objects, like ActiveCollection, Cart, Order, Quote
+export interface ChildAssetLoadParameters {
+  readonly id: string;
+  readonly uuid: string;
+  readonly timeStart?: string;
+  readonly timeEnd?: string;
+}
+
+// Generic combination of SearchAssetLoadParameters and ChildAssetLoadParameters
+export interface AssetLoadParameters {
+  readonly id: string;
   readonly uuid?: string;
+  readonly share_key?: string;
   readonly timeStart?: string;
   readonly timeEnd?: string;
 }
