@@ -1,31 +1,31 @@
 import * as OrderAssetActions from '../actions/order-asset.actions';
-import { Asset, OrderAssetUrlLoadParameters } from '../../shared/interfaces/common.interface';
+import { Asset } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
   readonly activeAsset: Asset;
   readonly loading: boolean;
-  readonly loadParameters: OrderAssetUrlLoadParameters;
+  readonly loadingUuid: string;
 };
 
 export const initialState: State = {
   activeAsset: { assetId: 0, name: '' },
   loading: false,
-  loadParameters: null
+  loadingUuid: null
 };
 
 export function reducer(state: State = initialState, action: OrderAssetActions.Any): State {
   switch (action.type) {
     case OrderAssetActions.Load.Type: {
-      return { ...Common.clone(state), loading: true, loadParameters: action.loadParameters };
+      return { ...Common.clone(state), loading: true, loadingUuid: action.assetUuid };
     }
 
     case OrderAssetActions.LoadSuccess.Type: {
-      return { activeAsset: action.activeAsset, loading: false, loadParameters: null };
+      return { activeAsset: action.activeAsset, loading: false, loadingUuid: null };
     }
 
     case OrderAssetActions.LoadFailure.Type: {
-      return { ...Common.clone(state), loading: false, loadParameters: null };
+      return { ...Common.clone(state), loading: false, loadingUuid: null };
     }
 
     default: {

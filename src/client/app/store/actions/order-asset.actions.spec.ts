@@ -9,12 +9,12 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'load',
-        parameters: [47, { some: 'load parameters' }]
+        parameters: [47, 'some UUID']
       },
       expectedAction: {
         type: '[Order Asset] Load',
         orderId: 47,
-        loadParameters: { some: 'load parameters' }
+        assetUuid: 'some UUID'
       }
     });
 

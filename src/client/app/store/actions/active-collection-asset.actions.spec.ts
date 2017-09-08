@@ -9,11 +9,11 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'load',
-        parameters: [{ some: 'load parameters' }]
+        parameters: ['some UUID']
       },
       expectedAction: {
         type: '[Active Collection Asset] Load',
-        loadParameters: { some: 'load parameters' }
+        assetUuid: 'some UUID'
       }
     });
 

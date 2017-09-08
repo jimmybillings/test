@@ -48,7 +48,7 @@ export function main() {
       },
       inputAction: {
         type: CartAssetActions.Load.Type,
-        loadParameters: { uuid: 'abc-123' }
+        assetUuid: 'abc-123'
       },
       outputActionFactories: {
         success: {
@@ -76,7 +76,7 @@ export function main() {
       },
       inputAction: {
         type: CartAssetActions.Load.Type,
-        loadParameters: { uuid: 'abc-123' }
+        assetUuid: 'abc-123'
       },
       outputActionFactories: {
         success: {
@@ -94,7 +94,8 @@ export function main() {
       state: [
         {
           storeSectionName: 'cartAsset',
-          value: { loadParameters: { uuid: 'abc-123' } }
+          propertyName: 'loadingUuid',
+          value: 'abc-123'
         },
         {
           storeSectionName: 'cart',

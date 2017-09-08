@@ -22,11 +22,11 @@ export class QuoteEditAssetEffects {
 
   @Effect() loadAssetOnQuoteLoadSuccess: Observable<Action> = this.actions.ofType(QuoteEditActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
-    .filter(([action, state]: [QuoteEditActions.LoadSuccess, AppState]) => state.quoteEditAsset.loadParameters !== null)
+    .filter(([action, state]: [QuoteEditActions.LoadSuccess, AppState]) => state.quoteEditAsset.loadingUuid !== null)
     .map(([action, state]: [QuoteEditActions.LoadSuccess, AppState]) => {
-      const extraLoadParams: Common.QuoteAssetApiLoadParameters
-        = this.mergeQuoteAssetWithLoadParameters(state.quoteEdit.data, state.quoteEditAsset.loadParameters);
-      return this.store.create(factory => factory.quoteEditAsset.loadAfterQuoteAvailable(extraLoadParams));
+      const loadParameters: Common.ChildAssetLoadParameters
+        = this.createAssetLoadParametersFor(state.quoteEdit.data, state.quoteEditAsset.loadingUuid);
+      return this.store.create(factory => factory.quoteEditAsset.loadAfterQuoteAvailable(loadParameters));
     });
 
   @Effect()
@@ -37,33 +37,20 @@ export class QuoteEditAssetEffects {
       if (quote.id === 0) {
         mapper = (factory) => factory.quoteEdit.load();
       } else {
-        const extraLoadParams: Common.QuoteAssetApiLoadParameters
-          = this.mergeQuoteAssetWithLoadParameters(quote, action.loadParameters);
-        mapper = (factory) => factory.quoteEditAsset.loadAfterQuoteAvailable(extraLoadParams);
+        const loadParameters: Common.ChildAssetLoadParameters = this.createAssetLoadParametersFor(quote, action.assetUuid);
+        mapper = (factory) => factory.quoteEditAsset.loadAfterQuoteAvailable(loadParameters);
       }
       return this.store.create(mapper);
     });
 
-  constructor(
-    private actions: Actions,
-    private store: AppStore,
-    private service: AssetService
-  ) { }
+  constructor(private actions: Actions, private store: AppStore, private service: AssetService) { }
 
-  private mergeQuoteAssetWithLoadParameters(
-    quote: Commerce.Quote,
-    loadParameters: Common.QuoteAssetUrlLoadParameters
-  ): Common.QuoteAssetApiLoadParameters {
-    const lineItems: Commerce.AssetLineItem[] = quote.projects
-      .reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
+  private createAssetLoadParametersFor(quote: Commerce.Quote, assetUuid: string): Common.ChildAssetLoadParameters {
+    const lineItems: Commerce.AssetLineItem[] =
+      quote.projects.reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
 
-    const asset: Commerce.Asset = lineItems
-      .find(lineItem => lineItem.id === loadParameters.uuid).asset;
+    const asset: Commerce.Asset = lineItems.find(lineItem => lineItem.id === assetUuid).asset;
 
-    return this.extraLoadParametersFrom(asset);
-  }
-
-  private extraLoadParametersFrom(asset: Commerce.Asset): Common.QuoteAssetApiLoadParameters {
     return {
       id: String(asset.assetId),
       uuid: String(asset.uuid),

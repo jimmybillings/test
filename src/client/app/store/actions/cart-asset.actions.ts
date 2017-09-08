@@ -1,11 +1,11 @@
 import { Action } from '@ngrx/store';
-import { Asset, CartAssetUrlLoadParameters } from '../../shared/interfaces/common.interface';
+import { Asset, ChildAssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 export class ActionFactory {
-  public load(parameters: CartAssetUrlLoadParameters): Load {
-    return new Load(parameters);
+  public load(assetUuid: string): Load {
+    return new Load(assetUuid);
   }
 }
 
@@ -14,7 +14,7 @@ export class InternalActionFactory extends ActionFactory {
     return new LoadSuccess(activeAsset);
   }
 
-  public loadAfterCartAvailable(loadParameters: CartAssetUrlLoadParameters): LoadAfterCartAvailable {
+  public loadAfterCartAvailable(loadParameters: ChildAssetLoadParameters): LoadAfterCartAvailable {
     return new LoadAfterCartAvailable(loadParameters);
   }
 
@@ -26,13 +26,13 @@ export class InternalActionFactory extends ActionFactory {
 export class Load implements Action {
   public static readonly Type = '[Cart Asset] Load';
   public readonly type = Load.Type;
-  constructor(public readonly loadParameters: CartAssetUrlLoadParameters) { }
+  constructor(public readonly assetUuid: string) { }
 }
 
 export class LoadAfterCartAvailable implements Action {
   public static readonly Type = '[Cart Asset] Load After Cart Available';
   public readonly type = LoadAfterCartAvailable.Type;
-  constructor(public readonly loadParameters: CartAssetUrlLoadParameters) { }
+  constructor(public readonly loadParameters: ChildAssetLoadParameters) { }
 }
 
 export class LoadSuccess implements Action {

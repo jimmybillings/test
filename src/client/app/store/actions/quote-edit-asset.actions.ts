@@ -1,11 +1,11 @@
 import { Action } from '@ngrx/store';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
-import { QuoteAssetUrlLoadParameters, Asset } from '../../shared/interfaces/common.interface';
+import { Asset, ChildAssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 export class ActionFactory {
-  public load(parameters: QuoteAssetUrlLoadParameters): Load {
-    return new Load(parameters);
+  public load(assetUuid: string): Load {
+    return new Load(assetUuid);
   }
 }
 
@@ -14,7 +14,7 @@ export class InternalActionFactory extends ActionFactory {
     return new LoadSuccess(activeAsset);
   }
 
-  public loadAfterQuoteAvailable(loadParameters: QuoteAssetUrlLoadParameters): LoadAfterQuoteAvailable {
+  public loadAfterQuoteAvailable(loadParameters: ChildAssetLoadParameters): LoadAfterQuoteAvailable {
     return new LoadAfterQuoteAvailable(loadParameters);
   }
 
@@ -26,13 +26,13 @@ export class InternalActionFactory extends ActionFactory {
 export class Load implements Action {
   public static readonly Type = '[Quote Edit Asset] Load';
   public readonly type = Load.Type;
-  constructor(public readonly loadParameters: QuoteAssetUrlLoadParameters) { }
+  constructor(public readonly assetUuid: string) { }
 }
 
 export class LoadAfterQuoteAvailable implements Action {
   public static readonly Type = '[Quote Edit Asset] Load After Quote Available';
   public readonly type = LoadAfterQuoteAvailable.Type;
-  constructor(public readonly loadParameters: QuoteAssetUrlLoadParameters) { }
+  constructor(public readonly loadParameters: ChildAssetLoadParameters) { }
 }
 
 export class LoadSuccess implements Action {

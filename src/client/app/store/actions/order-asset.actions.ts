@@ -1,16 +1,16 @@
 import { Action } from '@ngrx/store';
-import { Asset, OrderAssetUrlLoadParameters } from '../../shared/interfaces/common.interface';
+import { Asset, ChildAssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 export class ActionFactory {
-  public load(orderId: number, loadParameters: OrderAssetUrlLoadParameters): Load {
-    return new Load(orderId, loadParameters);
+  public load(orderId: number, assetUuid: string): Load {
+    return new Load(orderId, assetUuid);
   }
 }
 
 export class InternalActionFactory extends ActionFactory {
-  public loadAfterOrderAvailable(loadParameters: OrderAssetUrlLoadParameters): LoadAfterOrderAvailable {
+  public loadAfterOrderAvailable(loadParameters: ChildAssetLoadParameters): LoadAfterOrderAvailable {
     return new LoadAfterOrderAvailable(loadParameters);
   }
 
@@ -26,13 +26,13 @@ export class InternalActionFactory extends ActionFactory {
 export class Load implements Action {
   public static readonly Type = '[Order Asset] Load';
   public readonly type = Load.Type;
-  constructor(public readonly orderId: number, public readonly loadParameters: OrderAssetUrlLoadParameters) { }
+  constructor(public readonly orderId: number, public readonly assetUuid: string) { }
 }
 
 export class LoadAfterOrderAvailable implements Action {
   public static readonly Type = '[Order Asset] Load After Order Available';
   public readonly type = LoadAfterOrderAvailable.Type;
-  constructor(public readonly loadParameters: OrderAssetUrlLoadParameters) { }
+  constructor(public readonly loadParameters: ChildAssetLoadParameters) { }
 }
 
 export class LoadSuccess implements Action {

@@ -16,9 +16,9 @@ export function main() {
       customTests: [
         {
           it: 'returns the state with loading: true and new load parameters',
-          actionParameters: { quoteId: 47, loadParameters: { some: 'params' } },
+          actionParameters: { quoteId: 47, assetUuid: 'some UUID' },
           previousState: QuoteShowAssetState.initialState,
-          expectedNextState: { ...QuoteShowAssetState.initialState, loading: true, loadParameters: { some: 'params' } }
+          expectedNextState: { ...QuoteShowAssetState.initialState, loading: true, loadingUuid: 'some UUID' }
         }
       ]
     });
@@ -27,10 +27,10 @@ export function main() {
       actionClassName: 'LoadSuccess',
       customTests: [
         {
-          it: 'returns the state with the new asset, loading: false, and loadParameters: null',
+          it: 'returns the state with the new asset, loading: false, and loadingUuid: null',
           actionParameters: { activeAsset: { some: 'asset' } },
-          previousState: { ...QuoteShowAssetState.initialState, loading: true, loadParameters: { some: 'params' } },
-          expectedNextState: { activeAsset: { some: 'asset' }, loading: false, loadParameters: null }
+          previousState: { ...QuoteShowAssetState.initialState, loading: true, loadingUuid: 'some UUID' },
+          expectedNextState: { activeAsset: { some: 'asset' }, loading: false, loadingUuid: null }
         }
       ]
     });
@@ -43,8 +43,8 @@ export function main() {
       customTests: [
         {
           it: 'returns the state with loading: false',
-          previousState: { ...QuoteShowAssetState.initialState, loading: true, loadParameters: { some: 'params' } },
-          expectedNextState: { ...QuoteShowAssetState.initialState, loading: false, loadParameters: null }
+          previousState: { ...QuoteShowAssetState.initialState, loading: true, loadingUuid: 'some UUID' },
+          expectedNextState: { ...QuoteShowAssetState.initialState, loading: false, loadingUuid: null }
         }
       ]
     });

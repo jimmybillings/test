@@ -16,9 +16,9 @@ export function main() {
       customTests: [
         {
           it: 'returns the state with loading: true and new load parameters',
-          actionParameters: { loadParameters: { some: 'params' } },
+          actionParameters: { assetUuid: 'some UUID' },
           previousState: ActiveCollectionAssetState.initialState,
-          expectedNextState: { ...ActiveCollectionAssetState.initialState, loading: true, loadParameters: { some: 'params' } }
+          expectedNextState: { ...ActiveCollectionAssetState.initialState, loading: true, loadingUuid: 'some UUID' }
         }
       ]
     });
@@ -27,10 +27,10 @@ export function main() {
       actionClassName: 'LoadSuccess',
       customTests: [
         {
-          it: 'returns the state with the new asset, loading: false, and loadParameters: null',
+          it: 'returns the state with the new asset, loading: false, and loadingUuid: null',
           actionParameters: { activeAsset: { some: 'asset' } },
-          previousState: { ...ActiveCollectionAssetState.initialState, loading: true, loadParameters: { some: 'params' } },
-          expectedNextState: { activeAsset: { some: 'asset' }, loading: false, loadParameters: null }
+          previousState: { ...ActiveCollectionAssetState.initialState, loading: true, loadingUuid: 'some UUID' },
+          expectedNextState: { activeAsset: { some: 'asset' }, loading: false, loadingUuid: null }
         }
       ]
     });
@@ -43,8 +43,8 @@ export function main() {
       customTests: [
         {
           it: 'returns the state with loading: false',
-          previousState: { ...ActiveCollectionAssetState.initialState, loading: true, loadParameters: { some: 'params' } },
-          expectedNextState: { ...ActiveCollectionAssetState.initialState, loading: false, loadParameters: null }
+          previousState: { ...ActiveCollectionAssetState.initialState, loading: true, loadingUuid: 'some UUID' },
+          expectedNextState: { ...ActiveCollectionAssetState.initialState, loading: false, loadingUuid: null }
         }
       ]
     });

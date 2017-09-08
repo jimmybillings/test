@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
 import { AppStore } from '../../app.store';
-import { Pojo, SearchAssetUrlLoadParameters } from '../../shared/interfaces/common.interface';
+import { Pojo, SearchAssetLoadParameters } from '../../shared/interfaces/common.interface';
 
 @Injectable()
 export class SearchAssetResolver implements Resolve<boolean> {
@@ -15,7 +15,7 @@ export class SearchAssetResolver implements Resolve<boolean> {
     return this.store.blockUntil(state => !state.searchAsset.loading);
   }
 
-  private convertToLoadParameters(routeParameters: Pojo): SearchAssetUrlLoadParameters {
+  private convertToLoadParameters(routeParameters: Pojo): SearchAssetLoadParameters {
     return {
       id: routeParameters['id'],
       share_key: routeParameters['share_key'],

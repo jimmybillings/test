@@ -22,11 +22,11 @@ export class CartAssetEffects {
 
   @Effect() loadAssetOnCartLoadSuccess: Observable<Action> = this.actions.ofType(CartActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
-    .filter(([action, state]: [CartActions.LoadSuccess, AppState]) => state.cartAsset.loadParameters !== null)
+    .filter(([action, state]: [CartActions.LoadSuccess, AppState]) => state.cartAsset.loadingUuid !== null)
     .map(([action, state]: [CartActions.LoadSuccess, AppState]) => {
-      const extraLoadParams: Common.CartAssetApiLoadParameters
-        = this.mergeCartAssetWithLoadParameters(state.cart.data, state.cartAsset.loadParameters);
-      return this.store.create(factory => factory.cartAsset.loadAfterCartAvailable(extraLoadParams));
+      const loadParameters: Common.ChildAssetLoadParameters
+        = this.createAssetLoadParametersFor(state.cart.data, state.cartAsset.loadingUuid);
+      return this.store.create(factory => factory.cartAsset.loadAfterCartAvailable(loadParameters));
     });
 
   @Effect()
@@ -37,33 +37,20 @@ export class CartAssetEffects {
       if (cart.id === null) {
         mapper = (factory) => factory.cart.load();
       } else {
-        const extraLoadParams: Common.CartAssetApiLoadParameters
-          = this.mergeCartAssetWithLoadParameters(cart, action.loadParameters);
-        mapper = (factory) => factory.cartAsset.loadAfterCartAvailable(extraLoadParams);
+        const loadParameters: Common.ChildAssetLoadParameters = this.createAssetLoadParametersFor(cart, action.assetUuid);
+        mapper = (factory) => factory.cartAsset.loadAfterCartAvailable(loadParameters);
       }
       return this.store.create(mapper);
     });
 
-  constructor(
-    private actions: Actions,
-    private store: AppStore,
-    private service: AssetService
-  ) { }
+  constructor(private actions: Actions, private store: AppStore, private service: AssetService) { }
 
-  private mergeCartAssetWithLoadParameters(
-    cart: Commerce.Cart,
-    loadParameters: Common.CartAssetUrlLoadParameters
-  ): Common.CartAssetApiLoadParameters {
-    const lineItems: Commerce.AssetLineItem[] = cart.projects
-      .reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
+  private createAssetLoadParametersFor(cart: Commerce.Cart, assetUuid: string): Common.ChildAssetLoadParameters {
+    const lineItems: Commerce.AssetLineItem[] =
+      cart.projects.reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
 
-    const asset: Commerce.Asset = lineItems
-      .find(lineItem => lineItem.id === loadParameters.uuid).asset;
+    const asset: Commerce.Asset = lineItems.find(lineItem => lineItem.id === assetUuid).asset;
 
-    return this.extraLoadParametersFrom(asset);
-  }
-
-  private extraLoadParametersFrom(asset: Commerce.Asset): Common.CartAssetApiLoadParameters {
     return {
       id: String(asset.assetId),
       uuid: String(asset.uuid),

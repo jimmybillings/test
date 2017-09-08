@@ -1,11 +1,11 @@
 import * as SearchAssetActions from '../actions/search-asset.actions';
-import { Asset, SearchAssetUrlLoadParameters } from '../../shared/interfaces/common.interface';
+import { Asset, SearchAssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
   readonly activeAsset: Asset;
   readonly loading: boolean;
-  readonly loadParameters: SearchAssetUrlLoadParameters;
+  readonly loadParameters: SearchAssetLoadParameters;
 };
 
 export const initialState: State = {

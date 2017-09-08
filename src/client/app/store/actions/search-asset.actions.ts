@@ -1,10 +1,10 @@
 import { Action } from '@ngrx/store';
-import { Asset, SearchAssetUrlLoadParameters } from '../../shared/interfaces/common.interface';
+import { Asset, SearchAssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 export class ActionFactory {
-  public load(parameters: SearchAssetUrlLoadParameters): Load {
+  public load(parameters: SearchAssetLoadParameters): Load {
     return new Load(parameters);
   }
 
@@ -26,7 +26,7 @@ export class InternalActionFactory extends ActionFactory {
 export class Load implements Action {
   public static readonly Type = '[Search Asset] Load';
   public readonly type = Load.Type;
-  constructor(public readonly loadParameters: SearchAssetUrlLoadParameters) { }
+  constructor(public readonly loadParameters: SearchAssetLoadParameters) { }
 }
 
 export class LoadSuccess implements Action {

@@ -16,9 +16,9 @@ export function main() {
       customTests: [
         {
           it: 'returns the state with loading: true and new load parameters',
-          actionParameters: { loadParameters: { some: 'params' } },
+          actionParameters: { assetUuid: 'some UUID' },
           previousState: CartAssetState.initialState,
-          expectedNextState: { ...CartAssetState.initialState, loading: true, loadParameters: { some: 'params' } }
+          expectedNextState: { ...CartAssetState.initialState, loading: true, loadingUuid: 'some UUID' }
         }
       ]
     });
@@ -27,10 +27,10 @@ export function main() {
       actionClassName: 'LoadSuccess',
       customTests: [
         {
-          it: 'returns the state with the new asset, loading: false, and loadParameters: null',
+          it: 'returns the state with the new asset, loading: false, and loadingUuid: null',
           actionParameters: { activeAsset: { some: 'asset' } },
-          previousState: { ...CartAssetState.initialState, loading: true, loadParameters: { some: 'params' } },
-          expectedNextState: { activeAsset: { some: 'asset' }, loading: false, loadParameters: null }
+          previousState: { ...CartAssetState.initialState, loading: true, loadingUuid: 'some UUID' },
+          expectedNextState: { activeAsset: { some: 'asset' }, loading: false, loadingUuid: null }
         }
       ]
     });
@@ -43,8 +43,8 @@ export function main() {
       customTests: [
         {
           it: 'returns the state with loading: false',
-          previousState: { ...CartAssetState.initialState, loading: true, loadParameters: { some: 'params' } },
-          expectedNextState: { ...CartAssetState.initialState, loading: false, loadParameters: null }
+          previousState: { ...CartAssetState.initialState, loading: true, loadingUuid: 'some UUID' },
+          expectedNextState: { ...CartAssetState.initialState, loading: false, loadingUuid: null }
         }
       ]
     });

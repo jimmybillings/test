@@ -28,7 +28,7 @@ export function main() {
       it('dispatches an action', () => {
         resolverUnderTest.resolve(mockRoute).subscribe(resolverSubscriptionFunction);
 
-        mockStore.expectDispatchFor(loadSpy, 1234, { uuid: 'ABCD' });
+        mockStore.expectDispatchFor(loadSpy, 1234, 'ABCD');
       });
 
       it('doesn\'t return when the loading flag is true', () => {

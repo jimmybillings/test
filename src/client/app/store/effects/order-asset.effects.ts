@@ -22,11 +22,11 @@ export class OrderAssetEffects {
 
   @Effect() loadAssetOnOrderLoadSuccess: Observable<Action> = this.actions.ofType(OrderActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
-    .filter(([action, state]: [OrderActions.LoadSuccess, AppState]) => state.orderAsset.loadParameters !== null)
+    .filter(([action, state]: [OrderActions.LoadSuccess, AppState]) => state.orderAsset.loadingUuid !== null)
     .map(([action, state]: [OrderActions.LoadSuccess, AppState]) => {
-      const extraLoadParams: Common.OrderAssetApiLoadParameters
-        = this.mergeOrderAssetWithLoadParameters(state.order.activeOrder, state.orderAsset.loadParameters);
-      return this.store.create(factory => factory.orderAsset.loadAfterOrderAvailable(extraLoadParams));
+      const loadParameters: Common.ChildAssetLoadParameters
+        = this.createAssetLoadParametersFor(state.order.activeOrder, state.orderAsset.loadingUuid);
+      return this.store.create(factory => factory.orderAsset.loadAfterOrderAvailable(loadParameters));
     });
 
   @Effect()
@@ -37,33 +37,20 @@ export class OrderAssetEffects {
       if (order.id !== action.orderId) {
         mapper = (factory) => factory.order.load(action.orderId);
       } else {
-        const extraLoadParams: Common.OrderAssetApiLoadParameters
-          = this.mergeOrderAssetWithLoadParameters(order, action.loadParameters);
-        mapper = (factory) => factory.orderAsset.loadAfterOrderAvailable(extraLoadParams);
+        const loadParameters: Common.ChildAssetLoadParameters = this.createAssetLoadParametersFor(order, action.assetUuid);
+        mapper = (factory) => factory.orderAsset.loadAfterOrderAvailable(loadParameters);
       }
       return this.store.create(mapper);
     });
 
-  constructor(
-    private actions: Actions,
-    private store: AppStore,
-    private service: AssetService
-  ) { }
+  constructor(private actions: Actions, private store: AppStore, private service: AssetService) { }
 
-  private mergeOrderAssetWithLoadParameters(
-    order: Commerce.Order,
-    loadParameters: Common.OrderAssetUrlLoadParameters
-  ): Common.OrderAssetApiLoadParameters {
-    const lineItems: Commerce.AssetLineItem[] = order.projects
-      .reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
+  private createAssetLoadParametersFor(order: Commerce.Order, assetUuid: string): Common.ChildAssetLoadParameters {
+    const lineItems: Commerce.AssetLineItem[] =
+      order.projects.reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
 
-    const asset: Commerce.Asset = lineItems
-      .find(lineItem => lineItem.id === loadParameters.uuid).asset;
+    const asset: Commerce.Asset = lineItems.find(lineItem => lineItem.id === assetUuid).asset;
 
-    return this.extraLoadParametersFrom(asset);
-  }
-
-  private extraLoadParametersFrom(asset: Commerce.Asset): Common.OrderAssetApiLoadParameters {
     return {
       id: String(asset.assetId),
       uuid: String(asset.uuid),

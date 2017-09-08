@@ -50,7 +50,7 @@ export function main() {
       inputAction: {
         type: OrderAssetActions.Load.Type,
         orderId: 47,
-        loadParameters: { uuid: 'abc-123' }
+        assetUuid: 'abc-123'
       },
       outputActionFactories: {
         success: {
@@ -78,7 +78,7 @@ export function main() {
       inputAction: {
         type: OrderAssetActions.Load.Type,
         orderId: 47,
-        loadParameters: { uuid: 'abc-123' }
+        assetUuid: 'abc-123'
       },
       outputActionFactories: {
         success: {
@@ -96,7 +96,8 @@ export function main() {
       state: [
         {
           storeSectionName: 'orderAsset',
-          value: { loadParameters: { uuid: 'abc-123' } }
+          propertyName: 'loadingUuid',
+          value: 'abc-123'
         },
         {
           storeSectionName: 'order',

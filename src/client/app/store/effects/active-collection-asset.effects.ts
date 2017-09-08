@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 
 import * as ActiveCollectionAssetActions from '../actions/active-collection-asset.actions';
 import * as ActiveCollectionActions from '../actions/active-collection.actions';
-import { Asset, CollectionAssetApiLoadParameters, CollectionAssetUrlLoadParameters } from '../../shared/interfaces/common.interface';
+import { Asset, ChildAssetLoadParameters } from '../../shared/interfaces/common.interface';
 import { AppStore, AppState, InternalActionFactoryMapper } from '../../app.store';
 import { AssetService } from '../services/asset.service';
 import { Collection } from '../../shared/interfaces/collection.interface';
@@ -25,11 +25,11 @@ export class ActiveCollectionAssetEffects {
   public loadAssetOnCollectionLoadSuccess: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
     .filter(([action, state]: [ActiveCollectionActions.LoadSuccess, AppState]) => {
-      return state.activeCollectionAsset.loadParameters !== null;
+      return state.activeCollectionAsset.loadingUuid !== null;
     }).map(([action, state]: [ActiveCollectionActions.LoadSuccess, AppState]) => {
-      const extraLoadParams: CollectionAssetApiLoadParameters =
-        this.mergeAssetWithLoadParameters(state.activeCollection.collection, state.activeCollectionAsset.loadParameters);
-      return this.store.create(factory => factory.activeCollectionAsset.loadAfterCollectionAvailable(extraLoadParams));
+      const loadParameters: ChildAssetLoadParameters =
+        this.createAssetLoadParametersFor(state.activeCollection.collection, state.activeCollectionAsset.loadingUuid);
+      return this.store.create(factory => factory.activeCollectionAsset.loadAfterCollectionAvailable(loadParameters));
     });
 
   @Effect()
@@ -40,29 +40,17 @@ export class ActiveCollectionAssetEffects {
       if (collection.id === null) {
         mapper = (factory) => factory.activeCollection.load();
       } else {
-        const extraLoadParams: CollectionAssetApiLoadParameters =
-          this.mergeAssetWithLoadParameters(collection, action.loadParameters);
-        mapper = (factory) => factory.activeCollectionAsset.loadAfterCollectionAvailable(extraLoadParams);
+        const loadParameters: ChildAssetLoadParameters = this.createAssetLoadParametersFor(collection, action.assetUuid);
+        mapper = (factory) => factory.activeCollectionAsset.loadAfterCollectionAvailable(loadParameters);
       }
       return this.store.create(mapper);
     });
 
-  constructor(
-    private actions: Actions,
-    private store: AppStore,
-    private service: AssetService
-  ) { }
+  constructor(private actions: Actions, private store: AppStore, private service: AssetService) { }
 
-  private mergeAssetWithLoadParameters(
-    collection: Collection,
-    loadParameters: CollectionAssetUrlLoadParameters
-  ): CollectionAssetApiLoadParameters {
-    const asset: Asset = collection.assets.items.find(asset => asset.uuid === loadParameters.uuid);
+  private createAssetLoadParametersFor(collection: Collection, assetUuid: string): ChildAssetLoadParameters {
+    const asset: Asset = collection.assets.items.find(asset => asset.uuid === assetUuid);
 
-    return this.extraLoadParametersFrom(asset);
-  }
-
-  private extraLoadParametersFrom(asset: Asset): CollectionAssetApiLoadParameters {
     return {
       id: String(asset.assetId),
       uuid: String(asset.uuid),

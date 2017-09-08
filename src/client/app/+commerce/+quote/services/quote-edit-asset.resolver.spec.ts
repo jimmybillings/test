@@ -17,7 +17,7 @@ export function main() {
       it('should dispatch the proper action', () => {
         resolverUnderTest.resolve(mockRoute);
 
-        expect(loadSpy).toHaveBeenCalledWith({ uuid: 'abc-123' });
+        expect(loadSpy).toHaveBeenCalledWith('abc-123');
       });
 
       it('Should not resolve if the Quote Asset store has no data from the server', () => {

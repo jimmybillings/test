@@ -2,18 +2,18 @@ import { ActionFactory, InternalActionFactory } from './quote-edit-asset.actions
 import { ActionsSpecHelper } from '../../store/spec-helpers/actions.spec-helper';
 
 export function main() {
-  describe('Quote Asset Action Factory', () => {
+  describe('Quote Edit Asset Action Factory', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'load',
-        parameters: [{ some: 'load parameters' }]
+        parameters: ['some UUID']
       },
       expectedAction: {
         type: '[Quote Edit Asset] Load',
-        loadParameters: { some: 'load parameters' }
+        assetUuid: 'some UUID'
       }
     });
 
