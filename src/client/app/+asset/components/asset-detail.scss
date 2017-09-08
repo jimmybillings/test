@@ -3,8 +3,29 @@ section.preview-bk {
   overflow: hidden;
   width: 100%;
   position: relative;
-  padding-top: rem(1.8);
-  padding-bottom: rem(7.4);
+  padding-top: 0;
+  padding-bottom: 74px;
+  .breadcrumb-container {
+    padding: 5px 0;
+    position: relative;
+    .breadcrumb {
+      a[md-button],
+      .breadcrumb-current {
+        line-height: 40px;
+      }
+      .breadcrumb-separator {
+        display: inline-block;
+        &::before {
+          top: -18px;
+        }
+      }
+      .back-to-search {
+        margin-right: 2px;
+        margin-left: -8px;
+      }
+    }
+
+  }
   &.theater {
     height: 100%;
     @include mat-elevation(2);
@@ -24,13 +45,10 @@ section.preview-bk {
       position: relative;
       z-index: 1;
       @media screen and (max-width: $layout-breakpoint-xs)  {
-        margin-right: rem(1.6);    
-        margin-left: rem(1.6);    
+        margin-right: 6px;    
+        margin-left: 6px;    
       }
     }
-    // & > div:first-child > div {
-    //   z-index: 2;
-    // }
   }
   .preview {
     position: relative;
@@ -49,29 +67,17 @@ section.preview-bk {
     }
   }
   .toolbar-actions {
-    display: flex;
-    height: 100%;
-    min-height: 100%;
-    max-height: 100%;
-    md-menu {
-      z-index: 8;
-    }
-    nav.asset-options {
-      display: flex;
-      button[md-icon-button] {
-        margin-left: rem(.6);
-      }
-    }
+    text-align: right;
   }
   div.primary-info {
     box-shadow: none;
-    padding:rem(1.6);
+    padding: 16px;
     position: relative;
     height: 100%;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       padding: 0;
       background-color: transparent;
-      min-height: rem(33.5);
+      min-height: 335px;
     }
     div.primary-content {
       @media screen and (max-width: $layout-breakpoint-sm) and (min-width: $layout-breakpoint-xs)   {
@@ -81,17 +87,17 @@ section.preview-bk {
       }
       .title-txt {
         margin-top: 0;
-        margin-bottom: rem(1.2);
+        margin-bottom: 12px;
         font-size: 1.2em;
         opacity: .5;
         @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-          margin-top: rem(1.2);
+          margin-top: 12px;
           font-size: 1em;
           opacity: .65;
         }
       }
       .description-txt {
-        height: rem(12.1);
+        height: 121px;
         overflow-y: scroll;
         margin-top: 0;
         margin-bottom: 0;
@@ -101,16 +107,16 @@ section.preview-bk {
         @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) {
           height: auto;
           font-size: .9em;
-          margin-top: rem(.4);
-          margin-bottom: rem(16.0);
+          margin-top: 4px;
+          margin-bottom: 160px;
         }
       }
       .list-price, .calculated-price {
         position: absolute;
-        bottom: rem(13.0);
-        right: rem(3.7);
+        bottom: 130px;
+        right: 37px;
         @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-          bottom: rem(9.0);
+          bottom: 90px;
           right: 0;
         }
         span {
@@ -120,7 +126,7 @@ section.preview-bk {
           line-height: 1;
           &.starting {
             font-size: 1.1em;
-            margin-right: rem(.5);
+            margin-right: 5px;
           }
           &.price::first-letter {
             font-size: .7em;
@@ -132,13 +138,13 @@ section.preview-bk {
 
       .contact-us-pricing {
         width: calc(100% - 32px);
-        bottom: rem(13.5);
+        bottom: 135px;
         display: block;
         font-size: 1.12em;
         font-weight: 200;
         line-height: 1.1;
-        margin-left: rem(1.6);
-        margin-right: rem(1.6);
+        margin-left: 16px;
+        margin-right: 16px;
         position: absolute;
         right: 0;
         text-align: center;
@@ -149,18 +155,18 @@ section.preview-bk {
       md-card-actions {
         md-select {
           width: 100%;
-          margin-bottom: rem(2);
+          margin-bottom: 20px;
         }
         width: calc(100% - 42px);
         margin: 0;
-        padding-left: rem(1.6); 
-        padding-right: rem(.8); 
+        padding-left: 16px; 
+        padding-right: 8px; 
         position: absolute;
-        bottom: rem(1.6);
+        bottom: 16px;
         @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
           padding-left: 0; 
           padding-right: 0;
-          bottom: rem(-2.0);
+          bottom: -20px;
           width: 100%;
         }
         button {
@@ -198,36 +204,32 @@ section.preview-bk {
   .photo-container {
     text-align: center;
     img {
-      max-height: rem(63.5);
-      min-height: rem(38.0);
+      max-height: 635px;
+      min-height: 380px;
       max-width: 100%;
       vertical-align: middle;
       @media screen and (max-width: $layout-breakpoint-sm)  {
-        max-height: rem(50.5);
-        min-height: rem(23.0);
+        max-height: 505px;
+        min-height: 230px;
       }
       @media screen and (max-width: $layout-breakpoint-xs)  {
-        max-height: rem(47.5);
-        min-height: rem(23.0);
+        max-height: 475px;
+        min-height: 230px;
       }
     }
   }
 }
 div.primary-info-t {
-  height: rem(4.8);
+  height: 40px;
   div.primary-content-t {
-    .back-to-search {
-      margin-right: rem(.2);
-      margin-left: rem(-.5);
-    }
-    .asset-name {
-      margin-bottom: rem(.4);
-      opacity: .5;
+    height: 100%;
+    & > div > div {
+      height: 100%;
     }
     .sd-hd {
-      height: rem(2);
-      width: rem(2.8);
-      border-radius: rem(.3);
+      height: 20px;
+      width: 28px;
+      border-radius: 3px;
       border-width: 1px;
       border-style: solid;
       position: relative;
@@ -243,8 +245,8 @@ div.primary-info-t {
       }
     }
     .sd-hd.sd {
-      width: rem(2.7);
-      height: rem(1.8);
+      width: 27px;
+      height: 18px;
       border-radius: 50%;
       &::before {
         content: "SD";
@@ -252,22 +254,21 @@ div.primary-info-t {
       }
     }
     .rights {
-      padding-left: rem(.8);
-      padding-top: rem(.4);
+      padding-left: 8px;
       text-transform: uppercase;
     }
     .image.photo {
       position: relative;
-      height: rem(2.0);
-      width: rem(3.0);
+      height: 20px;
+      width: 30px;
       color: transparent;
       &::before {
         content: "\e412";
         font-family: 'Material Icons';
         color: rgba(mat-color($mat-grey, 100),0.4);
         position: absolute;
-        top: rem(-.8);
-        left: rem(.1);
+        top: -8px;
+        left: 1px;
         font-size: 1.85em;
       }
     }
