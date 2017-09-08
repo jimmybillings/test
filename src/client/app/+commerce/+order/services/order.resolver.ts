@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
-import { OrderService } from '../../../shared/services/order.service';
-import { OrderStore } from '../../../shared/stores/order.store';
-import { Order } from '../../../shared/interfaces/commerce.interface';
+import { AppStore } from '../../../app.store';
 
 @Injectable()
-export class OrderResolver implements Resolve<Order> {
-  constructor(private orderService: OrderService, private orderStore: OrderStore) { }
+export class OrderResolver implements Resolve<boolean> {
+  constructor(private store: AppStore) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Order> | Observable<any> {
-    if (Number(this.orderStore.state.id) === Number(route.params['orderId'])) {
-      return Observable.of({});
-    } else {
-      return this.orderService.getOrder(route.params['orderId']);
-    }
+  public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
+    const requestedOrderId: number = Number(route.params['orderId']);
+
+    this.store.dispatch(factory => factory.order.load(requestedOrderId));
+
+    return this.store.blockUntil(state => !state.order.loading);
   }
 }

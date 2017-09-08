@@ -19,7 +19,7 @@ export function main() {
       mockUserPreferenceService = { openCollectionTray: jasmine.createSpy('openCollectionTray') };
       mockRouter = {
         navigate: jasmine.createSpy('navigate'),
-        routerState: { snapshot: { url: '/asset/blahblahblah' } }
+        routerState: { snapshot: { url: '/blahblahblah/asset/blahblahblah' } }
       };
     });
 
@@ -206,7 +206,7 @@ export function main() {
       },
       state: [
         {
-          storeSectionName: 'asset',
+          storeSectionName: 'activeCollectionAsset',
           propertyName: 'activeAsset',
           value: { assetId: 123 }
         },
@@ -221,6 +221,7 @@ export function main() {
               }
             },
             collection: {
+              id: 555,
               assets: {
                 items: [
                   {
@@ -241,7 +242,7 @@ export function main() {
       ],
       customTests: [
         {
-          it: 'does nothing if the active route is not /asset',
+          it: 'does nothing if the active route does not contain /asset',
           beforeInstantiation: () => {
             mockRouter.routerState.snapshot.url = '/something/else';
           },
@@ -272,7 +273,9 @@ export function main() {
         {
           it: 'otherwise activates a route for a newly added asset',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'ABCD', timeStart: '1000', timeEnd: '2000' }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(
+              ['/collections/555/asset/123', { uuid: 'ABCD', timeStart: '1000', timeEnd: '2000' }]
+            );
           }
         },
         {
@@ -292,7 +295,7 @@ export function main() {
             ];
           },
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'EFGH' }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections/555/asset/123', { uuid: 'EFGH' }]);
           }
         }
       ]
@@ -353,7 +356,7 @@ export function main() {
       },
       state: [
         {
-          storeSectionName: 'asset',
+          storeSectionName: 'activeCollectionAsset',
           propertyName: 'activeAsset',
           value: { assetId: 123, uuid: 'ABCD' }
         },
@@ -365,6 +368,7 @@ export function main() {
               uuid: 'ABCD'
             },
             collection: {
+              id: 555,
               assets: {
                 items: [
                   {
@@ -383,7 +387,7 @@ export function main() {
       ],
       customTests: [
         {
-          it: 'does nothing if the active route is not /asset',
+          it: 'does nothing if the active route does not contain /asset',
           beforeInstantiation: () => {
             mockRouter.routerState.snapshot.url = '/something/else';
           },
@@ -434,7 +438,7 @@ export function main() {
         {
           it: 'otherwise activates a route for the first collection asset it finds with the same asset ID',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', { uuid: 'EFGH' }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections/555/asset/123', { uuid: 'EFGH' }]);
           }
         },
         {
@@ -446,13 +450,13 @@ export function main() {
                 ...originalState[1],
                 value: {
                   ...originalState[1].value,
-                  collection: { assets: { items: [] } }
+                  collection: { id: 555, assets: { items: [] } }
                 }
               }
             ];
           },
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/asset/123', {}]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections/555/asset/123', {}]);
           }
         },
       ]

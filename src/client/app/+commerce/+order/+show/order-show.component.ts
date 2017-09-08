@@ -1,36 +1,52 @@
-import { Component, OnDestroy } from '@angular/core';
-import { OrderService } from '../../../shared/services/order.service';
-import { WindowRef } from '../../../shared/services/window-ref.service';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Order, AssetLineItem, Project } from '../../../shared/interfaces/commerce.interface';
 import { Subscription } from 'rxjs/Subscription';
+
+import { WindowRef } from '../../../shared/services/window-ref.service';
+import { Order, AssetLineItem, Project } from '../../../shared/interfaces/commerce.interface';
+import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
+import { AppStore } from '../../../app.store';
+import { Common } from '../../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
   selector: 'order-show-component',
-  templateUrl: 'order-show.html'
+  templateUrl: 'order-show.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class OrderShowComponent implements OnDestroy {
-  public projects: Project[];
-  private projectSubscription: Subscription;
+export class OrderShowComponent {
+  public orderObservable: Observable<Order>;
 
-  constructor(public window: WindowRef, public order: OrderService) {
-    this.projectSubscription = this.order.projects.subscribe(projects => this.projects = projects);
-  }
+  constructor(private window: WindowRef, private store: AppStore) {
+    this.orderObservable = this.store.select(state => {
+      const order: Order = Common.clone(state.order.activeOrder);
 
-  public ngOnDestroy() {
-    this.projectSubscription.unsubscribe();
+      order.projects.forEach((project: Project) => {
+        if (!project.lineItems) return;
+
+        project.lineItems.forEach((lineItem: AssetLineItem) => {
+          lineItem.asset = enhanceAsset(
+            Object.assign(lineItem.asset, { uuid: lineItem.id }),
+            'orderAsset', order.id
+          );
+        });
+      });
+
+      return order;
+    });
   }
 
   public downloadMaster(masterUrl: string): void {
     this.window.nativeWindow.location.href = masterUrl;
   }
 
-  public displayOrderAssetCount(count: number): string {
-    if (count > 0) {
-      return (count === 1) ? 'ORDER.SHOW.PROJECTS.ONLY_ONE_ASSET' : 'ORDER.SHOW.PROJECTS.MORE_THAN_ONE_ASSET';
-    } else return 'ORDER.SHOW.PROJECTS.NO_ASSETS';
+  public assetCountLabelKeyFor(count: number): string {
+    switch (count) {
+      case 0: return 'ORDER.SHOW.PROJECTS.NO_ASSETS';
+      case 1: return 'ORDER.SHOW.PROJECTS.ONLY_ONE_ASSET';
+      default: return 'ORDER.SHOW.PROJECTS.MORE_THAN_ONE_ASSET';
+    }
   }
 
   public isRefundedLineItem(lineItem: AssetLineItem): boolean {
@@ -41,15 +57,11 @@ export class OrderShowComponent implements OnDestroy {
     return !!project.creditMemoForProjectId;
   }
 
-  public get isRefund(): Observable<boolean> {
-    return this.order.data.map((order: Order) => !!order.creditMemoForOrderId);
+  public isRefundedOrder(order: Order): boolean {
+    return !!order.creditMemoForOrderId;
   }
 
-  public get creditMemoForOrderId(): Observable<number> {
-    return this.order.data.map((order: Order) => order.creditMemoForOrderId);
-  }
-
-  public get showDiscount(): Observable<boolean> {
-    return this.order.data.map((order: Order) => (order.discount || 0) > 0 && !order.creditMemoForOrderId);
+  public shouldShowDiscountFor(order: Order): boolean {
+    return (order.discount || 0) > 0 && !order.creditMemoForOrderId;
   }
 }

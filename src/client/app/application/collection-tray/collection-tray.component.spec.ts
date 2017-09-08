@@ -9,9 +9,9 @@ export function main() {
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
 
     beforeEach(() => {
-      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, null);
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset');
       componentUnderTest = new CollectionTrayComponent(null);
-      componentUnderTest.collection = { assets: { items: [EnhancedMock.enhanceAsset(mockAsset, null)] } };
+      componentUnderTest.collection = { assets: { items: [EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset')] } };
     });
 
     describe('hasId()', () => {

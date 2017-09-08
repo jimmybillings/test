@@ -9,7 +9,6 @@ import {
   FeeLineItem,
   AddAssetParameters,
   Quote,
-  QuoteState,
   QuoteOptions,
   EditableQuoteFields,
   FeeConfig,
@@ -17,8 +16,7 @@ import {
 } from '../interfaces/commerce.interface';
 import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 import { Frame } from 'wazee-frame-formatter';
-import { ActiveQuoteStore } from '../stores/active-quote.store';
-
+import { AppStore, QuoteEditState } from '../../app.store';
 import { FeeConfigStore } from '../stores/fee-config.store';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
 import { Common } from '../utilities/common.functions';
@@ -27,23 +25,23 @@ import { enhanceAsset } from '../interfaces/enhanced-asset';
 @Injectable()
 export class QuoteEditService {
   constructor(
-    private store: ActiveQuoteStore,
+    private store: AppStore,
     private feeConfigStore: FeeConfigStore,
     private api: ApiService
   ) { }
 
   // Store Accessors
 
-  public get data(): Observable<QuoteState> {
-    return this.store.data;
+  public get data(): Observable<QuoteEditState> {
+    return this.store.select(state => state.quoteEdit);
   }
 
-  public get state(): QuoteState {
-    return this.store.state;
+  public get state(): QuoteEditState {
+    return this.store.snapshot(state => state.quoteEdit);
   }
 
   public get quote(): Observable<Quote> {
-    return this.data.map((state: QuoteState) => state.data);
+    return this.store.select(state => state.quoteEdit.data);
   }
 
   public get projects(): Observable<Project[]> {
@@ -51,7 +49,7 @@ export class QuoteEditService {
       return data.projects.map((project: Project) => {
         if (project.lineItems) {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
-            lineItem.asset = enhanceAsset(lineItem.asset, { type: 'quoteEditAsset' });
+            lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'quoteEditAsset');
             return lineItem;
           });
         }
@@ -81,7 +79,7 @@ export class QuoteEditService {
   }
 
   public get hasAssetLineItems(): Observable<boolean> {
-    return this.data.map((state: QuoteState) => {
+    return this.data.map((state: QuoteEditState) => {
       return state.data.projects.reduce((previous: number, current: Project) => {
         return current.lineItems ? previous += current.lineItems.length : 0;
       }, 0) > 0;
@@ -106,10 +104,6 @@ export class QuoteEditService {
         body: clonedQuote
       })
       .do(this.replaceQuote);
-  }
-
-  public getFocusedQuote(): Observable<Quote> {
-    return this.api.get(Api.Orders, 'quote/focused', { loadingIndicator: true }).do(this.replaceQuote);
   }
 
   public addProject(): void {
@@ -204,8 +198,6 @@ export class QuoteEditService {
     ).subscribe(this.replaceQuote);
   }
 
-  // this does the send request and then takes user to the review page of the active quote.
-  // But it does not make another focused, or create a new focused quote.
   public sendQuote(options: QuoteOptions): Observable<any> {
     return this.api.put(
       Api.Orders,
@@ -293,7 +285,7 @@ export class QuoteEditService {
   }
 
   private replaceQuote = (quote: Quote): void => {
-    this.store.replaceQuote(quote);
+    this.store.dispatch(factory => factory.quoteEdit.loadSuccess(quote));
   }
 
   private loadFeeConfig(): Observable<FeeConfig> {

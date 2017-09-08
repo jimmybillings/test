@@ -87,7 +87,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
           let collection: Collection = Common.clone(state.collection);
           if (collection.assets && collection.assets.items) {
             collection.assets.items = collection.assets.items
-              .map(item => enhanceAsset(item, { type: 'collectionAsset', parentId: collection.id }));
+              .map(item => enhanceAsset(item, 'collectionAsset', collection.id));
           }
           return collection;
         })

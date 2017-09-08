@@ -225,5 +225,24 @@ export function main() {
         }
       ]
     });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: ['LoadFailure', 'SetFailure', 'LoadPageFailure', 'RemoveAssetFailure',
+        'AddAssetFailure', 'RemoveAssetFailure', 'UpdateAssetMarkersFailure'],
+      mutationTestData: {
+        previousState: { loading: true }
+      },
+      customTests: [
+        {
+          it: 'with previous state, returns previous state but with loading: false',
+          previousState: { some: 'stuff', loading: true },
+          expectedNextState: { some: 'stuff', loading: false }
+        },
+        {
+          it: 'without previous state, returns initial state but with loading: false',
+          expectedNextState: { ...ActiveCollectionState.initialState, loading: false }
+        }
+      ]
+    });
   });
 }

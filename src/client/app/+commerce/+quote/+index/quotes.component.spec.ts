@@ -71,7 +71,7 @@ export function main() {
       it('should navigate', () => {
         componentUnderTest.onEditQuote(1);
 
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/activeQuote']);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/active-quote']);
       });
     });
 
@@ -111,8 +111,8 @@ export function main() {
         expect(mockQuotesService.createEmpty).toHaveBeenCalled();
       });
 
-      it('should navigate to /commerce/activeQuote', () => {
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/activeQuote']);
+      it('should navigate to /commerce/active-quote', () => {
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/active-quote']);
       });
     });
   });

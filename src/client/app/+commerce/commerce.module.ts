@@ -4,16 +4,22 @@ import { SharedModule } from '../shared/shared.module';
 import { CommerceCapabilities } from './services/commerce.capabilities';
 import { COMMERCE_ROUTES } from './commerce.routes';
 import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
+import { CartAssetResolver } from '../+commerce/+cart/services/cart-asset.resolver';
 import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
-import { QuoteResolver } from '../+commerce/+quote/services/quote.resolver';
+import { OrderAssetResolver } from '../+commerce/+order/services/order-asset.resolver';
+import { QuoteShowResolver } from '../+commerce/+quote/services/quote-show.resolver';
+import { QuoteEditAssetResolver } from '../+commerce/+quote/services/quote-edit-asset.resolver';
+import { QuoteShowAssetResolver } from '../+commerce/+quote/services/quote-show-asset.resolver';
 import { QuotesResolver } from '../+commerce/+quote/services/quotes.resolver';
 import { QuoteEditResolver } from '../+commerce/+quote/services/quote-edit.resolver';
 import { CartGuard } from './+cart/services/cart.guard';
 import { QuoteEditGuard } from './+quote/services/quote-edit.guard';
+import { AssetModule } from '../+asset/asset.module';
 
 // Cart Stuff
 import { CartComponent } from './+cart/cart.component';
+import { CartAssetComponent } from './+cart/components/cart-asset.component';
 
 // tabs
 import { CartTabComponent } from './+cart/components/tabs/cart-tab.component';
@@ -24,12 +30,15 @@ import { CartConfirmTabComponent } from './+cart/components/tabs/cart-confirm-ta
 // Order Stuff
 import { OrdersComponent } from './+order/+index/orders.component';
 import { OrderShowComponent } from './+order/+show/order-show.component';
+import { OrderAssetComponent } from './+order/components/order-asset.component';
 
 // Quote Stuff
 import { QuoteShowComponent } from './+quote/+show/quote-show.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
 import { AdministerQuoteComponent } from './+quote/components/administer-quote.component';
 import { QuotePurchaseTypeComponent } from './+quote/components/quote-purchase-type.component';
+import { QuoteEditAssetComponent } from './+quote/components/quote-edit-asset.component';
+import { QuoteShowAssetComponent } from './+quote/components/quote-show-asset.component';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 
 // tabs
@@ -64,10 +73,11 @@ import { AssetInfoComponent } from './components/asset/asset-info.component';
 import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-display.component';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
+  imports: [SharedModule, AssetModule, RouterModule.forChild(COMMERCE_ROUTES)],
   declarations: [
     CartComponent,
     CartTabComponent,
+    CartAssetComponent,
     CartBillingTabComponent,
     CartPaymentTabComponent,
     CartConfirmTabComponent,
@@ -87,6 +97,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     AssetSubclipDisplayComponent,
     OrderShowComponent,
     OrdersComponent,
+    OrderAssetComponent,
     CommerceListComponent,
     CommerceHeaderComponent,
     LicenseAgreementComponent,
@@ -95,6 +106,8 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     AdministerQuoteComponent,
     QuotePurchaseTypeComponent,
     QuoteEditComponent,
+    QuoteEditAssetComponent,
+    QuoteShowAssetComponent,
     QuoteTabComponent,
     QuoteBillingTabComponent,
     QuotePaymentTabComponent,
@@ -104,13 +117,17 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
   providers: [
     CommerceCapabilities,
     CartResolver,
+    CartAssetResolver,
     OrderResolver,
     OrdersResolver,
-    QuoteResolver,
+    OrderAssetResolver,
+    QuoteShowResolver,
+    QuoteEditAssetResolver,
     QuotesResolver,
     QuoteEditResolver,
     CartGuard,
     QuoteEditGuard,
+    QuoteShowAssetResolver
   ],
   entryComponents: [LicenseAgreementComponent]
 })

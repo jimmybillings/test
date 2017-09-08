@@ -8,7 +8,8 @@ export interface ReducerTestModules {
 }
 
 export interface ReducerTestParameters {
-  actionClassName: string | string[];
+  actionClassName?: string | string[];
+  actionTypes?: string | string[];
   mutationTestData?: {
     previousState?: Pojo;
     actionParameters?: Pojo;
@@ -39,98 +40,111 @@ export class StateSpecHelper {
   }
 
   public generateTestsFor(parameters: ReducerTestParameters): void {
-    (Array.isArray(parameters.actionClassName) ? parameters.actionClassName : [parameters.actionClassName])
-      .forEach(actionClassName => {
-        if (!this.reducerTestModules) {
-          describe(`for ${actionClassName} (unknown action type)`, () => {
-            it('has modules defined for test', () => {
-              fail(`setStandardReducerTestModules() needs to be called before addStandardReducerTestsFor()`);
-            });
-          });
+    if (parameters.actionClassName) {
+      (Array.isArray(parameters.actionClassName) ? parameters.actionClassName : [parameters.actionClassName])
+        .forEach(actionClassName => {
+          const actionType: string = this.reducerTestModules.actions[actionClassName].Type;
+          this.runSpecsFor(actionType, parameters);
+        });
+    }
 
-          return;
-        }
+    if (parameters.actionTypes) {
+      (Array.isArray(parameters.actionTypes) ? parameters.actionTypes : [parameters.actionTypes])
+        .forEach(actionType => {
+          this.runSpecsFor(actionType, parameters);
+        });
+    }
+  }
 
-        const reducerUnderTest: ActionReducer<any> = this.reducerTestModules.state.reducer;
-        const actionType: string = this.reducerTestModules.actions[actionClassName].Type;
-
-        describe(`for ${actionClassName} ('${actionType}')`, () => {
-          parameters.customTests.forEach(test => {
-            it(test.it, () => {
-              const testAction: any = { type: actionType, ...test.actionParameters };
-
-              expect(reducerUnderTest(test.previousState, testAction)).toEqual(test.expectedNextState);
-            });
-          });
-
-          describe('meets basic reducer standards, because it:', () => {
-            const testAction: any = {
-              type: actionType,
-              ...(parameters.mutationTestData ? (parameters.mutationTestData.actionParameters || []) : [])
-            };
-            const previousState: Pojo = parameters.mutationTestData ? parameters.mutationTestData.previousState : undefined;
-            const previousStateSnapshot: string = JSON.stringify(previousState);
-            const initialState: Pojo = this.reducerTestModules.state.initialState;
-            const initialStateSnapshot: string = JSON.stringify(initialState);
-
-            it('does not throw an exception when the previous state is null', () => {
-              expect(() => reducerUnderTest(null, testAction)).not.toThrow();
-            });
-
-            it('has test parameters sufficient to prove lack of mutation', () => {
-              const newState = reducerUnderTest(previousState, testAction);
-
-              if (JSON.stringify(newState) === (previousStateSnapshot || initialStateSnapshot)) {
-                fail('The test parameters do not cause a difference between pre- and post-action states for this reducer,'
-                  + ' so we cannot determine whether it could potentially mutate the previous state.'
-                  + ' (Specify \'mutationTestData\' with \'previousState\' and/or \'actionParameters\' to ensure a state change.)');
-              }
-            });
-
-            it('does not directly mutate the previous state', () => {
-              reducerUnderTest(previousState, testAction);
-
-              const postReducerSnapshot = JSON.stringify(previousState);
-
-              expect(postReducerSnapshot).toEqual(previousStateSnapshot);
-            });
-
-            it('does not directly mutate the initial state when there was a previous state', () => {
-              reducerUnderTest(previousState, testAction);
-
-              const postReducerSnapshot = JSON.stringify(initialState);
-
-              expect(postReducerSnapshot).toEqual(initialStateSnapshot);
-            });
-
-            it('does not directly mutate the initial state when there was not a previous state', () => {
-              reducerUnderTest(undefined, testAction);
-
-              const postReducerSnapshot = JSON.stringify(initialState);
-
-              expect(postReducerSnapshot).toEqual(initialStateSnapshot);
-            });
-
-            it('protects the previous state from changes to the returned state', () => {
-              const newState = reducerUnderTest(previousState, testAction);
-
-              expect(this.preserves(previousState, 'previous', newState)).toBe(true);
-            });
-
-            it('protects the initial state from changes to the returned state when there was a previous state', () => {
-              const newState = reducerUnderTest(previousState, testAction);
-
-              expect(this.preserves(initialState, 'initial', newState)).toBe(true);
-            });
-
-            it('protects the initial state from changes to the returned state when there was not a previous state', () => {
-              const newState = reducerUnderTest(undefined, testAction);
-
-              expect(this.preserves(initialState, 'initial', newState)).toBe(true);
-            });
-          });
+  private runSpecsFor(actionType: string, parameters: ReducerTestParameters): void {
+    if (!this.reducerTestModules) {
+      describe(`for ${actionType} (unknown action type)`, () => {
+        it('has modules defined for test', () => {
+          fail(`setStandardReducerTestModules() needs to be called before addStandardReducerTestsFor()`);
         });
       });
+
+      return;
+    }
+
+    const reducerUnderTest: ActionReducer<any> = this.reducerTestModules.state.reducer;
+
+    describe(`for ${actionType} ('${actionType}')`, () => {
+      parameters.customTests.forEach(test => {
+        it(test.it, () => {
+          const testAction: any = { type: actionType, ...test.actionParameters };
+
+          expect(reducerUnderTest(test.previousState, testAction)).toEqual(test.expectedNextState);
+        });
+      });
+
+      describe('meets basic reducer standards, because it:', () => {
+        const testAction: any = {
+          type: actionType,
+          ...(parameters.mutationTestData ? (parameters.mutationTestData.actionParameters || []) : [])
+        };
+        const previousState: Pojo = parameters.mutationTestData ? parameters.mutationTestData.previousState : undefined;
+        const previousStateSnapshot: string = JSON.stringify(previousState);
+        const initialState: Pojo = this.reducerTestModules.state.initialState;
+        const initialStateSnapshot: string = JSON.stringify(initialState);
+
+        it('does not throw an exception when the previous state is null', () => {
+          expect(() => reducerUnderTest(null, testAction)).not.toThrow();
+        });
+
+        it('has test parameters sufficient to prove lack of mutation', () => {
+          const newState = reducerUnderTest(previousState, testAction);
+
+          if (JSON.stringify(newState) === (previousStateSnapshot || initialStateSnapshot)) {
+            fail('The test parameters do not cause a difference between pre- and post-action states for this reducer,'
+              + ' so we cannot determine whether it could potentially mutate the previous state.'
+              + ' (Specify \'mutationTestData\' with \'previousState\' and/or \'actionParameters\' to ensure a state change.)');
+          }
+        });
+
+        it('does not directly mutate the previous state', () => {
+          reducerUnderTest(previousState, testAction);
+
+          const postReducerSnapshot = JSON.stringify(previousState);
+
+          expect(postReducerSnapshot).toEqual(previousStateSnapshot);
+        });
+
+        it('does not directly mutate the initial state when there was a previous state', () => {
+          reducerUnderTest(previousState, testAction);
+
+          const postReducerSnapshot = JSON.stringify(initialState);
+
+          expect(postReducerSnapshot).toEqual(initialStateSnapshot);
+        });
+
+        it('does not directly mutate the initial state when there was not a previous state', () => {
+          reducerUnderTest(undefined, testAction);
+
+          const postReducerSnapshot = JSON.stringify(initialState);
+
+          expect(postReducerSnapshot).toEqual(initialStateSnapshot);
+        });
+
+        it('protects the previous state from changes to the returned state', () => {
+          const newState = reducerUnderTest(previousState, testAction);
+
+          expect(this.preserves(previousState, 'previous', newState)).toBe(true);
+        });
+
+        it('protects the initial state from changes to the returned state when there was a previous state', () => {
+          const newState = reducerUnderTest(previousState, testAction);
+
+          expect(this.preserves(initialState, 'initial', newState)).toBe(true);
+        });
+
+        it('protects the initial state from changes to the returned state when there was not a previous state', () => {
+          const newState = reducerUnderTest(undefined, testAction);
+
+          expect(this.preserves(initialState, 'initial', newState)).toBe(true);
+        });
+      });
+    });
   }
 
   private preserves(

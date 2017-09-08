@@ -8,14 +8,14 @@ export function main() {
   describe('App Component', () => {
     (<any>window).portal = 'core';
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUserService: any,
-      mockCollections: any, mockUiState: any, mockUserPreference: any, mockNotification: any,
-      mockApiConfig: any, mockUserCan: any, mockCart: any, mockWindow: any, mockNgZone: any,
-      mockFilter: any, mockSortDefinition: any;
-    let loggedInState = false, canViewCollections = true;
+      mockCollections: any, mockUiState: any, mockUserPreference: any, mockNotification: any, mockApiConfig: any,
+      mockUserCan: any, mockWindow: any, mockNgZone: any, componentUnderTest: AppComponent, mockStore: MockAppStore,
+      mockFilter: any, mockSortDefinition: any, cartLoadSpy: jasmine.Spy, collectionLoadSpy: jasmine.Spy,
+      quoteLoadSpy: jasmine.Spy;
+
+    let loggedInState: boolean = false, canViewCollections: boolean = true;
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
-    let componentUnderTest: AppComponent;
-    let configHasLoaded = true;
-    let mockStore: MockAppStore;
+    let configHasLoaded: boolean = true;
 
     beforeEach(() => {
       mockUiConfig = {
@@ -23,36 +23,37 @@ export function main() {
         hasLoaded: () => configHasLoaded,
         load: jasmine.createSpy('load').and.returnValue(Observable.of({}))
       };
-      mockRouter = {
-        events: Observable.of(nextNavigation),
-        initialNavigation: jasmine.createSpy('initialNavigation')
-      };
-      mockMultiLingual = {
-        setLanguage: jasmine.createSpy('setLanguage'),
-        setBaseUrl: jasmine.createSpy('setBaseUrl')
-      };
+
+      mockRouter = { events: Observable.of(nextNavigation), initialNavigation: jasmine.createSpy('initialNavigation') };
+
+      mockMultiLingual = { setLanguage: jasmine.createSpy('setLanguage'), setBaseUrl: jasmine.createSpy('setBaseUrl') };
+
       mockSearchContext = {
         update: null,
         go: jasmine.createSpy('go'),
         new: jasmine.createSpy('new'),
         state: { q: 'cat', i: 7, n: 100, sortId: 23, filterIds: '1517', filterValues: '1517:2015-12-10 - 2016-12-12' }
       };
+
       mockCurrentUserService = {
         set: jasmine.createSpy('set'),
         destroy: jasmine.createSpy('destroy'),
         loggedIn: () => true,
         loggedInState: () => Observable.of(loggedInState)
       };
+
       mockCollections = {
         load: jasmine.createSpy('load').and.returnValue(Observable.of({})),
         destroyAll: jasmine.createSpy('destroyAll')
       };
+
       mockUiState = {
         showFixedHeader: jasmine.createSpy('showFixedHeader'),
         checkRouteForSearchBar: jasmine.createSpy('checkRouteForSearchBar'),
         checkForFilters: jasmine.createSpy('checkForFilters'),
         reset: jasmine.createSpy('reset')
       };
+
       mockUserPreference = {
         state: {
           sortId: 23,
@@ -63,23 +64,28 @@ export function main() {
         toggleFilterTree: jasmine.createSpy('toggleFilterTree'),
         updateSortPreference: jasmine.createSpy('updateSortPreference')
       };
+
       mockApiConfig = {
         getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal'),
         baseUrl: () => jasmine.createSpy('baseUrl')
       };
+
       mockUserCan = { viewCollections: () => canViewCollections, administerQuotes: () => false };
-      mockCart = { initializeData: jasmine.createSpy('initializeData').and.returnValue(Observable.of({})) };
       mockWindow = { nativeWindow: { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') } };
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       mockNgZone = { runOutsideAngular: () => true };
       mockStore = new MockAppStore();
 
+      collectionLoadSpy = mockStore.createActionFactoryMethod('activeCollection', 'load');
+      cartLoadSpy = mockStore.createActionFactoryMethod('cart', 'load');
+      quoteLoadSpy = mockStore.createActionFactoryMethod('quoteEdit', 'load');
+
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-        mockCollections, mockUiState, mockUserPreference,
-        mockApiConfig, mockUserCan,
-        mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore);
+        mockCollections, mockUiState, mockUserPreference, mockApiConfig, mockUserCan, mockWindow,
+        mockFilter, mockSortDefinition, null, null, mockNgZone, mockStore
+      );
     });
 
 
@@ -98,21 +104,21 @@ export function main() {
           canViewCollections = false;
           componentUnderTest.ngOnInit();
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
-          expect(mockCart.initializeData).toHaveBeenCalled();
-          expect(mockStore.dispatch).not.toHaveBeenCalled();
+          expect(cartLoadSpy).toHaveBeenCalled();
+          expect(collectionLoadSpy).not.toHaveBeenCalled();
         });
 
         it('Should process the actions for a logged in user with view collections permissions', () => {
           loggedInState = true;
           canViewCollections = true;
-          mockStore.createActionFactoryMethod('activeCollection', 'load');
+
           mockStore.createStateElement('activeCollection', 'loaded', true);
 
           componentUnderTest.ngOnInit();
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
-          expect(mockStore.dispatch).toHaveBeenCalled();
+          expect(collectionLoadSpy).toHaveBeenCalled();
+          expect(cartLoadSpy).toHaveBeenCalled();
           expect(mockCollections.load).toHaveBeenCalled();
-          expect(mockCart.initializeData).toHaveBeenCalled();
         });
       });
 
@@ -183,9 +189,9 @@ export function main() {
       it('Should initialize the navigation immediatly if the config is already loaded', () => {
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUiState, mockUserPreference,
-          mockApiConfig, mockUserCan,
-          mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore);
+          mockCollections, mockUiState, mockUserPreference, mockApiConfig, mockUserCan,
+          mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, mockStore
+        );
 
         expect(mockRouter.initialNavigation).toHaveBeenCalled();
         expect(mockUiConfig.load).not.toHaveBeenCalled();
@@ -196,9 +202,9 @@ export function main() {
 
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUiState, mockUserPreference,
-          mockApiConfig, mockUserCan,
-          mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null, mockStore);
+          mockCollections, mockUiState, mockUserPreference, mockApiConfig, mockUserCan,
+          mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, mockStore
+        );
 
         expect(mockUiConfig.load).toHaveBeenCalled();
         expect(mockRouter.initialNavigation).toHaveBeenCalled();

@@ -1,37 +1,40 @@
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 import { CartResolver } from './cart.resolver';
 
 export function main() {
   describe('Cart Resolver', () => {
-    const mockObservable = Observable.of({ userId: 123 });
-    const mockRoute: ActivatedRouteSnapshot = undefined;
-    const mockState: RouterStateSnapshot = undefined;
+    let mockStore: MockAppStore;
     let resolverUnderTest: CartResolver;
-    let mockCartService: any = {
-      loaded: false,
-      data: Observable.of(mockObservable)
-    };
 
     beforeEach(() => {
-      resolverUnderTest = new CartResolver(mockCartService);
+      mockStore = new MockAppStore();
+      resolverUnderTest = new CartResolver(mockStore);
     });
 
     describe('resolve()', () => {
-      it('Should not resolve if the Cart store has no data from the server', () => {
-        expect(() => {
-          resolverUnderTest.resolve(mockRoute, mockState).take(1).subscribe((data) => {
-            throw new Error();
-          });
-        }).not.toThrow();
+      let loadSpy: jasmine.Spy;
+      let resolved: jasmine.Spy;
+
+      beforeEach(() => {
+        loadSpy = mockStore.createActionFactoryMethod('cart', 'load');
+        resolved = jasmine.createSpy('resolved');
+        mockStore.createStateSection('cart', { loading: true });
       });
 
-      it('Should resolve if the Cart store already has data from the server', () => {
-        mockCartService.loaded = true;
-        resolverUnderTest.resolve(mockRoute, mockState).take(1).subscribe((data) => {
-          expect(data).toEqual(mockObservable);
-        });
+      it('dispatches an action', () => {
+        resolverUnderTest.resolve().subscribe(resolved);
+        mockStore.expectDispatchFor(loadSpy);
+      });
+
+      it('doesn\'t return when the loading flag is true', () => {
+        resolverUnderTest.resolve().subscribe(resolved);
+        expect(resolved).not.toHaveBeenCalled();
+      });
+
+      it('returns when the loading flag is false', () => {
+        mockStore.createStateSection('cart', { loading: false });
+        resolverUnderTest.resolve().subscribe(resolved);
+        expect(resolved).toHaveBeenCalledWith(true);
       });
     });
   });

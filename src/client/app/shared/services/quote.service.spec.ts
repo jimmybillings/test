@@ -4,13 +4,17 @@ import { Api } from '../interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
 import { Quote } from '../../shared/interfaces/commerce.interface';
 import { Common } from '../utilities/common.functions';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Quote Service', () => {
     let serviceUnderTest: QuoteService, mockApi: MockApiService, mockCartService: any,
-      mockQuoteStore: any, mockCheckoutStore: any, mockPaymentOptions: any, mockUserService: any;
+      mockStore: MockAppStore, mockCheckoutStore: any, mockPaymentOptions: any, mockUserService: any,
+      quoteLoadSuccessSpy: jasmine.Spy;
+
     const mockQuoteResponse = {
       'createdUserId': 1,
+      'ownerUserId': 2,
       'lastUpdated': '2017-07-23T18:41:21Z',
       'createdOn': '2017-07-23T18:20:00Z',
       'id': 282,
@@ -35,6 +39,7 @@ export function main() {
         }
       ]
     };
+
     function setupFor(options: Array<PaymentOptions> = null) {
       mockPaymentOptions = options ? {
         paymentOptions: options,
@@ -48,23 +53,24 @@ export function main() {
 
     beforeEach(() => {
       mockApi = new MockApiService();
+      jasmine.addMatchers(mockApiMatchers);
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('quoteShow', { data: { id: 3, ownerUserId: 10, itemCount: 1 } });
+      quoteLoadSuccessSpy = mockStore.createActionFactoryMethod('quoteShow', 'loadSuccess');
+
       mockCartService = {
         data: Observable.of({ cart: { projects: [] } }),
         state: { cart: { projects: [] } }
       };
-      mockQuoteStore = {
-        data: Observable.of({ data: { id: 3, ownerUserId: 10, itemCount: 1 } }),
-        state: { data: { id: 3, ownerUserId: 10, itemCount: 1 } },
-        updateQuote: jasmine.createSpy('updateQuote'),
-        addToQuote: jasmine.createSpy('addToQuote')
-      };
+
       mockUserService = {
         getById: jasmine.createSpy('getById').and.returnValue(Observable.of(
           { emailAddress: 'test@gmail.com', firstName: 'best', lastName: 'tester' }))
       };
+
       mockCheckoutStore = { updateOrderInProgress: jasmine.createSpy('updateOrderInProgress') };
-      jasmine.addMatchers(mockApiMatchers);
-      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockQuoteStore, mockCheckoutStore, mockUserService);
+
+      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockStore, mockCheckoutStore, mockUserService);
     });
 
     describe('data getter', () => {
@@ -86,59 +92,6 @@ export function main() {
         serviceUnderTest.hasAssets.take(1).subscribe((has: boolean) => expect(has).toBe(true));
       });
     });
-
-    describe('load()', () => {
-
-      beforeEach(() => {
-        mockApi.getResponse = Common.clone(mockQuoteResponse);
-      });
-
-      describe('Admin user', () => {
-        it('should call the api service correctly to get a quote', () => {
-          serviceUnderTest.load(1, true).take(1).subscribe();
-          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
-          expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/1');
-          expect(mockApi.get).toHaveBeenCalledWithLoading(true);
-        });
-
-        it('Should call the user service getById() with the createdUserId', () => {
-          serviceUnderTest.load(1, true).take(1).subscribe();
-          expect(mockUserService.getById).toHaveBeenCalledWith(1);
-        });
-
-        it('should set the quote in the quote store with the user added to the quote response', () => {
-          serviceUnderTest.load(1, true).take(1).subscribe();
-          let testResponse: Quote = Common.clone(mockQuoteResponse) as any;
-          testResponse = Object.assign(testResponse, {
-            createdUserFullName: 'best tester',
-            createdUserEmailAddress: 'test@gmail.com'
-          });
-          expect(mockQuoteStore.updateQuote).toHaveBeenCalledWith(testResponse);
-        });
-      });
-
-      describe('End User', () => {
-        it('should call the api service correctly to get a quote', () => {
-          serviceUnderTest.load(1, false).take(1).subscribe();
-          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
-          expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/1');
-          expect(mockApi.get).toHaveBeenCalledWithLoading(true);
-        });
-
-        it('Should not call the user service getById() with the createdUserId', () => {
-          serviceUnderTest.load(1, false).take(1).subscribe();
-          expect(mockUserService.getById).not.toHaveBeenCalled();
-        });
-
-        it('should set the quote in the quote store', () => {
-          serviceUnderTest.load(1, false).take(1).subscribe();
-          expect(mockQuoteStore.updateQuote)
-            .toHaveBeenCalledWith(Common.clone(mockQuoteResponse));
-        });
-      });
-
-    });
-
 
     describe('paymentOptionsEqual()', () => {
       describe('returns false', () => {
@@ -207,6 +160,7 @@ export function main() {
       beforeEach(() => {
         mockApi.putResponse = Common.clone(mockQuoteResponse);
       });
+
       it('should call the api service correctly', () => {
         serviceUnderTest.extendExpirationDate('2017-01-01');
 
@@ -220,7 +174,7 @@ export function main() {
 
       it('Should call the user service getById() with the createdUserId', () => {
         serviceUnderTest.extendExpirationDate('2017-01-01').subscribe();
-        expect(mockUserService.getById).toHaveBeenCalledWith(1);
+        expect(mockUserService.getById).toHaveBeenCalledWith(2);
       });
 
       it('should set the quote in the quote store with the user added to the quote response', () => {
@@ -230,7 +184,7 @@ export function main() {
           createdUserFullName: 'best tester',
           createdUserEmailAddress: 'test@gmail.com'
         });
-        expect(mockQuoteStore.updateQuote).toHaveBeenCalledWith(testResponse);
+        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(testResponse);
       });
     });
   });
