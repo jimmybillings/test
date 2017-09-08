@@ -1,40 +1,44 @@
-import { CollectionAssetResolver } from './collection-asset.resolver';
+import { Observable } from 'rxjs/Observable';
+
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
+import { CollectionAssetResolver } from './collection-asset.resolver';
 
 export function main() {
   describe('Collection Asset Resolver', () => {
-    let resolverUnderTest: CollectionAssetResolver, mockStore: MockAppStore, loadSpy: jasmine.Spy;
-    const mockRoute: any = { params: { uuid: 'abc-123' } };
+    let mockStore: MockAppStore;
+    let resolverUnderTest: CollectionAssetResolver;
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      loadSpy = mockStore.createActionFactoryMethod('activeCollectionAsset', 'load');
       resolverUnderTest = new CollectionAssetResolver(mockStore);
     });
 
     describe('resolve()', () => {
-      it('should dispatch the proper action', () => {
-        resolverUnderTest.resolve(mockRoute);
+      let mockRoute: any;
+      let loadSpy: jasmine.Spy;
+      let resolved: jasmine.Spy;
 
-        expect(loadSpy).toHaveBeenCalledWith('abc-123');
+      beforeEach(() => {
+        mockRoute = { params: { uuid: 'abc-123' } };
+        loadSpy = mockStore.createActionFactoryMethod('activeCollectionAsset', 'load');
+        resolved = jasmine.createSpy('resolved');
+        mockStore.createStateSection('activeCollectionAsset', { activeCollectionAsset: { id: 123 }, loading: true });
       });
 
-      it('Should not resolve if the Collection Asset store has no data from the server', () => {
-        mockStore.createStateSection('activeCollectionAsset', { loading: true });
-
-        expect(() => {
-          resolverUnderTest.resolve(mockRoute).take(1).subscribe((data) => {
-            throw new Error();
-          });
-        }).not.toThrow();
+      it('dispatches an action', () => {
+        resolverUnderTest.resolve(mockRoute).subscribe(resolved);
+        mockStore.expectDispatchFor(loadSpy, 'abc-123');
       });
 
-      it('Should resolve if the Collection Asset store already has data from the server', () => {
-        mockStore.createStateSection('activeCollectionAsset', { loading: false });
+      it('doesn\'t return when the loading flag is true', () => {
+        resolverUnderTest.resolve(mockRoute).subscribe(resolved);
+        expect(resolved).not.toHaveBeenCalled();
+      });
 
-        resolverUnderTest.resolve(mockRoute).take(1).subscribe((data) => {
-          expect(data).toEqual(true);
-        });
+      it('returns when the loading flag is false', () => {
+        mockStore.createStateSection('activeCollectionAsset', { activeCollectionAsset: { id: 123 }, loading: false });
+        resolverUnderTest.resolve(mockRoute).subscribe(resolved);
+        expect(resolved).toHaveBeenCalledWith(true);
       });
     });
   });
