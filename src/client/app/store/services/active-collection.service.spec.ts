@@ -205,7 +205,7 @@ export function main() {
       });
 
       it('also calls the API correctly to get the first page of assets for the updated active collection', () => {
-        mockApiService.postResponse = { some: 'response' };
+        mockApiService.postResponse = { list: ['something'] };
 
         serviceUnderTest.addAssetTo(
           { id: 17, assets: { pagination: { pageSize: 200 } } } as any,
@@ -219,8 +219,8 @@ export function main() {
         expect(mockApiService.get).toHaveBeenCalledWithParameters({ i: '0', n: '200' });
       });
 
-      it('returns the expected observable', () => {
-        mockApiService.postResponse = { some: 'response' };
+      it('returns the expected observable when the body has a list', () => {
+        mockApiService.postResponse = { list: ['something'] };
         mockApiService.getResponse = {
           items: [
             { id: 123, other: 'stuff', timeStart: '123', timeEnd: '456' },
@@ -254,6 +254,19 @@ export function main() {
               hasPreviousPage: false,
               numberOfPages: 1
             }
+          });
+        });
+      });
+
+      it('returns the expected observable when the body does not have a list', () => {
+        mockApiService.postResponse = {};
+        serviceUnderTest.addAssetTo(
+          { id: 17, assets: { pagination: { pageSize: 200 } } } as any,
+          { assetId: 234 } as any,
+          { in: new Frame(30).setFromFrameNumber(30), out: new Frame(30).setFromFrameNumber(60) }
+        ).subscribe(response => {
+          expect(response).toEqual({
+            items: [], pagination: {}
           });
         });
       });

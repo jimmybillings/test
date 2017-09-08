@@ -51,7 +51,12 @@ export class ActiveCollectionEffects {
     .withLatestFrom(this.store.select(state => state.activeCollection.collection))
     .switchMap(([action, collection]: [ActiveCollectionActions.AddAsset, Collection]) =>
       this.service.addAssetTo(collection, action.asset, action.markers)
-        .map((assets: CollectionItems) => this.store.create(factory => factory.activeCollection.addAssetSuccess(assets)))
+        .map((assets: CollectionItems) => assets.items.length > 0
+          ? this.store.create(factory => factory.activeCollection.addAssetSuccess(assets))
+          : this.store.create(factory =>
+            factory.snackbar.display('COLLECTION.ALREADY_IN_COLLECTION_TOAST', { collectionName: collection.name })
+          )
+        )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 

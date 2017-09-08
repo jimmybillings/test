@@ -122,6 +122,7 @@ export function main() {
 
     effectsSpecHelper.generateTestsFor({
       effectName: 'addAsset',
+      comment: 'with a new asset',
       effectsInstantiator: instantiator,
       inputAction: {
         type: ActiveCollectionActions.AddAsset.Type,
@@ -136,16 +137,45 @@ export function main() {
       serviceMethod: {
         name: 'addAssetTo',
         expectedArguments: [{ some: 'collection' }, { some: 'asset' }, { some: 'markers' }],
-        returnsObservableOf: { some: 'assets' }
+        returnsObservableOf: { items: ['something'] }
       },
       outputActionFactories: {
         success: {
           sectionName: 'activeCollection',
           methodName: 'addAssetSuccess',
-          expectedArguments: [{ some: 'assets' }]
+          expectedArguments: [{ items: ['something'] }]
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addAsset',
+      comment: 'with an asset already in the collection',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: ActiveCollectionActions.AddAsset.Type,
+        asset: { some: 'asset' },
+        markers: { some: 'markers' }
+      },
+      state: {
+        storeSectionName: 'activeCollection',
+        propertyName: 'collection',
+        value: { name: 'some-collection' }
+      },
+      serviceMethod: {
+        name: 'addAssetTo',
+        expectedArguments: [{ name: 'some-collection' }, { some: 'asset' }, { some: 'markers' }],
+        returnsObservableOf: { items: [] }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['COLLECTION.ALREADY_IN_COLLECTION_TOAST', { collectionName: 'some-collection' }]
+        }
+      }
+    });
+
 
     effectsSpecHelper.generateTestsFor({
       effectName: 'showSnackBarOnAddSuccess',
