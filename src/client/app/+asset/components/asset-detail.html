@@ -107,15 +107,9 @@
             <md-icon>share</md-icon>
           </button>
 
-<<<<<<< HEAD
-          <button md-icon-button *ngIf="alreadyInCollection(asset.uuid)" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}" (click)="showComments($event)">
-            <md-icon>mode_comment</md-icon>
-          </button>
-=======
             <button md-icon-button *ngIf="alreadyInCollection(asset.common[0].value)" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
               <md-icon>mode_comment</md-icon>
             </button>
->>>>>>> develop
 
           <ng-container *ngIf="userCan.haveCollections()">
             <button md-icon-button 
