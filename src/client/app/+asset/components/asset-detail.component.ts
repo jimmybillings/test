@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 import { AppStore, ActionFactoryMapper } from '../../app.store';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
+import { durationFrom } from '../../shared/interfaces/subclip-markers';
 
 @Component({
   moduleId: module.id,
@@ -41,8 +42,10 @@ export class AssetDetailComponent implements OnChanges {
   ngOnChanges(changes: any): void {
     if (changes.asset) this.parseNewAsset(changes.asset);
     if (changes.activeCollection) {
-      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((x: any) => x.uuid);
-    }
+      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((asset: any) =>
+        this.hashUniqueAsset(asset)
+      );
+    };
   }
 
   public get hasPageHistory() {
@@ -53,8 +56,24 @@ export class AssetDetailComponent implements OnChanges {
     this.onPreviousPage.emit();
   }
 
-  public alreadyInCollection(uuid: any): boolean {
-    return this.showAssetSaveSubclip ? false : this.assetsArr.indexOf(uuid) > -1;
+  public uniqueInCollection(asset: EnhancedAsset): boolean {
+    return this.assetsArr.indexOf(this.hashUniqueAsset(asset, this.subclipMarkers)) > -1;
+  }
+
+  public inCollection(asset: EnhancedAsset): boolean {
+    return this.assetsArr.map((hash) => hash.split('|')[0]).includes(asset.assetId.toString());
+  }
+
+  public canBeAddedToCollection(asset: EnhancedAsset): boolean {
+    return !this.uniqueInCollection(asset) && !this.inCollection(asset);
+  }
+
+  public canBeAddedAgainToCollection(asset: EnhancedAsset): boolean {
+    return !this.uniqueInCollection(asset) && this.inCollection(asset);
+  }
+
+  public canBeRemovedFromCollection(asset: EnhancedAsset): boolean {
+    return this.uniqueInCollection(asset);
   }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
@@ -82,7 +101,17 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public removeAssetFromActiveCollection(): void {
-    this.store.dispatch(factory => factory.activeCollection.removeAsset(this.asset));
+    if (this.subclipMarkers) {
+      let timeStamps = durationFrom(this.subclipMarkers);
+      let newAsset = this.activeCollection.assets.items.find((asset: EnhancedAsset) =>
+        asset.assetId === this.asset.assetId &&
+        asset.timeStart === timeStamps.timeStart &&
+        asset.timeEnd === timeStamps.timeEnd
+      );
+      this.store.dispatch(factory => factory.activeCollection.removeAsset(newAsset));
+    } else {
+      return this.store.dispatch(factory => factory.activeCollection.removeAsset(this.asset));
+    }
   }
 
   public downloadComp(assetId: any, compType: any): void {
@@ -120,5 +149,11 @@ export class AssetDetailComponent implements OnChanges {
     if (this.asset.transcodeTargets) {
       this.selectedTarget = this.asset.transcodeTargets[0];
     }
+  }
+
+  private hashUniqueAsset(asset: EnhancedAsset, subclipMarkers?: SubclipMarkers) {
+    let timeStart = subclipMarkers ? durationFrom(subclipMarkers).timeStart : asset.timeStart;
+    let timeEnd = subclipMarkers ? durationFrom(subclipMarkers).timeEnd : asset.timeEnd;
+    return [asset.assetId, timeStart || -1, timeEnd || -2].join('|');
   }
 }

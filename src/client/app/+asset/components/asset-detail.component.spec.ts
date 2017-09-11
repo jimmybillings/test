@@ -9,7 +9,17 @@ export function main() {
     let transcodeTargets: any, detailTypeMap: any, finalAsset: any;
 
     beforeEach(() => {
-      collection = { assets: { items: [{ uuid: 123 }, { uuid: 456 }, { uuid: 789 }, { uuid: 102 }, { uuid: 103 }] } };
+      collection = {
+        assets: {
+          items: [
+            { assetId: 1, timeStart: 123, timeEnd: 1000 },
+            { assetId: 1, timeStart: 456, timeEnd: 1000 },
+            { assetId: 1, timeStart: 789, timeEnd: 1000 },
+            { assetId: 1, timeStart: 102, timeEnd: 1000 },
+            { assetId: 1, timeStart: 103, timeEnd: 1000 }
+          ]
+        }
+      };
       transcodeTargets = ['master_copy', '1080i', '1080p'];
       detailTypeMap = {
         common: ['field'], filter: true, id: 13, name: 'Core Packages', primary: [], secondary: [], siteName: 'core'
@@ -19,7 +29,7 @@ export function main() {
         assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl',
         transcodeTargets: ['master_copy', '1080i', '1080p']
       };
-      asset = { assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl' };
+      asset = { assetId: 1, timeStart: 102, timeEnd: 1000, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl' };
       asset.detailTypeMap = detailTypeMap;
       asset.transcodeTargets = transcodeTargets;
 
@@ -70,12 +80,12 @@ export function main() {
       describe('changes.collection', () => {
         it('Should not update the assetsArr unless changes happen to the changes.collection', () => {
           componentUnderTest.ngOnChanges({});
-          expect(componentUnderTest.alreadyInCollection(123)).toBe(false);
+          expect(componentUnderTest.uniqueInCollection(asset)).toBe(false);
         });
 
         it('Should update the assetsArr if changes happen to changes.collection', () => {
           componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
-          expect(componentUnderTest.alreadyInCollection(123)).toBe(true);
+          expect(componentUnderTest.uniqueInCollection(asset)).toBe(true);
         });
       });
     });

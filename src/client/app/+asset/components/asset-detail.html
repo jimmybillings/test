@@ -107,20 +107,27 @@
             <md-icon>share</md-icon>
           </button>
 
-            <button md-icon-button *ngIf="alreadyInCollection(asset.common[0].value)" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
+            <button md-icon-button *ngIf="uniqueInCollection(asset.common[0].value)" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
               <md-icon>mode_comment</md-icon>
             </button>
 
           <ng-container *ngIf="userCan.haveCollections()">
             <button md-icon-button 
-              *ngIf="!alreadyInCollection(asset.uuid)"
+              *ngIf="canBeAddedToCollection(asset)"
+              [disabled]="!userCan.editCollections()" 
+              title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
+              (click)="addAssetToActiveCollection()">
+              <md-icon>add_box</md-icon>
+            </button>
+            <button md-icon-button 
+              *ngIf="canBeAddedAgainToCollection(asset)"
               [disabled]="!userCan.editCollections()" 
               title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="addAssetToActiveCollection()">
               <md-icon>library_add</md-icon>
             </button>
             <button md-icon-button 
-              *ngIf="alreadyInCollection(asset.uuid)"  
+              *ngIf="canBeRemovedFromCollection(asset)"  
               [disabled]="!userCan.editCollections()"
               title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="removeAssetFromActiveCollection()">
