@@ -124,7 +124,7 @@
             <button md-icon-button 
               *ngIf="canBeAddedAgainToCollection(asset)"
               [disabled]="!userCan.editCollections()" 
-              title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
+              title="{{ 'COLLECTION.ADD_AGAIN_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="addAssetToActiveCollection()">
               <md-icon>library_add</md-icon>
             </button>

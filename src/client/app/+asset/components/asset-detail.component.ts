@@ -101,17 +101,13 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public removeAssetFromActiveCollection(): void {
-    if (this.subclipMarkers) {
-      let timeStamps = durationFrom(this.subclipMarkers);
-      let newAsset = this.activeCollection.assets.items.find((asset: EnhancedAsset) =>
-        asset.assetId === this.asset.assetId &&
-        asset.timeStart === timeStamps.timeStart &&
-        asset.timeEnd === timeStamps.timeEnd
-      );
-      this.store.dispatch(factory => factory.activeCollection.removeAsset(newAsset));
-    } else {
-      return this.store.dispatch(factory => factory.activeCollection.removeAsset(this.asset));
-    }
+    const timeStamps = this.subclipMarkers ? durationFrom(this.subclipMarkers) : null;
+    const assetToRemove = timeStamps ? this.activeCollection.assets.items.find((asset: EnhancedAsset) =>
+      asset.assetId === this.asset.assetId &&
+      asset.timeStart === timeStamps.timeStart &&
+      asset.timeEnd === timeStamps.timeEnd
+    ) : this.asset;
+    this.store.dispatch(factory => factory.activeCollection.removeAsset(assetToRemove));
   }
 
   public downloadComp(assetId: any, compType: any): void {
