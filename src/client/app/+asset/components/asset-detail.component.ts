@@ -140,6 +140,18 @@ export class AssetDetailComponent implements OnChanges {
       : (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
   }
 
+  public canCommentOn(asset: EnhancedAsset) {
+    return ['cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset'].includes(asset.type);
+  }
+
+  public canShare(asset: EnhancedAsset) {
+    return ['collectionAsset', 'searchAsset'].includes(asset.type) && this.userCan.createAccessInfo();
+  }
+
+  public get shareButtonLabelKey(): string {
+    return this.markersAreDefined ? 'ASSET.DETAIL.SHARING_SUBCLIP_BTN_TITLE' : 'ASSET.DETAIL.SHARING_BTN_TITLE';
+  }
+
   private get markersAreDefined(): boolean {
     return !!this.subclipMarkers && !!this.subclipMarkers.in && !!this.subclipMarkers.out;
   }

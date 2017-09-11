@@ -102,14 +102,16 @@
             </md-list>
           </md-menu>
 
-          <button md-icon-button [disabled]="!userCan.createAccessInfo()" title="{{ (userCan.createAccessInfo() ? 
-            'ASSET.DETAIL.SHARING_BTN_TITLE' : 'ASSET.DETAIL.SHARING_UNAVAILABLE_BTN_TITLE') | translate }}" (click)="sharing.show($event)">
+          <button md-icon-button
+            *ngIf="canShare(asset)"
+            title="{{ shareButtonLabelKey | translate }}"
+            (click)="sharing.show($event)">
             <md-icon>share</md-icon>
           </button>
 
-            <button md-icon-button *ngIf="uniqueInCollection(asset.common[0].value)" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
-              <md-icon>mode_comment</md-icon>
-            </button>
+          <button md-icon-button *ngIf="canCommentOn(asset)" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
+            <md-icon>mode_comment</md-icon>
+          </button>
 
           <ng-container *ngIf="userCan.haveCollections()">
             <button md-icon-button 
