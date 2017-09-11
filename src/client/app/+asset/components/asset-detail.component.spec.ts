@@ -1,5 +1,8 @@
 import { AssetDetailComponent } from './asset-detail.component';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
+import { enhanceAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
+import { Asset } from '../../shared/interfaces/common.interface';
+
 
 export function main() {
   describe('Asset Detail Component', () => {
@@ -176,6 +179,68 @@ export function main() {
         componentUnderTest.window.history.pushState({ data: 'somedata2' }, 'test2');
         componentUnderTest.window.history.pushState({ data: 'somedata3' }, 'test3');
         expect(componentUnderTest.hasPageHistory).toBe(true);
+      });
+    });
+
+    describe('canCommentOn()', () => {
+      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', expectedResult: true },
+        { assetType: 'collectionAsset', expectedResult: true },
+        { assetType: 'orderAsset', expectedResult: true },
+        { assetType: 'quoteEditAsset', expectedResult: true },
+        { assetType: 'quoteShowAsset', expectedResult: true },
+        { assetType: 'searchAsset', expectedResult: false }
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          expect(componentUnderTest.canCommentOn(enhanceAsset({} as any, test.assetType))).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('canShare()', () => {
+      const tests: { assetType: AssetType, userCanShare: boolean, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'collectionAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'orderAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'quoteEditAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'quoteShowAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'searchAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'cartAsset', userCanShare: true, expectedResult: false },
+        { assetType: 'collectionAsset', userCanShare: true, expectedResult: true },
+        { assetType: 'orderAsset', userCanShare: true, expectedResult: false },
+        { assetType: 'quoteEditAsset', userCanShare: true, expectedResult: false },
+        { assetType: 'quoteShowAsset', userCanShare: true, expectedResult: false },
+        { assetType: 'searchAsset', userCanShare: true, expectedResult: true }
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          componentUnderTest.userCan = { createAccessInfo: () => test.userCanShare } as any;
+
+          expect(componentUnderTest.canShare(enhanceAsset({} as any, test.assetType))).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('shareButtonLabelKey()', () => {
+      const tests: { markers: any, expectedKey: string }[] = [
+        { markers: undefined, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: null, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: { in: 'x' }, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: { in: 'x', out: null }, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: { out: 'y' }, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: { in: null, out: 'y' }, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: { in: 'x', out: 'y' }, expectedKey: 'ASSET.DETAIL.SHARING_SUBCLIP_BTN_TITLE' }
+      ];
+
+      tests.forEach(test => {
+        it(`returns '${test.expectedKey}' for markers = ${test.markers}`, () => {
+          componentUnderTest.subclipMarkers = test.markers;
+
+          expect(componentUnderTest.shareButtonLabelKey).toEqual(test.expectedKey);
+        });
       });
     });
   });
