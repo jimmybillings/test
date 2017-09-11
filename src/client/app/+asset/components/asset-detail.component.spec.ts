@@ -261,12 +261,12 @@ export function main() {
 
       it('returns true when the assetId is in the collection', () => {
         expect(componentUnderTest.inCollection(asset)).toBe(true);
-      })
+      });
 
       it('returns false when the assetId is not in the collection', () => {
         asset.assetId = 9999;
         expect(componentUnderTest.inCollection(asset)).toBe(false);
-      })
+      });
     });
 
     describe('canBeAddedToCollection()', () => {
@@ -277,11 +277,11 @@ export function main() {
       it('returns true when the assetId is not in the collection ', () => {
         asset.assetId = 9999;
         expect(componentUnderTest.canBeAddedToCollection(asset)).toBe(true);
-      })
+      });
 
       it('returns false when the assetId is in the collection', () => {
         expect(componentUnderTest.canBeAddedToCollection(asset)).toBe(false);
-      })
+      });
     });
 
     describe('canBeAddedAgainToCollection()', () => {
@@ -292,16 +292,16 @@ export function main() {
       it('returns true when the collection has a version of that asset without matching subclip markers', () => {
         asset.timeEnd = 9999;
         expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(true);
-      })
+      });
 
       it('returns false when the collection has a version of that asset with matching subclip markers', () => {
         expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(false);
-      })
+      });
 
       it('returns false when the collection does not have a version of that asset', () => {
         asset.assetId = 9999;
         expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(false);
-      })
+      });
     });
 
     describe('canBeRemovedFromCollection()', () => {
@@ -311,17 +311,17 @@ export function main() {
 
       it('returns true when the collection has a version of that asset with matching time markers', () => {
         expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(true);
-      })
+      });
 
       it('returns false when the collection has a version of that asset without matching time markers', () => {
         asset.timeEnd = 9999;
         expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
-      })
+      });
 
       it('returns false when the collection does not have a version of that asset', () => {
         asset.assetId = 9999;
         expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
-      })
+      });
     });
   });
 }
