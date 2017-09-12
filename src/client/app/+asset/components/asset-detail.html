@@ -11,14 +11,15 @@
       layout="row" 
       layout-xs="column">
       <div flex="nogrow" class="breadcrumb" flex-order-xs="2">
-        <a
+        <!-- this maybe reintroduced when user comes from a page by clicking the collection tray asset from any page other than collection show page (look at referrer url and the asset.type)-->
+        <!-- <a
           class="back-to-search"
           *ngIf="hasPageHistory && asset.type == 'collectionAsset'"
           title="Back to search results"
           md-icon-button 
           (click)="previousPage()">
             <md-icon>arrow_back</md-icon>
-        </a>
+        </a> -->
         <a md-button (click)="breadcrumbLink()">{{ firstBreadcrumb[0] | uppercase | translate:{id: firstBreadcrumb[1]} }}</a>
         <span class="breadcrumb-separator"></span>
         <span class="breadcrumb-current">{{asset.common[5].value}}</span>
