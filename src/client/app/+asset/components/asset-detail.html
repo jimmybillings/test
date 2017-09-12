@@ -8,9 +8,9 @@
       flex-lg="75" 
       flex-gt-lg="75" 
       flex="100" 
-      layout="row" 
-      layout-xs="column">
-      <div flex="nogrow" class="breadcrumb" flex-order-xs="2">
+      layout-gt-xs="row" 
+      layout="column">
+      <div flex="noshrink" class="breadcrumb" flex-order-xs="2">
         <!-- this maybe reintroduced when user comes from a page by clicking the collection tray asset from any page other than collection show page (look at referrer url and the asset.type)-->
         <!-- <a
           class="back-to-search"
@@ -25,7 +25,7 @@
         <span class="breadcrumb-current">{{asset.common[5].value}}</span>
         <ng-container *ngIf="asset.timeStart">
           <span class="breadcrumb-timecode-separator"></span>
-          <span class="breadcrumb-current">{{asset.inMarkerFrame | timecode }} - {{asset.outMarkerFrame | timecode }}</span>
+          <span class="breadcrumb-current timecode">{{asset.inMarkerFrame | timecode }} - {{asset.outMarkerFrame | timecode }}</span>
         </ng-container>
       </div>
 

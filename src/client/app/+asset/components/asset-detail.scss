@@ -12,10 +12,14 @@ section.preview-bk {
       a[md-button] {
         line-height: 40px;
         min-width: 60px;
+
       }
       .breadcrumb-current {
         line-height: 40px;
         opacity: .65;
+        &.timecode {
+          font-size: .75em;
+        }
       }
       .breadcrumb-separator {
         display: inline-block;
@@ -85,6 +89,11 @@ section.preview-bk {
   }
   .toolbar-actions {
     text-align: right;
+    max-width: 174px;
+    @media screen and (max-width: $layout-breakpoint-xs)  {
+      max-width: none;
+
+    }
   }
   div.primary-info {
     box-shadow: none;

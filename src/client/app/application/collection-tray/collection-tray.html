@@ -20,14 +20,14 @@
   </div>
   <div layout="row" flex="auto" layout-align="end center" class="focused-collection">
     <nav class="focused" *ngIf="collection.name">
-      <button md-button [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
+      <a md-button [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
         <md-icon>folder_special</md-icon>
           {{collection.name}}
         <span class="asset-count" *ngIf="collection.assets">
           <span class="count" *ngIf="collection.assets">{{collection.assetsCount}}</span>
           <span class="count" *ngIf="!collection.assets">0</span>
         </span>
-      </button>
+      </a>
     </nav>
     <button
       md-icon-button
