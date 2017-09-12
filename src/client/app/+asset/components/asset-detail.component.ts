@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 import { AppStore, ActionFactoryMapper } from '../../app.store';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
+import { SearchState } from '../../shared/services/search-context.service';
 
 @Component({
   moduleId: module.id,
@@ -24,12 +25,13 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public activeCollection: Collection;
   @Input() public usagePrice: Observable<number>;
   @Input() public window: Window;
+  @Input() public searchContext: SearchState;
+  @Input() public pageSize: number;
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onShowSnackBar = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
-  @Output() breadcrumbClick = new EventEmitter<null>();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
@@ -56,8 +58,32 @@ export class AssetDetailComponent implements OnChanges {
     this.onPreviousPage.emit();
   }
 
-  public onBreadcrumbClick(): void {
-    this.breadcrumbClick.emit();
+  public get routerLinkForAssetParent(): any[] {
+    switch (this.asset.type) {
+      case 'collectionAsset': {
+        return ['/collections', this.asset.parentId, { i: 1, n: this.pageSize }];
+      }
+
+      case 'searchAsset': {
+        return ['/search', this.searchContext];
+      }
+
+      case 'quoteEditAsset': {
+        return ['/active-quote'];
+      }
+
+      case 'quoteShowAsset': {
+        return ['/quotes', this.asset.parentId];
+      }
+
+      case 'orderAsset': {
+        return ['/orders', this.asset.parentId];
+      }
+
+      case 'cartAsset': {
+        return ['/cart'];
+      }
+    }
   }
 
   public get breadcrumbLabel(): Array<string> {

@@ -369,13 +369,45 @@ export function main() {
       });
     });
 
-    describe('onBreadcrumbClick()', () => {
-      it('emits the breadcrumbClick event', () => {
-        spyOn(componentUnderTest.breadcrumbClick, 'emit');
+    describe('routerLinkForAssetParent()', () => {
+      describe('returns the correct routerLink', () => {
+        it('for a collection asset', () => {
+          componentUnderTest.pageSize = 50;
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'collectionAsset', 100);
 
-        componentUnderTest.onBreadcrumbClick();
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/collections', 100, { i: 1, n: 50 }]);
+        });
 
-        expect(componentUnderTest.breadcrumbClick.emit).toHaveBeenCalled();
+        it('for a quote edit asset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteEditAsset');
+
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/active-quote']);
+        });
+
+        it('for a quote show asset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteShowAsset', 999);
+
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/quotes', 999]);
+        });
+
+        it('for an order asset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'orderAsset', 111);
+
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/orders', 111]);
+        });
+
+        it('for a cart asset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'cartAsset');
+
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/cart']);
+        });
+
+        it('for a search asset', () => {
+          componentUnderTest.searchContext = { q: 'cat', i: 1, n: 100, sortId: 10 };
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'searchAsset');
+
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/search', { q: 'cat', i: 1, n: 100, sortId: 10 }]);
+        });
       });
     });
 

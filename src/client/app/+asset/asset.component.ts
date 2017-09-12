@@ -26,6 +26,7 @@ import { AppStore, StateMapper } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { PricingService } from '../shared/services/pricing.service';
 import { Common } from '../shared/utilities/common.functions';
+import { SearchContext, SearchState } from '../shared/services/search-context.service';
 
 @Component({
   moduleId: module.id,
@@ -49,10 +50,10 @@ export class AssetComponent implements OnInit, OnDestroy {
   public pricingAttributes: Array<PriceAttribute>;
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
+  public pageSize: number = 50;
   private assetSubscription: Subscription;
   private routeSubscription: Subscription;
   private selectedAttributes: Pojo;
-  private pageSize: number = 50;
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
 
   constructor(
@@ -72,7 +73,8 @@ export class AssetComponent implements OnInit, OnDestroy {
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
     private pricingStore: PricingStore,
-    private pricingService: PricingService
+    private pricingService: PricingService,
+    private searchContext: SearchContext
   ) { }
 
   public ngOnInit(): void {
@@ -93,41 +95,16 @@ export class AssetComponent implements OnInit, OnDestroy {
     return this.store.select(state => state.activeCollection.collection);
   }
 
-  public onBreadcrumbClick(): void {
-    switch (this.asset.type) {
-      case 'collectionAsset': {
-        this.router.navigate(['collections', this.asset.parentId, { i: 1, n: this.pageSize }]);
-        break;
-      }
-      case 'searchAsset': {
-        this.previousPage();
-        break;
-      }
-      case 'quoteEditAsset': {
-        this.router.navigate(['active-quote']);
-        break;
-      }
-      case 'quoteShowAsset': {
-        this.router.navigate(['quotes', this.asset.parentId]);
-        break;
-      }
-      case 'orderAsset': {
-        this.router.navigate(['orders', this.asset.parentId]);
-        break;
-      }
-      case 'cartAsset': {
-        this.router.navigate(['cart']);
-        break;
-      }
-    }
-  }
-
   public get userEmail(): Observable<string> {
     return this.currentUser.data.map(user => user.emailAddress);
   }
 
   public get priceForDetails(): Observable<number> {
     return this.pricingStore.priceForDetails;
+  }
+
+  public get searchContextState(): SearchState {
+    return this.searchContext.state;
   }
 
   public showSnackBar(message: any): void {

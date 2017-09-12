@@ -57,7 +57,8 @@ export function main() {
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCart,
-        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
+        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
+        null
       );
     });
 
@@ -106,62 +107,11 @@ export function main() {
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockUiState,
           mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCart,
-          mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
+          mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
+          null
         );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
-      });
-    });
-
-    describe('onBreadcrumbClick()', () => {
-      describe('calls \'navigate\' on the router with the correct arguments', () => {
-        it('for a collection asset', () => {
-          componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset', 100);
-
-          componentUnderTest.onBreadcrumbClick();
-
-          expect(mockRouter.navigate).toHaveBeenCalledWith(['collections', 100, { i: 1, n: 50 }]);
-        });
-
-        it('for a quote edit asset', () => {
-          componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');
-
-          componentUnderTest.onBreadcrumbClick();
-
-          expect(mockRouter.navigate).toHaveBeenCalledWith(['active-quote']);
-        });
-
-        it('for a quote show asset', () => {
-          componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteShowAsset', 999);
-
-          componentUnderTest.onBreadcrumbClick();
-
-          expect(mockRouter.navigate).toHaveBeenCalledWith(['quotes', 999]);
-        });
-
-        it('for a order asset', () => {
-          componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'orderAsset', 111);
-
-          componentUnderTest.onBreadcrumbClick();
-
-          expect(mockRouter.navigate).toHaveBeenCalledWith(['orders', 111]);
-        });
-
-        it('for a cart asset', () => {
-          componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'cartAsset');
-
-          componentUnderTest.onBreadcrumbClick();
-
-          expect(mockRouter.navigate).toHaveBeenCalledWith(['cart']);
-        });
-      });
-
-      it('calls \'back\' on the window\'s history object', () => {
-        componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'searchAsset');
-
-        componentUnderTest.onBreadcrumbClick();
-
-        expect(mockWindow.nativeWindow.history.back).toHaveBeenCalled();
       });
     });
 

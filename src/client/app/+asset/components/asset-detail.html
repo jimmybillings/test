@@ -20,7 +20,11 @@
           (click)="previousPage()">
             <md-icon>arrow_back</md-icon>
         </a> -->
-        <a md-button (click)="onBreadcrumbClick()">{{ breadcrumbLabel[0] | uppercase | translate:{id: breadcrumbLabel[1]} }}</a>
+        <a
+          md-button
+          [routerLink]="routerLinkForAssetParent">
+          {{ breadcrumbLabel[0] | uppercase | translate:{id: breadcrumbLabel[1]} }}
+        </a>
         <span class="breadcrumb-separator"></span>
         <span class="breadcrumb-current">{{asset.common[5].value}}</span>
         <ng-container *ngIf="asset.timeStart">

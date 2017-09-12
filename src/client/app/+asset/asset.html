@@ -6,12 +6,13 @@
     [uiConfig]="uiConfig"
     [usagePrice]="priceForDetails"
     [window]="window.nativeWindow"
+    [searchContext]="searchContextState"
+    [pageSize]="pageSize"
     (onDownloadComp)="downloadComp($event)"
     (addToCart)="addAssetToCart($event)"
     (getPriceAttributes)="getPricingAttributes($event)"
     (onShowSnackBar)="showSnackBar($event)"
     (onPreviousPage)="previousPage()"
-    (breadcrumbClick)="onBreadcrumbClick($event)"
     (markersChange)="onMarkersChange($event)">
   </asset-detail>
   <asset-data
