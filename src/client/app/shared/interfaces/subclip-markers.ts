@@ -78,5 +78,5 @@ function timeEndFrom(markers: SubclipMarkers): number {
 }
 
 function toMilliseconds(frame: Frame): number {
-  return frame.asSeconds(3) * 1000;
+  return Math.ceil(frame.asSeconds(3) * 1000);
 }
