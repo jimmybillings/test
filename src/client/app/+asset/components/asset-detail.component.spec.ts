@@ -1,6 +1,7 @@
 import { AssetDetailComponent } from './asset-detail.component';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 import { enhanceAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
+import { mockAsset } from '../../shared/mocks/mock-asset';
 import { Asset } from '../../shared/interfaces/common.interface';
 
 
@@ -365,6 +366,55 @@ export function main() {
       it('returns false when the collection does not have a version of that asset', () => {
         asset.assetId = 9999;
         expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
+      });
+    });
+
+    describe('onBreadcrumbClick()', () => {
+      it('emits the breadcrumbClick event', () => {
+        spyOn(componentUnderTest.breadcrumbClick, 'emit');
+
+        componentUnderTest.onBreadcrumbClick();
+
+        expect(componentUnderTest.breadcrumbClick.emit).toHaveBeenCalled();
+      });
+    });
+
+    describe('breadcrumbLabel getter', () => {
+      describe('returns the correct translatable string', () => {
+        it('for a collectionAsset', () => {
+          componentUnderTest.activeCollection = { name: 'some collection' } as any;
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'collectionAsset', 100);
+
+          expect(componentUnderTest.breadcrumbLabel).toEqual(['some collection', '']);
+        });
+
+        it('for a quoteShowAsset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteShowAsset', 111);
+
+          expect(componentUnderTest.breadcrumbLabel).toEqual(['asset.detail.breadcrumb_quoteShowAsset', '111']);
+        });
+
+        it('for a orderAsset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'orderAsset', 333);
+
+          expect(componentUnderTest.breadcrumbLabel).toEqual(['asset.detail.breadcrumb_orderAsset', '333']);
+        });
+
+        describe('for any other type of asset - ', () => {
+          const tests: { assetType: AssetType; expected: string[] }[] = [
+            { assetType: 'searchAsset', expected: ['asset.detail.breadcrumb_searchAsset', ''] },
+            { assetType: 'quoteEditAsset', expected: ['asset.detail.breadcrumb_quoteEditAsset', ''] },
+            { assetType: 'cartAsset', expected: ['asset.detail.breadcrumb_cartAsset', ''] }
+          ];
+
+          tests.forEach((test: { assetType: AssetType; expected: string[] }) => {
+            it(`(${test.assetType})`, () => {
+              componentUnderTest.asset = enhanceAsset(mockAsset, test.assetType);
+
+              expect(componentUnderTest.breadcrumbLabel).toEqual(test.expected);
+            });
+          });
+        });
       });
     });
   });

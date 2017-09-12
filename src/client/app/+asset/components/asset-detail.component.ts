@@ -3,12 +3,11 @@ import { Collection } from '../../shared/interfaces/collection.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
+import { SubclipMarkers, durationFrom } from '../../shared/interfaces/subclip-markers';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 import { AppStore, ActionFactoryMapper } from '../../app.store';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
-import { durationFrom } from '../../shared/interfaces/subclip-markers';
 
 @Component({
   moduleId: module.id,
@@ -25,13 +24,12 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public activeCollection: Collection;
   @Input() public usagePrice: Observable<number>;
   @Input() public window: Window;
-  @Input() public routeSegmentId: string;
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onShowSnackBar = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
-  @Output() onBreadcrumbLink = new EventEmitter();
+  @Output() breadcrumbClick = new EventEmitter<null>();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
@@ -39,9 +37,7 @@ export class AssetDetailComponent implements OnChanges {
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   private assetsArr: Array<string> = [];
 
-  constructor(
-    private store: AppStore
-  ) { }
+  constructor(private store: AppStore) { }
 
   ngOnChanges(changes: any): void {
     if (changes.asset) this.parseNewAsset(changes.asset);
@@ -60,33 +56,25 @@ export class AssetDetailComponent implements OnChanges {
     this.onPreviousPage.emit();
   }
 
-  public breadcrumbLink() {
-    this.onBreadcrumbLink.emit();
+  public onBreadcrumbClick(): void {
+    this.breadcrumbClick.emit();
   }
 
-  public get firstBreadcrumb(): Array<string> {
-    let firstCrumb: Array<string> = [];
+  public get breadcrumbLabel(): Array<string> {
     switch (this.asset.type) {
       case 'collectionAsset': {
-        firstCrumb = [this.activeCollection.name, ''];
-        break;
+        return [this.activeCollection.name, ''];
       }
 
+      case 'orderAsset':
       case 'quoteShowAsset': {
-        firstCrumb = [`asset.detail.breadcrumb_${this.asset.type}`, this.routeSegmentId];
-        break;
-      }
-      case 'orderAsset': {
-        firstCrumb = [`asset.detail.breadcrumb_${this.asset.type}`, this.routeSegmentId];
-        break;
+        return [`asset.detail.breadcrumb_${this.asset.type}`, String(this.asset.parentId)];
       }
 
       default: {
-        firstCrumb = [`asset.detail.breadcrumb_${this.asset.type}`, ''];
-        break;
+        return [`asset.detail.breadcrumb_${this.asset.type}`, ''];
       }
     }
-    return firstCrumb;
   }
 
   public uniqueInCollection(asset: EnhancedAsset): boolean {

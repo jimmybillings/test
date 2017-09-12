@@ -32,7 +32,6 @@ import { Common } from '../shared/utilities/common.functions';
   selector: 'asset-component',
   templateUrl: 'asset.html',
 })
-
 export class AssetComponent implements OnInit, OnDestroy {
   @Input() assetType: AssetType;
   @Input()
@@ -40,7 +39,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.assetSubscription = this.store.select(stateMapper)
       .map(asset => {
         const clonedAsset: Asset = Common.clone(asset);
-        return enhanceAsset(clonedAsset, this.assetType);
+        return enhanceAsset(clonedAsset, this.assetType, this.parentIdIn(this.route.snapshot.params));
       }).subscribe(asset => {
         this.asset = asset;
         this.pricingStore.setPriceForDetails(this.asset.price);
@@ -50,7 +49,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   public pricingAttributes: Array<PriceAttribute>;
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
-  public routeSegment: Array<any>;
   private assetSubscription: Subscription;
   private routeSubscription: Subscription;
   private selectedAttributes: Pojo;
@@ -81,15 +79,13 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
-    this.routeSubscription = this.route.url.subscribe(url => { this.routeSegment = url; });
   }
 
   public ngOnDestroy(): void {
     if (this.assetSubscription) this.assetSubscription.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 
-  public previousPage() {
+  public previousPage(): void {
     this.window.nativeWindow.history.back();
   }
 
@@ -97,10 +93,10 @@ export class AssetComponent implements OnInit, OnDestroy {
     return this.store.select(state => state.activeCollection.collection);
   }
 
-  public breadcrumbLink(): void {
+  public onBreadcrumbClick(): void {
     switch (this.asset.type) {
       case 'collectionAsset': {
-        this.router.navigate(['/collections/', this.routeSegment[0].path, { i: 1, n: this.pageSize }]);
+        this.router.navigate(['collections', this.asset.parentId, { i: 1, n: this.pageSize }]);
         break;
       }
       case 'searchAsset': {
@@ -108,19 +104,19 @@ export class AssetComponent implements OnInit, OnDestroy {
         break;
       }
       case 'quoteEditAsset': {
-        this.router.navigate(['/active-quote/']);
+        this.router.navigate(['active-quote']);
         break;
       }
       case 'quoteShowAsset': {
-        this.router.navigate(['/quotes/', this.routeSegment[1].path]);
+        this.router.navigate(['quotes', this.asset.parentId]);
         break;
       }
       case 'orderAsset': {
-        this.router.navigate(['/orders/', this.routeSegment[1].path]);
+        this.router.navigate(['orders', this.asset.parentId]);
         break;
       }
       case 'cartAsset': {
-        this.router.navigate(['/cart']);
+        this.router.navigate(['cart']);
         break;
       }
     }
@@ -134,7 +130,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     return this.pricingStore.priceForDetails;
   }
 
-  public showSnackBar(message: any) {
+  public showSnackBar(message: any): void {
     this.translate.get(message.key, message.value)
       .subscribe((res: string) => {
         this.snackBar.open(res, '', { duration: 2000 });
@@ -243,5 +239,26 @@ export class AssetComponent implements OnInit, OnDestroy {
   private calculatePrice(attributes: Pojo): Observable<number> {
     this.selectedAttributes = attributes;
     return this.pricingService.getPriceFor(this.asset, attributes, this.subclipMarkers);
+  }
+
+  // I'd like to eliminate this, but we set up the dynamic parts of our routes too specifically
+  private parentIdIn(routeParams: Pojo): number {
+    switch (this.assetType) {
+      case 'collectionAsset': {
+        return Number(routeParams.id);
+      }
+
+      case 'orderAsset': {
+        return Number(routeParams.orderId);
+      }
+
+      case 'quoteShowAsset': {
+        return Number(routeParams.quoteId);
+      }
+
+      default: {
+        return NaN;
+      }
+    }
   }
 }

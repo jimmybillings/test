@@ -1,15 +1,17 @@
 import { AssetComponent } from './asset.component';
 import { MockAppStore } from '../store/spec-helpers/mock-app.store';
+import * as EnhancedMock from '../shared/interfaces/enhanced-asset';
+import { mockAsset } from '../shared/mocks/mock-asset';
 import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Asset Component', () => {
-
     let mockCurrentUserService: any, mockCapabilities: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockCart: any,
       mockWindow: any, mockRouter: any, mockRoute: any, mockDialogService: any,
       mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
       mockPricingStore: any, mockPricingService: any;
+    let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
     let mockStore: MockAppStore;
     let componentUnderTest: AssetComponent;
 
@@ -30,8 +32,7 @@ export function main() {
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
-      // mockRoute = { url: [{ path: 'orders' }, { path: '205408' }] };
-      mockRoute = { url: jasmine.createSpy('url').and.returnValue(Observable.of([{ path: 'orders' }, { path: '205408' }])) };
+      mockRoute = { snapshot: { params: { id: '100' } } };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };
@@ -58,6 +59,19 @@ export function main() {
         mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCart,
         mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
       );
+    });
+
+    describe('stateMapper setter', () => {
+      beforeEach(() => {
+        mockStore.createStateSection('activeCollectionAsset', { activeAsset: mockAsset });
+        componentUnderTest.assetType = 'collectionAsset';
+      });
+
+      it('sets up an asset instance variable', () => {
+        componentUnderTest.stateMapper = (factory) => factory.activeCollectionAsset.activeAsset;
+        const expectedAsset: EnhancedMock.EnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset', 100);
+        expect(componentUnderTest.asset).toEqual(expectedAsset);
+      });
     });
 
     describe('ngOnInit()', () => {
@@ -97,7 +111,58 @@ export function main() {
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
       });
+    });
 
+    describe('onBreadcrumbClick()', () => {
+      describe('calls \'navigate\' on the router with the correct arguments', () => {
+        it('for a collection asset', () => {
+          componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset', 100);
+
+          componentUnderTest.onBreadcrumbClick();
+
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['collections', 100, { i: 1, n: 50 }]);
+        });
+
+        it('for a quote edit asset', () => {
+          componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');
+
+          componentUnderTest.onBreadcrumbClick();
+
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['active-quote']);
+        });
+
+        it('for a quote show asset', () => {
+          componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteShowAsset', 999);
+
+          componentUnderTest.onBreadcrumbClick();
+
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['quotes', 999]);
+        });
+
+        it('for a order asset', () => {
+          componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'orderAsset', 111);
+
+          componentUnderTest.onBreadcrumbClick();
+
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['orders', 111]);
+        });
+
+        it('for a cart asset', () => {
+          componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'cartAsset');
+
+          componentUnderTest.onBreadcrumbClick();
+
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['cart']);
+        });
+      });
+
+      it('calls \'back\' on the window\'s history object', () => {
+        componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'searchAsset');
+
+        componentUnderTest.onBreadcrumbClick();
+
+        expect(mockWindow.nativeWindow.history.back).toHaveBeenCalled();
+      });
     });
 
     describe('addAssetToCart()', () => {
