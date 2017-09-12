@@ -24,11 +24,13 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public activeCollection: Collection;
   @Input() public usagePrice: Observable<number>;
   @Input() public window: Window;
+  @Input() public routeSegmentId: string;
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onShowSnackBar = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
+  @Output() onBreadcrumbLink = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
@@ -36,7 +38,9 @@ export class AssetDetailComponent implements OnChanges {
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   private assetsArr: Array<string> = [];
 
-  constructor(private store: AppStore) { }
+  constructor(
+    private store: AppStore
+  ) { }
 
   ngOnChanges(changes: any): void {
     if (changes.asset) this.parseNewAsset(changes.asset);
@@ -51,6 +55,35 @@ export class AssetDetailComponent implements OnChanges {
 
   public previousPage() {
     this.onPreviousPage.emit();
+  }
+
+  public breadcrumbLink() {
+    this.onBreadcrumbLink.emit();
+  }
+
+  public get firstBreadcrumb(): Array<string> {
+    let firstCrumb: Array<string> = [];
+    switch (this.asset.type) {
+      case 'collectionAsset': {
+        firstCrumb = [this.activeCollection.name, ''];
+        break;
+      }
+
+      case 'quoteShowAsset': {
+        firstCrumb = [`asset.detail.breadcrumb_${this.asset.type}`, this.routeSegmentId];
+        break;
+      }
+      case 'orderAsset': {
+        firstCrumb = [`asset.detail.breadcrumb_${this.asset.type}`, this.routeSegmentId];
+        break;
+      }
+
+      default: {
+        firstCrumb = [`asset.detail.breadcrumb_${this.asset.type}`, ''];
+        break;
+      }
+    }
+    return firstCrumb;
   }
 
   public alreadyInCollection(uuid: any): boolean {

@@ -13,15 +13,19 @@
       <div flex="nogrow" class="breadcrumb" flex-order-xs="2">
         <a
           class="back-to-search"
-          *ngIf="hasPageHistory"
+          *ngIf="hasPageHistory && asset.type == 'collectionAsset'"
           title="Back to search results"
           md-icon-button 
           (click)="previousPage()">
             <md-icon>arrow_back</md-icon>
         </a>
-        <a md-button [routerLink]="">search</a>
+        <a md-button (click)="breadcrumbLink()">{{ firstBreadcrumb[0] | uppercase | translate:{id: firstBreadcrumb[1]} }}</a>
         <span class="breadcrumb-separator"></span>
         <span class="breadcrumb-current">{{asset.common[5].value}}</span>
+        <ng-container *ngIf="asset.timeStart">
+          <span class="breadcrumb-timecode-separator"></span>
+          <span class="breadcrumb-current">{{asset.inMarkerFrame | timecode }} - {{asset.outMarkerFrame | timecode }}</span>
+        </ng-container>
       </div>
 
       <div flex="auto" class="toolbar-actions" flex-order-xs="-1">

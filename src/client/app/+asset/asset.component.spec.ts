@@ -7,7 +7,8 @@ export function main() {
 
     let mockCurrentUserService: any, mockCapabilities: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockCart: any,
-      mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
+      mockWindow: any, mockRouter: any, mockRoute: any, mockDialogService: any,
+      mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
       mockPricingStore: any, mockPricingService: any;
     let mockStore: MockAppStore;
     let componentUnderTest: AssetComponent;
@@ -28,6 +29,9 @@ export function main() {
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
+      mockRouter = { navigate: jasmine.createSpy('navigate') };
+      // mockRoute = { url: [{ path: 'orders' }, { path: '205408' }] };
+      mockRoute = { url: jasmine.createSpy('url').and.returnValue(Observable.of([{ path: 'orders' }, { path: '205408' }])) };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };
@@ -51,7 +55,7 @@ export function main() {
       mockStore = new MockAppStore();
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockUiState,
-        mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockCart,
+        mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCart,
         mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
       );
     });
@@ -87,7 +91,7 @@ export function main() {
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockUiState,
-          mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockCart,
+          mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCart,
           mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
         );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });

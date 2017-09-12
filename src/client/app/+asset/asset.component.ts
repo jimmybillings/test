@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../store/services/asset.service';
 import { AddAssetParameters, PriceAttribute } from '../shared/interfaces/commerce.interface';
@@ -49,7 +50,9 @@ export class AssetComponent implements OnInit, OnDestroy {
   public pricingAttributes: Array<PriceAttribute>;
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
+  public routeSegment: Array<any>;
   private assetSubscription: Subscription;
+  private routeSubscription: Subscription;
   private selectedAttributes: Pojo;
   private pageSize: number = 50;
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
@@ -61,6 +64,8 @@ export class AssetComponent implements OnInit, OnDestroy {
     public assetService: AssetService,
     public uiConfig: UiConfig,
     public window: WindowRef,
+    private router: Router,
+    private route: ActivatedRoute,
     private store: AppStore,
     private userPreference: UserPreferenceService,
     private cart: CartService,
@@ -76,10 +81,12 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
+    this.routeSubscription = this.route.url.subscribe(url => { this.routeSegment = url; });
   }
 
   public ngOnDestroy(): void {
     if (this.assetSubscription) this.assetSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   public previousPage() {
@@ -88,6 +95,35 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   public get activeCollection(): Observable<Collection> {
     return this.store.select(state => state.activeCollection.collection);
+  }
+
+  public breadcrumbLink(): void {
+    switch (this.asset.type) {
+      case 'collectionAsset': {
+        this.router.navigate(['/collections/', this.routeSegment[0].path, { i: 1, n: this.pageSize }]);
+        break;
+      }
+      case 'searchAsset': {
+        this.previousPage();
+        break;
+      }
+      case 'quoteEditAsset': {
+        this.router.navigate(['/active-quote/']);
+        break;
+      }
+      case 'quoteShowAsset': {
+        this.router.navigate(['/quotes/', this.routeSegment[1].path]);
+        break;
+      }
+      case 'orderAsset': {
+        this.router.navigate(['/orders/', this.routeSegment[1].path]);
+        break;
+      }
+      case 'cartAsset': {
+        this.router.navigate(['/cart']);
+        break;
+      }
+    }
   }
 
   public get userEmail(): Observable<string> {

@@ -6,11 +6,13 @@
     [uiConfig]="uiConfig"
     [usagePrice]="priceForDetails"
     [window]="window.nativeWindow"
+    [routeSegmentId]="routeSegment[1].path"
     (onDownloadComp)="downloadComp($event)"
     (addToCart)="addAssetToCart($event)"
     (getPriceAttributes)="getPricingAttributes($event)"
     (onShowSnackBar)="showSnackBar($event)"
     (onPreviousPage)="previousPage()"
+    (onBreadcrumbLink)="breadcrumbLink()"
     (markersChange)="onMarkersChange($event)">
   </asset-detail>
   <asset-data

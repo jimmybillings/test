@@ -9,9 +9,13 @@ section.preview-bk {
     padding: 5px 0;
     position: relative;
     .breadcrumb {
-      a[md-button],
+      a[md-button] {
+        line-height: 40px;
+        min-width: 60px;
+      }
       .breadcrumb-current {
         line-height: 40px;
+        opacity: .65;
       }
       .breadcrumb-separator {
         display: inline-block;
@@ -22,6 +26,19 @@ section.preview-bk {
       .back-to-search {
         margin-right: 2px;
         margin-left: -8px;
+      }
+      .breadcrumb-timecode-separator {
+        position: relative;
+        width: 10px;
+        &::before {
+          content: "\e192";
+          font-family: 'Material Icons';
+          position: absolute;
+          top: -2px;
+          left: -14px;
+          font-size: 22px;
+          opacity: .4;
+        }
       }
     }
 
