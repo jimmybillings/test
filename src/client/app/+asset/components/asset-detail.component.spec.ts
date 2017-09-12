@@ -1,5 +1,8 @@
 import { AssetDetailComponent } from './asset-detail.component';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
+import { enhanceAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
+import { Asset } from '../../shared/interfaces/common.interface';
+
 
 export function main() {
   describe('Asset Detail Component', () => {
@@ -9,7 +12,17 @@ export function main() {
     let transcodeTargets: any, detailTypeMap: any, finalAsset: any;
 
     beforeEach(() => {
-      collection = { assets: { items: [{ uuid: 123 }, { uuid: 456 }, { uuid: 789 }, { uuid: 102 }, { uuid: 103 }] } };
+      collection = {
+        assets: {
+          items: [
+            { assetId: 1, timeStart: 123, timeEnd: 1000 },
+            { assetId: 1, timeStart: 456, timeEnd: 1000 },
+            { assetId: 1, timeStart: 789, timeEnd: 1000 },
+            { assetId: 1, timeStart: 102, timeEnd: 1000 },
+            { assetId: 1, timeStart: 103, timeEnd: 1000 }
+          ]
+        }
+      };
       transcodeTargets = ['master_copy', '1080i', '1080p'];
       detailTypeMap = {
         common: ['field'], filter: true, id: 13, name: 'Core Packages', primary: [], secondary: [], siteName: 'core'
@@ -19,7 +32,7 @@ export function main() {
         assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl',
         transcodeTargets: ['master_copy', '1080i', '1080p']
       };
-      asset = { assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl' };
+      asset = { assetId: 1, timeStart: 102, timeEnd: 1000, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl' };
       asset.detailTypeMap = detailTypeMap;
       asset.transcodeTargets = transcodeTargets;
 
@@ -70,12 +83,12 @@ export function main() {
       describe('changes.collection', () => {
         it('Should not update the assetsArr unless changes happen to the changes.collection', () => {
           componentUnderTest.ngOnChanges({});
-          expect(componentUnderTest.alreadyInCollection(123)).toBe(false);
+          expect(componentUnderTest.uniqueInCollection(asset)).toBe(false);
         });
 
         it('Should update the assetsArr if changes happen to changes.collection', () => {
           componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
-          expect(componentUnderTest.alreadyInCollection(123)).toBe(true);
+          expect(componentUnderTest.uniqueInCollection(asset)).toBe(true);
         });
       });
     });
@@ -176,6 +189,138 @@ export function main() {
         componentUnderTest.window.history.pushState({ data: 'somedata2' }, 'test2');
         componentUnderTest.window.history.pushState({ data: 'somedata3' }, 'test3');
         expect(componentUnderTest.hasPageHistory).toBe(true);
+      });
+    });
+
+    describe('canCommentOn()', () => {
+      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', expectedResult: true },
+        { assetType: 'collectionAsset', expectedResult: true },
+        { assetType: 'orderAsset', expectedResult: true },
+        { assetType: 'quoteEditAsset', expectedResult: true },
+        { assetType: 'quoteShowAsset', expectedResult: true },
+        { assetType: 'searchAsset', expectedResult: false }
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          expect(componentUnderTest.canCommentOn(enhanceAsset({} as any, test.assetType))).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('canShare()', () => {
+      const tests: { assetType: AssetType, userCanShare: boolean, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'collectionAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'orderAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'quoteEditAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'quoteShowAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'searchAsset', userCanShare: false, expectedResult: false },
+        { assetType: 'cartAsset', userCanShare: true, expectedResult: false },
+        { assetType: 'collectionAsset', userCanShare: true, expectedResult: true },
+        { assetType: 'orderAsset', userCanShare: true, expectedResult: false },
+        { assetType: 'quoteEditAsset', userCanShare: true, expectedResult: false },
+        { assetType: 'quoteShowAsset', userCanShare: true, expectedResult: false },
+        { assetType: 'searchAsset', userCanShare: true, expectedResult: true }
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          componentUnderTest.userCan = { createAccessInfo: () => test.userCanShare } as any;
+
+          expect(componentUnderTest.canShare(enhanceAsset({} as any, test.assetType))).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('shareButtonLabelKey()', () => {
+      const tests: { markers: any, expectedKey: string }[] = [
+        { markers: undefined, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: null, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: { in: 'x' }, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: { in: 'x', out: null }, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: { out: 'y' }, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: { in: null, out: 'y' }, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },
+        { markers: { in: 'x', out: 'y' }, expectedKey: 'ASSET.DETAIL.SHARING_SUBCLIP_BTN_TITLE' }
+      ];
+
+      tests.forEach(test => {
+        it(`returns '${test.expectedKey}' for markers = ${test.markers}`, () => {
+          componentUnderTest.subclipMarkers = test.markers;
+
+          expect(componentUnderTest.shareButtonLabelKey).toEqual(test.expectedKey);
+        });
+      });
+    });
+
+    describe('inCollection()', () => {
+      beforeEach(() => {
+        componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
+      });
+
+      it('returns true when the assetId is in the collection', () => {
+        expect(componentUnderTest.inCollection(asset)).toBe(true);
+      });
+
+      it('returns false when the assetId is not in the collection', () => {
+        asset.assetId = 9999;
+        expect(componentUnderTest.inCollection(asset)).toBe(false);
+      });
+    });
+
+    describe('canBeAddedToCollection()', () => {
+      beforeEach(() => {
+        componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
+      });
+
+      it('returns true when the assetId is not in the collection ', () => {
+        asset.assetId = 9999;
+        expect(componentUnderTest.canBeAddedToCollection(asset)).toBe(true);
+      });
+
+      it('returns false when the assetId is in the collection', () => {
+        expect(componentUnderTest.canBeAddedToCollection(asset)).toBe(false);
+      });
+    });
+
+    describe('canBeAddedAgainToCollection()', () => {
+      beforeEach(() => {
+        componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
+      });
+
+      it('returns true when the collection has a version of that asset without matching subclip markers', () => {
+        asset.timeEnd = 9999;
+        expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(true);
+      });
+
+      it('returns false when the collection has a version of that asset with matching subclip markers', () => {
+        expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(false);
+      });
+
+      it('returns false when the collection does not have a version of that asset', () => {
+        asset.assetId = 9999;
+        expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(false);
+      });
+    });
+
+    describe('canBeRemovedFromCollection()', () => {
+      beforeEach(() => {
+        componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
+      });
+
+      it('returns true when the collection has a version of that asset with matching time markers', () => {
+        expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(true);
+      });
+
+      it('returns false when the collection has a version of that asset without matching time markers', () => {
+        asset.timeEnd = 9999;
+        expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
+      });
+
+      it('returns false when the collection does not have a version of that asset', () => {
+        asset.assetId = 9999;
+        expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
       });
     });
   });
