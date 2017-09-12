@@ -211,12 +211,6 @@ export function main() {
 
     describe('canShare()', () => {
       const tests: { assetType: AssetType, userCanShare: boolean, expectedResult: boolean }[] = [
-        { assetType: 'cartAsset', userCanShare: false, expectedResult: false },
-        { assetType: 'collectionAsset', userCanShare: false, expectedResult: false },
-        { assetType: 'orderAsset', userCanShare: false, expectedResult: false },
-        { assetType: 'quoteEditAsset', userCanShare: false, expectedResult: false },
-        { assetType: 'quoteShowAsset', userCanShare: false, expectedResult: false },
-        { assetType: 'searchAsset', userCanShare: false, expectedResult: false },
         { assetType: 'cartAsset', userCanShare: true, expectedResult: false },
         { assetType: 'collectionAsset', userCanShare: true, expectedResult: true },
         { assetType: 'orderAsset', userCanShare: true, expectedResult: false },
@@ -270,32 +264,65 @@ export function main() {
     });
 
     describe('canBeAddedToCollection()', () => {
+      const tests: { assetType: AssetType, assetIdInCollection: boolean, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'collectionAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'orderAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'quoteEditAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'quoteShowAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'searchAsset', assetIdInCollection: true, expectedResult: false },
+
+        { assetType: 'cartAsset', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'collectionAsset', assetIdInCollection: false, expectedResult: true },
+        { assetType: 'orderAsset', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'quoteEditAsset', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'quoteShowAsset', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'searchAsset', assetIdInCollection: false, expectedResult: true }
+      ];
+
       beforeEach(() => {
         componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
       });
 
-      it('returns true when the assetId is not in the collection ', () => {
-        asset.assetId = 9999;
-        expect(componentUnderTest.canBeAddedToCollection(asset)).toBe(true);
-      });
-
-      it('returns false when the assetId is in the collection', () => {
-        expect(componentUnderTest.canBeAddedToCollection(asset)).toBe(false);
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}' if the assetId 
+        is ${test.assetIdInCollection ? 'included' : 'not'} in the collection`, () => {
+            asset.assetId = test.assetIdInCollection ? 1 : 9999;
+            asset.type = test.assetType;
+            expect(componentUnderTest.canBeAddedToCollection(asset)).toBe(test.expectedResult);
+          });
       });
     });
 
     describe('canBeAddedAgainToCollection()', () => {
+      const tests: { assetType: AssetType, matchingSubclipMarkers: boolean, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'collectionAsset', matchingSubclipMarkers: false, expectedResult: true },
+        { assetType: 'orderAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'quoteEditAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'quoteShowAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'searchAsset', matchingSubclipMarkers: false, expectedResult: true },
+
+        { assetType: 'cartAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'collectionAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'orderAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'quoteEditAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'quoteShowAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'searchAsset', matchingSubclipMarkers: true, expectedResult: false }
+      ];
+
       beforeEach(() => {
         componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
       });
 
-      it('returns true when the collection has a version of that asset without matching subclip markers', () => {
-        asset.timeEnd = 9999;
-        expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(true);
-      });
-
-      it('returns false when the collection has a version of that asset with matching subclip markers', () => {
-        expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(false);
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}' when the collection has a version of that 
+        asset ${test.matchingSubclipMarkers ? 'with' : 'without'} matching subclip markers`, () => {
+            asset.timeStart = 123;
+            asset.timeEnd = test.matchingSubclipMarkers ? 1000 : 9999;
+            asset.type = test.assetType;
+            expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(test.expectedResult);
+          });
       });
 
       it('returns false when the collection does not have a version of that asset', () => {
@@ -305,17 +332,34 @@ export function main() {
     });
 
     describe('canBeRemovedFromCollection()', () => {
+      const tests: { assetType: AssetType, matchingSubclipMarkers: boolean, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'collectionAsset', matchingSubclipMarkers: true, expectedResult: true },
+        { assetType: 'orderAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'quoteEditAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'quoteShowAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'searchAsset', matchingSubclipMarkers: true, expectedResult: true },
+
+        { assetType: 'cartAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'collectionAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'orderAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'quoteEditAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'quoteShowAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'searchAsset', matchingSubclipMarkers: false, expectedResult: false }
+      ];
+
       beforeEach(() => {
         componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
       });
 
-      it('returns true when the collection has a version of that asset with matching time markers', () => {
-        expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(true);
-      });
-
-      it('returns false when the collection has a version of that asset without matching time markers', () => {
-        asset.timeEnd = 9999;
-        expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}' when the collection has a version of that 
+        asset ${test.matchingSubclipMarkers ? 'with' : 'without'} matching subclip markers`, () => {
+            asset.timeStart = 123;
+            asset.timeEnd = test.matchingSubclipMarkers ? 1000 : 9999;
+            asset.type = test.assetType;
+            expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(test.expectedResult);
+          });
       });
 
       it('returns false when the collection does not have a version of that asset', () => {

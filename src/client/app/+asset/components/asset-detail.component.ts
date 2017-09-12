@@ -65,15 +65,18 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public canBeAddedToCollection(asset: EnhancedAsset): boolean {
-    return !this.uniqueInCollection(asset) && !this.inCollection(asset);
+    return !this.uniqueInCollection(asset) && !this.inCollection(asset)
+      && ['collectionAsset', 'searchAsset'].includes(asset.type);
   }
 
   public canBeAddedAgainToCollection(asset: EnhancedAsset): boolean {
-    return !this.uniqueInCollection(asset) && this.inCollection(asset);
+    return !this.uniqueInCollection(asset) && this.inCollection(asset)
+      && ['collectionAsset', 'searchAsset'].includes(asset.type);
   }
 
   public canBeRemovedFromCollection(asset: EnhancedAsset): boolean {
-    return this.uniqueInCollection(asset);
+    return this.uniqueInCollection(asset)
+      && ['collectionAsset', 'searchAsset'].includes(asset.type);
   }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
