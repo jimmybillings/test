@@ -1,14 +1,17 @@
 import { AssetComponent } from './asset.component';
 import { MockAppStore } from '../store/spec-helpers/mock-app.store';
+import * as EnhancedMock from '../shared/interfaces/enhanced-asset';
+import { mockAsset } from '../shared/mocks/mock-asset';
 import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Asset Component', () => {
-
     let mockCurrentUserService: any, mockCapabilities: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockCart: any,
-      mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
+      mockWindow: any, mockRouter: any, mockRoute: any, mockDialogService: any,
+      mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
       mockPricingStore: any, mockPricingService: any;
+    let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
     let mockStore: MockAppStore;
     let componentUnderTest: AssetComponent;
 
@@ -28,6 +31,8 @@ export function main() {
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
+      mockRouter = { navigate: jasmine.createSpy('navigate') };
+      mockRoute = { snapshot: { params: { id: '100' } } };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };
@@ -51,9 +56,23 @@ export function main() {
       mockStore = new MockAppStore();
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockUiState,
-        mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockCart,
-        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
+        mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCart,
+        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
+        null
       );
+    });
+
+    describe('stateMapper setter', () => {
+      beforeEach(() => {
+        mockStore.createStateSection('activeCollectionAsset', { activeAsset: mockAsset });
+        componentUnderTest.assetType = 'collectionAsset';
+      });
+
+      it('sets up an asset instance variable', () => {
+        componentUnderTest.stateMapper = (factory) => factory.activeCollectionAsset.activeAsset;
+        const expectedAsset: EnhancedMock.EnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset', 100);
+        expect(componentUnderTest.asset).toEqual(expectedAsset);
+      });
     });
 
     describe('ngOnInit()', () => {
@@ -87,13 +106,13 @@ export function main() {
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockUiState,
-          mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockCart,
-          mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
+          mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCart,
+          mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
+          null
         );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
       });
-
     });
 
     describe('addAssetToCart()', () => {

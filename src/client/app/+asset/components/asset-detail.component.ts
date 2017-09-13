@@ -4,12 +4,12 @@ import { Cart, Project } from '../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
-import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
+import { SubclipMarkers, durationFrom } from '../../shared/interfaces/subclip-markers';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 import { AppStore, ActionFactoryMapper } from '../../app.store';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
-import { durationFrom } from '../../shared/interfaces/subclip-markers';
+import { SearchState } from '../../shared/services/search-context.service';
 
 @Component({
   moduleId: module.id,
@@ -27,6 +27,8 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public cart: Cart;
   @Input() public usagePrice: number;
   @Input() public window: Window;
+  @Input() public searchContext: SearchState;
+  @Input() public pageSize: number;
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
@@ -60,6 +62,51 @@ export class AssetDetailComponent implements OnChanges {
     this.onPreviousPage.emit();
   }
 
+  public get routerLinkForAssetParent(): any[] {
+    switch (this.asset.type) {
+      case 'collectionAsset': {
+        return ['/collections', this.asset.parentId, { i: 1, n: this.pageSize }];
+      }
+
+      case 'searchAsset': {
+        return ['/search', this.searchContext];
+      }
+
+      case 'quoteEditAsset': {
+        return ['/active-quote'];
+      }
+
+      case 'quoteShowAsset': {
+        return ['/quotes', this.asset.parentId];
+      }
+
+      case 'orderAsset': {
+        return ['/orders', this.asset.parentId];
+      }
+
+      case 'cartAsset': {
+        return ['/cart'];
+      }
+    }
+  }
+
+  public get breadcrumbLabel(): Array<string> {
+    switch (this.asset.type) {
+      case 'collectionAsset': {
+        return [this.activeCollection.name, ''];
+      }
+
+      case 'orderAsset':
+      case 'quoteShowAsset': {
+        return [`asset.detail.breadcrumb_${this.asset.type}`, String(this.asset.parentId)];
+      }
+
+      default: {
+        return [`asset.detail.breadcrumb_${this.asset.type}`, ''];
+      }
+    }
+  }
+
   public uniqueInCollection(asset: EnhancedAsset): boolean {
     return this.assetsArr.indexOf(this.hashUniqueAsset(asset, this.subclipMarkers)) > -1;
   }
@@ -69,15 +116,18 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public canBeAddedToCollection(asset: EnhancedAsset): boolean {
-    return !this.uniqueInCollection(asset) && !this.inCollection(asset);
+    return !this.uniqueInCollection(asset) && !this.inCollection(asset)
+      && ['collectionAsset', 'searchAsset'].includes(asset.type);
   }
 
   public canBeAddedAgainToCollection(asset: EnhancedAsset): boolean {
-    return !this.uniqueInCollection(asset) && this.inCollection(asset);
+    return !this.uniqueInCollection(asset) && this.inCollection(asset)
+      && ['collectionAsset', 'searchAsset'].includes(asset.type);
   }
 
   public canBeRemovedFromCollection(asset: EnhancedAsset): boolean {
-    return this.uniqueInCollection(asset);
+    return this.uniqueInCollection(asset)
+      && ['collectionAsset', 'searchAsset'].includes(asset.type);
   }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
@@ -105,17 +155,13 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public removeAssetFromActiveCollection(): void {
-    if (this.subclipMarkers) {
-      let timeStamps = durationFrom(this.subclipMarkers);
-      let newAsset = this.activeCollection.assets.items.find((asset: EnhancedAsset) =>
-        asset.assetId === this.asset.assetId &&
-        asset.timeStart === timeStamps.timeStart &&
-        asset.timeEnd === timeStamps.timeEnd
-      );
-      this.store.dispatch(factory => factory.activeCollection.removeAsset(newAsset));
-    } else {
-      return this.store.dispatch(factory => factory.activeCollection.removeAsset(this.asset));
-    }
+    const timeStamps = this.subclipMarkers ? durationFrom(this.subclipMarkers) : null;
+    const assetToRemove = timeStamps ? this.activeCollection.assets.items.find((asset: EnhancedAsset) =>
+      asset.assetId === this.asset.assetId &&
+      asset.timeStart === timeStamps.timeStart &&
+      asset.timeEnd === timeStamps.timeEnd
+    ) : this.asset;
+    this.store.dispatch(factory => factory.activeCollection.removeAsset(assetToRemove));
   }
 
   public downloadComp(assetId: any, compType: any): void {

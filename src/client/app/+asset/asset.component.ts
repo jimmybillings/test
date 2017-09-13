@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../store/services/asset.service';
 import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
@@ -25,13 +26,13 @@ import { AppStore, StateMapper } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { PricingService } from '../shared/services/pricing.service';
 import { Common } from '../shared/utilities/common.functions';
+import { SearchContext, SearchState } from '../shared/services/search-context.service';
 
 @Component({
   moduleId: module.id,
   selector: 'asset-component',
   templateUrl: 'asset.html',
 })
-
 export class AssetComponent implements OnInit, OnDestroy {
   @Input() assetType: AssetType;
   @Input()
@@ -39,7 +40,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.assetSubscription = this.store.select(stateMapper)
       .map(asset => {
         const clonedAsset: Asset = Common.clone(asset);
-        return enhanceAsset(clonedAsset, this.assetType);
+        return enhanceAsset(clonedAsset, this.assetType, this.parentIdIn(this.route.snapshot.params));
       }).subscribe(asset => {
         this.asset = asset;
         this.pricingStore.setPriceForDetails(this.asset.price);
@@ -49,9 +50,10 @@ export class AssetComponent implements OnInit, OnDestroy {
   public pricingAttributes: Array<PriceAttribute>;
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
+  public pageSize: number = 50;
   private assetSubscription: Subscription;
+  private routeSubscription: Subscription;
   private selectedAttributes: Pojo;
-  private pageSize: number = 50;
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
 
   constructor(
@@ -61,6 +63,8 @@ export class AssetComponent implements OnInit, OnDestroy {
     public assetService: AssetService,
     public uiConfig: UiConfig,
     public window: WindowRef,
+    private router: Router,
+    private route: ActivatedRoute,
     private store: AppStore,
     private userPreference: UserPreferenceService,
     private cartService: CartService,
@@ -69,7 +73,8 @@ export class AssetComponent implements OnInit, OnDestroy {
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
     private pricingStore: PricingStore,
-    private pricingService: PricingService
+    private pricingService: PricingService,
+    private searchContext: SearchContext
   ) { }
 
   public ngOnInit(): void {
@@ -82,7 +87,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     if (this.assetSubscription) this.assetSubscription.unsubscribe();
   }
 
-  public previousPage() {
+  public previousPage(): void {
     this.window.nativeWindow.history.back();
   }
 
@@ -102,7 +107,11 @@ export class AssetComponent implements OnInit, OnDestroy {
     return this.pricingStore.priceForDetails;
   }
 
-  public showSnackBar(message: any) {
+  public get searchContextState(): SearchState {
+    return this.searchContext.state;
+  }
+
+  public showSnackBar(message: any): void {
     this.translate.get(message.key, message.value)
       .subscribe((res: string) => {
         this.snackBar.open(res, '', { duration: 2000 });
@@ -211,5 +220,26 @@ export class AssetComponent implements OnInit, OnDestroy {
   private calculatePrice(attributes: Pojo): Observable<number> {
     this.selectedAttributes = attributes;
     return this.pricingService.getPriceFor(this.asset, attributes, this.subclipMarkers);
+  }
+
+  // I'd like to eliminate this, but we set up the dynamic parts of our routes too specifically
+  private parentIdIn(routeParams: Pojo): number {
+    switch (this.assetType) {
+      case 'collectionAsset': {
+        return Number(routeParams.id);
+      }
+
+      case 'orderAsset': {
+        return Number(routeParams.orderId);
+      }
+
+      case 'quoteShowAsset': {
+        return Number(routeParams.quoteId);
+      }
+
+      default: {
+        return NaN;
+      }
+    }
   }
 }
