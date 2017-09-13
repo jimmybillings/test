@@ -5,14 +5,12 @@ import { Api } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
 import { Quote, Quotes, QuotesApiResponse } from '../../shared/interfaces/commerce.interface';
 import { QuotesStore } from '../../shared/stores/quotes.store';
-import { AppStore } from '../../app.store';
 
 @Injectable()
 export class QuotesService {
   constructor(private api: ApiService,
     private cart: CartService,
     private quotesStore: QuotesStore,
-    private appStore: AppStore
   ) { }
 
 
