@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../store/services/asset.service';
-import { AddAssetParameters, PriceAttribute } from '../shared/interfaces/commerce.interface';
+import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
 import { WzEvent } from '../shared/interfaces/common.interface';
 import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
@@ -63,7 +63,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     public window: WindowRef,
     private store: AppStore,
     private userPreference: UserPreferenceService,
-    private cart: CartService,
+    private cartService: CartService,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private dialogService: WzDialogService,
@@ -88,6 +88,10 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   public get activeCollection(): Observable<Collection> {
     return this.store.select(state => state.activeCollection.collection);
+  }
+
+  public get cart(): Observable<Cart> {
+    return this.cartService.cart;
   }
 
   public get userEmail(): Observable<string> {
@@ -128,7 +132,7 @@ export class AssetComponent implements OnInit, OnDestroy {
       };
       this.userCan.administerQuotes() ?
         this.quoteEditService.addAssetToProjectInQuote(options) :
-        this.cart.addAssetToProjectInCart(options);
+        this.cartService.addAssetToProjectInCart(options);
     });
     this.showSnackBar({
       key: this.userCan.administerQuotes() ? 'ASSET.ADD_TO_QUOTE_TOAST' : 'ASSET.ADD_TO_CART_TOAST',

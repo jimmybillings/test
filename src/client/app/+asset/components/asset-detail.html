@@ -102,14 +102,11 @@
             </md-list>
           </md-menu>
 
-          <button md-icon-button
-            *ngIf="canShare(asset)"
-            title="{{ shareButtonLabelKey | translate }}"
-            (click)="sharing.show($event)">
+          <button md-icon-button *ngIf="canShare" title="{{ shareButtonLabelKey | translate }}" (click)="sharing.show($event)">
             <md-icon>share</md-icon>
           </button>
 
-          <button md-icon-button *ngIf="canCommentOn(asset)" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
+          <button md-icon-button *ngIf="canComment" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
             <md-icon>mode_comment</md-icon>
           </button>
 
@@ -153,7 +150,7 @@
                 <div [ngClass]="{image: asset.primary[0].value == 'Image'}" class="photo"
                   *ngIf="asset.primary[0].value != null && asset.primary[0].value == 'Image'">
                 </div>
-                <div flex="none" class="rights md-caption">{{asset.primary[3].value}}</div>
+                <div flex="none" class="rights md-caption">{{rights}}</div>
                 <div flex="none" class="restriction-banner" *ngIf="asset.primary[4].value != null && asset.primary[4].value != 'Needs calculation'">{{asset.primary[4].value}}</div>
               </div>
             </div>
@@ -191,64 +188,33 @@
           <div class="primary-content">
             <h4 class="title-txt" *ngIf="asset.primary[5].value !== null">{{asset.primary[5].value}}</h4>
             <p class="description-txt">{{asset.primary[6].value}}</p>
-            <!--Start Royalty Free Asset-->
-            <div *ngIf="asset.primary[3].value === 'Royalty Free'" layout="row">
-              <div *ngIf="(asset.price && asset.price !== 0)" class="list-price">
-                <span class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
-              </div>
-              <div *ngIf="(!asset.price || asset.price === 0)" class="contact-us-pricing">
-                {{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}
-              </div>
-              <md-card-actions layout="column" layout-align="center center" layout-wrap="">
-                <ng-container *ngIf="userCan.haveCart()">
-                  <md-select
-                    (change)="onSelectTarget($event)"
-                    *ngIf="userCan.addToCart() && asset.transcodeTargets"
-                    [(ngModel)]="selectedTarget">
-                    <md-option *ngFor="let target of asset.transcodeTargets" [value]="target">
-                      {{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
-                    </md-option>
-                  </md-select>
-                  <button
-                    md-raised-button
-                    [disabled]="!userCan.addToCart()"
-                    (click)="addAssetToCart()"
-                    color="primary">
-                    {{ addToCartBtnLabel | translate }}
-                    </button>
-                </ng-container>
-              </md-card-actions>
-            </div>
-            <!--End Royalty Free Asset-->
 
-            <!--Start Rights Managed Asset-->
-            <div layout="row" *ngIf="asset.primary[3].value === 'Rights Managed'">
-              <div *ngIf="asset.price && asset.price !== 0 && !(usagePrice | async)" class="list-price">
-                <span class="starting">{{ 'ASSET.DETAIL.BASE_PRICE' | translate }}</span>
-                <span class="price">{{ asset.price | currency:'USD':true:'1.2-2' }}</span>
+            <div *ngIf="canShowPricingAndCartActions" layout="row">
+              <div *ngIf="hasPrice" class="list-price">
+                <span *ngIf="priceIsStartingPrice" class="starting">{{ 'ASSET.DETAIL.BASE_PRICE' | translate }}</span>
+                <span class="price">{{ price | currency:'USD':true:'1.2-2' }}</span>
               </div>
-              <div *ngIf="usagePrice | async" class="calculated-price">
-                <span class="price">{{ usagePrice | async | currency:'USD':true:'1.2-2' }}</span>
-              </div>
-              <div *ngIf="(!asset.price || asset.price === 0)" class="contact-us-pricing">
+
+              <div *ngIf="hasNoPrice" class="contact-us-pricing">
                 {{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}
               </div>
-              <ng-container *ngIf="userCan.haveCart()">
-                <md-card-actions *ngIf="(asset.price && asset.price !== 0)" layout="column" layout-align="center center" layout-wrap="">
-                  <button *ngIf="userCan.calculatePrice()" md-button (click)="getPricingAttributes()" class="is-outlined">
-                    {{ 'PRICING.CALCULATE_HEADING' | translate }}
-                  </button>
-                  <button 
-                    md-raised-button 
-                    [disabled]="!userCan.addToCart()" 
-                    (click)="addAssetToCart()"
-                    color="primary">
-                    {{ addToCartBtnLabel | translate }}
-                  </button>
-                </md-card-actions>
-              </ng-container>
-            </div>
-            <!--End Rights Managed Asset-->
+
+              <md-card-actions *ngIf="canPerformCartActions" layout="column" layout-align="center center" layout-wrap="">
+                <md-select *ngIf="canSelectTranscodeTarget" (change)="onSelectTarget($event)" [(ngModel)]="selectedTarget">
+                  <md-option *ngFor="let target of asset.transcodeTargets" [value]="target">
+                    {{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
+                  </md-option>
+                </md-select>
+
+                <button *ngIf="canCalculatePrice" md-button (click)="getPricingAttributes()" class="is-outlined">
+                  {{ 'PRICING.CALCULATE_HEADING' | translate }}
+                </button>
+
+                <button md-raised-button [disabled]="!canAddToCart" (click)="addAssetToCart()" color="primary">
+                  {{ addToCartBtnLabel | translate }}
+                </button>
+              </md-card-actions>                  
+            </div>              
           </div>
         </div>
       </div>

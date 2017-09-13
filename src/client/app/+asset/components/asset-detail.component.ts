@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, Input, OnChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
+import { Cart, Project } from '../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
@@ -23,7 +24,8 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public userCan: Capabilities;
   @Input() public uiConfig: UiConfig;
   @Input() public activeCollection: Collection;
-  @Input() public usagePrice: Observable<number>;
+  @Input() public cart: Cart;
+  @Input() public usagePrice: number;
   @Input() public window: Window;
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
@@ -34,8 +36,10 @@ export class AssetDetailComponent implements OnChanges {
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
   public subclipMarkers: SubclipMarkers;
+
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   private assetsArr: Array<string> = [];
+  private cartAssets: Array<string> = [];
 
   constructor(private store: AppStore) { }
 
@@ -127,7 +131,7 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public getPricingAttributes(): void {
-    this.getPriceAttributes.emit(this.asset.primary[3].value);
+    this.getPriceAttributes.emit(this.rights);
   }
 
   public onSelectTarget(target: any): void {
@@ -140,16 +144,68 @@ export class AssetDetailComponent implements OnChanges {
       : (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
   }
 
-  public canCommentOn(asset: EnhancedAsset) {
-    return ['cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset'].includes(asset.type);
+  public get canComment(): boolean {
+    return ['cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset'].includes(this.asset.type);
   }
 
-  public canShare(asset: EnhancedAsset) {
-    return ['collectionAsset', 'searchAsset'].includes(asset.type) && this.userCan.createAccessInfo();
+  public get canShare(): boolean {
+    return ['collectionAsset', 'searchAsset'].includes(this.asset.type) && this.userCan.createAccessInfo();
   }
 
   public get shareButtonLabelKey(): string {
     return this.markersAreDefined ? 'ASSET.DETAIL.SHARING_SUBCLIP_BTN_TITLE' : 'ASSET.DETAIL.SHARING_BTN_TITLE';
+  }
+
+  public get rights(): string {
+    return this.asset.getMetadataValueFor('Rights.Reproduction');
+  }
+
+  public get canShowPricingAndCartActions(): boolean {
+    return this.isRoyaltyFree || this.isRightsManaged;
+  }
+
+  public get priceIsStartingPrice(): boolean {
+    return !!this.asset.price && !this.usagePrice && this.isRightsManaged;
+  }
+
+  public get price(): number {
+    if (!this.isRightsManaged && !this.isRoyaltyFree) return null;
+    if (this.isRightsManaged && !!this.usagePrice) return this.usagePrice;
+    if (this.asset.price) return this.asset.price;
+
+    return null;
+  }
+
+  public get hasPrice(): boolean {
+    return !!this.price;
+  }
+
+  public get hasNoPrice(): boolean {
+    return !this.asset.price;
+  }
+
+  public get canPerformCartActions(): boolean {
+    return this.userCan.haveCart() && (this.isRoyaltyFree || (this.isRightsManaged && !!this.asset.price));
+  }
+
+  public get canSelectTranscodeTarget(): boolean {
+    return this.isRoyaltyFree && this.userCan.addToCart() && !!this.asset.transcodeTargets;
+  }
+
+  public get canCalculatePrice(): boolean {
+    return this.isRightsManaged && this.userCan.calculatePrice();
+  }
+
+  public get canAddToCart(): boolean {
+    return this.userCan.addToCart();
+  }
+
+  private get isRoyaltyFree(): boolean {
+    return this.rights === 'Royalty Free';
+  }
+
+  private get isRightsManaged(): boolean {
+    return this.rights === 'Rights Managed';
   }
 
   private get markersAreDefined(): boolean {
