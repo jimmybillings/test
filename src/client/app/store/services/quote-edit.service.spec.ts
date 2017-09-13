@@ -19,13 +19,34 @@ export function main() {
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('quote/focused');
-        expect(mockApiService.get).toHaveBeenCalledWithLoading();
+        expect(mockApiService.get).toHaveBeenCalledWithLoading(true);
       });
 
       it('returns an observable', () => {
         mockApiService.getResponse = { some: 'quote' };
 
         serviceUnderTest.load().subscribe(q => expect(q).toEqual({ some: 'quote' }));
+      });
+    });
+
+    describe('delete()', () => {
+      it('calls the api service correctly', () => {
+        serviceUnderTest.delete(1);
+
+        expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('quote/1');
+        expect(mockApiService.delete).toHaveBeenCalledWithLoading('onBeforeRequest');
+      });
+
+      it('switchMaps to a .load()', () => {
+        let response: any;
+        serviceUnderTest.delete(1).subscribe(res => response = res);
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('quote/focused');
+        expect(mockApiService.get).toHaveBeenCalledWithLoading(true);
+
+        expect(response).toEqual(mockApiService.getResponse);
       });
     });
   });

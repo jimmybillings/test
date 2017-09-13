@@ -8,6 +8,10 @@ export class ActionFactory {
     return new Load();
   }
 
+  public delete(): Delete {
+    return new Delete();
+  }
+
   // Move this to internal action factory when quote is fully "effected"
   public loadSuccess(quote: Quote): LoadSuccess {
     return new LoadSuccess(quote);
@@ -17,6 +21,14 @@ export class ActionFactory {
 export class InternalActionFactory extends ActionFactory {
   public loadFailure(error: ApiErrorResponse): LoadFailure {
     return new LoadFailure(error);
+  }
+
+  public deleteSuccess(quote: Quote): DeleteSuccess {
+    return new DeleteSuccess(quote);
+  }
+
+  public deleteFailure(error: ApiErrorResponse): DeleteFailure {
+    return new DeleteFailure(error);
   }
 }
 
@@ -37,4 +49,23 @@ export class LoadFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export type Any = Load | LoadSuccess | LoadFailure;
+export class Delete implements Action {
+  public static readonly Type = '[Quote Edit] Delete';
+  public readonly type = Delete.Type;
+}
+
+export class DeleteSuccess implements Action {
+  public static readonly Type = '[Quote Edit] Delete Success';
+  public readonly type = DeleteSuccess.Type;
+  constructor(public readonly quote: Quote) { }
+}
+
+export class DeleteFailure implements Action {
+  public static readonly Type = '[Quote Edit] Delete Failure';
+  public readonly type = DeleteFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
+
+export type Any =
+  Load | LoadSuccess | LoadFailure |
+  Delete | DeleteSuccess | DeleteFailure;

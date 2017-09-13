@@ -283,8 +283,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   }
 
   private deleteQuote = (): void => {
-    this.quoteEditService.deleteQuote().subscribe(() => {
-      this.router.navigate(['/quotes']);
-    });
+    this.store.dispatch(factory => factory.quoteEdit.delete());
   }
 }
