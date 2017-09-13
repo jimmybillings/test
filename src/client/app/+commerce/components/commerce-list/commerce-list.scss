@@ -18,6 +18,9 @@
     &.focused {
       @include mat-elevation(2);
     }
+    // &:hover {
+    //   cursor: pointer;
+    // }
     .details {
       padding: 7px 10px;
       margin: 7px 2px 7px 7px;
@@ -51,17 +54,18 @@
     }
     .total {
       text-align: right;
-      letter-spacing: -.05em;
       padding-right: 8px;
       padding-left: 8px;
       padding-top: 2px;
       position: relative;
       min-height: 100%;
       .total-label {
+        letter-spacing: -.05em;
         font-weight: 100;
         letter-spacing: 0;
       }
       .total-amount {
+        letter-spacing: -.05em;
         display: inline-block;
         &::first-letter {
           font-size: .68em;
@@ -70,7 +74,7 @@
           letter-spacing: 0;
         }
       }
-      button {
+      a, button {
         margin-bottom: 10px;
         &:last-child {
           margin-left: 10px;
