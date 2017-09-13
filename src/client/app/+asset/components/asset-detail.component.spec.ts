@@ -3,6 +3,7 @@ import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 import { enhanceAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
 import { mockAsset } from '../../shared/mocks/mock-asset';
 import { Asset } from '../../shared/interfaces/common.interface';
+import { Frame } from 'wazee-frame-formatter';
 
 
 export function main() {
@@ -113,6 +114,16 @@ export function main() {
         const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
         componentUnderTest.removeAssetFromActiveCollection();
         mockStore.expectDispatchFor(spy, componentUnderTest.asset);
+      });
+      it('with subclipping defined dispatches the expected action', () => {
+        componentUnderTest.activeCollection = collection;
+        componentUnderTest.activeCollection.assets.items.push({ assetId: 1, timeStart: 40, timeEnd: 80 } as Asset);
+        const startFrame = new Frame(25).setFromFrameNumber(1);
+        const endFrame = new Frame(25).setFromFrameNumber(2);
+        componentUnderTest.subclipMarkers = { in: startFrame, out: endFrame } as any;
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
+        componentUnderTest.removeAssetFromActiveCollection();
+        mockStore.expectDispatchFor(spy, { assetId: 1, timeStart: 40, timeEnd: 80 });
       });
     });
 
@@ -629,7 +640,7 @@ export function main() {
 
       tests.forEach(test => {
         it(`returns ${test.expectedResult} for asset type '${test.assetType}' when the collection has a version of that 
-        asset ${test.matchingSubclipMarkers ? 'with' : 'without'} matching subclip markers`, () => {
+        asset ${test.matchingSubclipMarkers ? 'with' : 'without'} matching timestamps`, () => {
             asset.timeStart = 123;
             asset.timeEnd = test.matchingSubclipMarkers ? 1000 : 9999;
             asset.type = test.assetType;
@@ -639,6 +650,19 @@ export function main() {
 
       it('returns false when the collection does not have a version of that asset', () => {
         asset.assetId = 9999;
+        expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
+      });
+
+      it('returns false when the collection does not have a version of that asset with set subclip markers', () => {
+        const startFrame = new Frame(25).setFromFrameNumber(1);
+        const endFrame = new Frame(25).setFromFrameNumber(2);
+        componentUnderTest.subclipMarkers = { in: startFrame, out: endFrame } as any;
+        expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
+      });
+
+      it('returns false when the collection does not have a version of that asset without timestamps', () => {
+        asset.timeStart = null;
+        asset.timeEnd = null;
         expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
       });
     });
