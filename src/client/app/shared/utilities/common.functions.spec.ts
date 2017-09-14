@@ -29,7 +29,6 @@ export function main() {
 
 
     describe('deletePropertiesFromObject', () => {
-
       it('Should remove the provided properties from a flat object', () => {
         let objectForTest = {
           id: 1,
@@ -42,6 +41,23 @@ export function main() {
         Common.deletePropertiesFromObject(objectForTest, propertiesToRemove);
 
         expect(objectForTest).toEqual({ name: 'test', age: 3 });
+      });
+
+      it('Should only remove the provided properties if they exist', () => {
+        let objectForTest: any = {
+          id: 1,
+          name: 'test',
+          age: 3,
+          createdOn: '10/10/2017',
+          lastUpdated: '10/10/2017',
+          someProp: null,
+          anotherProp: undefined,
+          lastProp: NaN
+        };
+        let propertiesToRemove: Array<string> = ['someProp', 'anotherProp', 'lastProp', 'notAProp'];
+        Common.deletePropertiesFromObject(objectForTest, propertiesToRemove);
+
+        expect(objectForTest).toEqual(objectForTest);
       });
 
       it('Should remove the provided properties from a deeply nested object', () => {
