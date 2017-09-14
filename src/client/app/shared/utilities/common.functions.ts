@@ -14,22 +14,22 @@ export class Common {
       // If the property is another object but not
       // an array then recusively call this function
       // again with the propertie value.
-      if (typeof object[item] === 'object' && !Array.isArray(object[item])) {
+      if (Common.isObject(object[item])) {
         Common.deletePropertiesFromObject(object[item], propertiesToDelete);
       }
 
       // If the properties value is an array of objects then
       // loop over the array and recursivly call this function
       // again for each object in the array.
-      if (typeof object[item] === 'object' && Array.isArray(object[item])) {
+      if (Common.isArray(object[item])) {
         object[item].forEach((item: any) => {
           if (typeof item === 'object' && !Array.isArray(item)) {
             Common.deletePropertiesFromObject(item, propertiesToDelete);
           }
         });
       }
-
     });
+
     return object;
   }
 
@@ -65,5 +65,17 @@ export class Common {
     if (elements.length === 0) return;
     const scrollTopMargin: number = -1 * document.body.getBoundingClientRect().top;
     elements[elements.length - 1].setAttribute('style', `margin-top: ${scrollTopMargin}px`);
+  }
+
+  private static isObject(item: any): boolean {
+    return Common.isDefined(item) && typeof item === 'object' && !Array.isArray(item);
+  }
+
+  private static isArray(item: any): boolean {
+    return Common.isDefined(item) && typeof item === 'object' && Array.isArray(item);
+  }
+
+  private static isDefined(item: any): boolean {
+    return item !== null && item !== undefined && item !== NaN;
   }
 }

@@ -257,7 +257,7 @@ export function main() {
         componentUnderTest.quoteType = 'ProvisionalOrder';
         componentUnderTest.onOpenQuoteDialog();
         mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
-        expect(mockRouter.navigate).toHaveBeenCalledWith([`/commerce/quotes/1`]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes/1']);
       });
 
       it('Shows a success snack bar notification on succesfull submit', () => {
@@ -432,10 +432,7 @@ export function main() {
         spyOn(componentUnderTest, 'showSnackBar');
         componentUnderTest.onCreateQuote();
 
-        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
-          key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED',
-          value: null
-        });
+        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({ key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED' });
       });
     });
 
@@ -450,10 +447,7 @@ export function main() {
         spyOn(componentUnderTest, 'showSnackBar');
         componentUnderTest.onCloneQuote();
 
-        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
-          key: 'QUOTE.CLONE_SUCCESS',
-          value: null
-        });
+        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({ key: 'QUOTE.CLONE_SUCCESS' });
       });
     });
 
