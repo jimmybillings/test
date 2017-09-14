@@ -40,7 +40,8 @@ export class AssetDetailComponent implements OnChanges {
   public subclipMarkers: SubclipMarkers;
 
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
-  private assetsArr: Array<string> = [];
+  private assets: Array<number> = [];
+  private uuids: Array<string> = [];
   private cartAssets: Array<string> = [];
 
   constructor(private store: AppStore) { }
@@ -48,10 +49,9 @@ export class AssetDetailComponent implements OnChanges {
   ngOnChanges(changes: any): void {
     if (changes.asset) this.parseNewAsset(changes.asset);
     if (changes.activeCollection) {
-      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((asset: any) =>
-        this.hashUniqueAsset(asset)
-      );
-    };
+      this.assets = changes.activeCollection.currentValue.assets.items.map((asset: EnhancedAsset) => asset.assetId);
+      this.uuids = changes.activeCollection.currentValue.assets.items.map((asset: EnhancedAsset) => asset.uuid);
+    }
   }
 
   public get hasPageHistory() {
@@ -108,26 +108,24 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public uniqueInCollection(asset: EnhancedAsset): boolean {
-    return this.assetsArr.indexOf(this.hashUniqueAsset(asset, this.subclipMarkers)) > -1;
+    return this.uuids.indexOf(asset.uuid) > -1;
   }
 
   public inCollection(asset: EnhancedAsset): boolean {
-    return this.assetsArr.map((hash) => hash.split('|')[0]).includes(asset.assetId.toString());
+    return this.assets.indexOf(asset.assetId) > -1;
   }
 
   public canBeAddedToCollection(asset: EnhancedAsset): boolean {
-    return !this.uniqueInCollection(asset) && !this.inCollection(asset)
-      && ['collectionAsset', 'searchAsset'].includes(asset.type);
-  }
-
-  public canBeAddedAgainToCollection(asset: EnhancedAsset): boolean {
-    return !this.uniqueInCollection(asset) && this.inCollection(asset)
-      && ['collectionAsset', 'searchAsset'].includes(asset.type);
+    return !this.inCollection(asset) && ['collectionAsset', 'searchAsset'].includes(asset.type);
   }
 
   public canBeRemovedFromCollection(asset: EnhancedAsset): boolean {
-    return this.uniqueInCollection(asset)
-      && ['collectionAsset', 'searchAsset'].includes(asset.type);
+    return asset.type === 'collectionAsset' && this.uniqueInCollection(asset);
+  }
+
+  public canBeAddedAgainToCollection(asset: EnhancedAsset): boolean {
+    return (asset.type === 'searchAsset' && this.inCollection(asset)) ||
+      (asset.type === 'collectionAsset' && (this.inCollection(asset) || this.showAssetSaveSubclip));
   }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
@@ -155,13 +153,7 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public removeAssetFromActiveCollection(): void {
-    const timeStamps = this.subclipMarkers ? durationFrom(this.subclipMarkers) : null;
-    const assetToRemove = timeStamps ? this.activeCollection.assets.items.find((asset: EnhancedAsset) =>
-      asset.assetId === this.asset.assetId &&
-      asset.timeStart === timeStamps.timeStart &&
-      asset.timeEnd === timeStamps.timeEnd
-    ) : this.asset;
-    this.store.dispatch(factory => factory.activeCollection.removeAsset(assetToRemove));
+    this.store.dispatch(factory => factory.activeCollection.removeAsset(this.asset));
   }
 
   public downloadComp(assetId: any, compType: any): void {
@@ -263,11 +255,5 @@ export class AssetDetailComponent implements OnChanges {
     if (this.asset.transcodeTargets) {
       this.selectedTarget = this.asset.transcodeTargets[0];
     }
-  }
-
-  private hashUniqueAsset(asset: EnhancedAsset, subclipMarkers?: SubclipMarkers) {
-    let timeStart = subclipMarkers ? durationFrom(subclipMarkers).timeStart : asset.timeStart;
-    let timeEnd = subclipMarkers ? durationFrom(subclipMarkers).timeEnd : asset.timeEnd;
-    return [asset.assetId, timeStart || -1, timeEnd || -2].join('|');
   }
 }
