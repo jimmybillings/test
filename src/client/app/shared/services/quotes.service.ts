@@ -10,27 +10,23 @@ import { QuotesStore } from '../../shared/stores/quotes.store';
 export class QuotesService {
   constructor(private api: ApiService,
     private cart: CartService,
-    private store: QuotesStore) { }
+    private quotesStore: QuotesStore
+  ) { }
 
 
   public get data(): Observable<Quotes> {
-    return this.store.data;
+    return this.quotesStore.data;
   }
 
   public get state(): Quotes {
-    return this.store.state;
+    return this.quotesStore.state;
   }
 
-  public getQuotes(getFocused: boolean = false, params: any = {}): Observable<any> {
-    if (getFocused) {
-      return this.getFocused().switchMap((activeQuote: Quote) => {
-        return this.quotesList(params)
-          .map((res: QuotesApiResponse) => { res.items = res.items ? res.items : []; return res; })
-          .do((res: QuotesApiResponse) => this.findNewFocused(res.items, activeQuote.id))
-          .do(this.setQuotesInStore);
-      });
+  public getQuotes(userCanAdministerQuotes: boolean = false, params: any = {}): Observable<any> {
+    if (userCanAdministerQuotes) {
+      return this.getQuotesForSalesUser(params);
     } else {
-      return this.quotesList(params).do(this.setQuotesInStore);
+      return this.getQuotesForCustomer(params);
     }
   }
 
@@ -52,15 +48,31 @@ export class QuotesService {
     return this.api.post(Api.Orders, 'quote');
   }
 
-  private findNewFocused(quotes: Quote[], activeQuoteId: number): Quote[] {
-    return quotes.map((quote: Quote) => {
-      quote.focused = quote.id === activeQuoteId ? true : false;
-      return quote;
-    });
+  private getQuotesForCustomer(params: any): Observable<QuotesApiResponse> {
+    return this.quotesList(params);
   }
 
-  private quotesList(params: any = {}): Observable<any> {
-    return this.api.get(Api.Orders, 'quote/myQuotes', { parameters: this.buildSearchParams(params), loadingIndicator: true });
+  private getQuotesForSalesUser(params: any): Observable<QuotesApiResponse> {
+    return this.getFocused().switchMap(quote => this.quotesList(params, quote.id));
+  }
+
+  private quotesList(params: any = {}, focusedQuoteId?: number): Observable<QuotesApiResponse> {
+    return this.api.get(
+      Api.Orders,
+      'quote/myQuotes',
+      { parameters: this.buildSearchParams(params), loadingIndicator: true }
+    ).map((res: QuotesApiResponse) => {
+      res.items = res.items ? res.items : [];
+      if (focusedQuoteId) this.findNewFocused(res.items, focusedQuoteId);
+      return res;
+    }).do(this.setQuotesInStore);
+  }
+
+  private findNewFocused(quotes: Quote[], activeQuoteId: number): Quote[] {
+    return quotes.map((quote: Quote) => {
+      quote.focused = quote.id === activeQuoteId;
+      return quote;
+    });
   }
 
   private updateNewFocusedQuote(quoteId: number): void {
@@ -79,10 +91,10 @@ export class QuotesService {
   }
 
   private updateQuotesInStore = (quotes: Quotes): void => {
-    this.store.updateQuotes({ items: quotes.items });
+    this.quotesStore.updateQuotes({ items: quotes.items });
   }
 
   private setQuotesInStore = (quotes: QuotesApiResponse): void => {
-    this.store.setQuotes(quotes);
+    this.quotesStore.setQuotes(quotes);
   }
 }

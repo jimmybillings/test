@@ -16,6 +16,10 @@ export class ActionFactory {
   public followRedirect(): FollowRedirect {
     return new FollowRedirect();
   }
+
+  public goToQuotes(): GoToQuotes {
+    return new GoToQuotes();
+  }
 }
 
 export class InternalActionFactory extends ActionFactory { }
@@ -38,4 +42,9 @@ export class FollowRedirect implements Action {
 export class GoToPageNotFound implements Action {
   public static readonly Type = '[Router] Go To Page Not Found';
   public readonly type = GoToPageNotFound.Type;
+}
+
+export class GoToQuotes implements Action {
+  public static readonly Type = '[Router] Go To Quotes';
+  public readonly type = GoToQuotes.Type;
 }

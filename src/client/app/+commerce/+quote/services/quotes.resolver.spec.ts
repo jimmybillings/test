@@ -6,25 +6,44 @@ export function main() {
     let resolverUnderTest: QuotesResolver, mockQuotesService: any,
       mockActivatedRoute: any, mockRouterState: any, mockCapabilities: any;
 
-    beforeEach(() => {
+    function instantiator(mockQuotesState: any) {
       mockQuotesService = {
-        getQuotes: jasmine.createSpy('getQuotes').and.returnValue(Observable.of([{ some: 'quote' },
-        { another: 'quote' }]))
+        data: Observable.of(mockQuotesState),
+        getQuotes: jasmine.createSpy('getQuotes').and.returnValue(
+          Observable.of([{ some: 'quote' }, { another: 'quote' }])
+        )
       };
       mockCapabilities = { administerQuotes: () => false };
       mockActivatedRoute = { params: { s: 'createdOn' } };
-      mockRouterState = {};
       resolverUnderTest = new QuotesResolver(mockQuotesService, mockCapabilities);
-    });
+    }
 
     describe('resolve()', () => {
-      it('should return an observable of some data', () => {
-        let result: Observable<any> = resolverUnderTest.resolve(mockActivatedRoute, mockRouterState);
-        expect(mockQuotesService.getQuotes).toHaveBeenCalledWith(false, { s: 'createdOn' });
+      let resolved: jasmine.Spy;
 
-        result.take(1).subscribe(d => {
-          expect(d).toEqual([{ some: 'quote' }, { another: 'quote' }]);
-        });
+      beforeEach(() => {
+        resolved = jasmine.createSpy('resolved');
+      });
+
+      it('should call \'getQuotes\' on the quotesService with the correct params', () => {
+        instantiator({ items: [{}] });
+        resolverUnderTest.resolve(mockActivatedRoute);
+
+        expect(mockQuotesService.getQuotes).toHaveBeenCalledWith(false, { s: 'createdOn' });
+      });
+
+      it('should resolve if there is data in the store', () => {
+        instantiator({ items: [{}] });
+        resolverUnderTest.resolve(mockActivatedRoute).subscribe(resolved);
+
+        expect(resolved).toHaveBeenCalled();
+      });
+
+      it('should not resolve if there is not data in the store', () => {
+        instantiator({ items: [] });
+        resolverUnderTest.resolve(mockActivatedRoute).subscribe(resolved);
+
+        expect(resolved).not.toHaveBeenCalled();
       });
     });
   });
