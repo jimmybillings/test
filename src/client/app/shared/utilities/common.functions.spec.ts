@@ -43,7 +43,7 @@ export function main() {
         expect(objectForTest).toEqual({ name: 'test', age: 3 });
       });
 
-      it('Should only remove the provided properties if they exist', () => {
+      it('Should handle bad data and input', () => {
         let objectForTest: any = {
           id: 1,
           name: 'test',
@@ -54,10 +54,16 @@ export function main() {
           anotherProp: undefined,
           lastProp: NaN
         };
-        let propertiesToRemove: Array<string> = ['someProp', 'anotherProp', 'lastProp', 'notAProp'];
-        Common.deletePropertiesFromObject(objectForTest, propertiesToRemove);
 
-        expect(objectForTest).toEqual(objectForTest);
+        Common.deletePropertiesFromObject(objectForTest, ['someProp', 'anotherProp', 'lastProp', 'notAProp']);
+
+        expect(objectForTest).toEqual({
+          id: 1,
+          name: 'test',
+          age: 3,
+          createdOn: '10/10/2017',
+          lastUpdated: '10/10/2017'
+        });
       });
 
       it('Should remove the provided properties from a deeply nested object', () => {
