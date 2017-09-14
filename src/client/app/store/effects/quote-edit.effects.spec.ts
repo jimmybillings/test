@@ -5,15 +5,10 @@ import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
 export function main() {
   describe('Quote Edit Effects', () => {
     const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
-    let mockRouter: any;
 
     function instantiator(): any {
-      mockRouter = {
-        navigate: jasmine.createSpy('navigate')
-      };
-
       return new QuoteEditEffects(
-        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService, mockRouter
+        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
       );
     }
 
@@ -64,6 +59,21 @@ export function main() {
         failure: {
           sectionName: 'quoteEdit',
           methodName: 'deleteFailure'
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'changeRouteOnDeleteSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.DeleteSuccess.Type
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'router',
+          methodName: 'goToQuotes',
+          expectedArguments: []
         }
       }
     });

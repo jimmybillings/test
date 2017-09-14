@@ -2,21 +2,17 @@ import { Observable } from 'rxjs/Observable';
 
 import { QuotesService } from './quotes.service';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
-import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 import { Api } from '../interfaces/api.interface';
 
 export function main() {
   describe('Quotes Service', () => {
     let serviceUnderTest: QuotesService;
     let mockApi: MockApiService;
-    let mockStore: MockAppStore;
     let mockCartService: any;
     let mockQuotesStore: any;
 
     beforeEach(() => {
       mockApi = new MockApiService();
-
-      mockStore = new MockAppStore();
 
       mockCartService = {
         data: Observable.of({ cart: { projects: [] } })
@@ -30,7 +26,7 @@ export function main() {
 
       jasmine.addMatchers(mockApiMatchers);
 
-      serviceUnderTest = new QuotesService(mockApi.injector, mockCartService, mockQuotesStore, mockStore);
+      serviceUnderTest = new QuotesService(mockApi.injector, mockCartService, mockQuotesStore);
     });
 
     describe('data getter', () => {

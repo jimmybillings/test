@@ -46,7 +46,9 @@ export class QuoteEditService {
 
   public get projects(): Observable<Project[]> {
     return this.quote.map((data: Quote) => {
-      return data.projects.map((project: Project) => {
+      const clonedQuote: Quote = Common.clone(data);
+
+      return clonedQuote.projects.map((project: Project) => {
         if (project.lineItems) {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
             lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'quoteEditAsset');

@@ -10,7 +10,7 @@ import { QuotesStore } from '../../shared/stores/quotes.store';
 export class QuotesService {
   constructor(private api: ApiService,
     private cart: CartService,
-    private quotesStore: QuotesStore,
+    private quotesStore: QuotesStore
   ) { }
 
 

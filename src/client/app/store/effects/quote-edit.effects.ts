@@ -2,7 +2,6 @@ import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
 import { Effect, Actions } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
 import * as QuoteEditActions from '../actions/quote-edit.actions';
 import { FutureQuoteEditService } from '../services/quote-edit.service';
@@ -25,14 +24,13 @@ export class QuoteEditEffects {
       .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.deleteFailure(error))))
     );
 
-  @Effect({ dispatch: false })
+  @Effect()
   public changeRouteOnDeleteSuccess: Observable<Action> = this.actions.ofType(QuoteEditActions.DeleteSuccess.Type)
-    .do(() => this.router.navigate(['/quotes']));
+    .map(() => this.store.create(factory => factory.router.goToQuotes()));
 
   constructor(
     private actions: Actions,
     private store: AppStore,
-    private service: FutureQuoteEditService,
-    private router: Router
+    private service: FutureQuoteEditService
   ) { }
 }
