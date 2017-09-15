@@ -222,6 +222,10 @@ line-item-rights-component {
   section.read-only:hover {
     background-color: transparent;
     cursor: default;
+    &::before {
+      content: "";
+      opacity: 0;
+    }
   }
 }
 

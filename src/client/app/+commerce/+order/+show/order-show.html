@@ -125,10 +125,14 @@
                   flex="100" 
                   layout="row" 
                   layout-xs="column">
-                  <div flex="100" flex-gt-xs="60">
-                    <cart-asset-component [asset]="lineItem.asset"></cart-asset-component>
-                  </div>
-                  <div flex-gt-xs="40" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
+                  <cart-asset-component [asset]="lineItem.asset" flex="100" flex-gt-xs="60"></cart-asset-component>
+                  <line-item-rights-component
+                    flex="100" flex-gt-xs="20"
+                    [readOnly]="true"
+                    [rights]="lineItem.attributes"
+                    [hasAttributes]="!!lineItem.attributes">
+                  </line-item-rights-component>
+                  <div flex-gt-xs="20" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
                     <div class="tools" flex="100" layout-padding>
                       <button
                         [disabled]="!lineItem.asset.masterDownloadUrl"
