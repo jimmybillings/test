@@ -7,13 +7,13 @@
   </h1>
   <div class="license-agreement-content">
     <md-tab-group>
-      <md-tab *ngFor='let lic of licenses.items' label="lic.projectType">
+      <md-tab *ngFor='let lic of _licenses' label="lic.projectType">
         <ng-template md-tab-label>{{lic.projectType ? lic.projectType : lic.rights}}</ng-template>
         <div flex="100" class="asset-carousel grid">
           <ul class="asset-list" *ngIf="lic.matchingAssets">
             <li *ngFor="let asset of lic.matchingAssets">
               <div class="asset">
-                <a flex="" class="asset-thb" [routerLink]="['/asset/', asset.assetId]">
+                <a (click)="onClickLink()" flex="" class="asset-thb" [routerLink]="asset.routerLink">
                   <img *ngIf="asset.thumbnailUrl" src="{{ asset.thumbnailUrl }}"/>
                 </a>
               </div>

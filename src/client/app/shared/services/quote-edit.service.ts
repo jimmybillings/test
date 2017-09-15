@@ -126,7 +126,8 @@ export class QuoteEditService {
       `quote/${this.quoteId}/asset/lineItem`,
       {
         body: this.formatAssetBody(addAssetParameters),
-        parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
+        parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' },
+        loadingIndicator: true
       }
     ).subscribe(this.replaceQuote);
   }
@@ -173,7 +174,7 @@ export class QuoteEditService {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}/update/lineItem/${lineItem.id}`,
-      { body: lineItem, parameters: { region: 'AAA' } }
+      { body: lineItem, parameters: { region: 'AAA' }, loadingIndicator: true }
     ).subscribe(this.replaceQuote);
   }
 
@@ -234,10 +235,15 @@ export class QuoteEditService {
   }
 
   public bulkImport(rawAssets: { lineItemAttributes: string }, projectId: string): Observable<Quote> {
-    return this.api.put(Api.Orders, `quote/${this.state.data.id}/asset/direct/lineItem`, {
-      body: rawAssets,
-      parameters: { projectId }
-    }).do(this.replaceQuote);
+    return this.api.put(
+      Api.Orders,
+      `quote/${this.state.data.id}/asset/direct/lineItem`,
+      {
+        body: rawAssets,
+        parameters: { projectId },
+        loadingIndicator: true
+      }
+    ).do(this.replaceQuote);
   }
 
   // Private helper methods

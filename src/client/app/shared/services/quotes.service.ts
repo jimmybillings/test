@@ -35,7 +35,7 @@ export class QuotesService {
   }
 
   public setFocused(quoteId: number): Observable<Quote> {
-    return this.api.put(Api.Orders, `quote/focused/${quoteId}`).do((quote: Quote) => {
+    return this.api.put(Api.Orders, `quote/focused/${quoteId}`, { loadingIndicator: true }).do((quote: Quote) => {
       this.updateNewFocusedQuote(quote.id);
     });
   }
@@ -45,7 +45,7 @@ export class QuotesService {
   }
 
   public createEmpty(): Observable<Quote> {
-    return this.api.post(Api.Orders, 'quote');
+    return this.api.post(Api.Orders, 'quote', { loadingIndicator: true });
   }
 
   private getQuotesForCustomer(params: any): Observable<QuotesApiResponse> {
