@@ -25,10 +25,9 @@ projects-component section.header {
 div.project {
   margin-bottom: 0;
   header.project-info {
-    border-radius: 2px 2px 0 0;
-    position: relative;
     h5[md-display-1] {
-      margin: 0 0 rem(.2) 0;
+      margin: 0 0 2px 0;
+      white-space: nowrap;
       .project-name {
         font-size: rem(1.8);
         font-weight: 400;
@@ -37,8 +36,36 @@ div.project {
     .project-client {
       line-height: 1.6;
     }
-    div:first-child {
-      padding: rem(.7) rem(.8) rem(.7) rem(1.0);
+    project-info-component {
+      margin: 8px 0 8px 8px;
+      padding: 0 0 0 2px;
+      position: relative;
+      transition: all .2s ease-in-out;
+      &::before {
+        content: "\e150";
+        font-family: 'Material Icons';
+        position: absolute;
+        top: 2px;
+        right: 3px;
+        font-size: 24px;
+        opacity: 0;
+      }
+      &:hover {
+        padding: 0 40px 0 6px;
+        cursor: pointer;
+        &::before {
+          opacity: .55;
+        }
+      }
+      &.read-only:hover {
+        padding: 0 0 0 2px;
+        background-color: transparent;
+        cursor: default;
+        &::before {
+          content: "";
+          opacity: 0;
+        }
+      }
     }
     div:nth-child(2n) {
       padding: rem(.2) rem(.2) rem(.4) 0;
