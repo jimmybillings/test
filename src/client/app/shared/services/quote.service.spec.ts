@@ -133,6 +133,7 @@ export function main() {
 
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/licensing/3');
+        expect(mockApi.get).toHaveBeenCalledWithLoading(true);
       });
     });
 
@@ -153,6 +154,7 @@ export function main() {
 
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/reject/3');
+        expect(mockApi.put).toHaveBeenCalledWithLoading(true);
       });
     });
 

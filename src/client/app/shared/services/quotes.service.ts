@@ -39,7 +39,7 @@ export class QuotesService {
   }
 
   public setFocused(quoteId: number): Observable<Quote> {
-    return this.api.put(Api.Orders, `quote/focused/${quoteId}`).do((quote: Quote) => {
+    return this.api.put(Api.Orders, `quote/focused/${quoteId}`, { loadingIndicator: true }).do((quote: Quote) => {
       this.updateNewFocusedQuote(quote.id);
     });
   }
@@ -49,7 +49,7 @@ export class QuotesService {
   }
 
   public createEmpty(): Observable<Quote> {
-    return this.api.post(Api.Orders, 'quote');
+    return this.api.post(Api.Orders, 'quote', { loadingIndicator: true });
   }
 
   private findNewFocused(quotes: Quote[], activeQuoteId: number): Quote[] {
@@ -60,7 +60,11 @@ export class QuotesService {
   }
 
   private quotesList(params: any = {}): Observable<any> {
-    return this.api.get(Api.Orders, 'quote/myQuotes', { parameters: this.buildSearchParams(params), loadingIndicator: true });
+    return this.api.get(
+      Api.Orders,
+      'quote/myQuotes',
+      { parameters: this.buildSearchParams(params), loadingIndicator: true }
+    );
   }
 
   private updateNewFocusedQuote(quoteId: number): void {

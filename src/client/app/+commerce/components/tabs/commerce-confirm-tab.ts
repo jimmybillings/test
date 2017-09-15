@@ -9,8 +9,6 @@ import { ViewAddress } from '../../../shared/interfaces/user.interface';
 import { CartState, QuoteState, CheckoutState, OrderType } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { LicenseAgreements } from '../../../shared/interfaces/commerce.interface';
-import { LicenseAgreementComponent } from '../../components/license-agreement/license-agreement.component';
 import { Common } from '../../../shared/utilities/common.functions';
 
 export class CommerceConfirmTab extends Tab {
@@ -81,19 +79,5 @@ export class CommerceConfirmTab extends Tab {
 
   public shouldShowLicenseDetailsBtn(): boolean {
     return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
-  }
-
-  public showLicenseAgreements(): void {
-    this.commerceService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
-      this.dialogService.openComponentInDialog(
-        {
-          componentType: LicenseAgreementComponent,
-          dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
-          inputOptions: {
-            licenses: Common.clone(agreements),
-          },
-        }
-      );
-    });
   }
 }

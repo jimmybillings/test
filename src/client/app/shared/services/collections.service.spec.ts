@@ -100,6 +100,7 @@ export function main() {
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Assets);
         expect(mockApi.post).toHaveBeenCalledWithEndpoint('collectionSummary');
         expect(mockApi.post).toHaveBeenCalledWithBody(mockCollection);
+        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
       });
 
       it('should add the response to the store', () => {
@@ -116,6 +117,7 @@ export function main() {
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Assets);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('collectionSummary/158');
         expect(mockApi.put).toHaveBeenCalledWithBody(mockCollection);
+        expect(mockApi.put).toHaveBeenCalledWithLoading(true);
       });
     });
 
@@ -131,6 +133,7 @@ export function main() {
 
         expect(mockApi.delete).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApi.delete).toHaveBeenCalledWithEndpoint('collection/123');
+        expect(mockApi.delete).toHaveBeenCalledWithLoading('onBeforeRequest');
       });
 
       it('should reload the active collection if the collection being deleted is active', () => {

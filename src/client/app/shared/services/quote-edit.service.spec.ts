@@ -195,6 +195,7 @@ export function main() {
           projectName: 'Project A',
           region: 'AAA'
         });
+        expect(mockApi.put).toHaveBeenCalledWithLoading(true);
       });
 
       it('sends timeStart and timeEnd if defined', () => {
@@ -344,6 +345,7 @@ export function main() {
           id: '123', attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
         expect(mockApi.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+        expect(mockApi.put).toHaveBeenCalledWithLoading(true);
       });
 
       it('should replace the quote store with the response', () => {
@@ -491,6 +493,7 @@ export function main() {
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3/asset/direct/lineItem');
         expect(mockApi.put).toHaveBeenCalledWithBody({ lineItemAttributes: 'one\ntwo' });
         expect(mockApi.put).toHaveBeenCalledWithParameters({ projectId: 'abc-123' });
+        expect(mockApi.put).toHaveBeenCalledWithLoading(true);
       });
     });
   });

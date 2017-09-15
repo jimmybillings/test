@@ -76,8 +76,16 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
           componentType: LicenseAgreementComponent,
           dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
           inputOptions: {
-            licenses: Common.clone(agreements),
+            assetType: 'cartAsset',
+            licenses: Common.clone(agreements)
           },
+          outputOptions: [
+            {
+              event: 'close',
+              callback: () => true,
+              closeOnEvent: true
+            }
+          ]
         }
       );
     });
