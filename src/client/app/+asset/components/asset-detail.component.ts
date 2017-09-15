@@ -258,6 +258,14 @@ export class AssetDetailComponent implements OnChanges {
     return `ASSET.DETAIL.BUTTON.${operation}.${subclipOrAsset}.${quoteOrCart}`;
   }
 
+  public get canGoToSearchAssetDetails(): boolean {
+    return ['cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset'].includes(this.asset.type);
+  }
+
+  public goToSearchAssetDetails(): void {
+    this.store.dispatch(factory => factory.router.goToSearchAssetDetails(this.asset.assetId, this.subclipMarkers));
+  }
+
   private get isQuoteUser(): boolean {
     return this.userCan.administerQuotes();
   }

@@ -1,5 +1,7 @@
 import { Action } from '@ngrx/store';
 
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
+
 export class ActionFactory {
   public goToLogin(): GoToLogin {
     return new GoToLogin();
@@ -11,6 +13,10 @@ export class ActionFactory {
 
   public goToPageNotFound(): GoToPageNotFound {
     return new GoToPageNotFound();
+  }
+
+  public goToSearchAssetDetails(assetId: number, markers?: SubclipMarkers): GoToSearchAssetDetails {
+    return new GoToSearchAssetDetails(assetId, markers);
   }
 
   public followRedirect(): FollowRedirect {
@@ -42,6 +48,12 @@ export class FollowRedirect implements Action {
 export class GoToPageNotFound implements Action {
   public static readonly Type = '[Router] Go To Page Not Found';
   public readonly type = GoToPageNotFound.Type;
+}
+
+export class GoToSearchAssetDetails implements Action {
+  public static readonly Type = '[Router] Go To Search Asset Details';
+  public readonly type = GoToSearchAssetDetails.Type;
+  constructor(public readonly assetId: number, public readonly markers: SubclipMarkers) { }
 }
 
 export class GoToQuotes implements Action {

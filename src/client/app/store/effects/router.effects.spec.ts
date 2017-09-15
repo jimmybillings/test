@@ -3,6 +3,7 @@ import { Subject } from 'rxjs/Subject';
 import { RouterEffects } from './router.effects';
 import * as RouterActions from '../actions/router.actions';
 import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
+import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
   describe('Router Effects', () => {
@@ -122,6 +123,44 @@ export function main() {
         });
       });
 
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToSearchAssetDetails',
+      comment: 'without markers',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToSearchAssetDetails.Type,
+        assetId: 47,
+        markers: undefined
+      },
+      customTests: [
+        {
+          it: 'navigates to /search/asset/:assetId',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/asset/47', {}]);
+          }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToSearchAssetDetails',
+      comment: 'with markers',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToSearchAssetDetails.Type,
+        assetId: 47,
+        markers: { in: new Frame(30).setFromFrameNumber(30), out: new Frame(30).setFromFrameNumber(60) }
+      },
+      customTests: [
+        {
+          it: 'navigates to /search/asset/:assetId;timeStart=<milliseconds>;timeEnd=<milliseconds>',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/asset/47', { timeStart: 1000, timeEnd: 2000 }]);
+          }
+        }
+      ]
     });
 
     effectsSpecHelper.generateTestsFor({

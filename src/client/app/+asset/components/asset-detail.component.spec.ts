@@ -510,10 +510,6 @@ export function main() {
         { assetType: 'searchAsset', expectedResult: false },
       ];
 
-      beforeEach(() => {
-        componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
-      });
-
       tests.forEach(test => {
         it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
           componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
@@ -599,6 +595,48 @@ export function main() {
 
           expect(componentUnderTest.addToCartButtonLabelKey).toBe(test.expectedKey);
         });
+      });
+    });
+
+    describe('canGoToSearchAssetDetails getter', () => {
+      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', expectedResult: true },
+        { assetType: 'collectionAsset', expectedResult: true },
+        { assetType: 'orderAsset', expectedResult: true },
+        { assetType: 'quoteEditAsset', expectedResult: true },
+        { assetType: 'quoteShowAsset', expectedResult: true },
+        { assetType: 'searchAsset', expectedResult: false },
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
+
+          expect(componentUnderTest.canGoToSearchAssetDetails).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('goToSearchAssetDetails', () => {
+      it('dispatches the expected action when subclipMarkers are not set', () => {
+        const spy = mockStore.createActionFactoryMethod('router', 'goToSearchAssetDetails');
+
+        componentUnderTest.goToSearchAssetDetails();
+
+        mockStore.expectDispatchFor(spy, componentUnderTest.asset.assetId, undefined);
+      });
+
+      it('dispatches the expected action when subclipMarkers are set', () => {
+        const spy = mockStore.createActionFactoryMethod('router', 'goToSearchAssetDetails');
+
+        componentUnderTest.onPlayerMarkerChange({ in: { some: 'inFrame' } as any, out: { some: 'outFrame' } as any });
+        componentUnderTest.goToSearchAssetDetails();
+
+        mockStore.expectDispatchFor(
+          spy,
+          componentUnderTest.asset.assetId,
+          { in: { some: 'inFrame' }, out: { some: 'outFrame' } }
+        );
       });
     });
 

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import * as RouterActions from '../actions/router.actions';
+import { bothMarkersAreSet, durationFrom } from '../../shared/interfaces/subclip-markers';
 
 @Injectable()
 export class RouterEffects {
@@ -26,6 +27,15 @@ export class RouterEffects {
   @Effect({ dispatch: false })
   public goToPageNotFound: Observable<Action> = this.actions.ofType(RouterActions.GoToPageNotFound.Type)
     .do((action: RouterActions.GoToPageNotFound) => this.router.navigate([this.PageNotFoundPath]));
+
+  @Effect({ dispatch: false })
+  public goToSearchAssetDetails: Observable<Action> = this.actions.ofType(RouterActions.GoToSearchAssetDetails.Type)
+    .do((action: RouterActions.GoToSearchAssetDetails) =>
+      this.router.navigate([
+        `${this.SearchAssetDetailsPath}/${action.assetId}`,
+        bothMarkersAreSet(action.markers) ? durationFrom(action.markers) : {}
+      ])
+    );
 
   @Effect({ dispatch: false })
   public followRedirect: Observable<Action> = this.actions.ofType(RouterActions.FollowRedirect.Type)
@@ -49,6 +59,7 @@ export class RouterEffects {
   private readonly QuotesPath: string = '/quotes';
   private readonly RootPath: string = '/';
   private readonly RedirectUrlKey: string = 'RouterEffects.RedirectUrl';
+  private readonly SearchAssetDetailsPath: string = '/search/asset';
 
   constructor(private actions: Actions, private router: Router, private location: Location) { }
 }
