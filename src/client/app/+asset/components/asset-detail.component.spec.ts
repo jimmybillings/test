@@ -3,6 +3,7 @@ import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 import { enhanceAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
 import { mockAsset } from '../../shared/mocks/mock-asset';
 import { Asset } from '../../shared/interfaces/common.interface';
+import { Frame } from 'wazee-frame-formatter';
 
 
 export function main() {
@@ -110,6 +111,16 @@ export function main() {
 
     describe('removeAssetFromActiveCollection()', () => {
       it('dispatches the expected action', () => {
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
+        componentUnderTest.removeAssetFromActiveCollection();
+        mockStore.expectDispatchFor(spy, componentUnderTest.asset);
+      });
+      it('with subclipping defined it still removes the same asset', () => {
+        componentUnderTest.activeCollection = collection;
+        componentUnderTest.activeCollection.assets.items.push({ assetId: 1, timeStart: 40, timeEnd: 80 } as Asset);
+        const startFrame = new Frame(25).setFromFrameNumber(1);
+        const endFrame = new Frame(25).setFromFrameNumber(2);
+        componentUnderTest.subclipMarkers = { in: startFrame, out: endFrame } as any;
         const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
         componentUnderTest.removeAssetFromActiveCollection();
         mockStore.expectDispatchFor(spy, componentUnderTest.asset);
@@ -647,11 +658,11 @@ export function main() {
         { assetType: 'searchAsset', matchingSubclipMarkers: false, expectedResult: true },
 
         { assetType: 'cartAsset', matchingSubclipMarkers: true, expectedResult: false },
-        { assetType: 'collectionAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'collectionAsset', matchingSubclipMarkers: true, expectedResult: true },
         { assetType: 'orderAsset', matchingSubclipMarkers: true, expectedResult: false },
         { assetType: 'quoteEditAsset', matchingSubclipMarkers: true, expectedResult: false },
         { assetType: 'quoteShowAsset', matchingSubclipMarkers: true, expectedResult: false },
-        { assetType: 'searchAsset', matchingSubclipMarkers: true, expectedResult: false }
+        { assetType: 'searchAsset', matchingSubclipMarkers: true, expectedResult: true }
       ];
 
       beforeEach(() => {
@@ -672,6 +683,15 @@ export function main() {
         asset.assetId = 9999;
         expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(false);
       });
+
+      it('returns true if the collection does not have that asset but the type is collection & subclip markers were set', () => {
+        asset.assetId = 9999;
+        asset.type = 'collectionAsset';
+        const startFrame = new Frame(25).setFromFrameNumber(1);
+        const endFrame = new Frame(25).setFromFrameNumber(2);
+        componentUnderTest.onPlayerMarkerChange({ in: startFrame, out: endFrame });
+        expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(true);
+      });
     });
 
     describe('canBeRemovedFromCollection()', () => {
@@ -681,10 +701,10 @@ export function main() {
         { assetType: 'orderAsset', matchingSubclipMarkers: true, expectedResult: false },
         { assetType: 'quoteEditAsset', matchingSubclipMarkers: true, expectedResult: false },
         { assetType: 'quoteShowAsset', matchingSubclipMarkers: true, expectedResult: false },
-        { assetType: 'searchAsset', matchingSubclipMarkers: true, expectedResult: true },
+        { assetType: 'searchAsset', matchingSubclipMarkers: true, expectedResult: false },
 
         { assetType: 'cartAsset', matchingSubclipMarkers: false, expectedResult: false },
-        { assetType: 'collectionAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'collectionAsset', matchingSubclipMarkers: false, expectedResult: true },
         { assetType: 'orderAsset', matchingSubclipMarkers: false, expectedResult: false },
         { assetType: 'quoteEditAsset', matchingSubclipMarkers: false, expectedResult: false },
         { assetType: 'quoteShowAsset', matchingSubclipMarkers: false, expectedResult: false },
@@ -697,7 +717,7 @@ export function main() {
 
       tests.forEach(test => {
         it(`returns ${test.expectedResult} for asset type '${test.assetType}' when the collection has a version of that 
-        asset ${test.matchingSubclipMarkers ? 'with' : 'without'} matching subclip markers`, () => {
+        asset ${test.matchingSubclipMarkers ? 'with' : 'without'} matching timestamps`, () => {
             asset.timeStart = 123;
             asset.timeEnd = test.matchingSubclipMarkers ? 1000 : 9999;
             asset.type = test.assetType;
@@ -707,6 +727,19 @@ export function main() {
 
       it('returns false when the collection does not have a version of that asset', () => {
         asset.assetId = 9999;
+        expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
+      });
+
+      it('returns false when the collection does not have a version of that asset with set subclip markers', () => {
+        const startFrame = new Frame(25).setFromFrameNumber(1);
+        const endFrame = new Frame(25).setFromFrameNumber(2);
+        componentUnderTest.subclipMarkers = { in: startFrame, out: endFrame } as any;
+        expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
+      });
+
+      it('returns false when the collection does not have a version of that asset without timestamps', () => {
+        asset.timeStart = null;
+        asset.timeEnd = null;
         expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
       });
     });
