@@ -12,7 +12,7 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'Load',
+      actionClassName: ['Load', 'Delete'],
       customTests: [
         {
           it: 'returns a clone of the state with loading: true',
@@ -23,7 +23,7 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'LoadSuccess',
+      actionClassName: ['LoadSuccess', 'DeleteSuccess'],
       customTests: [
         {
           it: 'returns the state with the requested quote and loading: false',
@@ -35,7 +35,7 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'LoadFailure',
+      actionClassName: ['LoadFailure', 'DeleteFailure'],
       mutationTestData: {
         previousState: { loading: true }
       },

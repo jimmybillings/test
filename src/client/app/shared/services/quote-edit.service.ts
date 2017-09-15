@@ -46,7 +46,9 @@ export class QuoteEditService {
 
   public get projects(): Observable<Project[]> {
     return this.quote.map((data: Quote) => {
-      return data.projects.map((project: Project) => {
+      const clonedQuote: Quote = Common.clone(data);
+
+      return clonedQuote.projects.map((project: Project) => {
         if (project.lineItems) {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
             lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'quoteEditAsset');
@@ -225,10 +227,6 @@ export class QuoteEditService {
 
   public get feeConfig(): Observable<FeeConfig> {
     return this.feeConfigStore.initialized ? Observable.of(this.feeConfigStore.feeConfig) : this.loadFeeConfig();
-  }
-
-  public deleteQuote(): Observable<Quote> {
-    return this.api.delete(Api.Orders, `quote/${this.state.data.id}`, { loadingIndicator: 'onBeforeRequest' });
   }
 
   // This method is here only cause the linter gets mad if it isn't
