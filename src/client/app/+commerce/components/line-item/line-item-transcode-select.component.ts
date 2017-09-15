@@ -16,8 +16,10 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
           </md-option>
       </md-select>
       <div *ngIf="readOnly" class="read-only-transcode">
-        <span class="md-caption asset-name">{{ 'ASSET.TRANSCODE_TARGETS.FORM_PLACEHOLDER' | translate }}</span>
-        <div>{{ 'ASSET.TRANSCODE_TARGETS.' + selectedTarget | translate }}</div>
+        <span class="cart-asset-metadata md-caption">
+          <strong>{{ 'ASSET.TRANSCODE_TARGETS.FORM_PLACEHOLDER' | translate }}: </strong>
+          {{ 'ASSET.TRANSCODE_TARGETS.' + selectedTarget | translate }}
+        </span>
       </div>
     </div>
   `

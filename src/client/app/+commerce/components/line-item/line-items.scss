@@ -160,25 +160,27 @@ li.cart-asset {
   }
 }
 line-item-transcode-select-component .read-only-transcode { 
-  margin-top: -5px; 
-  margin-left: 40px;
+  margin-top: -8px; 
+  padding: 6px;
   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
     margin: 0;
+    padding: 0;
   }
 }
 line-item-rights-component {
   section {
     margin-bottom: 12px;
-    margin-top: -8px;
-    padding: 8px;
+    margin-top: -2px;
+    padding: 6px;
     position: relative;
     transition: all .2s ease-in-out;
     &::before {
+      transition: all .2s ease-in-out;
       content: "\e150";
       font-family: 'Material Icons';
       position: absolute;
       top: 3px;
-      right: 4px;
+      right: 34px;
       font-size: 24px;
       opacity: 0;
     }
@@ -187,15 +189,13 @@ line-item-rights-component {
       padding: 0;
     }
     &:hover {
-      margin-top: 0;
       cursor: pointer;
       &::before {
+        right: 4px;
         opacity: .4;
       }
     }
-    &.read-only:hover {
-      margin-top: -8px;
-    }
+
   }
   header {
     position: relative;
