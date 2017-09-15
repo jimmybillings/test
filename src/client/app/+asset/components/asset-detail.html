@@ -219,8 +219,16 @@
                   {{ 'PRICING.CALCULATE_HEADING' | translate }}
                 </button>
 
-                <button md-raised-button [disabled]="!canAddToCart" (click)="addAssetToCart()" color="primary">
-                  {{ addToCartBtnLabel | translate }}
+                <button *ngIf="canUpdateCartAsset"
+                  [disabled]="assetMatchesCartAsset"
+                  md-raised-button
+                  (click)="updateCartAsset()"
+                  color="primary">
+                  {{ updateCartAssetButtonLabelKey | translate }}
+                </button>
+
+                <button *ngIf="canAddToCart" md-raised-button (click)="addAssetToCart()" color="primary">
+                  {{ addToCartButtonLabelKey | translate }}
                 </button>
               </md-card-actions>                  
             </div>              

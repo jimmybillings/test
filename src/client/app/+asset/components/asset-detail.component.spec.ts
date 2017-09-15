@@ -151,26 +151,6 @@ export function main() {
       });
     });
 
-    describe('addToCartBtnLabel()', () => {
-      it('Should return translatable string based on on generic user and subclip markers exist.', () => {
-        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
-        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE');
-      });
-      it('Should return translatable string based on subclip markers exist and user is sales person.', () => {
-        componentUnderTest.userCan = { administerQuotes: () => true } as any;
-        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
-        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE');
-      });
-      it('Should return translatable string based on generic user and not a subclip.', () => {
-        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
-      });
-      it('Should return translatable string based on sales user and subclip markers are present', () => {
-        componentUnderTest.userCan = { administerQuotes: () => true } as any;
-        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
-        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE');
-      });
-    });
-
     describe('previousPage()', () => {
       it('Should emit an event to go back to the previous page', () => {
         spyOn(componentUnderTest.onPreviousPage, 'emit');
@@ -509,6 +489,62 @@ export function main() {
       });
     });
 
+    describe('canUpdateCartAsset getter', () => {
+      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', expectedResult: true },
+        { assetType: 'collectionAsset', expectedResult: false },
+        { assetType: 'orderAsset', expectedResult: false },
+        { assetType: 'quoteEditAsset', expectedResult: true },
+        { assetType: 'quoteShowAsset', expectedResult: false },
+        { assetType: 'searchAsset', expectedResult: false },
+      ];
+
+      beforeEach(() => {
+        componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
+      });
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
+
+          expect(componentUnderTest.canUpdateCartAsset).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('updateCartAssetButtonLabelKey getter', () => {
+      const tests: { quoteUser: boolean, markers: boolean, expectedKey: string }[] = [
+        { quoteUser: false, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.ASSET.CART' },
+        { quoteUser: false, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.CART' },
+        { quoteUser: false, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.ASSET.CART' },
+        { quoteUser: false, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.CART' },
+
+        { quoteUser: true, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.ASSET.QUOTE' },
+        { quoteUser: true, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.QUOTE' },
+        { quoteUser: true, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.ASSET.QUOTE' },
+        { quoteUser: true, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.QUOTE' }
+      ];
+
+      tests.forEach(test => {
+        const description: string = `returns ${test.expectedKey}` +
+          ` for a user ${test.quoteUser ? 'with' : 'without'} quote administrator capabililty and` +
+          ` an asset with markers ${test.markers ? '' : 'not '}defined`;
+
+        it(description, () => {
+          componentUnderTest.userCan = { administerQuotes: () => test.quoteUser } as any;
+          if (test.markers) componentUnderTest.subclipMarkers = { in: { some: 'frame' }, out: { some: 'frame' } } as any;
+
+          expect(componentUnderTest.updateCartAssetButtonLabelKey).toBe(test.expectedKey);
+        });
+      });
+    });
+
+    describe('updateCartAsset()', () => {
+      it('is not yet implemented', () => {
+        expect(true).toBe(true);
+      });
+    });
+
     describe('canAddToCart getter', () => {
       it('returns true with addToCart capability', () => {
         componentUnderTest.userCan = { addToCart: () => true } as any;
@@ -520,6 +556,38 @@ export function main() {
         componentUnderTest.userCan = { addToCart: () => false } as any;
 
         expect(componentUnderTest.canAddToCart).toBe(false);
+      });
+    });
+
+    describe('addToCartButtonLabelKey getter', () => {
+      const tests: { quoteUser: boolean, type: AssetType, markers: boolean, expectedKey: string }[] = [
+        { quoteUser: false, type: 'searchAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.CART' },
+        { quoteUser: false, type: 'searchAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.CART' },
+        { quoteUser: false, type: 'cartAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.ASSET.CART' },
+        { quoteUser: false, type: 'cartAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.CART' },
+        { quoteUser: false, type: 'quoteEditAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.CART' },
+        { quoteUser: false, type: 'quoteEditAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.CART' },
+
+        { quoteUser: true, type: 'searchAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.QUOTE' },
+        { quoteUser: true, type: 'searchAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.QUOTE' },
+        { quoteUser: true, type: 'cartAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.QUOTE' },
+        { quoteUser: true, type: 'cartAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.QUOTE' },
+        { quoteUser: true, type: 'quoteEditAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.ASSET.QUOTE' },
+        { quoteUser: true, type: 'quoteEditAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.QUOTE' }
+      ];
+
+      tests.forEach(test => {
+        const description: string = `returns ${test.expectedKey}` +
+          ` for a user ${test.quoteUser ? 'with' : 'without'} quote administrator capabililty and` +
+          ` an asset with type '${test.type}' and markers ${test.markers ? '' : 'not '}defined`;
+
+        it(description, () => {
+          componentUnderTest.userCan = { administerQuotes: () => test.quoteUser } as any;
+          componentUnderTest.asset = enhanceAsset({} as any, test.type);
+          if (test.markers) componentUnderTest.subclipMarkers = { in: { some: 'frame' }, out: { some: 'frame' } } as any;
+
+          expect(componentUnderTest.addToCartButtonLabelKey).toBe(test.expectedKey);
+        });
       });
     });
 

@@ -52,6 +52,9 @@ export function durationFrom(markers: SubclipMarkers): Duration {
   };
 }
 
+export function matches(timeStart: number, timeEnd: number, markers: SubclipMarkers): boolean {
+  return timeStartFrom(markers) === (timeStart || -1) && timeEndFrom(markers) === (timeEnd || -2);
+}
 
 export function bothMarkersAreSet(markers: SubclipMarkers): boolean {
   return !!markers && !!markers.in && !!markers.out;

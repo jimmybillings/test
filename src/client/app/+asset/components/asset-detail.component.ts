@@ -24,11 +24,11 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public userCan: Capabilities;
   @Input() public uiConfig: UiConfig;
   @Input() public activeCollection: Collection;
-  @Input() public cart: Cart;
   @Input() public usagePrice: number;
   @Input() public window: Window;
   @Input() public searchContext: SearchState;
   @Input() public pageSize: number;
+  @Input() public assetMatchesCartAsset: boolean;
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
@@ -41,7 +41,6 @@ export class AssetDetailComponent implements OnChanges {
 
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   private assetsArr: Array<string> = [];
-  private cartAssets: Array<string> = [];
 
   constructor(private store: AppStore) { }
 
@@ -184,12 +183,6 @@ export class AssetDetailComponent implements OnChanges {
     this.selectedTarget = target.value;
   }
 
-  public get addToCartBtnLabel(): string {
-    return this.userCan.administerQuotes()
-      ? (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL')
-      : (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
-  }
-
   public get canComment(): boolean {
     return ['cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset'].includes(this.asset.type);
   }
@@ -242,8 +235,39 @@ export class AssetDetailComponent implements OnChanges {
     return this.isRightsManaged && this.userCan.calculatePrice();
   }
 
+  public get canUpdateCartAsset(): boolean {
+    return ['cartAsset', 'quoteEditAsset'].includes(this.asset.type);
+  }
+
+  public get updateCartAssetButtonLabelKey(): string {
+    const subclipOrAsset: string = this.markersAreDefined ? 'SUBCLIP' : 'ASSET';
+    const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
+
+    return `ASSET.DETAIL.BUTTON.UPDATE.${subclipOrAsset}.${quoteOrCart}`;
+  }
+
+  public updateCartAsset(): void {
+    this.store.dispatch(factory => factory.notifier.notify({
+      title: 'COMING SOON!',
+      message: 'Asset updating is not yet implemented.'
+    }));
+  }
+
   public get canAddToCart(): boolean {
     return this.userCan.addToCart();
+  }
+
+  public get addToCartButtonLabelKey(): string {
+    const onMatchingPage: boolean = this.isQuoteUser ? this.asset.type === 'quoteEditAsset' : this.asset.type === 'cartAsset';
+    const operation: string = onMatchingPage ? 'ADD_NEW' : 'ADD';
+    const subclipOrAsset: string = this.markersAreDefined ? 'SUBCLIP' : 'ASSET';
+    const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
+
+    return `ASSET.DETAIL.BUTTON.${operation}.${subclipOrAsset}.${quoteOrCart}`;
+  }
+
+  private get isQuoteUser(): boolean {
+    return this.userCan.administerQuotes();
   }
 
   private get isRoyaltyFree(): boolean {
