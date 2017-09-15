@@ -11,9 +11,26 @@ import { AppStore } from '../../app.store';
 export class QuoteEditEffects {
   @Effect()
   public load: Observable<Action> = this.actions.ofType(QuoteEditActions.Load.Type)
-    .switchMap(() => this.service.load())
-    .map(quote => this.store.create(factory => factory.quoteEdit.loadSuccess(quote)))
-    .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.loadFailure(error))));
+    .switchMap(() => this.service.load()
+      .map(quote => this.store.create(factory => factory.quoteEdit.loadSuccess(quote)))
+      .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.loadFailure(error))))
+    );
 
-  constructor(private actions: Actions, private store: AppStore, private service: FutureQuoteEditService) { }
+  @Effect()
+  public delete: Observable<Action> = this.actions.ofType(QuoteEditActions.Delete.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.Delete, number]) => this.service.delete(quoteId)
+      .map(quote => this.store.create(factory => factory.quoteEdit.deleteSuccess(quote)))
+      .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.deleteFailure(error))))
+    );
+
+  @Effect()
+  public changeRouteOnDeleteSuccess: Observable<Action> = this.actions.ofType(QuoteEditActions.DeleteSuccess.Type)
+    .map(() => this.store.create(factory => factory.router.goToQuotes()));
+
+  constructor(
+    private actions: Actions,
+    private store: AppStore,
+    private service: FutureQuoteEditService
+  ) { }
 }

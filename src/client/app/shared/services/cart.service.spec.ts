@@ -86,7 +86,11 @@ export function main() {
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
 
         expect(mockApi.put)
-          .toHaveBeenCalledWith(Api.Orders, 'cart/asset/lineItem', { body: body, parameters: parameters });
+          .toHaveBeenCalledWith(
+          Api.Orders,
+          'cart/asset/lineItem',
+          { body: body, parameters: parameters, loadingIndicator: true }
+          );
       });
 
       it('calls the api service correctly - no transcode target', () => {
@@ -97,7 +101,11 @@ export function main() {
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
 
         expect(mockApi.put)
-          .toHaveBeenCalledWith(Api.Orders, 'cart/asset/lineItem', { body: body, parameters: parameters });
+          .toHaveBeenCalledWith(
+          Api.Orders,
+          'cart/asset/lineItem',
+          { body: body, parameters: parameters, loadingIndicator: true }
+          );
       });
 
       it('adds the asset to the cart store', () => {

@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
   public state: string = '';
   public userCan: Capabilities;
   public activeCollection: Collection;
+  public showLoadingIndicator: Observable<boolean>;
   private bootStrapUserDataSubscription: Subscription;
 
   constructor(
@@ -80,6 +81,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.routerChanges();
     this.processUser();
+    this.showLoadingIndicator = this.uiState.data.map(data => data.loadingIndicator);
   }
 
   public loadActiveCollection(): void {

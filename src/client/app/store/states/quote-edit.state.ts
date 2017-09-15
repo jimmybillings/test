@@ -22,6 +22,7 @@ export function reducer(state: State = initialState, action: QuoteEditActions.An
   if (state === null) state = initialState;
 
   switch (action.type) {
+    case QuoteEditActions.Delete.Type:
     case QuoteEditActions.Load.Type: {
       return {
         ...Common.clone(state),
@@ -29,6 +30,7 @@ export function reducer(state: State = initialState, action: QuoteEditActions.An
       };
     }
 
+    case QuoteEditActions.DeleteSuccess.Type:
     case QuoteEditActions.LoadSuccess.Type: {
       return {
         loading: false,
@@ -38,6 +40,7 @@ export function reducer(state: State = initialState, action: QuoteEditActions.An
       };
     }
 
+    case QuoteEditActions.DeleteFailure.Type:
     case QuoteEditActions.LoadFailure.Type: {
       return {
         ...Common.clone(state),

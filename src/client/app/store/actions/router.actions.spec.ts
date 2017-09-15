@@ -48,5 +48,16 @@ export function main() {
         type: '[Router] Follow Redirect'
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'goToQuotes',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Router] Go To Quotes'
+      }
+    });
   });
 }

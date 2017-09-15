@@ -137,7 +137,7 @@ export class QuoteService {
   }
 
   public retrieveLicenseAgreements(): Observable<LicenseAgreements> {
-    return this.api.get(Api.Orders, `quote/licensing/${this.state.data.id}`);
+    return this.api.get(Api.Orders, `quote/licensing/${this.state.data.id}`, { loadingIndicator: true });
   }
 
   public expireQuote(): Observable<Quote> {
@@ -146,7 +146,7 @@ export class QuoteService {
   }
 
   public rejectQuote(): Observable<Quote> {
-    return this.api.put(Api.Orders, `quote/reject/${this.state.data.id}`);
+    return this.api.put(Api.Orders, `quote/reject/${this.state.data.id}`, { loadingIndicator: true });
   }
 
   public extendExpirationDate(newDate: string): Observable<Quote> {

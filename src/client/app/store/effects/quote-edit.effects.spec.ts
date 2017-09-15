@@ -34,5 +34,48 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'delete',
+      effectsInstantiator: instantiator,
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      inputAction: {
+        type: QuoteEditActions.Delete.Type
+      },
+      serviceMethod: {
+        name: 'delete',
+        expectedArguments: [1],
+        returnsObservableOf: { some: 'quote' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'deleteSuccess',
+          expectedArguments: [{ some: 'quote' }]
+        },
+        failure: {
+          sectionName: 'quoteEdit',
+          methodName: 'deleteFailure'
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'changeRouteOnDeleteSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.DeleteSuccess.Type
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'router',
+          methodName: 'goToQuotes',
+          expectedArguments: []
+        }
+      }
+    });
   });
 }
