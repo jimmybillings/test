@@ -1,5 +1,5 @@
 line-items-component {
-  padding: 0 rem(1.2) rem(1.2) rem(1.2);
+  padding: 0 12px 12px 12px;
   display: flex;
 }
 
@@ -11,23 +11,20 @@ ul.asset-list {
 }
 li.cart-asset {
   position: relative;
-  margin: rem(1.2) 0 0 0;
-  padding: rem(.2);
+  margin: 12px 0 0 0;
+  padding: 2px;
   border-radius: 2px;
   transition: $swift-ease-out;
   .actions {
-    min-height: rem(4.5);
+    min-height: 45px;
     position: relative;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-      padding-top: rem(.4);
+      padding-top: 4px;
     }
   }
   .tools {
     opacity: .85;
     text-align: right;
-    // @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-    //   padding-bottom: rem(3.8);
-    // }
   }
   .tools button {
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
@@ -39,11 +36,6 @@ li.cart-asset {
     width: 100%;
     padding-left: 8px;
     max-width: 290px;
-    // width: 99%;
-    // max-width: rem(19.0);
-    // display: block;
-    // margin-left: auto;
-    // margin-right: auto;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       margin-top: 30px;
       margin-bottom: 30px;
@@ -52,19 +44,19 @@ li.cart-asset {
     }
   }
   .asset-description {
-    font-size: rem(1.4);
-    line-height: rem(1.55);
-    margin-top: rem(.3);
-    margin-bottom: rem(1.1);
+    font-size: 14px;
+    line-height: 15.5px;
+    margin-top: 3px;
+    margin-bottom: 11px;
   }
   .asset-name {
-    font-size: rem(1.1);
+    font-size: 11px;
     opacity: .7;
   }
   .subclip-timeline {
-    margin: rem(.5) 0 0;
+    margin: 5px 0 0;
     position: relative;
-    height: rem(.6);
+    height: 6px;
     width: 100%;
     .subclip-segment {
       height: 100%;
@@ -75,21 +67,21 @@ li.cart-asset {
     margin-top: 0;
     list-style: none;
     padding: 0;
-    height: rem(2.0);
-    line-height: rem(2.0);
+    height: 20px;
+    line-height: 20px;
     width: 100%;
-    min-width: rem(38.0);
-    font-size: rem(1.1);
+    min-width: 380px;
+    font-size: 11px;
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-      font-size: rem(1.0);
+      font-size: 10px;
       min-width: 100%;
     }
     li {
       &:first-child {
-        margin:0 0 0 rem(0.4);
+        margin:0 0 0 4px;
       }
       &:nth-child(3n) {
-        margin:0 rem(0.4) 0 0;
+        margin:0 4px 0 0;
         text-align: right;
       }
     }
@@ -148,13 +140,13 @@ li.cart-asset {
     }
   }
   .divider {
-    margin: rem(.6) rem(.8) 0 rem(.8);
-    padding-bottom: rem(.6);
+    margin: 6px 8px 0 8px;
+    padding-bottom: 6px;
     display: none;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       display: flex;
       position: absolute;
-      bottom: rem(3.2);
+      bottom: 32px;
       width: calc(100% - 16px);
     }
   }
@@ -230,10 +222,10 @@ line-item-rights-component {
 }
 
 button.is-outlined.mini {
-  line-height: rem(2.4);
-  min-width: rem(5.0);
-  padding: 0 rem(1.0);
-  margin-right: rem(1.2);
+  line-height: 24px;
+  min-width: 50px;
+  padding: 0 10px;
+  margin-right: 12px;
 }
 .cart-asset asset-subclip-display-component .asset-sub-clip {
   margin-top: 14px;
