@@ -13,15 +13,15 @@ import { AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.in
       <md-icon>assignment</md-icon>
       {{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
     </button>
-    <button md-icon-button (click)="onEditButtonClick()" title="{{ 'CART.PROJECTS.EDIT_PROJECT_BTN_TITLE' | translate }}">
-      <md-icon>edit</md-icon>
-    </button>
     <button md-icon-button 
       [md-menu-trigger-for]="projectOptionsMenu" 
       title="{{ 'CART.PROJECTS.MORE_OPTIONS_BTN_TITLE' | translate }}">
       <md-icon>more_vert</md-icon>
     </button>
     <md-menu x-position="before" #projectOptionsMenu="mdMenu">
+      <button md-menu-item (click)="onEditButtonClick()">
+        <md-icon>edit</md-icon>{{ 'CART.PROJECTS.EDIT_PROJECT_BTN_TITLE' | translate }}
+      </button>
       <ng-container *ngIf="allowQuoteAdministration">
         <button md-menu-item (click)="onAddFeeButtonClick()">
           <md-icon>note_add</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}

@@ -65,6 +65,7 @@ import { LineItemTranscodeSelectComponent } from './components/line-item/line-it
 import { LineItemActionsComponent } from './components/line-item/line-item-actions.component';
 import { LineItemPriceComponent } from './components/line-item/line-item-price.component';
 import { FeeLineItemsComponent } from './components/line-item/fee-line-items.component';
+import { LineItemRightsComponent } from './components/line-item/line-item-rights.component';
 
 // asset
 import { AssetComponent } from './components/asset/asset.component';
@@ -91,6 +92,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     LineItemActionsComponent,
     LineItemPriceComponent,
     FeeLineItemsComponent,
+    LineItemRightsComponent,
     AssetComponent,
     AssetThumbnailComponent,
     AssetInfoComponent,

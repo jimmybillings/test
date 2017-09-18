@@ -150,5 +150,50 @@ export function main() {
           .toBe(mockEnhancedAsset.isSubclipped);
       });
     });
+
+    describe('shouldDisplayPricing()', () => {
+      it('returns true when quote is NOT a ProvisionalOrder', () => {
+        classUnderTest.quoteType = 'OfflineAgreement';
+        expect(classUnderTest.shouldDisplayPricing)
+          .toBe(true);
+      });
+      it('returns false when the quote is a ProvisionalOrder', () => {
+        classUnderTest.quoteType = 'ProvisionalOrder';
+        expect(classUnderTest.shouldDisplayPricing)
+          .toBe(false);
+      });
+    });
+    describe('shouldShowTargets()', () => {
+      it('returns true when transcodeTargets exist and have a length greater than 0', () => {
+        let lineItem: any = { transcodeTargets: ['native', '10mbH264', 'xconvert_prores_hd'] };
+        expect(classUnderTest.shouldShowTargets(lineItem))
+          .toBe(true);
+      });
+      it('returns false when transcodeTargets exist, but have a zero length', () => {
+        let lineItem: any = { transcodeTargets: [] };
+        expect(classUnderTest.shouldShowTargets(lineItem))
+          .toBe(false);
+      });
+    });
+
+    describe('shouldDisplayRights()', () => {
+      it('returns true when the line item is rights managed and quote is NOT a ProvisionalOrder', () => {
+        let lineItem: any = { rightsManaged: 'Rights Managed' };
+        classUnderTest.quoteType = 'OfflineAgreement';
+        expect(classUnderTest.shouldDisplayRights(lineItem))
+          .toBe(true);
+      });
+      it('returns false when the line item is royalty-free', () => {
+        let lineItem: any = { rightsManaged: 'Royalty Free' };
+        expect(classUnderTest.shouldDisplayRights(lineItem))
+          .toBe(false);
+      });
+      it('returns false when the quote is a ProvisionalOrder', () => {
+        let lineItem: any = { rightsManaged: 'Rights Managed' };
+        classUnderTest.quoteType = 'ProvisionalOrder';
+        expect(classUnderTest.shouldDisplayRights(lineItem))
+          .toBe(false);
+      });
+    });
   });
 }

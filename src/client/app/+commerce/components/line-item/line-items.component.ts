@@ -63,6 +63,10 @@ export class LineItemsComponent {
     }
   }
 
+  public shouldDisplayRights(lineItem: AssetLineItem): boolean {
+    return lineItem.rightsManaged === 'Rights Managed' && this.quoteType !== 'ProvisionalOrder';
+  }
+
   public shouldShowTargets(lineItem: AssetLineItem): boolean {
     return lineItem.transcodeTargets && lineItem.transcodeTargets.length > 0;
   }

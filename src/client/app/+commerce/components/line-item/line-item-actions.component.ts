@@ -7,14 +7,6 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="tools" flex="100">
-      <button
-        md-icon-button
-        *ngIf="displayPriceButton"
-        [ngClass]="{'select-usage': needsAttributes }"
-        title="{{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}"
-        (click)="showPricingDialog.emit()">
-        <md-icon>assignment</md-icon>
-      </button>
       <button 
         md-icon-button
         (click)="remove.emit()"
@@ -42,6 +34,13 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
       <button md-menu-item (click)="editMarkers.emit()" *ngIf="userCanCreateSubclips">
         <md-icon>theaters</md-icon>
         <span>{{ trStringForSubclipping | translate }}</span>
+      </button>
+      <button md-menu-item 
+        *ngIf="displayPriceButton"
+        (click)="showPricingDialog.emit()"
+        [ngClass]="{'select-usage': needsAttributes }">
+        <md-icon>assignment</md-icon>
+        <span>{{ trStringForRightsPackage | translate }}</span>
       </button>
       <div class="divider"></div>
       <button md-menu-item (click)="openCostMultiplierForm.emit()" *ngIf="userCanAdministerQuotes">
@@ -95,7 +94,15 @@ export class LineItemActionsComponent {
   }
 
   public get trStringForCostMultiplier(): string {
-    return this.hasMultiplier ? 'QUOTE.EDIT_MULTIPLIER_TITLE' : 'QUOTE.ADD_MULTIPLIER_TITLE';
+    return this.hasMultiplier
+      ? 'QUOTE.EDIT_MULTIPLIER_TITLE'
+      : 'QUOTE.ADD_MULTIPLIER_TITLE';
+  }
+
+  public get trStringForRightsPackage(): string {
+    return this.hasAttributes
+      ? 'QUOTE.EDIT_RIGHTS_PACKAGE_TITLE'
+      : 'QUOTE.ADD_RIGHTS_PACKAGE_TITLE';
   }
 
   public get showDeleteCostMultiplierBtn(): boolean {

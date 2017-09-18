@@ -305,6 +305,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     this.dialogService.openFormDialog(
       project.items,
       {
+        dialogConfig: { position: { top: '10%' }, disableClose: false },
         title: 'CART.PROJECTS.FORM.TITLE',
         submitLabel: 'CART.PROJECTS.FORM.SUBMIT_LABEL',
         autocomplete: 'off'
