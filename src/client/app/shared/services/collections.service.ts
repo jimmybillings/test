@@ -35,17 +35,17 @@ export class CollectionsService {
   }
 
   public create(collection: Collection): Observable<any> {
-    return this.api.post(Api.Assets, 'collectionSummary', { body: collection })
+    return this.api.post(Api.Assets, 'collectionSummary', { body: collection, loadingIndicator: true })
       .do(response => this.collectionsStore.add(response as Collection));
   }
 
   public update(collection: Collection): Observable<any> {
-    return this.api.put(Api.Assets, `collectionSummary/${collection.id}`, { body: collection });
+    return this.api.put(Api.Assets, `collectionSummary/${collection.id}`, { body: collection, loadingIndicator: true });
   }
 
   public delete(collectionId: number): Observable<any> {
     this.collectionsStore.deleteCollectionWith(collectionId);
-    return this.api.delete(Api.Identities, `collection/${collectionId}`)
+    return this.api.delete(Api.Identities, `collection/${collectionId}`, { loadingIndicator: 'onBeforeRequest' })
       .switchMap(_ => {
         if (this.store.match(collectionId, state => state.activeCollection.collection.id)) {
           this.store.dispatch(factory => factory.activeCollection.load());

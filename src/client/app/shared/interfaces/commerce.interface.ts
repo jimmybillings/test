@@ -1,5 +1,6 @@
 import { ViewAddress, Pagination, Common, SelectedPriceAttributes, Store } from './common.interface';
 import { SubclipMarkers } from './subclip-markers';
+import { EnhancedAsset } from './enhanced-asset';
 
 export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
@@ -262,10 +263,17 @@ export interface Document {
 export interface LicenseAgreement {
   projectType?: string;
   rights?: string;
-  matchingAssets: Array<Asset>;
+  matchingAssets: Array<LicenseAsset | EnhancedAsset>;
   document: Document;
 }
 
 export interface LicenseAgreements {
   items: Array<LicenseAgreement>;
+}
+
+export interface LicenseAsset {
+  assetId: number;
+  assetLineItemId: string;
+  name: string;
+  thumbnailUrl: string;
 }

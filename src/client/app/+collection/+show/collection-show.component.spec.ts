@@ -18,8 +18,8 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: [{ some: 'item' }] } } }))
       };
       mockStore = new MockAppStore();
-      mockStore.createStateSection('activeCollection', { 'collection': { id: 123 }, loaded: true });
-      mockStore.createStateElement('comment', 'count', { 'abc-123': 5 });
+      mockStore.createStateSection('activeCollection', { collection: { id: 123 }, loaded: true });
+      mockStore.createStateSection('comment', { collection: { pagination: { totalCount: 3 } } });
       getCountsSpy = mockStore.createActionFactoryMethod('comment', 'getCounts');
 
       componentUnderTest = new CollectionShowComponent(
@@ -75,6 +75,14 @@ export function main() {
         expect(componentUnderTest.showComments).toBe(true);
         componentUnderTest.toggleCommentsVisibility();
         expect(componentUnderTest.showComments).toBe(false);
+      });
+    });
+
+    describe('commentCounts getter', () => {
+      it('selects the right part of the store', () => {
+        let count: number;
+        componentUnderTest.commentCount.subscribe(c => count = c);
+        expect(count).toBe(3);
       });
     });
   });

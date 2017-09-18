@@ -4,6 +4,9 @@ import { CartService } from '../../../../shared/services/cart.service';
 import { Router } from '@angular/router';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
+import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
+import { Common } from '../../../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -20,5 +23,27 @@ export class CartConfirmTabComponent extends CommerceConfirmTab {
     public userCan: CommerceCapabilities
   ) {
     super(router, cartService, dialogService, userCan);
+  }
+
+  public showLicenseAgreements(): void {
+    this.commerceService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
+      this.dialogService.openComponentInDialog(
+        {
+          componentType: LicenseAgreementComponent,
+          dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
+          inputOptions: {
+            assetType: 'cartAsset',
+            licenses: Common.clone(agreements)
+          },
+          outputOptions: [
+            {
+              event: 'close',
+              callback: () => true,
+              closeOnEvent: true
+            }
+          ]
+        }
+      );
+    });
   }
 }

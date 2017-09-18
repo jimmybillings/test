@@ -51,20 +51,29 @@
             <div flex="grow" layout="row" layout-align="center center">
               <div class="avatar" flex="none"><strong>{{initials(comment.userName)}}</strong></div>  
               <div flex="initial">
-                <strong>{{comment.userName}} </strong>{{comment.createdOn | date:'short' }}
+                <span>
+                  <strong>{{comment.userName}}</strong>
+                  <span> posted on </span>
+                  <strong>{{comment.createdOn | date:'yMd'}}</strong>
+                  <span> at </span>
+                  <strong>{{comment.createdOn | date:'jm'}}</strong>
+                </span>
+                <span *ngIf="isCommentOwner(comment.userId)">
+                  for <strong>{{ pluralize(comment.access) }}</strong>
+                </span>
               </div>
             </div> 
             <div flex="auto" class="actions" layout="row" layout-align="end center">
               <button
                 title="{{ 'COMMENTS.EDIT_HOVER_TITLE' | translate }}"
-                *ngIf="showEditCommentButton(comment.userId)"
+                *ngIf="isCommentOwner(comment.userId)"
                 (click)="onEditCommentButtonClick(comment)"
                 md-icon-button>
                   <md-icon>mode_edit</md-icon>
               </button>
               <button
                 title="{{ 'COMMENTS.DELETE_HOVER_TITLE' | translate }}"
-                *ngIf="showDeleteCommentButton(comment.userId)"
+                *ngIf="isCommentOwner(comment.userId)"
                 (click)="onDeleteCommentButtonClick(comment)"
                 md-icon-button>
                   <md-icon>delete</md-icon>

@@ -40,8 +40,13 @@ export class RouterEffects {
       }
     });
 
+  @Effect({ dispatch: false })
+  public goToQuotes: Observable<Action> = this.actions.ofType(RouterActions.GoToQuotes.Type)
+    .do(() => this.router.navigate([this.QuotesPath]));
+
   private readonly LoginPath: string = '/user/login';
   private readonly PageNotFoundPath: string = '/404';
+  private readonly QuotesPath: string = '/quotes';
   private readonly RootPath: string = '/';
   private readonly RedirectUrlKey: string = 'RouterEffects.RedirectUrl';
 

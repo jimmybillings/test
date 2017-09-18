@@ -51,7 +51,8 @@ export function main() {
         showFixedHeader: jasmine.createSpy('showFixedHeader'),
         checkRouteForSearchBar: jasmine.createSpy('checkRouteForSearchBar'),
         checkForFilters: jasmine.createSpy('checkForFilters'),
-        reset: jasmine.createSpy('reset')
+        reset: jasmine.createSpy('reset'),
+        data: Observable.of({ loadingIndicator: true })
       };
 
       mockUserPreference = {
