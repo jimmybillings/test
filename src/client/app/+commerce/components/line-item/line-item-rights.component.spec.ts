@@ -8,7 +8,7 @@ export function main() {
       componentUnderTest = new LineItemRightsComponent();
     });
 
-    it('***** HASN\'T BEEN TESTED YET! *****', () => {
+    it('***** HAS NO FUNCTIONALITY TO TEST *****', () => {
       expect(true).toBe(true);
     });
   });

@@ -21,7 +21,7 @@ export class ProjectInfoComponent {
   @Input() name: string;
   @Input() clientName: string;
   @Input() readOnly: boolean = false;
-  @Output() showEditDialog: EventEmitter<any> = new EventEmitter();
+  @Output() showEditDialog: EventEmitter<null> = new EventEmitter();
 
   public onEditClick(): void {
     if (!this.readOnly) this.showEditDialog.emit();
