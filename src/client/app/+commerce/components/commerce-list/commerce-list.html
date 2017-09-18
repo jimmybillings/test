@@ -94,22 +94,22 @@
             color="primary">
             {{ 'QUOTE.INDEX.EDIT_BTN_TITLE' | translate }}  
           </button>
-          <button
+          <!-- <button 
+            *ngIf="shouldShowRejectQuoteButton(item)"
+            md-button 
+            color="primary"
+            class="reject-quote" 
+            (click)="rejectQuote.emit(item)">
+            <md-icon>not_interested</md-icon>{{ 'QUOTE.REJECT_BTN' | translate }}
+          </button> -->
+          <a
             *ngIf="shouldShowViewQuoteButton(item)"
             md-button
             class="is-outlined"
             color="primary"
             [routerLink]="['/quotes', item.id]">
             {{ 'QUOTE.INDEX.DETAIL_BTN_TITLE' | translate }}
-          </button>
-          <button
-            *ngIf="shouldShowRejectQuoteButton(item)"
-            (click)="rejectQuote.emit(item)"
-            md-button
-            class="is-outlined"
-            color="warn">
-            {{ 'QUOTE.REJECT_BTN' | translate }}
-          </button>
+          </a>
           <button
             *ngIf="shouldShowViewOrderButton"
             md-button

@@ -5,35 +5,61 @@
   [userCan]="userCan">
 </projects-component>
 
-<div *ngIf="userCan.administerQuotes()">
-  <div layout="column" layout-align="center end">
-    <div flex="100" layout-padding>
-      <button
-          *ngIf="shouldShowCloneButton | async"
-          md-button
-          class="large-text is-outlined"
-          (click)="onCloneQuote()">
-          {{ 'QUOTE.CLONE_QUOTE' | translate }}
-        </button>
-      <button
-        *ngIf="shouldShowExpireQuoteButton"
-        md-button
-        color="warn"
-        class="is-outlined large-text"
-        (click)="showExpireConfirmationDialog()">
-        {{ 'QUOTE.EXPIRE_BTN' | translate }}
-      </button>
-      <button
-        *ngIf="shouldShowResendButton"
-        (click)="openResendDialog()"
-        md-button
-        class="is-outlined large-text"
-        color="primary">
-        {{ 'QUOTE.EXTEND_EXPIRATION' | translate }}
-      </button>
-    </div>
+<div
+  *ngIf="userCan.administerQuotes()"
+  class="cart-total"  
+  flex="100"
+  layout-gt-xs="row"
+  layout="column"
+  layout-align="space-between end"
+  layout-align-xs="end end">
+  <div *ngIf="shouldShowExpireQuoteButton" 
+    class="reject-quote" 
+    flex-gt-xs="auto" 
+    flex="100" 
+    flex-order-xs="2" 
+    layout-padding>	
+    <button md-button color="primary" (click)="showExpireConfirmationDialog()">
+      <md-icon>hourglass_empty</md-icon>{{ 'QUOTE.EXPIRE_BTN' | translate }}
+    </button>
   </div>
+  <section flex-gt-xs="65" flex="100" class="action-items" flex-order-xs="-1" layout-padding>
+    <button
+      *ngIf="shouldShowCloneButton | async"
+      md-button
+      color="primary"
+      (click)="onCloneQuote()">
+      {{ 'QUOTE.CLONE_QUOTE' | translate }}
+    </button>
+    <button
+      *ngIf="shouldShowResendButton"
+      (click)="openResendDialog()"
+      md-button
+      color="primary"
+      class="is-outlined">
+      {{ 'QUOTE.EXTEND_EXPIRATION' | translate }}
+    </button>
+  </section>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <section
 	*ngIf="shouldShowCheckoutOptions"
@@ -62,27 +88,29 @@
       </span>
 		</div>
     <div flex="100" layout="row" layout-align="end center">
-      <button
-        md-button
-        *ngIf="shouldShowLicenseDetailsBtn"
-        color="primary"
-        class="is-outlined large-text"
-        (click)="showLicenseAgreements()">
-          {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
-      </button>
-      <button
-        *ngIf="shouldShowRejectQuoteButton"
-        (click)="openRejectQuoteDialog()"
-        md-button
-        class="is-outlined large-text"
-        color="warn">
-        {{ 'QUOTE.REJECT_BTN' | translate }}
-      </button>
-      <button
-        md-raised-button class="checkout"
-        (click)="checkout()">
-          {{ 'CART.PROCEED_BTN_LABEL' | translate }}
-      </button>
+      <div flex="100" layout-gt-xs="row" layout="column" layout-align="space-between end" layout-align-xs="end end">
+        <div *ngIf="shouldShowRejectQuoteButton" class="reject-quote" flex-gt-xs="auto" flex="100" flex-order-xs="2">	
+          <button md-button color="primary" (click)="openRejectQuoteDialog()">
+            <md-icon>not_interested</md-icon>{{ 'QUOTE.REJECT_BTN' | translate }}
+          </button>
+        </div>
+        <section flex-gt-xs="50" flex="100" class="action-items" flex-order-xs="-1">
+          <button
+            md-button
+            *ngIf="shouldShowLicenseDetailsBtn"
+            color="primary"
+            class="is-outlined"
+            (click)="showLicenseAgreements()">
+              {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
+          </button>
+          <button
+            md-raised-button 
+            color="primary"
+            (click)="checkout()">
+              {{ 'CART.PROCEED_BTN_LABEL' | translate }}
+          </button>
+        </section>
+      </div>
     </div>
 	</div>
 </section>

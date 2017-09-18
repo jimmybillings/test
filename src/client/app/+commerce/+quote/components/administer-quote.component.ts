@@ -4,35 +4,34 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   moduleId: module.id,
   selector: 'administer-quote-component',
   template: `
-    <div flex="100" layout="column" layout-gt-sm="row" layout-align="end end">
-      <div class="create-quote-actions">
+    <div flex="100" layout-gt-xs="row" layout="column" layout-align="space-between end" layout-align-xs="end end">
+      <div class="reject-quote" flex-gt-xs="auto" flex="100" flex-order-xs="2">	
+        <button md-button color="primary" (click)="onOpenDeleteDialog()">
+          <md-icon>delete</md-icon>{{ 'QUOTE.DELETE_BTN' | translate }}
+        </button>
+      </div>
+      <section flex-gt-xs="65" flex="100" class="action-items" flex-order-xs="-1">
         <button
-          md-button
-          [disabled]="!shouldShowCloneButton"
-          class="large-text is-outlined"
-          (click)="onClickCloneQuoteButton()">
-          {{ 'QUOTE.CLONE_QUOTE' | translate }}
+        md-button
+        color="primary"
+        [disabled]="!shouldShowCloneButton"
+        (click)="onClickCloneQuoteButton()">
+        {{ 'QUOTE.CLONE_QUOTE' | translate }}
         </button>
         <button
-          md-button
-          class="large-text is-outlined"
-          (click)="onSaveAndNew()">
-          {{ 'QUOTE.SAVE_AND_NEW' | translate }}
-        </button>
-        <button
-          md-button
-          class="large-text is-outlined"
-          color="warn"
-          (click)="onOpenDeleteDialog()">
-          {{ 'QUOTE.DELETE_BTN' | translate }}
+        md-button
+        color="primary"
+        (click)="onSaveAndNew()">
+        {{ 'QUOTE.SAVE_AND_NEW' | translate }}
         </button>
         <button
           [disabled]="!canOpenQuoteDialog"
-          md-raised-button class="checkout"
+          md-raised-button
+          color="primary"
           (click)="onOpenQuoteDialog()">
           {{ 'QUOTE.CREATE_QUOTE_BTN' | translate }}
         </button>
-      </div>
+      </section>
     </div>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
