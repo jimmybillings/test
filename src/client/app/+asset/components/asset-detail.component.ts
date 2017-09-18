@@ -21,7 +21,7 @@ import { SearchState } from '../../shared/services/search-context.service';
 
 export class AssetDetailComponent {
   @Input() public set asset(asset: EnhancedAsset) {
-    this._asset = asset
+    this._asset = asset;
     this.usagePrice = null;
     if (asset.transcodeTargets) this.selectedTarget = asset.transcodeTargets[0];  // Is this what we want for all asset types?
     this.setAssetCollectionMembershipFlags();

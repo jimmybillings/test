@@ -48,6 +48,21 @@
           <button md-menu-item (click)="editDiscount()">
             <md-icon>monetization_on</md-icon>{{ discountActionLabel | translate }}
           </button>
+          <div class="divider"></div>
+          <button md-menu-item
+            [disabled]="!shouldShowCloneButton | async"
+            (click)="onCloneQuote()">
+            <md-icon>layers</md-icon>{{ 'QUOTE.CLONE_QUOTE' | translate }}
+          </button>
+          <button md-menu-item
+            (click)="onCreateQuote()">
+            <md-icon>control_point_duplicate</md-icon>{{ 'QUOTE.SAVE_AND_NEW' | translate }}
+          </button>
+          <div class="divider"></div>
+          <button md-menu-item
+            (click)="onOpenDeleteQuoteDialog()">
+            <md-icon>delete</md-icon>{{ 'QUOTE.DELETE_BTN' | translate }}
+          </button>
         </md-menu>
       </div>
     </header>

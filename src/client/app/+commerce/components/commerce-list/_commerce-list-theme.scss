@@ -10,6 +10,9 @@
       background-color: rgba(mat-color($background, card), .65);
       color: rgba(mat-color($foreground, text), .7);
       border: 1px solid rgba(mat-color($background, card), .01);
+      // &:hover {
+      //   background-color: rgba(mat-color($background, card), .95);
+      // }
       &.focused {
         background-color: rgba(mat-color($background, card), 1);
         border: 1px solid rgba(mat-color($primary, default), .75);
