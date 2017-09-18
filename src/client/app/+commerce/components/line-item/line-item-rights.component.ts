@@ -20,5 +20,5 @@ export class LineItemRightsComponent {
   @Input() rights: Array<SelectedPriceAttributes>;
   @Input() hasAttributes: boolean;
   @Input() readOnly: boolean = false;
-  @Output() showPricingDialog: EventEmitter<any> = new EventEmitter();
+  @Output() showPricingDialog: EventEmitter<null> = new EventEmitter();
 }
