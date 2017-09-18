@@ -9,7 +9,7 @@ import { SubclipMarkers, durationFrom } from '../../shared/interfaces/subclip-ma
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 import { AppStore, ActionFactoryMapper } from '../../app.store';
-import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
+import { EnhancedAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
 import { SearchState } from '../../shared/services/search-context.service';
 
 @Component({
@@ -118,7 +118,7 @@ export class AssetDetailComponent {
   }
 
   public get canAddToActiveCollection(): boolean {
-    return !this.activeCollectionContainsAssetId && ['collectionAsset', 'searchAsset'].includes(this._asset.type);
+    return !this.activeCollectionContainsAssetId && this.assetTypeIsOneOf('collectionAsset', 'searchAsset');
   }
 
   public get canRemoveFromActiveCollection(): boolean {
@@ -181,11 +181,11 @@ export class AssetDetailComponent {
   }
 
   public get canComment(): boolean {
-    return ['cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset'].includes(this._asset.type);
+    return this.assetTypeIsOneOf('cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset');
   }
 
   public get canShare(): boolean {
-    return ['collectionAsset', 'searchAsset'].includes(this._asset.type) && this.userCan.createAccessInfo();
+    return this.assetTypeIsOneOf('collectionAsset', 'searchAsset') && this.userCan.createAccessInfo();
   }
 
   public get shareButtonLabelKey(): string {
@@ -233,7 +233,7 @@ export class AssetDetailComponent {
   }
 
   public get canUpdateCartAsset(): boolean {
-    return ['cartAsset', 'quoteEditAsset'].includes(this._asset.type);
+    return this.assetTypeIsOneOf('cartAsset', 'quoteEditAsset');
   }
 
   public get updateCartAssetButtonLabelKey(): string {
@@ -264,11 +264,15 @@ export class AssetDetailComponent {
   }
 
   public get canGoToSearchAssetDetails(): boolean {
-    return ['cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset'].includes(this._asset.type);
+    return this.assetTypeIsOneOf('cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset');
   }
 
   public goToSearchAssetDetails(): void {
     this.store.dispatch(factory => factory.router.goToSearchAssetDetails(this._asset.assetId, this.subclipMarkers));
+  }
+
+  private assetTypeIsOneOf(...assetTypes: AssetType[]) {
+    return assetTypes.includes(this._asset.type);
   }
 
   private setAssetCollectionMembershipFlags(): void {
