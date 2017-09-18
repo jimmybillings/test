@@ -23,7 +23,7 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
 
     <md-menu x-position="before" #lineItemOptionsMenu="mdMenu">
       <button md-menu-item (click)="clone.emit()">
-        <md-icon>control_point_duplicate</md-icon>{{ 'CART.PROJECTS.DUPLICATE_ASSET_BTN_LABEL' | translate }}
+        <md-icon>layers</md-icon>{{ 'CART.PROJECTS.DUPLICATE_ASSET_BTN_LABEL' | translate }}
       </button>
       <div class="divider" *ngIf="otherProjectsExist"></div>
       <button md-menu-item *ngFor="let otherProject of otherProjects" (click)="moveTo.emit(otherProject)">
@@ -32,7 +32,7 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
       </button>
       <div class="divider" *ngIf="shouldShowSubclipButton"></div>
       <button md-menu-item (click)="editMarkers.emit()" *ngIf="userCanCreateSubclips">
-        <md-icon>theaters</md-icon>
+        <md-icon>access_time</md-icon>
         <span>{{ trStringForSubclipping | translate }}</span>
       </button>
       <button md-menu-item 

@@ -27,6 +27,7 @@
     <button
       *ngIf="shouldShowCloneButton | async"
       md-button
+      color="primary"
       (click)="onCloneQuote()">
       {{ 'QUOTE.CLONE_QUOTE' | translate }}
     </button>
@@ -34,7 +35,8 @@
       *ngIf="shouldShowResendButton"
       (click)="openResendDialog()"
       md-button
-      class="is-outlined large-text">
+      color="primary"
+      class="is-outlined">
       {{ 'QUOTE.EXTEND_EXPIRATION' | translate }}
     </button>
   </section>
@@ -97,13 +99,13 @@
             md-button
             *ngIf="shouldShowLicenseDetailsBtn"
             color="primary"
-            class="is-outlined large-text"
+            class="is-outlined"
             (click)="showLicenseAgreements()">
               {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
           </button>
           <button
             md-raised-button 
-            class="checkout"
+            color="primary"
             (click)="checkout()">
               {{ 'CART.PROCEED_BTN_LABEL' | translate }}
           </button>
