@@ -174,11 +174,6 @@ export function main() {
         expect(classUnderTest.shouldShowTargets(lineItem))
           .toBe(false);
       });
-      it('returns false when transcodeTargets do NOT exist', () => {
-        let lineItem: any = { some: 'lineItem' };
-        expect(classUnderTest.shouldShowTargets(lineItem))
-          .toBe(false);
-      });
     });
 
     describe('shouldDisplayRights()', () => {
