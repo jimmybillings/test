@@ -71,5 +71,406 @@ export function main() {
         expect(SubclipMarkers.neitherMarkersAreSet({ in: { some: 'frame' }, out: { some: 'frame' } } as any)).toBe(false);
       });
     });
+
+    describe('matches()', () => {
+      const tests: { timeStart: number, timeEnd: number, markers: any, expectedResult: boolean }[] = [
+        { timeStart: undefined, timeEnd: undefined, markers: undefined, expectedResult: true },
+        { timeStart: undefined, timeEnd: undefined, markers: null, expectedResult: true },
+
+        { timeStart: undefined, timeEnd: undefined, markers: { in: undefined, out: undefined }, expectedResult: true },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: undefined, out: null }, expectedResult: true },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: undefined, markers: { in: null, out: undefined }, expectedResult: true },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: null, out: null }, expectedResult: true },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: undefined, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: undefined, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: undefined, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: null, markers: undefined, expectedResult: true },
+        { timeStart: undefined, timeEnd: null, markers: null, expectedResult: true },
+
+        { timeStart: undefined, timeEnd: null, markers: { in: undefined, out: undefined }, expectedResult: true },
+        { timeStart: undefined, timeEnd: null, markers: { in: undefined, out: null }, expectedResult: true },
+        { timeStart: undefined, timeEnd: null, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: null, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: null, markers: { in: null, out: undefined }, expectedResult: true },
+        { timeStart: undefined, timeEnd: null, markers: { in: null, out: null }, expectedResult: true },
+        { timeStart: undefined, timeEnd: null, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: null, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: null, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: undefined, timeEnd: null, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: undefined, timeEnd: null, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: null, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: null, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: undefined, timeEnd: null, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: undefined, timeEnd: null, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: null, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: -2, markers: undefined, expectedResult: true },
+        { timeStart: undefined, timeEnd: -2, markers: null, expectedResult: true },
+
+        { timeStart: undefined, timeEnd: -2, markers: { in: undefined, out: undefined }, expectedResult: true },
+        { timeStart: undefined, timeEnd: -2, markers: { in: undefined, out: null }, expectedResult: true },
+        { timeStart: undefined, timeEnd: -2, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: -2, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: -2, markers: { in: null, out: undefined }, expectedResult: true },
+        { timeStart: undefined, timeEnd: -2, markers: { in: null, out: null }, expectedResult: true },
+        { timeStart: undefined, timeEnd: -2, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: -2, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: -2, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: undefined, timeEnd: -2, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: undefined, timeEnd: -2, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: -2, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: -2, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: undefined, timeEnd: -2, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: undefined, timeEnd: -2, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: -2, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: 2000, markers: undefined, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: null, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: 2000, markers: { in: undefined, out: undefined }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: undefined, out: null }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: undefined, out: 'matching' }, expectedResult: true },
+
+        { timeStart: undefined, timeEnd: 2000, markers: { in: null, out: undefined }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: null, out: null }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: null, out: 'matching' }, expectedResult: true },
+
+        { timeStart: undefined, timeEnd: 2000, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: undefined, timeEnd: 2000, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: undefined, timeEnd: 2000, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: undefined, markers: undefined, expectedResult: true },
+        { timeStart: null, timeEnd: undefined, markers: null, expectedResult: true },
+
+        { timeStart: null, timeEnd: undefined, markers: { in: undefined, out: undefined }, expectedResult: true },
+        { timeStart: null, timeEnd: undefined, markers: { in: undefined, out: null }, expectedResult: true },
+        { timeStart: null, timeEnd: undefined, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: undefined, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: undefined, markers: { in: null, out: undefined }, expectedResult: true },
+        { timeStart: null, timeEnd: undefined, markers: { in: null, out: null }, expectedResult: true },
+        { timeStart: null, timeEnd: undefined, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: undefined, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: undefined, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: null, timeEnd: undefined, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: null, timeEnd: undefined, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: undefined, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: undefined, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: null, timeEnd: undefined, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: null, timeEnd: undefined, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: undefined, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: null, markers: undefined, expectedResult: true },
+        { timeStart: null, timeEnd: null, markers: null, expectedResult: true },
+
+        { timeStart: null, timeEnd: null, markers: { in: undefined, out: undefined }, expectedResult: true },
+        { timeStart: null, timeEnd: null, markers: { in: undefined, out: null }, expectedResult: true },
+        { timeStart: null, timeEnd: null, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: null, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: null, markers: { in: null, out: undefined }, expectedResult: true },
+        { timeStart: null, timeEnd: null, markers: { in: null, out: null }, expectedResult: true },
+        { timeStart: null, timeEnd: null, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: null, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: null, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: null, timeEnd: null, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: null, timeEnd: null, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: null, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: null, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: null, timeEnd: null, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: null, timeEnd: null, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: null, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: -2, markers: undefined, expectedResult: true },
+        { timeStart: null, timeEnd: -2, markers: null, expectedResult: true },
+
+        { timeStart: null, timeEnd: -2, markers: { in: undefined, out: undefined }, expectedResult: true },
+        { timeStart: null, timeEnd: -2, markers: { in: undefined, out: null }, expectedResult: true },
+        { timeStart: null, timeEnd: -2, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: -2, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: -2, markers: { in: null, out: undefined }, expectedResult: true },
+        { timeStart: null, timeEnd: -2, markers: { in: null, out: null }, expectedResult: true },
+        { timeStart: null, timeEnd: -2, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: -2, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: -2, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: null, timeEnd: -2, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: null, timeEnd: -2, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: -2, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: -2, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: null, timeEnd: -2, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: null, timeEnd: -2, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: -2, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: 2000, markers: undefined, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: null, expectedResult: false },
+
+        { timeStart: null, timeEnd: 2000, markers: { in: undefined, out: undefined }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: undefined, out: null }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: undefined, out: 'matching' }, expectedResult: true },
+
+        { timeStart: null, timeEnd: 2000, markers: { in: null, out: undefined }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: null, out: null }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: null, out: 'matching' }, expectedResult: true },
+
+        { timeStart: null, timeEnd: 2000, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: null, timeEnd: 2000, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: null, timeEnd: 2000, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: undefined, markers: undefined, expectedResult: true },
+        { timeStart: -1, timeEnd: undefined, markers: null, expectedResult: true },
+
+        { timeStart: -1, timeEnd: undefined, markers: { in: undefined, out: undefined }, expectedResult: true },
+        { timeStart: -1, timeEnd: undefined, markers: { in: undefined, out: null }, expectedResult: true },
+        { timeStart: -1, timeEnd: undefined, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: undefined, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: undefined, markers: { in: null, out: undefined }, expectedResult: true },
+        { timeStart: -1, timeEnd: undefined, markers: { in: null, out: null }, expectedResult: true },
+        { timeStart: -1, timeEnd: undefined, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: undefined, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: undefined, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: -1, timeEnd: undefined, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: -1, timeEnd: undefined, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: undefined, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: undefined, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: -1, timeEnd: undefined, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: -1, timeEnd: undefined, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: undefined, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: null, markers: undefined, expectedResult: true },
+        { timeStart: -1, timeEnd: null, markers: null, expectedResult: true },
+
+        { timeStart: -1, timeEnd: null, markers: { in: undefined, out: undefined }, expectedResult: true },
+        { timeStart: -1, timeEnd: null, markers: { in: undefined, out: null }, expectedResult: true },
+        { timeStart: -1, timeEnd: null, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: null, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: null, markers: { in: null, out: undefined }, expectedResult: true },
+        { timeStart: -1, timeEnd: null, markers: { in: null, out: null }, expectedResult: true },
+        { timeStart: -1, timeEnd: null, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: null, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: null, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: -1, timeEnd: null, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: -1, timeEnd: null, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: null, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: null, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: -1, timeEnd: null, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: -1, timeEnd: null, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: null, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: -2, markers: undefined, expectedResult: true },
+        { timeStart: -1, timeEnd: -2, markers: null, expectedResult: true },
+
+        { timeStart: -1, timeEnd: -2, markers: { in: undefined, out: undefined }, expectedResult: true },
+        { timeStart: -1, timeEnd: -2, markers: { in: undefined, out: null }, expectedResult: true },
+        { timeStart: -1, timeEnd: -2, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: -2, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: -2, markers: { in: null, out: undefined }, expectedResult: true },
+        { timeStart: -1, timeEnd: -2, markers: { in: null, out: null }, expectedResult: true },
+        { timeStart: -1, timeEnd: -2, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: -2, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: -2, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: -1, timeEnd: -2, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: -1, timeEnd: -2, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: -2, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: -2, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: -1, timeEnd: -2, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: -1, timeEnd: -2, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: -2, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: 2000, markers: undefined, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: null, expectedResult: false },
+
+        { timeStart: -1, timeEnd: 2000, markers: { in: undefined, out: undefined }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: undefined, out: null }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: undefined, out: 'matching' }, expectedResult: true },
+
+        { timeStart: -1, timeEnd: 2000, markers: { in: null, out: undefined }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: null, out: null }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: null, out: 'matching' }, expectedResult: true },
+
+        { timeStart: -1, timeEnd: 2000, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: -1, timeEnd: 2000, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: -1, timeEnd: 2000, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: undefined, markers: undefined, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: null, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: undefined, markers: { in: undefined, out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: undefined, out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: undefined, markers: { in: null, out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: null, out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: undefined, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: undefined, markers: { in: 'matching', out: undefined }, expectedResult: true },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: 'matching', out: null }, expectedResult: true },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: undefined, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: null, markers: undefined, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: null, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: null, markers: { in: undefined, out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: { in: undefined, out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: null, markers: { in: null, out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: { in: null, out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: null, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: null, markers: { in: 'matching', out: undefined }, expectedResult: true },
+        { timeStart: 1000, timeEnd: null, markers: { in: 'matching', out: null }, expectedResult: true },
+        { timeStart: 1000, timeEnd: null, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: null, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: -2, markers: undefined, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: null, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: -2, markers: { in: undefined, out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: { in: undefined, out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: -2, markers: { in: null, out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: { in: null, out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: -2, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: -2, markers: { in: 'matching', out: undefined }, expectedResult: true },
+        { timeStart: 1000, timeEnd: -2, markers: { in: 'matching', out: null }, expectedResult: true },
+        { timeStart: 1000, timeEnd: -2, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: -2, markers: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: 2000, markers: undefined, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: null, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: 2000, markers: { in: undefined, out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: undefined, out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: 2000, markers: { in: null, out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: null, out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: null, out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: 2000, markers: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: 'nonmatching', out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { timeStart: 1000, timeEnd: 2000, markers: { in: 'matching', out: undefined }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: 'matching', out: null }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { timeStart: 1000, timeEnd: 2000, markers: { in: 'matching', out: 'matching' }, expectedResult: true },
+      ];
+
+      const matchingInFrame: Frame = new Frame(30).setFromFrameNumber(30);
+      const matchingOutFrame: Frame = new Frame(30).setFromFrameNumber(60);
+      const nonmatchingInFrame: Frame = new Frame(30).setFromFrameNumber(31);
+      const nonmatchingOutFrame: Frame = new Frame(30).setFromFrameNumber(61);
+
+      tests.forEach(test => {
+        const markersDescription: string = test.markers
+          ? `{ in: ${test.markers.in}, out: ${test.markers.out} }`
+          : test.markers;
+
+        it(`returns ${test.expectedResult}` +
+          ` for timeStart = ${test.timeStart}, timeEnd = ${test.timeEnd}, and markers = ${markersDescription} `,
+          () => {
+            const markers: SubclipMarkers.SubclipMarkers =
+              test.markers
+                ? {
+                  in: test.markers.in === 'matching'
+                    ? matchingInFrame
+                    : (test.markers.in === 'nonmatching' ? nonmatchingInFrame : test.markers.in),
+                  out: test.markers.out === 'matching'
+                    ? matchingOutFrame
+                    : (test.markers.out === 'nonmatching' ? nonmatchingOutFrame : test.markers.out)
+                }
+                : test.markers;
+
+            expect(SubclipMarkers.matches(test.timeStart, test.timeEnd, markers)).toBe(test.expectedResult);
+          });
+      });
+    });
   });
 }

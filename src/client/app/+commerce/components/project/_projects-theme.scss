@@ -23,6 +23,11 @@
           color: mat-color($warn, darker);
         }
       }
+      project-info-component {
+        &:hover {
+          background-color: rgba(mat-color($background, card), .2);
+        }
+      }
     }
   }
 }

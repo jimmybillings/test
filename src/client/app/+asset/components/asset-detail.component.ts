@@ -1,6 +1,7 @@
-import { Component, Output, EventEmitter, Input, OnChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { Cart, Project } from '../../shared/interfaces/commerce.interface';
+import { Asset } from '../../shared/interfaces/common.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
@@ -8,7 +9,7 @@ import { SubclipMarkers, durationFrom } from '../../shared/interfaces/subclip-ma
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 import { AppStore, ActionFactoryMapper } from '../../app.store';
-import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
+import { EnhancedAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
 import { SearchState } from '../../shared/services/search-context.service';
 
 @Component({
@@ -18,17 +19,28 @@ import { SearchState } from '../../shared/services/search-context.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class AssetDetailComponent implements OnChanges {
-  @Input() public asset: EnhancedAsset;
+export class AssetDetailComponent {
+  @Input() public set asset(asset: EnhancedAsset) {
+    this._asset = asset
+    this.usagePrice = null;
+    if (asset.transcodeTargets) this.selectedTarget = asset.transcodeTargets[0];  // Is this what we want for all asset types?
+    this.setAssetCollectionMembershipFlags();
+  }
+
+  @Input() public set activeCollection(collection: Collection) {
+    this._activeCollection = collection;
+    this.activeCollectionName = collection.name;
+    this.setAssetCollectionMembershipFlags();
+  }
+
   @Input() public userEmail: Observable<string>;
   @Input() public userCan: Capabilities;
   @Input() public uiConfig: UiConfig;
-  @Input() public activeCollection: Collection;
-  @Input() public cart: Cart;
   @Input() public usagePrice: number;
   @Input() public window: Window;
   @Input() public searchContext: SearchState;
   @Input() public pageSize: number;
+  @Input() public assetMatchesCartAsset: boolean;
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
@@ -38,20 +50,18 @@ export class AssetDetailComponent implements OnChanges {
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
   public subclipMarkers: SubclipMarkers;
+  public activeCollectionName: string;
 
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
-  private assetsArr: Array<string> = [];
-  private cartAssets: Array<string> = [];
+  private _asset: EnhancedAsset;
+  private _activeCollection: Collection;
+  private activeCollectionContainsAssetId: boolean = false;
+  private activeCollectionContainsAssetUuid: boolean = false;
 
   constructor(private store: AppStore) { }
 
-  ngOnChanges(changes: any): void {
-    if (changes.asset) this.parseNewAsset(changes.asset);
-    if (changes.activeCollection) {
-      this.assetsArr = changes.activeCollection.currentValue.assets.items.map((asset: any) =>
-        this.hashUniqueAsset(asset)
-      );
-    };
+  public get asset(): EnhancedAsset {
+    return this._asset;
   }
 
   public get hasPageHistory() {
@@ -63,9 +73,9 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public get routerLinkForAssetParent(): any[] {
-    switch (this.asset.type) {
+    switch (this._asset.type) {
       case 'collectionAsset': {
-        return ['/collections', this.asset.parentId, { i: 1, n: this.pageSize }];
+        return ['/collections', this._asset.parentId, { i: 1, n: this.pageSize }];
       }
 
       case 'searchAsset': {
@@ -77,11 +87,11 @@ export class AssetDetailComponent implements OnChanges {
       }
 
       case 'quoteShowAsset': {
-        return ['/quotes', this.asset.parentId];
+        return ['/quotes', this._asset.parentId];
       }
 
       case 'orderAsset': {
-        return ['/orders', this.asset.parentId];
+        return ['/orders', this._asset.parentId];
       }
 
       case 'cartAsset': {
@@ -91,43 +101,33 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public get breadcrumbLabel(): Array<string> {
-    switch (this.asset.type) {
+    switch (this._asset.type) {
       case 'collectionAsset': {
-        return [this.activeCollection.name, ''];
+        return [this.activeCollectionName, ''];
       }
 
       case 'orderAsset':
       case 'quoteShowAsset': {
-        return [`asset.detail.breadcrumb_${this.asset.type}`, String(this.asset.parentId)];
+        return [`asset.detail.breadcrumb_${this._asset.type}`, String(this._asset.parentId)];
       }
 
       default: {
-        return [`asset.detail.breadcrumb_${this.asset.type}`, ''];
+        return [`asset.detail.breadcrumb_${this._asset.type}`, ''];
       }
     }
   }
 
-  public uniqueInCollection(asset: EnhancedAsset): boolean {
-    return this.assetsArr.indexOf(this.hashUniqueAsset(asset, this.subclipMarkers)) > -1;
+  public get canAddToActiveCollection(): boolean {
+    return !this.activeCollectionContainsAssetId && this.assetTypeIsOneOf('collectionAsset', 'searchAsset');
   }
 
-  public inCollection(asset: EnhancedAsset): boolean {
-    return this.assetsArr.map((hash) => hash.split('|')[0]).includes(asset.assetId.toString());
+  public get canRemoveFromActiveCollection(): boolean {
+    return this._asset.type === 'collectionAsset' && this.activeCollectionContainsAssetUuid;
   }
 
-  public canBeAddedToCollection(asset: EnhancedAsset): boolean {
-    return !this.uniqueInCollection(asset) && !this.inCollection(asset)
-      && ['collectionAsset', 'searchAsset'].includes(asset.type);
-  }
-
-  public canBeAddedAgainToCollection(asset: EnhancedAsset): boolean {
-    return !this.uniqueInCollection(asset) && this.inCollection(asset)
-      && ['collectionAsset', 'searchAsset'].includes(asset.type);
-  }
-
-  public canBeRemovedFromCollection(asset: EnhancedAsset): boolean {
-    return this.uniqueInCollection(asset)
-      && ['collectionAsset', 'searchAsset'].includes(asset.type);
+  public get canAddAgainToActiveCollection(): boolean {
+    return (this._asset.type === 'searchAsset' && this.activeCollectionContainsAssetId) ||
+      (this._asset.type === 'collectionAsset' && (this.activeCollectionContainsAssetId || this.showAssetSaveSubclip));
   }
 
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
@@ -139,8 +139,8 @@ export class AssetDetailComponent implements OnChanges {
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
     this.subclipMarkers = newMarkers;
     this.showAssetSaveSubclip = this.markersAreDefined;
-    if (this.markersAreDefined && this.asset.type === 'searchAsset') {
-      this.store.dispatch((factory) => factory.searchAsset.updateMarkersInUrl(this.subclipMarkers, this.asset.assetId));
+    if (this.markersAreDefined && this._asset.type === 'searchAsset') {
+      this.store.dispatch((factory) => factory.searchAsset.updateMarkersInUrl(this.subclipMarkers, this._asset.assetId));
     }
     this.markersChange.emit(newMarkers);
   }
@@ -150,18 +150,14 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public addAssetToActiveCollection(): void {
-    this.store.dispatch(factory => factory.activeCollection.addAsset(this.asset, this.subclipMarkers ? this.subclipMarkers : null));
+    this.store.dispatch(
+      factory => factory.activeCollection.addAsset(this._asset, this.subclipMarkers ? this.subclipMarkers : null)
+    );
     this.showAssetSaveSubclip = false;
   }
 
   public removeAssetFromActiveCollection(): void {
-    const timeStamps = this.subclipMarkers ? durationFrom(this.subclipMarkers) : null;
-    const assetToRemove = timeStamps ? this.activeCollection.assets.items.find((asset: EnhancedAsset) =>
-      asset.assetId === this.asset.assetId &&
-      asset.timeStart === timeStamps.timeStart &&
-      asset.timeEnd === timeStamps.timeEnd
-    ) : this.asset;
-    this.store.dispatch(factory => factory.activeCollection.removeAsset(assetToRemove));
+    this.store.dispatch(factory => factory.activeCollection.removeAsset(this._asset));
   }
 
   public downloadComp(assetId: any, compType: any): void {
@@ -170,7 +166,7 @@ export class AssetDetailComponent implements OnChanges {
 
   public addAssetToCart(): void {
     this.addToCart.emit({
-      assetId: this.asset.assetId,
+      assetId: this._asset.assetId,
       markers: this.markersAreDefined ? this.subclipMarkers : null,
       selectedTranscodeTarget: this.selectedTarget
     });
@@ -184,18 +180,12 @@ export class AssetDetailComponent implements OnChanges {
     this.selectedTarget = target.value;
   }
 
-  public get addToCartBtnLabel(): string {
-    return this.userCan.administerQuotes()
-      ? (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL')
-      : (this.markersAreDefined ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
-  }
-
   public get canComment(): boolean {
-    return ['cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset'].includes(this.asset.type);
+    return this.assetTypeIsOneOf('cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset');
   }
 
   public get canShare(): boolean {
-    return ['collectionAsset', 'searchAsset'].includes(this.asset.type) && this.userCan.createAccessInfo();
+    return this.assetTypeIsOneOf('collectionAsset', 'searchAsset') && this.userCan.createAccessInfo();
   }
 
   public get shareButtonLabelKey(): string {
@@ -203,7 +193,7 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public get rights(): string {
-    return this.asset.getMetadataValueFor('Rights.Reproduction');
+    return this._asset.getMetadataValueFor('Rights.Reproduction');
   }
 
   public get canShowPricingAndCartActions(): boolean {
@@ -211,13 +201,13 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public get priceIsStartingPrice(): boolean {
-    return !!this.asset.price && !this.usagePrice && this.isRightsManaged;
+    return !!this._asset.price && !this.usagePrice && this.isRightsManaged;
   }
 
   public get price(): number {
     if (!this.isRightsManaged && !this.isRoyaltyFree) return null;
     if (this.isRightsManaged && !!this.usagePrice) return this.usagePrice;
-    if (this.asset.price) return this.asset.price;
+    if (this._asset.price) return this._asset.price;
 
     return null;
   }
@@ -227,23 +217,81 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public get hasNoPrice(): boolean {
-    return !this.asset.price;
+    return !this._asset.price;
   }
 
   public get canPerformCartActions(): boolean {
-    return this.userCan.haveCart() && (this.isRoyaltyFree || (this.isRightsManaged && !!this.asset.price));
+    return this.userCan.haveCart() && (this.isRoyaltyFree || (this.isRightsManaged && !!this._asset.price));
   }
 
   public get canSelectTranscodeTarget(): boolean {
-    return this.isRoyaltyFree && this.userCan.addToCart() && !!this.asset.transcodeTargets;
+    return this.isRoyaltyFree && this.userCan.addToCart() && !!this._asset.transcodeTargets;
   }
 
   public get canCalculatePrice(): boolean {
     return this.isRightsManaged && this.userCan.calculatePrice();
   }
 
+  public get canUpdateCartAsset(): boolean {
+    return this.assetTypeIsOneOf('cartAsset', 'quoteEditAsset');
+  }
+
+  public get updateCartAssetButtonLabelKey(): string {
+    const subclipOrAsset: string = this.markersAreDefined ? 'SUBCLIP' : 'ASSET';
+    const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
+
+    return `ASSET.DETAIL.BUTTON.UPDATE.${subclipOrAsset}.${quoteOrCart}`;
+  }
+
+  public updateCartAsset(): void {
+    this.store.dispatch(factory => factory.notifier.notify({
+      title: 'COMING SOON!',
+      message: 'Asset updating is not yet implemented.'
+    }));
+  }
+
   public get canAddToCart(): boolean {
     return this.userCan.addToCart();
+  }
+
+  public get addToCartButtonLabelKey(): string {
+    const onMatchingPage: boolean = this.isQuoteUser ? this._asset.type === 'quoteEditAsset' : this._asset.type === 'cartAsset';
+    const operation: string = onMatchingPage ? 'ADD_NEW' : 'ADD';
+    const subclipOrAsset: string = this.markersAreDefined ? 'SUBCLIP' : 'ASSET';
+    const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
+
+    return `ASSET.DETAIL.BUTTON.${operation}.${subclipOrAsset}.${quoteOrCart}`;
+  }
+
+  public get canGoToSearchAssetDetails(): boolean {
+    return this.assetTypeIsOneOf('cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset');
+  }
+
+  public goToSearchAssetDetails(): void {
+    this.store.dispatch(factory => factory.router.goToSearchAssetDetails(this._asset.assetId, this.subclipMarkers));
+  }
+
+  private assetTypeIsOneOf(...assetTypes: AssetType[]) {
+    return assetTypes.includes(this._asset.type);
+  }
+
+  private setAssetCollectionMembershipFlags(): void {
+    if (!this._activeCollection || !this._asset) {
+      this.activeCollectionContainsAssetId = this.activeCollectionContainsAssetUuid = false;
+      return;
+    }
+
+    const collectionItems: Asset[] = this._activeCollection.assets.items;
+
+    this.activeCollectionContainsAssetId =
+      collectionItems.some((collectionAsset: Asset) => collectionAsset.assetId === this._asset.assetId);
+
+    this.activeCollectionContainsAssetUuid =
+      !!this._asset.uuid && collectionItems.some((collectionAsset: Asset) => collectionAsset.uuid === this._asset.uuid);
+  }
+
+  private get isQuoteUser(): boolean {
+    return this.userCan.administerQuotes();
   }
 
   private get isRoyaltyFree(): boolean {
@@ -256,18 +304,5 @@ export class AssetDetailComponent implements OnChanges {
 
   private get markersAreDefined(): boolean {
     return !!this.subclipMarkers && !!this.subclipMarkers.in && !!this.subclipMarkers.out;
-  }
-
-  private parseNewAsset(asset: any) {
-    this.usagePrice = null;
-    if (this.asset.transcodeTargets) {
-      this.selectedTarget = this.asset.transcodeTargets[0];
-    }
-  }
-
-  private hashUniqueAsset(asset: EnhancedAsset, subclipMarkers?: SubclipMarkers) {
-    let timeStart = subclipMarkers ? durationFrom(subclipMarkers).timeStart : asset.timeStart;
-    let timeEnd = subclipMarkers ? durationFrom(subclipMarkers).timeEnd : asset.timeEnd;
-    return [asset.assetId, timeStart || -1, timeEnd || -2].join('|');
   }
 }

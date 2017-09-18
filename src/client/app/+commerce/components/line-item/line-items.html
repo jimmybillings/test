@@ -4,14 +4,22 @@
 			[asset]="lineItem.asset"
 			flex="100" flex-gt-xs="60">
 		</cart-asset-component>
-		<line-item-transcode-select-component
-			*ngIf="shouldShowTargets(lineItem)"
-			[readOnly]="readOnly"
-			[transcodeTargets]="lineItem.transcodeTargets"
-			[selectedTarget]="lineItem.selectedTranscodeTarget"
-			(selectTarget)="onSelectTarget($event, lineItem.selectedTranscodeTarget, lineItem)"
-			flex-gt-xs="30" flex-gt-sm="25" flex="auto" class="delivery-format" layout-padding>
-		</line-item-transcode-select-component>
+		<div flex-gt-xs="30" flex-gt-sm="25" flex="auto" layout-padding>
+			<line-item-rights-component
+				*ngIf="shouldDisplayRights(lineItem)"
+				[readOnly]="readOnly"
+				[rights]="lineItem.attributes"
+				[hasAttributes]="!!lineItem.attributes"
+				(showPricingDialog)="onShowPricingDialog(lineItem)">
+			</line-item-rights-component>
+			<line-item-transcode-select-component
+				*ngIf="shouldShowTargets(lineItem)"
+				[readOnly]="readOnly"
+				[transcodeTargets]="lineItem.transcodeTargets"
+				[selectedTarget]="lineItem.selectedTranscodeTarget"
+				(selectTarget)="onSelectTarget($event, lineItem.selectedTranscodeTarget, lineItem)">
+			</line-item-transcode-select-component>
+		</div>
 		<div flex-gt-xs="20" flex="auto" class="actions" flex-order-xs="-3">
 			<line-item-actions-component
 				*ngIf="!readOnly"

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../store/services/asset.service';
 import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
-import { WzEvent } from '../shared/interfaces/common.interface';
+import { WzEvent, SelectedPriceAttributes } from '../shared/interfaces/common.interface';
 import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
@@ -32,6 +32,7 @@ import { SearchContext, SearchState } from '../shared/services/search-context.se
   moduleId: module.id,
   selector: 'asset-component',
   templateUrl: 'asset.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AssetComponent implements OnInit, OnDestroy {
   @Input() assetType: AssetType;
@@ -45,6 +46,8 @@ export class AssetComponent implements OnInit, OnDestroy {
         this.asset = asset;
         this.pricingStore.setPriceForDetails(this.asset.price);
         this.selectedAttributes = null;
+        this.appliedAttributes = null;
+        this.loadCorrespondingCartAsset();
       });
   }
   public pricingAttributes: Array<PriceAttribute>;
@@ -54,7 +57,10 @@ export class AssetComponent implements OnInit, OnDestroy {
   private assetSubscription: Subscription;
   private routeSubscription: Subscription;
   private selectedAttributes: Pojo;
+  private appliedAttributes: Pojo;
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
+  private cartAsset: EnhancedAsset;
+  private cartAssetPriceAttributes: SelectedPriceAttributes[];
 
   constructor(
     public currentUser: CurrentUserService,
@@ -93,10 +99,6 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   public get activeCollection(): Observable<Collection> {
     return this.store.select(state => state.activeCollection.collection);
-  }
-
-  public get cart(): Observable<Cart> {
-    return this.cartService.cart;
   }
 
   public get userEmail(): Observable<string> {
@@ -178,6 +180,12 @@ export class AssetComponent implements OnInit, OnDestroy {
     }
   }
 
+  public get assetMatchesCartAsset(): boolean {
+    return this.cartAsset
+      ? this.subclipMarkersMatchCartAsset && this.pricingAttributesMatchCartAsset
+      : true; // We populate this.cartAsset for 'cartAsset' and 'quoteEditAsset' types only.
+  }
+
   private openPricingDialog(): void {
     this.dialogService.openComponentInDialog(
       {
@@ -207,6 +215,7 @@ export class AssetComponent implements OnInit, OnDestroy {
       case 'APPLY_PRICE':
         this.pricingStore.setPriceForDetails(event.payload.price);
         this.userPreference.updatePricingPreferences(event.payload.attributes);
+        this.appliedAttributes = event.payload.attributes;
         dialogRef.close();
         break;
       case 'ERROR':
@@ -241,5 +250,40 @@ export class AssetComponent implements OnInit, OnDestroy {
         return NaN;
       }
     }
+  }
+
+  private loadCorrespondingCartAsset(): void {
+    this.cartAsset = null;
+    this.cartAssetPriceAttributes = null;
+
+    let service: CartService | QuoteEditService;
+
+    switch (this.assetType) {
+      case 'cartAsset': service = this.cartService; break;
+      case 'quoteEditAsset': service = this.quoteEditService; break;
+      default: return;
+    }
+
+    const lineItem = service.state.data.projects
+      .reduce((lineItems, project) => lineItems.concat(project.lineItems), [])
+      .find(lineItem => lineItem.id === this.asset.uuid);
+
+    if (!lineItem) return;  // Could happen during initialization.
+
+    this.cartAsset = lineItem.asset ? enhanceAsset(lineItem.asset, this.assetType) : null;
+    this.cartAssetPriceAttributes = lineItem.attributes || [];
+  }
+
+  private get subclipMarkersMatchCartAsset(): boolean {
+    return SubclipMarkersInterface.matches(this.cartAsset.timeStart, this.cartAsset.timeEnd, this.subclipMarkers);
+  }
+
+  private get pricingAttributesMatchCartAsset(): boolean {
+    if (!this.appliedAttributes) return true;  // We know the user hasn't changed attributes if this.appliedAttributes isn't set.
+    if (this.cartAssetPriceAttributes.length !== Object.keys(this.appliedAttributes).length) return false;
+
+    return this.cartAssetPriceAttributes.every((cartAttribute: SelectedPriceAttributes) => {
+      return cartAttribute.selectedAttributeValue === this.appliedAttributes[cartAttribute.priceAttributeName];
+    });
   }
 }

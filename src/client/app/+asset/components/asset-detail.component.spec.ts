@@ -3,6 +3,7 @@ import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 import { enhanceAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
 import { mockAsset } from '../../shared/mocks/mock-asset';
 import { Asset } from '../../shared/interfaces/common.interface';
+import { Frame } from 'wazee-frame-formatter';
 
 
 export function main() {
@@ -16,11 +17,11 @@ export function main() {
       collection = {
         assets: {
           items: [
-            { assetId: 1, timeStart: 123, timeEnd: 1000 },
-            { assetId: 1, timeStart: 456, timeEnd: 1000 },
-            { assetId: 1, timeStart: 789, timeEnd: 1000 },
-            { assetId: 1, timeStart: 102, timeEnd: 1000 },
-            { assetId: 1, timeStart: 103, timeEnd: 1000 }
+            { assetId: 1, uuid: 'ABCD', timeStart: 123, timeEnd: 1000 },
+            { assetId: 1, uuid: 'EFGH', timeStart: 456, timeEnd: 1000 },
+            { assetId: 1, uuid: 'IJKL', timeStart: 789, timeEnd: 1000 },
+            { assetId: 1, uuid: 'MNOP', timeStart: 102, timeEnd: 1000 },
+            { assetId: 1, uuid: 'QRST', timeStart: 103, timeEnd: 1000 }
           ]
         }
       };
@@ -49,48 +50,17 @@ export function main() {
       componentUnderTest.userCan = { administerQuotes: () => false } as any;
     });
 
-    describe('ngOnChanges()', () => {
-      describe('changes.asset', () => {
-        it('Should not update the asset if changes are not on the asset property', () => {
-          componentUnderTest.ngOnChanges({});
-          expect(componentUnderTest.asset)
-            .toEqual({ assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl', transcodeTargets: transcodeTargets });
-        });
+    describe('asset setter', () => {
+      it('sets the component\'s asset property', () => {
+        componentUnderTest.asset = asset;
 
-        it('Should not update the asset with new changes to the asset object does not contain the property', () => {
-          asset.detailTypeMap.common = [];
-          componentUnderTest.ngOnChanges({ asset: { currentValue: asset } });
-          expect(componentUnderTest.asset)
-            .toEqual({ assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl', transcodeTargets: transcodeTargets });
-        });
-
-        it('Should set the selectedTranscodeTarget property to the first target in the array', () => {
-          componentUnderTest.ngOnChanges({ asset: { currentValue: asset } });
-          expect(componentUnderTest.selectedTarget).toEqual('master_copy');
-        });
-
-        it('Should delete the detailTypeMap property from the asset object', () => {
-          componentUnderTest.ngOnChanges({ asset: { currentValue: asset } });
-          expect(componentUnderTest.asset.detailTypeMap)
-            .toBeUndefined();
-        });
-
-        it('Should build the final asset object to be this', () => {
-          componentUnderTest.ngOnChanges({ asset: { currentValue: asset } });
-          expect(componentUnderTest.asset).toEqual(finalAsset);
-        });
+        expect(componentUnderTest.asset).toEqual(asset);
       });
 
-      describe('changes.collection', () => {
-        it('Should not update the assetsArr unless changes happen to the changes.collection', () => {
-          componentUnderTest.ngOnChanges({});
-          expect(componentUnderTest.uniqueInCollection(asset)).toBe(false);
-        });
+      it('initializes the selectedTarget property to the first target in the array', () => {
+        componentUnderTest.asset = asset;
 
-        it('Should update the assetsArr if changes happen to changes.collection', () => {
-          componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
-          expect(componentUnderTest.uniqueInCollection(asset)).toBe(true);
-        });
+        expect(componentUnderTest.selectedTarget).toEqual('master_copy');
       });
     });
 
@@ -114,6 +84,16 @@ export function main() {
         componentUnderTest.removeAssetFromActiveCollection();
         mockStore.expectDispatchFor(spy, componentUnderTest.asset);
       });
+      it('with subclipping defined it still removes the same asset', () => {
+        collection.assets.items.push({ assetId: 1, timeStart: 40, timeEnd: 80 } as Asset);
+        componentUnderTest.activeCollection = collection;
+        const startFrame = new Frame(25).setFromFrameNumber(1);
+        const endFrame = new Frame(25).setFromFrameNumber(2);
+        componentUnderTest.subclipMarkers = { in: startFrame, out: endFrame } as any;
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
+        componentUnderTest.removeAssetFromActiveCollection();
+        mockStore.expectDispatchFor(spy, componentUnderTest.asset);
+      });
     });
 
     describe('downloadComp()', () => {
@@ -127,9 +107,7 @@ export function main() {
 
     describe('addAssetToCart()', () => {
       it('Should emit an event to add an asset to the cart/quote without subclipping', () => {
-        // Gotta do both of these to set the asset as expected.
         componentUnderTest.asset = { assetId: 1234, transcodeTargets: transcodeTargets } as any;
-        componentUnderTest.ngOnChanges({ asset: { assetId: 1234, currentValue: asset } });
         spyOn(componentUnderTest.addToCart, 'emit');
         componentUnderTest.addAssetToCart();
         expect(componentUnderTest.addToCart.emit)
@@ -137,10 +115,8 @@ export function main() {
       });
 
       it('Should emit an event to add an asset to the cart/quote with subclipping', () => {
-        // Gotta do both of these to set the asset as expected.
         componentUnderTest.asset = { assetId: 1234, transcodeTargets: transcodeTargets } as any;
         componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
-        componentUnderTest.ngOnChanges({ asset: { assetId: 1234, currentValue: asset } });
 
         spyOn(componentUnderTest.addToCart, 'emit');
         componentUnderTest.addAssetToCart();
@@ -148,26 +124,6 @@ export function main() {
           .toHaveBeenCalledWith({
             assetId: 1234, markers: { in: {}, out: {} }, selectedTranscodeTarget: 'master_copy'
           });
-      });
-    });
-
-    describe('addToCartBtnLabel()', () => {
-      it('Should return translatable string based on on generic user and subclip markers exist.', () => {
-        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
-        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE');
-      });
-      it('Should return translatable string based on subclip markers exist and user is sales person.', () => {
-        componentUnderTest.userCan = { administerQuotes: () => true } as any;
-        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
-        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE');
-      });
-      it('Should return translatable string based on generic user and not a subclip.', () => {
-        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.DETAIL.ADD_TO_CART_BTN_LABEL');
-      });
-      it('Should return translatable string based on sales user and subclip markers are present', () => {
-        componentUnderTest.userCan = { administerQuotes: () => true } as any;
-        componentUnderTest.subclipMarkers = { in: {}, out: {} } as any;
-        expect(componentUnderTest.addToCartBtnLabel).toBe('ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE');
       });
     });
 
@@ -509,6 +465,58 @@ export function main() {
       });
     });
 
+    describe('canUpdateCartAsset getter', () => {
+      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', expectedResult: true },
+        { assetType: 'collectionAsset', expectedResult: false },
+        { assetType: 'orderAsset', expectedResult: false },
+        { assetType: 'quoteEditAsset', expectedResult: true },
+        { assetType: 'quoteShowAsset', expectedResult: false },
+        { assetType: 'searchAsset', expectedResult: false },
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
+
+          expect(componentUnderTest.canUpdateCartAsset).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('updateCartAssetButtonLabelKey getter', () => {
+      const tests: { quoteUser: boolean, markers: boolean, expectedKey: string }[] = [
+        { quoteUser: false, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.ASSET.CART' },
+        { quoteUser: false, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.CART' },
+        { quoteUser: false, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.ASSET.CART' },
+        { quoteUser: false, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.CART' },
+
+        { quoteUser: true, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.ASSET.QUOTE' },
+        { quoteUser: true, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.QUOTE' },
+        { quoteUser: true, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.ASSET.QUOTE' },
+        { quoteUser: true, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.QUOTE' }
+      ];
+
+      tests.forEach(test => {
+        const description: string = `returns ${test.expectedKey}` +
+          ` for a user ${test.quoteUser ? 'with' : 'without'} quote administrator capabililty and` +
+          ` an asset with markers ${test.markers ? '' : 'not '}defined`;
+
+        it(description, () => {
+          componentUnderTest.userCan = { administerQuotes: () => test.quoteUser } as any;
+          if (test.markers) componentUnderTest.subclipMarkers = { in: { some: 'frame' }, out: { some: 'frame' } } as any;
+
+          expect(componentUnderTest.updateCartAssetButtonLabelKey).toBe(test.expectedKey);
+        });
+      });
+    });
+
+    describe('updateCartAsset()', () => {
+      it('is not yet implemented', () => {
+        expect(true).toBe(true);
+      });
+    });
+
     describe('canAddToCart getter', () => {
       it('returns true with addToCart capability', () => {
         componentUnderTest.userCan = { addToCart: () => true } as any;
@@ -520,203 +528,261 @@ export function main() {
         componentUnderTest.userCan = { addToCart: () => false } as any;
 
         expect(componentUnderTest.canAddToCart).toBe(false);
-        describe('inCollection()', () => {
-          beforeEach(() => {
-            componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
-          });
+      });
+    });
 
-          it('returns true when the assetId is in the collection', () => {
-            expect(componentUnderTest.inCollection(asset)).toBe(true);
-          });
+    describe('addToCartButtonLabelKey getter', () => {
+      const tests: { quoteUser: boolean, type: AssetType, markers: boolean, expectedKey: string }[] = [
+        { quoteUser: false, type: 'searchAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.CART' },
+        { quoteUser: false, type: 'searchAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.CART' },
+        { quoteUser: false, type: 'cartAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.ASSET.CART' },
+        { quoteUser: false, type: 'cartAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.CART' },
+        { quoteUser: false, type: 'quoteEditAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.CART' },
+        { quoteUser: false, type: 'quoteEditAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.CART' },
 
-          it('returns false when the assetId is not in the collection', () => {
-            asset.assetId = 9999;
-            expect(componentUnderTest.inCollection(asset)).toBe(false);
-          });
+        { quoteUser: true, type: 'searchAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.QUOTE' },
+        { quoteUser: true, type: 'searchAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.QUOTE' },
+        { quoteUser: true, type: 'cartAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.QUOTE' },
+        { quoteUser: true, type: 'cartAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.QUOTE' },
+        { quoteUser: true, type: 'quoteEditAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.ASSET.QUOTE' },
+        { quoteUser: true, type: 'quoteEditAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.QUOTE' }
+      ];
+
+      tests.forEach(test => {
+        const description: string = `returns ${test.expectedKey}` +
+          ` for a user ${test.quoteUser ? 'with' : 'without'} quote administrator capabililty and` +
+          ` an asset with type '${test.type}' and markers ${test.markers ? '' : 'not '}defined`;
+
+        it(description, () => {
+          componentUnderTest.userCan = { administerQuotes: () => test.quoteUser } as any;
+          componentUnderTest.asset = enhanceAsset({} as any, test.type);
+          if (test.markers) componentUnderTest.subclipMarkers = { in: { some: 'frame' }, out: { some: 'frame' } } as any;
+
+          expect(componentUnderTest.addToCartButtonLabelKey).toBe(test.expectedKey);
         });
+      });
+    });
 
-        describe('canBeAddedToCollection()', () => {
-          const tests: { assetType: AssetType, assetIdInCollection: boolean, expectedResult: boolean }[] = [
-            { assetType: 'cartAsset', assetIdInCollection: true, expectedResult: false },
-            { assetType: 'collectionAsset', assetIdInCollection: true, expectedResult: false },
-            { assetType: 'orderAsset', assetIdInCollection: true, expectedResult: false },
-            { assetType: 'quoteEditAsset', assetIdInCollection: true, expectedResult: false },
-            { assetType: 'quoteShowAsset', assetIdInCollection: true, expectedResult: false },
-            { assetType: 'searchAsset', assetIdInCollection: true, expectedResult: false },
+    describe('canGoToSearchAssetDetails getter', () => {
+      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', expectedResult: true },
+        { assetType: 'collectionAsset', expectedResult: true },
+        { assetType: 'orderAsset', expectedResult: true },
+        { assetType: 'quoteEditAsset', expectedResult: true },
+        { assetType: 'quoteShowAsset', expectedResult: true },
+        { assetType: 'searchAsset', expectedResult: false },
+      ];
 
-            { assetType: 'cartAsset', assetIdInCollection: false, expectedResult: false },
-            { assetType: 'collectionAsset', assetIdInCollection: false, expectedResult: true },
-            { assetType: 'orderAsset', assetIdInCollection: false, expectedResult: false },
-            { assetType: 'quoteEditAsset', assetIdInCollection: false, expectedResult: false },
-            { assetType: 'quoteShowAsset', assetIdInCollection: false, expectedResult: false },
-            { assetType: 'searchAsset', assetIdInCollection: false, expectedResult: true }
-          ];
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
 
-          beforeEach(() => {
-            componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
-          });
+          expect(componentUnderTest.canGoToSearchAssetDetails).toBe(test.expectedResult);
+        });
+      });
+    });
 
-          tests.forEach(test => {
-            it(`returns ${test.expectedResult} for asset type '${test.assetType}' if the assetId 
+    describe('goToSearchAssetDetails', () => {
+      it('dispatches the expected action when subclipMarkers are not set', () => {
+        const spy = mockStore.createActionFactoryMethod('router', 'goToSearchAssetDetails');
+
+        componentUnderTest.goToSearchAssetDetails();
+
+        mockStore.expectDispatchFor(spy, componentUnderTest.asset.assetId, undefined);
+      });
+
+      it('dispatches the expected action when subclipMarkers are set', () => {
+        const spy = mockStore.createActionFactoryMethod('router', 'goToSearchAssetDetails');
+
+        componentUnderTest.onPlayerMarkerChange({ in: { some: 'inFrame' } as any, out: { some: 'outFrame' } as any });
+        componentUnderTest.goToSearchAssetDetails();
+
+        mockStore.expectDispatchFor(
+          spy,
+          componentUnderTest.asset.assetId,
+          { in: { some: 'inFrame' }, out: { some: 'outFrame' } }
+        );
+      });
+    });
+
+    describe('canAddToActiveCollection getter', () => {
+      const tests: { assetType: AssetType, assetIdInCollection: boolean, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'collectionAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'orderAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'quoteEditAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'quoteShowAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'searchAsset', assetIdInCollection: true, expectedResult: false },
+
+        { assetType: 'cartAsset', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'collectionAsset', assetIdInCollection: false, expectedResult: true },
+        { assetType: 'orderAsset', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'quoteEditAsset', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'quoteShowAsset', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'searchAsset', assetIdInCollection: false, expectedResult: true }
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}' if the assetId 
         is ${test.assetIdInCollection ? 'included' : 'not'} in the collection`, () => {
-                asset.assetId = test.assetIdInCollection ? 1 : 9999;
-                asset.type = test.assetType;
-                expect(componentUnderTest.canBeAddedToCollection(asset)).toBe(test.expectedResult);
-              });
+            componentUnderTest.activeCollection = collection;
+            componentUnderTest.asset = enhanceAsset({ ...asset, assetId: test.assetIdInCollection ? 1 : 9999 }, test.assetType);
+
+            expect(componentUnderTest.canAddToActiveCollection).toBe(test.expectedResult);
           });
+      });
+    });
+
+    describe('canAddAgainToActiveCollection getter', () => {
+      const tests: { assetType: AssetType, matchingSubclipMarkers: boolean, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'collectionAsset', matchingSubclipMarkers: false, expectedResult: true },
+        { assetType: 'orderAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'quoteEditAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'quoteShowAsset', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'searchAsset', matchingSubclipMarkers: false, expectedResult: true },
+
+        { assetType: 'cartAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'collectionAsset', matchingSubclipMarkers: true, expectedResult: true },
+        { assetType: 'orderAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'quoteEditAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'quoteShowAsset', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'searchAsset', matchingSubclipMarkers: true, expectedResult: true }
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}' when the collection has a version of that 
+        asset ${test.matchingSubclipMarkers ? 'with' : 'without'} matching subclip markers`, () => {
+            componentUnderTest.activeCollection = collection;
+            componentUnderTest.asset = enhanceAsset(
+              { ...asset, timeStart: 123, timeEnd: test.matchingSubclipMarkers ? 1000 : 9999 },
+              test.assetType
+            );
+
+            expect(componentUnderTest.canAddAgainToActiveCollection).toBe(test.expectedResult);
+          });
+      });
+
+      it('returns false when the collection does not have a version of that asset', () => {
+        componentUnderTest.asset = enhanceAsset({ ...asset, assetId: 9999 }, 'collectionAsset');
+
+        expect(componentUnderTest.canAddAgainToActiveCollection).toBe(false);
+      });
+
+      it('returns true if the collection does not have that asset but the type is collection & subclip markers were set', () => {
+        componentUnderTest.asset = enhanceAsset({ ...asset, assetId: 9999 }, 'collectionAsset');
+
+        const startFrame = new Frame(25).setFromFrameNumber(1);
+        const endFrame = new Frame(25).setFromFrameNumber(2);
+        componentUnderTest.onPlayerMarkerChange({ in: startFrame, out: endFrame });
+
+        expect(componentUnderTest.canAddAgainToActiveCollection).toBe(true);
+      });
+    });
+
+    describe('canRemoveFromActiveCollection getter', () => {
+      const tests: { assetType: AssetType, matchingUuid: boolean, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', matchingUuid: true, expectedResult: false },
+        { assetType: 'collectionAsset', matchingUuid: true, expectedResult: true },
+        { assetType: 'orderAsset', matchingUuid: true, expectedResult: false },
+        { assetType: 'quoteEditAsset', matchingUuid: true, expectedResult: false },
+        { assetType: 'quoteShowAsset', matchingUuid: true, expectedResult: false },
+        { assetType: 'searchAsset', matchingUuid: true, expectedResult: false },
+
+        { assetType: 'cartAsset', matchingUuid: false, expectedResult: false },
+        { assetType: 'collectionAsset', matchingUuid: false, expectedResult: false },
+        { assetType: 'orderAsset', matchingUuid: false, expectedResult: false },
+        { assetType: 'quoteEditAsset', matchingUuid: false, expectedResult: false },
+        { assetType: 'quoteShowAsset', matchingUuid: false, expectedResult: false },
+        { assetType: 'searchAsset', matchingUuid: false, expectedResult: false }
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}' when the collection has a version of that 
+        asset ${test.matchingUuid ? 'with' : 'without'} matching UUID`, () => {
+            componentUnderTest.activeCollection = collection;
+            componentUnderTest.asset = enhanceAsset({ ...asset, uuid: test.matchingUuid ? 'ABCD' : 'NOPE' }, test.assetType);
+
+            expect(componentUnderTest.canRemoveFromActiveCollection).toBe(test.expectedResult);
+          });
+      });
+    });
+
+    describe('routerLinkForAssetParent()', () => {
+      describe('returns the correct routerLink', () => {
+        it('for a collection asset', () => {
+          componentUnderTest.pageSize = 50;
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'collectionAsset', 100);
+
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/collections', 100, { i: 1, n: 50 }]);
         });
 
-        describe('canBeAddedAgainToCollection()', () => {
-          const tests: { assetType: AssetType, matchingSubclipMarkers: boolean, expectedResult: boolean }[] = [
-            { assetType: 'cartAsset', matchingSubclipMarkers: false, expectedResult: false },
-            { assetType: 'collectionAsset', matchingSubclipMarkers: false, expectedResult: true },
-            { assetType: 'orderAsset', matchingSubclipMarkers: false, expectedResult: false },
-            { assetType: 'quoteEditAsset', matchingSubclipMarkers: false, expectedResult: false },
-            { assetType: 'quoteShowAsset', matchingSubclipMarkers: false, expectedResult: false },
-            { assetType: 'searchAsset', matchingSubclipMarkers: false, expectedResult: true },
+        it('for a quote edit asset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteEditAsset');
 
-            { assetType: 'cartAsset', matchingSubclipMarkers: true, expectedResult: false },
-            { assetType: 'collectionAsset', matchingSubclipMarkers: true, expectedResult: false },
-            { assetType: 'orderAsset', matchingSubclipMarkers: true, expectedResult: false },
-            { assetType: 'quoteEditAsset', matchingSubclipMarkers: true, expectedResult: false },
-            { assetType: 'quoteShowAsset', matchingSubclipMarkers: true, expectedResult: false },
-            { assetType: 'searchAsset', matchingSubclipMarkers: true, expectedResult: false }
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/active-quote']);
+        });
+
+        it('for a quote show asset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteShowAsset', 999);
+
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/quotes', 999]);
+        });
+
+        it('for an order asset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'orderAsset', 111);
+
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/orders', 111]);
+        });
+
+        it('for a cart asset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'cartAsset');
+
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/cart']);
+        });
+
+        it('for a search asset', () => {
+          componentUnderTest.searchContext = { q: 'cat', i: 1, n: 100, sortId: 10 };
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'searchAsset');
+
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/search', { q: 'cat', i: 1, n: 100, sortId: 10 }]);
+        });
+      });
+    });
+
+    describe('breadcrumbLabel getter', () => {
+      describe('returns the correct translatable string', () => {
+        it('for a collectionAsset', () => {
+          componentUnderTest.activeCollection = { ...collection, name: 'some collection' };
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'collectionAsset', 100);
+
+          expect(componentUnderTest.breadcrumbLabel).toEqual(['some collection', '']);
+        });
+
+        it('for a quoteShowAsset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteShowAsset', 111);
+
+          expect(componentUnderTest.breadcrumbLabel).toEqual(['asset.detail.breadcrumb_quoteShowAsset', '111']);
+        });
+
+        it('for a orderAsset', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'orderAsset', 333);
+
+          expect(componentUnderTest.breadcrumbLabel).toEqual(['asset.detail.breadcrumb_orderAsset', '333']);
+        });
+
+        describe('for any other type of asset - ', () => {
+          const tests: { assetType: AssetType; expected: string[] }[] = [
+            { assetType: 'searchAsset', expected: ['asset.detail.breadcrumb_searchAsset', ''] },
+            { assetType: 'quoteEditAsset', expected: ['asset.detail.breadcrumb_quoteEditAsset', ''] },
+            { assetType: 'cartAsset', expected: ['asset.detail.breadcrumb_cartAsset', ''] }
           ];
 
-          beforeEach(() => {
-            componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
-          });
+          tests.forEach((test: { assetType: AssetType; expected: string[] }) => {
+            it(`(${test.assetType})`, () => {
+              componentUnderTest.asset = enhanceAsset(mockAsset, test.assetType);
 
-          tests.forEach(test => {
-            it(`returns ${test.expectedResult} for asset type '${test.assetType}' when the collection has a version of that 
-        asset ${test.matchingSubclipMarkers ? 'with' : 'without'} matching subclip markers`, () => {
-                asset.timeStart = 123;
-                asset.timeEnd = test.matchingSubclipMarkers ? 1000 : 9999;
-                asset.type = test.assetType;
-                expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(test.expectedResult);
-              });
-          });
-
-          it('returns false when the collection does not have a version of that asset', () => {
-            asset.assetId = 9999;
-            expect(componentUnderTest.canBeAddedAgainToCollection(asset)).toBe(false);
-          });
-        });
-
-        describe('canBeRemovedFromCollection()', () => {
-          const tests: { assetType: AssetType, matchingSubclipMarkers: boolean, expectedResult: boolean }[] = [
-            { assetType: 'cartAsset', matchingSubclipMarkers: true, expectedResult: false },
-            { assetType: 'collectionAsset', matchingSubclipMarkers: true, expectedResult: true },
-            { assetType: 'orderAsset', matchingSubclipMarkers: true, expectedResult: false },
-            { assetType: 'quoteEditAsset', matchingSubclipMarkers: true, expectedResult: false },
-            { assetType: 'quoteShowAsset', matchingSubclipMarkers: true, expectedResult: false },
-            { assetType: 'searchAsset', matchingSubclipMarkers: true, expectedResult: true },
-
-            { assetType: 'cartAsset', matchingSubclipMarkers: false, expectedResult: false },
-            { assetType: 'collectionAsset', matchingSubclipMarkers: false, expectedResult: false },
-            { assetType: 'orderAsset', matchingSubclipMarkers: false, expectedResult: false },
-            { assetType: 'quoteEditAsset', matchingSubclipMarkers: false, expectedResult: false },
-            { assetType: 'quoteShowAsset', matchingSubclipMarkers: false, expectedResult: false },
-            { assetType: 'searchAsset', matchingSubclipMarkers: false, expectedResult: false }
-          ];
-
-          beforeEach(() => {
-            componentUnderTest.ngOnChanges({ activeCollection: { currentValue: collection } });
-          });
-
-          tests.forEach(test => {
-            it(`returns ${test.expectedResult} for asset type '${test.assetType}' when the collection has a version of that 
-        asset ${test.matchingSubclipMarkers ? 'with' : 'without'} matching subclip markers`, () => {
-                asset.timeStart = 123;
-                asset.timeEnd = test.matchingSubclipMarkers ? 1000 : 9999;
-                asset.type = test.assetType;
-                expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(test.expectedResult);
-              });
-          });
-
-          it('returns false when the collection does not have a version of that asset', () => {
-            asset.assetId = 9999;
-            expect(componentUnderTest.canBeRemovedFromCollection(asset)).toBe(false);
-          });
-        });
-
-        describe('routerLinkForAssetParent()', () => {
-          describe('returns the correct routerLink', () => {
-            it('for a collection asset', () => {
-              componentUnderTest.pageSize = 50;
-              componentUnderTest.asset = enhanceAsset(mockAsset, 'collectionAsset', 100);
-
-              expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/collections', 100, { i: 1, n: 50 }]);
-            });
-
-            it('for a quote edit asset', () => {
-              componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteEditAsset');
-
-              expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/active-quote']);
-            });
-
-            it('for a quote show asset', () => {
-              componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteShowAsset', 999);
-
-              expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/quotes', 999]);
-            });
-
-            it('for an order asset', () => {
-              componentUnderTest.asset = enhanceAsset(mockAsset, 'orderAsset', 111);
-
-              expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/orders', 111]);
-            });
-
-            it('for a cart asset', () => {
-              componentUnderTest.asset = enhanceAsset(mockAsset, 'cartAsset');
-
-              expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/cart']);
-            });
-
-            it('for a search asset', () => {
-              componentUnderTest.searchContext = { q: 'cat', i: 1, n: 100, sortId: 10 };
-              componentUnderTest.asset = enhanceAsset(mockAsset, 'searchAsset');
-
-              expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/search', { q: 'cat', i: 1, n: 100, sortId: 10 }]);
-            });
-          });
-        });
-
-        describe('breadcrumbLabel getter', () => {
-          describe('returns the correct translatable string', () => {
-            it('for a collectionAsset', () => {
-              componentUnderTest.activeCollection = { name: 'some collection' } as any;
-              componentUnderTest.asset = enhanceAsset(mockAsset, 'collectionAsset', 100);
-
-              expect(componentUnderTest.breadcrumbLabel).toEqual(['some collection', '']);
-            });
-
-            it('for a quoteShowAsset', () => {
-              componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteShowAsset', 111);
-
-              expect(componentUnderTest.breadcrumbLabel).toEqual(['asset.detail.breadcrumb_quoteShowAsset', '111']);
-            });
-
-            it('for a orderAsset', () => {
-              componentUnderTest.asset = enhanceAsset(mockAsset, 'orderAsset', 333);
-
-              expect(componentUnderTest.breadcrumbLabel).toEqual(['asset.detail.breadcrumb_orderAsset', '333']);
-            });
-
-            describe('for any other type of asset - ', () => {
-              const tests: { assetType: AssetType; expected: string[] }[] = [
-                { assetType: 'searchAsset', expected: ['asset.detail.breadcrumb_searchAsset', ''] },
-                { assetType: 'quoteEditAsset', expected: ['asset.detail.breadcrumb_quoteEditAsset', ''] },
-                { assetType: 'cartAsset', expected: ['asset.detail.breadcrumb_cartAsset', ''] }
-              ];
-
-              tests.forEach((test: { assetType: AssetType; expected: string[] }) => {
-                it(`(${test.assetType})`, () => {
-                  componentUnderTest.asset = enhanceAsset(mockAsset, test.assetType);
-
-                  expect(componentUnderTest.breadcrumbLabel).toEqual(test.expected);
-                });
-              });
+              expect(componentUnderTest.breadcrumbLabel).toEqual(test.expected);
             });
           });
         });
