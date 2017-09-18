@@ -91,6 +91,9 @@ module.exports = function (config) {
     // web server port
     port: 9876,
 
+    // Ed added this because Karma kept timing out in 10 seconds waiting for the browser.
+    browserNoActivityTimeout: 60000,
+
 
     // enable / disable colors in the output (reporters and logs)
     colors: true,
