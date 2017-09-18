@@ -1,14 +1,31 @@
+import { Observable } from 'rxjs/Observable';
+
 import { AssetComponent } from './asset.component';
 import { MockAppStore } from '../store/spec-helpers/mock-app.store';
-import { Observable } from 'rxjs/Observable';
+import * as EnhancedMock from '../shared/interfaces/enhanced-asset';
+import { mockAsset } from '../shared/mocks/mock-asset';
+import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
   describe('Asset Component', () => {
-
-    let mockCurrentUserService: any, mockCapabilities: any, mockSearchContext: any, mockUiState: any;
-    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockCart: any,
-      mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
-      mockPricingStore: any, mockPricingService: any;
+    let mockCurrentUserService: any;
+    let mockCapabilities: any;
+    let mockSearchContext: any;
+    let mockUiState: any;
+    let mockUserPreference: any;
+    let mockAssetService: any;
+    let mockUiConfig: any;
+    let mockCartService: any;
+    let mockWindow: any;
+    let mockRouter: any;
+    let mockRoute: any;
+    let mockDialogService: any;
+    let mockTranslate: any;
+    let mockSnackBar: any;
+    let mockQuoteEditService: any;
+    let mockPricingStore: any;
+    let mockPricingService: any;
+    let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
     let mockStore: MockAppStore;
     let componentUnderTest: AssetComponent;
 
@@ -18,7 +35,8 @@ export function main() {
       mockUiState = {};
       mockUserPreference = {
         openCollectionTray: jasmine.createSpy('openCollectionTray'),
-        state: { pricingPreferences: 'thePricingPreferences' }
+        state: { pricingPreferences: 'thePricingPreferences' },
+        updatePricingPreferences: jasmine.createSpy('updatePricingPreferences')
       };
       mockAssetService = {
         downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
@@ -26,8 +44,10 @@ export function main() {
         priceForDetails: Observable.of(100)
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
-      mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
+      mockCartService = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
+      mockRouter = { navigate: jasmine.createSpy('navigate') };
+      mockRoute = { snapshot: { params: { id: '100' } } };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };
@@ -51,9 +71,23 @@ export function main() {
       mockStore = new MockAppStore();
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockUiState,
-        mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockCart,
-        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
+        mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
+        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
+        null
       );
+    });
+
+    describe('stateMapper setter', () => {
+      beforeEach(() => {
+        mockStore.createStateSection('activeCollectionAsset', { activeAsset: mockAsset });
+        componentUnderTest.assetType = 'collectionAsset';
+      });
+
+      it('sets up an asset instance variable', () => {
+        componentUnderTest.stateMapper = (factory) => factory.activeCollectionAsset.activeAsset;
+        const expectedAsset: EnhancedMock.EnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset', 100);
+        expect(componentUnderTest.asset).toEqual(expectedAsset);
+      });
     });
 
     describe('ngOnInit()', () => {
@@ -87,20 +121,20 @@ export function main() {
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockUiState,
-          mockAssetService, mockUiConfig, mockWindow, mockStore, mockUserPreference, mockCart,
-          mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService
+          mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
+          mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
+          null
         );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
       });
-
     });
 
     describe('addAssetToCart()', () => {
       describe('Should call the cart summary service with the correct params', () => {
         it('with a price', () => {
           componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
-          expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
+          expect(mockCartService.addAssetToProjectInCart).toHaveBeenCalledWith({
             lineItem: {
               selectedTranscodeTarget: 'Target',
               price: 100,
@@ -115,7 +149,7 @@ export function main() {
           componentUnderTest.addAssetToCart({
             assetId: 123123, selectedTranscodeTarget: 'Target', markers: { some: 'markers' }
           });
-          expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
+          expect(mockCartService.addAssetToProjectInCart).toHaveBeenCalledWith({
             lineItem: {
               selectedTranscodeTarget: 'Target',
               price: 100,
@@ -155,6 +189,182 @@ export function main() {
         it('does not call getPriceFor() on the asset service', () => {
           componentUnderTest.onMarkersChange({ in: {}, out: {} } as any);
           expect(mockPricingService.getPriceFor).not.toHaveBeenCalled();
+        });
+      });
+    });
+
+    describe('assetMatchesCartAsset()', () => {
+      ['collectionAsset', 'orderAsset', 'quoteShowAsset', 'searchAsset'].forEach((assetType: EnhancedMock.AssetType) => {
+        it(`returns true (somewhat pointlessly) for an asset with type '${assetType}'`, () => {
+          mockStore.createStateSection(assetType, { activeAsset: mockAsset });
+          componentUnderTest.assetType = assetType;
+          componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+
+          expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
+        });
+      });
+
+      ['cartAsset', 'quoteEditAsset'].forEach((assetType: EnhancedMock.AssetType) => {
+        describe(`when asset has type '${assetType}'`, () => {
+          let localMockAsset: any;
+
+          beforeEach(() => {
+            (assetType === 'cartAsset' ? mockCartService : mockQuoteEditService).state = {
+              data: {
+                projects: [
+                  {
+                    lineItems: [
+                      { id: 'ABCD', asset: { timeStart: 1000, timeEnd: 2000 } },
+                      { id: 'EFGH' }
+                    ]
+                  },
+                  {
+                    lineItems: [
+                      {
+                        id: 'IJKL', asset: {}, attributes: [
+                          { priceAttributeName: 'a', selectedAttributeValue: '1' },
+                          { priceAttributeName: 'b', selectedAttributeValue: '2' },
+                          { priceAttributeName: 'c', selectedAttributeValue: '3' }
+                        ]
+                      },
+                      {
+                        id: 'MNOP', asset: {}, attributes: [
+                          { priceAttributeName: 'a', selectedAttributeValue: '1' },
+                          { priceAttributeName: 'b', selectedAttributeValue: '2' },
+                          { priceAttributeName: 'c', selectedAttributeValue: 'NOT 3' }
+                        ]
+                      },
+                      {
+                        id: 'QRST', asset: {}, attributes: [
+                          { priceAttributeName: 'a', selectedAttributeValue: '1' },
+                          { priceAttributeName: 'b', selectedAttributeValue: '2' }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            };
+
+            const mockAppliedAttributes = { a: '1', b: '2', c: '3' };
+            mockDialogService.openComponentInDialog =
+              jasmine.createSpy('openComponentInDialog').and.callFake((parameters: any) => {
+                parameters.outputOptions[0].callback(
+                  { type: 'APPLY_PRICE', payload: { attributes: mockAppliedAttributes } },
+                  { close: jasmine.createSpy('close') }
+                );
+              });
+
+            componentUnderTest = new AssetComponent(
+              mockCurrentUserService, mockCapabilities, mockUiState,
+              mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
+              mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
+              null
+            );
+
+            componentUnderTest.assetType = assetType;
+          });
+
+          it('returns true when the asset has no corresponding cart line item', () => {
+            localMockAsset = { uuid: '????' };
+            mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
+            componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+
+            expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
+          });
+
+          it('returns true when the asset\'s corresponding cart line item has no asset', () => {
+            localMockAsset = { uuid: 'EFGH' };
+            mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
+            componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+
+            expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
+          });
+
+          describe('when price attributes have not been changed by the user', () => {
+            beforeEach(() => {
+              localMockAsset = { uuid: 'ABCD' };
+              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
+              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+            });
+
+            it('returns true when subclip markers match', () => {
+              componentUnderTest.onMarkersChange({
+                in: new Frame(30).setFromFrameNumber(30), // 1000ms
+                out: new Frame(30).setFromFrameNumber(60) // 2000ms
+              });
+
+              expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
+            });
+
+            it('returns true when neither the cart asset nor the active asset has markers', () => {
+              localMockAsset = { uuid: 'IJKL' };
+              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
+              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+
+              expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
+            });
+
+            it('returns false when subclip markers don\'t match', () => {
+              componentUnderTest.onMarkersChange({
+                in: new Frame(30).setFromFrameNumber(30), // 1000ms
+                out: new Frame(30).setFromFrameNumber(6000) // 200000ms
+              });
+
+              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
+            });
+
+            it('returns false when the cart asset has subclip markers and the active asset doesn\'t', () => {
+              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
+            });
+
+            it('returns false when the active asset has subclip markers and the cart asset doesn\'t', () => {
+              localMockAsset = { uuid: 'IJKL' };
+              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
+              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+
+              componentUnderTest.onMarkersChange({
+                in: new Frame(30).setFromFrameNumber(30), // 1000ms
+                out: new Frame(30).setFromFrameNumber(60) // 2000ms
+              });
+
+              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
+            });
+          });
+
+          describe('when price attributes have been changed by the user', () => {
+            it('returns true when the attributes match', () => {
+              localMockAsset = { uuid: 'IJKL' };
+              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
+              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+              componentUnderTest.rightsReproduction = 'some rights reproduction';
+              componentUnderTest.getPricingAttributes('some rights reproduction');
+
+              expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
+            });
+
+            it('returns false when the attributes don\'t match', () => {
+              localMockAsset = { uuid: 'MNOP' };
+              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
+              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+              componentUnderTest.rightsReproduction = 'some rights reproduction';
+              componentUnderTest.getPricingAttributes('some rights reproduction');
+
+
+              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
+            });
+
+            it('returns false when the number of attributes doesn\'t match', () => {
+              localMockAsset = { uuid: 'QRST' };
+              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
+              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+              componentUnderTest.rightsReproduction = 'some rights reproduction';
+              componentUnderTest.getPricingAttributes('some rights reproduction');
+
+
+              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
+            });
+          });
         });
       });
     });

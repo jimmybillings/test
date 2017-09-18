@@ -5,14 +5,22 @@ import { Observable } from 'rxjs/Observable';
 import { Common } from '../utilities/common.functions';
 import { LegacyAction } from '../interfaces/common.interface';
 
-const initSearchContext: any = {
-  q: null,
+export interface SearchState {
+  q: string;
+  i: number;
+  n: number;
+  sortId: number;
+  [index: string]: string | number;
+}
+
+const initSearchContext: SearchState = {
+  q: '',
   i: 1,
   n: 100,
   sortId: 0
 };
 
-export function searchContext(state: any = initSearchContext, action: LegacyAction) {
+export function searchContext(state: SearchState = initSearchContext, action: LegacyAction) {
   switch (action.type) {
     case 'SEARCHCONTEXT.CREATE':
       return Object.assign({}, action.payload);
@@ -32,7 +40,7 @@ export function searchContext(state: any = initSearchContext, action: LegacyActi
 
 @Injectable()
 export class SearchContext {
-  public data: Observable<any>;
+  public data: Observable<SearchState>;
   constructor(public router: Router, public store: Store<any>) {
     this.data = this.store.select('searchContext');
   }
@@ -42,7 +50,7 @@ export class SearchContext {
     this.go();
   }
 
-  public get state(): any {
+  public get state(): SearchState {
     let s: any;
     this.data.take(1).subscribe(state => s = state);
     return s;

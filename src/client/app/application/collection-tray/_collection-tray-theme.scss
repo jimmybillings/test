@@ -16,6 +16,7 @@
           linear-gradient(mat-color($primary, 800, .06), mat-color($primary, 800, .06)),
           linear-gradient(rgba(mat-color($background, status-bar), 1), rgba(mat-color($background, status-bar), 1));
         .focused {
+          a[md-button],
           button[md-button] {
             color: rgba(mat-color($foreground, secondary-text), .6);
           }

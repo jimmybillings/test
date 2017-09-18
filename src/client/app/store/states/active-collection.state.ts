@@ -9,11 +9,6 @@ import { Common } from '../../shared/utilities/common.functions';
 export interface State {
   readonly loading: boolean;
   readonly collection: Collection;
-  readonly latestAddition: {
-    readonly asset: Asset;
-    readonly markers?: SerializedSubclipMarkers
-  };
-  readonly latestRemoval: Asset;
 };
 
 export const initialState: State = {
@@ -42,12 +37,7 @@ export const initialState: State = {
     },
     tags: [],
     assetsCount: 0
-  },
-  latestAddition: {
-    asset: null,
-    markers: {}
-  },
-  latestRemoval: null
+  }
 };
 
 export function reducer(state: State = initialState, action: ActiveCollectionActions.Any): State {
@@ -57,6 +47,8 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     case ActiveCollectionActions.Load.Type:
     case ActiveCollectionActions.Set.Type:
     case ActiveCollectionActions.LoadPage.Type:
+    case ActiveCollectionActions.AddAsset.Type:
+    case ActiveCollectionActions.RemoveAsset.Type:
     case ActiveCollectionActions.UpdateAssetMarkers.Type: {
       return {
         ...Common.clone(state),
@@ -87,14 +79,6 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
       };
     }
 
-    case ActiveCollectionActions.AddAsset.Type: {
-      return {
-        ...Common.clone(state),
-        loading: true,
-        latestAddition: action.markers ? { asset: action.asset, markers: serialize(action.markers) } : { asset: action.asset }
-      };
-    }
-
     case ActiveCollectionActions.AddAssetSuccess.Type: {
       const stateClone: State = Common.clone(state);
 
@@ -106,14 +90,6 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
           assetsCount: stateClone.collection.assetsCount + 1
         },
         loading: false
-      };
-    }
-
-    case ActiveCollectionActions.RemoveAsset.Type: {
-      return {
-        ...Common.clone(state),
-        loading: true,
-        latestRemoval: action.asset
       };
     }
 

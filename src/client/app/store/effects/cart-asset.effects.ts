@@ -53,7 +53,7 @@ export class CartAssetEffects {
 
     return {
       id: String(asset.assetId),
-      uuid: String(asset.uuid),
+      uuid: assetUuid,
       timeStart: String(asset.timeStart),
       timeEnd: String(asset.timeEnd)
     };

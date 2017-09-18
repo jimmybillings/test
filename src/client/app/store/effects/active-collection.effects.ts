@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Effect, Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Frame } from 'wazee-frame-formatter';
 
 import * as ActiveCollectionActions from '../actions/active-collection.actions';
 import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
@@ -67,34 +65,6 @@ export class ActiveCollectionEffects {
       this.store.create(factory => factory.snackbar.display('COLLECTION.ADD_TO_COLLECTION_TOAST', { collectionName: name }))
     );
 
-  @Effect({ dispatch: false })
-  public maybeChangeAssetRouteOnAddSuccess: Observable<Action> =
-  this.actions.ofType(ActiveCollectionActions.AddAssetSuccess.Type)
-    .do(() => {
-      if (!this.assetRouteActivated()) return;
-
-      const state: AppState = this.store.completeSnapshot();
-      const currentAsset: Asset = state.activeCollectionAsset.activeAsset;
-      const addedAsset: Asset = state.activeCollection.latestAddition.asset;
-      if (currentAsset.assetId !== addedAsset.assetId) return;
-
-      const addedMarkers: SubclipMarkersInterface.SubclipMarkers =
-        SubclipMarkersInterface.deserialize(state.activeCollection.latestAddition.markers);
-      const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(addedMarkers);
-      let addedTimeStart: number = duration.timeStart;
-      let addedTimeEnd: number = duration.timeEnd;
-      if (addedTimeEnd < 0) addedTimeEnd = undefined;
-      if (addedTimeStart < 0) addedTimeStart = undefined;
-      // ASSUMPTION: If the active collection happens to have two assets with the same id and markers the user just added,
-      // the user doesn't care which one we give him (and we can't tell which one is right anyway).
-      const newAsset: Asset =
-        state.activeCollection.collection.assets.items.find(asset =>
-          asset.assetId === addedAsset.assetId && asset.timeStart === addedTimeStart && asset.timeEnd === addedTimeEnd
-        );
-
-      this.activateAssetRouteFor(state.activeCollection.collection.id, currentAsset.assetId, newAsset);
-    });
-
   @Effect()
   public removeAsset: Observable<Action> = this.actions.ofType(ActiveCollectionActions.RemoveAsset.Type)
     .withLatestFrom(this.store.select(state => state.activeCollection.collection))
@@ -111,25 +81,6 @@ export class ActiveCollectionEffects {
       this.store.create(factory => factory.snackbar.display('COLLECTION.REMOVE_FROM_COLLECTION_TOAST', { collectionName: name }))
     );
 
-  @Effect({ dispatch: false })
-  public maybeChangeAssetRouteOnRemoveSuccess: Observable<Action> =
-  this.actions.ofType(ActiveCollectionActions.RemoveAssetSuccess.Type)
-    .do(() => {
-      if (!this.assetRouteActivated()) return;
-
-      const state: AppState = this.store.completeSnapshot();
-      const currentAsset: Asset = state.activeCollectionAsset.activeAsset;
-      const removedAsset: Asset = state.activeCollection.latestRemoval;
-      if (currentAsset.assetId !== removedAsset.assetId || currentAsset.uuid !== removedAsset.uuid) return;
-
-      const otherAsset: Asset =
-        state.activeCollection.collection.assets.items.find(asset =>
-          asset.assetId === currentAsset.assetId && asset.uuid !== currentAsset.uuid
-        );
-
-      this.activateAssetRouteFor(state.activeCollection.collection.id, currentAsset.assetId, otherAsset);
-    });
-
   @Effect()
   public updateAssetMarkers: Observable<Action> = this.actions.ofType(ActiveCollectionActions.UpdateAssetMarkers.Type)
     .withLatestFrom(this.store.select(state => state.activeCollection.collection))
@@ -144,29 +95,6 @@ export class ActiveCollectionEffects {
     private actions: Actions,
     private store: AppStore,
     private service: ActiveCollectionService,
-    private userPreferenceService: UserPreferenceService,  // For now, until we can directly map to user preference actions...
-    private router: Router
+    private userPreferenceService: UserPreferenceService  // For now, until we can directly map to user preference actions...
   ) { }
-
-  private assetRouteActivated(): boolean {
-    // Hacky.  But one cannot inject ActivatedRoute here and get any meaningful information.
-    // See https://github.com/ngrx/effects/issues/78#issuecomment-299108842
-    return this.router.routerState.snapshot.url.includes('/asset');
-  }
-
-  private activateAssetRouteFor(collectionId: number, currentAssetId: number, nextAsset: Asset) {
-    this.router.navigate([`/collections/${collectionId}/asset/${currentAssetId}`, this.routerParametersFor(nextAsset)]);
-  }
-
-  private routerParametersFor(asset: Asset): object {
-    let parameters = {};
-
-    if (asset) {
-      parameters = { ...parameters, uuid: asset.uuid };
-      if (asset.timeStart >= 0) parameters = { ...parameters, timeStart: String(asset.timeStart) };
-      if (asset.timeEnd >= 0) parameters = { ...parameters, timeEnd: String(asset.timeEnd) };
-    }
-
-    return parameters;
-  }
 }

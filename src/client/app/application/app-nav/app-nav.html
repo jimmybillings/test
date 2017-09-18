@@ -29,7 +29,7 @@
     
     <button *ngIf="userCan.viewCollectionTray() | async" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleCollectionTray()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
     
-    <button 
+    <a 
       *ngIf="(userCan.viewCartIcon() | async) && !userCan.administerQuotes()" 
       md-icon-button
       class="cart"
@@ -39,9 +39,9 @@
       <span class="asset-count" *ngIf="cartSize && cartSize > 0">
         <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
       </span>
-    </button>
+    </a>
 
-    <button 
+    <a 
       *ngIf="(userCan.viewCartIcon() | async) && userCan.administerQuotes()" 
       md-icon-button
       class="cart"
@@ -51,7 +51,7 @@
       <span class="asset-count" *ngIf="cartSize && cartSize > 0">
           <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
       </span>
-    </button>
+    </a>
 
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>
