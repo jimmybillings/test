@@ -89,7 +89,7 @@ section.preview-bk {
   }
   .toolbar-actions {
     text-align: right;
-    max-width: 174px;
+    max-width: 220px;
     @media screen and (max-width: $layout-breakpoint-xs)  {
       max-width: none;
 
@@ -139,7 +139,7 @@ section.preview-bk {
       }
       .list-price, .calculated-price {
         position: absolute;
-        bottom: 130px;
+        bottom: 167px;
         right: 37px;
         @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
           bottom: 90px;
@@ -161,7 +161,20 @@ section.preview-bk {
           }
         }
       }
-
+      &.searchAsset .list-price, 
+      &.searchAsset .calculated-price {
+        bottom: 130px;
+        // @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        //   bottom: 90px;
+        // }
+      }
+      &.quoteEditAsset .list-price, 
+      &.quoteEditAsset .calculated-price {
+        bottom: 211px;
+        // @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        //   bottom: 90px;
+        // }
+      }
       .contact-us-pricing {
         width: calc(100% - 32px);
         bottom: 135px;
