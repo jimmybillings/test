@@ -13,22 +13,21 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
       <section flex-gt-xs="65" flex="100" class="action-items" flex-order-xs="-1">
         <button
         md-button
-        [disabled]="!shouldShowCloneButton"
-        class="large-text is-outlined"
         color="primary"
+        [disabled]="!shouldShowCloneButton"
         (click)="onClickCloneQuoteButton()">
         {{ 'QUOTE.CLONE_QUOTE' | translate }}
         </button>
         <button
         md-button
-        class="large-text is-outlined"
         color="primary"
         (click)="onSaveAndNew()">
         {{ 'QUOTE.SAVE_AND_NEW' | translate }}
         </button>
         <button
           [disabled]="!canOpenQuoteDialog"
-          md-raised-button class="checkout"
+          md-raised-button
+          color="primary"
           (click)="onOpenQuoteDialog()">
           {{ 'QUOTE.CREATE_QUOTE_BTN' | translate }}
         </button>
