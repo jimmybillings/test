@@ -127,7 +127,8 @@ export class CartService {
       'cart/asset/lineItem',
       {
         body: this.formatBody(addAssetParameters),
-        parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
+        parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' },
+        loadingIndicator: true
       }
     ).subscribe(this.replaceCartWith);
   }
@@ -167,9 +168,13 @@ export class CartService {
     if (!!fieldToEdit.pricingAttributes) {
       fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };
     }
+
     Object.assign(lineItem, fieldToEdit);
-    this.api.put(Api.Orders, `cart/update/lineItem/${lineItem.id}`, { body: lineItem, parameters: { region: 'AAA' } })
-      .subscribe(this.replaceCartWith);
+
+    this.api.put(Api.Orders,
+      `cart/update/lineItem/${lineItem.id}`,
+      { body: lineItem, parameters: { region: 'AAA' }, loadingIndicator: true }
+    ).subscribe(this.replaceCartWith);
   }
 
   public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkersInterface.SubclipMarkers): void {
@@ -201,7 +206,7 @@ export class CartService {
   }
 
   public retrieveLicenseAgreements(): Observable<LicenseAgreements> {
-    return this.api.get(Api.Orders, 'cart/licensing');
+    return this.api.get(Api.Orders, 'cart/licensing', { loadingIndicator: true });
   }
 
   // Private methods

@@ -5,15 +5,28 @@ import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Quote Edit Component', () => {
-    let componentUnderTest: QuoteEditComponent, mockCapabilities: any, mockQuoteEditService: any, mockUiConfig: any,
-      mockDialogService: any, mockAssetService: any, mockWindow: any, mockUserPreference: any, mockRouter: any,
-      mockDocument: any, mockSnackbar: any, mockTranslateService: any, mockStore: MockAppStore,
-      mockCurrentUserService: any, mockPricingService: any;
+    let componentUnderTest: QuoteEditComponent;
+    let deleteQuoteDispatchSpy: jasmine.Spy;
+    let mockStore: MockAppStore;
+    let mockCapabilities: any;
+    let mockQuoteEditService: any;
+    let mockUiConfig: any;
+    let mockDialogService: any;
+    let mockAssetService: any;
+    let mockWindow: any;
+    let mockUserPreference: any;
+    let mockRouter: any;
+    let mockDocument: any;
+    let mockSnackbar: any;
+    let mockTranslateService: any;
+    let mockCurrentUserService: any;
+    let mockPricingService: any;
 
     beforeEach(() => {
       mockCapabilities = {
         cloneQuote: jasmine.createSpy('cloneQuote')
       };
+
       mockQuoteEditService = {
         state: { data: 'store' },
         data: { store: 'test data' },
@@ -25,7 +38,6 @@ export function main() {
         updateQuoteField: jasmine.createSpy('updateQuoteField'),
         sendQuote: jasmine.createSpy('sendQuote').and.returnValue(Observable.of({})),
         editLineItem: jasmine.createSpy('editLineItem'),
-        deleteQuote: jasmine.createSpy('deleteQuote').and.returnValue(Observable.of({})),
         createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({})),
         cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({})),
         bulkImport: jasmine.createSpy('bulkImport').and.returnValue(Observable.of({}))
@@ -69,6 +81,8 @@ export function main() {
       };
 
       mockStore = new MockAppStore();
+
+      deleteQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'delete');
 
       componentUnderTest =
         new QuoteEditComponent(
@@ -257,7 +271,7 @@ export function main() {
         componentUnderTest.quoteType = 'ProvisionalOrder';
         componentUnderTest.onOpenQuoteDialog();
         mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
-        expect(mockRouter.navigate).toHaveBeenCalledWith([`/commerce/quotes/1`]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes/1']);
       });
 
       it('Shows a success snack bar notification on succesfull submit', () => {
@@ -290,12 +304,8 @@ export function main() {
           mockDialogService.onAcceptCallback();
         });
 
-        it('deletes the quote', () => {
-          expect(mockQuoteEditService.deleteQuote).toHaveBeenCalled();
-        });
-
-        it('navigates to the correct route', () => {
-          expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes']);
+        it('dispatches the correct action', () => {
+          mockStore.expectDispatchFor(deleteQuoteDispatchSpy);
         });
       });
     });
@@ -432,10 +442,7 @@ export function main() {
         spyOn(componentUnderTest, 'showSnackBar');
         componentUnderTest.onCreateQuote();
 
-        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
-          key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED',
-          value: null
-        });
+        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({ key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED' });
       });
     });
 
@@ -450,10 +457,7 @@ export function main() {
         spyOn(componentUnderTest, 'showSnackBar');
         componentUnderTest.onCloneQuote();
 
-        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
-          key: 'QUOTE.CLONE_SUCCESS',
-          value: null
-        });
+        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({ key: 'QUOTE.CLONE_SUCCESS' });
       });
     });
 

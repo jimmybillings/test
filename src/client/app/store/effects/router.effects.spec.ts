@@ -179,5 +179,21 @@ export function main() {
         }
       ]
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToQuotes',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToQuotes.Type
+      },
+      customTests: [
+        {
+          it: 'navigates to /quotes',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes']);
+          }
+        }
+      ]
+    });
   });
 }

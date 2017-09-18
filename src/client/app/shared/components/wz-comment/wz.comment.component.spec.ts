@@ -133,35 +133,25 @@ export function main() {
       });
     });
 
-    describe('showEditCommentButton', () => {
+    describe('isCommentOwner', () => {
       describe('returns true', () => {
         it('when the userId is the same as the comment ownerId', () => {
           componentUnderTest.currentUserId = 1;
-          expect(componentUnderTest.showEditCommentButton(1)).toBe(true);
+          expect(componentUnderTest.isCommentOwner(1)).toBe(true);
         });
       });
 
       describe('returns false', () => {
         it('when the userId is NOT the same as the comment ownerId', () => {
           componentUnderTest.currentUserId = 1;
-          expect(componentUnderTest.showEditCommentButton(2)).toBe(false);
+          expect(componentUnderTest.isCommentOwner(2)).toBe(false);
         });
       });
     });
 
-    describe('showDeleteCommentButton', () => {
-      describe('returns true', () => {
-        it('when the userId is the same as the comment ownerId', () => {
-          componentUnderTest.currentUserId = 1;
-          expect(componentUnderTest.showDeleteCommentButton(1)).toBe(true);
-        });
-      });
-
-      describe('returns false', () => {
-        it('when the userId is NOT the same as the comment ownerId', () => {
-          componentUnderTest.currentUserId = 1;
-          expect(componentUnderTest.showDeleteCommentButton(2)).toBe(false);
-        });
+    describe('pluralize()', () => {
+      it('adds an \'s\'', () => {
+        expect(componentUnderTest.pluralize('Commenter')).toEqual('Commenters');
       });
     });
   });

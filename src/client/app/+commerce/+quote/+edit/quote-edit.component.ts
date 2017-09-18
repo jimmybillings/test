@@ -181,23 +181,13 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
 
   public onCloneQuote() {
     this.quoteEditService.cloneQuote(this.quoteEditService.state.data)
-      .do(() => {
-        this.showSnackBar({
-          key: 'QUOTE.CLONE_SUCCESS',
-          value: null
-        });
-      })
+      .do(() => this.showSnackBar({ key: 'QUOTE.CLONE_SUCCESS' }))
       .subscribe();
   }
 
   public onCreateQuote() {
     this.quoteEditService.createQuote()
-      .do(() => {
-        this.showSnackBar({
-          key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED',
-          value: null
-        });
-      })
+      .do(() => this.showSnackBar({ key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED' }))
       .subscribe();
   }
 
@@ -231,7 +221,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   private sendQuote(options: QuoteOptions): void {
     this.quoteEditService.sendQuote(options)
       .do(() => {
-        this.router.navigate([`/commerce/quotes/${this.quoteEditService.quoteId}`]);
+        this.router.navigate([`/quotes/${this.quoteEditService.quoteId}`]);
         this.showSnackBar({
           key: 'QUOTE.CREATED_FOR_TOAST',
           value: { emailAddress: options.ownerEmail }
@@ -283,8 +273,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   }
 
   private deleteQuote = (): void => {
-    this.quoteEditService.deleteQuote().subscribe(() => {
-      this.router.navigate(['/quotes']);
-    });
+    this.store.dispatch(factory => factory.quoteEdit.delete());
   }
 }

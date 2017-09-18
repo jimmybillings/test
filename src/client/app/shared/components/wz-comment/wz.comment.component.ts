@@ -3,7 +3,14 @@ import { Observable } from 'rxjs/Observable';
 
 import { AppStore } from '../../../app.store';
 import { FormFields } from '../../interfaces/forms.interface';
-import { Comments, Comment, ObjectType, CommentParentObject, CommentFormMode } from '../../interfaces/comment.interface';
+import {
+  Comments,
+  Comment,
+  ObjectType,
+  CommentParentObject,
+  CommentFormMode,
+  CommentAccess
+} from '../../interfaces/comment.interface';
 import { WzFormComponent } from '../../modules/wz-form/wz.form.component';
 import { Capabilities } from '../../services/capabilities.service';
 
@@ -79,12 +86,12 @@ export class WzCommentComponent {
     return this.store.select(state => state.comment[this._parentObject.objectType]);
   }
 
-  public showEditCommentButton(commentOwnerId: number): boolean {
+  public isCommentOwner(commentOwnerId: number): boolean {
     return commentOwnerId === this.currentUserId;
   }
 
-  public showDeleteCommentButton(commentOwnerId: number): boolean {
-    return commentOwnerId === this.currentUserId;
+  public pluralize(commentAccess: CommentAccess): string {
+    return commentAccess + 's';
   }
 
   private initializeData(): void {

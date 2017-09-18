@@ -18,7 +18,7 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
-        class: InternalActionFactory,
+        class: ActionFactory,
         name: 'loadSuccess',
         parameters: [{ some: 'quote' }]
       },
@@ -30,12 +30,47 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
+        class: ActionFactory,
+        name: 'delete',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Quote Edit] Delete'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
         class: InternalActionFactory,
         name: 'loadFailure',
         parameters: [{ some: 'error' }]
       },
       expectedAction: {
         type: '[Quote Edit] Load Failure',
+        error: { some: 'error' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'deleteSuccess',
+        parameters: [{ some: 'quote' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Delete Success',
+        quote: { some: 'quote' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'deleteFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Delete Failure',
         error: { some: 'error' }
       }
     });

@@ -1,3 +1,8 @@
+.app .mat-progress-bar {
+  top: 0;
+  z-index: 4;
+  position: fixed;
+}
 header.app-header {
   position: relative;
   width: 100%;

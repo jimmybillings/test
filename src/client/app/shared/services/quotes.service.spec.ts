@@ -1,23 +1,31 @@
+import { Observable } from 'rxjs/Observable';
+
 import { QuotesService } from './quotes.service';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api } from '../interfaces/api.interface';
-import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Quotes Service', () => {
-    let serviceUnderTest: QuotesService, mockApi: MockApiService, mockCartService: any, mockQuotesStore: any;
+    let serviceUnderTest: QuotesService;
+    let mockApi: MockApiService;
+    let mockCartService: any;
+    let mockQuotesStore: any;
 
     beforeEach(() => {
       mockApi = new MockApiService();
+
       mockCartService = {
         data: Observable.of({ cart: { projects: [] } })
       };
+
       mockQuotesStore = {
         data: Observable.of([{ id: 3, ownerUserId: 10 }, { id: 12, ownerUserId: 4 }]),
         state: [{ id: 3, ownerUserId: 10 }, { id: 12, ownerUserId: 4 }],
         setQuotes: jasmine.createSpy('setQuotes')
       };
+
       jasmine.addMatchers(mockApiMatchers);
+
       serviceUnderTest = new QuotesService(mockApi.injector, mockCartService, mockQuotesStore);
     });
 
