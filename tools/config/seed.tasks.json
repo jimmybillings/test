@@ -49,6 +49,7 @@
     "build.js.prod.aot",
     "build.bundles",
     "build.bundles.app.aot",
+    "minify.bundles",
     "build.index.prod"
   ],
   "build.prod.rollup.aot": [
