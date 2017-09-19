@@ -12,7 +12,8 @@ import {
   CommentAccess
 } from '../../interfaces/comment.interface';
 import { WzFormComponent } from '../../modules/wz-form/wz.form.component';
-import { Capabilities } from '../../services/capabilities.service';
+import { CurrentUserService } from '../../services/current-user.service';
+import { User } from '../../interfaces/user.interface';
 
 @Component({
   moduleId: module.id,
@@ -28,12 +29,14 @@ export class WzCommentComponent {
   }
   @Input() formFields: Array<FormFields>;
   @Input() userCanAddComments: boolean = true;
-  @Input() currentUserId: number;
   @Output() toggleCommentsVisibility: EventEmitter<null> = new EventEmitter();
   @ViewChild(WzFormComponent) wzForm: WzFormComponent;
+  private currentUserId: number;
   private _parentObject: CommentParentObject;
 
-  constructor(private store: AppStore) { }
+  constructor(private store: AppStore, private currentUserService: CurrentUserService) {
+    this.currentUserService.data.take(1).subscribe((user: User) => this.currentUserId = user.id);
+  }
 
   public get commentsExist(): Observable<boolean> {
     return this.comments.map(comments => comments.items.length > 0);

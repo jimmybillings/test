@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+
 import { WzCommentComponent } from './wz.comment.component';
 import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
@@ -5,7 +7,7 @@ export function main() {
   describe('Wz Comment Component', () => {
     let componentUnderTest: WzCommentComponent, mockStore: MockAppStore,
       loadSpy: jasmine.Spy, formSubmitSpy: jasmine.Spy, removeSpy: jasmine.Spy, changeToEditSpy: jasmine.Spy,
-      changeFormModeToAdd: jasmine.Spy;
+      changeFormModeToAdd: jasmine.Spy, mockCurrentUserService: any;
 
     const mockWzForm: any = {
       resetForm: jasmine.createSpy('resetForm'),
@@ -25,7 +27,9 @@ export function main() {
       changeToEditSpy = mockStore.createActionFactoryMethod('comment', 'changeFormModeToEdit');
       changeFormModeToAdd = mockStore.createActionFactoryMethod('comment', 'changeFormModeToAdd');
 
-      componentUnderTest = new WzCommentComponent(mockStore);
+      mockCurrentUserService = { data: Observable.of({ id: 10 }) };
+
+      componentUnderTest = new WzCommentComponent(mockStore, mockCurrentUserService);
       componentUnderTest.wzForm = mockWzForm;
       componentUnderTest.formFields = [{ name: 'some', value: '' }] as any;
     });
@@ -136,15 +140,13 @@ export function main() {
     describe('isCommentOwner', () => {
       describe('returns true', () => {
         it('when the userId is the same as the comment ownerId', () => {
-          componentUnderTest.currentUserId = 1;
-          expect(componentUnderTest.isCommentOwner(1)).toBe(true);
+          expect(componentUnderTest.isCommentOwner(10)).toBe(true);
         });
       });
 
       describe('returns false', () => {
         it('when the userId is NOT the same as the comment ownerId', () => {
-          componentUnderTest.currentUserId = 1;
-          expect(componentUnderTest.isCommentOwner(2)).toBe(false);
+          expect(componentUnderTest.isCommentOwner(11)).toBe(false);
         });
       });
     });

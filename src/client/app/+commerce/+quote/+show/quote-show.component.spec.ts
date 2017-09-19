@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   describe('Quote Show Component', () => {
     let componentUnderTest: QuoteShowComponent, mockCapabilities: any, mockQuoteService: any, mockUiConfig: any,
-      mockCurrentUserService: any, mockAppStore: MockAppStore;
+      mockAppStore: MockAppStore;
 
     beforeEach(() => {
       mockCapabilities = { administerQuotes: () => false };
@@ -17,12 +17,10 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: ['wow'] } } }))
       };
 
-      mockCurrentUserService = { data: Observable.of({ id: 10 }) };
-
       mockAppStore = new MockAppStore();
 
       componentUnderTest = new QuoteShowComponent(
-        mockCapabilities, mockQuoteService, mockUiConfig, mockCurrentUserService, mockAppStore
+        mockCapabilities, mockQuoteService, mockUiConfig, mockAppStore
       );
     });
 
@@ -119,16 +117,11 @@ export function main() {
           data: Observable.of({ data: {} }),
           state: mockState,
         };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, null);
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
         expect(componentUnderTest.hasDiscount).toBe(true);
       });
     });
 
-    describe('currentUserId', () => {
-      it('should access the data property on the currentUserService', () => {
-        componentUnderTest.currentUserId.take(1).subscribe(id => expect(id).toBe(10));
-      });
-    });
 
     describe('toggleCommentVisibility', () => {
       it('should toggle the showComments flag', () => {

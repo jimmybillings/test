@@ -12,7 +12,6 @@ import { WindowRef } from '../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteOptions, Project, FeeLineItem, Quote, AssetLineItem, QuoteState } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
-import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
@@ -50,7 +49,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public translate: TranslateService,
     public pricingStore: PricingStore,
     public router: Router,
-    public currentUserService: CurrentUserService,
     protected store: AppStore,
     public pricingService: PricingService
   ) {
@@ -132,10 +130,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
 
   public get commentCount(): Observable<number> {
     return this.store.select(state => state.comment.quote.pagination.totalCount);
-  }
-
-  public get currentUserId(): Observable<number> {
-    return this.currentUserService.data.map(user => user.id);
   }
 
   public addBulkOrderId(): void {

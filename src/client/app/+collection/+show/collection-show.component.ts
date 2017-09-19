@@ -8,7 +8,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../store/services/asset.service';
@@ -61,7 +60,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public collections: CollectionsService,
     public asset: AssetService,
     public collectionsStore: Store<CollectionsStoreI>,
-    public currentUser: CurrentUserService,
     public uiState: UiState,
     public uiConfig: UiConfig,
     public cart: CartService,
@@ -259,9 +257,5 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public get userCanEditCollection(): Observable<boolean> {
     return this.userCan.editCollection(this.activeCollection);
-  }
-
-  public get currentUserId(): Observable<number> {
-    return this.currentUser.data.map(user => user.id);
   }
 }

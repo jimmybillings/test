@@ -19,7 +19,6 @@ export function main() {
     let mockDocument: any;
     let mockSnackbar: any;
     let mockTranslateService: any;
-    let mockCurrentUserService: any;
     let mockPricingService: any;
 
     beforeEach(() => {
@@ -73,8 +72,6 @@ export function main() {
 
       mockRouter = { navigate: jasmine.createSpy('navigate') };
 
-      mockCurrentUserService = { data: Observable.of({ id: 10 }) };
-
       mockPricingService = {
         getPriceFor: jasmine.createSpy('getPriceFor'),
         getPriceAttributes: jasmine.createSpy('getPricingAttributes')
@@ -88,7 +85,7 @@ export function main() {
         new QuoteEditComponent(
           mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
           mockWindow, mockUserPreference, mockDocument, mockSnackbar, mockTranslateService,
-          null, mockRouter, mockCurrentUserService, mockStore, mockPricingService
+          null, mockRouter, mockStore, mockPricingService
         );
     });
 
@@ -103,7 +100,7 @@ export function main() {
       componentUnderTest = new QuoteEditComponent(
         mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
         mockWindow, mockUserPreference, mockDocument, mockSnackbar, mockTranslateService,
-        null, mockRouter, mockCurrentUserService, mockStore, mockPricingService
+        null, mockRouter, mockStore, mockPricingService
       );
       return componentUnderTest;
     };
@@ -232,12 +229,6 @@ export function main() {
         expect(componentUnderTest.showComments).toBe(true);
         componentUnderTest.toggleCommentsVisibility();
         expect(componentUnderTest.showComments).toBe(false);
-      });
-    });
-
-    describe('currentUserId', () => {
-      it('returns the current user\'s id', () => {
-        componentUnderTest.currentUserId.take(1).subscribe(userId => expect(userId).toBe(10));
       });
     });
 
