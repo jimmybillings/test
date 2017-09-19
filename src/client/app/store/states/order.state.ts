@@ -6,6 +6,7 @@ import { Order } from '../../shared/interfaces/commerce.interface';
 export interface State {
   readonly activeOrder: Order;
   readonly loading: boolean;
+  readonly checkingOut: boolean;
 };
 
 export const initialState: State = {
@@ -32,21 +33,28 @@ export const initialState: State = {
     creditMemoForOrderId: 0,
     projects: []
   },
-  loading: false
+  loading: false,
+  checkingOut: false
 };
 
 export function reducer(state: State = initialState, action: OrderActions.Any): State {
+  if (state === null) state = initialState;
+
   switch (action.type) {
     case OrderActions.Load.Type: {
       return { ...Common.clone(state), loading: true };
     }
 
     case OrderActions.LoadSuccess.Type: {
-      return { activeOrder: action.activeOrder, loading: false };
+      return { activeOrder: action.activeOrder, loading: false, checkingOut: state.checkingOut };
     }
 
     case OrderActions.LoadFailure.Type: {
       return { ...Common.clone(state), loading: false };
+    }
+
+    case OrderActions.SetCheckoutState.Type: {
+      return { ...Common.clone(state), checkingOut: action.checkingOut };
     }
 
     default: {

@@ -19,5 +19,13 @@ export class OrderEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.order.loadFailure(error))))
     );
 
+  @Effect()
+  public loadSuccess: Observable<Action> = this.actions.ofType(OrderActions.LoadSuccess.Type)
+    .filter((action: OrderActions.LoadSuccess) => this.store.match(true, state => state.order.checkingOut))
+    .mergeMap((action: Action) => Observable.from([
+      this.store.create(factory => factory.order.setCheckoutState(false)),
+      this.store.create(factory => factory.cart.load())
+    ]));
+
   constructor(private actions: Actions, private store: AppStore, private service: OrderService) { }
 }

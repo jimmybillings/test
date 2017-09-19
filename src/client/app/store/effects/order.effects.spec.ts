@@ -36,5 +36,46 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'loadSuccess',
+      comment: 'with order store checkingOut === true',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: OrderActions.LoadSuccess.Type
+      },
+      state: {
+        storeSectionName: 'order',
+        propertyName: 'checkingOut',
+        value: true
+      },
+      outputActionFactories: {
+        success: [{
+          sectionName: 'order',
+          methodName: 'setCheckoutState',
+          expectedArguments: [false]
+        },
+        {
+          sectionName: 'cart',
+          methodName: 'load',
+          expectedArguments: []
+        }]
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'loadSuccess',
+      comment: 'with order store checkingOut === false',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: OrderActions.LoadSuccess.Type
+      },
+      state: {
+        storeSectionName: 'order',
+        propertyName: 'checkingOut',
+        value: false
+      },
+      expectToEmitAction: false
+    });
   });
 }

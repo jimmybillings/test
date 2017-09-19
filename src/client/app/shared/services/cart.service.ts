@@ -214,13 +214,13 @@ export class CartService {
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;
     return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options }, loadingIndicator: true })
-      .do(() => this.store.dispatch(factory => factory.cart.load()));
+      .do(() => this.store.dispatch(factory => factory.order.setCheckoutState(true)));
   }
 
   private purchaseOnCredit(): Observable<number> {
     const options: AddressPurchaseOptions = this.addressPurchaseOptions;
     return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { body: { options }, loadingIndicator: true })
-      .do(() => this.store.dispatch(factory => factory.cart.load()))
+      .do(() => this.store.dispatch(factory => factory.order.setCheckoutState(true)))
       .map((order: Order) => order.id);
   }
 
