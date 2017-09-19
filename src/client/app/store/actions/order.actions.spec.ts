@@ -40,5 +40,17 @@ export function main() {
         error: { some: 'error' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'setCheckoutState',
+        parameters: [true]
+      },
+      expectedAction: {
+        type: '[Order] Set Checkout State',
+        checkingOut: true
+      }
+    });
   });
 }

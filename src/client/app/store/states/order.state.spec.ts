@@ -34,14 +34,14 @@ export function main() {
       customTests: [
         {
           it: 'with previous state, returns new state with updated order and loading: false',
-          previousState: { activeOrder: 'previous', loading: true },
+          previousState: { activeOrder: 'previous', loading: true, checkingOut: false },
           actionParameters: { activeOrder: 'new' },
-          expectedNextState: { activeOrder: 'new', loading: false }
+          expectedNextState: { activeOrder: 'new', loading: false, checkingOut: false }
         },
         {
           it: 'without previous state, returns new state with updated order and loading: false',
           actionParameters: { activeOrder: 'new' },
-          expectedNextState: { activeOrder: 'new', loading: false }
+          expectedNextState: { activeOrder: 'new', loading: false, checkingOut: false }
         }
       ]
     });
@@ -62,6 +62,26 @@ export function main() {
           it: 'without previous state, returns initial state',
           actionParameters: { error: { some: 'error' } },
           expectedNextState: OrderState.initialState
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'SetCheckoutState',
+      mutationTestData: {
+        previousState: { checkingOut: true }
+      },
+      customTests: [
+        {
+          it: 'with previous state, returns previous state but with action.checkingOut',
+          previousState: { some: 'stuff', checkingOut: false },
+          actionParameters: { checkingOut: true },
+          expectedNextState: { some: 'stuff', checkingOut: true }
+        },
+        {
+          it: 'without previous state, returns initial state but with action.checkingOut',
+          actionParameters: { checkingOut: true },
+          expectedNextState: { ...OrderState.initialState, checkingOut: true }
         }
       ]
     });

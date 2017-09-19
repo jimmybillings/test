@@ -234,6 +234,8 @@ export function main() {
 
     describe('purchase()', () => {
       let mockCheckoutStoreState: any;
+      let setCheckoutStateSpy: jasmine.Spy;
+
       describe('for a credit card', () => {
         beforeEach(() => {
           mockCheckoutStoreState = {
@@ -243,7 +245,7 @@ export function main() {
             state: mockCheckoutStoreState,
             updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
           };
-          loadSpy = mockStore.createActionFactoryMethod('cart', 'load');
+          setCheckoutStateSpy = mockStore.createActionFactoryMethod('order', 'setCheckoutState');
           serviceUnderTest = new CartService(mockStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
         });
 
@@ -263,7 +265,7 @@ export function main() {
         it('dispatches the proper action', () => {
           serviceUnderTest.purchase().subscribe();
 
-          expect(loadSpy).toHaveBeenCalled();
+          expect(setCheckoutStateSpy).toHaveBeenCalledWith(true);
         });
       });
 
@@ -276,7 +278,7 @@ export function main() {
             state: mockCheckoutStoreState,
             updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
           };
-          loadSpy = mockStore.createActionFactoryMethod('cart', 'load');
+          setCheckoutStateSpy = mockStore.createActionFactoryMethod('order', 'setCheckoutState');
           serviceUnderTest = new CartService(mockStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
         });
 
@@ -298,7 +300,7 @@ export function main() {
         it('dispatches the proper action', () => {
           serviceUnderTest.purchase().subscribe();
 
-          expect(loadSpy).toHaveBeenCalled();
+          expect(setCheckoutStateSpy).toHaveBeenCalledWith(true);
         });
       });
     });

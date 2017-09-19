@@ -12,6 +12,10 @@ export class ActionFactory {
   public loadSuccess(order: Order): LoadSuccess {
     return new LoadSuccess(order);
   }
+
+  public setCheckoutState(checkingOut: boolean): SetCheckoutState {
+    return new SetCheckoutState(checkingOut);
+  }
 }
 
 export class InternalActionFactory extends ActionFactory {
@@ -39,4 +43,10 @@ export class LoadFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export type Any = Load | LoadSuccess | LoadFailure;
+export class SetCheckoutState implements Action {
+  public static readonly Type = '[Order] Set Checkout State';
+  public readonly type = SetCheckoutState.Type;
+  constructor(public readonly checkingOut: boolean) { }
+}
+
+export type Any = Load | LoadSuccess | LoadFailure | SetCheckoutState;
