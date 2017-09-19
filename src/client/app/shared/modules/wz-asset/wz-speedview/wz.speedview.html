@@ -16,7 +16,6 @@
     </ul>
     <div *ngIf="speedviewAssetInfo.price && speedviewAssetInfo.price > 0" flex="35" class="price-info">
       <span class="clip-rights" *ngIf="speedviewAssetInfo.pricingType">{{ speedviewAssetInfo.pricingType | uppercase }}</span>
-      <span class="price">{{ speedviewAssetInfo.price | currency:'USD':true:'1.2-2' }} </span>
     </div>
   </section>
 </div>
