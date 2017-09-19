@@ -1,5 +1,6 @@
-import { Input, Output, EventEmitter, OnInit, OnChanges, ElementRef } from '@angular/core';
+import { Input, Output, EventEmitter, OnInit, OnChanges, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
+import { MdTextareaAutosize } from '@angular/material';
 import { FormModel } from './wz.form.model';
 import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
 
@@ -16,6 +17,7 @@ export class WzFormBase implements OnInit, OnChanges {
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
+  @ViewChild(MdTextareaAutosize) private autosize: MdTextareaAutosize;
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +49,7 @@ export class WzFormBase implements OnInit, OnChanges {
       for (let control in this.form.controls) {
         if (control === field.name) {
           (<FormControl>this.form.controls[control]).patchValue(field.value);
+          if (this.autosize) this.autosize.resizeToFitContent();
         }
       }
     });
@@ -143,6 +146,7 @@ export class WzFormBase implements OnInit, OnChanges {
     for (let controlName in this.form.controls) {
       if (!(fieldsToIgnore.includes(controlName))) {
         (<FormControl>this.form.controls[controlName]).reset();
+        if (this.autosize) this.autosize.resizeToFitContent();
       }
     }
     this.submitAttempt = false;
