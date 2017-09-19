@@ -62,6 +62,9 @@ order-show-component .project li.cart-asset .tools {
     min-height: 72px;
   }
 }
+order-show-component .project .project-info div {
+  padding: 8px;
+}
 .order-summary {
   padding-left: 4px;
   padding-right: 4px;
@@ -86,5 +89,10 @@ order-show-component .project li.cart-asset .tools {
   }
   .cart-total .subtotal {
     margin-top: 11px;
+  }
+}
+order-show-component .project line-item-rights-component {
+  section.read-only {
+    margin: 0 0 0 0;
   }
 }

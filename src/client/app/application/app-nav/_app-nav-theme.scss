@@ -34,6 +34,7 @@
     }
   }
 
+  a[md-icon-button].cart,
   button[md-icon-button].cart {
     .asset-count {
       background-color: rgba(mat-color($warn, 700), .9);

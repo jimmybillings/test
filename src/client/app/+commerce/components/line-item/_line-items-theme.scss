@@ -31,8 +31,20 @@
       box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
     }
   }
-
-  button.mat-icon-button.select-usage {
+  line-item-rights-component {
+    section {
+      &:hover {
+        background-color: rgba(mat-color($primary, darker), .075);
+      }
+      &.needs-rights {
+        color: mat-color($warn, darker);
+      }
+    }
+  }
+  button.mat-menu-item.select-usage {
     color: mat-color($warn, darker);
+    .mat-icon {
+      color: mat-color($warn, darker);
+    }
   }
 }

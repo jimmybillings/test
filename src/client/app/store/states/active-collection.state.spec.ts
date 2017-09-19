@@ -15,7 +15,7 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['Load', 'Set', 'LoadPage', 'UpdateAssetMarkers'],
+      actionClassName: ['Load', 'Set', 'LoadPage', 'AddAsset', 'RemoveAsset', 'UpdateAssetMarkers'],
       mutationTestData: {
         previousState: { loading: false }
       },
@@ -71,58 +71,6 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'AddAsset',
-      customTests: [
-        {
-          it: 'with previous state and markers, returns previous state but with latest addition and loading: true',
-          previousState: { some: 'stuff', loading: false },
-          actionParameters: {
-            asset: { some: 'asset' },
-            markers: { in: { frameNumber: 123, framesPerSecond: 29.97 }, out: { frameNumber: 456, framesPerSecond: 29.97 } }
-          },
-          expectedNextState: {
-            some: 'stuff',
-            latestAddition: {
-              asset: { some: 'asset' },
-              markers: { in: { frameNumber: 123, framesPerSecond: 29.97 }, out: { frameNumber: 456, framesPerSecond: 29.97 } }
-            },
-            loading: true
-          }
-        },
-        {
-          it: 'with previous state and no markers, returns previous state but with latest addition and loading: true',
-          previousState: { some: 'stuff', loading: false },
-          actionParameters: { asset: { some: 'asset' } },
-          expectedNextState: { some: 'stuff', latestAddition: { asset: { some: 'asset' } }, loading: true }
-        },
-        {
-          it: 'without previous state and with markers, returns initial state but with latest addition and loading: true',
-          actionParameters: {
-            asset: { some: 'asset' },
-            markers: { in: { frameNumber: 123, framesPerSecond: 29.97 }, out: { frameNumber: 456, framesPerSecond: 29.97 } }
-          },
-          expectedNextState: {
-            ...ActiveCollectionState.initialState,
-            latestAddition: {
-              asset: { some: 'asset' },
-              markers: { in: { frameNumber: 123, framesPerSecond: 29.97 }, out: { frameNumber: 456, framesPerSecond: 29.97 } }
-            },
-            loading: true
-          }
-        },
-        {
-          it: 'without previous state and no markers, returns initial state but with latest addition and loading: true',
-          actionParameters: { asset: { some: 'asset' } },
-          expectedNextState: {
-            ...ActiveCollectionState.initialState,
-            latestAddition: { asset: { some: 'asset' } },
-            loading: true
-          }
-        },
-      ]
-    });
-
-    stateSpecHelper.generateTestsFor({
       actionClassName: 'AddAssetSuccess',
       customTests: [
         {
@@ -146,34 +94,6 @@ export function main() {
             ...ActiveCollectionState.initialState,
             collection: { ...ActiveCollectionState.initialState.collection, assets: 'new', assetsCount: 1 },
             loading: false
-          }
-        }
-      ]
-    });
-
-    stateSpecHelper.generateTestsFor({
-      actionClassName: 'RemoveAsset',
-      customTests: [
-        {
-          it: 'with previous state, returns previous state but with latest removal and loading: true',
-          previousState: {
-            some: 'stuff',
-            loading: false
-          },
-          actionParameters: { asset: { some: 'asset' } },
-          expectedNextState: {
-            some: 'stuff',
-            latestRemoval: { some: 'asset' },
-            loading: true
-          }
-        },
-        {
-          it: 'without previous state, returns initial state but with latest removal and loading: true',
-          actionParameters: { asset: { some: 'asset' } },
-          expectedNextState: {
-            ...ActiveCollectionState.initialState,
-            latestRemoval: { some: 'asset' },
-            loading: true
           }
         }
       ]

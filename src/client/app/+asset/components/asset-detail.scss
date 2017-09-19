@@ -9,9 +9,17 @@ section.preview-bk {
     padding: 5px 0;
     position: relative;
     .breadcrumb {
-      a[md-button],
+      a[md-button] {
+        line-height: 40px;
+        min-width: 60px;
+
+      }
       .breadcrumb-current {
         line-height: 40px;
+        opacity: .65;
+        &.timecode {
+          font-size: .75em;
+        }
       }
       .breadcrumb-separator {
         display: inline-block;
@@ -22,6 +30,19 @@ section.preview-bk {
       .back-to-search {
         margin-right: 2px;
         margin-left: -8px;
+      }
+      .breadcrumb-timecode-separator {
+        position: relative;
+        width: 10px;
+        &::before {
+          content: "\e192";
+          font-family: 'Material Icons';
+          position: absolute;
+          top: -2px;
+          left: -14px;
+          font-size: 22px;
+          opacity: .4;
+        }
       }
     }
 
@@ -68,6 +89,11 @@ section.preview-bk {
   }
   .toolbar-actions {
     text-align: right;
+    max-width: 220px;
+    @media screen and (max-width: $layout-breakpoint-xs)  {
+      max-width: none;
+
+    }
   }
   div.primary-info {
     box-shadow: none;
@@ -94,6 +120,8 @@ section.preview-bk {
           margin-top: 12px;
           font-size: 1em;
           opacity: .65;
+          padding-left: 12px;
+          padding-right: 12px;
         }
       }
       .description-txt {
@@ -109,15 +137,17 @@ section.preview-bk {
           font-size: .9em;
           margin-top: 4px;
           margin-bottom: 160px;
+          padding-left: 12px;
+          padding-right: 12px;
         }
       }
       .list-price, .calculated-price {
         position: absolute;
-        bottom: 130px;
+        bottom: 174px;
         right: 37px;
         @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-          bottom: 90px;
-          right: 0;
+          bottom: 84px;
+          right: 16px;
         }
         span {
           display: inline-block;
@@ -135,7 +165,20 @@ section.preview-bk {
           }
         }
       }
-
+      &.searchAsset .list-price, 
+      &.searchAsset .calculated-price {
+        bottom: 130px;
+        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+          bottom: 38px;
+        }
+      }
+      &.quoteEditAsset .list-price, 
+      &.quoteEditAsset .calculated-price {
+        bottom: 222px;
+        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+          bottom: 131px;
+        }
+      }
       .contact-us-pricing {
         width: calc(100% - 32px);
         bottom: 135px;
@@ -159,14 +202,14 @@ section.preview-bk {
         }
         width: calc(100% - 42px);
         margin: 0;
-        padding-left: 16px; 
-        padding-right: 8px; 
+        padding: 0 8px 6px 16px;
         position: absolute;
         bottom: 16px;
         @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-          padding-left: 0; 
-          padding-right: 0;
-          bottom: -20px;
+          padding-left: 16px; 
+          padding-right: 16px;
+          padding-bottom: 0;
+          bottom: -65px;
           width: 100%;
         }
         button {

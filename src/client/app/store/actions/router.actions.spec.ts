@@ -39,6 +39,34 @@ export function main() {
     });
 
     actionsSpecHelper.generateTestFor({
+      comment: 'without markers',
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'goToSearchAssetDetails',
+        parameters: [42]
+      },
+      expectedAction: {
+        type: '[Router] Go To Search Asset Details',
+        assetId: 42,
+        markers: undefined
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      comment: 'with markers',
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'goToSearchAssetDetails',
+        parameters: [42, { some: 'markers' }]
+      },
+      expectedAction: {
+        type: '[Router] Go To Search Asset Details',
+        assetId: 42,
+        markers: { some: 'markers' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'followRedirect',

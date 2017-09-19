@@ -20,14 +20,15 @@
       <button
         *ngIf="shouldShowLicenseDetailsBtn()"
         md-button
+        class="is-outlined"
         color="primary"
-        class="is-outlined large-text"
         (click)="showLicenseAgreements()">
           {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
       </button>
       <button
         [disabled]="!userCanProceed"
-        md-raised-button class="checkout"
+        color="primary"
+        md-raised-button
         (click)="checkout()">
           {{ 'CART.PROCEED_BTN_LABEL' | translate }}
       </button>

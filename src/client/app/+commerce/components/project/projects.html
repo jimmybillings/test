@@ -6,12 +6,14 @@
 <section class="projects">
 	<div class="project" *ngFor="let project of projects">
 		<header class="project-info" layout-gt-xs="row" layout="column">
-			<div flex="100" flex-gt-sm="70" flex-order-xs="2">
-				<project-info-component
-					[name]="project.name"
-					[clientName]="project.clientName">
-				</project-info-component>
-			</div>
+			<project-info-component
+				flex-gt-xs="nogrow" flex-order-xs="2"
+				[ngClass]="{'read-only' : readOnly}"
+				[readOnly]="readOnly"
+				[name]="project.name"
+				[clientName]="project.clientName"
+				(showEditDialog)="onEdit(project)">
+			</project-info-component>
 			<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
 				<project-actions-component
 					*ngIf="!readOnly"

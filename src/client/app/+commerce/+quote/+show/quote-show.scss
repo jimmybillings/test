@@ -62,3 +62,18 @@ quote-show-component .project .assets {
 commerce-component wz-comment > section {
   padding: 6px 0 28px 0;
 }
+quotes-component .reject-quote.mat-button .mat-icon,
+.cart-total .reject-quote .mat-button .mat-icon {
+    height: 26px;
+    padding-right: 3px;
+    margin-left: -5px;
+}
+.cart-total .reject-quote {
+  @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) {
+    margin-top: 16px;
+  }
+}
+.cart-total .action-items {
+  white-space: nowrap;
+  text-align: right;
+}

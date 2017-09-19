@@ -156,6 +156,20 @@ export function main() {
       });
     });
 
+    describe('get trStringForRightsPackage()', () => {
+      it('returns "QUOTE.ADD_RIGHTS_PACKAGE_TITLE" when there is a rights attributes already exist', () => {
+        componentUnderTest.hasAttributes = false;
+
+        expect(componentUnderTest.trStringForRightsPackage).toBe('QUOTE.ADD_RIGHTS_PACKAGE_TITLE');
+      });
+
+      it('returns "QUOTE.EDIT_RIGHTS_PACKAGE_TITLE" when there are not rights attributes', () => {
+        componentUnderTest.hasAttributes = true;
+
+        expect(componentUnderTest.trStringForRightsPackage).toBe('QUOTE.EDIT_RIGHTS_PACKAGE_TITLE');
+      });
+    });
+
     describe('get showDeleteCostMultiplierBtn()', () => {
       describe('returns true', () => {
         it('when the user can administer quotes and the line item has a multiplier', () => {
