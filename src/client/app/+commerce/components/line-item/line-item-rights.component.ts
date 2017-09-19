@@ -6,18 +6,28 @@ import { SelectedPriceAttributes } from '../../../shared/interfaces/common.inter
   selector: 'line-item-rights-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template:
-  `<section [ngClass]="{'read-only': readOnly, 'needs-rights': !hasAttributes}" (click)="showPricingDialog.emit()">
-    <header>{{'QUOTE.RIGHTS_PACKAGE_TITLE' | translate}}</header>
-    <span *ngIf="!hasAttributes" class="cart-asset-metadata md-caption">
-      <strong>{{'QUOTE.RIGHTS_PACKAGE_NOT_SELECTED_MSG' | translate}}</strong>
-    </span>
-    <span *ngFor="let right of rights" class="cart-asset-metadata md-caption">
+  `
+  <ng-container *ngIf="rightsManaged == 'Rights Managed'">
+    <section [ngClass]="{'read-only': readOnly, 'needs-rights': !hasAttributes}" (click)="showPricingDialog.emit()">
+      <header>{{'QUOTE.RIGHTS_PACKAGE_TITLE' | translate}}</header>
+      <span *ngIf="!hasAttributes" class="cart-asset-metadata md-caption">
+        <strong>{{'QUOTE.RIGHTS_PACKAGE_NOT_SELECTED_MSG' | translate}}</strong>
+      </span>
+      <span *ngFor="let right of rights" class="cart-asset-metadata md-caption">
       <strong>{{right.priceAttributeName}}: </strong> {{right.selectedAttributeValue}}
-    </span>
-  </section>`
+      </span>
+    </section>
+  </ng-container>
+  <ng-container *ngIf="rightsManaged == 'Royalty Free'">
+    <section class="read-only">
+      <header class="royalty-free">{{rightsManaged}}</header>
+    </section>
+  </ng-container>
+  `
 })
 export class LineItemRightsComponent {
   @Input() rights: Array<SelectedPriceAttributes>;
+  @Input() rightsManaged: string;
   @Input() hasAttributes: boolean;
   @Input() readOnly: boolean = false;
   @Output() showPricingDialog: EventEmitter<null> = new EventEmitter();
