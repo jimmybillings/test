@@ -24,6 +24,9 @@
         color: mat-color($mat-grey, 50, .4);
         background-color: mat-color($mat-grey, 400, .15);
       }
+      .view-details-pg {
+        @include text-contrast(mat-color($foreground, base));
+      }
     }
     .preview::before {
       background-color: rgba(mat-color($mat-grey, 50), 1);
