@@ -17,21 +17,23 @@
       </span>
 		</div>
     <div flex="100" layout="row" layout-align="end center">
-      <button
-        *ngIf="shouldShowLicenseDetailsBtn()"
-        md-button
-        class="is-outlined"
-        color="primary"
-        (click)="showLicenseAgreements()">
-          {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
-      </button>
-      <button
-        [disabled]="!userCanProceed"
-        color="primary"
-        md-raised-button
-        (click)="checkout()">
-          {{ 'CART.PROCEED_BTN_LABEL' | translate }}
-      </button>
+      <section class="action-items" flex="100" flex-gt-xs="50">
+        <button
+          *ngIf="shouldShowLicenseDetailsBtn()"
+          md-button
+          class="is-outlined"
+          color="primary"
+          (click)="showLicenseAgreements()">
+            {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
+        </button>
+        <button
+          [disabled]="!userCanProceed"
+          color="primary"
+          md-raised-button
+          (click)="checkout()">
+            {{ 'CART.PROCEED_BTN_LABEL' | translate }}
+        </button>
+      </section>
     </div>
     <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf='showUsageWarning'>
       {{ 'CART.SELECT_USAGE_WARN' | translate }}

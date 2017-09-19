@@ -172,6 +172,8 @@ section.preview-bk {
           bottom: 38px;
         }
       }
+      &.cartAsset .list-price, 
+      &.cartAsset .calculated-price,
       &.quoteEditAsset .list-price, 
       &.quoteEditAsset .calculated-price {
         bottom: 222px;
