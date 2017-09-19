@@ -131,17 +131,16 @@
         START: FORM INPUT FOR textarea
       -->
     <md-input-container *ngIf="(field.type == 'textarea')">
-      <textarea mdInput
-      class="md-block"
-      name="{{field.name}}"
-      [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
-      placeholder="{{field.label | translate}}"
-      formControlName="{{field.name}}"
-      [required]="isRequiredField(field)"
-      rows="1"
-      mdTextareaAutosize
-      id="{{field.name}}"
-      ></textarea>
+      <textarea
+        mdInput
+        name="{{field.name}}"
+        [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+        placeholder="{{field.label | translate}}"
+        formControlName="{{field.name}}"
+        [required]="isRequiredField(field)"
+        mdTextareaAutosize
+        id="{{field.name}}">
+      </textarea>
       <md-hint
         *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart"
         align="start">
