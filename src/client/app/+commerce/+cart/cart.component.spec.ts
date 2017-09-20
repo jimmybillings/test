@@ -6,7 +6,7 @@ import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 export function main() {
   describe('Cart Component', () => {
     let componentUnderTest: CartComponent, mockCapabilities: any, mockAppStore: MockAppStore, mockUiConfig: any,
-      mockCartService: any, mockCurrentUserService: any;
+      mockCartService: any;
 
     beforeEach(() => {
       mockCapabilities = { administerQuotes: () => false };
@@ -15,9 +15,8 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: ['config'] } } }))
       };
       mockCartService = { state: { data: { id: 77 } } };
-      mockCurrentUserService = { data: Observable.of({ id: 10 }) };
       componentUnderTest = new CartComponent(
-        mockCapabilities, mockAppStore, mockUiConfig, mockCartService, mockCurrentUserService
+        mockCapabilities, mockAppStore, mockUiConfig, mockCartService
       );
     });
 
@@ -62,12 +61,6 @@ export function main() {
       it('selects the right part of the store', () => {
         mockAppStore.createStateSection('comment', { cart: { pagination: { totalCount: 1000 } } });
         componentUnderTest.commentCount.take(1).subscribe(count => expect(count).toBe(1000));
-      });
-    });
-
-    describe('currentUserId', () => {
-      it('maps the currentUserService\'s data store to the user Id', () => {
-        componentUnderTest.currentUserId.take(1).subscribe(id => expect(id).toBe(10));
       });
     });
 

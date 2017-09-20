@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { AssetDetailComponent } from './asset-detail.component';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 import { enhanceAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
@@ -150,21 +151,13 @@ export function main() {
     });
 
     describe('canComment getter', () => {
-      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
-        { assetType: 'cartAsset', expectedResult: true },
-        { assetType: 'collectionAsset', expectedResult: true },
-        { assetType: 'orderAsset', expectedResult: true },
-        { assetType: 'quoteEditAsset', expectedResult: true },
-        { assetType: 'quoteShowAsset', expectedResult: true },
-        { assetType: 'searchAsset', expectedResult: false }
-      ];
+      it('returns false when comment form config does not exist', () => {
+        expect(componentUnderTest.canComment).toBe(false);
+      });
 
-      tests.forEach(test => {
-        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
-          componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
-
-          expect(componentUnderTest.canComment).toBe(test.expectedResult);
-        });
+      it('returns true when comment form config does exist', () => {
+        componentUnderTest.commentFormConfig = [{ some: 'item' }] as any;
+        expect(componentUnderTest.canComment).toBe(true);
       });
     });
 
@@ -786,6 +779,75 @@ export function main() {
             });
           });
         });
+      });
+    });
+
+    describe('toggleCommentsVisibility()', () => {
+      it('toggles the \'showComments\' boolean', () => {
+        expect(componentUnderTest.showComments).toBe(undefined);
+        componentUnderTest.toggleCommentsVisibility();
+        expect(componentUnderTest.showComments).toBe(true);
+        componentUnderTest.toggleCommentsVisibility();
+        expect(componentUnderTest.showComments).toBe(false);
+      });
+    });
+
+    describe('userCanAddComments getter', () => {
+      describe('when the commentParentObject\'s objectType is \'collection\'', () => {
+        beforeEach(() => {
+          componentUnderTest.commentParentObject = {
+            objectId: 1,
+            objectType: 'collection'
+          };
+        });
+
+        it('returns an observable of true if the user can edit the collection', () => {
+          componentUnderTest.userCan = {
+            editCollection: jasmine.createSpy('editCollection').and.returnValue(Observable.of(true))
+          } as any;
+
+          let result: boolean;
+          componentUnderTest.userCanAddComments.take(1).subscribe(res => result = res);
+
+          expect(result).toBe(true);
+        });
+
+        it('returns an observable of false if the user can\'t edit the collection', () => {
+          componentUnderTest.userCan = {
+            editCollection: jasmine.createSpy('editCollection').and.returnValue(Observable.of(false))
+          } as any;
+
+          let result: boolean;
+          componentUnderTest.userCanAddComments.take(1).subscribe(res => result = res);
+
+          expect(result).toBe(false);
+        });
+      });
+
+      describe('when the commentParentObject\'s objectType isn\'t \'collection\'', () => {
+        beforeEach(() => {
+          componentUnderTest.commentParentObject = {
+            objectId: 1,
+            objectType: 'cart'
+          };
+        });
+
+        it('returns an observable of true', () => {
+          let result: boolean;
+
+          componentUnderTest.userCanAddComments.take(1).subscribe(res => result = res);
+
+          expect(result).toBe(true);
+        });
+      });
+    });
+
+    describe('commentCount getter', () => {
+      it('selects the right part of the store', () => {
+        mockStore.createStateSection('comment', { activeObjectType: 'lineItem', lineItem: { pagination: { totalCount: 10 } } });
+        let count: number;
+        componentUnderTest.commentCount.take(1).subscribe(c => count = c);
+        expect(count).toBe(10);
       });
     });
   });

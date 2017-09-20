@@ -22,11 +22,22 @@ export function main() {
     });
 
     describe('getCommentsFor()', () => {
-      it('calls the API correctly', () => {
-        serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: 123 });
+      describe('calls the API correctly', () => {
+        it('for a regular object type', () => {
+          serviceUnderTest.getCommentsFor({ objectType: 'collection', objectId: 123 });
 
-        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
-        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
+          expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
+        });
+
+        it('for a nested object type', () => {
+          serviceUnderTest.getCommentsFor({
+            objectType: 'collection', objectId: 123, nestedObjectType: 'lineItem', nestedObjectId: 'abc-123'
+          });
+
+          expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApiService.get).toHaveBeenCalledWithEndpoint('comment/byNestedType/collection/123/lineItem/abc-123');
+        });
       });
 
       describe('converts to response to the proper shape', () => {
@@ -70,13 +81,27 @@ export function main() {
     });
 
     describe('addCommentTo()', () => {
-      it('calls the API correctly', () => {
-        serviceUnderTest.addCommentTo({ objectType: 'collection', objectId: 123 }, { comment: 'wow' } as any);
+      describe('calls the API correctly', () => {
+        it('for a regular object type', () => {
+          serviceUnderTest.addCommentTo({ objectType: 'collection', objectId: 123 }, { comment: 'wow' } as any);
 
-        expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
-        expect(mockApiService.post).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
-        expect(mockApiService.post).toHaveBeenCalledWithBody({ comment: 'wow' });
-        expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
+          expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApiService.post).toHaveBeenCalledWithEndpoint('comment/byType/collection/123');
+          expect(mockApiService.post).toHaveBeenCalledWithBody({ comment: 'wow' });
+          expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
+        });
+
+        it('for a nested object type', () => {
+          serviceUnderTest.addCommentTo(
+            { objectType: 'collection', objectId: 123, nestedObjectType: 'lineItem', nestedObjectId: 'abc-123' },
+            { comment: 'wow' } as any
+          );
+
+          expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApiService.post).toHaveBeenCalledWithEndpoint('comment/byNestedType/collection/123/lineItem/abc-123');
+          expect(mockApiService.post).toHaveBeenCalledWithBody({ comment: 'wow' });
+          expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
+        });
       });
 
       it('calls getCommentsFor() with the correct objectType and objectId', () => {

@@ -7,7 +7,6 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
 import { CartService } from '../../shared/services/cart.service';
-import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Component({
   moduleId: module.id,
@@ -27,8 +26,7 @@ export class CartComponent implements OnInit {
     public userCan: CommerceCapabilities,
     private appStore: AppStore,
     private uiConfig: UiConfig,
-    private cartService: CartService,
-    private currentUserService: CurrentUserService
+    private cartService: CartService
   ) { }
 
   ngOnInit() {
@@ -74,10 +72,6 @@ export class CartComponent implements OnInit {
 
   public get commentCount(): Observable<number> {
     return this.appStore.select(state => state.comment.cart.pagination.totalCount);
-  }
-
-  public get currentUserId(): Observable<number> {
-    return this.currentUserService.data.map(user => user.id);
   }
 
   private goToNextTab(): void {

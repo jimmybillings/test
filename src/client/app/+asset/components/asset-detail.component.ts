@@ -10,6 +10,8 @@ import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 import { AppStore, ActionFactoryMapper } from '../../app.store';
 import { EnhancedAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
+import { CommentParentObject } from '../../shared/interfaces/comment.interface';
+import { FormFields } from '../../shared/interfaces/forms.interface';
 import { SearchState } from '../../shared/services/search-context.service';
 
 @Component({
@@ -41,6 +43,8 @@ export class AssetDetailComponent {
   @Input() public searchContext: SearchState;
   @Input() public pageSize: number;
   @Input() public assetMatchesCartAsset: boolean;
+  @Input() public commentParentObject: CommentParentObject;
+  @Input() public commentFormConfig: FormFields;
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
@@ -51,7 +55,7 @@ export class AssetDetailComponent {
   public showAssetSaveSubclip: boolean = false;
   public subclipMarkers: SubclipMarkers;
   public activeCollectionName: string;
-
+  public showComments: boolean;
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   private _asset: EnhancedAsset;
   private _activeCollection: Collection;
@@ -181,7 +185,7 @@ export class AssetDetailComponent {
   }
 
   public get canComment(): boolean {
-    return this.assetTypeIsOneOf('cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset');
+    return !!this.commentFormConfig;
   }
 
   public get canShare(): boolean {
@@ -269,6 +273,23 @@ export class AssetDetailComponent {
 
   public goToSearchAssetDetails(): void {
     this.store.dispatch(factory => factory.router.goToSearchAssetDetails(this._asset.assetId, this.subclipMarkers));
+  }
+
+  public toggleCommentsVisibility(): void {
+    this.showComments = !this.showComments;
+  }
+
+  public get userCanAddComments(): Observable<boolean> {
+    switch (this.commentParentObject.objectType) {
+      case 'collection':
+        return this.userCan.editCollection(this._activeCollection);
+      default:
+        return Observable.of(true);
+    }
+  }
+
+  public get commentCount(): Observable<number> {
+    return this.store.select(state => state.comment[state.comment.activeObjectType].pagination.totalCount);
   }
 
   private assetTypeIsOneOf(...assetTypes: AssetType[]) {

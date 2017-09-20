@@ -1,11 +1,30 @@
 <!-- there probably should be some kind of toggle for theater mode (dark background where preview is VS light)-->
 
+<section class="comments-section" layout="row" layout-align="center">
+  <div flex-gt-xs="95" 
+    flex-gt-md="85" 
+    flex-lg="80" 
+    flex-gt-lg="75" 
+    flex="100" 
+    layout-gt-xs="row" 
+    layout="column">
+    <wz-comment
+      flex
+      *ngIf="canComment"
+      [ngClass]="{ 'visible': showComments, 'not-visible': showComments === false }"
+      [formFields]="commentFormConfig"
+      [parentObject]="commentParentObject"
+      [userCanAddComments]="userCanAddComments | async"
+      (toggleCommentsVisibility)="toggleCommentsVisibility()">
+    </wz-comment>
+  </div>
+</section>
 <section class="preview-bk theater">
-  <div layout="row" layout-align="center" class="breadcrumb-container" layout-align="center">
+  <div layout="row" layout-align="center" class="breadcrumb-container">
     <div 
       flex-gt-xs="95" 
       flex-gt-md="85" 
-      flex-lg="75" 
+      flex-lg="80" 
       flex-gt-lg="75" 
       flex="100" 
       layout-gt-xs="row" 
@@ -33,7 +52,10 @@
         </ng-container>
       </div>
 
-      <div flex="auto" class="toolbar-actions" flex-order-xs="-1">
+      <div
+        class="toolbar-actions" 
+        flex="auto" flex-order-xs="-1"
+        [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
         <nav class="asset-options" flex layout-align="end stretch">
           <button [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)" md-icon-button [md-menu-trigger-for]="downloadCompMenu"
             title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 
@@ -115,8 +137,12 @@
             <md-icon>share</md-icon>
           </button>
 
-          <button md-icon-button *ngIf="canComment" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
-            <md-icon>mode_comment</md-icon>
+          <button md-icon-button
+            (click)="toggleCommentsVisibility()"
+            *ngIf="canComment"
+            title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
+              <md-icon>mode_comment</md-icon>
+              <span *ngIf="(commentCount | async) > 0" class="comment-count">{{commentCount| async}}</span>
           </button>
 
           <ng-container *ngIf="userCan.haveCollections()">
@@ -147,7 +173,7 @@
     </div>
   </div>
   <div layout="row" layout-align="center">
-    <div flex-gt-xs="95" flex-gt-md="85" flex-lg="75" flex-gt-lg="75" flex="100" layout="row" layout-xs="column">
+    <div flex-gt-xs="95" flex-gt-md="85" flex-lg="80" flex-gt-lg="75" flex="100" layout="row" layout-xs="column">
       <div flex-gt-xs="66" flex="100" flex-order-xs="2">
         <div flex="" layout="column" class="primary-info-t">
           <div class="primary-content-t" layout="row">
@@ -170,7 +196,7 @@
   </div>
 
   <div layout="row" flex="" layout-align="center">
-    <div flex-gt-xs="95" flex-gt-md="85" flex-lg="75" flex-gt-lg="75" flex="100" layout="row" layout-xs="column">
+    <div flex-gt-xs="95" flex-gt-md="85" flex-lg="80" flex-gt-lg="75" flex="100" layout="row" layout-xs="column">
       <div *ngIf="userCan.createSubclips(asset)" flex-gt-xs="66" flex="100" class="responsive-video">
         <wz-advanced-player
           [window]="window"

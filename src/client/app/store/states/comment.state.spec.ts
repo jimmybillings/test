@@ -63,10 +63,18 @@ export function main() {
       },
       customTests: [
         {
-          it: 'changes the activeObjectType to the action\'s objectType',
+          it: 'changes the activeObjectType to the action\'s objectType for a regular object type',
           actionParameters: { parentObject: { objectType: 'collection', objectId: 1 } },
           previousState: { activeObjectType: null },
           expectedNextState: { activeObjectType: 'collection' }
+        },
+        {
+          it: 'changes the activeObjectType to the action\'s objectType for a nested object type',
+          actionParameters: {
+            parentObject: { objectType: 'collection', objectId: 1, nestedObjectType: 'lineItem', nestedObjectId: 'abc-123' }
+          },
+          previousState: { activeObjectType: null },
+          expectedNextState: { activeObjectType: 'lineItem' }
         }
       ]
     });

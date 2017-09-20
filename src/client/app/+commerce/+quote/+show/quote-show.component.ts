@@ -7,7 +7,6 @@ import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { AppStore } from '../../../app.store';
 
 @Component({
@@ -29,7 +28,6 @@ export class QuoteShowComponent implements OnInit {
     public userCan: CommerceCapabilities,
     public quoteService: QuoteService,
     private uiConfig: UiConfig,
-    private currentUserService: CurrentUserService,
     private appStore: AppStore
   ) {
     this.quote = this.quoteService.data.map(state => state.data);
@@ -86,10 +84,6 @@ export class QuoteShowComponent implements OnInit {
         this.disableTab(message.payload);
       }
     }
-  }
-
-  public get currentUserId(): Observable<number> {
-    return this.currentUserService.data.map(user => user.id);
   }
 
   public toggleCommentsVisibility(): void {

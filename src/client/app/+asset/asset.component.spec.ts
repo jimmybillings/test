@@ -47,7 +47,7 @@ export function main() {
       mockCartService = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
-      mockRoute = { snapshot: { params: { id: '100' } } };
+      mockRoute = { params: Observable.of({ id: '100', uuid: 'abc-123' }), snapshot: { params: { id: '100' } } };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };
@@ -94,6 +94,56 @@ export function main() {
       it('Should call the config service to get global configurations', () => {
         componentUnderTest.ngOnInit();
         expect(mockUiConfig.get).toHaveBeenCalledWith('global');
+      });
+
+      describe('sets up the commentParentObject', () => {
+        it('for a collection asset', () => {
+          componentUnderTest.assetType = 'collectionAsset';
+          componentUnderTest.ngOnInit();
+
+          expect(componentUnderTest.commentParentObject).toEqual({
+            objectId: 100,
+            objectType: 'collection',
+            nestedObjectId: 'abc-123',
+            nestedObjectType: 'lineItem'
+          });
+        });
+
+        it('for a quoteEditAsset', () => {
+          componentUnderTest.assetType = 'quoteEditAsset';
+          componentUnderTest.ngOnInit();
+
+          expect(componentUnderTest.commentParentObject).toEqual({
+            objectId: 100,
+            objectType: 'quote',
+            nestedObjectId: 'abc-123',
+            nestedObjectType: 'lineItem'
+          });
+        });
+
+        it('for a quoteShowAsset', () => {
+          componentUnderTest.assetType = 'quoteShowAsset';
+          componentUnderTest.ngOnInit();
+
+          expect(componentUnderTest.commentParentObject).toEqual({
+            objectId: 100,
+            objectType: 'quote',
+            nestedObjectId: 'abc-123',
+            nestedObjectType: 'lineItem'
+          });
+        });
+
+        it('for a cart asset', () => {
+          componentUnderTest.assetType = 'cartAsset';
+          componentUnderTest.ngOnInit();
+
+          expect(componentUnderTest.commentParentObject).toEqual({
+            objectId: 100,
+            objectType: 'cart',
+            nestedObjectId: 'abc-123',
+            nestedObjectType: 'lineItem'
+          });
+        });
       });
     });
 

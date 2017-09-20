@@ -14,14 +14,14 @@ export class CommentService {
   public getCommentsFor(parentObject: CommentParentObject): Observable<Comments> {
     return this.apiService.get(
       Api.Identities,
-      `comment/byType/${this.urlSegmentFor(parentObject)}`
+      `comment/${this.urlSegmentFor(parentObject)}`
     ).map(this.convertToComments);
   }
 
   public addCommentTo(parentObject: CommentParentObject, comment: Comment): Observable<Comments> {
     return this.apiService.post(
       Api.Identities,
-      `comment/byType/${this.urlSegmentFor(parentObject)}`,
+      `comment/${this.urlSegmentFor(parentObject)}`,
       { body: comment, loadingIndicator: true }
     ).flatMap(() => this.getCommentsFor(parentObject));
   }
@@ -45,12 +45,14 @@ export class CommentService {
   public getCountsFor(parentObject: CommentParentObject): Observable<CommentCounts> {
     return this.apiService.get(
       Api.Identities,
-      `comment/byType/counts/${this.urlSegmentFor(parentObject)}`
+      `comment/byType/counts/${parentObject.objectType}/${parentObject.objectId}`
     ).map(this.convertCounts);
   }
 
-  private urlSegmentFor(parentObject: CommentParentObject): string {
-    return `${parentObject.objectType}/${parentObject.objectId}`;
+  private urlSegmentFor(parent: CommentParentObject): string {
+    return parent.nestedObjectId ?
+      `byNestedType/${parent.objectType}/${parent.objectId}/${parent.nestedObjectType}/${parent.nestedObjectId}` :
+      `byType/${parent.objectType}/${parent.objectId}`;
   }
 
   private convertToComments = (comments: CommentsApiResponse): Comments => {

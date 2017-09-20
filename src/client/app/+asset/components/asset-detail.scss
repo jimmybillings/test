@@ -94,6 +94,22 @@ section.preview-bk {
       max-width: none;
 
     }
+    .asset-options {
+      span.comment-count {
+        position: absolute;
+        top:0;
+        right: -2px;
+        border-radius: 2px;
+        min-width: 14px;
+        font-size: .8em;
+        line-height: 1;
+        margin-right: 0;
+        margin-left: 0;
+        padding: 1px 2px;
+        border-width: 1px;
+        border-style: solid;
+      }
+    }
   }
   div.primary-info {
     box-shadow: none;
