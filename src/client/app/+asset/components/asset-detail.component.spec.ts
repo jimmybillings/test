@@ -97,6 +97,17 @@ export function main() {
       });
     });
 
+    describe('updateAssetInActiveCollection()', () => {
+      it('dispatches the expected action', () => {
+        const startFrame = new Frame(25).setFromFrameNumber(1);
+        const endFrame = new Frame(25).setFromFrameNumber(2);
+        componentUnderTest.subclipMarkers = { in: startFrame, out: endFrame } as any;
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'updateAssetMarkers');
+        componentUnderTest.updateAssetInActiveCollection();
+        mockStore.expectDispatchFor(spy, componentUnderTest.asset, componentUnderTest.subclipMarkers);
+      });
+    });
+
     describe('downloadComp()', () => {
       it('Should emit an event to download a comp with the right parameters', () => {
         spyOn(componentUnderTest.onDownloadComp, 'emit');
@@ -700,6 +711,42 @@ export function main() {
           });
       });
     });
+
+    describe('canUpdateInActiveCollection getter', () => {
+      const tests: {
+        assetType: AssetType, matchingUuid: boolean, subclipsSet: boolean, subclipsExact: boolean, expectedResult: boolean
+      }[] = [
+          { assetType: 'cartAsset', matchingUuid: true, subclipsSet: true, subclipsExact: false, expectedResult: false },
+          { assetType: 'orderAsset', matchingUuid: true, subclipsSet: false, subclipsExact: false, expectedResult: false },
+          { assetType: 'quoteEditAsset', matchingUuid: false, subclipsSet: true, subclipsExact: false, expectedResult: false },
+          { assetType: 'searchAsset', matchingUuid: false, subclipsSet: false, subclipsExact: false, expectedResult: false },
+          { assetType: 'collectionAsset', matchingUuid: false, subclipsSet: true, subclipsExact: false, expectedResult: false },
+          { assetType: 'collectionAsset', matchingUuid: true, subclipsSet: false, subclipsExact: false, expectedResult: false },
+          { assetType: 'collectionAsset', matchingUuid: true, subclipsSet: true, subclipsExact: false, expectedResult: true },
+          { assetType: 'collectionAsset', matchingUuid: true, subclipsSet: true, subclipsExact: true, expectedResult: false }
+        ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}' 
+        when the collection has a version of that asset ${test.matchingUuid ? 'with' : 'without'} matching UUID 
+        and the subclip markers ${test.subclipsSet ? 'were' : 'were not'} changed
+        ${test.subclipsExact && ' to match existing asset subclips'}`, () => {
+            collection.assets.items.push({ assetId: 1, timeStart: 40, timeEnd: 80 } as Asset);
+            componentUnderTest.activeCollection = collection;
+            componentUnderTest.subclipMarkers = test.subclipsSet ? {
+              in: new Frame(25).setFromFrameNumber(1),
+              out: test.subclipsExact ? new Frame(25).setFromFrameNumber(2) : new Frame(25).setFromFrameNumber(3)
+            } : null;
+            componentUnderTest.asset = enhanceAsset({
+              ...asset,
+              uuid: test.matchingUuid ? 'MNOP' : 'NOPE'
+            }, test.assetType);
+            componentUnderTest.showAssetSaveSubclip = test.subclipsSet;
+            expect(componentUnderTest.canUpdateInActiveCollection).toBe(test.expectedResult);
+          });
+      });
+    });
+
 
     describe('routerLinkForAssetParent()', () => {
       describe('returns the correct routerLink', () => {

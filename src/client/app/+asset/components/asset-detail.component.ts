@@ -134,6 +134,14 @@ export class AssetDetailComponent {
       (this._asset.type === 'collectionAsset' && (this.activeCollectionContainsAssetId || this.showAssetSaveSubclip));
   }
 
+  public get canUpdateInActiveCollection(): boolean {
+    return this._asset.type === 'collectionAsset' && this.showAssetSaveSubclip && this.activeCollectionContainsAssetUuid &&
+      !this._activeCollection.assets.items.some((collectionAsset: Asset) => {
+        const duration = durationFrom(this.subclipMarkers);
+        return collectionAsset.timeStart === duration.timeStart && collectionAsset.timeEnd === duration.timeEnd;
+      });
+  }
+
   public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
     this.subclipMarkers = initialMarkers;
     this.showAssetSaveSubclip = false;
@@ -162,6 +170,10 @@ export class AssetDetailComponent {
 
   public removeAssetFromActiveCollection(): void {
     this.store.dispatch(factory => factory.activeCollection.removeAsset(this._asset));
+  }
+
+  public updateAssetInActiveCollection(): void {
+    this.store.dispatch(factory => factory.activeCollection.updateAssetMarkers(this._asset, this.subclipMarkers));
   }
 
   public downloadComp(assetId: any, compType: any): void {
