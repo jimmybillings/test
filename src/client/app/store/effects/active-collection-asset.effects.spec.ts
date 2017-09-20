@@ -106,5 +106,32 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'loadAssetOnCollectionLoadSuccess',
+      comment: 'when the asset UUID doesn\'t exist in the collection',
+      effectsInstantiator: instantiator,
+      state: [
+        {
+          storeSectionName: 'activeCollectionAsset',
+          propertyName: 'loadingUuid',
+          value: 'xyz-not-present'
+        },
+        {
+          storeSectionName: 'activeCollection',
+          value: { collection: { id: 1, assets: { items: [{ assetId: 50, uuid: 'abc-123', timeStart: 500, timeEnd: 5000 }] } } }
+        }
+      ],
+      inputAction: {
+        type: ActiveCollectionActions.LoadSuccess.Type
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'activeCollectionAsset',
+          methodName: 'loadFailure',
+          expectedArguments: [{ status: 404 }]
+        }
+      }
+    });
   });
 }
