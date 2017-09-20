@@ -22,40 +22,39 @@ export class CartAssetEffects {
 
   @Effect() loadAssetOnCartLoadSuccess: Observable<Action> = this.actions.ofType(CartActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
-    .filter(([action, state]: [CartActions.LoadSuccess, AppState]) => state.cartAsset.loadingUuid !== null)
-    .map(([action, state]: [CartActions.LoadSuccess, AppState]) => {
-      const loadParameters: Common.ChildAssetLoadParameters
-        = this.createAssetLoadParametersFor(state.cart.data, state.cartAsset.loadingUuid);
-      return this.store.create(factory => factory.cartAsset.loadAfterCartAvailable(loadParameters));
-    });
+    .filter(([action, state]: [CartActions.LoadSuccess, AppState]) => !!state.cartAsset.loadingUuid)
+    .map(([action, state]: [CartActions.LoadSuccess, AppState]) =>
+      this.createNextActionFor(state.cart.data, state.cartAsset.loadingUuid)
+    );
 
   @Effect()
   public load: Observable<Action> = this.actions.ofType(CartAssetActions.Load.Type)
     .withLatestFrom(this.store.select(state => state.cart.data))
-    .map(([action, cart]: [CartAssetActions.Load, Commerce.Cart]) => {
-      let mapper: InternalActionFactoryMapper;
-      if (cart.id === null) {
-        mapper = (factory) => factory.cart.load();
-      } else {
-        const loadParameters: Common.ChildAssetLoadParameters = this.createAssetLoadParametersFor(cart, action.assetUuid);
-        mapper = (factory) => factory.cartAsset.loadAfterCartAvailable(loadParameters);
-      }
-      return this.store.create(mapper);
-    });
+    .map(([action, cart]: [CartAssetActions.Load, Commerce.Cart]) =>
+      this.createNextActionFor(cart, action.assetUuid)
+    );
 
   constructor(private actions: Actions, private store: AppStore, private service: AssetService) { }
 
-  private createAssetLoadParametersFor(cart: Commerce.Cart, assetUuid: string): Common.ChildAssetLoadParameters {
-    const lineItems: Commerce.AssetLineItem[] =
-      cart.projects.reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
+  private createNextActionFor(cart: Commerce.Cart, assetUuid: string): Action {
+    return this.store.create(this.nextActionMapperFor(cart, assetUuid));
+  }
 
-    const asset: Commerce.Asset = lineItems.find(lineItem => lineItem.id === assetUuid).asset;
+  private nextActionMapperFor(cart: Commerce.Cart, assetUuid: string): InternalActionFactoryMapper {
+    if (cart.id === null) return factory => factory.cart.load();
 
-    return {
-      id: String(asset.assetId),
-      uuid: assetUuid,
-      timeStart: String(asset.timeStart),
-      timeEnd: String(asset.timeEnd)
-    };
+    const lineItem: Commerce.AssetLineItem = cart.projects
+      .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
+      .find(lineItem => lineItem.id === assetUuid);
+
+    if (lineItem) {
+      const asset: Commerce.Asset = lineItem.asset;
+
+      return factory => factory.cartAsset.loadAfterCartAvailable({
+        id: String(asset.assetId), uuid: assetUuid, timeStart: String(asset.timeStart), timeEnd: String(asset.timeEnd)
+      });
+    }
+
+    return factory => factory.cartAsset.loadFailure({ status: 404 });
   }
 }
