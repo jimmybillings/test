@@ -174,8 +174,8 @@ wz-comment {
 }
 
 // animations to show/hide header action items specific to the page
+asset-detail .toolbar-actions.hide-for-comments,
 commerce-component header .tools.hide-for-comments,
-
 cart-component header .tools.hide-for-comments,
 orders-component header .tools.hide-for-comments,
 order-show-component header .tools.hide-for-comments,
@@ -187,6 +187,7 @@ quote-show-component header .tools.hide-for-comments,
   opacity: 0
 }
 
+asset-detail .toolbar-actions.comments-closed,
 cart-component header .tools.comments-closed,
 orders-component header .tools.comments-closed,
 order-show-component header .tools.comments-closed,

@@ -74,6 +74,7 @@ export class WzCommentComponent {
     this.store.dispatch(factory => factory.dialog.showConfirmation(
       {
         title: 'COMMENTS.DELETE_CONFIRMATION.TITLE',
+        message: 'COMMENTS.DELETE_CONFIRMATION.MESSAGE',
         accept: 'COMMENTS.DELETE_CONFIRMATION.ACCEPT',
         decline: 'COMMENTS.DELETE_CONFIRMATION.DECLINE'
       },
