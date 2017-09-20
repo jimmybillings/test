@@ -185,7 +185,7 @@ export class AssetDetailComponent {
   }
 
   public get canComment(): boolean {
-    return this.assetTypeIsOneOf('cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset');
+    return !!this.commentFormConfig;
   }
 
   public get canShare(): boolean {

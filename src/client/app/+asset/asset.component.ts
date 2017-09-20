@@ -94,6 +94,7 @@ export class AssetComponent implements OnInit, OnDestroy {
 
     this.routeSubscription = this.route.params.subscribe((params: any) => {
       this.commentParentObject = this.commentParentObjectFromRoute(params);
+      console.log(this.commentParentObject);
     });
   }
 

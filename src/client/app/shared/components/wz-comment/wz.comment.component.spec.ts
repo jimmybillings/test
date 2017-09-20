@@ -42,12 +42,6 @@ export function main() {
       it('should dispatch the getComments action', () => {
         mockStore.expectDispatchFor(loadSpy, { objectType: 'collection', objectId: 1 });
       });
-
-      it('should set the comments instance variable', () => {
-        componentUnderTest.comments.take(1).subscribe(comments =>
-          expect(comments).toEqual({ items: [{ some: 'comment' }], pagination: {} })
-        );
-      });
     });
 
     describe('onFormSubmit', () => {
@@ -134,6 +128,52 @@ export function main() {
         componentUnderTest.onDeleteCommentButtonClick({ some: 'comment', id: 2 } as any);
 
         mockStore.expectDispatchFor(removeSpy, jasmine.any(Object), jasmine.any(Function));
+      });
+    });
+
+    describe('closeComments', () => {
+      it('emits the toggleCommentsVisibility event', () => {
+        spyOn(componentUnderTest.toggleCommentsVisibility, 'emit');
+        componentUnderTest.closeComments();
+        expect(componentUnderTest.toggleCommentsVisibility.emit).toHaveBeenCalled();
+      });
+    });
+
+    describe('comments getter', () => {
+      describe('selects the right part of the store', () => {
+        it('for a regular objectType', () => {
+          mockStore.createStateSection(
+            'comment',
+            { collection: { items: [{ some: 'comment' }], pagination: { totalCount: 10 } } }
+          );
+
+          componentUnderTest.parentObject = {
+            objectType: 'collection',
+            objectId: 1
+          };
+
+          componentUnderTest.comments.take(1).subscribe(comments =>
+            expect(comments).toEqual({ items: [{ some: 'comment' }], pagination: { totalCount: 10 } })
+          );
+        });
+
+        it('for a nested objectType', () => {
+          mockStore.createStateSection(
+            'comment',
+            { lineItem: { items: [{ some: 'lineItem' }], pagination: { totalCount: 10 } } }
+          );
+
+          componentUnderTest.parentObject = {
+            objectType: 'collection',
+            objectId: 1,
+            nestedObjectType: 'lineItem',
+            nestedObjectId: 'abc-123'
+          };
+
+          componentUnderTest.comments.take(1).subscribe(comments =>
+            expect(comments).toEqual({ items: [{ some: 'lineItem' }], pagination: { totalCount: 10 } })
+          );
+        });
       });
     });
 

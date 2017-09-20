@@ -86,7 +86,7 @@ export class WzCommentComponent {
   }
 
   public get comments(): Observable<Comments> {
-    const activeObjectType: ObjectType = this._parentObject.nestedObjectId && this._parentObject.nestedObjectType ?
+    const activeObjectType: ObjectType = this._parentObject.nestedObjectId ?
       'lineItem' : this._parentObject.objectType;
     return this.store.select(state => state.comment[activeObjectType]);
   }
