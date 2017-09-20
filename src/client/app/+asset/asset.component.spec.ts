@@ -47,7 +47,7 @@ export function main() {
       mockCartService = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
-      mockRoute = { snapshot: { params: { id: '100' } } };
+      mockRoute = { params: Observable.of({ id: '100' }), snapshot: { params: { id: '100' } } };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };

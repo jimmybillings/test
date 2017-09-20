@@ -24,6 +24,8 @@ import { Asset, Pojo } from '../shared/interfaces/common.interface';
 import * as SubclipMarkersInterface from '../shared/interfaces/subclip-markers';
 import { AppStore, StateMapper } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
+import { CommentParentObject, ObjectType } from '../shared/interfaces/comment.interface';
+import { FormFields } from '../shared/interfaces/forms.interface';
 import { PricingService } from '../shared/services/pricing.service';
 import { Common } from '../shared/utilities/common.functions';
 import { SearchContext, SearchState } from '../shared/services/search-context.service';
@@ -36,6 +38,7 @@ import { SearchContext, SearchState } from '../shared/services/search-context.se
 })
 export class AssetComponent implements OnInit, OnDestroy {
   @Input() assetType: AssetType;
+  @Input() commentFormConfig: FormFields;
   @Input()
   set stateMapper(stateMapper: StateMapper<Asset>) {
     this.assetSubscription = this.store.select(stateMapper)
@@ -54,6 +57,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
   public pageSize: number = 50;
+  public commentParentObject: CommentParentObject;
   private assetSubscription: Subscription;
   private routeSubscription: Subscription;
   private selectedAttributes: Pojo;
@@ -87,10 +91,15 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
+
+    this.routeSubscription = this.route.params.subscribe((params: any) => {
+      this.commentParentObject = this.commentParentObjectFromRoute(params);
+    });
   }
 
   public ngOnDestroy(): void {
     if (this.assetSubscription) this.assetSubscription.unsubscribe();
+    if (this.routeSubscription) this.routeSubscription.unsubscribe();
   }
 
   public previousPage(): void {
@@ -285,5 +294,31 @@ export class AssetComponent implements OnInit, OnDestroy {
     return this.cartAssetPriceAttributes.every((cartAttribute: SelectedPriceAttributes) => {
       return cartAttribute.selectedAttributeValue === this.appliedAttributes[cartAttribute.priceAttributeName];
     });
+  }
+
+  private commentParentObjectFromRoute(routeParams: any): CommentParentObject {
+    return {
+      objectId: Number(routeParams.id),
+      objectType: this.commentObjectTypeFrom(this.assetType),
+      nestedObjectId: routeParams.uuid,
+      nestedObjectType: 'lineItem'
+    };
+  }
+
+  private commentObjectTypeFrom(assetType: AssetType): ObjectType {
+    switch (assetType) {
+      case 'collectionAsset': {
+        return 'collection';
+      }
+
+      case 'quoteEditAsset':
+      case 'quoteShowAsset': {
+        return 'quote';
+      }
+
+      default: {
+        return 'cart';
+      }
+    }
   }
 }

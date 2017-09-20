@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: CollectionAssetComponent;
 
     beforeEach(() => {
-      componentUnderTest = new CollectionAssetComponent();
+      componentUnderTest = new CollectionAssetComponent(null, null);
     });
 
     it('has no testable functionality!', () => {

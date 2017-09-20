@@ -1,4 +1,11 @@
 <!-- there probably should be some kind of toggle for theater mode (dark background where preview is VS light)-->
+<wz-comment
+  [ngClass]="{ 'visible': showComments, 'not-visible': showComments === false }"
+  [formFields]="commentFormConfig"
+  [parentObject]="commentParentObject"
+  [userCanAddComments]="userCanAddComments | async"
+  (toggleCommentsVisibility)="toggleCommentsVisibility()">
+</wz-comment>
 
 <section class="preview-bk theater">
   <div layout="row" layout-align="center" class="breadcrumb-container" layout-align="center">
@@ -115,8 +122,12 @@
             <md-icon>share</md-icon>
           </button>
 
-          <button md-icon-button *ngIf="canComment" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
-            <md-icon>mode_comment</md-icon>
+          <button md-icon-button
+            (click)="toggleCommentsVisibility()"
+            *ngIf="canComment"
+            title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
+              <md-icon>mode_comment</md-icon>
+              <span *ngIf="(commentCount | async) > 0" class="comment-count">{{commentCount| async}}</span>
           </button>
 
           <ng-container *ngIf="userCan.haveCollections()">

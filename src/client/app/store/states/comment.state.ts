@@ -16,6 +16,7 @@ export interface State {
   readonly cart?: Comments;
   readonly collection?: Comments;
   readonly quote?: Comments;
+  readonly lineItem?: Comments;
   readonly counts?: CommentCounts;
 }
 
@@ -29,6 +30,7 @@ export const initialState: State = {
   cart: { items: [], pagination: defaultCommentPagination },
   collection: { items: [], pagination: defaultCommentPagination },
   quote: { items: [], pagination: defaultCommentPagination },
+  lineItem: { items: [], pagination: defaultCommentPagination },
   counts: {}
 };
 
@@ -56,9 +58,12 @@ export function reducer(state: State = initialState, action: CommentActions.Any)
 
     case CommentActions.Load.Type:
     case CommentActions.Remove.Type: {
+      const activeObjectType: ObjectType = action.parentObject.nestedObjectId
+        ? 'lineItem'
+        : action.parentObject.objectType;
       return {
         ...Common.clone(state),
-        activeObjectType: action.parentObject.objectType
+        activeObjectType: activeObjectType
       };
     }
 
