@@ -42,7 +42,9 @@
           }
         }
         .comment-count {
-          background-color: mat-color($primary, 500);
+          background-color: mat-color($primary);
+          @include text-contrast(mat-color($primary));
+          border-color: mat-color($background, card, 0);
         }
       }
     }
