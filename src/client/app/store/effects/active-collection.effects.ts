@@ -91,6 +91,15 @@ export class ActiveCollectionEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
+  @Effect()
+  public showSnackbarOnUpdateAssetMarkersSuccess: Observable<Action> =
+  this.actions.ofType(ActiveCollectionActions.UpdateAssetMarkersSuccess.Type)
+    .withLatestFrom(this.store.select(state => state.activeCollection.collection.name))
+    .map(([action, name]: [ActiveCollectionActions.UpdateAssetMarkersSuccess, string]) =>
+      this.store.create(factory => factory.snackbar.display('COLLECTION.UPDATE_IN_COLLECTION_TOAST', { collectionName: name }))
+    );
+
+
   constructor(
     private actions: Actions,
     private store: AppStore,

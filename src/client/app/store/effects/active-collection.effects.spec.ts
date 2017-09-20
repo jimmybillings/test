@@ -266,5 +266,26 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'showSnackbarOnUpdateAssetMarkersSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: ActiveCollectionActions.UpdateAssetMarkersSuccess.Type,
+        currentPageItems: { some: 'assets' }
+      },
+      state: {
+        storeSectionName: 'activeCollection',
+        propertyName: 'collection',
+        value: { name: 'someCollectionName' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['COLLECTION.UPDATE_IN_COLLECTION_TOAST', { collectionName: 'someCollectionName' }]
+        }
+      }
+    });
   });
 }
