@@ -6,12 +6,12 @@ import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { Common } from '../../../shared/utilities/common.functions';
 
 @Injectable()
-export class QuotesResolver implements Resolve<any> {
+export class QuotesResolver implements Resolve<boolean> {
   constructor(private quotesService: QuotesService, private userCan: CommerceCapabilities) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
     this.quotesService.getQuotes(this.userCan.administerQuotes(), Common.clone(route.params)).subscribe();
 
-    return this.quotesService.data.map((data => data.items.length > 0)).filter(data => data).take(1);
+    return this.quotesService.data.map((data => data.items !== null)).filter(data => data).take(1);
   }
 }

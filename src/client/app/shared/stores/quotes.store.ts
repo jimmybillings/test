@@ -5,7 +5,7 @@ import { Quote, Quotes } from '../interfaces/commerce.interface';
 import { LegacyAction } from '../interfaces/common.interface';
 
 const initState: Quotes = {
-  items: [],
+  items: null,
   pagination: {
     totalCount: 0,
     currentPage: 1,

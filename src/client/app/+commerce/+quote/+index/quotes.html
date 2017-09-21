@@ -24,11 +24,11 @@
 				(getPage)="changePage($event)">
 			</wz-pagination>
 		</div>
-		<md-card *ngIf="!(quotes | async).items">
+		<md-card *ngIf="!(quotes | async).items.length">
 			<md-card-title>You currently do not have any quotes</md-card-title>
 		</md-card>
 		<commerce-list
-			*ngIf="(quotes | async).items"
+			*ngIf="(quotes | async).items.length > 0"
 			[type]="'QUOTE'"
 			[items]="(quotes | async).items"
 			[userCanAdministerQuotes]="userCan.administerQuotes()"

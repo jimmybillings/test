@@ -40,7 +40,7 @@ export function main() {
       });
 
       it('should not resolve if there is not data in the store', () => {
-        instantiator({ items: [] });
+        instantiator({ items: null });
         resolverUnderTest.resolve(mockActivatedRoute).subscribe(resolved);
 
         expect(resolved).not.toHaveBeenCalled();
