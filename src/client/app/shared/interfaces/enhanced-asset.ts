@@ -8,7 +8,7 @@ interface InternalCache {
 
 export type AssetType = 'collectionAsset' | 'quoteEditAsset' | 'searchAsset' | 'quoteShowAsset' | 'orderAsset' | 'cartAsset';
 
-export function enhanceAsset(asset: commerce.Asset | common.Asset, type: AssetType, parentId?: Number): EnhancedAsset {
+export function enhanceAsset(asset: commerce.Asset | common.Asset, type: AssetType, parentId?: Number | string): EnhancedAsset {
   return Object.assign(new EnhancedAsset(), asset, { type, parentId }).normalize();
 }
 

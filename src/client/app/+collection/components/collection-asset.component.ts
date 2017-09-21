@@ -19,7 +19,6 @@ import { UiConfig } from '../../shared/services/ui.config';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CollectionAssetComponent implements OnInit {
-  public commentParentObject: CommentParentObject;
   public commentFormConfig: FormFields;
 
   constructor(private store: AppStore, private uiConfig: UiConfig) { }

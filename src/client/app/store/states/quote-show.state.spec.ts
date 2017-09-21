@@ -16,7 +16,7 @@ export function main() {
       customTests: [
         {
           it: 'returns the state with loading: true',
-          actionParameters: { quoteId: 47 },
+          actionParameters: { id: 47 },
           previousState: QuoteShowState.initialState,
           expectedNextState: { ...QuoteShowState.initialState, loading: true }
         }
