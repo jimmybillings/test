@@ -28,6 +28,24 @@ export function main() {
         expect(componentUnderTest.orderObservable).toEqual(Observable.of({ some: 'order', projects: [] }));
       });
 
+      it('creates an empty lineItems array for projects that don\'t have lineItems', () => {
+        mockAppStore.createStateElement(
+          'order',
+          'activeOrder',
+          {
+            some: 'order',
+            id: 42,
+            projects: [{ lineItems: [{ asset: {} }] }, {}]
+          }
+        );
+
+        let retrievedOrder: any;
+
+        new OrderShowComponent(mockWindow, mockAppStore).orderObservable.take(1).subscribe(order => retrievedOrder = order);
+
+        expect(retrievedOrder.projects[1].lineItems).toEqual([]);
+      });
+
       it('contains enhanced assets', () => {
         mockAppStore.createStateElement(
           'order',
