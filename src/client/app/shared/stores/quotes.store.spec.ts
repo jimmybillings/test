@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 export function main() {
   const initState: any = {
-    items: [],
+    items: null,
     pagination: {
       totalCount: 0,
       currentPage: 1,

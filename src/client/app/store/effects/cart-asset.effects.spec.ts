@@ -120,5 +120,39 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'loadAssetOnCartLoadSuccess',
+      comment: 'when the asset UUID doesn\'t exist in the cart',
+      effectsInstantiator: instantiator,
+      state: [
+        {
+          storeSectionName: 'cartAsset',
+          propertyName: 'loadingUuid',
+          value: 'xyz-not-present'
+        },
+        {
+          storeSectionName: 'cart',
+          value: {
+            data: {
+              id: 1,
+              projects: [
+                { lineItems: [{ id: 'abc-123', asset: { assetId: 50, uuid: 'abc-123', timeStart: 500, timeEnd: 5000 } }] }
+              ]
+            }
+          }
+        }
+      ],
+      inputAction: {
+        type: CartActions.LoadSuccess.Type
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'cartAsset',
+          methodName: 'loadFailure',
+          expectedArguments: [{ status: 404 }]
+        }
+      }
+    });
   });
 }
