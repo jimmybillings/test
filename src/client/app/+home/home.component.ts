@@ -26,7 +26,7 @@ import { Common } from '../shared/utilities/common.functions';
 export class HomeComponent implements OnInit, OnDestroy {
   public config: any;
   public data: Observable<Gallery>;
-  public isVideo: boolean = true;
+  public isVideo: boolean = false;
   public playlist: Subject<any> = new Subject();
   private configSubscription: Subscription;
 
