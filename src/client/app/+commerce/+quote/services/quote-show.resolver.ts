@@ -9,7 +9,7 @@ export class QuoteShowResolver implements Resolve<boolean> {
   constructor(private store: AppStore) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-    this.store.dispatch(factory => factory.quoteShow.load(parseInt(route.params.quoteId)));
+    this.store.dispatch(factory => factory.quoteShow.load(parseInt(route.params.id)));
 
     return this.store.blockUntil(state => !state.quoteShow.loading);
   }

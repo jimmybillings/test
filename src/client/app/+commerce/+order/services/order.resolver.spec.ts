@@ -19,7 +19,7 @@ export function main() {
       let resolved: jasmine.Spy;
 
       beforeEach(() => {
-        mockRoute = { params: { orderId: '1234' } };
+        mockRoute = { params: { id: '1234' } };
         loadSpy = mockStore.createActionFactoryMethod('order', 'load');
         resolved = jasmine.createSpy('resolved');
         mockStore.createStateSection('order', { activeOrder: { id: 5678 }, loading: true });

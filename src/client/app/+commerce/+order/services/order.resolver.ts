@@ -9,7 +9,7 @@ export class OrderResolver implements Resolve<boolean> {
   constructor(private store: AppStore) { }
 
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-    const requestedOrderId: number = Number(route.params['orderId']);
+    const requestedOrderId: number = Number(route.params['id']);
 
     this.store.dispatch(factory => factory.order.load(requestedOrderId));
 
