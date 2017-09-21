@@ -10,6 +10,13 @@ export class OrderService {
   constructor(private apiService: FutureApiService) { }
 
   public load(orderId: number): Observable<Order> {
-    return this.apiService.get(Api.Orders, `order/${orderId}`, { loadingIndicator: true });
+    return this.apiService.get(Api.Orders, `order/${orderId}`, { loadingIndicator: true }).map(this.normalize);
+  }
+
+  private normalize(order: Order): Order {
+    return {
+      ...order,
+      projects: order.projects.map(project => project.lineItems ? project : { ...project, lineItems: [] })
+    };
   }
 }
