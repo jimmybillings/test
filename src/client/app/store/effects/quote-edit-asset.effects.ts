@@ -22,40 +22,39 @@ export class QuoteEditAssetEffects {
 
   @Effect() loadAssetOnQuoteLoadSuccess: Observable<Action> = this.actions.ofType(QuoteEditActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
-    .filter(([action, state]: [QuoteEditActions.LoadSuccess, AppState]) => state.quoteEditAsset.loadingUuid !== null)
-    .map(([action, state]: [QuoteEditActions.LoadSuccess, AppState]) => {
-      const loadParameters: Common.ChildAssetLoadParameters
-        = this.createAssetLoadParametersFor(state.quoteEdit.data, state.quoteEditAsset.loadingUuid);
-      return this.store.create(factory => factory.quoteEditAsset.loadAfterQuoteAvailable(loadParameters));
-    });
+    .filter(([action, state]: [QuoteEditActions.LoadSuccess, AppState]) => !!state.quoteEditAsset.loadingUuid)
+    .map(([action, state]: [QuoteEditActions.LoadSuccess, AppState]) =>
+      this.createNextActionFor(state.quoteEdit.data, state.quoteEditAsset.loadingUuid)
+    );
 
   @Effect()
   public load: Observable<Action> = this.actions.ofType(QuoteEditAssetActions.Load.Type)
     .withLatestFrom(this.store.select(state => state.quoteEdit.data))
-    .map(([action, quote]: [QuoteEditAssetActions.Load, Commerce.Quote]) => {
-      let mapper: InternalActionFactoryMapper;
-      if (quote.id === 0) {
-        mapper = (factory) => factory.quoteEdit.load();
-      } else {
-        const loadParameters: Common.ChildAssetLoadParameters = this.createAssetLoadParametersFor(quote, action.assetUuid);
-        mapper = (factory) => factory.quoteEditAsset.loadAfterQuoteAvailable(loadParameters);
-      }
-      return this.store.create(mapper);
-    });
+    .map(([action, quote]: [QuoteEditAssetActions.Load, Commerce.Quote]) =>
+      this.createNextActionFor(quote, action.assetUuid)
+    );
 
   constructor(private actions: Actions, private store: AppStore, private service: AssetService) { }
 
-  private createAssetLoadParametersFor(quote: Commerce.Quote, assetUuid: string): Common.ChildAssetLoadParameters {
-    const lineItems: Commerce.AssetLineItem[] =
-      quote.projects.reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
+  private createNextActionFor(quote: Commerce.Quote, assetUuid: string): Action {
+    return this.store.create(this.nextActionMapperFor(quote, assetUuid));
+  }
 
-    const asset: Commerce.Asset = lineItems.find(lineItem => lineItem.id === assetUuid).asset;
+  private nextActionMapperFor(quote: Commerce.Quote, assetUuid: string): InternalActionFactoryMapper {
+    if (quote.id === 0) return factory => factory.quoteEdit.load();
 
-    return {
-      id: String(asset.assetId),
-      uuid: assetUuid,
-      timeStart: String(asset.timeStart),
-      timeEnd: String(asset.timeEnd)
-    };
+    const lineItem: Commerce.AssetLineItem = quote.projects
+      .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
+      .find(lineItem => lineItem.id === assetUuid);
+
+    if (lineItem) {
+      const asset: Commerce.Asset = lineItem.asset;
+
+      return factory => factory.quoteEditAsset.loadAfterQuoteAvailable({
+        id: String(asset.assetId), uuid: assetUuid, timeStart: String(asset.timeStart), timeEnd: String(asset.timeEnd)
+      });
+    }
+
+    return factory => factory.quoteEditAsset.loadFailure({ status: 404 });
   }
 }

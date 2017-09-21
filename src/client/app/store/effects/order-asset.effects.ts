@@ -22,40 +22,39 @@ export class OrderAssetEffects {
 
   @Effect() loadAssetOnOrderLoadSuccess: Observable<Action> = this.actions.ofType(OrderActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
-    .filter(([action, state]: [OrderActions.LoadSuccess, AppState]) => state.orderAsset.loadingUuid !== null)
-    .map(([action, state]: [OrderActions.LoadSuccess, AppState]) => {
-      const loadParameters: Common.ChildAssetLoadParameters
-        = this.createAssetLoadParametersFor(state.order.activeOrder, state.orderAsset.loadingUuid);
-      return this.store.create(factory => factory.orderAsset.loadAfterOrderAvailable(loadParameters));
-    });
+    .filter(([action, state]: [OrderActions.LoadSuccess, AppState]) => !!state.orderAsset.loadingUuid)
+    .map(([action, state]: [OrderActions.LoadSuccess, AppState]) =>
+      this.createNextActionFor(state.order.activeOrder, state.order.activeOrder.id, state.orderAsset.loadingUuid)
+    );
 
   @Effect()
   public load: Observable<Action> = this.actions.ofType(OrderAssetActions.Load.Type)
     .withLatestFrom(this.store.select(state => state.order.activeOrder))
-    .map(([action, order]: [OrderAssetActions.Load, Commerce.Order]) => {
-      let mapper: InternalActionFactoryMapper;
-      if (order.id !== action.orderId) {
-        mapper = (factory) => factory.order.load(action.orderId);
-      } else {
-        const loadParameters: Common.ChildAssetLoadParameters = this.createAssetLoadParametersFor(order, action.assetUuid);
-        mapper = (factory) => factory.orderAsset.loadAfterOrderAvailable(loadParameters);
-      }
-      return this.store.create(mapper);
-    });
+    .map(([action, order]: [OrderAssetActions.Load, Commerce.Order]) =>
+      this.createNextActionFor(order, action.orderId, action.assetUuid)
+    );
 
   constructor(private actions: Actions, private store: AppStore, private service: AssetService) { }
 
-  private createAssetLoadParametersFor(order: Commerce.Order, assetUuid: string): Common.ChildAssetLoadParameters {
-    const lineItems: Commerce.AssetLineItem[] =
-      order.projects.reduce((assetsArr, project) => assetsArr.concat(project.lineItems), []);
+  private createNextActionFor(order: Commerce.Order, requestedOrderId: number, assetUuid: string): Action {
+    return this.store.create(this.nextActionMapperFor(order, requestedOrderId, assetUuid));
+  }
 
-    const asset: Commerce.Asset = lineItems.find(lineItem => lineItem.id === assetUuid).asset;
+  private nextActionMapperFor(order: Commerce.Order, requestedOrderId: number, assetUuid: string): InternalActionFactoryMapper {
+    if (order.id !== requestedOrderId) return factory => factory.order.load(requestedOrderId);
 
-    return {
-      id: String(asset.assetId),
-      uuid: String(asset.uuid),
-      timeStart: String(asset.timeStart),
-      timeEnd: String(asset.timeEnd)
-    };
+    const lineItem: Commerce.AssetLineItem = order.projects
+      .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
+      .find(lineItem => lineItem.id === assetUuid);
+
+    if (lineItem) {
+      const asset: Commerce.Asset = lineItem.asset;
+
+      return factory => factory.orderAsset.loadAfterOrderAvailable({
+        id: String(asset.assetId), uuid: assetUuid, timeStart: String(asset.timeStart), timeEnd: String(asset.timeEnd)
+      });
+    }
+
+    return factory => factory.orderAsset.loadFailure({ status: 404 });
   }
 }

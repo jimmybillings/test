@@ -121,5 +121,38 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'loadAssetOnOrderLoadSuccess',
+      comment: 'when the asset UUID doesn\'t exist in the order',
+      effectsInstantiator: instantiator,
+      state: [
+        {
+          storeSectionName: 'orderAsset',
+          propertyName: 'loadingUuid',
+          value: 'xyz-not-present'
+        },
+        {
+          storeSectionName: 'order',
+          propertyName: 'activeOrder',
+          value: {
+            id: 1,
+            projects: [
+              { lineItems: [{ id: 'abc-123', asset: { assetId: 50, uuid: 'abc-123', timeStart: 500, timeEnd: 5000 } }] }
+            ]
+          }
+        }
+      ],
+      inputAction: {
+        type: OrderActions.LoadSuccess.Type
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'orderAsset',
+          methodName: 'loadFailure',
+          expectedArguments: [{ status: 404 }]
+        }
+      }
+    });
   });
 }

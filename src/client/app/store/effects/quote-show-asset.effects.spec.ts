@@ -121,5 +121,38 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'loadAssetOnQuoteLoadSuccess',
+      comment: 'when the asset UUID doesn\'t exist in the quote',
+      effectsInstantiator: instantiator,
+      state: [
+        {
+          storeSectionName: 'quoteShowAsset',
+          propertyName: 'loadingUuid',
+          value: 'xyz-not-present'
+        },
+        {
+          storeSectionName: 'quoteShow',
+          propertyName: 'data',
+          value: {
+            id: 1,
+            projects: [
+              { lineItems: [{ id: 'abc-123', asset: { assetId: 50, uuid: 'abc-123', timeStart: 500, timeEnd: 5000 } }] }
+            ]
+          }
+        }
+      ],
+      inputAction: {
+        type: QuoteShowActions.LoadSuccess.Type
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteShowAsset',
+          methodName: 'loadFailure',
+          expectedArguments: [{ status: 404 }]
+        }
+      }
+    });
   });
 }
