@@ -240,27 +240,6 @@ export class AssetComponent implements OnInit, OnDestroy {
     return this.pricingService.getPriceFor(this.asset, attributes, this.subclipMarkers);
   }
 
-  // I'd like to eliminate this, but we set up the dynamic parts of our routes too specifically
-  private parentIdIn(routeParams: Pojo): number {
-    switch (this.assetType) {
-      case 'collectionAsset': {
-        return Number(routeParams.id);
-      }
-
-      case 'orderAsset': {
-        return Number(routeParams.orderId);
-      }
-
-      case 'quoteShowAsset': {
-        return Number(routeParams.quoteId);
-      }
-
-      default: {
-        return NaN;
-      }
-    }
-  }
-
   private loadCorrespondingCartAsset(): void {
     this.cartAsset = null;
     this.cartAssetPriceAttributes = null;
@@ -298,11 +277,17 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   private commentParentObjectFromRoute(routeParams: any): CommentParentObject {
     return {
-      objectId: Number(routeParams.id) || 0,
+      objectId: this.parentIdIn(routeParams),
       objectType: this.commentObjectTypeFrom(this.assetType),
       nestedObjectId: routeParams.uuid,
       nestedObjectType: 'lineItem'
     };
+  }
+
+  private parentIdIn(routeParams: Pojo): number {
+    return (this.assetType === 'quoteEditAsset') ?
+      this.store.snapshot(state => state.quoteEdit.data.id) :
+      Number(routeParams.id) || 0;
   }
 
   private commentObjectTypeFrom(assetType: AssetType): ObjectType {
