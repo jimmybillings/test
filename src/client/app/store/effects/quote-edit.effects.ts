@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import * as QuoteEditActions from '../actions/quote-edit.actions';
 import { FutureQuoteEditService } from '../services/quote-edit.service';
 import { AppStore } from '../../app.store';
+import { Quote, AssetLineItem } from '../../shared/interfaces/commerce.interface';
 
 @Injectable()
 export class QuoteEditEffects {
@@ -28,9 +29,25 @@ export class QuoteEditEffects {
   public changeRouteOnDeleteSuccess: Observable<Action> = this.actions.ofType(QuoteEditActions.DeleteSuccess.Type)
     .map(() => this.store.create(factory => factory.router.goToQuotes()));
 
+  @Effect()
+  public editLineItemMarkers: Observable<Action> = this.actions.ofType(QuoteEditActions.EditLineItemFromDetails.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data))
+    .switchMap(([action, quote]: [QuoteEditActions.EditLineItemFromDetails, Quote]) => {
+      const lineItemToEdit: AssetLineItem = this.findLineItemBy(action.uuid, quote);
+      return this.service.editLineItem(quote.id, lineItemToEdit, action.markers, action.selectedAttributes)
+        .map(quote => this.store.create(factory => factory.quoteEdit.editLineItemFromDetailsSuccess(quote)))
+        .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.editLineItemFromDetailsFailure(error))));
+    });
+
   constructor(
     private actions: Actions,
     private store: AppStore,
     private service: FutureQuoteEditService
   ) { }
+
+  private findLineItemBy(assetLineItemUuid: string, quote: Quote): AssetLineItem {
+    return quote.projects
+      .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
+      .find(lineItem => lineItem.id === assetLineItemUuid);
+  }
 }

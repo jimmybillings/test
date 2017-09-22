@@ -195,6 +195,20 @@ export class AssetComponent implements OnInit, OnDestroy {
       : true; // We populate this.cartAsset for 'cartAsset' and 'quoteEditAsset' types only.
   }
 
+  public onUpdateAssetLineItem(): void {
+    this.userCan.administerQuotes() ?
+      this.store.dispatch(factory => factory.quoteEdit.editLineItemFromDetails(
+        this.asset.uuid,
+        this.subclipMarkers,
+        this.appliedAttributes
+      )) :
+      this.store.dispatch(factory => factory.cart.editLineItemFromDetails(
+        this.asset.uuid,
+        this.subclipMarkers,
+        this.appliedAttributes
+      ));
+  }
+
   private openPricingDialog(): void {
     this.dialogService.openComponentInDialog(
       {
