@@ -298,7 +298,7 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   private commentParentObjectFromRoute(routeParams: any): CommentParentObject {
     return {
-      objectId: Number(routeParams.id),
+      objectId: Number(routeParams.id) || 0,
       objectType: this.commentObjectTypeFrom(this.assetType),
       nestedObjectId: routeParams.uuid,
       nestedObjectType: 'lineItem'

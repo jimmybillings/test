@@ -1,15 +1,27 @@
+import { Observable } from 'rxjs/Observable';
+
 import { CartAssetComponent } from './cart-asset.component';
 
 export function main() {
   describe('Cart Asset Component', () => {
     let componentUnderTest: CartAssetComponent;
+    let mockUiConfig: any;
 
     beforeEach(() => {
-      componentUnderTest = new CartAssetComponent();
+      mockUiConfig = {
+        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: [{ some: 'field' }] } } }))
+      };
+
+      componentUnderTest = new CartAssetComponent(mockUiConfig);
     });
 
-    it('has no testable functionality!', () => {
-      expect(true).toBe(true);
+    describe('ngOnInit()', () => {
+      it('gets the right ui config', () => {
+        componentUnderTest.ngOnInit();
+
+        expect(mockUiConfig.get).toHaveBeenCalledWith('cartComment');
+        expect(componentUnderTest.commentFormConfig).toEqual([{ some: 'field' }]);
+      });
     });
   });
 }
