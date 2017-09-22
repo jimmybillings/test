@@ -23,10 +23,7 @@ export class OrderShowComponent {
       const order: Order = Common.clone(state.order.activeOrder);
 
       order.projects.forEach((project: Project) => {
-        if (!project.lineItems) {
-          project.lineItems = [];
-          return;
-        }
+        if (!project.lineItems) return;
 
         project.lineItems.forEach((lineItem: AssetLineItem) => {
           lineItem.asset = enhanceAsset(
