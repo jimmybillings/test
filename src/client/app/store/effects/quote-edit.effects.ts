@@ -39,6 +39,12 @@ export class QuoteEditEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.editLineItemFromDetailsFailure(error))));
     });
 
+  @Effect()
+  public showSnackbarOnEditLineItemSuccess: Observable<Action> =
+  this.actions.ofType(QuoteEditActions.EditLineItemFromDetailsSuccess.Type).map(() => {
+    return this.store.create(factory => factory.snackbar.display('Quote item has been updated'));
+  });
+
   constructor(
     private actions: Actions,
     private store: AppStore,

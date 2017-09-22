@@ -17,7 +17,7 @@ export class CartEffects {
     .catch(error => Observable.of(this.store.create(factory => factory.cart.loadFailure(error))));
 
   @Effect()
-  public editLineItemMarkers: Observable<Action> = this.actions.ofType(CartActions.EditLineItemFromDetails.Type)
+  public editLineItemFromDetails: Observable<Action> = this.actions.ofType(CartActions.EditLineItemFromDetails.Type)
     .withLatestFrom(this.store.select(state => state.cart.data))
     .switchMap(([action, cart]: [CartActions.EditLineItemFromDetails, Cart]) => {
       const lineItemToEdit: AssetLineItem = this.findLineItemBy(action.uuid, cart);
@@ -25,6 +25,13 @@ export class CartEffects {
         .map(cart => this.store.create(factory => factory.cart.editLineItemFromDetailsSuccess(cart)))
         .catch(error => Observable.of(this.store.create(factory => factory.cart.editLineItemFromDetailsFailure(error))));
     });
+
+  @Effect()
+  public showSnackbarOnEditLineItemSuccess: Observable<Action> =
+  this.actions.ofType(CartActions.EditLineItemFromDetailsSuccess.Type).map(() => {
+    return this.store.create(factory => factory.snackbar.display('Cart item has been updated'));
+  });
+
 
   constructor(private actions: Actions, private store: AppStore, private service: FutureCartService) { }
 

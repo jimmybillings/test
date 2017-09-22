@@ -25,8 +25,8 @@ export class InternalActionFactory extends ActionFactory {
     return new LoadFailure(error);
   }
 
-  public editLineItemFromDetailsSuccess(cart: Cart): EditLineItemMarkersFromDetails {
-    return new EditLineItemMarkersFromDetails(cart);
+  public editLineItemFromDetailsSuccess(cart: Cart): EditLineItemFromDetailsSuccess {
+    return new EditLineItemFromDetailsSuccess(cart);
   }
 
   public editLineItemFromDetailsFailure(error: ApiErrorResponse): EditLineItemFromDetailsFailure {
@@ -57,9 +57,9 @@ export class EditLineItemFromDetails implements Action {
   constructor(public readonly uuid: string, public readonly markers: SubclipMarkers, public readonly selectedAttributes: Pojo) { }
 }
 
-export class EditLineItemMarkersFromDetails implements Action {
+export class EditLineItemFromDetailsSuccess implements Action {
   public static readonly Type = '[Cart Edit] Edit Line Item From Details Success';
-  public readonly type = EditLineItemMarkersFromDetails.Type;
+  public readonly type = EditLineItemFromDetailsSuccess.Type;
   constructor(public readonly cart: Cart) { }
 }
 
@@ -71,4 +71,4 @@ export class EditLineItemFromDetailsFailure implements Action {
 
 export type Any =
   Load | LoadSuccess | LoadFailure |
-  EditLineItemFromDetails | EditLineItemMarkersFromDetails | EditLineItemFromDetailsFailure;
+  EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure;
