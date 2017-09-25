@@ -30,6 +30,7 @@ export function reducer(state: State = initialState, action: QuoteEditActions.An
       };
     }
 
+    case QuoteEditActions.EditLineItemFromDetailsSuccess.Type:
     case QuoteEditActions.DeleteSuccess.Type:
     case QuoteEditActions.LoadSuccess.Type: {
       return {

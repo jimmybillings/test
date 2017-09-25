@@ -897,5 +897,14 @@ export function main() {
         expect(count).toBe(10);
       });
     });
+
+    describe('updateCartAsset()', () => {
+      it('emits the right event', () => {
+        spyOn(componentUnderTest.updateAssetLineItem, 'emit');
+        componentUnderTest.updateCartAsset();
+
+        expect(componentUnderTest.updateAssetLineItem.emit).toHaveBeenCalled();
+      });
+    });
   });
 }

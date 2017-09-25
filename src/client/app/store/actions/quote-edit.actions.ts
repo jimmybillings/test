@@ -2,6 +2,8 @@ import { Action } from '@ngrx/store';
 
 import { Quote } from '../../shared/interfaces/commerce.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
+import { Pojo } from '../../shared/interfaces/common.interface';
 
 export class ActionFactory {
   public load(): Load {
@@ -10,6 +12,10 @@ export class ActionFactory {
 
   public delete(): Delete {
     return new Delete();
+  }
+
+  public editLineItemFromDetails(uuid: string, markers: SubclipMarkers, attributes: Pojo): EditLineItemFromDetails {
+    return new EditLineItemFromDetails(uuid, markers, attributes);
   }
 
   // Move this to internal action factory when quote is fully "effected"
@@ -29,6 +35,14 @@ export class InternalActionFactory extends ActionFactory {
 
   public deleteFailure(error: ApiErrorResponse): DeleteFailure {
     return new DeleteFailure(error);
+  }
+
+  public editLineItemFromDetailsSuccess(quote: Quote): EditLineItemFromDetailsSuccess {
+    return new EditLineItemFromDetailsSuccess(quote);
+  }
+
+  public editLineItemFromDetailsFailure(error: ApiErrorResponse): EditLineItemFromDetailsFailure {
+    return new EditLineItemFromDetailsFailure(error);
   }
 }
 
@@ -66,6 +80,26 @@ export class DeleteFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
+export class EditLineItemFromDetails implements Action {
+  public static readonly Type = '[Quote Edit] Edit Line Item From Details';
+  public readonly type = EditLineItemFromDetails.Type;
+  constructor(public readonly uuid: string, public readonly markers: SubclipMarkers, public readonly attributes: Pojo) { }
+}
+
+export class EditLineItemFromDetailsSuccess implements Action {
+  public static readonly Type = '[Quote Edit] Edit Line Item From Details Success';
+  public readonly type = EditLineItemFromDetailsSuccess.Type;
+  constructor(public readonly quote: Quote) { }
+}
+
+export class EditLineItemFromDetailsFailure implements Action {
+  public static readonly Type = '[Quote Edit] Edit Line Item From Details Failure';
+  public readonly type = EditLineItemFromDetailsFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
+
+
 export type Any =
   Load | LoadSuccess | LoadFailure |
-  Delete | DeleteSuccess | DeleteFailure;
+  Delete | DeleteSuccess | DeleteFailure |
+  EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure;

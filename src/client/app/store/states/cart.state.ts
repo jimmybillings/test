@@ -27,6 +27,7 @@ export function reducer(state: State = initialState, action: CartActions.Any): S
       };
     }
 
+    case CartActions.EditLineItemFromDetailsSuccess.Type:
     case CartActions.LoadSuccess.Type: {
       return {
         loading: false,

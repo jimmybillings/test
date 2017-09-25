@@ -6,6 +6,7 @@ import { Action } from '@ngrx/store';
 import * as CartActions from '../actions/cart.actions';
 import { AppStore } from '../../app.store';
 import { FutureCartService } from '../services/cart.service';
+import { Cart, AssetLineItem } from '../../shared/interfaces/commerce.interface';
 
 @Injectable()
 export class CartEffects {
@@ -15,5 +16,28 @@ export class CartEffects {
     .map(cart => this.store.create(factory => factory.cart.loadSuccess(cart)))
     .catch(error => Observable.of(this.store.create(factory => factory.cart.loadFailure(error))));
 
+  @Effect()
+  public editLineItemFromDetails: Observable<Action> = this.actions.ofType(CartActions.EditLineItemFromDetails.Type)
+    .withLatestFrom(this.store.select(state => state.cart.data))
+    .switchMap(([action, cart]: [CartActions.EditLineItemFromDetails, Cart]) => {
+      const lineItemToEdit: AssetLineItem = this.findLineItemBy(action.uuid, cart);
+      return this.service.editLineItem(lineItemToEdit, action.markers, action.attributes)
+        .map(cart => this.store.create(factory => factory.cart.editLineItemFromDetailsSuccess(cart)))
+        .catch(error => Observable.of(this.store.create(factory => factory.cart.editLineItemFromDetailsFailure(error))));
+    });
+
+  @Effect()
+  public showSnackbarOnEditLineItemSuccess: Observable<Action> =
+  this.actions.ofType(CartActions.EditLineItemFromDetailsSuccess.Type).map(() => {
+    return this.store.create(factory => factory.snackbar.display('ASSET.DETAIL.CART_ITEM_UPDATED'));
+  });
+
+
   constructor(private actions: Actions, private store: AppStore, private service: FutureCartService) { }
+
+  private findLineItemBy(assetLineItemUuid: string, cart: Cart): AssetLineItem {
+    return cart.projects
+      .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
+      .find(lineItem => lineItem.id === assetLineItemUuid);
+  }
 }

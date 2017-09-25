@@ -56,6 +56,7 @@ export class AssetDetailComponent {
   public subclipMarkers: SubclipMarkers;
   public activeCollectionName: string;
   public showComments: boolean;
+  @Output() public updateAssetLineItem: EventEmitter<null> = new EventEmitter();
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   private _asset: EnhancedAsset;
   private _activeCollection: Collection;
@@ -260,10 +261,7 @@ export class AssetDetailComponent {
   }
 
   public updateCartAsset(): void {
-    this.store.dispatch(factory => factory.notifier.notify({
-      title: 'COMING SOON!',
-      message: 'Asset updating is not yet implemented.'
-    }));
+    this.updateAssetLineItem.emit();
   }
 
   public get canAddToCart(): boolean {

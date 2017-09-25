@@ -77,5 +77,52 @@ export function main() {
         }
       }
     });
+
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'editLineItemFromDetails',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.EditLineItemFromDetails.Type,
+        uuid: 'abc-123',
+        markers: { in: 1, out: 2 },
+        attributes: { some: 'attribute' }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 77, projects: [{ lineItems: [{ id: 'abc-123', asset: { some: 'asset' } }] }] } }
+      },
+      serviceMethod: {
+        name: 'editLineItem',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [77, { id: 'abc-123', asset: { some: 'asset' } }, { in: 1, out: 2 }, { some: 'attribute' }]
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'editLineItemFromDetailsSuccess',
+          expectedArguments: [{ some: 'quote' }]
+        },
+        failure: {
+          sectionName: 'quoteEdit',
+          methodName: 'editLineItemFromDetailsFailure'
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'showSnackbarOnEditLineItemSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.EditLineItemFromDetailsSuccess.Type,
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['ASSET.DETAIL.QUOTE_ITEM_UPDATED']
+        }
+      }
+    });
   });
 }
