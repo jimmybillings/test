@@ -14,6 +14,7 @@ import {
 import { WzFormComponent } from '../../modules/wz-form/wz.form.component';
 import { CurrentUserService } from '../../services/current-user.service';
 import { User } from '../../interfaces/user.interface';
+import { Common } from '../../utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -33,7 +34,6 @@ export class WzCommentComponent {
   @ViewChild(WzFormComponent) wzForm: WzFormComponent;
   private currentUserId: number;
   private _parentObject: CommentParentObject;
-
   constructor(private store: AppStore, private currentUserService: CurrentUserService) {
     this.currentUserService.data.take(1).subscribe((user: User) => this.currentUserId = user.id);
   }
@@ -53,7 +53,7 @@ export class WzCommentComponent {
 
   public onFormSubmit(comment: Comment): void {
     this.store.dispatch(factory => factory.comment.formSubmit(this._parentObject, comment));
-    this.wzForm.resetForm(['access']);
+    this.resetForm();
   }
 
   public onEditCommentButtonClick(comment: Comment): void {
@@ -65,9 +65,10 @@ export class WzCommentComponent {
     this.wzForm.mergeNewValues(newFormFields);
   }
 
-  public onFormCancel(): void {
+  public onFormCancel($event: any): void {
+    $event.preventDefault();
     this.store.dispatch(factory => factory.comment.changeFormModeToAdd());
-    this.wzForm.resetForm(['access']);
+    this.resetForm();
   }
 
   public onDeleteCommentButtonClick(comment: Comment): void {
@@ -98,6 +99,12 @@ export class WzCommentComponent {
 
   public pluralize(commentAccess: CommentAccess): string {
     return commentAccess + 's';
+  }
+
+  private resetForm() {
+    const accessStateFieldValue: string = this.wzForm.getValueForField('access');
+    this.wzForm.resetForm();
+    this.wzForm.setValueForField('access', accessStateFieldValue);
   }
 
   private initializeData(): void {

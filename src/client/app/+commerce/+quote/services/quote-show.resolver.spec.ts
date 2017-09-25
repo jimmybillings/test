@@ -19,7 +19,7 @@ export function main() {
       let resolved: jasmine.Spy;
 
       beforeEach(() => {
-        mockRoute = { params: { quoteId: '1234' } };
+        mockRoute = { params: { id: '1234' } };
         loadSpy = mockStore.createActionFactoryMethod('quoteShow', 'load');
         resolved = jasmine.createSpy('resolved');
         mockStore.createStateSection('quoteShow', { data: { id: 5678 }, loading: true });

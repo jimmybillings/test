@@ -8,11 +8,21 @@ export function main() {
   describe('Order Service', () => {
     let serviceUnderTest: OrderService;
     let mockApiService: MockApiService;
+    let backEndOrder: any;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApiService = new MockApiService();
-      mockApiService.getResponse = { some: 'order' };
+
+      backEndOrder = {
+        projects: [
+          { lineItems: [{ some: 'lineItem' }, { another: 'lineItem' }] },
+          { lineItems: [{ oneMore: 'lineItem' }, { yetAnother: 'lineItem' }] }
+        ],
+        other: 'stuff'
+      };
+
+      mockApiService.getResponse = backEndOrder;
 
       serviceUnderTest = new OrderService(mockApiService.injector);
     });
@@ -26,10 +36,28 @@ export function main() {
         expect(mockApiService.get).toHaveBeenCalledWithLoading(true);
       });
 
-      it('returns an observable of an order', () => {
-        mockApiService.getResponse = { some: 'order' };
+      it('returns an observable of the back end\'s order', () => {
+        let retrievedOrder: any;
+        serviceUnderTest.load(47).subscribe(order => retrievedOrder = order);
 
-        expect(serviceUnderTest.load(47)).toEqual(Observable.of({ some: 'order' }));
+        expect(retrievedOrder).toEqual(backEndOrder);
+      });
+
+      it('fills in missing line items with an empty array', () => {
+        delete backEndOrder.projects[1].lineItems;
+
+        const expectedRetrievedOrder: any = {
+          projects: [
+            { lineItems: [{ some: 'lineItem' }, { another: 'lineItem' }] },
+            { lineItems: [] }
+          ],
+          other: 'stuff'
+        };
+
+        let retrievedOrder: any;
+        serviceUnderTest.load(47).subscribe(order => retrievedOrder = order);
+
+        expect(retrievedOrder).toEqual(expectedRetrievedOrder);
       });
     });
   });

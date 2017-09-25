@@ -27,12 +27,12 @@ export const COMMERCE_ROUTES: Routes = [
   { path: 'cart', component: CartComponent, resolve: { cart: CartResolver } },
   { path: 'cart/asset/:uuid', component: CartAssetComponent, resolve: { asset: CartAssetResolver } },
   { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },
-  { path: 'orders/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
-  { path: 'orders/:orderId/asset/:uuid', component: OrderAssetComponent, resolve: { orderAsset: OrderAssetResolver } },
+  { path: 'orders/:id', component: OrderShowComponent, resolve: { order: OrderResolver } },
+  { path: 'orders/:id/asset/:uuid', component: OrderAssetComponent, resolve: { orderAsset: OrderAssetResolver } },
   { path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver } },
-  { path: 'quotes/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteShowResolver } },
+  { path: 'quotes/:id', component: QuoteShowComponent, resolve: { quote: QuoteShowResolver } },
   {
-    path: 'quotes/:quoteId/asset/:uuid',
+    path: 'quotes/:id/asset/:uuid',
     component: QuoteShowAssetComponent,
     resolve: { quoteShowAsset: QuoteShowAssetResolver }
   },

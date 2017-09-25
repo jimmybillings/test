@@ -16,7 +16,7 @@ export function main() {
       customTests: [
         {
           it: 'returns the state with loading: true and new load parameters',
-          actionParameters: { quoteId: 47, assetUuid: 'some UUID' },
+          actionParameters: { id: 47, assetUuid: 'some UUID' },
           previousState: QuoteShowAssetState.initialState,
           expectedNextState: { ...QuoteShowAssetState.initialState, loading: true, loadingUuid: 'some UUID' }
         }

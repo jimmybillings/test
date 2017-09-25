@@ -1,5 +1,5 @@
 import { Input, Output, EventEmitter, OnInit, OnChanges, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, AbstractControl, FormGroupDirective } from '@angular/forms';
 import { MdTextareaAutosize } from '@angular/material';
 import { FormModel } from './wz.form.model';
 import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
@@ -18,6 +18,7 @@ export class WzFormBase implements OnInit, OnChanges {
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
   @ViewChild(MdTextareaAutosize) private autosize: MdTextareaAutosize;
+  @ViewChild(FormGroupDirective) private internalForm: FormGroupDirective;
 
   constructor(
     private fb: FormBuilder,
@@ -49,9 +50,9 @@ export class WzFormBase implements OnInit, OnChanges {
       for (let control in this.form.controls) {
         if (control === field.name) {
           (<FormControl>this.form.controls[control]).patchValue(field.value);
-          if (this.autosize) this.autosize.resizeToFitContent();
         }
       }
+      if (this.autosize) this.autosize.resizeToFitContent();
     });
   }
 
@@ -63,6 +64,20 @@ export class WzFormBase implements OnInit, OnChanges {
         }
       }
     });
+  }
+
+  public getValueForField(field: string) {
+    let fieldValue: string;
+    for (let control in this.form.controls) {
+      if (control === field) {
+        fieldValue = (<FormControl>this.form.controls[control]).value;
+      }
+    }
+    return (fieldValue) ? fieldValue : '';
+  }
+
+  public setValueForField(field: string, value: string) {
+    (<FormControl>this.form.controls[field]).patchValue(value);
   }
 
   public activateForm() {
@@ -142,13 +157,9 @@ export class WzFormBase implements OnInit, OnChanges {
     }
   }
 
-  public resetForm(fieldsToIgnore: Array<string> = []) {
-    for (let controlName in this.form.controls) {
-      if (!(fieldsToIgnore.includes(controlName))) {
-        (<FormControl>this.form.controls[controlName]).reset();
-        if (this.autosize) this.autosize.resizeToFitContent();
-      }
-    }
+  public resetForm() {
+    this.internalForm.resetForm();
+    if (this.autosize) this.autosize.resizeToFitContent();
     this.submitAttempt = false;
   }
 

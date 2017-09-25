@@ -110,6 +110,7 @@ export function main() {
         });
 
         it('for a quoteEditAsset', () => {
+          mockStore.createStateSection('quoteEdit', { data: { id: 100 } });
           componentUnderTest.assetType = 'quoteEditAsset';
           componentUnderTest.ngOnInit();
 
@@ -259,6 +260,7 @@ export function main() {
           let localMockAsset: any;
 
           beforeEach(() => {
+            if (assetType === 'quoteEditAsset') mockStore.createStateSection('quoteEdit', { data: { id: 1 } });
             (assetType === 'cartAsset' ? mockCartService : mockQuoteEditService).state = {
               data: {
                 projects: [
