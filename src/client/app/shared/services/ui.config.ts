@@ -5,6 +5,7 @@ import { LegacyAction } from '../interfaces/common.interface';
 
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
+import { Common } from '../utilities/common.functions';
 
 const InitState: any = { loaded: false, components: {} };
 export function config(state = InitState, action: LegacyAction) {
@@ -43,7 +44,7 @@ export class UiConfig {
 
   public get(component: string = ''): Observable<any> {
     return this.store.select('config').map((config: any) => {
-      return (component === '') ? config : config.components[component] || {};
+      return Common.clone(component === '' ? config : config.components[component] || {});
     });
   }
 
