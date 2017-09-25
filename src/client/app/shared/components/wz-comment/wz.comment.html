@@ -25,7 +25,7 @@
               [items]="formFields"
               [submitLabel]="formSubmitLabel | async"
               [includeCancel]="true"
-              (formCancel)="onFormCancel()"
+              (formCancel)="onFormCancel($event)"
               (formSubmit)="onFormSubmit($event)">
             </wz-form>
           </md-card-content>

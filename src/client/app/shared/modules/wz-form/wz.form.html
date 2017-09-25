@@ -349,7 +349,7 @@
 	</div>
 
 	<md-card-actions layout="row" layout-align="end center" *ngIf="includeCancel">
-		<button md-button type="reset" color="primary" (click)="formCancel.emit()">{{cancelLabel | translate}}</button>
+		<button md-button type="reset" color="primary" (click)="formCancel.emit($event)">{{cancelLabel | translate}}</button>
 		<button md-button type="submit" color="primary">{{submitLabel | translate}}</button>
 	</md-card-actions>
 
