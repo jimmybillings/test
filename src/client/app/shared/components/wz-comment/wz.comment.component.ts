@@ -102,10 +102,9 @@ export class WzCommentComponent {
   }
 
   private resetForm() {
-    const accessStateField: any = Common.clone(this.formFields[1]);
-    accessStateField.value = this.wzForm.getValueForField('access');
+    const accessStateFieldValue: string = this.wzForm.getValueForField('access');
     this.wzForm.resetForm();
-    this.wzForm.mergeNewValues([accessStateField]);
+    this.wzForm.setValueForField('access', accessStateFieldValue);
   }
 
   private initializeData(): void {

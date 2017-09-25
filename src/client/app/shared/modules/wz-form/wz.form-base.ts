@@ -76,6 +76,10 @@ export class WzFormBase implements OnInit, OnChanges {
     return (fieldValue) ? fieldValue : '';
   }
 
+  public setValueForField(field: string, value: string) {
+    (<FormControl>this.form.controls[field]).patchValue(value);
+  }
+
   public activateForm() {
     this.items.forEach((field: any) => {
       for (let control in this.form.controls) {
