@@ -11,7 +11,9 @@ export function main() {
 
     const mockWzForm: any = {
       resetForm: jasmine.createSpy('resetForm'),
-      mergeNewValues: jasmine.createSpy('mergeNewValues')
+      mergeNewValues: jasmine.createSpy('mergeNewValues'),
+      getValueForField: jasmine.createSpy('getValueForField').and.returnValue('Editor'),
+      setValueForField: jasmine.createSpy('setValueForField')
     };
 
     beforeEach(() => {
@@ -55,10 +57,18 @@ export function main() {
         mockStore.expectDispatchFor(formSubmitSpy, { objectType: 'collection', objectId: 1 }, { some: 'comment' });
       });
 
-      it('resets the form', () => {
+      it('calls resetForm() on the wzForm', () => {
         componentUnderTest.onFormSubmit({ some: 'comment' } as any);
 
-        expect(componentUnderTest.wzForm.resetForm).toHaveBeenCalledWith(['access']);
+        expect(mockWzForm.resetForm).toHaveBeenCalled();
+      });
+
+      it('calls getValueForField() on the wzForm', () => {
+        expect(mockWzForm.getValueForField).toHaveBeenCalled();
+      });
+
+      it('calls setValueForField() on the wzForm', () => {
+        expect(mockWzForm.setValueForField).toHaveBeenCalledWith('access', 'Editor');
       });
     });
 
@@ -110,11 +120,19 @@ export function main() {
 
     describe('onFormCancel()', () => {
       beforeEach(() => {
-        componentUnderTest.onFormCancel();
+        componentUnderTest.onFormCancel({ preventDefault: () => { } });
       });
 
       it('calls resetForm() on the wzForm', () => {
-        expect(mockWzForm.resetForm).toHaveBeenCalledWith(['access']);
+        expect(mockWzForm.resetForm).toHaveBeenCalled();
+      });
+
+      it('calls getValueForField() on the wzForm', () => {
+        expect(mockWzForm.getValueForField).toHaveBeenCalled();
+      });
+
+      it('calls setValueForField() on the wzForm', () => {
+        expect(mockWzForm.setValueForField).toHaveBeenCalledWith('access', 'Editor');
       });
 
       it('dispatches the correct action', () => {
