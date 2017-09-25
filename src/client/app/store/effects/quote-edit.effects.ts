@@ -30,11 +30,11 @@ export class QuoteEditEffects {
     .map(() => this.store.create(factory => factory.router.goToQuotes()));
 
   @Effect()
-  public editLineItemMarkers: Observable<Action> = this.actions.ofType(QuoteEditActions.EditLineItemFromDetails.Type)
+  public editLineItemFromDetails: Observable<Action> = this.actions.ofType(QuoteEditActions.EditLineItemFromDetails.Type)
     .withLatestFrom(this.store.select(state => state.quoteEdit.data))
     .switchMap(([action, quote]: [QuoteEditActions.EditLineItemFromDetails, Quote]) => {
       const lineItemToEdit: AssetLineItem = this.findLineItemBy(action.uuid, quote);
-      return this.service.editLineItem(quote.id, lineItemToEdit, action.markers, action.selectedAttributes)
+      return this.service.editLineItem(quote.id, lineItemToEdit, action.markers, action.attributes)
         .map(quote => this.store.create(factory => factory.quoteEdit.editLineItemFromDetailsSuccess(quote)))
         .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.editLineItemFromDetailsFailure(error))));
     });
@@ -42,7 +42,7 @@ export class QuoteEditEffects {
   @Effect()
   public showSnackbarOnEditLineItemSuccess: Observable<Action> =
   this.actions.ofType(QuoteEditActions.EditLineItemFromDetailsSuccess.Type).map(() => {
-    return this.store.create(factory => factory.snackbar.display('Quote item has been updated'));
+    return this.store.create(factory => factory.snackbar.display('ASSET.DETAIL.QUOTE_ITEM_UPDATED'));
   });
 
   constructor(

@@ -56,8 +56,8 @@ export class AssetDetailComponent {
   public subclipMarkers: SubclipMarkers;
   public activeCollectionName: string;
   public showComments: boolean;
+  @Output() public updateAssetLineItem: EventEmitter<null> = new EventEmitter();
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
-  @Output() private updateAssetLineItem: EventEmitter<null> = new EventEmitter();
   private _asset: EnhancedAsset;
   private _activeCollection: Collection;
   private activeCollectionContainsAssetId: boolean = false;

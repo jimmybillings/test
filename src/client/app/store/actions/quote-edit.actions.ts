@@ -14,8 +14,8 @@ export class ActionFactory {
     return new Delete();
   }
 
-  public editLineItemFromDetails(uuid: string, markers: SubclipMarkers, selectedAttributes: Pojo): EditLineItemFromDetails {
-    return new EditLineItemFromDetails(uuid, markers, selectedAttributes);
+  public editLineItemFromDetails(uuid: string, markers: SubclipMarkers, attributes: Pojo): EditLineItemFromDetails {
+    return new EditLineItemFromDetails(uuid, markers, attributes);
   }
 
   // Move this to internal action factory when quote is fully "effected"
@@ -83,7 +83,7 @@ export class DeleteFailure implements Action {
 export class EditLineItemFromDetails implements Action {
   public static readonly Type = '[Quote Edit] Edit Line Item From Details';
   public readonly type = EditLineItemFromDetails.Type;
-  constructor(public readonly uuid: string, public readonly markers: SubclipMarkers, public readonly selectedAttributes: Pojo) { }
+  constructor(public readonly uuid: string, public readonly markers: SubclipMarkers, public readonly attributes: Pojo) { }
 }
 
 export class EditLineItemFromDetailsSuccess implements Action {

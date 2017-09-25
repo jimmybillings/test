@@ -10,8 +10,8 @@ export class ActionFactory {
     return new Load();
   }
 
-  public editLineItemFromDetails(uuid: string, markers: SubclipMarkers, selectedAttributes: Pojo): EditLineItemFromDetails {
-    return new EditLineItemFromDetails(uuid, markers, selectedAttributes);
+  public editLineItemFromDetails(uuid: string, markers: SubclipMarkers, attributes: Pojo): EditLineItemFromDetails {
+    return new EditLineItemFromDetails(uuid, markers, attributes);
   }
 
   // Move this to internal action factory when cart is fully "effected"
@@ -52,19 +52,19 @@ export class LoadFailure implements Action {
 }
 
 export class EditLineItemFromDetails implements Action {
-  public static readonly Type = '[Cart Edit] Edit Line Item From Details';
+  public static readonly Type = '[Cart] Edit Line Item From Details';
   public readonly type = EditLineItemFromDetails.Type;
-  constructor(public readonly uuid: string, public readonly markers: SubclipMarkers, public readonly selectedAttributes: Pojo) { }
+  constructor(public readonly uuid: string, public readonly markers: SubclipMarkers, public readonly attributes: Pojo) { }
 }
 
 export class EditLineItemFromDetailsSuccess implements Action {
-  public static readonly Type = '[Cart Edit] Edit Line Item From Details Success';
+  public static readonly Type = '[Cart] Edit Line Item From Details Success';
   public readonly type = EditLineItemFromDetailsSuccess.Type;
   constructor(public readonly cart: Cart) { }
 }
 
 export class EditLineItemFromDetailsFailure implements Action {
-  public static readonly Type = '[Cart Edit] Edit Line Item From Details Failure';
+  public static readonly Type = '[Cart] Edit Line Item From Details Failure';
   public readonly type = EditLineItemFromDetailsFailure.Type;
   constructor(public readonly error: ApiErrorResponse) { }
 }

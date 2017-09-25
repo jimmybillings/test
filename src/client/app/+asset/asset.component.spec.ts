@@ -418,6 +418,30 @@ export function main() {
         });
       });
     });
+
+    describe('onUpdateAssetLineItem()', () => {
+      it('dispatches the proper action for a user that can\'t administer quotes', () => {
+        mockStore.createActionFactoryMethod('cart', 'editLineItemFromDetails');
+        componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'cartAsset');
+        componentUnderTest.onUpdateAssetLineItem();
+
+        expect(mockStore.dispatch).toHaveBeenCalled();
+      });
+
+      it('dispatches the proper action for a user that can administer quotes', () => {
+        mockCapabilities = { administerQuotes: () => true };
+        mockStore.createActionFactoryMethod('quoteEdit', 'editLineItemFromDetails');
+
+        componentUnderTest = new AssetComponent(
+          null, mockCapabilities, null, null, null, null, null, null,
+          mockStore, null, null, null, null, null, null, null, null, null
+        );
+        componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');
+        componentUnderTest.onUpdateAssetLineItem();
+
+        expect(mockStore.dispatch).toHaveBeenCalled();
+      });
+    });
   });
 
   function mockActiveCollectionAndAsset(id?: number) {
