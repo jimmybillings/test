@@ -237,4 +237,21 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       );
     });
   }
+
+  public createCollection() {
+    this.uiConfig.get('collection').take(1).subscribe((config: any) => {
+      this.dialogService.openComponentInDialog({
+        componentType: CollectionFormComponent,
+        dialogConfig: { position: { top: '10%' } },
+        inputOptions: {
+          fields: config.config,
+        },
+        outputOptions: [{
+          event: 'collectionSaved',
+          callback: (event: WzEvent) => true,
+          closeOnEvent: true
+        }]
+      });
+    });
+  }
 }

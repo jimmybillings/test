@@ -51,6 +51,9 @@
 					<strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{options.currentSearchQuery.q}}
 				</span>
 			</div>
+			<button md-button (click)="createCollection()" title="Create Collection" color="primary" class="create-collection">
+				<md-icon>library_add</md-icon>Create Collection
+			</button>
 			<button md-button class="is-dd" color="primary" [md-menu-trigger-for]="filterCollectionOptions">
 				<span class="key">{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</span>
 				<span class="value md-caption">
