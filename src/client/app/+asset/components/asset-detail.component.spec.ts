@@ -80,20 +80,26 @@ export function main() {
     });
 
     describe('removeAssetFromActiveCollection()', () => {
-      it('dispatches the expected action', () => {
-        const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
+      it('dispatches the confirmation prompt', () => {
+        const spy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
         componentUnderTest.removeAssetFromActiveCollection();
-        mockStore.expectDispatchFor(spy, componentUnderTest.asset);
+        mockStore.expectDispatchFor(spy, {
+          title: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.TITLE',
+          message: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.MESSAGE',
+          accept: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.ACCEPT',
+          decline: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.DECLINE'
+        }, jasmine.any(Function));
       });
-      it('with subclipping defined it still removes the same asset', () => {
-        collection.assets.items.push({ assetId: 1, timeStart: 40, timeEnd: 80 } as Asset);
-        componentUnderTest.activeCollection = collection;
-        const startFrame = new Frame(25).setFromFrameNumber(1);
-        const endFrame = new Frame(25).setFromFrameNumber(2);
-        componentUnderTest.subclipMarkers = { in: startFrame, out: endFrame } as any;
-        const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
+
+      it('dispatches the correct action via the onAccept callback', () => {
+        const dialogSpy: any = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
+        const removeSpy: any = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
+        dialogSpy.and.callFake((_: any, onAcceptCallback: Function) => {
+          dialogSpy.onAcceptCallback = onAcceptCallback;
+        });
         componentUnderTest.removeAssetFromActiveCollection();
-        mockStore.expectDispatchFor(spy, componentUnderTest.asset);
+        dialogSpy.onAcceptCallback();
+        mockStore.expectDispatchFor(removeSpy, componentUnderTest.asset);
       });
     });
 

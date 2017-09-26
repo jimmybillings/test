@@ -26,6 +26,11 @@ export class ActionFactory {
   public goToQuotes(): GoToQuotes {
     return new GoToQuotes();
   }
+
+  public goToCollection(collectionId: number, page: number = 1, perPage: number = 100): GoToCollection {
+    return new GoToCollection(collectionId, page, perPage);
+  }
+
 }
 
 export class InternalActionFactory extends ActionFactory { }
@@ -59,4 +64,10 @@ export class GoToSearchAssetDetails implements Action {
 export class GoToQuotes implements Action {
   public static readonly Type = '[Router] Go To Quotes';
   public readonly type = GoToQuotes.Type;
+}
+
+export class GoToCollection implements Action {
+  public static readonly Type = '[Router] Go To Collection';
+  public readonly type = GoToCollection.Type;
+  constructor(public readonly collectionId: number, public readonly page: number, public readonly perPage: number) { }
 }

@@ -87,5 +87,35 @@ export function main() {
         type: '[Router] Go To Quotes'
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      comment: 'with default page and perPage',
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'goToCollection',
+        parameters: [1]
+      },
+      expectedAction: {
+        type: '[Router] Go To Collection',
+        collectionId: 1,
+        page: 1,
+        perPage: 100
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      comment: 'with custom page and perPage',
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'goToCollection',
+        parameters: [1, 5, 55]
+      },
+      expectedAction: {
+        type: '[Router] Go To Collection',
+        collectionId: 1,
+        page: 5,
+        perPage: 55
+      }
+    });
   });
 }

@@ -54,12 +54,19 @@ export class RouterEffects {
   public goToQuotes: Observable<Action> = this.actions.ofType(RouterActions.GoToQuotes.Type)
     .do(() => this.router.navigate([this.QuotesPath]));
 
+  @Effect({ dispatch: false })
+  public goToCollection: Observable<Action> = this.actions.ofType(RouterActions.GoToCollection.Type)
+    .do((action: RouterActions.GoToCollection) => {
+      this.router.navigate([`${this.CollectionsPath}/${action.collectionId}`, { i: action.page, n: action.perPage }]);
+    });
+
   private readonly LoginPath: string = '/user/login';
   private readonly PageNotFoundPath: string = '/404';
   private readonly QuotesPath: string = '/quotes';
   private readonly RootPath: string = '/';
   private readonly RedirectUrlKey: string = 'RouterEffects.RedirectUrl';
   private readonly SearchAssetDetailsPath: string = '/search/asset';
+  private readonly CollectionsPath: string = '/collections';
 
   constructor(private actions: Actions, private router: Router, private location: Location) { }
 }

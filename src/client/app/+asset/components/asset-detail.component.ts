@@ -170,7 +170,15 @@ export class AssetDetailComponent {
   }
 
   public removeAssetFromActiveCollection(): void {
-    this.store.dispatch(factory => factory.activeCollection.removeAsset(this._asset));
+    this.store.dispatch(factory => factory.dialog.showConfirmation(
+      {
+        title: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.TITLE',
+        message: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.MESSAGE',
+        accept: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.ACCEPT',
+        decline: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.DECLINE'
+      },
+      () => this.store.dispatch(factory => factory.activeCollection.removeAsset(this._asset))
+    ));
   }
 
   public updateAssetInActiveCollection(): void {

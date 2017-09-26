@@ -241,6 +241,28 @@ export function main() {
     });
 
     effectsSpecHelper.generateTestsFor({
+      effectName: 'changeRouteOnDeleteSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: ActiveCollectionActions.RemoveAssetSuccess.Type,
+        currentPageItems: { some: 'assets' }
+      },
+      state: {
+        storeSectionName: 'activeCollection',
+        propertyName: 'collection',
+        value: { id: 123 }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'router',
+          methodName: 'goToCollection',
+          expectedArguments: [123]
+        }
+      }
+    });
+
+
+    effectsSpecHelper.generateTestsFor({
       effectName: 'updateAssetMarkers',
       effectsInstantiator: instantiator,
       inputAction: {

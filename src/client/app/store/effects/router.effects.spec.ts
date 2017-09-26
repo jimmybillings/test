@@ -234,5 +234,43 @@ export function main() {
         }
       ]
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToCollection',
+      comment: 'without i and n being set',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToCollection.Type,
+        collectionId: 1,
+      },
+      customTests: [
+        {
+          it: 'navigates to /collections/:collectionId',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections/1', { i: undefined, n: undefined }]);
+          }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToCollection',
+      comment: 'with custom i and n set',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToCollection.Type,
+        collectionId: 1,
+        page: 5,
+        perPage: 55
+      },
+      customTests: [
+        {
+          it: 'navigates to /collection/:collectionId;i=<page>;n=<perPage>',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections/1', { i: 5, n: 55 }]);
+          }
+        }
+      ]
+    });
   });
 }
