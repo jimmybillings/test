@@ -5,7 +5,7 @@ import { Component, Input, Output, ChangeDetectionStrategy, EventEmitter } from 
   selector: 'project-info-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section (click)="onEditClick()">
+    <section>
       <h5 md-display-1>
       <span class="project-label md-caption">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
       <span class="project-name">{{ name }}</span>
@@ -21,9 +21,4 @@ export class ProjectInfoComponent {
   @Input() name: string;
   @Input() clientName: string;
   @Input() readOnly: boolean = false;
-  @Output() showEditDialog: EventEmitter<null> = new EventEmitter();
-
-  public onEditClick(): void {
-    if (!this.readOnly) this.showEditDialog.emit();
-  }
 }
