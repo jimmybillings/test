@@ -49,7 +49,15 @@ export class WzAsset {
   }
 
   public removeFromActiveCollection(asset: EnhancedAsset) {
-    this.store.dispatch(factory => factory.activeCollection.removeAsset(asset));
+    this.store.dispatch(factory => factory.dialog.showConfirmation(
+      {
+        title: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.TITLE',
+        message: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.MESSAGE',
+        accept: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.ACCEPT',
+        decline: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.DECLINE'
+      },
+      () => this.store.dispatch(factory => factory.activeCollection.removeAsset(asset))
+    ));
   }
 
   public addAssetToCart(asset: EnhancedAsset) {
