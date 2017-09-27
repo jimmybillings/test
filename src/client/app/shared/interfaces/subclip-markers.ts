@@ -73,13 +73,9 @@ function deserializeSingle(serializedMarker: SerializedSubclipMarker): Frame {
 }
 
 function timeStartFrom(markers: SubclipMarkers): number {
-  return markers && markers.in ? toMilliseconds(markers.in) : -1;
+  return markers && markers.in ? markers.in.asMilliseconds() : -1;
 }
 
 function timeEndFrom(markers: SubclipMarkers): number {
-  return markers && markers.out ? toMilliseconds(markers.out) : -2;
-}
-
-function toMilliseconds(frame: Frame): number {
-  return Math.ceil(frame.asSeconds(3) * 1000);
+  return markers && markers.out ? markers.out.asMilliseconds() : -2;
 }
