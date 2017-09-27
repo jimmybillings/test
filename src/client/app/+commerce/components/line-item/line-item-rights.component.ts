@@ -9,12 +9,14 @@ import { SelectedPriceAttributes } from '../../../shared/interfaces/common.inter
   `
   <ng-container *ngIf="rightsManaged == 'Rights Managed'">
     <section [ngClass]="{'read-only': readOnly, 'needs-rights': !hasAttributes}" (click)="showPricingDialog.emit()">
-      <header>{{'QUOTE.RIGHTS_PACKAGE_TITLE' | translate}}</header>
-      <span *ngIf="!hasAttributes" class="cart-asset-metadata md-caption">
-        <strong>{{'QUOTE.RIGHTS_PACKAGE_NOT_SELECTED_MSG' | translate}}</strong>
-      </span>
+      <ng-container *ngIf="!isOrder">
+        <header>{{'QUOTE.RIGHTS_PACKAGE_TITLE' | translate}}</header>
+        <span *ngIf="!hasAttributes" class="cart-asset-metadata md-caption">
+          <strong>{{'QUOTE.RIGHTS_PACKAGE_NOT_SELECTED_MSG' | translate}}</strong>
+        </span>
+      </ng-container>
       <span *ngFor="let right of rights" class="cart-asset-metadata md-caption">
-      <strong>{{right.priceAttributeName}}: </strong> {{right.selectedAttributeValue}}
+        <strong>{{right.priceAttributeName}}: </strong> {{right.selectedAttributeValue}}
       </span>
     </section>
   </ng-container>
@@ -30,5 +32,6 @@ export class LineItemRightsComponent {
   @Input() rightsManaged: string;
   @Input() hasAttributes: boolean;
   @Input() readOnly: boolean = false;
+  @Input() isOrder: boolean = false;
   @Output() showPricingDialog: EventEmitter<null> = new EventEmitter();
 }
