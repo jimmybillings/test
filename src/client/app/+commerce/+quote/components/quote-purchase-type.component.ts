@@ -1,4 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { MdSelectChange } from '@angular/material';
+import { MdSelectOption } from '../../../shared/interfaces/forms.interface';
 
 @Component({
   moduleId: module.id,
@@ -6,9 +8,9 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   template: `
     <div class="quote-purchase-types" layout="column" layout-align="start center">
       <md-select 
-        (change)="selectQuoteType.emit({ type: $event.value });" 
+        (change)="onSelectChange($event)" 
         [(ngModel)]="selectedType" 
-        placeholder="Please select a quote purchase type">
+        placeholder="{{ 'QUOTE.PURCHASE_TYPE_SELECT' | translate }}">
         <md-option
           *ngFor="let type of types"
           [value]="type.value">{{ type.viewValue }}
@@ -24,11 +26,16 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   ]
 })
 export class QuotePurchaseTypeComponent {
-  @Output() selectQuoteType: EventEmitter<any> = new EventEmitter();
-  public types: any[] = [
-    { viewValue: 'Standard', value: 'standard' },
-    { viewValue: 'Provisional Order', value: 'ProvisionalOrder' },
-    { viewValue: 'Offline Agreement', value: 'OfflineAgreement' }
-  ];
-  public selectedType: string = this.types[0].value;
+  public types: MdSelectOption[];
+  public selectedType: string;
+  @Output() selectQuoteType: EventEmitter<{ type: string }> = new EventEmitter();
+  @Input()
+  public set quoteTypes(types: MdSelectOption[]) {
+    this.types = types;
+    this.selectedType = this.types[0].value;
+  }
+
+  public onSelectChange(event: MdSelectChange): void {
+    this.selectQuoteType.emit({ type: event.value });
+  }
 }

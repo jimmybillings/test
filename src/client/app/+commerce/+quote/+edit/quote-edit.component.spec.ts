@@ -50,7 +50,8 @@ export function main() {
             addBulkOrderId: { items: [{ some: 'bulk' }] },
             addDiscount: { items: [{ some: 'discount' }] },
             addCostMultiplier: { items: [{ some: 'multiplier' }] },
-            bulkImport: { items: [{ some: 'import' }] }
+            bulkImport: { items: [{ some: 'import' }] },
+            quotePurchaseType: { items: [{ some: 'purchaseType' }] }
           }
         }))
       };
@@ -117,7 +118,8 @@ export function main() {
           addBulkOrderId: { items: [{ some: 'bulk' }] },
           addDiscount: { items: [{ some: 'discount' }] },
           addCostMultiplier: { items: [{ some: 'multiplier' }] },
-          bulkImport: { items: [{ some: 'import' }] }
+          bulkImport: { items: [{ some: 'import' }] },
+          quotePurchaseType: { items: [{ some: 'purchaseType' }] }
         });
       });
 
@@ -126,9 +128,12 @@ export function main() {
       });
 
       it('gets the UI config specifically for the comments', () => {
-        componentUnderTest.ngOnInit();
-
         expect(mockUiConfig.get).toHaveBeenCalledWith('quoteComment');
+      });
+
+      it('sets the \'purchaseTypeConfig\' instance variable', () => {
+        expect(mockUiConfig.get).toHaveBeenCalledWith('cart');
+        expect(componentUnderTest.purchaseTypeConfig).toEqual([{ some: 'purchaseType' }]);
       });
     });
 
