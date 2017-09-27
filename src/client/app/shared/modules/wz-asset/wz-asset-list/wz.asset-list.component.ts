@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { WzAsset } from '../wz-asset';
 import { AppStore } from '../../../../app.store';
+import { UiConfig } from '../../../../shared/services/ui.config';
 
 @Component({
   moduleId: module.id,
@@ -10,7 +11,7 @@ import { AppStore } from '../../../../app.store';
 })
 
 export class WzAssetListComponent extends WzAsset {
-  constructor(store: AppStore) {
-    super(store);
+  constructor(store: AppStore, uiConfig: UiConfig) {
+    super(store, uiConfig);
   }
 }
