@@ -7,7 +7,7 @@ import * as EnhancedMock from '../../interfaces/enhanced-asset';
 import { mockAsset } from '../../mocks/mock-asset';
 
 export function main() {
-  describe('Wz Asset Component', () => {
+  describe('Wz Asset Base Class', () => {
     let componentUnderTest: WzAsset;
     let mockStore: MockAppStore;
     let mockCollection: Collection;
@@ -23,6 +23,7 @@ export function main() {
 
       mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'searchAsset');
       mockStore = new MockAppStore();
+      mockStore.createStateSection('speedPreview', { 1234: { price: 100 } });
       mockStore.createStateElement('comment', 'counts', { 'abc-123': 3 });
 
       componentUnderTest = new WzAsset(mockStore);
@@ -237,8 +238,9 @@ export function main() {
         expect(componentUnderTest.canBePurchased(asset)).toBe(false);
       });
 
-      it('is true when Rights.Reproduction is Royalty Free', () => {
+      it('is true when Rights.Reproduction is Royalty Free AND the asset has a price', () => {
         let asset: any = {
+          assetId: 1234,
           metaData: [
             { name: 'Rights.Reproduction', value: 'Royalty Free' }
           ]
@@ -246,8 +248,9 @@ export function main() {
         expect(componentUnderTest.canBePurchased(asset)).toBe(true);
       });
 
-      it('is true when Rights.Reproduction is Rights Managed', () => {
+      it('is true when Rights.Reproduction is Rights Managed AND the asset has a price', () => {
         let asset: any = {
+          assetId: 1234,
           metaData: [
             { name: 'Rights.Reproduction', value: 'Rights Managed' }
           ]
@@ -317,10 +320,6 @@ export function main() {
         expect(componentUnderTest.canBeAddedAgain(mockEnhancedAsset)).toBe(false);
       });
     });
-
-
-
-
   });
 }
 

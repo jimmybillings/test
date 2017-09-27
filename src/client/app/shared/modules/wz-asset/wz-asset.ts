@@ -162,7 +162,8 @@ export class WzAsset {
   public canBePurchased(asset: EnhancedAsset): boolean {
     const rights: Metadatum = asset.metaData.find((metadatum: Metadatum) => metadatum.name === 'Rights.Reproduction');
     if (!rights) return false;
-    return ['Rights Managed', 'Royalty Free'].includes(rights.value);
+    return ['Rights Managed', 'Royalty Free'].includes(rights.value) &&
+      this.store.snapshot(state => state.speedPreview[asset.assetId] ? state.speedPreview[asset.assetId].price : 0) > 0;
   }
 
   public commentCountFor(asset: EnhancedAsset): Observable<number> {
