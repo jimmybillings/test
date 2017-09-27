@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { Cart } from '../../shared/interfaces/commerce.interface';
+import { Asset } from '../../shared/interfaces/common.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { Pojo } from '../../shared/interfaces/common.interface';
@@ -12,6 +13,10 @@ export class ActionFactory {
 
   public editLineItemFromDetails(uuid: string, markers: SubclipMarkers, attributes: Pojo): EditLineItemFromDetails {
     return new EditLineItemFromDetails(uuid, markers, attributes);
+  }
+
+  public removeAsset(asset: Asset): RemoveAsset {
+    return new RemoveAsset(asset);
   }
 
   // Move this to internal action factory when cart is fully "effected"
@@ -67,6 +72,12 @@ export class EditLineItemFromDetailsFailure implements Action {
   public static readonly Type = '[Cart] Edit Line Item From Details Failure';
   public readonly type = EditLineItemFromDetailsFailure.Type;
   constructor(public readonly error: ApiErrorResponse) { }
+}
+
+export class RemoveAsset implements Action {
+  public static readonly Type = '[Cart] Remove Asset';
+  public readonly type = RemoveAsset.Type;
+  constructor(public readonly asset: Asset) { }
 }
 
 export type Any =

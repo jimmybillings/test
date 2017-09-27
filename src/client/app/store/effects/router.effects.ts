@@ -60,6 +60,14 @@ export class RouterEffects {
       this.router.navigate([`${this.CollectionsPath}/${action.collectionId}`, { i: action.page, n: action.perPage }]);
     });
 
+  @Effect({ dispatch: false })
+  public goToQuote: Observable<Action> = this.actions.ofType(RouterActions.GoToQuote.Type)
+    .do((action: RouterActions.GoToQuote) => {
+      console.log(action);
+      return this.router.navigate([`${this.QuotesPath}/${action.quoteId}`]);
+    });
+
+
   private readonly LoginPath: string = '/user/login';
   private readonly PageNotFoundPath: string = '/404';
   private readonly QuotesPath: string = '/quotes';

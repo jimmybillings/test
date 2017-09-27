@@ -27,6 +27,10 @@ export class ActionFactory {
     return new GoToQuotes();
   }
 
+  public goToQuote(quoteId: number): GoToQuote {
+    return new GoToQuote(quoteId);
+  }
+
   public goToCollection(collectionId: number, page: number = 1, perPage: number = 100): GoToCollection {
     return new GoToCollection(collectionId, page, perPage);
   }
@@ -71,3 +75,10 @@ export class GoToCollection implements Action {
   public readonly type = GoToCollection.Type;
   constructor(public readonly collectionId: number, public readonly page: number, public readonly perPage: number) { }
 }
+
+export class GoToQuote implements Action {
+  public static readonly Type = '[Router] Go To Quote';
+  public readonly type = GoToQuote.Type;
+  constructor(public readonly quoteId: number) { }
+}
+

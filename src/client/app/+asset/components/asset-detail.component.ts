@@ -285,6 +285,13 @@ export class AssetDetailComponent {
     return `ASSET.DETAIL.BUTTON.${operation}.${subclipOrAsset}.${quoteOrCart}`;
   }
 
+  public get removeFromCartButtonLabelKey(): string {
+    const subclipOrAsset: string = this._asset.isSubclipped ? 'SUBCLIP' : 'ASSET';
+    const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
+
+    return `ASSET.DETAIL.BUTTON.REMOVE.${subclipOrAsset}.${quoteOrCart}`;
+  }
+
   public get canGoToSearchAssetDetails(): boolean {
     return this.assetTypeIsOneOf('cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset');
   }
@@ -308,6 +315,10 @@ export class AssetDetailComponent {
 
   public get commentCount(): Observable<number> {
     return this.store.select(state => state.comment[state.comment.activeObjectType].pagination.totalCount);
+  }
+
+  public removeAssetFromCartOrQuote(): void {
+    this.store.dispatch((factory) => factory.quoteEdit.removeAsset(this._asset));
   }
 
   private assetTypeIsOneOf(...assetTypes: AssetType[]) {

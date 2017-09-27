@@ -35,6 +35,11 @@ export class FutureQuoteEditService {
     return this.makeEditLineItemRequest(quoteId, newLineItem);
   }
 
+  public removeAsset(quoteId: number, asset: Asset): Observable<Quote> {
+    return this.apiService.delete(Api.Orders, `quote/${quoteId}/asset/${asset.uuid}`, { loadingIndicator: true })
+      .switchMap(() => this.load());
+  }
+
   private durationFrom(lineItem: AssetLineItem, markers: SubclipMarkers): Duration {
     return bothMarkersAreSet(markers) ?
       durationFrom(markers) : { timeStart: lineItem.asset.timeStart, timeEnd: lineItem.asset.timeEnd };
