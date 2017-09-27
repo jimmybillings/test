@@ -14,7 +14,7 @@ import { QuoteOptions, Project, FeeLineItem, Quote, AssetLineItem, QuoteState } 
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
-import { FormFields } from '../../../shared/interfaces/forms.interface';
+import { FormFields, MdSelectOption } from '../../../shared/interfaces/forms.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
 import { AppStore } from '../../../app.store';
@@ -34,6 +34,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   public commentParentObject: CommentParentObject;
   public showComments: boolean = null;
   public projects: Project[];
+  public purchaseTypeConfig: MdSelectOption[];
   private projectSubscription: Subscription;
 
   constructor(
@@ -57,6 +58,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
       userPreference, document, snackBar, translate, pricingStore, store, pricingService
     );
     this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+    this.uiConfig.get('cart').take(1).subscribe(config => this.purchaseTypeConfig = config.config.quotePurchaseType.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
     this.projectSubscription = this.quoteEditService.projects.subscribe(projects => this.projects = projects);
   }

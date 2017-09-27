@@ -39,3 +39,8 @@ export interface Errors {
   message: string;
   resource?: string;
 }
+
+export interface MdSelectOption {
+  value: string;
+  viewValue: string;
+}
