@@ -302,7 +302,7 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
   }
 
   private millisecondsFrom(frame: Frame): number {
-    return frame ? frame.asSeconds(3) * 1000 : undefined;
+    return frame ? frame.asMilliseconds() : undefined;
   }
 
   private percentageFor(frame: Frame): number {

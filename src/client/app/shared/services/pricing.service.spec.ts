@@ -9,10 +9,10 @@ export function main() {
     const mockAsset: any = { assetId: 12345 };
     const mockMarkers: any = {
       in: {
-        asSeconds: () => 1
+        asMilliseconds: () => 1000
       },
       out: {
-        asSeconds: () => 10
+        asMilliseconds: () => 10000
       }
     };
 
