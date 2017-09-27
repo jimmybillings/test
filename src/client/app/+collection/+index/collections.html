@@ -51,9 +51,9 @@
 					<strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{options.currentSearchQuery.q}}
 				</span>
 			</div>
-			<button md-button (click)="createCollection()" title="Create Collection" color="primary" class="create-collection">
+			<!-- <button md-button (click)="createCollection()" title="Create Collection" color="primary" class="create-collection">
 				<md-icon>library_add</md-icon>Create Collection
-			</button>
+			</button> -->
 			<button md-button class="is-dd" color="primary" [md-menu-trigger-for]="filterCollectionOptions">
 				<span class="key">{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</span>
 				<span class="value md-caption">
@@ -72,8 +72,15 @@
 
 <section layout="row" flex="100" layout-margin-gt-xs layout-align="center start">
 	<section class="collections-list" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout-margin>
-		<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination" (getPage)="changePage($event)">
-		</wz-pagination>
+		<div layout-gt-xs="row" layout="column" layout-align="end end" layout-align-gt-xs="space-between end">
+			<div class="new-collection" flex-gt-xs="auto" flex="100">	
+				<button md-button color="primary" (click)="createCollection()">
+					<md-icon>add_circle_outline</md-icon>{{ 'COLLECTION.INDEX.NEW_COLLECTION_BTN' | translate }}
+				</button>
+			</div>
+			<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination" (getPage)="changePage($event)">
+			</wz-pagination>
+		</div>
 		<!-- COLLECTION LIST -->
 		<wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="editCollection($event)"
 			[activeCollection]="(activeCollection | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event);"

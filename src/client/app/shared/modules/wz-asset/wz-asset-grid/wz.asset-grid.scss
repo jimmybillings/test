@@ -8,7 +8,7 @@ wz-asset-grid ul.asset-grid-view {
   font-size: 0;
   line-height: 0;
   padding: 0;
-  margin: 0 0 0 -1%;
+  margin: 12px 0 0 -1%;
   min-height: 100%;
   & > li {
     font-size: 1em;
@@ -40,10 +40,10 @@ wz-asset-grid ul.asset-grid-view {
       position: absolute;
       top: -12px;
       left: 1px;
-      font-size: rem(1.1);
-      line-height: rem(1.1);
+      font-size: 11px;
+      line-height: 11px;
       transition: $swift-ease-out;
-      opacity: 0;
+      opacity: .6;
     }
     .asset a.asset-thb {
       display: block;
@@ -101,8 +101,8 @@ wz-asset-grid ul.asset-grid-view {
       span.mdata-1 {
         display: block;
         position: static;
-        font-size: rem(1.2);
-        line-height: rem(1.55);
+        font-size: 12px;
+        line-height: 15.5px;
         height: 72%;
         padding: 2.5% 3% 0 3%;
         opacity: .65;
@@ -137,16 +137,16 @@ wz-asset-grid ul.asset-grid-view {
         height: 100%;
         min-height: 100%;
         max-height: 100%;
-        padding-left: rem(.6);
-        padding-right: rem(.6);
+        padding-left: 6px;
+        padding-right: 6px;
         button[md-icon-button] {
-          height: rem(3.6);
-          width: rem(3.6);
-          padding: rem(.6);
+          height: 36px;
+          width: 36px;
+          padding: 6px;
           margin-top: auto;
           margin-bottom: auto;
-          margin-left: rem(.2);
-          margin-right: rem(.2);
+          margin-left: 2px;
+          margin-right: 2px;
           transition: $swift-ease-in-out;
           span.mat-button-wrapper {
             position: static;
@@ -164,21 +164,45 @@ wz-asset-grid ul.asset-grid-view {
       opacity: 1;
     } 
     span {
-      // display: block;
       position: absolute;
-      font-size: rem(1.2);
-      line-height: rem(1.55);
+      font-size: 12px;
+      line-height: 1.3;
       &.mdata-0 {
         display: none;
       }
       &.comment-count {
         top: 2px;
         left: 2px;
+        width: 27px;
+        height: 27px;
         span.count {
-          font-weight: bold;
           position: absolute;
-          top: 3px;
-          left: 9px;
+          top: 8px;
+          left: 4px;
+          font-size: .94em;
+          text-align: center;
+          line-height: 1;
+          width: 20px;
+          height: 14px;
+          z-index: 4;
+        }
+        &::before {
+          content: "\e0cb";
+          font-family: 'Material Icons';
+          position: absolute;
+          top: -3px;
+          left: 0;
+          font-size: 29px;
+          z-index: 3;
+        }
+        &::after {
+          content: "\e0ca";
+          font-family: 'Material Icons';
+          position: absolute;
+          top: -1px;
+          left: 1px;
+          font-size: 26px;
+          z-index: 2;
         }
       }
       &.mdata-2 {
@@ -194,17 +218,17 @@ wz-asset-grid ul.asset-grid-view {
           right: 0;
           &::before {
             content: "HD";
-            // border-radius: rem(.2);
-            border-width: rem(.144);
+            border-width: 1.44px;
             border-style: solid;
             border-color: rgba(mat-color($mat-grey, 100),0.5);
             color: rgba(mat-color($mat-grey, 100),0.7);
             position: absolute;
-            top: rem(.1);
-            right: rem(.1);
+            top: 1px;
+            right: 1px;
             font-size: 1.1em;
+            line-height: 1;
             font-weight: bold;
-            padding: 0 2px 0 3px;
+            padding: 2px 2px 1px 3px;
           }
         }
         .sd-hd.sd, .sd-hd.dv {
@@ -240,8 +264,8 @@ wz-asset-grid ul.asset-grid-view {
             font-family: 'Material Icons';
             color: rgba(mat-color($mat-grey, 100),0.4);
             position: absolute;
-            top: rem(.3);
-            right: rem(-.2);
+            top: 3px;
+            right: -2px;
             font-size: 1.86em;
           }
         }
@@ -249,10 +273,10 @@ wz-asset-grid ul.asset-grid-view {
       &.subclip-timeline {
         transition: $swift-ease-out;
         position: absolute;
-        height: rem(.6);
+        height: 6px;
         width: 100%;
-        bottom: rem(2.2);
-        left: rem(0.0);
+        bottom: 22px;
+        left: 0;
         z-index: 1;
         opacity: .75;
         .subclip-segment {

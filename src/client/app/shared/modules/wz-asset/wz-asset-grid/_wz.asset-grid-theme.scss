@@ -42,8 +42,13 @@
           @include text-contrast(mat-color($foreground, base));
         }
         &.comment-count {
-          color: rgba(mat-color($primary, default), .8);
+          &::before {
+            color: mat-color($mat-grey, 800);
+          }
           span.count {
+            @include text-contrast(mat-color($background, card));
+          }
+          &::after {
             color: mat-color($background, card);
           }
         }

@@ -12,7 +12,7 @@
 				[readOnly]="readOnly"
 				[name]="project.name"
 				[clientName]="project.clientName"
-				(showEditDialog)="onEdit(project)">
+				(click)="onEdit(project)">
 			</project-info-component>
 			<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
 				<project-actions-component

@@ -6,16 +6,11 @@ export function main() {
 
     beforeEach(() => {
       componentUnderTest = new ProjectInfoComponent();
-      componentUnderTest.showEditDialog.emit = jasmine.createSpy('edit emitter');
     });
 
-    describe('onEditButtonClick()', () => {
-      it('emits an showEditDialog request if readOnly is false', () => {
-        componentUnderTest.readOnly = false;
-        componentUnderTest.onEditClick();
-
-        expect(componentUnderTest.showEditDialog.emit).toHaveBeenCalled();
-      });
+    it('has no testable functionality', () => {
+      expect(true).toBe(true);
     });
+
   });
 }
