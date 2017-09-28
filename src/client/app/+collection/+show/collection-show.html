@@ -58,7 +58,7 @@
           <button
             md-icon-button
             title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}"
-            (click)="editCollection();">
+            (click)="editCollection()">
               <md-icon>edit</md-icon>
           </button>
           <button
@@ -81,13 +81,25 @@
               <md-icon>more_vert</md-icon>
           </button>
           <md-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="mdMenu">
-            <button md-menu-item disabled><md-icon>file_download</md-icon>Download all comps</button>
-            <button md-menu-item disabled><md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}</button>
+            <button md-menu-item disabled>
+              <md-icon>file_download</md-icon>Download all comps
+            </button>
+            <button md-menu-item disabled>
+              <md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}
+            </button>
             <div class="divider"></div>
-            <button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
-            <button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
-            <button md-menu-item (click)="duplicateCollection();"><md-icon>layers</md-icon>Duplicate Collection</button>
-            <button md-menu-item (click)="getAssetsForLink()"><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
+            <button md-menu-item (click)="duplicateCollection()">
+              <md-icon>layers</md-icon>{{'COLLECTION.MORE_DD_MENU.DUPLICATE_COLLECTION' | translate }}
+            </button>
+            <button md-menu-item disabled>
+              <md-icon>import_export</md-icon>Export collection as XML
+            </button>
+            <button md-menu-item disabled>
+              <md-icon>print</md-icon>Print collection asset list
+            </button>
+            <button md-menu-item (click)="getAssetsForLink()">
+              <md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
+            </button>
             <div *ngIf="!!activeCollection.owner">
               <div class="divider"></div>
               <button md-menu-item class="delete" (click)="setCollectionForDelete()">
