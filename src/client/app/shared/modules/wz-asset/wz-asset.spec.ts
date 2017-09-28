@@ -47,26 +47,11 @@ export function main() {
     });
 
     describe('removeFromActiveCollection()', () => {
-      it('dispatches the confirmation prompt', () => {
-        const spy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
+      it('dispatches the expected action', () => {
+        const mockAsset: any = { some: 'asset' };
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
         componentUnderTest.removeFromActiveCollection(mockEnhancedAsset);
-        mockStore.expectDispatchFor(spy, {
-          title: 'COLLECTION.REMOVE_ASSET.TITLE',
-          message: 'COLLECTION.REMOVE_ASSET.MESSAGE',
-          accept: 'COLLECTION.REMOVE_ASSET.ACCEPT',
-          decline: 'COLLECTION.REMOVE_ASSET.DECLINE'
-        }, jasmine.any(Function));
-      });
-
-      it('dispatches the correct action via the onAccept callback', () => {
-        const dialogSpy: any = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
-        const removeSpy: any = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
-        dialogSpy.and.callFake((_: any, onAcceptCallback: Function) => {
-          dialogSpy.onAcceptCallback = onAcceptCallback;
-        });
-        componentUnderTest.removeFromActiveCollection(mockEnhancedAsset);
-        dialogSpy.onAcceptCallback();
-        mockStore.expectDispatchFor(removeSpy, mockEnhancedAsset);
+        mockStore.expectDispatchFor(spy, mockEnhancedAsset);
       });
     });
 

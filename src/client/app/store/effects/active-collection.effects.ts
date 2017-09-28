@@ -82,7 +82,8 @@ export class ActiveCollectionEffects {
     );
 
   @Effect()
-  public changeRouteOnDeleteSuccess: Observable<Action> = this.actions.ofType(ActiveCollectionActions.RemoveAssetSuccess.Type)
+  public changeRouteOnRemoveAssetSuccess: Observable<Action> =
+  this.actions.ofType(ActiveCollectionActions.RemoveAssetSuccess.Type)
     .withLatestFrom(this.store.select(state => state.activeCollection.collection.id))
     .map(([action, collectionId]: [ActiveCollectionActions.RemoveAssetSuccess, number]) => {
       return this.store.create(factory => factory.router.goToCollection(collectionId));

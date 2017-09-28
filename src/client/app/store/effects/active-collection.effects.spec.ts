@@ -240,7 +240,7 @@ export function main() {
     });
 
     effectsSpecHelper.generateTestsFor({
-      effectName: 'changeRouteOnDeleteSuccess',
+      effectName: 'changeRouteOnRemoveAssetSuccess',
       effectsInstantiator: instantiator,
       inputAction: {
         type: ActiveCollectionActions.RemoveAssetSuccess.Type,
