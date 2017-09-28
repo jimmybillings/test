@@ -1,7 +1,7 @@
 <ul class="asset-grid-view" *ngIf="assets">
   <li *ngFor="let asset of assets">
     <div class="asset">
-      <div class="asset-name">{{ nameOf(asset) }}</div>
+      <div class="asset-name" *ngIf="showAssetName">{{ nameOf(asset) }}</div>
       <a
         flex=""
         [routerLink]="routerLinkFor(asset)"

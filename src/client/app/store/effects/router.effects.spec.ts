@@ -138,7 +138,7 @@ export function main() {
         {
           it: 'navigates to /search/asset/:assetId',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/asset/47', {}]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/asset', 47, {}]);
           }
         }
       ]
@@ -157,7 +157,7 @@ export function main() {
         {
           it: 'navigates to /search/asset/:assetId;timeStart=<milliseconds>;timeEnd=<milliseconds>',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/asset/47', { timeStart: 1000, timeEnd: 2000 }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/asset', 47, { timeStart: 1000, timeEnd: 2000 }]);
           }
         }
       ]
@@ -230,6 +230,76 @@ export function main() {
           it: 'navigates to /quotes',
           expectation: () => {
             expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes']);
+          }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToCollection',
+      comment: 'without i and n being set',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToCollection.Type,
+        collectionId: 1,
+      },
+      customTests: [
+        {
+          it: 'navigates to /collections/:collectionId',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections', 1, { i: undefined, n: undefined }]);
+          }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToCollection',
+      comment: 'with custom i and n set',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToCollection.Type,
+        collectionId: 1,
+        page: 5,
+        perPage: 55
+      },
+      customTests: [
+        {
+          it: 'navigates to /collection/:collectionId;i=<page>;n=<perPage>',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections', 1, { i: 5, n: 55 }]);
+          }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToActiveQuote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToActiveQuote.Type
+      },
+      customTests: [
+        {
+          it: 'navigates to /active-quote',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/active-quote']);
+          }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToCart',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToCart.Type
+      },
+      customTests: [
+        {
+          it: 'navigates to /cart',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/cart']);
           }
         }
       ]

@@ -78,8 +78,17 @@ export class ActiveCollectionEffects {
   public showSnackBarOnRemoveSuccess: Observable<Action> = this.actions.ofType(ActiveCollectionActions.RemoveAssetSuccess.Type)
     .withLatestFrom(this.store.select(state => state.activeCollection.collection.name))
     .map(([action, name]: [ActiveCollectionActions.RemoveAssetSuccess, string]) =>
-      this.store.create(factory => factory.snackbar.display('COLLECTION.REMOVE_FROM_COLLECTION_TOAST', { collectionName: name }))
+      this.store.create(factory => factory.snackbar.display('COLLECTION.REMOVE_ASSET.SUCCESS', { collectionName: name }))
     );
+
+  @Effect()
+  public changeRouteOnRemoveAssetSuccess: Observable<Action> =
+  this.actions.ofType(ActiveCollectionActions.RemoveAssetSuccess.Type)
+    .withLatestFrom(this.store.select(state => state.activeCollection.collection.id))
+    .map(([action, collectionId]: [ActiveCollectionActions.RemoveAssetSuccess, number]) => {
+      return this.store.create(factory => factory.router.goToCollection(collectionId));
+    });
+
 
   @Effect()
   public updateAssetMarkers: Observable<Action> = this.actions.ofType(ActiveCollectionActions.UpdateAssetMarkers.Type)

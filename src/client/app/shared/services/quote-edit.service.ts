@@ -159,11 +159,6 @@ export class QuoteEditService {
       .subscribe(this.replaceQuote);
   }
 
-  public removeLineItem(lineItem: AssetLineItem): void {
-    this.api.delete(Api.Orders, `quote/${this.quoteId}/asset/${lineItem.id}`, { loadingIndicator: true })
-      .subscribe(this.replaceQuote);
-  }
-
   public editLineItem(lineItem: AssetLineItem, fieldToEdit: any): void {
     if (!!fieldToEdit.pricingAttributes) {
       fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };

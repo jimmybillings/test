@@ -22,9 +22,8 @@ export class WzInputTagsComponent {
   @Input() fControl: FormControl;
   @Input() tags: Array<string> = [];
   private finalDelete: boolean = false;
-  constructor(private ref: ChangeDetectorRef) {
+  constructor(private ref: ChangeDetectorRef) { }
 
-  }
   public submit(e: any) {
     switch (e.code) {
 

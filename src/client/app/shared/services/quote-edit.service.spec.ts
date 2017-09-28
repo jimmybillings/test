@@ -319,22 +319,6 @@ export function main() {
       });
     });
 
-    describe('removeLineItem()', () => {
-      it('should call the API service correctly', () => {
-        serviceUnderTest.removeLineItem({ id: '123' });
-
-        expect(mockApi.delete).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.delete).toHaveBeenCalledWithEndpoint('quote/3/asset/123');
-        expect(mockApi.delete).toHaveBeenCalledWithLoading(true);
-      });
-
-      it('should replace the store with the response', () => {
-        serviceUnderTest.removeLineItem({ id: '123' });
-
-        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.deleteResponse);
-      });
-    });
-
     describe('editLineItem()', () => {
       it('should call the API service correctly', () => {
         serviceUnderTest.editLineItem({ id: '123' }, { pricingAttributes: { Distribution: 'Online Streaming' } });

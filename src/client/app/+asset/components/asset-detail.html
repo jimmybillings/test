@@ -273,7 +273,15 @@
                   md-raised-button
                   (click)="addAssetToCart()"
                   color="primary">
-                  {{ addToCartButtonLabelKey | translate }}
+                  {{ addToCartOrQuoteButtonLabelKey | translate }}
+                </button>
+
+                <button
+                  *ngIf="canUpdateCartAsset"
+                  md-raised-button
+                  (click)="removeAssetFromCartOrQuote()"
+                  color="accent">
+                  {{ removeFromCartOrQuoteButtonLabelKey | translate }}
                 </button>
 
                 <button *ngIf="canGoToSearchAssetDetails" class="is-outlined" md-button (click)="goToSearchAssetDetails()">

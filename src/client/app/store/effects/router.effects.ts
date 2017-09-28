@@ -32,7 +32,8 @@ export class RouterEffects {
   public goToSearchAssetDetails: Observable<Action> = this.actions.ofType(RouterActions.GoToSearchAssetDetails.Type)
     .do((action: RouterActions.GoToSearchAssetDetails) =>
       this.router.navigate([
-        `${this.SearchAssetDetailsPath}/${action.assetId}`,
+        this.SearchAssetDetailsPath,
+        action.assetId,
         bothMarkersAreSet(action.markers) ? durationFrom(action.markers) : {}
       ])
     );
@@ -54,12 +55,29 @@ export class RouterEffects {
   public goToQuotes: Observable<Action> = this.actions.ofType(RouterActions.GoToQuotes.Type)
     .do(() => this.router.navigate([this.QuotesPath]));
 
+  @Effect({ dispatch: false })
+  public goToCollection: Observable<Action> = this.actions.ofType(RouterActions.GoToCollection.Type)
+    .do((action: RouterActions.GoToCollection) => {
+      this.router.navigate([this.CollectionsPath, action.collectionId, { i: action.page, n: action.perPage }]);
+    });
+
+  @Effect({ dispatch: false })
+  public goToActiveQuote: Observable<Action> = this.actions.ofType(RouterActions.GoToActiveQuote.Type)
+    .do((action: RouterActions.GoToActiveQuote) => this.router.navigate([this.ActiveQuotePath]));
+
+  @Effect({ dispatch: false })
+  public goToCart: Observable<Action> = this.actions.ofType(RouterActions.GoToCart.Type)
+    .do((action: RouterActions.GoToCart) => this.router.navigate([this.CartPath]));
+
   private readonly LoginPath: string = '/user/login';
   private readonly PageNotFoundPath: string = '/404';
   private readonly QuotesPath: string = '/quotes';
   private readonly RootPath: string = '/';
   private readonly RedirectUrlKey: string = 'RouterEffects.RedirectUrl';
   private readonly SearchAssetDetailsPath: string = '/search/asset';
+  private readonly CollectionsPath: string = '/collections';
+  private readonly ActiveQuotePath: string = '/active-quote';
+  private readonly CartPath: string = '/cart';
 
   constructor(private actions: Actions, private router: Router, private location: Location) { }
 }

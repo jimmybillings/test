@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { WzAsset } from './wz-asset';
 import { Collection } from '../../interfaces/collection.interface';
 import { Asset } from '../../interfaces/common.interface';
@@ -12,6 +13,7 @@ export function main() {
     let mockStore: MockAppStore;
     let mockCollection: Collection;
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
+    let mockUiConfig: any;
 
     beforeEach(() => {
       mockCollection = {
@@ -24,9 +26,24 @@ export function main() {
       mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'searchAsset');
       mockStore = new MockAppStore();
       mockStore.createStateElement('comment', 'counts', { 'abc-123': 3 });
+      mockUiConfig = {
+        get: jasmine.createSpy('get').and.returnValue(
+          Observable.of({ config: { showAssetNameGridView: { value: 'true' } } }))
+      };
 
-      componentUnderTest = new WzAsset(mockStore);
+      componentUnderTest = new WzAsset(mockStore, mockUiConfig);
       componentUnderTest.assets = [EnhancedMock.enhanceAsset(mockAsset, 'searchAsset')];
+    });
+
+    describe('ngOnInit()', () => {
+      it('Should call the config service to get search configurations', () => {
+        componentUnderTest.ngOnInit();
+        expect(mockUiConfig.get).toHaveBeenCalledWith('search');
+      });
+      it('Should call the ui config and set variable showAssetName from ui config', () => {
+        componentUnderTest.ngOnInit();
+        expect(componentUnderTest.showAssetName).toBe(true);
+      });
     });
 
     describe('assets getter', () => {
