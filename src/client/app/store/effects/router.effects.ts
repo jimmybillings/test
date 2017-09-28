@@ -61,14 +61,12 @@ export class RouterEffects {
     });
 
   @Effect({ dispatch: false })
-  public goToQuote: Observable<Action> = this.actions.ofType(RouterActions.GoToActiveQuote.Type)
-    .do((action: RouterActions.GoToActiveQuote) => {
-      return this.router.navigate([`${this.ActiveQuotePath}`]);
-    });
+  public goToActiveQuote: Observable<Action> = this.actions.ofType(RouterActions.GoToActiveQuote.Type)
+    .do((action: RouterActions.GoToActiveQuote) => this.router.navigate([`${this.ActiveQuotePath}`]));
 
   @Effect({ dispatch: false })
   public goToCart: Observable<Action> = this.actions.ofType(RouterActions.GoToCart.Type)
-    .do(() => this.router.navigate([this.CartPath]));
+    .do((action: RouterActions.GoToCart) => this.router.navigate([this.CartPath]));
 
   private readonly LoginPath: string = '/user/login';
   private readonly PageNotFoundPath: string = '/404';

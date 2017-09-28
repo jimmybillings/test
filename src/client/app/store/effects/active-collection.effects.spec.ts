@@ -171,7 +171,6 @@ export function main() {
       }
     });
 
-
     effectsSpecHelper.generateTestsFor({
       effectName: 'showSnackBarOnAddSuccess',
       effectsInstantiator: instantiator,
@@ -260,7 +259,6 @@ export function main() {
         }
       }
     });
-
 
     effectsSpecHelper.generateTestsFor({
       effectName: 'updateAssetMarkers',

@@ -117,5 +117,27 @@ export function main() {
         perPage: 55
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'goToActiveQuote',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Router] Go To Active Quote'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'goToCart',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Router] Go To Cart'
+      }
+    });
   });
 }

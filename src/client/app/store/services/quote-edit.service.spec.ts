@@ -100,8 +100,7 @@ export function main() {
             7,
             {
               id: 3,
-              asset: { some: 'asset' },
-              attributes: [{ priceAttributeName: 'some', selectedAttributeValue: 'attribute' }]
+              asset: { some: 'asset' }
             } as any,
             { in: new Frame(30).setFromFrameNumber(30), out: new Frame(30).setFromFrameNumber(60) },
             null
@@ -113,11 +112,19 @@ export function main() {
           expect(mockApiService.put).toHaveBeenCalledWithBody({
             id: 3,
             asset: { some: 'asset', timeStart: 1000, timeEnd: 2000 },
-            attributes: [
-              { priceAttributeName: 'some', selectedAttributeValue: 'attribute' }
-            ]
+            attributes: []
           });
           expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+        });
+      });
+
+      describe('removeAsset()', () => {
+        it('calls the API correctly', () => {
+          serviceUnderTest.removeAsset(123, { uuid: 'ABCD' });
+
+          expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('quote/123/asset/ABCD');
+          expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
         });
       });
     });

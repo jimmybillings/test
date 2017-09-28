@@ -36,8 +36,7 @@ export class FutureQuoteEditService {
   }
 
   public removeAsset(quoteId: number, asset: Asset): Observable<Quote> {
-    return this.apiService.delete(Api.Orders, `quote/${quoteId}/asset/${asset.uuid}`, { loadingIndicator: true })
-      .switchMap(() => this.load());
+    return this.apiService.delete(Api.Orders, `quote/${quoteId}/asset/${asset.uuid}`, { loadingIndicator: true });
   }
 
   private durationFrom(lineItem: AssetLineItem, markers: SubclipMarkers): Duration {

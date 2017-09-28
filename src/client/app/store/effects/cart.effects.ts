@@ -42,7 +42,7 @@ export class CartEffects {
 
   @Effect()
   public showSnackbarOnRemoveAssetSuccess: Observable<Action> =
-  this.actions.ofType(CartActions.RemoveAssetSuccess.Type).map(() =>
+  this.actions.ofType(CartActions.RemoveAssetSuccess.Type).map((action: CartActions.RemoveAssetSuccess) =>
     this.store.create(factory => factory.snackbar.display('CART.REMOVE_ASSET.SUCCESS'))
   );
 

@@ -31,8 +31,7 @@ export class FutureCartService {
   }
 
   public removeAsset(asset: Asset): Observable<Cart> {
-    return this.apiService.delete(Api.Orders, `cart/asset/${asset.uuid}`, { loadingIndicator: true })
-      .switchMap(() => this.load());
+    return this.apiService.delete(Api.Orders, `cart/asset/${asset.uuid}`, { loadingIndicator: true });
   }
 
 

@@ -276,7 +276,7 @@ export class AssetDetailComponent {
     return this.userCan.addToCart();
   }
 
-  public get addToCartButtonLabelKey(): string {
+  public get addToCartOrQuoteButtonLabelKey(): string {
     const onMatchingPage: boolean = this.isQuoteUser ? this._asset.type === 'quoteEditAsset' : this._asset.type === 'cartAsset';
     const operation: string = onMatchingPage ? 'ADD_NEW' : 'ADD';
     const subclipOrAsset: string = this.markersAreDefined ? 'SUBCLIP' : 'ASSET';
@@ -285,7 +285,7 @@ export class AssetDetailComponent {
     return `ASSET.DETAIL.BUTTON.${operation}.${subclipOrAsset}.${quoteOrCart}`;
   }
 
-  public get removeFromCartButtonLabelKey(): string {
+  public get removeFromCartOrQuoteButtonLabelKey(): string {
     const subclipOrAsset: string = this._asset.isSubclipped ? 'SUBCLIP' : 'ASSET';
     const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
 

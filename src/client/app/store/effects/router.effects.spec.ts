@@ -272,5 +272,37 @@ export function main() {
         }
       ]
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToActiveQuote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToActiveQuote.Type
+      },
+      customTests: [
+        {
+          it: 'navigates to /active-quote',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/active-quote']);
+          }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToCart',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToCart.Type
+      },
+      customTests: [
+        {
+          it: 'navigates to /cart',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/cart']);
+          }
+        }
+      ]
+    });
   });
 }
