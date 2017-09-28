@@ -171,7 +171,6 @@ export function main() {
       }
     });
 
-
     effectsSpecHelper.generateTestsFor({
       effectName: 'showSnackBarOnAddSuccess',
       effectsInstantiator: instantiator,
@@ -235,7 +234,28 @@ export function main() {
         success: {
           sectionName: 'snackbar',
           methodName: 'display',
-          expectedArguments: ['COLLECTION.REMOVE_FROM_COLLECTION_TOAST', { collectionName: 'someCollectionName' }]
+          expectedArguments: ['COLLECTION.REMOVE_ASSET.SUCCESS', { collectionName: 'someCollectionName' }]
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'changeRouteOnRemoveAssetSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: ActiveCollectionActions.RemoveAssetSuccess.Type,
+        currentPageItems: { some: 'assets' }
+      },
+      state: {
+        storeSectionName: 'activeCollection',
+        propertyName: 'collection',
+        value: { id: 123 }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'router',
+          methodName: 'goToCollection',
+          expectedArguments: [123]
         }
       }
     });

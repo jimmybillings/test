@@ -112,5 +112,41 @@ export function main() {
         error: { some: 'error' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'removeAsset',
+        parameters: [{ some: 'asset' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Remove Asset',
+        asset: { some: 'asset' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'removeAssetSuccess',
+        parameters: [{ some: 'quote' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Remove Asset Success',
+        quote: { some: 'quote' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'removeAssetFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Remove Asset Failure',
+        error: { some: 'error' }
+      }
+    });
   });
 }

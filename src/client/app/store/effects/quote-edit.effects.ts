@@ -45,6 +45,28 @@ export class QuoteEditEffects {
     return this.store.create(factory => factory.snackbar.display('ASSET.DETAIL.QUOTE_ITEM_UPDATED'));
   });
 
+  @Effect()
+  public removeAsset: Observable<Action> = this.actions.ofType(QuoteEditActions.RemoveAsset.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.RemoveAsset, number]) =>
+      this.service.removeAsset(quoteId, action.asset)
+        .map((quote: Quote) => this.store.create(factory => factory.quoteEdit.removeAssetSuccess(quote)))
+        .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.removeAssetFailure(error))))
+    );
+
+  @Effect()
+  public showSnackbarOnRemoveAssetSuccess: Observable<Action> =
+  this.actions.ofType(QuoteEditActions.RemoveAssetSuccess.Type).map((action: QuoteEditActions.RemoveAssetSuccess) =>
+    this.store.create(factory => factory.snackbar.display('QUOTE.REMOVE_ASSET.SUCCESS'))
+  );
+
+  @Effect()
+  public changeRouteOnRemoveAssetSuccess: Observable<Action> =
+  this.actions.ofType(QuoteEditActions.RemoveAssetSuccess.Type).map((action: QuoteEditActions.RemoveAssetSuccess) =>
+    this.store.create(factory => factory.router.goToActiveQuote())
+  );
+
+
   constructor(
     private actions: Actions,
     private store: AppStore,

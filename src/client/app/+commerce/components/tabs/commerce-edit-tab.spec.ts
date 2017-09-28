@@ -322,11 +322,20 @@ export function main() {
         expect(mockCartService.cloneLineItem).toHaveBeenCalledWith(mockLineItem);
       });
 
-      it('clones a line item when notified with REMOVE_LINE_ITEM', () => {
-        let mockLineItem = {};
-        componentUnderTest.onNotification({ type: 'REMOVE_LINE_ITEM', payload: mockLineItem });
+      describe('removes a line item when notified with REMOVE_LINE_ITEM', () => {
+        it('for a quoteEditAsset', () => {
+          const spy = mockAppStore.createActionFactoryMethod('quoteEdit', 'removeAsset');
+          const mockLineItem = { asset: { id: 123, type: 'quoteEditAsset' } };
+          componentUnderTest.onNotification({ type: 'REMOVE_LINE_ITEM', payload: mockLineItem });
+          mockAppStore.expectDispatchFor(spy, { id: 123, type: 'quoteEditAsset' });
+        });
 
-        expect(mockCartService.removeLineItem).toHaveBeenCalledWith(mockLineItem);
+        it('for a cartAsset', () => {
+          const spy = mockAppStore.createActionFactoryMethod('cart', 'removeAsset');
+          const mockLineItem = { asset: { id: 123, type: 'cartAsset' } };
+          componentUnderTest.onNotification({ type: 'REMOVE_LINE_ITEM', payload: mockLineItem });
+          mockAppStore.expectDispatchFor(spy, { id: 123, type: 'cartAsset' });
+        });
       });
 
       it('edits a line item when notified with EDIT_LINE_ITEM', () => {
