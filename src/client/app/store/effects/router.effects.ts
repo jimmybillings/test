@@ -61,10 +61,10 @@ export class RouterEffects {
     });
 
   @Effect({ dispatch: false })
-  public goToQuote: Observable<Action> = this.actions.ofType(RouterActions.GoToQuote.Type)
-    .do((action: RouterActions.GoToQuote) => {
+  public goToQuote: Observable<Action> = this.actions.ofType(RouterActions.GoToActiveQuote.Type)
+    .do((action: RouterActions.GoToActiveQuote) => {
       console.log(action);
-      return this.router.navigate([`${this.QuotesPath}/${action.quoteId}`]);
+      return this.router.navigate([`${this.ActiveQuotePath}`]);
     });
 
 
@@ -75,6 +75,8 @@ export class RouterEffects {
   private readonly RedirectUrlKey: string = 'RouterEffects.RedirectUrl';
   private readonly SearchAssetDetailsPath: string = '/search/asset';
   private readonly CollectionsPath: string = '/collections';
+  private readonly ActiveQuotePath: string = '/active-quote';
+
 
   constructor(private actions: Actions, private router: Router, private location: Location) { }
 }

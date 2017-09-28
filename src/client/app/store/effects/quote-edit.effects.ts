@@ -63,7 +63,7 @@ export class QuoteEditEffects {
   @Effect()
   public changeRouteOnRemoveAssetSuccess: Observable<Action> =
   this.actions.ofType(QuoteEditActions.RemoveAssetSuccess.Type).map((action: QuoteEditActions.RemoveAssetSuccess) =>
-    this.store.create(factory => factory.router.goToQuote(action.quote.id))
+    this.store.create(factory => factory.router.goToActiveQuote())
   );
 
 
