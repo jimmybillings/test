@@ -80,5 +80,65 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'removeAsset',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: CartActions.RemoveAsset.Type,
+        asset: { some: 'asset' }
+      },
+      state: {
+        storeSectionName: 'cart',
+        propertyName: 'data',
+        value: { id: { some: 'cartId' } }
+      },
+      serviceMethod: {
+        name: 'removeAsset',
+        expectedArguments: [{ some: 'asset' }],
+        returnsObservableOf: { some: 'cart' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'cart',
+          methodName: 'removeAssetSuccess',
+          expectedArguments: [{ some: 'cart' }]
+        },
+        failure: {
+          sectionName: 'cart',
+          methodName: 'removeAssetFailure',
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'changeRouteOnRemoveAssetSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: CartActions.RemoveAssetSuccess.Type
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'router',
+          methodName: 'goToCart',
+          expectedArguments: []
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'showSnackbarOnRemoveAssetSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: CartActions.RemoveAssetSuccess.Type,
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['CART.REMOVE_ASSET.SUCCESS']
+        }
+      }
+    });
   });
 }

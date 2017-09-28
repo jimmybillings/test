@@ -2,24 +2,20 @@ import {
   Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Inject
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { Collection, CollectionsStoreI } from '../../shared/interfaces/collection.interface';
+import { Collection, CollectionActionType } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UiConfig } from '../../shared/services/ui.config';
-import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../store/services/asset.service';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
-import { MdSnackBar } from '@angular/material';
-import { TranslateService } from '@ngx-translate/core';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
-import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
@@ -27,7 +23,7 @@ import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
 import { QuoteEditService } from '../../shared/services/quote-edit.service';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { WzEvent, Coords } from '../../shared/interfaces/common.interface';
+import { WzEvent, Coords, Pojo, Asset } from '../../shared/interfaces/common.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { AppStore } from '../../app.store';
 import { enhanceAsset } from '../../shared/interfaces/enhanced-asset';
@@ -42,39 +38,28 @@ import { Common } from '../../shared/utilities/common.functions';
 
 export class CollectionShowComponent implements OnInit, OnDestroy {
   public activeCollection: Collection;
-  public assets: any;
-  public routeParams: any;
-  public errorMessage: string;
   public commentFormConfig: FormFields;
-  public screenWidth: number;
   public commentParentObject: CommentParentObject;
   public showComments: boolean = null;
-  @ViewChild(WzSpeedviewComponent) public wzSpeedview: WzSpeedviewComponent;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
-
+  private routeParams: Pojo;
 
   constructor(
     public userCan: Capabilities,
     public router: Router,
     public collections: CollectionsService,
-    public asset: AssetService,
-    public collectionsStore: Store<CollectionsStoreI>,
-    public uiState: UiState,
     public uiConfig: UiConfig,
     public cart: CartService,
     public userPreference: UserPreferenceService,
+    private asset: AssetService,
     private route: ActivatedRoute,
-    private snackBar: MdSnackBar,
-    private translate: TranslateService,
     private window: WindowRef,
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
-    @Inject(DOCUMENT) private document: any,
+    @Inject(DOCUMENT) private document: Pojo,
     private store: AppStore,
     private changeDetectorRef: ChangeDetectorRef) {
-    this.screenWidth = this.window.nativeWindow.innerWidth;
-    this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
   }
 
   ngOnInit() {
@@ -101,7 +86,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         });
 
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
-    this.uiConfig.get('collectionComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+    this.uiConfig.get('collectionComment').take(1).subscribe((config: Pojo) => this.commentFormConfig = config.config.form.items);
   }
 
   ngOnDestroy() {
@@ -109,28 +94,12 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.routeSubscription.unsubscribe();
   }
 
-  public showSnackBar(message: any) {
-    this.translate.get(message.key, message.value)
-      .subscribe((res: string) => {
-        this.snackBar.open(res, '', { duration: 2000 });
-      });
-  }
-
-  public resetCollection() {
-    this.activeCollection = Object.assign({}, this.activeCollection);
-  }
-
-  public buildRouteParams(params: any): void {
-    this.routeParams = Object.assign({}, this.routeParams, params);
-    delete (this.routeParams['id']);
-  }
-
-  public changePage(i: any): void {
+  public changePage(i: number): void {
     this.buildRouteParams({ i });
     this.router.navigate(['/collections/' + this.activeCollection.id, this.routeParams]);
   }
 
-  public downloadComp(params: any): void {
+  public downloadComp(params: Pojo): void {
     this.asset.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
         this.window.nativeWindow.location.href = res.url;
@@ -158,14 +127,13 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public deleteCollection(id: number) {
-    this.router.navigate(['/collections']).then(() => {
-      this.collections.delete(id).subscribe(response => {
-        this.showSnackBar({ key: 'Your collection has been deleted' });
-      });
+    this.router.navigate(['/collections']);
+    this.collections.delete(id).subscribe(response => {
+      this.store.dispatch(factory => factory.snackbar.display('COLLECTION.INDEX.DELETE_SUCCESS_TOAST'));
     });
   }
 
-  public addAssetToCart(asset: any): void {
+  public addAssetToCartOrQuote(asset: Asset): void {
     let params: AddAssetParameters = { lineItem: { asset: asset } };
 
     if (this.userCan.administerQuotes()) {
@@ -173,10 +141,12 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     } else {
       this.cart.addAssetToProjectInCart(params);
     }
-    this.showSnackBar({
-      key: this.userCan.administerQuotes() ? 'ASSET.ADD_TO_QUOTE_TOAST' : 'ASSET.ADD_TO_CART_TOAST',
-      value: { assetId: asset.name }
-    });
+    this.store.dispatch(factory =>
+      factory.snackbar.display(
+        this.userCan.administerQuotes() ? 'ASSET.ADD_TO_QUOTE_TOAST' : 'ASSET.ADD_TO_CART_TOAST',
+        { assetId: asset.name }
+      )
+    );
   }
 
   public getAssetsForLink(): void {
@@ -188,7 +158,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     );
   }
 
-  public editAsset(asset: any) {
+  public editAsset(asset: Asset) {
     this.asset.getClipPreviewData(asset.assetId)
       .subscribe(data => {
         this.document.body.classList.add('subclipping-edit-open');
@@ -205,7 +175,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
             outputOptions: [
               {
                 event: 'cancel',
-                callback: (event: any) => { return true; },
+                callback: (event: Pojo) => { return true; },
                 closeOnEvent: true
               },
               {
@@ -224,26 +194,21 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public editCollection() {
-    this.uiConfig.get('collection').take(1).subscribe((config: any) => {
-      this.dialogService.openComponentInDialog(
-        {
-          componentType: CollectionFormComponent,
-          inputOptions: {
-            collection: Common.clone(this.activeCollection),
-            fields: config.config,
-            isEdit: true
-          },
-          outputOptions: [{
-            event: 'collectionSaved',
-            callback: (event: WzEvent) => true,
-            closeOnEvent: true
-          }]
-        }
-      );
-    });
+    this.dialogService.openComponentInDialog(
+      this.collectionFormComponentOptions('edit', Common.clone(this.activeCollection))
+    );
   }
 
-  public onChangeAssetView(assetView: any): void {
+  public duplicateCollection() {
+    this.collections.getByIdAndDuplicate(this.activeCollection.id)
+      .subscribe(collection => {
+        this.dialogService.openComponentInDialog(
+          this.collectionFormComponentOptions('duplicate', collection)
+        );
+      });
+  }
+
+  public onChangeAssetView(assetView: string): void {
     this.userPreference.updateAssetViewPreference(assetView);
   }
 
@@ -257,5 +222,35 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public get userCanEditCollection(): Observable<boolean> {
     return this.userCan.editCollection(this.activeCollection);
+  }
+
+  private buildRouteParams(params: Pojo): void {
+    this.routeParams = Object.assign({}, this.routeParams, params);
+    delete this.routeParams['id'];
+  }
+
+  private collectionFormComponentOptions(actionType: CollectionActionType, collection: Pojo) {
+    return {
+      componentType: CollectionFormComponent,
+      inputOptions: {
+        collection: collection,
+        fields: this.formFields,
+        collectionActionType: actionType
+      },
+      outputOptions: [{
+        event: 'collectionSaved',
+        callback: (event: WzEvent) => true,
+        closeOnEvent: true
+      }]
+    };
+  }
+
+  private get formFields() {
+    let fields: Pojo;
+
+    this.uiConfig.get('collection').take(1)
+      .subscribe((config: Pojo) => fields = config.config);
+
+    return fields;
   }
 }

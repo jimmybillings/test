@@ -23,7 +23,7 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['LoadSuccess', 'DeleteSuccess', 'EditLineItemFromDetailsSuccess'],
+      actionClassName: ['LoadSuccess', 'DeleteSuccess', 'EditLineItemFromDetailsSuccess', 'RemoveAssetSuccess'],
       customTests: [
         {
           it: 'returns the state with the requested quote and loading: false',
