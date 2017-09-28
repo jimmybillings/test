@@ -37,6 +37,14 @@ export class InternalActionFactory extends ActionFactory {
   public editLineItemFromDetailsFailure(error: ApiErrorResponse): EditLineItemFromDetailsFailure {
     return new EditLineItemFromDetailsFailure(error);
   }
+
+  public removeAssetSuccess(cart: Cart): RemoveAssetSuccess {
+    return new RemoveAssetSuccess(cart);
+  }
+
+  public removeAssetFailure(error: ApiErrorResponse): RemoveAssetFailure {
+    return new RemoveAssetFailure(error);
+  }
 }
 
 export class Load implements Action {
@@ -79,6 +87,19 @@ export class RemoveAsset implements Action {
   public readonly type = RemoveAsset.Type;
   constructor(public readonly asset: Asset) { }
 }
+
+export class RemoveAssetSuccess implements Action {
+  public static readonly Type = '[Cart] Remove Asset Success';
+  public readonly type = RemoveAssetSuccess.Type;
+  constructor(public readonly cart: Cart) { }
+}
+
+export class RemoveAssetFailure implements Action {
+  public static readonly Type = '[Cart] Remove Asset Failure';
+  public readonly type = RemoveAssetFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
+
 
 export type Any =
   Load | LoadSuccess | LoadFailure |

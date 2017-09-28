@@ -172,10 +172,10 @@ export class AssetDetailComponent {
   public removeAssetFromActiveCollection(): void {
     this.store.dispatch(factory => factory.dialog.showConfirmation(
       {
-        title: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.TITLE',
-        message: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.MESSAGE',
-        accept: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.ACCEPT',
-        decline: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.DECLINE'
+        title: 'COLLECTION.REMOVE_ASSET.TITLE',
+        message: 'COLLECTION.REMOVE_ASSET.MESSAGE',
+        accept: 'COLLECTION.REMOVE_ASSET.ACCEPT',
+        decline: 'COLLECTION.REMOVE_ASSET.DECLINE'
       },
       () => this.store.dispatch(factory => factory.activeCollection.removeAsset(this._asset))
     ));
@@ -318,7 +318,16 @@ export class AssetDetailComponent {
   }
 
   public removeAssetFromCartOrQuote(): void {
-    this.store.dispatch((factory) => factory.quoteEdit.removeAsset(this._asset));
+    const type: string = this._asset.type === 'quoteEditAsset' ? 'QUOTE' : 'CART';
+    this.store.dispatch(factory => factory.dialog.showConfirmation({
+      title: `${type}.REMOVE_ASSET.TITLE`,
+      message: `${type}.REMOVE_ASSET.MESSAGE`,
+      accept: `${type}.REMOVE_ASSET.ACCEPT`,
+      decline: `${type}.REMOVE_ASSET.DECLINE`
+    }, () => this.store.dispatch(factory => this._asset.type === 'quoteEditAsset'
+      ? factory.quoteEdit.removeAsset(this._asset)
+      : factory.cart.removeAsset(this._asset))
+    ));
   }
 
   private assetTypeIsOneOf(...assetTypes: AssetType[]) {

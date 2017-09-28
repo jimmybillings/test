@@ -63,10 +63,12 @@ export class RouterEffects {
   @Effect({ dispatch: false })
   public goToQuote: Observable<Action> = this.actions.ofType(RouterActions.GoToActiveQuote.Type)
     .do((action: RouterActions.GoToActiveQuote) => {
-      console.log(action);
       return this.router.navigate([`${this.ActiveQuotePath}`]);
     });
 
+  @Effect({ dispatch: false })
+  public goToCart: Observable<Action> = this.actions.ofType(RouterActions.GoToCart.Type)
+    .do(() => this.router.navigate([this.CartPath]));
 
   private readonly LoginPath: string = '/user/login';
   private readonly PageNotFoundPath: string = '/404';
@@ -76,7 +78,7 @@ export class RouterEffects {
   private readonly SearchAssetDetailsPath: string = '/search/asset';
   private readonly CollectionsPath: string = '/collections';
   private readonly ActiveQuotePath: string = '/active-quote';
-
+  private readonly CartPath: string = '/cart';
 
   constructor(private actions: Actions, private router: Router, private location: Location) { }
 }

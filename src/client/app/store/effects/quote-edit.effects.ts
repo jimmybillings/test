@@ -57,7 +57,7 @@ export class QuoteEditEffects {
   @Effect()
   public showSnackbarOnRemoveAssetSuccess: Observable<Action> =
   this.actions.ofType(QuoteEditActions.RemoveAssetSuccess.Type).map(() =>
-    this.store.create(factory => factory.snackbar.display('QUOTE.REMOVE.SUCCESS'))
+    this.store.create(factory => factory.snackbar.display('QUOTE.REMOVE_ASSET.SUCCESS'))
   );
 
   @Effect()

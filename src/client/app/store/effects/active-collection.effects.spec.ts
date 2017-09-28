@@ -235,7 +235,7 @@ export function main() {
         success: {
           sectionName: 'snackbar',
           methodName: 'display',
-          expectedArguments: ['COLLECTION.REMOVE_FROM_COLLECTION_TOAST', { collectionName: 'someCollectionName' }]
+          expectedArguments: ['COLLECTION.REMOVE_ASSET.SUCCESS', { collectionName: 'someCollectionName' }]
         }
       }
     });

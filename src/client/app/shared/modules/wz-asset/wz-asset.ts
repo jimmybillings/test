@@ -51,10 +51,10 @@ export class WzAsset {
   public removeFromActiveCollection(asset: EnhancedAsset) {
     this.store.dispatch(factory => factory.dialog.showConfirmation(
       {
-        title: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.TITLE',
-        message: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.MESSAGE',
-        accept: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.ACCEPT',
-        decline: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.DECLINE'
+        title: 'COLLECTION.REMOVE_ASSET.TITLE',
+        message: 'COLLECTION.REMOVE_ASSET.MESSAGE',
+        accept: 'COLLECTION.REMOVE_ASSET.ACCEPT',
+        decline: 'COLLECTION.REMOVE_ASSET.DECLINE'
       },
       () => this.store.dispatch(factory => factory.activeCollection.removeAsset(asset))
     ));

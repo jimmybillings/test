@@ -51,10 +51,10 @@ export function main() {
         const spy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
         componentUnderTest.removeFromActiveCollection(mockEnhancedAsset);
         mockStore.expectDispatchFor(spy, {
-          title: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.TITLE',
-          message: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.MESSAGE',
-          accept: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.ACCEPT',
-          decline: 'COLLECTION.REMOVE_ASSET_CONFIRMATION.DECLINE'
+          title: 'COLLECTION.REMOVE_ASSET.TITLE',
+          message: 'COLLECTION.REMOVE_ASSET.MESSAGE',
+          accept: 'COLLECTION.REMOVE_ASSET.ACCEPT',
+          decline: 'COLLECTION.REMOVE_ASSET.DECLINE'
         }, jasmine.any(Function));
       });
 

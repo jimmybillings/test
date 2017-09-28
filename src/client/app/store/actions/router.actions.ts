@@ -35,6 +35,10 @@ export class ActionFactory {
     return new GoToCollection(collectionId, page, perPage);
   }
 
+  public goToCart(): GoToCart {
+    return new GoToCart();
+  }
+
 }
 
 export class InternalActionFactory extends ActionFactory { }
@@ -81,3 +85,7 @@ export class GoToActiveQuote implements Action {
   public readonly type = GoToActiveQuote.Type;
 }
 
+export class GoToCart implements Action {
+  public static readonly Type = '[Router] Go To Cart';
+  public readonly type = GoToCart.Type;
+}

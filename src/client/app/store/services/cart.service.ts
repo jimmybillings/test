@@ -30,6 +30,12 @@ export class FutureCartService {
     return this.makeEditLineItemRequest(newLineItem);
   }
 
+  public removeAsset(asset: Asset): Observable<Cart> {
+    return this.apiService.delete(Api.Orders, `cart/asset/${asset.uuid}`, { loadingIndicator: true })
+      .switchMap(() => this.load());
+  }
+
+
   private durationFrom(lineItem: AssetLineItem, markers: SubclipMarkers): Duration {
     return bothMarkersAreSet(markers) ?
       durationFrom(markers) : { timeStart: lineItem.asset.timeStart, timeEnd: lineItem.asset.timeEnd };

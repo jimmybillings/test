@@ -32,6 +32,27 @@ export class CartEffects {
     return this.store.create(factory => factory.snackbar.display('ASSET.DETAIL.CART_ITEM_UPDATED'));
   });
 
+  @Effect()
+  public removeAsset: Observable<Action> = this.actions.ofType(CartActions.RemoveAsset.Type)
+    .withLatestFrom(this.store.select(state => state.cart.data.id))
+    .switchMap(([action, cartId]: [CartActions.RemoveAsset, number]) => this.service.removeAsset(action.asset)
+      .map(cart => this.store.create(factory => factory.cart.removeAssetSuccess(cart)))
+      .catch(error => Observable.of(this.store.create(factory => factory.cart.removeAssetFailure(error))))
+    );
+
+  @Effect()
+  public showSnackbarOnRemoveAssetSuccess: Observable<Action> =
+  this.actions.ofType(CartActions.RemoveAssetSuccess.Type).map(() =>
+    this.store.create(factory => factory.snackbar.display('CART.REMOVE_ASSET.SUCCESS'))
+  );
+
+  @Effect()
+  public changeRouteOnRemoveAssetSuccess: Observable<Action> =
+  this.actions.ofType(CartActions.RemoveAssetSuccess.Type).map((action: CartActions.RemoveAssetSuccess) =>
+    this.store.create(factory => factory.router.goToCart())
+  );
+
+
 
   constructor(private actions: Actions, private store: AppStore, private service: FutureCartService) { }
 
