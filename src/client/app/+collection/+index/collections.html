@@ -3,7 +3,7 @@
 		<wz-item-search-form 
 			[ngClass]="{ 'revealed' : collectionSearchIsShowing }" 
 			[hidden]="!collectionSearchIsShowing" 
-			[currentSearchQuery]="options.currentSearchQuery"
+			[currentSearchQuery]="(collectionContextData | async).currentSearchQuery"
 			placeholderTxt="{{ 'COLLECTION.INDEX.SEARCH_BOX_LABEL' | translate }}"
 			(query)="search($event)" 
 			(closeSearch)="toggleCollectionSearch()">
@@ -46,9 +46,9 @@
 			layout="column" 
 			layout-align="start start" 
 			layout-align-gt-xs="end center">
-			<div *ngIf="options.currentSearchQuery.q" class="query-details" flex="auto">
+			<div *ngIf="(collectionContextData | async).currentSearchQuery.q" class="query-details" flex="auto">
 				<span flex="none" class="search">
-					<strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{options.currentSearchQuery.q}}
+					<strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{(collectionContextData | async).currentSearchQuery.q}}
 				</span>
 			</div>
 			<!-- <button md-button (click)="createCollection()" title="Create Collection" color="primary" class="create-collection">
@@ -57,13 +57,13 @@
 			<button md-button class="is-dd" color="primary" [md-menu-trigger-for]="filterCollectionOptions">
 				<span class="key">{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</span>
 				<span class="value md-caption">
-					{{ options.currentFilter.name | translate}}
+					{{ (collectionContextData | async).currentFilter.name | translate}}
 				</span>
 			</button>
 			<button md-button class="is-dd" color="primary" [md-menu-trigger-for]="sortCollectionOptions">
 				<span class="key">{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</span>
 				<span class="value md-caption">
-					{{ options.currentSort.name | translate}}
+					{{ (collectionContextData | async).currentSort.name | translate}}
 				</span>
 			</button>
 		</div>
@@ -78,26 +78,32 @@
 					<md-icon>add_circle_outline</md-icon>{{ 'COLLECTION.INDEX.NEW_COLLECTION_BTN' | translate }}
 				</button>
 			</div>
-			<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination" (getPage)="changePage($event)">
+			<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination">
 			</wz-pagination>
 		</div>
+
 		<!-- COLLECTION LIST -->
-		<wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="editCollection($event)"
-			[activeCollection]="(activeCollection | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event);"
-			(generateCollectionLink)="getAssetsForLink($event);">
+		<wz-collection-item-list 
+			[collections]="(collections.data | async).items" 
+			(editCollection)="editCollection($event)"
+			[activeCollection]="(activeCollection | async).id" 
+			(setActiveCollection)="selectActiveCollection($event)" 
+			(deleteCollection)="setCollectionForDelete($event);"
+			(generateCollectionLink)="getAssetsForLink($event);"
+			(duplicateCollection)="onDuplicateCollection($event)">
 		</wz-collection-item-list>
 		<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
-			flex layout-align="end stretch" (getPage)="changePage($event)">
+			flex layout-align="end stretch">
 		</wz-pagination>
 	</section>
 </section>
 
 <md-menu x-position="before" #filterCollectionOptions="mdMenu">
-	<wz-sort-component [current]="options.currentFilter" [items]="filterOptions" (sort)="onFilterCollections($event)"></wz-sort-component>
+	<wz-sort-component [current]="(collectionContextData | async).currentFilter" [items]="filterOptions" (sort)="onFilterCollections($event)"></wz-sort-component>
 </md-menu>
 
 <md-menu x-position="before" #sortCollectionOptions="mdMenu">
-	<wz-sort-component [current]="options.currentSort" [items]="sortOptions" (sort)="onSortCollections($event)"></wz-sort-component>
+	<wz-sort-component [current]="(collectionContextData | async).currentSort" [items]="sortOptions" (sort)="onSortCollections($event)"></wz-sort-component>
 </md-menu>
 
 

@@ -124,5 +124,65 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'removeAsset',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.RemoveAsset.Type,
+        asset: { some: 'asset' }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        propertyName: 'data',
+        value: { id: { some: 'quoteId' } }
+      },
+      serviceMethod: {
+        name: 'removeAsset',
+        expectedArguments: [{ some: 'quoteId' }, { some: 'asset' }],
+        returnsObservableOf: { some: 'quote' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'removeAssetSuccess',
+          expectedArguments: [{ some: 'quote' }]
+        },
+        failure: {
+          sectionName: 'quoteEdit',
+          methodName: 'removeAssetFailure',
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'changeRouteOnRemoveAssetSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.RemoveAssetSuccess.Type
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'router',
+          methodName: 'goToActiveQuote',
+          expectedArguments: []
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'showSnackbarOnRemoveAssetSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.RemoveAssetSuccess.Type,
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['QUOTE.REMOVE_ASSET.SUCCESS']
+        }
+      }
+    });
   });
 }

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { Quote } from '../../shared/interfaces/commerce.interface';
+import { Asset } from '../../shared/interfaces/common.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { Pojo } from '../../shared/interfaces/common.interface';
@@ -16,6 +17,10 @@ export class ActionFactory {
 
   public editLineItemFromDetails(uuid: string, markers: SubclipMarkers, attributes: Pojo): EditLineItemFromDetails {
     return new EditLineItemFromDetails(uuid, markers, attributes);
+  }
+
+  public removeAsset(asset: Asset): RemoveAsset {
+    return new RemoveAsset(asset);
   }
 
   // Move this to internal action factory when quote is fully "effected"
@@ -43,6 +48,14 @@ export class InternalActionFactory extends ActionFactory {
 
   public editLineItemFromDetailsFailure(error: ApiErrorResponse): EditLineItemFromDetailsFailure {
     return new EditLineItemFromDetailsFailure(error);
+  }
+
+  public removeAssetSuccess(quote: Quote): RemoveAssetSuccess {
+    return new RemoveAssetSuccess(quote);
+  }
+
+  public removeAssetFailure(error: ApiErrorResponse): RemoveAssetFailure {
+    return new RemoveAssetFailure(error);
   }
 }
 
@@ -98,8 +111,28 @@ export class EditLineItemFromDetailsFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
+export class RemoveAsset implements Action {
+  public static readonly Type = '[Quote Edit] Remove Asset';
+  public readonly type = RemoveAsset.Type;
+  constructor(public readonly asset: Asset) { }
+}
+
+export class RemoveAssetSuccess implements Action {
+  public static readonly Type = '[Quote Edit] Remove Asset Success';
+  public readonly type = RemoveAssetSuccess.Type;
+  constructor(public readonly quote: Quote) { }
+}
+
+export class RemoveAssetFailure implements Action {
+  public static readonly Type = '[Quote Edit] Remove Asset Failure';
+  public readonly type = RemoveAssetFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
+
+
 
 export type Any =
   Load | LoadSuccess | LoadFailure |
   Delete | DeleteSuccess | DeleteFailure |
-  EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure;
+  EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
+  RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure;

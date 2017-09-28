@@ -73,6 +73,7 @@ export class CollectionTrayComponent implements OnInit {
         dialogConfig: { position: { top: '10%' } },
         inputOptions: {
           fields: config.config,
+          collectionActionType: 'create'
         },
         outputOptions: [{
           event: 'collectionSaved',

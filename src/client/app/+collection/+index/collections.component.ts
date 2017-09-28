@@ -1,17 +1,15 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { Collection } from '../../shared/interfaces/collection.interface';
+import { Collection, CollectionActionType, CollectionSummary, CollectionSummaryItem } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
-import { WzEvent } from '../../shared/interfaces/common.interface';
+import { WzEvent, Pojo } from '../../shared/interfaces/common.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Subscription';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
 import { UiState } from '../../shared/services/ui.state';
-import { MdSnackBar } from '@angular/material';
-import { TranslateService } from '@ngx-translate/core';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
@@ -26,19 +24,10 @@ import { Common } from '../../shared/utilities/common.functions';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CollectionsComponent implements OnInit, OnDestroy {
-  public optionsSubscription: Subscription;
-  public errorMessage: string;
-  public options: any;
+export class CollectionsComponent {
   public collectionSearchIsShowing: boolean = false;
-  public collectionFilterIsShowing: boolean = false;
-  public collectionSortIsShowing: boolean = false;
-  public pageSize: string;
-  public collectionForEdit: Collection;
   public filterOptions: Array<any> = [];
-  public assetsForLink: Array<any> = [];
   public sortOptions: Array<any> = [];
-  public collectionForDelete: Collection;
 
   constructor(
     public router: Router,
@@ -47,11 +36,8 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public currentUser: CurrentUserService,
     public uiConfig: UiConfig,
     public uiState: UiState,
-    private snackBar: MdSnackBar,
-    private translate: TranslateService,
     private dialogService: WzDialogService,
     private store: AppStore) {
-
     this.filterOptions = [
       {
         'first': {
@@ -136,26 +122,12 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnInit() {
-    this.uiConfig.get('global').take(1).subscribe(config => {
-      this.pageSize = config.config.pageSize.value;
-    });
-    this.optionsSubscription = this.collectionContext.data.subscribe(data => this.options = data);
-  }
-
-  ngOnDestroy(): void {
-    this.optionsSubscription.unsubscribe();
+  public get collectionContextData() {
+    return this.collectionContext.data;
   }
 
   public get activeCollection(): Observable<Collection> {
     return this.store.select(state => state.activeCollection.collection);
-  }
-
-  public showSnackBar(message: any) {
-    this.translate.get(message.key, message.value)
-      .subscribe((res: string) => {
-        this.snackBar.open(res, '', { duration: 2000 });
-      });
   }
 
   public toggleCollectionSearch() {
@@ -166,7 +138,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.store.dispatch(factory => factory.activeCollection.set(id));
   }
 
-  public setCollectionForDelete(collection: any): void {
+  public setCollectionForDelete(collection: CollectionSummaryItem): void {
     this.dialogService.openComponentInDialog(
       {
         componentType: CollectionDeleteComponent,
@@ -183,21 +155,21 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     );
   }
 
-  public deleteCollection(id: number): void {
-    this.collections.delete(id).subscribe();
+  public deleteCollection(id: number, ): void {
+    this.collections.delete(id, true).subscribe();
   }
 
-  public search(query: any) {
+  public search(query: string) {
     this.collectionContext.updateCollectionOptions({ currentSearchQuery: query });
     this.collections.load(query, true).subscribe();
   }
 
-  public onFilterCollections(filter: any) {
+  public onFilterCollections(filter: Pojo) {
     this.collectionContext.updateCollectionOptions({ currentFilter: filter });
     this.collections.load(filter.access, true).subscribe();
   }
 
-  public onSortCollections(sort: any) {
+  public onSortCollections(sort: Pojo) {
     this.collectionContext.updateCollectionOptions({ currentSort: sort });
     this.collections.load(sort.sort, true).subscribe();
   }
@@ -208,50 +180,58 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public getAssetsForLink(collectionId: number): void {
     this.collections.getItems(collectionId).subscribe(data => {
-      this.assetsForLink = data.items;
       this.dialogService.openComponentInDialog(
         {
           componentType: CollectionLinkComponent,
-          inputOptions: { assets: this.assetsForLink }
+          inputOptions: { assets: data.items }
         }
       );
     });
   }
 
-  public editCollection(collection: Collection) {
-    this.uiConfig.get('collection').take(1).subscribe((config: any) => {
-      this.dialogService.openComponentInDialog(
-        {
-          componentType: CollectionFormComponent,
-          inputOptions: {
-            collection: Common.clone(collection),
-            fields: config.config,
-            isEdit: true
-          },
-          outputOptions: [{
-            event: 'collectionSaved',
-            callback: (event: WzEvent) => true,
-            closeOnEvent: true
-          }]
-        }
-      );
-    });
+  public editCollection(collection: CollectionSummaryItem) {
+    this.dialogService.openComponentInDialog(
+      this.collectionFormComponentOptions('edit', Common.clone(collection))
+    );
   }
 
   public createCollection() {
-    this.uiConfig.get('collection').take(1).subscribe((config: any) => {
-      this.dialogService.openComponentInDialog({
-        componentType: CollectionFormComponent,
-        dialogConfig: { position: { top: '10%' } },
-        inputOptions: {
-          fields: config.config,
-        },
-        outputOptions: [{
-          event: 'collectionSaved',
-          callback: (event: WzEvent) => true,
-          closeOnEvent: true
-        }]
+    this.dialogService.openComponentInDialog(
+      this.collectionFormComponentOptions('create')
+    );
+  }
+
+  public onDuplicateCollection(collectionId: number) {
+    this.collections.getByIdAndDuplicate(collectionId)
+      .subscribe(collection => {
+        this.dialogService.openComponentInDialog(
+          this.collectionFormComponentOptions('duplicate', collection)
+        );
       });
-    });
+  }
+
+  private collectionFormComponentOptions(actionType: CollectionActionType, collection: Pojo | boolean = false) {
+    return {
+      componentType: CollectionFormComponent,
+      inputOptions: {
+        collection: collection,
+        fields: this.formFields,
+        collectionActionType: actionType
+      },
+      outputOptions: [{
+        event: 'collectionSaved',
+        callback: (event: WzEvent) => true,
+        closeOnEvent: true
+      }]
+    };
+  }
+
+  private get formFields() {
+    let fields: Pojo;
+
+    this.uiConfig.get('collection').take(1)
+      .subscribe((config: Pojo) => fields = config.config);
+
+    return fields;
   }
 }

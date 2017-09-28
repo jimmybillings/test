@@ -14,7 +14,27 @@ export interface Collection extends Common {
   tagCount?: number;
   collectionThumbnail?: { name: string, urls: { https: string } };
   assetsCount?: number;
+  pagination?: Pagination;
 }
+
+export interface CollectionSummary {
+
+  items: CollectionSummaryItem[];
+  pagination?: Pagination;
+}
+
+export interface CollectionSummaryItem {
+  assetsCount?: number;
+  createdOn?: string;
+  email?: string;
+  id: number;
+  lastUpdated?: string;
+  name: string;
+  owner: number;
+  userRole?: string;
+}
+
+export type CollectionActionType = 'create' | 'edit' | 'duplicate';
 
 export interface CollectionsStoreI {
   items: Collection[];

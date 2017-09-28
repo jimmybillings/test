@@ -87,7 +87,9 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         break;
       }
       case 'REMOVE_LINE_ITEM': {
-        this.commerceService.removeLineItem(message.payload);
+        this.store.dispatch(factory => message.payload.asset.type === 'quoteEditAsset'
+          ? factory.quoteEdit.removeAsset(message.payload.asset)
+          : factory.cart.removeAsset(message.payload.asset));
         break;
       }
       case 'EDIT_LINE_ITEM': {

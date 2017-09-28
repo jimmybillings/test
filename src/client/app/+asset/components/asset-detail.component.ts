@@ -170,7 +170,15 @@ export class AssetDetailComponent {
   }
 
   public removeAssetFromActiveCollection(): void {
-    this.store.dispatch(factory => factory.activeCollection.removeAsset(this._asset));
+    this.store.dispatch(factory => factory.dialog.showConfirmation(
+      {
+        title: 'COLLECTION.REMOVE_ASSET.TITLE',
+        message: 'COLLECTION.REMOVE_ASSET.MESSAGE',
+        accept: 'COLLECTION.REMOVE_ASSET.ACCEPT',
+        decline: 'COLLECTION.REMOVE_ASSET.DECLINE'
+      },
+      () => this.store.dispatch(factory => factory.activeCollection.removeAsset(this._asset))
+    ));
   }
 
   public updateAssetInActiveCollection(): void {
@@ -268,13 +276,20 @@ export class AssetDetailComponent {
     return this.userCan.addToCart();
   }
 
-  public get addToCartButtonLabelKey(): string {
+  public get addToCartOrQuoteButtonLabelKey(): string {
     const onMatchingPage: boolean = this.isQuoteUser ? this._asset.type === 'quoteEditAsset' : this._asset.type === 'cartAsset';
     const operation: string = onMatchingPage ? 'ADD_NEW' : 'ADD';
     const subclipOrAsset: string = this.markersAreDefined ? 'SUBCLIP' : 'ASSET';
     const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
 
     return `ASSET.DETAIL.BUTTON.${operation}.${subclipOrAsset}.${quoteOrCart}`;
+  }
+
+  public get removeFromCartOrQuoteButtonLabelKey(): string {
+    const subclipOrAsset: string = this._asset.isSubclipped ? 'SUBCLIP' : 'ASSET';
+    const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
+
+    return `ASSET.DETAIL.BUTTON.REMOVE.${subclipOrAsset}.${quoteOrCart}`;
   }
 
   public get canGoToSearchAssetDetails(): boolean {
@@ -300,6 +315,19 @@ export class AssetDetailComponent {
 
   public get commentCount(): Observable<number> {
     return this.store.select(state => state.comment[state.comment.activeObjectType].pagination.totalCount);
+  }
+
+  public removeAssetFromCartOrQuote(): void {
+    const type: string = this._asset.type === 'quoteEditAsset' ? 'QUOTE' : 'CART';
+    this.store.dispatch(factory => factory.dialog.showConfirmation({
+      title: `${type}.REMOVE_ASSET.TITLE`,
+      message: `${type}.REMOVE_ASSET.MESSAGE`,
+      accept: `${type}.REMOVE_ASSET.ACCEPT`,
+      decline: `${type}.REMOVE_ASSET.DECLINE`
+    }, () => this.store.dispatch(factory => this._asset.type === 'quoteEditAsset'
+      ? factory.quoteEdit.removeAsset(this._asset)
+      : factory.cart.removeAsset(this._asset))
+    ));
   }
 
   private assetTypeIsOneOf(...assetTypes: AssetType[]) {
