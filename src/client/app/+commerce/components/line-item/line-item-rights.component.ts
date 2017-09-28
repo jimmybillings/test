@@ -24,7 +24,7 @@ import { SelectedPriceAttributes } from '../../../shared/interfaces/common.inter
     </section>
   </ng-container>
   <ng-container *ngIf="rightsManaged == 'Royalty Free'">
-    <section data-pendo="cart-lineitem-pricing-btn" class="read-only">
+    <section data-pendo="cart-lineitem_pricing-btn" class="read-only">
       <header class="royalty-free">{{rightsManaged}}</header>
     </section>
   </ng-container>
