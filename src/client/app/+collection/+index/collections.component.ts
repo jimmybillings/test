@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { Collection, CollectionActionType, CollectionSummary, collectionSummaryItem } from '../../shared/interfaces/collection.interface';
+import { Collection, CollectionActionType, CollectionSummary, CollectionSummaryItem } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
@@ -138,7 +138,7 @@ export class CollectionsComponent {
     this.store.dispatch(factory => factory.activeCollection.set(id));
   }
 
-  public setCollectionForDelete(collection: collectionSummaryItem): void {
+  public setCollectionForDelete(collection: CollectionSummaryItem): void {
     this.dialogService.openComponentInDialog(
       {
         componentType: CollectionDeleteComponent,
@@ -189,7 +189,7 @@ export class CollectionsComponent {
     });
   }
 
-  public editCollection(collection: collectionSummaryItem) {
+  public editCollection(collection: CollectionSummaryItem) {
     this.dialogService.openComponentInDialog(
       this.collectionFormComponentOptions('edit', Common.clone(collection))
     );
