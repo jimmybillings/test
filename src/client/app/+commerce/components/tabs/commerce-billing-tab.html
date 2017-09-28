@@ -6,7 +6,7 @@
     flex-gt-sm="55"
     flex-gt-xs="60"
     flex="100">
-    <md-card class="billing-card wz-form-card">
+    <md-card class="billing-card wz-form-card" *ngIf="loaded">
       <md-card-content>
         <wz-address-form-component
           [loaded]="loaded"

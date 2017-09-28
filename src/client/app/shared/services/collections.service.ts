@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Collection } from '../../shared/interfaces/collection.interface';
+import { Collection, CollectionSummary } from '../../shared/interfaces/collection.interface';
+import { Pojo, Asset } from '../../shared/interfaces/common.interface';
 import { Observable } from 'rxjs/Observable';
 import { CollectionsStore } from '../stores/collections.store';
 import { ApiService } from '../../shared/services/api.service';
-import { Api } from '../../shared/interfaces/api.interface';
+import { Api, LoadingIndicatorOption } from '../../shared/interfaces/api.interface';
 import { AppStore, ActiveCollectionState } from '../../app.store';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class CollectionsService {
     this.staySyncedWithActiveCollection();
   }
 
-  public get data(): Observable<Collection[]> {
+  public get data(): Observable<CollectionSummary> {
     return this.collectionsStore.data;
   }
 
@@ -39,13 +40,22 @@ export class CollectionsService {
       .do(response => this.collectionsStore.add(response as Collection));
   }
 
+  public duplicate(collection: Collection): Observable<any> {
+    return this.api.post(Api.Identities, 'collection', { body: collection, loadingIndicator: true });
+  }
+
+  public getByIdAndDuplicate(id: number) {
+    return this.api.get(Api.Identities, `collection/${id}`, { loadingIndicator: true })
+      .map(response => this.prepareForDuplication(response));
+  }
+
   public update(collection: Collection): Observable<any> {
     return this.api.put(Api.Assets, `collectionSummary/${collection.id}`, { body: collection, loadingIndicator: true });
   }
 
-  public delete(collectionId: number): Observable<any> {
+  public delete(collectionId: number, loadingIndicator: LoadingIndicatorOption = 'onBeforeRequest'): Observable<any> {
     this.collectionsStore.deleteCollectionWith(collectionId);
-    return this.api.delete(Api.Identities, `collection/${collectionId}`, { loadingIndicator: 'onBeforeRequest' })
+    return this.api.delete(Api.Identities, `collection/${collectionId}`, { loadingIndicator: loadingIndicator })
       .switchMap(_ => {
         if (this.store.match(collectionId, state => state.activeCollection.collection.id)) {
           this.store.dispatch(factory => factory.activeCollection.load());
@@ -80,5 +90,23 @@ export class CollectionsService {
 
   private setSearchParams() {
     this.params = { q: '', accessLevel: 'all', s: '', d: '', i: 0, n: 200 };
+  }
+
+  private prepareForDuplication(collection: Pojo): Pojo {
+    let collectionCopy: Pojo = {
+      name: collection.name,
+      tags: collection.tags,
+      siteName: collection.siteName,
+    };
+    if (collection.assets) {
+      collectionCopy.assets = collection.assets.map((asset: Asset) => (
+        {
+          assetId: asset.assetId,
+          timeEnd: asset.timeEnd,
+          timeStart: asset.timeStart
+        }
+      ));
+    }
+    return collectionCopy;
   }
 }
