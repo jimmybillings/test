@@ -93,17 +93,20 @@ export class CollectionsService {
   }
 
   private prepareForDuplication(collection: Pojo): Pojo {
-    return {
+    let collectionCopy: Pojo = {
       name: collection.name,
       tags: collection.tags,
       siteName: collection.siteName,
-      assets: (collection.assets) ? collection.assets.map((asset: Asset) => (
+    };
+    if (collection.assets) {
+      collectionCopy.assets = collection.assets.map((asset: Asset) => (
         {
           assetId: asset.assetId,
           timeEnd: asset.timeEnd,
           timeStart: asset.timeStart
         }
-      )) : null
-    };
+      ));
+    }
+    return collectionCopy;
   }
 }
