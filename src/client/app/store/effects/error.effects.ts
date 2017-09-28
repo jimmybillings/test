@@ -35,7 +35,7 @@ export class ErrorEffects {
   private awaitingPreviousNotificationDismissal: boolean = false;
 
   private nextActionCreators: any = {
-    400: this.loginRequired,
+    400: this.badRequest,
     401: this.unauthorized,
     403: this.forbidden,
     404: this.notFound,
@@ -73,7 +73,7 @@ export class ErrorEffects {
     return isNaN(status) ? this.customError(error.status) : this.nextActionCreators[status].call(this);
   }
 
-  private loginRequired(): Action[] {
+  private badRequest(): Action[] {
     this.currentUserService.destroy();  // TODO: When AppStore has currentUser, this will be an action in the returned array.
 
     return [

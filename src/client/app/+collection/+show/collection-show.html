@@ -58,7 +58,7 @@
           <button
             md-icon-button
             title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}"
-            (click)="editCollection();resetCollection()">
+            (click)="editCollection();">
               <md-icon>edit</md-icon>
           </button>
           <button
@@ -86,6 +86,7 @@
             <div class="divider"></div>
             <button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
             <button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
+            <button md-menu-item (click)="duplicateCollection();"><md-icon>layers</md-icon>Duplicate Collection</button>
             <button md-menu-item (click)="getAssetsForLink()"><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
             <div *ngIf="!!activeCollection.owner">
               <div class="divider"></div>
@@ -129,10 +130,8 @@
         [userCan]="userCan" 
         [assetType]="'collection'"
         [activeCollection]="activeCollection"
-        (onAddToCart)="addAssetToCart($event)" 
+        (onAddToCart)="addAssetToCartOrQuote($event)" 
         (onDownloadComp)="downloadComp($event)" 
-        (onShowSpeedview)="wzSpeedview.showSpeedview($event)" 
-        (onHideSpeedview)="wzSpeedview.hideSpeedview()"
         (onEditAsset)="editAsset($event)">
       </wz-asset-grid>
 
@@ -141,10 +140,8 @@
         [userCan]="userCan" 
         [assetType]="'collection'"
         [activeCollection]="activeCollection"
-        (onAddToCart)="addAssetToCart($event)" 
+        (onAddToCart)="addAssetToCartOrQuote($event)" 
         (onDownloadComp)="downloadComp($event)" 
-        (onShowSpeedview)="wzSpeedview.showSpeedview($event)" 
-        (onHideSpeedview)="wzSpeedview.hideSpeedview()"
         (onEditAsset)="editAsset($event)">
       </wz-asset-list>
 

@@ -1,13 +1,12 @@
 import {
-  Component, Input, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter
+  Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Collection } from '../../../shared/interfaces/collection.interface';
+import { Collection, CollectionActionType } from '../../../shared/interfaces/collection.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { Asset } from '../../../shared/interfaces/common.interface';
 
-import { WzFormComponent } from '../../../shared/modules/wz-form/wz.form.component';
 import { CollectionsService } from '../../../shared/services/collections.service';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { UiState } from '../../../shared/services/ui.state';
@@ -29,7 +28,7 @@ export class CollectionFormComponent implements OnInit {
   @Input() newCollectionFormIsOpen: boolean;
   @Input() dialog: any;
   @Input() fields: any;
-  @Input() isEdit: boolean = false;
+  @Input() collectionActionType: CollectionActionType = 'create';
   @Output() collectionSaved = new EventEmitter();
 
   // public originalName: string;
@@ -38,10 +37,14 @@ export class CollectionFormComponent implements OnInit {
   public formItems: Array<any> = [];
   public serverErrors: any;
   public tr: any;
-  private defaultCollectionParams: any = { 'q': '', 'accessLevel': 'all', 's': '', 'd': '', 'i': 0, 'n': 200 };
-
-
-  @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
+  private defaultCollectionParams: any = {
+    'q': '',
+    'accessLevel': 'all',
+    's': '',
+    'd': '',
+    'i': 0,
+    'n': 200
+  };
 
   constructor(
     public collections: CollectionsService,
@@ -54,52 +57,86 @@ export class CollectionFormComponent implements OnInit {
 
   ngOnInit() {
     this.formItems = this.setForm();
-    this.tr = {
-      title: (this.isEdit) ? 'COLLECTION.EDIT.TITLE' : 'COLLECTION.NEW_TITLE',
-      close: 'COLLECTION.FORM.CLOSE_HOVER_TITLE',
-      submitLabel: (this.isEdit) ? 'COLLECTION.EDIT.SUBMIT_LABEL' : 'COLLECTION.FORM.SUBMIT_LABEL'
-    };
+    switch (this.collectionActionType) {
+      case 'create':
+        this.tr = {
+          title: 'COLLECTION.NEW_TITLE',
+          submitLabel: 'COLLECTION.FORM.SUBMIT_LABEL'
+        };
+        break;
+      case 'edit':
+        this.tr = {
+          title: 'COLLECTION.EDIT.TITLE',
+          submitLabel: 'COLLECTION.EDIT.SUBMIT_LABEL'
+        };
+        break;
+      case 'duplicate':
+        this.tr = {
+          title: 'COLLECTION.DUPLICATE.TITLE',
+          submitLabel: 'COLLECTION.DUPLICATE.SUBMIT_LABEL'
+        };
+        break;
+    }
+    this.tr.close = 'COLLECTION.FORM.CLOSE_HOVER_TITLE';
   }
 
   public collectionAction(collection: Collection) {
-    (this.isEdit) ? this.editCollection(collection) : this.createCollection(collection);
+    switch (this.collectionActionType) {
+      case 'create':
+        this.createCollection(collection);
+        break;
+      case 'edit':
+        this.editCollection(collection);
+        break;
+      case 'duplicate':
+        this.duplicateCollection(collection);
+        break;
+    }
   }
 
-  public createCollection(collection: Collection): void {
-    collection.tags = (collection.tags) ? collection.tags.split(/\s*,\s*/) : [];
+  // -------- END OF PUBLIC INTERFACE --------- //
+
+  private createCollection(collection: Collection): void {
+    collection.tags = collection.tags.split(/\s*,\s*/);
     this.collections.create(collection).subscribe(collection => {
-      this.collectionContext.resetCollectionOptions();
-      this.getActiveCollection();
-      this.loadCollections();
+      this.refreshCollections();
     }, this.error.bind(this));
   }
 
-  public editCollection(collection: Collection) {
+  private editCollection(collection: Collection) {
     collection = Object.assign(
       {}, collection, {
-        id: this.collection.id, tags: (collection.tags !== '') ? collection.tags.split(/\s*,\s*/) : [], owner: this.collection.owner
+        id: this.collection.id,
+        tags: collection.tags.split(/\s*,\s*/),
+        owner: this.collection.owner
       });
     this.collections.update(collection)
       .subscribe(() => {
         this.loadCollections();
-        if (this.store.match(collection.id, state => state.activeCollection.collection.id)) this.getActiveCollection();
+        if (this.store.match(collection.id, state => state.activeCollection.collection.id)) {
+          this.getActiveCollection();
+        }
       }, this.error.bind(this));
   }
 
-  public loadCollections() {
+  private duplicateCollection(collection: Collection) {
+    collection = Object.assign(
+      {}, this.collection, collection, {
+        tags: collection.tags.split(/\s*,\s*/)
+      });
+    this.collections.duplicate(collection)
+      .subscribe(() => {
+        this.refreshCollections();
+      }, this.error.bind(this));
+  }
+
+  private loadCollections() {
     this.collections.load(this.defaultCollectionParams)
-      .subscribe(this.success.bind(this));
+      .subscribe(() => this.collectionSaved.emit());
   }
 
-  public getActiveCollection() {
+  private getActiveCollection() {
     this.store.dispatch(factory => factory.activeCollection.load());
-  }
-
-  public success(): void {
-    this.formItems = this.clearForm();
-    this.wzForm.resetForm();
-    this.detector.markForCheck();
-    this.collectionSaved.emit();
   }
 
   private error(error: any) {
@@ -107,24 +144,28 @@ export class CollectionFormComponent implements OnInit {
     this.detector.markForCheck();
   }
 
-  private clearForm() {
-    return this.formItems
-      .map((field: FormFields) => {
-        field.value = '';
-        if (field.type === 'tags') field.tags = [];
-        return field;
-      });
+  private refreshCollections() {
+    this.collectionContext.resetCollectionOptions();
+    this.getActiveCollection();
+    this.loadCollections();
   }
 
   private setForm() {
     this.fields = Common.clone(this.fields);
     return this.fields.form.items.map((item: any) => {
-      if (item.name === 'name' && this.collection) item.value = this.collection.name;
-      if (item.type === 'tags') {
-        item.tags = (this.collection && this.collection.tags) ? this.collection.tags : [];
-        item.value = (this.collection && this.collection.tags) ? this.collection.tags.toString() : '';
+      if (item.name === 'name' && this.collection) {
+        item.value = this.collection.name;
+        if (this.collectionActionType === 'duplicate') {
+          item.value = `Copy - ${item.value}`;
+        }
       }
-      return Object.assign({}, item);
+      if (item.type === 'tags') {
+        item.tags = (this.collection && this.collection.tags)
+          ? this.collection.tags : [];
+        item.value = (this.collection && this.collection.tags)
+          ? this.collection.tags.toString() : '';
+      }
+      return item;
     });
   }
 

@@ -18,6 +18,7 @@ export class WzCollectionItemListComponent {
   @Output() setActiveCollection = new EventEmitter();
   @Output() deleteCollection = new EventEmitter();
   @Output() generateCollectionLink = new EventEmitter();
+  @Output() duplicateCollection = new EventEmitter();
   public currentCollection: any;
 
   public selectActiveCollection(collectionId: any) {
@@ -38,6 +39,10 @@ export class WzCollectionItemListComponent {
 
   public delete(collection: any): void {
     this.deleteCollection.emit(collection);
+  }
+
+  public duplicate(): void {
+    this.duplicateCollection.emit(this.currentCollection.id);
   }
 
   public generateLegacyLink(): void {

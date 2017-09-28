@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Collection } from '../../shared/interfaces/collection.interface';
+import { Collection, CollectionSummary } from '../../shared/interfaces/collection.interface';
+import { Pojo, Asset } from '../../shared/interfaces/common.interface';
 import { Observable } from 'rxjs/Observable';
 import { CollectionsStore } from '../stores/collections.store';
 import { ApiService } from '../../shared/services/api.service';
@@ -19,7 +20,7 @@ export class CollectionsService {
     this.staySyncedWithActiveCollection();
   }
 
-  public get data(): Observable<Collection[]> {
+  public get data(): Observable<CollectionSummary> {
     return this.collectionsStore.data;
   }
 
@@ -37,6 +38,15 @@ export class CollectionsService {
   public create(collection: Collection): Observable<any> {
     return this.api.post(Api.Assets, 'collectionSummary', { body: collection, loadingIndicator: true })
       .do(response => this.collectionsStore.add(response as Collection));
+  }
+
+  public duplicate(collection: Collection): Observable<any> {
+    return this.api.post(Api.Identities, 'collection', { body: collection, loadingIndicator: true });
+  }
+
+  public getByIdAndDuplicate(id: number) {
+    return this.api.get(Api.Identities, `collection/${id}`, { loadingIndicator: true })
+      .map(response => this.prepareForDuplication(response));
   }
 
   public update(collection: Collection): Observable<any> {
@@ -80,5 +90,20 @@ export class CollectionsService {
 
   private setSearchParams() {
     this.params = { q: '', accessLevel: 'all', s: '', d: '', i: 0, n: 200 };
+  }
+
+  private prepareForDuplication(collection: Pojo): Pojo {
+    return {
+      name: collection.name,
+      tags: collection.tags,
+      siteName: collection.siteName,
+      assets: (collection.assets) ? collection.assets.map((asset: Asset) => (
+        {
+          assetId: asset.assetId,
+          timeEnd: asset.timeEnd,
+          timeStart: asset.timeStart
+        }
+      )) : null
+    };
   }
 }

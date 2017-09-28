@@ -67,6 +67,7 @@
   </a>
   <button (click)="generateLegacyLink()" md-menu-item><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
   <button md-menu-item disabled><md-icon>history</md-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.HISTORY' | translate }}</button>
+  <button md-menu-item (click)="duplicate();"><md-icon>layers</md-icon>Duplicate Collection</button>
   <div *ngIf="currentCollection && !!currentCollection.owner">
   <div class="divider"></div>
   <button md-menu-item class="delete" (click)="delete(currentCollection)">
