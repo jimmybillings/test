@@ -134,4 +134,5 @@ export class RemoveAssetFailure implements Action {
 export type Any =
   Load | LoadSuccess | LoadFailure |
   Delete | DeleteSuccess | DeleteFailure |
-  EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure;
+  EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
+  RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure;
