@@ -32,7 +32,8 @@ export class RouterEffects {
   public goToSearchAssetDetails: Observable<Action> = this.actions.ofType(RouterActions.GoToSearchAssetDetails.Type)
     .do((action: RouterActions.GoToSearchAssetDetails) =>
       this.router.navigate([
-        `${this.SearchAssetDetailsPath}/${action.assetId}`,
+        this.SearchAssetDetailsPath,
+        action.assetId,
         bothMarkersAreSet(action.markers) ? durationFrom(action.markers) : {}
       ])
     );
@@ -57,12 +58,12 @@ export class RouterEffects {
   @Effect({ dispatch: false })
   public goToCollection: Observable<Action> = this.actions.ofType(RouterActions.GoToCollection.Type)
     .do((action: RouterActions.GoToCollection) => {
-      this.router.navigate([`${this.CollectionsPath}/${action.collectionId}`, { i: action.page, n: action.perPage }]);
+      this.router.navigate([this.CollectionsPath, action.collectionId, { i: action.page, n: action.perPage }]);
     });
 
   @Effect({ dispatch: false })
   public goToActiveQuote: Observable<Action> = this.actions.ofType(RouterActions.GoToActiveQuote.Type)
-    .do((action: RouterActions.GoToActiveQuote) => this.router.navigate([`${this.ActiveQuotePath}`]));
+    .do((action: RouterActions.GoToActiveQuote) => this.router.navigate([this.ActiveQuotePath]));
 
   @Effect({ dispatch: false })
   public goToCart: Observable<Action> = this.actions.ofType(RouterActions.GoToCart.Type)

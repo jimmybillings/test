@@ -50,7 +50,9 @@ export function main() {
       it('dispatches the expected action', () => {
         const mockAsset: any = { some: 'asset' };
         const spy = mockStore.createActionFactoryMethod('activeCollection', 'removeAsset');
+
         componentUnderTest.removeFromActiveCollection(mockEnhancedAsset);
+
         mockStore.expectDispatchFor(spy, mockEnhancedAsset);
       });
     });

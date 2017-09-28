@@ -138,7 +138,7 @@ export function main() {
         {
           it: 'navigates to /search/asset/:assetId',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/asset/47', {}]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/asset', 47, {}]);
           }
         }
       ]
@@ -157,7 +157,7 @@ export function main() {
         {
           it: 'navigates to /search/asset/:assetId;timeStart=<milliseconds>;timeEnd=<milliseconds>',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/asset/47', { timeStart: 1000, timeEnd: 2000 }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/asset', 47, { timeStart: 1000, timeEnd: 2000 }]);
           }
         }
       ]
@@ -247,7 +247,7 @@ export function main() {
         {
           it: 'navigates to /collections/:collectionId',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections/1', { i: undefined, n: undefined }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections', 1, { i: undefined, n: undefined }]);
           }
         }
       ]
@@ -267,7 +267,7 @@ export function main() {
         {
           it: 'navigates to /collection/:collectionId;i=<page>;n=<perPage>',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections/1', { i: 5, n: 55 }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections', 1, { i: 5, n: 55 }]);
           }
         }
       ]
