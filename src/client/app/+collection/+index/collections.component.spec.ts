@@ -115,7 +115,7 @@ export function main() {
       describe('deleteCollection()', () => {
         it('Should call the dialog service to open dialog which confirms delete', () => {
           componentUnderTest.deleteCollection(1);
-          expect(mockCollectionsService.delete).toHaveBeenCalledWith(1);
+          expect(mockCollectionsService.delete).toHaveBeenCalledWith(1, true);
         });
       });
 

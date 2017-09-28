@@ -155,8 +155,8 @@ export class CollectionsComponent {
     );
   }
 
-  public deleteCollection(id: number): void {
-    this.collections.delete(id).subscribe();
+  public deleteCollection(id: number, ): void {
+    this.collections.delete(id, true).subscribe();
   }
 
   public search(query: string) {

@@ -4,7 +4,7 @@ import { Pojo, Asset } from '../../shared/interfaces/common.interface';
 import { Observable } from 'rxjs/Observable';
 import { CollectionsStore } from '../stores/collections.store';
 import { ApiService } from '../../shared/services/api.service';
-import { Api } from '../../shared/interfaces/api.interface';
+import { Api, LoadingIndicatorOption } from '../../shared/interfaces/api.interface';
 import { AppStore, ActiveCollectionState } from '../../app.store';
 
 @Injectable()
@@ -53,9 +53,9 @@ export class CollectionsService {
     return this.api.put(Api.Assets, `collectionSummary/${collection.id}`, { body: collection, loadingIndicator: true });
   }
 
-  public delete(collectionId: number): Observable<any> {
+  public delete(collectionId: number, loadingIndicator: LoadingIndicatorOption = 'onBeforeRequest'): Observable<any> {
     this.collectionsStore.deleteCollectionWith(collectionId);
-    return this.api.delete(Api.Identities, `collection/${collectionId}`, { loadingIndicator: 'onBeforeRequest' })
+    return this.api.delete(Api.Identities, `collection/${collectionId}`, { loadingIndicator: loadingIndicator })
       .switchMap(_ => {
         if (this.store.match(collectionId, state => state.activeCollection.collection.id)) {
           this.store.dispatch(factory => factory.activeCollection.load());
