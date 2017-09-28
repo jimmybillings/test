@@ -57,12 +57,14 @@ export class SearchComponent implements OnDestroy {
     private router: Router,
     private detector: ChangeDetectorRef,
     private quoteEditService: QuoteEditService,
-    private store: AppStore) {
+    private store: AppStore
+  ) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
     this.userPreferences = userPreferencesService;
     this.search = searchService;
-    this.enhancedAssetsSubScription = this.search.enhancedAssets.subscribe(enhancedAssets => this.enhancedAssets = enhancedAssets);
+    this.enhancedAssetsSubScription = this.search.enhancedAssets
+      .subscribe(enhancedAssets => this.enhancedAssets = enhancedAssets);
     this.sortDefinition = sortDefinitionService;
     this.router.events.subscribe(route => {
       this.path = (this.route.snapshot.params['gq']) ? JSON.parse(this.route.snapshot.params['gq']) : '';

@@ -14,6 +14,7 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
           <md-icon>remove_circle</md-icon>
         </button>
       <button
+        data-pendo="cart-lineitem_options-menu-trigger"
         md-icon-button
         [md-menu-trigger-for]="lineItemOptionsMenu"
         title="{{ 'CART.PROJECTS.MORE_OPTIONS_BTN_HOVER' | translate }}">

@@ -32,6 +32,7 @@
         <nav class="asset-options" flex layout-align="end center">
           <!-- ADD TO CART -->
           <button
+            data-pendo="asset-result_add-to-cart-btn"
             *ngIf="userCan.addToCart()"
             [disabled]="!canBePurchased(asset)"
             md-icon-button
@@ -41,6 +42,7 @@
           </button>
           <!-- DOWNLOAD COMPS-->
           <button
+            data-pendo="asset-result_download-btn"
             md-icon-button
             [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
             title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED') | translate }}"

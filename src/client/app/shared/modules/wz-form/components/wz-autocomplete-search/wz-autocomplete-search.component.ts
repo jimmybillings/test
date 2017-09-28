@@ -38,7 +38,6 @@ export class WzAutocompleteSearchComponent {
 
   public toggleFilters() {
     this.toggleFilterTree.emit();
-    (<HTMLElement>document.querySelector('button.filter')).click();
   }
 
   public onSubmit(query?: any, searchTerm = false) {
