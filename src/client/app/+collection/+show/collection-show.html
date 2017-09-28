@@ -81,9 +81,6 @@
               <md-icon>more_vert</md-icon>
           </button>
           <md-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="mdMenu">
-            <button md-menu-item (click)="duplicateCollection()">
-              <md-icon>layers</md-icon>{{'COLLECTION.MORE_DD_MENU.DUPLICATE_COLLECTION' | translate }}
-            </button>
             <button md-menu-item disabled>
               <md-icon>file_download</md-icon>Download all comps
             </button>
@@ -91,6 +88,9 @@
               <md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}
             </button>
             <div class="divider"></div>
+            <button md-menu-item (click)="duplicateCollection()">
+              <md-icon>layers</md-icon>{{'COLLECTION.MORE_DD_MENU.DUPLICATE_COLLECTION' | translate }}
+            </button>
             <button md-menu-item disabled>
               <md-icon>import_export</md-icon>Export collection as XML
             </button>
