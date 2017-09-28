@@ -97,7 +97,7 @@ export class CollectionFormComponent implements OnInit {
   // -------- END OF PUBLIC INTERFACE --------- //
 
   private createCollection(collection: Collection): void {
-    collection.tags = collection.tags.split(/\s*,\s*/);
+    collection.tags = collection.tags.split(/\s*,\s*/).filter((tag: string) => tag !== '');
     this.collections.create(collection).subscribe(collection => {
       this.refreshCollections();
     }, this.error.bind(this));
@@ -107,7 +107,7 @@ export class CollectionFormComponent implements OnInit {
     collection = Object.assign(
       {}, collection, {
         id: this.collection.id,
-        tags: collection.tags.split(/\s*,\s*/),
+        tags: collection.tags.split(/\s*,\s*/).filter((tag: string) => tag !== ''),
         owner: this.collection.owner
       });
     this.collections.update(collection)
@@ -122,7 +122,7 @@ export class CollectionFormComponent implements OnInit {
   private duplicateCollection(collection: Collection) {
     collection = Object.assign(
       {}, this.collection, collection, {
-        tags: collection.tags.split(/\s*,\s*/)
+        tags: collection.tags.split(/\s*,\s*/).filter((tag: string) => tag !== '')
       });
     this.collections.duplicate(collection)
       .subscribe(() => {
@@ -161,7 +161,7 @@ export class CollectionFormComponent implements OnInit {
       }
       if (item.type === 'tags') {
         item.tags = (this.collection && this.collection.tags)
-          ? this.collection.tags : [];
+          ? this.collection.tags.filter((tag: string) => tag !== '') : [];
         item.value = (this.collection && this.collection.tags)
           ? this.collection.tags.toString() : '';
       }
