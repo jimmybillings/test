@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { Collection } from '../../interfaces/collection.interface';
@@ -8,8 +8,9 @@ import { Frame } from 'wazee-frame-formatter';
 import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 import { AppStore } from '../../../app.store';
 import { Metadatum } from '../../../shared/interfaces/commerce.interface';
+import { UiConfig } from '../../../shared/services/ui.config';
 
-export class WzAsset {
+export class WzAsset implements OnInit {
   @Output() onAddToCart = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
   @Output() onShowSpeedview = new EventEmitter();
@@ -33,12 +34,23 @@ export class WzAsset {
 
   public assetId: number;
   public hasComp: boolean;
+  public showAssetName: boolean = true;
   private _assets: EnhancedAsset[];
   private assetIdsInActiveCollection: number[] = [];
   private enhancedAssets: { [lookupId: string]: EnhancedAsset } = {};
   private _activeCollection: Collection;
+  constructor(
+    private store: AppStore,
+    public uiConfig: UiConfig) { }
 
-  constructor(private store: AppStore) { }
+  public ngOnInit(): void {
+    this.uiConfig.get('search').take(1).subscribe(config => {
+      this.showAssetName =
+        !!config.config.showAssetNameGridView && config.config.showAssetNameGridView.value === 'true'
+          ? true
+          : false;
+    });
+  }
 
   public get assets(): EnhancedAsset[] {
     return this._assets;

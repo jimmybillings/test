@@ -19,6 +19,9 @@
       @media (min-height: 875px) {
         background-color:rgba(mat-color($background, app-bar), .95);
         @include text-contrast(mat-color($background, app-bar), mat-color($foreground, secondary-text), mat-color($background, app-bar));
+        a.home-link > .logo-wrapper .logo img {
+          background-image: url($logo-header-fixed);
+        }
       }
     }
   }

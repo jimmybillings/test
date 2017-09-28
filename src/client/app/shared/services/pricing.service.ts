@@ -45,7 +45,7 @@ export class PricingService {
 
   private formatDurationParametersFor(markers: SubclipMarkersInterface.SubclipMarkers): object {
     return {
-      startSecond: markers.in.asSeconds(3) * 1000, endSecond: markers.out.asSeconds(3) * 1000
+      startSecond: markers.in.asMilliseconds(), endSecond: markers.out.asMilliseconds()
     };
   }
 }
