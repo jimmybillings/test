@@ -9,7 +9,7 @@
     <div flex="100" flex-gt-xs="66">
       <div flex="100" layout="row" layout-xs="column">
         <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding>
-          <a class="asset" [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">
+          <a class="asset" [routerLink]="['/selected-collection', {i: 1, n: 100}]">
             <div class="asset-thb">
               <div class="selected" *ngIf="activeCollection === collection.id" title="Selected collection">
                 <md-icon>star</md-icon>
@@ -20,7 +20,7 @@
           </a>
         </div>
         <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" layout-padding>
-          <a class="collection-name" [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">
+          <a class="collection-name" [routerLink]="['/selected-collection', {i: 1, n: 100}]">
             <h3 class="md-headline">{{collection.name}}
               <span class="asset-count">
                 <span class="count">{{collection.assetsCount || 0}}</span>
@@ -51,7 +51,13 @@
         (click)="setCurrentCollection(collection)"><md-icon>more_vert</md-icon></button>
       </div>
       <div class="premiere-actions">
-        <button md-button class="is-outlined" color="primary" [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">{{'COLLECTION.INDEX.VIEW_BTN_LABEL' | translate }}</button>
+        <button
+          md-button
+          class="is-outlined"
+          color="primary"
+          [routerLink]="['/selected-collection', {i: 1, n: 100}]">
+          {{'COLLECTION.INDEX.VIEW_BTN_LABEL' | translate }}
+        </button>
         <button md-button class="is-outlined" (click)="selectActiveCollection(collection.id)">{{'COLLECTION.INDEX.SELECT_BTN_LABEL' | translate }}</button>
       </div>
     </div>
@@ -62,7 +68,7 @@
   <button *ngIf="currentCollection" md-menu-item (click)="selectActiveCollection(currentCollection.id)">
     <md-icon>star_border</md-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.SELECT' | translate }}
   </button>
-  <a *ngIf="currentCollection" md-menu-item [routerLink]="['/collections/', currentCollection.id, {i: 1, n: 100}]" disableRipple="true">
+  <a *ngIf="currentCollection" md-menu-item [routerLink]="['/selected-collection', {i: 1, n: 100}]" disableRipple="true">
     <md-icon>open_in_browser</md-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.VIEW' | translate }}
   </a>
   <button (click)="generateLegacyLink()" md-menu-item><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
