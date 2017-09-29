@@ -274,7 +274,7 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
   private createRouterLink(): any[] {
     switch (this.type) {
       case 'collectionAsset':
-        return [`/selected-collection/asset/${this.uuid}`];
+        return [`/active-collection/asset/${this.uuid}`];
 
       case 'quoteEditAsset':
         return [`/active-quote/asset/${this.uuid}`];

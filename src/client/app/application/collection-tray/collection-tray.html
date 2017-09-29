@@ -20,7 +20,7 @@
   </div>
   <div layout="row" flex="auto" layout-align="end center" class="focused-collection">
     <nav class="focused" *ngIf="collection.name">
-      <a md-button [routerLink]="['/selected-collection', {i: 1, n: pageSize}]">
+      <a md-button [routerLink]="['/active-collection', {i: 1, n: pageSize}]">
         <md-icon>folder_special</md-icon>
           {{collection.name}}
         <span class="asset-count" *ngIf="collection.assets">
@@ -53,7 +53,7 @@
       <button md-menu-item (click)="list.show($event)">
         <md-icon>folder_special</md-icon>{{ 'COLLECTION.MORE_DD_MENU.CHANGE_SELECTED' | translate }}
       </button>
-      <a md-menu-item *ngIf="collection.id" [routerLink]="['/selected-collection', {i: 1, n: pageSize}]">
+      <a md-menu-item *ngIf="collection.id" [routerLink]="['/active-collection', {i: 1, n: pageSize}]">
         <md-icon>open_in_browser</md-icon>{{ 'COLLECTION.MORE_DD_MENU.OPEN_SELECTED' | translate }}
       </a>
       <a md-menu-item [routerLink]="['/collections']">

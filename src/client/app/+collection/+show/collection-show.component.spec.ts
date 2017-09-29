@@ -165,7 +165,7 @@ export function main() {
       it('Should navigate to the correct page', () => {
         componentUnderTest.ngOnInit();
         componentUnderTest.changePage(3);
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/selected-collection', { some: 'params', i: 3 }]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/active-collection', { some: 'params', i: 3 }]);
       });
 
     });

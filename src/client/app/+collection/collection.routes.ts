@@ -19,7 +19,7 @@ export const COLLECTION_ROUTES: Routes = [
     ]
   },
   {
-    path: 'selected-collection',
+    path: 'active-collection',
     children: [
       {
         path: '',
