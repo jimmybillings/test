@@ -247,7 +247,7 @@ export function main() {
         {
           it: 'navigates to /collections/:collectionId',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections', 1, { i: undefined, n: undefined }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/active-collection', { i: undefined, n: undefined }]);
           }
         }
       ]
@@ -267,7 +267,7 @@ export function main() {
         {
           it: 'navigates to /collection/:collectionId;i=<page>;n=<perPage>',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections', 1, { i: 5, n: 55 }]);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/active-collection', { i: 5, n: 55 }]);
           }
         }
       ]

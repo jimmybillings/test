@@ -841,7 +841,7 @@ export function main() {
           componentUnderTest.pageSize = 50;
           componentUnderTest.asset = enhanceAsset(mockAsset, 'collectionAsset', 100);
 
-          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/collections', 100, { i: 1, n: 50 }]);
+          expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/active-collection', { i: 1, n: 50 }]);
         });
 
         it('for a quote edit asset', () => {
