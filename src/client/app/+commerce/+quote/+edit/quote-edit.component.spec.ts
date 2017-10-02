@@ -222,12 +222,12 @@ export function main() {
 
       describe('ADD_CUSTOM_PRICE', () => {
         beforeEach(() => {
-          componentUnderTest.onNotification({ type: 'ADD_CUSTOM_PRICE', payload: { some: 'lineItem' } });
+          componentUnderTest.onNotification({ type: 'ADD_CUSTOM_PRICE', payload: { some: 'lineItem', grossAssetPrice: 100 } });
         });
 
         it('should open up a form dialog with the right config', () => {
           expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
-            [{ name: 'price', label: 'Price', value: '', type: 'number', min: '0', validation: 'GREATER_THAN' }],
+            [{ name: 'price', label: 'Price', value: '100', type: 'number', min: '0', validation: 'GREATER_THAN' }],
             { title: 'QUOTE.ADD_CUSTOM_PRICE_TITLE', submitLabel: 'QUOTE.ADD_CUSTOM_PRICE_SUBMIT', autocomplete: 'off' },
             jasmine.any(Function)
           );
@@ -236,7 +236,7 @@ export function main() {
         it('should dispatch the proper action on form submit', () => {
           mockDialogService.onSubmitCallback({ price: 10 });
 
-          mockStore.expectDispatchFor(addCustomPriceDispatchSpy, { some: 'lineItem' }, 10);
+          mockStore.expectDispatchFor(addCustomPriceDispatchSpy, { some: 'lineItem', grossAssetPrice: 100 }, 10);
         });
       });
 

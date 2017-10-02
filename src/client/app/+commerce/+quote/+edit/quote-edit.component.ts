@@ -208,7 +208,14 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
 
   public onAddCustomPriceTo(lineItem: AssetLineItem): void {
     this.dialogService.openFormDialog(
-      [{ name: 'price', label: 'Price', value: '', type: 'number', min: '0', validation: 'GREATER_THAN' }],
+      [{
+        name: 'price',
+        label: 'Price',
+        value: String(lineItem.grossAssetPrice),
+        type: 'number',
+        min: '0',
+        validation: 'GREATER_THAN'
+      }],
       { title: 'QUOTE.ADD_CUSTOM_PRICE_TITLE', submitLabel: 'QUOTE.ADD_CUSTOM_PRICE_SUBMIT', autocomplete: 'off' },
       (form: { price: number }) => {
         this.store.dispatch(factory => factory.quoteEdit.addCustomPriceToLineItem(lineItem, form.price));
