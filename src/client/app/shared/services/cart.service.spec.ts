@@ -67,6 +67,16 @@ export function main() {
       });
     });
 
+    describe('cart getter', () => {
+      it('returns the data from the cart store', () => {
+        serviceUnderTest.cart.subscribe(cart => expect(cart).toEqual({ some: 'data' }));
+      });
+
+      it('returns a cloned object', () => {
+        serviceUnderTest.cart.subscribe(cart => expect(cart).not.toBe(mockStore.snapshot(state => state.cart.data)));
+      });
+    });
+
     describe('addAssetToProjectInCart()', () => {
       beforeEach(() => {
         mockStore.createStateSection('cart', { data: { projects: [mockProjectB] } });

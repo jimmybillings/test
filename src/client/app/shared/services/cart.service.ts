@@ -26,6 +26,7 @@ import {
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
 import { Frame } from 'wazee-frame-formatter';
 import { enhanceAsset } from '../interfaces/enhanced-asset';
+import { Common } from '../utilities/common.functions';
 
 @Injectable()
 export class CartService {
@@ -53,7 +54,7 @@ export class CartService {
   }
 
   public get cart(): Observable<Cart> {
-    return this.data.map((state: CartState) => state.data);
+    return this.data.map((state: CartState) => Common.clone(state.data));
   }
 
   public get projects(): Observable<Project[]> {
