@@ -227,7 +227,7 @@ export function main() {
 
         it('should open up a form dialog with the right config', () => {
           expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
-            [{ name: 'price', label: 'Price', value: '', type: 'number', min: '0', validation: 'required' }],
+            [{ name: 'price', label: 'Price', value: '', type: 'number', min: '0', validation: 'GREATER_THAN' }],
             { title: 'QUOTE.ADD_CUSTOM_PRICE_TITLE', submitLabel: 'QUOTE.ADD_CUSTOM_PRICE_SUBMIT', autocomplete: 'off' },
             jasmine.any(Function)
           );

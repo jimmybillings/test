@@ -21,7 +21,12 @@
     .multiplier {
       color: mat-color($primary, lighter);
     }
-    .price.select-usage {
+    .admin-price {
+      &:hover {
+        background-color: rgba(mat-color($primary, darker), .075);
+      }
+    }
+    .non-admin-price.select-usage {
       color: lighten(mat-color($warn, darker), 30%);
       &::after {
         color: mat-color($warn, darker);

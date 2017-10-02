@@ -99,8 +99,29 @@ li.cart-asset {
       @media screen and (max-width: $layout-breakpoint-xs) {
         padding: 10px;
       }
-      .price {
-        padding-top: 4px;
+      .admin-price {
+        transition: all .2s ease-in-out;
+        &::after {
+          transition: all .2s ease-in-out;
+          content: "\e150";
+          font-family: 'Material Icons';
+          position: absolute;
+          bottom: 5px;
+          right: 5px;
+          font-size: 18px;
+          opacity: 0;
+        }
+        &:hover {
+          cursor: pointer;
+          transition: all .2s ease-in-out;
+          padding-right: 30px;
+          &::after {
+            opacity: .4;
+          }
+        }
+      }
+      .admin-price, .non-admin-price {
+        padding: 4px;
         &::first-letter {
           font-size: .78em;
           line-height: 1.355em;
@@ -125,7 +146,7 @@ li.cart-asset {
       }
       .multiplier-base {
         opacity: .8;
-        .price {
+        .multiplier-base-price {
           padding-top: 0;
           &::first-letter {
             font-size: .78em;
@@ -134,7 +155,7 @@ li.cart-asset {
           }
         }
       }
-      .multiplier .multiplier-value, .multiplier-base .price {
+      .multiplier .multiplier-value, .multiplier-base .multiplier-base-price {
         padding-left: 7px;
       }
     }

@@ -73,6 +73,52 @@ export function main() {
 
           expect(componentUnderTest.formattedMultiplier).toEqual('1758.19');
         });
+
+        it('for a number with only 1 decimal point', () => {
+          componentUnderTest.multiplier = 4.1;
+
+          expect(componentUnderTest.formattedMultiplier).toEqual('4.1');
+        });
+
+        it('for a number with no decimal points', () => {
+          componentUnderTest.multiplier = 4;
+
+          expect(componentUnderTest.formattedMultiplier).toEqual('4');
+        });
+      });
+    });
+
+    describe('showAdminPrice getter', () => {
+      describe('returns true', () => {
+        it('when the user can administer quotes, and the lineItem doesnt need attributes', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.rightsManaged = 'Royalty Free';
+
+          expect(componentUnderTest.showAdminPrice).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the user can\'t administer quotes', () => {
+          componentUnderTest.userCanAdministerQuotes = false;
+
+          expect(componentUnderTest.showAdminPrice).toBe(false);
+        });
+        it('when the user can administer quotes, but the lineItem does need attributes', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.rightsManaged = 'Rights Managed';
+          componentUnderTest.hasAttributes = false;
+
+          expect(componentUnderTest.showAdminPrice).toBe(false);
+        });
+      });
+    });
+
+    describe('onClickPrice()', () => {
+      it('emits the addCustomPrice event', () => {
+        spyOn(componentUnderTest.addCustomPrice, 'emit');
+        componentUnderTest.onClickPrice();
+        expect(componentUnderTest.addCustomPrice.emit).toHaveBeenCalled();
       });
     });
   });

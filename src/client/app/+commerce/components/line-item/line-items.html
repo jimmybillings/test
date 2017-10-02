@@ -49,7 +49,8 @@
 				[multiplier]="lineItem.multiplier"
 				[rightsManaged]="lineItem.rightsManaged"
 				[hasAttributes]="!!lineItem.attributes"
-				[userCanAdministerQuotes]="userCan.administerQuotes()">
+				[userCanAdministerQuotes]="userCan.administerQuotes()"
+				(addCustomPrice)="onAddCustomPrice(lineItem)">
 			</line-item-price-component>
 		</div>
 	</li>
