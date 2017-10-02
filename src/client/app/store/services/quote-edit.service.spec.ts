@@ -127,6 +127,22 @@ export function main() {
           expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
         });
       });
+
+      describe('addCustomPriceToLineItem', () => {
+        it('calls the apiService correctly', () => {
+          serviceUnderTest.addCustomPriceToLineItem(10, { id: 'abc-123', itemPrice: 100 } as any, 1000);
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/10/update/lineItem/abc-123');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            id: 'abc-123',
+            itemPrice: 100,
+            multiplier: 10
+          });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
     });
   });
 }

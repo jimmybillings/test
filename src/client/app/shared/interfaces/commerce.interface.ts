@@ -45,6 +45,7 @@ export interface AssetLineItem {
   attributes?: Array<SelectedPriceAttributes>;
   salesForceId?: string;
   price?: number;
+  grossAssetPrice?: number;
   rightsManaged?: string;
 }
 

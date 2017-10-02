@@ -97,6 +97,10 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
         this.onOpenBulkImportDialog(message.payload);
         break;
 
+      case 'ADD_CUSTOM_PRICE':
+        this.onAddCustomPriceTo(message.payload);
+        break;
+
       default:
         super.onNotification(message);
     };
@@ -200,6 +204,22 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
         }).subscribe();
       }
     );
+  }
+
+  public onAddCustomPriceTo(lineItem: AssetLineItem): void {
+    this.dialogService.openFormDialog(
+      [{
+        name: 'price',
+        label: 'Price',
+        value: String(lineItem.grossAssetPrice),
+        type: 'number',
+        min: '0',
+        validation: 'GREATER_THAN'
+      }],
+      { title: 'QUOTE.ADD_CUSTOM_PRICE_TITLE', submitLabel: 'QUOTE.ADD_CUSTOM_PRICE_SUBMIT', autocomplete: 'off' },
+      (form: { price: number }) => {
+        this.store.dispatch(factory => factory.quoteEdit.addCustomPriceToLineItem(lineItem, form.price));
+      });
   }
 
   private updateQuoteField = (options: any): void => {

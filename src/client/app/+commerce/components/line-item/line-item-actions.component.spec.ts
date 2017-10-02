@@ -203,5 +203,13 @@ export function main() {
         });
       });
     });
+
+    describe('onClickAddCustomPrice', () => {
+      it('emits the proper event', () => {
+        spyOn(componentUnderTest.addCustomPrice, 'emit');
+        componentUnderTest.onClickAddCustomPrice();
+        expect(componentUnderTest.addCustomPrice.emit).toHaveBeenCalled();
+      });
+    });
   });
 }

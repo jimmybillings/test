@@ -31,6 +31,7 @@ export function reducer(state: State = initialState, action: QuoteEditActions.An
     }
 
     case QuoteEditActions.EditLineItemFromDetailsSuccess.Type:
+    case QuoteEditActions.AddCustomPriceToLineItemSuccess.Type:
     case QuoteEditActions.DeleteSuccess.Type:
     case QuoteEditActions.LoadSuccess.Type:
     case QuoteEditActions.RemoveAssetSuccess.Type: {
@@ -43,6 +44,8 @@ export function reducer(state: State = initialState, action: QuoteEditActions.An
     }
 
     case QuoteEditActions.DeleteFailure.Type:
+    case QuoteEditActions.EditLineItemFromDetailsFailure.Type:
+    case QuoteEditActions.AddCustomPriceToLineItemFailure.Type:
     case QuoteEditActions.LoadFailure.Type: {
       return {
         ...Common.clone(state),
