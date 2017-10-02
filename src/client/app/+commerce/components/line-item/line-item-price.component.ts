@@ -14,18 +14,18 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
         <div *ngIf="shouldShowMultiplier" 
           class="multiplier-base"
           layout="row"
-          layout-align="end center"
-          >
+          layout-align="end center">
           <div class="label" flex="100">{{ 'QUOTE.MULTIPLIER_BASE_PRICE_LABEL' | translate }}</div>
           <div class="price" flex="no-grow">{{ itemPrice | currency:'USD':true:'1.2-2' }}</div>
         </div>
         <div *ngIf="shouldShowMultiplier" 
           class="multiplier"
           layout="row"
-          layout-align="end center"
-          >
+          layout-align="end center">
           <div class="label" flex="100">{{ 'QUOTE.MULTIPLIER_LABEL' | translate }}</div>
-          <div class="multiplier-value" flex="no-grow">{{ 'QUOTE.MULTIPLIER_VALUE' | translate:{multiplier: multiplier} }}</div>
+          <div class="multiplier-value" flex="no-grow">
+            {{ 'QUOTE.MULTIPLIER_VALUE' | translate:{multiplier: formattedMultiplier} }}
+          </div>
         </div>
         <div class="price" [ngClass]="{'select-usage': needsAttributes }">
           {{ price | currency:'USD':true:'1.2-2' }}
@@ -47,5 +47,10 @@ export class LineItemPriceComponent {
 
   public get shouldShowMultiplier(): boolean {
     return this.userCanAdministerQuotes && this.multiplier > 1;
+  }
+
+  public get formattedMultiplier(): string {
+    const [integer, decimal] = String(this.multiplier).split('.');
+    return integer.concat('.').concat(decimal.slice(0, 2));
   }
 }

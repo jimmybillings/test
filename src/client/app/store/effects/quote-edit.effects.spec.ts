@@ -184,5 +184,35 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addCustomPriceToLineItem',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddCustomPriceToLineItem.Type,
+        lineItem: { some: 'lineItem' },
+        price: 10000
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 10 } }
+      },
+      serviceMethod: {
+        name: 'addCustomPriceToLineItem',
+        expectedArguments: [10, { some: 'lineItem' }, 10000],
+        returnsObservableOf: { some: 'quote' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'addCustomPriceToLineItemSuccess',
+          expectedArguments: [{ some: 'quote' }]
+        },
+        failure: {
+          sectionName: 'quoteEdit',
+          methodName: 'addCustomPriceToLineItemFailure'
+        }
+      }
+    });
   });
 }
