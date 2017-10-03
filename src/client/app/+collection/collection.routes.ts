@@ -15,21 +15,15 @@ export const COLLECTION_ROUTES: Routes = [
         path: '',
         component: CollectionsComponent,
         canActivate: [CollectionGuard]
-      }
-    ]
-  },
-  {
-    path: 'active-collection',
-    children: [
+      },
       {
-        path: '',
+        path: ':id',
         component: CollectionShowComponent,
         canActivate: [CollectionGuard],
         resolve: { collection: CollectionShowResolver }
-
       },
       {
-        path: 'asset/:uuid',
+        path: ':id/asset/:uuid',
         component: CollectionAssetComponent,
         canActivate: [CollectionGuard],
         resolve: { asset: CollectionAssetResolver }

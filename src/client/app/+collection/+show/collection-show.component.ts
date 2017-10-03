@@ -96,7 +96,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public changePage(i: number): void {
     this.buildRouteParams({ i });
-    this.router.navigate(['/active-collection', this.routeParams]);
+    this.router.navigate(['/collections/' + this.activeCollection.id, this.routeParams]);
   }
 
   public downloadComp(params: Pojo): void {

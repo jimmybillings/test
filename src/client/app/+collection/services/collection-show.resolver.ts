@@ -18,12 +18,17 @@ export class CollectionShowResolver {
 
   private createAppropriateActionFor(routeParameters: { [key: string]: any }, factory: ActionFactory): Action {
     const state: ActiveCollectionState = this.store.snapshot(state => state.activeCollection);
+    const routeId: number = Number(routeParameters['id']);
     const actionParameters: CollectionPaginationParameters = {
       currentPage: routeParameters['i'], pageSize: routeParameters['n']
     };
 
-    if (state.collection.id > 0) {
-      return factory.activeCollection.loadPage(actionParameters);
+    if (!state.loading) {
+      if (state.collection.id === routeId) {
+        return factory.activeCollection.loadPage(actionParameters);
+      }
+
+      return factory.activeCollection.set(routeId, actionParameters);
     }
 
     return factory.activeCollection.load(actionParameters);

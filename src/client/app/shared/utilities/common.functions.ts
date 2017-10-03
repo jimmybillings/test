@@ -67,6 +67,10 @@ export class Common {
     elements[elements.length - 1].setAttribute('style', `margin-top: ${scrollTopMargin}px`);
   }
 
+  public static onCollectionShowPage(url: string): boolean {
+    return url.includes('/collections/') && !url.includes('/asset/');
+  }
+
   private static isObject(item: any): boolean {
     return Common.isDefined(item) && typeof item === 'object' && !Array.isArray(item);
   }
