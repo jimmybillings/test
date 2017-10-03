@@ -7,6 +7,7 @@ import { CollectionsService } from '../../../shared/services/collections.service
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { UiState } from '../../../shared/services/ui.state';
+import { Common } from '../../../shared/utilities/common.functions';
 import { AppStore } from '../../../app.store';
 
 /**
@@ -56,15 +57,15 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
   }
 
   public selectFocusedCollection(collection: Collection) {
-    if (this.onCollectionShowPage()) {
+    if (Common.onCollectionShowPage(this.router.url)) {
       this.navigateToCollectionShow(collection.id);
     } else {
       this.store.dispatch(factory => factory.activeCollection.set(collection.id));
     }
   }
 
-  public navigateToCollectionShow(assetId: number): void {
-    this.router.navigate(['/collections/', assetId, { i: 1, n: this.pageSize }]);
+  public navigateToCollectionShow(collectionId: number): void {
+    this.router.navigate(['/collections/', collectionId, { i: 1, n: this.pageSize }]);
   }
 
   public navigateToCollectionsIndex() {
@@ -98,9 +99,5 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
 
   public showCollectionSearch() {
     this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
-  }
-
-  public onCollectionShowPage(): boolean {
-    return (this.router.url.split('/')[1] === 'collection' && this.router.url.split('/')[2] !== undefined);
   }
 }
