@@ -1,11 +1,12 @@
 <ul class="asset-grid-view" *ngIf="assets">
   <li *ngFor="let asset of assets">
-    <div class="asset" [wzSpeedview]="asset">
+    <div class="asset" (mouseenter)=loadPricing(asset)>
       <div class="asset-name" *ngIf="showAssetName">{{ nameOf(asset) }}</div>
       <a
         flex=""
         [routerLink]="routerLinkFor(asset)"
-        class="asset-thb">
+        class="asset-thb"
+        [wzSpeedview]="asset">
         <img *ngIf="hasThumbnail(asset)" src="{{ thumbnailUrlFor(asset) }}"/>
         <span *ngIf="hasTitle(asset)" class="mdata-0">
           <span>{{ titleOf(asset) }}</span>

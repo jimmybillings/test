@@ -32,7 +32,7 @@ export function main() {
           Observable.of({ config: { showAssetNameGridView: { value: 'true' } } }))
       };
 
-      componentUnderTest = new WzAsset(mockStore, mockUiConfig);
+      componentUnderTest = new WzAsset(mockStore, null, mockUiConfig);
       componentUnderTest.assets = [EnhancedMock.enhanceAsset(mockAsset, 'searchAsset')];
     });
 
