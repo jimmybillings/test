@@ -24,7 +24,7 @@ export class AssetShareComponent implements OnDestroy {
   @Input()
   set enhancedAsset(value: EnhancedAsset) {
     this.currentAsset = value;
-    this.resetShareLinkShowing();
+    this.assetLinkIsShowing = false;
     this.closeAssetShare();
   };
   @Input() subclipMarkers: SubclipMarkersInterface.SubclipMarkers;
