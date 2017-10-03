@@ -10,13 +10,31 @@ export function main() {
 
     beforeEach(() => {
       componentUnderTest = new AssetShareComponent(null, null);
-      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAssetLineItem.asset, null);
-      componentUnderTest.enhancedAsset = mockEnhancedAsset;
+    });
+
+    describe('enhancedAsset setter', () => {
+      beforeEach(() => {
+        spyOn(componentUnderTest, 'closeAssetShare');
+        mockEnhancedAsset = EnhancedMock.enhanceAsset(mockCommerceAssetLineItem.asset, null);
+        componentUnderTest.enhancedAsset = mockEnhancedAsset;
+      });
+
+      it('should set the currentAsset', () => {
+        expect(componentUnderTest.currentAsset).toEqual(mockEnhancedAsset);
+      });
+
+      it('should set the assetLinkIsShowing to equal false', () => {
+        expect(componentUnderTest.assetLinkIsShowing).toEqual(false);
+      });
+
+      it('should call closeAssetShare()', () => {
+        expect(componentUnderTest.closeAssetShare).toHaveBeenCalled();
+      });
     });
 
     describe('ngOnDestroy', () => {
       it('calls the closeAssetShare method', () => {
-        spyOn(componentUnderTest, 'closeAssetShare').and.callThrough();
+        spyOn(componentUnderTest, 'closeAssetShare');
         componentUnderTest.ngOnDestroy();
         expect(componentUnderTest.closeAssetShare).toHaveBeenCalled();
       });
