@@ -5,11 +5,16 @@ import { CurrentUserService } from './current-user.service';
 @Injectable()
 export class ApiConfig {
   private _portal: string = null;
+  private _baseUrl: string = null;
 
   constructor(private currentUser: CurrentUserService) { }
 
   public get baseUrl(): string {
-    return (<any>window).baseUrl;
+    return this._baseUrl;
+  }
+
+  public set baseUrl(url: string) {
+    this._baseUrl = url;
   }
 
   public set portal(portal: string) {

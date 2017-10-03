@@ -15,10 +15,6 @@
   <link rel="shortcut icon" href="/assets/favicon/favicon.ico?v=yyxLGp2EBG">
   <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml?v=yyxLGp2EBG">
   <meta name="theme-color" content="#ffffff">
-  <script>
-    var baseUrl = 'https://crxextapi.qa.wzplatform.com/';
-    var portal = 'commerce';
-  </script>
   <link rel="stylesheet" href="layout.css">
   <link rel="stylesheet" href="theme.css">
   <!-- inject:css -->
@@ -27,7 +23,10 @@
 <body>
 
 
-  <wazee-digital-platform>Loading... </wazee-digital-platform>
+  <wazee-digital-platform 
+    baseUrl="https://crxextapi.qa.wzplatform.com/" 
+    portal="commerce">Loading... 
+  </wazee-digital-platform>
 
   <script>
   // Fixes undefined module function in SystemJS bundle
