@@ -55,6 +55,19 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
+        class: ActionFactory,
+        name: 'addCustomPriceToLineItem',
+        parameters: [{ some: 'lineItem' }, 1000]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Custom Price To LineItem',
+        lineItem: { some: 'lineItem' },
+        price: 1000
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
         class: InternalActionFactory,
         name: 'loadFailure',
         parameters: [{ some: 'error' }]
@@ -145,6 +158,30 @@ export function main() {
       },
       expectedAction: {
         type: '[Quote Edit] Remove Asset Failure',
+        error: { some: 'error' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'addCustomPriceToLineItemSuccess',
+        parameters: [{ some: 'quote' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Custom Price To LineItem Success',
+        quote: { some: 'quote' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'addCustomPriceToLineItemFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Custom Price To LineItem Failure',
         error: { some: 'error' }
       }
     });

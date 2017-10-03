@@ -195,5 +195,15 @@ export function main() {
           .toBe(false);
       });
     });
+
+    describe('onAddCustomPrice()', () => {
+      it('emits the lineItemsNotify event with the right type and payload', () => {
+        classUnderTest.onAddCustomPrice({ some: 'lineItem' } as any);
+
+        classUnderTest.lineItemsNotify.subscribe((event: any) => {
+          expect(event).toEqual({ type: 'ADD_CUSTOM_PRICE', payload: { some: 'lineItem' } });
+        });
+      });
+    });
   });
 }

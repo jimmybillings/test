@@ -211,6 +211,30 @@ export function main() {
         });
     });
 
+    describe('onCollectionShowPage()', () => {
+      describe('returns true', () => {
+        [
+          '/collections/1234',
+          '/collections/1234;i=1;n=100',
+        ].forEach((test: string) => {
+          it(`for ${test}`, () => {
+            expect(Common.onCollectionShowPage(test)).toBe(true);
+          });
+        });
+      });
+
+      describe('returns false', () => {
+        [
+          '/collections/1234/asset/abc-123',
+          '/collections',
+          '/search',
+        ].forEach((test: string) => {
+          it(`for ${test}`, () => {
+            expect(Common.onCollectionShowPage(test)).toBe(false);
+          });
+        });
+      });
+    });
   });
 }
 

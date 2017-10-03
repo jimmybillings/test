@@ -66,6 +66,14 @@ export class QuoteEditEffects {
     this.store.create(factory => factory.router.goToActiveQuote())
   );
 
+  @Effect()
+  public addCustomPriceToLineItem: Observable<Action> = this.actions.ofType(QuoteEditActions.AddCustomPriceToLineItem.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.AddCustomPriceToLineItem, number]) => {
+      return this.service.addCustomPriceToLineItem(quoteId, action.lineItem, action.price)
+        .map(quote => this.store.create(factory => factory.quoteEdit.addCustomPriceToLineItemSuccess(quote)))
+        .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.addCustomPriceToLineItemFailure(error))));
+    });
 
   constructor(
     private actions: Actions,

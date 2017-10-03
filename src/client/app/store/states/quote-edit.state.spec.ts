@@ -23,7 +23,9 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['LoadSuccess', 'DeleteSuccess', 'EditLineItemFromDetailsSuccess', 'RemoveAssetSuccess'],
+      actionClassName: [
+        'LoadSuccess', 'DeleteSuccess', 'EditLineItemFromDetailsSuccess', 'RemoveAssetSuccess', 'AddCustomPriceToLineItemSuccess'
+      ],
       customTests: [
         {
           it: 'returns the state with the requested quote and loading: false',
@@ -35,7 +37,7 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['LoadFailure', 'DeleteFailure'],
+      actionClassName: ['LoadFailure', 'DeleteFailure', 'EditLineItemFromDetailsFailure', 'AddCustomPriceToLineItemFailure'],
       mutationTestData: {
         previousState: { loading: true }
       },

@@ -14,6 +14,7 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
           <md-icon>remove_circle</md-icon>
         </button>
       <button
+        data-pendo="cart-lineitem_options-menu-trigger"
         md-icon-button
         [md-menu-trigger-for]="lineItemOptionsMenu"
         title="{{ 'CART.PROJECTS.MORE_OPTIONS_BTN_HOVER' | translate }}">
@@ -51,6 +52,10 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
         <md-icon>remove_circle</md-icon>
         <span>{{ 'QUOTE.REMOVE_MULTIPLIER' | translate }}</span>
       </button>
+      <button md-menu-item (click)="onClickAddCustomPrice()" *ngIf="userCanAdministerQuotes">
+        <md-icon>monetization_on</md-icon>
+        <span>{{ 'QUOTE.ADD_CUSTOM_PRICE_TITLE' | translate }}</span>
+      </button>
     </md-menu>
   `
 })
@@ -70,6 +75,7 @@ export class LineItemActionsComponent {
   @Output() editMarkers: EventEmitter<any> = new EventEmitter();
   @Output() openCostMultiplierForm: EventEmitter<null> = new EventEmitter();
   @Output() removeCostMultiplier: EventEmitter<null> = new EventEmitter();
+  @Output() addCustomPrice: EventEmitter<null> = new EventEmitter();
 
   public get displayPriceButton(): boolean {
     return this.rightsReproduction === 'Rights Managed' && this.quoteType !== 'ProvisionalOrder';
@@ -107,5 +113,9 @@ export class LineItemActionsComponent {
 
   public get showDeleteCostMultiplierBtn(): boolean {
     return this.userCanAdministerQuotes && this.hasMultiplier;
+  }
+
+  public onClickAddCustomPrice(): void {
+    this.addCustomPrice.emit();
   }
 }

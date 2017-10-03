@@ -8,7 +8,10 @@ import { SelectedPriceAttributes } from '../../../shared/interfaces/common.inter
   template:
   `
   <ng-container *ngIf="rightsManaged == 'Rights Managed'">
-    <section [ngClass]="{'read-only': readOnly, 'needs-rights': !hasAttributes}" (click)="showPricingDialog.emit()">
+    <section
+      data-pendo="cart-lineitem_pricing-btn"
+      [ngClass]="{'read-only': readOnly, 'needs-rights': !hasAttributes}"
+      (click)="showPricingDialog.emit()">
       <ng-container *ngIf="!isOrder">
         <header>{{'QUOTE.RIGHTS_PACKAGE_TITLE' | translate}}</header>
         <span *ngIf="!hasAttributes" class="cart-asset-metadata md-caption">
@@ -21,7 +24,7 @@ import { SelectedPriceAttributes } from '../../../shared/interfaces/common.inter
     </section>
   </ng-container>
   <ng-container *ngIf="rightsManaged == 'Royalty Free'">
-    <section class="read-only">
+    <section data-pendo="cart-lineitem_pricing-btn" class="read-only">
       <header class="royalty-free">{{rightsManaged}}</header>
     </section>
   </ng-container>

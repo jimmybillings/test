@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Quote } from '../../shared/interfaces/commerce.interface';
+import { Quote, AssetLineItem } from '../../shared/interfaces/commerce.interface';
 import { Asset } from '../../shared/interfaces/common.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
@@ -21,6 +21,10 @@ export class ActionFactory {
 
   public removeAsset(asset: Asset): RemoveAsset {
     return new RemoveAsset(asset);
+  }
+
+  public addCustomPriceToLineItem(lineItem: AssetLineItem, price: number): AddCustomPriceToLineItem {
+    return new AddCustomPriceToLineItem(lineItem, price);
   }
 
   // Move this to internal action factory when quote is fully "effected"
@@ -56,6 +60,14 @@ export class InternalActionFactory extends ActionFactory {
 
   public removeAssetFailure(error: ApiErrorResponse): RemoveAssetFailure {
     return new RemoveAssetFailure(error);
+  }
+
+  public addCustomPriceToLineItemSuccess(quote: Quote): AddCustomPriceToLineItemSuccess {
+    return new AddCustomPriceToLineItemSuccess(quote);
+  }
+
+  public addCustomPriceToLineItemFailure(error: ApiErrorResponse): AddCustomPriceToLineItemFailure {
+    return new AddCustomPriceToLineItemFailure(error);
   }
 }
 
@@ -129,10 +141,27 @@ export class RemoveAssetFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
+export class AddCustomPriceToLineItem implements Action {
+  public static readonly Type = '[Quote Edit] Add Custom Price To LineItem';
+  public readonly type = AddCustomPriceToLineItem.Type;
+  constructor(public readonly lineItem: AssetLineItem, public readonly price: number) { }
+}
 
+export class AddCustomPriceToLineItemSuccess implements Action {
+  public static readonly Type = '[Quote Edit] Add Custom Price To LineItem Success';
+  public readonly type = AddCustomPriceToLineItemSuccess.Type;
+  constructor(public readonly quote: Quote) { }
+}
+
+export class AddCustomPriceToLineItemFailure implements Action {
+  public static readonly Type = '[Quote Edit] Add Custom Price To LineItem Failure';
+  public readonly type = AddCustomPriceToLineItemFailure.Type;
+  constructor(public readonly error: ApiErrorResponse) { }
+}
 
 export type Any =
   Load | LoadSuccess | LoadFailure |
   Delete | DeleteSuccess | DeleteFailure |
   EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
-  RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure;
+  RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure |
+  AddCustomPriceToLineItem | AddCustomPriceToLineItemSuccess | AddCustomPriceToLineItemFailure;

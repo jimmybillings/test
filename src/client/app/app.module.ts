@@ -47,7 +47,17 @@ export class AppModule {
     private uiConfig: UiConfig,
     private apiConfig: ApiConfig,
     private currentUser: CurrentUserService) {
-    apiConfig.portal = localStorage.getItem('currentSite') || (<any>window).portal;
+    let attrs = document.querySelector('wazee-digital-platform').attributes;
+    Object.keys(attrs).forEach((key: any) => {
+      switch (attrs[key].name) {
+        case 'portal':
+          apiConfig.portal = localStorage.getItem('currentSite') || attrs[key].value;
+          break;
+        case 'baseurl':
+          apiConfig.baseUrl = attrs[key].value;
+          break;
+      }
+    });
     currentUser.set();
     uiConfig.initialize(apiConfig.portal);
   }

@@ -86,4 +86,8 @@ export class LineItemsComponent {
   public isSubclipped(asset: EnhancedAsset): boolean {
     return asset.isSubclipped;
   }
+
+  public onAddCustomPrice(lineItem: AssetLineItem): void {
+    this.lineItemsNotify.emit({ type: 'ADD_CUSTOM_PRICE', payload: lineItem });
+  }
 }

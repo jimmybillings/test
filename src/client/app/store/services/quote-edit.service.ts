@@ -39,6 +39,17 @@ export class FutureQuoteEditService {
     return this.apiService.delete(Api.Orders, `quote/${quoteId}/asset/${asset.uuid}`, { loadingIndicator: true });
   }
 
+  public addCustomPriceToLineItem(quoteId: number, lineItem: AssetLineItem, customPrice: number): Observable<Quote> {
+    const multiplier: number = Math.round((customPrice / lineItem.itemPrice) * Math.pow(10, 6)) / Math.pow(10, 6);
+
+    const newLineItem: AssetLineItem = {
+      ...lineItem,
+      multiplier: multiplier
+    };
+
+    return this.makeEditLineItemRequest(quoteId, newLineItem);
+  }
+
   private durationFrom(lineItem: AssetLineItem, markers: SubclipMarkers): Duration {
     return bothMarkersAreSet(markers) ?
       durationFrom(markers) : { timeStart: lineItem.asset.timeStart, timeEnd: lineItem.asset.timeEnd };

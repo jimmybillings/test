@@ -5,7 +5,10 @@ import { AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.in
   selector: 'project-actions-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-button type="button"
+    <button
+      md-button
+      type="button"
+      data-pendo="cart-project_pricing-btn"
       *ngIf="showRightsPricingBtn"
       (click)="editProjectPricing()" 
       class="is-outlined rights-pkg"
@@ -13,11 +16,14 @@ import { AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.in
       <md-icon>assignment</md-icon>
       {{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
     </button>
-    <button md-icon-button 
+    <button
+      data-pendo="cart-project_options-menu-trigger"
+      md-icon-button 
       [md-menu-trigger-for]="projectOptionsMenu" 
       title="{{ 'CART.PROJECTS.MORE_OPTIONS_BTN_TITLE' | translate }}">
       <md-icon>more_vert</md-icon>
     </button>
+
     <md-menu x-position="before" #projectOptionsMenu="mdMenu">
       <button md-menu-item (click)="onEditButtonClick()">
         <md-icon>edit</md-icon>{{ 'CART.PROJECTS.EDIT_PROJECT_BTN_TITLE' | translate }}

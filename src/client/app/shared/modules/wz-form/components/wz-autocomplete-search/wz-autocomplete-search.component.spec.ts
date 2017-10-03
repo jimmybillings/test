@@ -39,7 +39,6 @@ export function main() {
       it('toggle filters show and hide', () => {
         componentUnderTest.toggleFilters();
         expect(componentUnderTest.toggleFilterTree.emit).toHaveBeenCalled();
-        expect(document.querySelector).toHaveBeenCalledWith('button.filter');
       });
     });
 

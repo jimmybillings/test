@@ -20,7 +20,6 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'src/client/global-variables.js',
       // Polyfills.
       'node_modules/core-js/client/shim.min.js',
       'node_modules/intl/dist/Intl.min.js',
