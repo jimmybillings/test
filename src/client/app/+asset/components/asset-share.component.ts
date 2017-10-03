@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, ViewChild,
+  Component, Input, Output, ViewChild, OnDestroy,
   EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
 import { AssetService } from '../../store/services/asset.service';
@@ -18,14 +18,19 @@ import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-marker
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class AssetShareComponent {
+export class AssetShareComponent implements OnDestroy {
   @Input() userEmail: string;
   @Input() config: any;
-  @Input() enhancedAsset: EnhancedAsset;
+  @Input()
+  set enhancedAsset(value: EnhancedAsset) {
+    this.currentAsset = value;
+    this.resetShareLinkShowing();
+    this.closeAssetShare();
+  };
   @Input() subclipMarkers: SubclipMarkersInterface.SubclipMarkers;
   @Output() close = new EventEmitter();
   @Output() onOpenSnackBar = new EventEmitter();
-
+  public currentAsset: EnhancedAsset;
   public assetLinkIsShowing: boolean = false;
   public assetShareLink: string;
   public serverErrors: any;
@@ -37,6 +42,10 @@ export class AssetShareComponent {
   constructor(
     private asset: AssetService,
     private changeDetector: ChangeDetectorRef) {
+  }
+
+  ngOnDestroy() {
+    this.closeAssetShare();
   }
 
   public closeAssetShare(): void {
@@ -83,7 +92,7 @@ export class AssetShareComponent {
     Object.assign(shareLink, {
       accessEndDate: this.IsoFormatLocalDate(endDate),
       accessStartDate: this.IsoFormatLocalDate(new Date()),
-      accessInfo: this.enhancedAsset.assetId,
+      accessInfo: this.currentAsset.assetId,
       type: 'asset',
       recipientEmails: (shareLink.recipientEmails) ?
         shareLink.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [],
