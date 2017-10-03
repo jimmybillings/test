@@ -58,7 +58,7 @@ export class RouterEffects {
   @Effect({ dispatch: false })
   public goToCollection: Observable<Action> = this.actions.ofType(RouterActions.GoToCollection.Type)
     .do((action: RouterActions.GoToCollection) => {
-      this.router.navigate([this.CollectionsPath, { i: action.page, n: action.perPage }]);
+      this.router.navigate([this.CollectionsPath, action.collectionId, { i: action.page, n: action.perPage }]);
     });
 
   @Effect({ dispatch: false })
@@ -75,7 +75,7 @@ export class RouterEffects {
   private readonly RootPath: string = '/';
   private readonly RedirectUrlKey: string = 'RouterEffects.RedirectUrl';
   private readonly SearchAssetDetailsPath: string = '/search/asset';
-  private readonly CollectionsPath: string = '/active-collection';
+  private readonly CollectionsPath: string = '/collections';
   private readonly ActiveQuotePath: string = '/active-quote';
   private readonly CartPath: string = '/cart';
 

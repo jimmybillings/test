@@ -80,7 +80,7 @@ export class AssetDetailComponent {
   public get routerLinkForAssetParent(): any[] {
     switch (this._asset.type) {
       case 'collectionAsset': {
-        return ['/active-collection', { i: 1, n: this.pageSize }];
+        return ['/collections', this._asset.parentId, { i: 1, n: this.pageSize }];
       }
 
       case 'searchAsset': {
