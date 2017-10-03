@@ -64,7 +64,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
   }
 
   public navigateToCollectionShow(assetId: number): void {
-    this.router.navigate(['/active-collection', { i: 1, n: this.pageSize }]);
+    this.router.navigate(['/collections/', assetId, { i: 1, n: this.pageSize }]);
   }
 
   public navigateToCollectionsIndex() {
