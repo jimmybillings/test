@@ -2,24 +2,6 @@
   <header flex-gt-lg="80" flex-lg="80" flex-gt-sm="95" flex="100">
     <div layout="row"  layout-align="space-between end">
       <h2 flex="100" class="md-display-1">{{ 'PROFILE.PAGE_TITLE' | translate }}</h2>
-      <div class="tools" flex="auto">
-          <button md-button title="{{ 'PROFILE.SETTING_BTN_HOVER_TITLE' | translate }}" [md-menu-trigger-for]="profileSettings" class="icon-dd-button is-dd" color="primary"><md-icon>settings</md-icon></button>
-          <md-menu x-position="before" #profileSettings="mdMenu">
-            <button md-menu-item disabled>
-              <md-icon>settings_applications</md-icon>
-              {{ 'PROFILE.SETTINGS_DD_MENU.USER_PREFS_LINK' | translate }}
-            </button>
-            <button md-menu-item disabled>
-              <md-icon>business</md-icon>
-              {{ 'PROFILE.SETTINGS_DD_MENU.ACCOUNT_SETTINGS_LINK' | translate }}
-            </button>
-            <div class="divider"></div>
-            <button md-menu-item [routerLink]="['/user/reset-password']">
-              <md-icon>lock</md-icon>
-              {{ 'PROFILE.SETTINGS_DD_MENU.CHANGE_PASSWORD_LINK' | translate }}
-            </button>
-          </md-menu>
-        </div>
     </div>
   </header>
 </section>
