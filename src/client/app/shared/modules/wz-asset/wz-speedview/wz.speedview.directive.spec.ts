@@ -149,12 +149,6 @@ export function main() {
           expect(componentInstance.show).toHaveBeenCalled();
         });
 
-        it('Should dispatch the correct action to load speedview data', () => {
-          const enhancedAssetUnderTest = enhanceAsset(asset, 'searchAsset');
-          directiveUnderTest.onMouseEnter($event);
-
-          mockAppStore.expectDispatchFor(spy, enhancedAssetUnderTest);
-        });
 
         it('Should merge the new speedview data into the component when loaded', () => {
           const enhancedAssetUnderTest = enhanceAsset(asset, 'searchAsset');
