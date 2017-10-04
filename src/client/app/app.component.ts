@@ -1,14 +1,4 @@
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/observable/empty';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/mergeMap';  // a.k.a. flatMap
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/takeLast';
-import 'rxjs/add/operator/withLatestFrom';
+import './operators';
 import { Component, OnInit, HostListener, NgZone } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd, Event } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
