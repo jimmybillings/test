@@ -25,7 +25,8 @@ export function main() {
         loadPlacesLibrary: jasmine.createSpy('loadPlacesLibrary'),
         autocomplete: {
           addListener: jasmine.createSpy('addListener')
-        }
+        },
+        geolocate: jasmine.createSpy('geolocate')
       };
       componentUnderTest = new WzAddressFormComponent(fb, mockGoogleService, null, mockDocument);
     });

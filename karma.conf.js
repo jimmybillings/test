@@ -110,15 +110,20 @@ module.exports = function (config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
-      'PhantomJS'
-      // 'Chrome'
+      // 'PhantomJS'
+      'ChromeHeadless'
     ],
 
 
     customLaunchers: {
-      Chrome_travis_ci: {
+      ChromeHeadless: {
         base: 'Chrome',
-        flags: ['--no-sandbox']
+        flags: [
+          '--headless',
+          '--disable-gpu',
+          // Without a remote debugging port, Google Chrome exits immediately.
+          '--remote-debugging-port=9222',
+        ],
       }
     },
 

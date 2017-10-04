@@ -84,6 +84,7 @@
     "express": "~4.14.0",
     "express-history-api-fallback": "^2.0.0",
     "git-hooks": "^1.1.8",
+    "google-chrome": "0.0.0",
     "gulp": "3.9.1",
     "gulp-cached": "^1.1.0",
     "gulp-concat": "^2.6.0",
