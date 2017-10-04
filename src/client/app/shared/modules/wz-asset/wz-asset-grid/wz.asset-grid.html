@@ -1,6 +1,6 @@
 <ul class="asset-grid-view" *ngIf="assets">
   <li *ngFor="let asset of assets">
-    <div class="asset">
+    <div class="asset" (mouseenter)=loadPricing(asset)>
       <div class="asset-name" *ngIf="showAssetName">{{ nameOf(asset) }}</div>
       <a
         flex=""
@@ -12,7 +12,6 @@
           <span>{{ titleOf(asset) }}</span>
         </span>
         <span *ngIf="commentCountFor(asset) | async" class="comment-count">
-          <!-- <md-icon>chat_bubble_outline</md-icon> -->
           <span class="count">{{ commentCountFor(asset) | async }}</span>
         </span>
         <span *ngIf="hasFormatType(asset)" class="mdata-2">
