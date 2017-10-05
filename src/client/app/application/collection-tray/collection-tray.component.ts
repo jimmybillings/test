@@ -3,8 +3,9 @@ import { CollectionLinkComponent } from '../../+collection/components/collection
 import { CollectionFormComponent } from './components/collection-form.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Asset, WzEvent } from '../../shared/interfaces/common.interface';
+import { Collection } from '../../shared/interfaces/collection.interface';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
-
+import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -31,7 +32,7 @@ export class CollectionTrayComponent implements OnInit {
   private _collection: any;
   private enhancedAssets: { [uuid: string]: EnhancedAsset } = {};
 
-  constructor(private dialogService: WzDialogService) { }
+  constructor(private dialogService: WzDialogService, private store: AppStore) { }
 
   ngOnInit() {
     this.uiConfig.get('global').take(1).subscribe((config: any) => {
@@ -77,7 +78,7 @@ export class CollectionTrayComponent implements OnInit {
         },
         outputOptions: [{
           event: 'collectionSaved',
-          callback: (event: WzEvent) => true,
+          callback: (collection: Collection) => this.store.dispatch(factory => factory.router.goToCollection(collection.id)),
           closeOnEvent: true
         }]
       });

@@ -1,16 +1,29 @@
+import { Observable } from 'rxjs/Observable';
 import { CollectionTrayComponent } from './collection-tray.component';
+import { CollectionFormComponent } from './components/collection-form.component';
 import { Asset } from '../../shared/interfaces/common.interface';
 import * as EnhancedMock from '../../shared/interfaces/enhanced-asset';
 import { mockAsset } from '../../shared/mocks/mock-asset';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Collection Tray Component', () => {
     let componentUnderTest: CollectionTrayComponent;
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
+    let mockAppStore: MockAppStore;
+    let mockDialogService: any;
+    let navigateDispatchSpy: jasmine.Spy;
 
     beforeEach(() => {
       mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset');
-      componentUnderTest = new CollectionTrayComponent(null);
+      mockAppStore = new MockAppStore();
+      navigateDispatchSpy = mockAppStore.createActionFactoryMethod('router', 'goToCollection');
+      mockDialogService = {
+        openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.callFake((_: any) => {
+          mockDialogService.onSubmitCallback = _.outputOptions[0].callback;
+        })
+      };
+      componentUnderTest = new CollectionTrayComponent(mockDialogService, mockAppStore);
       componentUnderTest.collection = { assets: { items: [EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset')] } };
     });
 
@@ -42,12 +55,46 @@ export function main() {
       it('returns true if the asset has a thumbnail URL', () => {
         expect(componentUnderTest.hasThumbnail(mockEnhancedAsset)).toBe(true);
       });
-
     });
 
     describe('thumbnailUrlFor()', () => {
       it('returns the thumbnail URL for the asset', () => {
         expect(componentUnderTest.thumbnailUrlFor(mockEnhancedAsset)).toEqual(mockEnhancedAsset.thumbnailUrl);
+      });
+    });
+
+    describe('createCollection', () => {
+      beforeEach(() => {
+        componentUnderTest.uiConfig = {
+          get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { some: 'config' } }))
+        };
+        componentUnderTest.createCollection();
+      });
+
+      it('gets the UI config', () => {
+        expect(componentUnderTest.uiConfig.get).toHaveBeenCalledWith('collection');
+      });
+
+      it('calls openComponentInDialog on the dialog service', () => {
+        expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
+          componentType: CollectionFormComponent,
+          dialogConfig: { position: { top: '10%' } },
+          inputOptions: {
+            fields: { some: 'config' },
+            collectionActionType: 'create'
+          },
+          outputOptions: [{
+            event: 'collectionSaved',
+            callback: jasmine.any(Function),
+            closeOnEvent: true
+          }]
+        });
+      });
+
+      it('dispatches the proper action when the callback is called', () => {
+        mockDialogService.onSubmitCallback({ id: 123 });
+
+        mockAppStore.expectDispatchFor(navigateDispatchSpy, 123);
       });
     });
   });

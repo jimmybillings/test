@@ -99,6 +99,7 @@ export class CollectionFormComponent implements OnInit {
   private createCollection(collection: Collection): void {
     collection.tags = collection.tags.split(/\s*,\s*/).filter((tag: string) => tag !== '');
     this.collections.create(collection).subscribe(collection => {
+      this.collectionSaved.emit(collection);
       this.refreshCollections();
     }, this.error.bind(this));
   }
