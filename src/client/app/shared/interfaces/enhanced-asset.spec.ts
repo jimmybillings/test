@@ -385,7 +385,7 @@ export function main() {
             parentId: 1
           }
         );
-        expect(assetUnderTest.routerLink).toEqual([`/active-collection/asset/aabb-ccdd-eeff-gghh`]);
+        expect(assetUnderTest.routerLink).toEqual([`/collections/1/asset/aabb-ccdd-eeff-gghh`]);
       });
 
       it('Returns correct path for a quote edit asset', () => {

@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.currentUser.loggedIn() && this.config.galleryView) {
       this.data = this.galleryViewService.data;
     }
-    if (this.config && this.config.heroContentType.value === 'video') {
+    if (this.config && this.config.heroContentType && this.config.heroContentType.value === 'video') {
       this.isVideo = true;
       this.getVideoPlaylist();
     }

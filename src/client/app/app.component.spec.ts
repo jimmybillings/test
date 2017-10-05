@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { NavigationEnd } from '@angular/router';
+import { Event, NavigationEnd, RoutesRecognized } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { MockAppStore } from './store/spec-helpers/mock-app.store';
@@ -13,8 +13,8 @@ export function main() {
       mockFilter: any, mockSortDefinition: any, cartLoadSpy: jasmine.Spy, collectionLoadSpy: jasmine.Spy,
       quoteLoadSpy: jasmine.Spy;
 
-    let loggedInState: boolean = false, canViewCollections: boolean = true;
-    let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
+    let loggedInState: boolean = false, canViewCollections: boolean = true, canAdministerQuotes: boolean = false;
+    let nextNavigation: Event;
     let configHasLoaded: boolean = true;
 
     beforeEach(() => {
@@ -71,7 +71,7 @@ export function main() {
         baseUrl: () => jasmine.createSpy('baseUrl')
       };
 
-      mockUserCan = { viewCollections: () => canViewCollections, administerQuotes: () => false };
+      mockUserCan = { viewCollections: () => canViewCollections, administerQuotes: () => canAdministerQuotes };
       mockWindow = { nativeWindow: { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') } };
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
@@ -92,6 +92,10 @@ export function main() {
 
     describe('ngOnInit()', () => {
       describe('processUser()', () => {
+        beforeEach(() => {
+          nextNavigation = new NavigationEnd(1, '/', '/');
+        });
+
         it('Should process the actions for a logged out user', () => {
           loggedInState = false;
           componentUnderTest.ngOnInit();
@@ -100,26 +104,22 @@ export function main() {
           expect(mockUserPreference.reset).toHaveBeenCalled();
         });
 
-        it('Should process the actions for a logged in user without view collections permissions', () => {
+        it('Should process the actions for a logged in user - without administer quotes', () => {
           loggedInState = true;
-          canViewCollections = false;
+          canAdministerQuotes = false;
           componentUnderTest.ngOnInit();
+
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
           expect(cartLoadSpy).toHaveBeenCalled();
-          expect(collectionLoadSpy).not.toHaveBeenCalled();
         });
 
-        it('Should process the actions for a logged in user with view collections permissions', () => {
+        it('Should process the actions for a logged in user - with administer quotes', () => {
           loggedInState = true;
-          canViewCollections = true;
-
-          mockStore.createStateElement('activeCollection', 'loaded', true);
-
+          canAdministerQuotes = true;
           componentUnderTest.ngOnInit();
+
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
-          expect(collectionLoadSpy).toHaveBeenCalled();
-          expect(cartLoadSpy).toHaveBeenCalled();
-          expect(mockCollections.load).toHaveBeenCalled();
+          expect(quoteLoadSpy).toHaveBeenCalled();
         });
       });
 
@@ -132,31 +132,32 @@ export function main() {
       });
 
       describe('routerChanges()', () => {
-        beforeEach(() => {
-          mockStore.createActionFactoryMethod('activeCollection', 'load');
-        });
+        describe('for NavigationEnd', () => {
+          beforeEach(() => {
+            nextNavigation = new NavigationEnd(1, '/', '/');
+            componentUnderTest.ngOnInit();
+          });
 
-        it('Pass the current state url to see if we should display the search bar', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockUiState.checkRouteForSearchBar).toHaveBeenCalledWith('/');
-        });
-        it('Pass the current state url to see if we should display the filters', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockUiState.checkForFilters).toHaveBeenCalledWith('/');
-        });
-        it('Assign the current url state to an instance variable', () => {
-          componentUnderTest.ngOnInit();
-          expect(componentUnderTest.state).toEqual('/');
-        });
-        it('Should make sure the page is scrolled to the top on each successful state change', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockWindow.nativeWindow.scrollTo).toHaveBeenCalledWith(0, 0);
+          it('Pass the current state url to see if we should display the search bar', () => {
+            expect(mockUiState.checkRouteForSearchBar).toHaveBeenCalledWith('/');
+          });
+
+          it('Pass the current state url to see if we should display the filters', () => {
+            expect(mockUiState.checkForFilters).toHaveBeenCalledWith('/');
+          });
+
+          it('Assign the current url state to an instance variable', () => {
+            expect(componentUnderTest.state).toEqual('/');
+          });
+
+          it('Should make sure the page is scrolled to the top on each successful state change', () => {
+            expect(mockWindow.nativeWindow.scrollTo).toHaveBeenCalledWith(0, 0);
+          });
         });
       });
     });
 
     describe('logout()', () => {
-
       it('Should log out the user in the browser', () => {
         componentUnderTest.logout();
         expect(mockCurrentUserService.destroy).toHaveBeenCalled();

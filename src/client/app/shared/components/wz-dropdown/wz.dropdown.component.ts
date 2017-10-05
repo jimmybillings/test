@@ -58,7 +58,7 @@ export class WzDropdownComponent {
       return Promise.resolve(() => {
         this.overlayRef.detach();
       }).then(() => {
-        this.overlayRef.dispose();
+        if (this.overlayRef) this.overlayRef.dispose();
         this.overlayRef = null;
         this.viewRef();
       });
@@ -67,7 +67,7 @@ export class WzDropdownComponent {
 
   private positionElement(event: any) {
     let offset: number = 30;
-    let layoutBreakpointXs: boolean = event.view.innerWidth < 600;
+    let layoutBreakpointXs: boolean = event.view && event.view.innerWidth < 600;
     if (layoutBreakpointXs) {
       this.config.positionStrategy =
         this.overlay.position().global().left('0px').top('0px');

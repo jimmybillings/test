@@ -137,7 +137,6 @@ export class WzSpeedviewDirective implements OnDestroy, OnInit {
   }
 
   private get loadSpeedViewData(): Observable<boolean> {
-    this.store.dispatch(factory => factory.speedPreview.load(this.enhancedAsset));
     return this.store.blockUntil(state => !!state.speedPreview[this.enhancedAsset.assetId])
       .do(() => this.speedViewInstance.merge(this.speedViewData));
   }

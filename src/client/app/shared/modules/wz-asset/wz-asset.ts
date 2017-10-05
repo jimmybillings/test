@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { Collection } from '../../interfaces/collection.interface';
@@ -41,6 +41,7 @@ export class WzAsset implements OnInit {
   private _activeCollection: Collection;
   constructor(
     private store: AppStore,
+    private detector: ChangeDetectorRef,
     public uiConfig: UiConfig) { }
 
   public ngOnInit(): void {
@@ -174,7 +175,8 @@ export class WzAsset implements OnInit {
   public canBePurchased(asset: EnhancedAsset): boolean {
     const rights: Metadatum = asset.metaData.find((metadatum: Metadatum) => metadatum.name === 'Rights.Reproduction');
     if (!rights) return false;
-    return ['Rights Managed', 'Royalty Free'].includes(rights.value);
+    return ['Rights Managed', 'Royalty Free'].includes(rights.value) &&
+      this.store.snapshot(state => state.speedPreview[asset.assetId] ? state.speedPreview[asset.assetId].price : 0) > 0;
   }
 
   public commentCountFor(asset: EnhancedAsset): Observable<number> {
@@ -187,5 +189,11 @@ export class WzAsset implements OnInit {
 
   public canBeAddedAgain(asset: EnhancedAsset) {
     return this.inCollection(asset) && this.assetType !== 'collection';
+  }
+
+  public loadPricing(asset: any) {
+    this.store.dispatch(factory => factory.speedPreview.load(asset));
+    this.store.blockUntil(state => !!state.speedPreview[asset.assetId])
+      .subscribe(() => this.detector.markForCheck());
   }
 }

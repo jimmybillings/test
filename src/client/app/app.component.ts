@@ -1,16 +1,6 @@
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/observable/empty';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/mergeMap';  // a.k.a. flatMap
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/takeLast';
-import 'rxjs/add/operator/withLatestFrom';
+import './operators';
 import { Component, OnInit, HostListener, NgZone } from '@angular/core';
-import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
+import { Router, RoutesRecognized, NavigationEnd, Event } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { MultilingualService } from './shared/services/multilingual.service';
@@ -67,7 +57,8 @@ export class AppComponent implements OnInit {
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private zone: NgZone,
-    private store: AppStore) {
+    private store: AppStore
+  ) {
     this.loadConfig();
     this.loadActiveCollection();
     this.userCan = capabilities;
@@ -134,13 +125,30 @@ export class AppComponent implements OnInit {
 
   private routerChanges() {
     this.router.events
-      .filter((event: RoutesRecognized) => event instanceof NavigationEnd)
+      .filter((event: Event) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
         this.uiState.checkRouteForSearchBar(event.url);
         this.uiState.checkForFilters(event.url);
         this.state = event.url;
         this.window.nativeWindow.scrollTo(0, 0);
       });
+
+    this.router.events
+      .filter((event: Event) => event instanceof RoutesRecognized)
+      .take(1)
+      .subscribe((event: RoutesRecognized) => this.loadCollections(event.url));
+  }
+
+  private loadCollections(url: string): void {
+    if (this.userCan.viewCollections()) {
+      if (!Common.onCollectionShowPage(url)) {
+        this.store.dispatch(factory => factory.activeCollection.load());
+      }
+
+      this.store.blockUntil(state => !state.activeCollection.loading).subscribe(() => {
+        this.collections.load().subscribe();
+      });
+    }
   }
 
   private processUser() {
@@ -150,14 +158,6 @@ export class AppComponent implements OnInit {
 
   private processLoggedInUser() {
     this.userPreference.getPrefs();
-
-    if (this.userCan.viewCollections()) {
-      this.store.dispatch(factory => factory.activeCollection.load());
-
-      this.store.blockUntil(state => !state.activeCollection.loading).subscribe(() => {
-        this.collections.load().subscribe();
-      });
-    }
 
     if (this.userCan.administerQuotes()) {
       this.store.dispatch(factory => factory.quoteEdit.load());

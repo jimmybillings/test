@@ -25,7 +25,7 @@
       <a
         md-button
         data-pendo="collection-tray_collection-name"
-        [routerLink]="['/active-collection', {i: 1, n: pageSize}]">
+        [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
         <md-icon>folder_special</md-icon>
           {{collection.name}}
         <span class="asset-count" *ngIf="collection.assets">
@@ -69,18 +69,14 @@
         (click)="list.show($event)">
         <md-icon>folder_special</md-icon>{{ 'COLLECTION.MORE_DD_MENU.CHANGE_SELECTED' | translate }}
       </button>
-
       <a
+        md-menu-item
+        *ngIf="collection.id"
         data-pendo="collection-tray-menu_view-focused-link"
-        md-menu-item *ngIf="collection.id"
-        [routerLink]="['/active-collection', {i: 1, n: pageSize}]">
+        [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
         <md-icon>open_in_browser</md-icon>{{ 'COLLECTION.MORE_DD_MENU.OPEN_SELECTED' | translate }}
       </a>
-
-      <a
-        data-pendo="collection-tray-menu_view-all-link"
-        md-menu-item
-        [routerLink]="['/collections/']">
+      <a md-menu-item [routerLink]="['/collections/']">
         <md-icon>folder_open</md-icon>{{ 'COLLECTION.MORE_DD_MENU.VIEW_ALL' | translate }}
       </a>
     </md-menu>
