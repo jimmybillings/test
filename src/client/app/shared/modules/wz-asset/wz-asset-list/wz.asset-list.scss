@@ -26,7 +26,7 @@ wz-asset-list ul.asset-list-view {
       max-height: 0;
       min-height: 0;
       position: absolute;
-      top: -15px;
+      top: -10px;
       right: 0;
       transition: $swift-ease-out;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
