@@ -47,7 +47,7 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({
           config: {
             form: { items: ['comment', 'stuff'] },
-            createQuote: { items: ['yay'] },
+            createQuote: { items: [{ name: 'purchaseType', value: '' }] },
             addBulkOrderId: { items: [{ some: 'bulk' }] },
             addDiscount: { items: [{ some: 'discount' }] },
             addCostMultiplier: { items: [{ some: 'multiplier' }] },
@@ -116,7 +116,7 @@ export function main() {
       it('sets up the config instance variable', () => {
         expect(componentUnderTest.config).toEqual({
           form: { items: ['comment', 'stuff'] },
-          createQuote: { items: ['yay'] },
+          createQuote: { items: [{ name: 'purchaseType', value: '' }] },
           addBulkOrderId: { items: [{ some: 'bulk' }] },
           addDiscount: { items: [{ some: 'discount' }] },
           addCostMultiplier: { items: [{ some: 'multiplier' }] },
@@ -131,11 +131,6 @@ export function main() {
 
       it('gets the UI config specifically for the comments', () => {
         expect(mockUiConfig.get).toHaveBeenCalledWith('quoteComment');
-      });
-
-      it('sets the \'purchaseTypeConfig\' instance variable', () => {
-        expect(mockUiConfig.get).toHaveBeenCalledWith('cart');
-        expect(componentUnderTest.purchaseTypeConfig).toEqual([{ some: 'purchaseType' }]);
       });
     });
 
@@ -259,7 +254,7 @@ export function main() {
       });
     });
 
-    describe('openQuoteDialog', () => {
+    describe('onOpenQuoteDialog', () => {
       beforeEach(() => {
         componentUnderTest.ngOnInit();
       });
@@ -268,35 +263,54 @@ export function main() {
         componentUnderTest.onOpenQuoteDialog();
 
         expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
-          ['yay'],
+          [{ name: 'purchaseType', value: '' }],
           { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
           jasmine.any(Function)
         );
       });
 
       it('calls the callback on form submit', () => {
-        componentUnderTest.quoteType = 'ProvisionalOrder';
         componentUnderTest.onOpenQuoteDialog();
-        mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
+
+        mockDialogService.onSubmitCallback({
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017/05/03',
+          purchaseType: 'Provisional Order',
+          externalAgreementIds: 'abc123'
+        });
+
         expect(mockQuoteEditService.sendQuote).toHaveBeenCalledWith({
           ownerEmail: 'ross.edfort@wazeedigital.com',
           expirationDate: '2017-05-03T06:00:00.000Z',
-          purchaseType: 'ProvisionalOrder'
+          purchaseType: 'ProvisionalOrder',
+          externalAgreementIds: 'abc123'
         });
       });
 
       it('Navigates to the quote detail page on succesfull submit', () => {
-        componentUnderTest.quoteType = 'ProvisionalOrder';
         componentUnderTest.onOpenQuoteDialog();
-        mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
+
+        mockDialogService.onSubmitCallback({
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017/05/03',
+          purchaseType: 'Provisional Order',
+          externalAgreementIds: 'abc123'
+        });
+
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes/1']);
       });
 
       it('Shows a success snack bar notification on succesfull submit', () => {
-        componentUnderTest.quoteType = 'ProvisionalOrder';
         componentUnderTest.onOpenQuoteDialog();
         spyOn(componentUnderTest, 'showSnackBar');
-        mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
+
+        mockDialogService.onSubmitCallback({
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017/05/03',
+          purchaseType: 'Provisional Order',
+          externalAgreementIds: 'abc123'
+        });
+
         expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
           key: 'QUOTE.CREATED_FOR_TOAST',
           value: { emailAddress: 'ross.edfort@wazeedigital.com' }
@@ -399,6 +413,39 @@ export function main() {
         mockStore.createStateSection('comment', { quote: { pagination: { totalCount: 10 } } });
 
         componentUnderTest.commentCount.take(1).subscribe(count => expect(count).toBe(10));
+      });
+    });
+
+    describe('onSelectQuoteType()', () => {
+      it('should set the quoteType instance variable', () => {
+        componentUnderTest.ngOnInit();
+        componentUnderTest.onSelectQuoteType({ type: 'OfflineAgreement' });
+
+        expect(componentUnderTest.quoteType).toBe('OfflineAgreement');
+      });
+
+      describe('should prepopulate the create quote form config', () => {
+        beforeEach(() => {
+          componentUnderTest.ngOnInit();
+        });
+
+        it('for offline agreement', () => {
+          componentUnderTest.onSelectQuoteType({ type: 'OfflineAgreement' });
+
+          expect(componentUnderTest.config.createQuote.items).toEqual([{ name: 'purchaseType', value: 'Offline Agreement' }]);
+        });
+
+        it('for provisional order', () => {
+          componentUnderTest.onSelectQuoteType({ type: 'ProvisionalOrder' });
+
+          expect(componentUnderTest.config.createQuote.items).toEqual([{ name: 'purchaseType', value: 'Provisional Order' }]);
+        });
+
+        it('for revenur only', () => {
+          componentUnderTest.onSelectQuoteType({ type: 'RevenueOnly' });
+
+          expect(componentUnderTest.config.createQuote.items).toEqual([{ name: 'purchaseType', value: 'Revenue Only' }]);
+        });
       });
     });
 

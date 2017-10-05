@@ -10,7 +10,7 @@ import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
-import { QuoteOptions, Project, FeeLineItem, Quote, AssetLineItem, QuoteState } from '../../../shared/interfaces/commerce.interface';
+import { QuoteOptions, Project, QuoteType, Quote, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
@@ -34,7 +34,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   public commentParentObject: CommentParentObject;
   public showComments: boolean = null;
   public projects: Project[];
-  public purchaseTypeConfig: MdSelectOption[];
   private projectSubscription: Subscription;
 
   constructor(
@@ -58,7 +57,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
       userPreference, document, snackBar, translate, pricingStore, store, pricingService
     );
     this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
-    this.uiConfig.get('cart').take(1).subscribe(config => this.purchaseTypeConfig = config.config.quotePurchaseType.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
     this.projectSubscription = this.quoteEditService.projects.subscribe(projects => this.projects = projects);
   }
@@ -136,6 +134,20 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
 
   public get commentCount(): Observable<number> {
     return this.store.select(state => state.comment.quote.pagination.totalCount);
+  }
+
+  public get purchaseTypeConfig(): MdSelectOption[] {
+    return this.config.quotePurchaseType.items;
+  }
+
+  public onSelectQuoteType(event: { type: QuoteType }): void {
+    this.quoteType = event.type;
+    this.config.createQuote.items.map((item: FormFields) => {
+      if (item.name === 'purchaseType') {
+        item.value = this.viewValueFor(event.type);
+      }
+      return item;
+    });
   }
 
   public addBulkOrderId(): void {
@@ -226,11 +238,12 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     this.quoteEditService.updateQuoteField(options);
   }
 
-  private onSubmitQuoteDialog = (result: { emailAddress: string, expirationDate: string }): void => {
+  private onSubmitQuoteDialog = (form: QuoteOptions): void => {
     this.sendQuote({
-      ownerEmail: result.emailAddress,
-      expirationDate: new Date(result.expirationDate).toISOString(),
-      purchaseType: this.quoteType
+      ownerEmail: form.ownerEmail,
+      expirationDate: new Date(form.expirationDate).toISOString(),
+      purchaseType: form.purchaseType.split(' ').join(''),
+      externalAgreementIds: form.externalAgreementIds
     });
   }
 
@@ -290,5 +303,18 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
 
   private deleteQuote = (): void => {
     this.store.dispatch(factory => factory.quoteEdit.delete());
+  }
+
+  private viewValueFor(quoteType: QuoteType): string {
+    switch (quoteType) {
+      case 'ProvisionalOrder':
+        return 'Provisional Order';
+      case 'OfflineAgreement':
+        return 'Offline Agreement';
+      case 'RevenueOnly':
+        return 'Revenue Only';
+      default:
+        return 'Standard';
+    }
   }
 }

@@ -239,8 +239,8 @@
       -->
 		<div *ngIf="field.type == 'select'">
 			<div class="md-group">
-				<md-select
-          style="margin-top: 1rem;"
+        <md-select
+          [value]="field.value"
           class="md-block"
           [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
           placeholder="{{field.label | translate}}"
@@ -248,7 +248,9 @@
           [required]="isRequiredField(field)"
           id="{{field.name}}"
           (change)="onSelectChange($event, field)">
-          <md-option *ngFor="let option of parseOptions(field.options)" [value]="option">{{option}}</md-option>
+          <ng-container *ngFor="let option of parseOptions(field.options)">
+            <md-option [value]="option">{{option}}</md-option>
+          </ng-container>
         </md-select>
 			</div>
 		</div>
