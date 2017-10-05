@@ -416,6 +416,13 @@ export function main() {
       });
     });
 
+    describe('purchaseTypeConfig getter', () => {
+      it('returns the config', () => {
+        componentUnderTest.ngOnInit();
+        expect(componentUnderTest.purchaseTypeConfig).toEqual([{ some: 'purchaseType' }]);
+      });
+    });
+
     describe('onSelectQuoteType()', () => {
       it('should set the quoteType instance variable', () => {
         componentUnderTest.ngOnInit();
