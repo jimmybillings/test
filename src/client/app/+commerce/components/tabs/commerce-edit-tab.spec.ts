@@ -275,14 +275,6 @@ export function main() {
       });
     });
 
-
-    describe('onSelectQuoteType()', () => {
-      it('should set the quoteType instance variable', () => {
-        componentUnderTest.onSelectQuoteType({ type: 'OfflineAgreement' });
-        expect(componentUnderTest.quoteType).toBe('OfflineAgreement');
-      });
-    });
-
     describe('onNotification()', () => {
       it('adds a project when notified with ADD_PROJECT', () => {
         componentUnderTest.onNotification({ type: 'ADD_PROJECT' });

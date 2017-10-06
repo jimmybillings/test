@@ -1,11 +1,11 @@
 import { FormModel } from './wz.form.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-type ValidationError = 'required' | 'minlength' | 'pattern' | 'tooLow';
+type ValidationError = 'required' | 'minlength' | 'pattern' | 'tooLow' | 'maxlength';
 
 const InputTypes = {
   number: { name: 'control', type: 'number', value: '', min: '1' },
-  generic: { name: 'control', type: 'text', value: '' },
+  generic: { name: 'control', type: 'text', value: '', min: '5', max: '10' },
 };
 
 interface TestCase {
@@ -34,14 +34,6 @@ export function main() {
             { case: '0.999999', validationResult: 'fail', error: 'tooLow' },
             { case: '1.000001', validationResult: 'pass', error: 'tooLow' },
             { case: '100', validationResult: 'pass', error: 'tooLow' }
-          ]
-        },
-        {
-          validation: 'GREATER_THAN',
-          type: InputTypes.generic,
-          cases: [
-            { case: '10000000', validationResult: 'pass', error: 'tooLow' },
-            { case: '-10000000', validationResult: 'pass', error: 'tooLow' }
           ]
         },
         {
@@ -78,6 +70,22 @@ export function main() {
             { case: null, validationResult: 'fail', error: 'required' },
             { case: 'abc123!@#', validationResult: 'pass', error: 'minlength' },
             { case: 'abc123!@#', validationResult: 'pass', error: 'required' }
+          ]
+        },
+        {
+          validation: 'MIN_LENGTH',
+          type: InputTypes.generic,
+          cases: [
+            { case: 'a', validationResult: 'fail', error: 'minlength' },
+            { case: 'abcdef', validationResult: 'pass', error: 'minlength' },
+          ]
+        },
+        {
+          validation: 'MAX_LENGTH',
+          type: InputTypes.generic,
+          cases: [
+            { case: 'abcdef', validationResult: 'pass', error: 'maxlength' },
+            { case: 'abcdefghijklmnop', validationResult: 'fail', error: 'maxlength' },
           ]
         }
       ];

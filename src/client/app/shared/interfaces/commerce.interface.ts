@@ -2,7 +2,7 @@ import { ViewAddress, Pagination, Common, SelectedPriceAttributes, Store } from 
 import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
 
-export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
+export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement' | 'RevenueOnly';
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
 export type TranscodeStatus = 'Submitted' | 'Completed' | 'Failed' | 'UrlError' | 'Deleted';
 export type OrderType = 'PurchaseOnCredit' | 'CreditCard' | 'BadDebt' | 'ChannelOrder' | 'FulfillmentOrder' | 'OfflineAgreement'
@@ -165,6 +165,10 @@ export interface Quote extends CommonCommerce {
   stripePublicKey?: string;
   bulkOrderId?: string;
   discount?: string;
+  externalAgreementIds?: string[];
+  internalAgreementIds?: number[];
+  externalLicenseIds?: string[];
+  internalLicenseIds?: number[];
 }
 
 export interface OrdersApiResponse extends Pagination {
@@ -192,9 +196,11 @@ export interface AddAssetParameters {
 }
 
 export interface QuoteOptions {
-  ownerEmail?: string;
-  expirationDate?: string;
-  purchaseType?: QuoteType;
+  ownerEmail: string;
+  expirationDate: string;
+  purchaseType: string;
+  offlineAgreementId?: string;
+  [index: string]: any;
 }
 
 export interface CommerceMessage {

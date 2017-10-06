@@ -138,10 +138,6 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     return !this.cartContainsNoAssets && !this.userCanProceed;
   }
 
-  public onSelectQuoteType(event: { type: QuoteType }): void {
-    this.quoteType = event.type;
-  }
-
   public showSnackBar(message: Pojo) {
     this.translate.get(message.key, message.value)
       .subscribe((res: string) => {

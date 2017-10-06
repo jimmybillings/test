@@ -6,7 +6,7 @@ import { MdSelectOption } from '../../../shared/interfaces/forms.interface';
   moduleId: module.id,
   selector: 'quote-purchase-type-component',
   template: `
-    <div class="quote-purchase-types" layout="column" layout-align="start center">
+    <div class="quote-purchase-types" layout="row" layout-align="start center">
       <md-select 
         (change)="onSelectChange($event)" 
         [(ngModel)]="selectedType" 
@@ -20,9 +20,9 @@ import { MdSelectOption } from '../../../shared/interfaces/forms.interface';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
-    `md-select { width: 100%; margin-top: 11px; margin-bottom: 11px; }`,
+    `md-select { width: 200px; margin-top: 11px; margin-bottom: 11px; }`,
     `.quote-purchase-types { padding: 12px 5px 0 5px; }`,
-    `:host {margin-bottom: -38px; min-width: 284px;}`
+    `:host { margin-bottom: -38px; min-width: 284px; }`
   ]
 })
 export class QuotePurchaseTypeComponent {

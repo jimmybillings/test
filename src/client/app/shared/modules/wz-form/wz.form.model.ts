@@ -50,6 +50,10 @@ export class FormModel {
         return this._getTermsValidator();
       case 'GREATER_THAN':
         return this._getGreaterThanValidator(field.min);
+      case 'MIN_LENGTH':
+        return this._getMinLengthValidator(field.min);
+      case 'MAX_LENGTH':
+        return this._getMaxLengthValidator(field.max);
       default:
         return this._getOptionalValidator;
     }
@@ -101,6 +105,14 @@ export class FormModel {
 
   private _getGreaterThanValidator(testValue: string): Validators {
     return (control: FormControl) => (parseFloat(control.value) <= parseFloat(testValue)) ? { tooLow: 'number too low' } : null;
+  }
+
+  private _getMinLengthValidator(length: string): Validators {
+    return Validators.minLength(parseInt(length));
+  }
+
+  private _getMaxLengthValidator(length: string): Validators {
+    return Validators.maxLength(parseInt(length));
   }
 
   private checkboxRequired(control: FormGroup) {
