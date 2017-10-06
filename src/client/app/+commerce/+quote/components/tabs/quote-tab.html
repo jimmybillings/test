@@ -42,51 +42,41 @@
   </section>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <section
 	*ngIf="shouldShowCheckoutOptions"
   class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
-    <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
-      <span class="total-label" flex="100">
-        {{ 'CART.CART_SUBTOTAL' | translate }} 
-      </span>
-      <span class="total-amount" flex="nogrow">
-        {{ (quote | async).subTotal | currency:'USD':true:'1.2-2' }}
-      </span>
-    </div>
-    <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount md-headline">
-      <span class="total-label" flex="100">
-        {{ 'CART.CART_DISCOUNT' | translate }} 
-      </span>
-      <span class="total-amount" flex="nogrow">{{ (quote | async).discount }}</span>
-    </div> 
-    <div flex="100" layout="row" layout-align="end center" class="total md-headline">
-      <span class="total-label">
-        {{ 'CART.CART_TOTAL' | translate }} 
-      </span>
-      <span class="total-amount">
-        {{ quoteService.total | async | currency:'USD':true:'1.2-2' }}
-      </span>
-		</div>
+    <ng-container *ngIf="!(quoteIsProvisionalOrder | async)">
+      <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+        <span class="total-label" flex="100">
+          {{ 'CART.CART_SUBTOTAL' | translate }} 
+        </span>
+        <span class="total-amount" flex="nogrow">
+          {{ (quote | async).subTotal | currency:'USD':true:'1.2-2' }}
+        </span>
+      </div>
+      <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+        <span class="total-label" flex="100">
+          {{ 'CART.CART_DISCOUNT' | translate }} 
+        </span>
+        <span class="total-amount" flex="nogrow">{{ (quote | async).discount }}</span>
+      </div> 
+      <div flex="100" layout="row" layout-align="end center" class="total md-headline">
+        <span class="total-label">
+          {{ 'CART.CART_TOTAL' | translate }} 
+        </span>
+        <span class="total-amount">
+          {{ quoteService.total | async | currency:'USD':true:'1.2-2' }}
+        </span>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="quoteIsProvisionalOrder | async">
+      <div flex="100" layout="row" layout-align="end center" class="provisional md-headline">
+        <span class="provisional-msg" flex="100">
+          {{ 'QUOTE.PROVISIONAL_USE_ONLY_MSG' | translate }}
+        </span>
+      </div>
+    </ng-container>
     <div flex="100" layout="row" layout-align="end center">
       <div flex="100" layout-gt-xs="row" layout="column" layout-align="space-between end" layout-align-xs="end end">
         <div *ngIf="shouldShowRejectQuoteButton" class="reject-quote" flex-gt-xs="auto" flex="100" flex-order-xs="2">	

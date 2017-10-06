@@ -290,5 +290,25 @@ export function main() {
         expect(componentUnderTest.hasDiscount).toBe(true);
       });
     });
+
+    describe('quoteIsProvisionalOrder', () => {
+      it('returns true if the quote is of type \'ProvisionalOrder\'', () => {
+        mockQuoteService = { data: Observable.of({ data: { purchaseType: 'ProvisionalOrder' } }), projects: Observable.of([]) };
+        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockUiConfig, null, null, null);
+        let is: boolean;
+        componentUnderTest.quoteIsProvisionalOrder.take(1).subscribe(res => is = res);
+
+        expect(is).toBe(true);
+      });
+
+      it('returns false if the quote is NOT of type \'ProvisionalOrder\'', () => {
+        mockQuoteService = { data: Observable.of({ data: { purchaseType: 'Blah' } }), projects: Observable.of([]) };
+        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockUiConfig, null, null, null);
+        let is: boolean;
+        componentUnderTest.quoteIsProvisionalOrder.take(1).subscribe(res => is = res);
+
+        expect(is).toBe(false);
+      });
+    });
   });
 }

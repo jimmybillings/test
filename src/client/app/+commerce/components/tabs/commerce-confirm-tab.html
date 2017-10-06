@@ -63,33 +63,42 @@
 </projects-component>
 
 <section class="commerce-total" layout="column" layout-align="end end">
-  <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
-    <span class="total-label" flex="100">
-      {{ 'CART.CART_SUBTOTAL' | translate }} 
-    </span>
-    <span class="total-amount" flex="nogrow">
-      {{ (data | async).subTotal | currency:'USD':true:'1.2-2' }}
-    </span>
-  </div>
-  <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount md-headline">
-    <span class="total-label" flex="100">
-      {{ 'CART.CART_DISCOUNT' | translate }} 
-    </span>
-    <span class="total-amount" flex="nogrow">{{ (data | async).discount }}</span>
-  </div> 
-  <div class="total md-headline" layout="row" flex="100" layout-align="end center">
-    <span class="total-label" flex="100">
-      {{ 'CART.CONFIRM.TOTAL' | translate }} 
-    </span>
-    <span class="total-amount" flex="nogrow">
-      {{ (data | async).total | currency:'USD':true:'1.2-2' }}
-    </span>
-  </div>
-  <div *ngIf="shouldShowLicenseDetailsBtn()" flex="100" class="license-agreement-ckbox">
-    <md-checkbox [(ngModel)]="licenseAgreement" color="primary">
-      {{'CART.CONFIRM.AGREE_TO_LIC_PLEDGE_TXT' | translate}}
-    </md-checkbox>
-  </div>
+  <ng-container *ngIf="showPricing | async">
+    <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+      <span class="total-label" flex="100">
+        {{ 'CART.CART_SUBTOTAL' | translate }} 
+      </span>
+      <span class="total-amount" flex="nogrow">
+        {{ (data | async).subTotal | currency:'USD':true:'1.2-2' }}
+      </span>
+    </div>
+    <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+      <span class="total-label" flex="100">
+        {{ 'CART.CART_DISCOUNT' | translate }} 
+      </span>
+      <span class="total-amount" flex="nogrow">{{ (data | async).discount }}</span>
+    </div> 
+    <div class="total md-headline" layout="row" flex="100" layout-align="end center">
+      <span class="total-label" flex="100">
+        {{ 'CART.CONFIRM.TOTAL' | translate }} 
+      </span>
+      <span class="total-amount" flex="nogrow">
+        {{ (data | async).total | currency:'USD':true:'1.2-2' }}
+      </span>
+    </div>
+    <div *ngIf="shouldShowLicenseDetailsBtn()" flex="100" class="license-agreement-ckbox">
+      <md-checkbox [(ngModel)]="licensesAreAgreedTo" color="primary">
+        {{'CART.CONFIRM.AGREE_TO_LIC_PLEDGE_TXT' | translate}}
+      </md-checkbox>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="quoteIsProvisionalOrder | async">
+    <div flex="100" layout="row" layout-align="end center" class="provisional md-headline">
+      <span class="provisional-msg" flex="100">
+        {{ 'QUOTE.PROVISIONAL_USE_ONLY_MSG' | translate }}
+      </span>
+    </div>
+  </ng-container>
   <div flex="100">
     <button
       md-button
@@ -103,7 +112,7 @@
       md-raised-button
       class="checkout"
       (click)="purchase()"
-      [disabled]='!licenseAgreement && shouldShowLicenseDetailsBtn()'>
+      [disabled]="!canPurchase">
       {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
     </button>
   </div>

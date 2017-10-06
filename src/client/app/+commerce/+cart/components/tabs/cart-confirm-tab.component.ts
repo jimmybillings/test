@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommerceConfirmTab } from '../../../components/tabs/commerce-confirm-tab';
 import { CartService } from '../../../../shared/services/cart.service';
@@ -26,7 +27,7 @@ export class CartConfirmTabComponent extends CommerceConfirmTab {
   }
 
   public showLicenseAgreements(): void {
-    this.commerceService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
+    this.cartService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
       this.dialogService.openComponentInDialog(
         {
           componentType: LicenseAgreementComponent,
@@ -45,5 +46,17 @@ export class CartConfirmTabComponent extends CommerceConfirmTab {
         }
       );
     });
+  }
+
+  public get showPricing(): Observable<boolean> {
+    return Observable.of(true);
+  }
+
+  public get quoteIsProvisionalOrder(): Observable<boolean> {
+    return Observable.of(false);
+  }
+
+  public get canPurchase(): boolean {
+    return this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn();
   }
 }

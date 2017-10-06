@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommerceConfirmTab } from '../../../components/tabs/commerce-confirm-tab';
 import { QuoteService } from '../../../../shared/services/quote.service';
@@ -46,5 +47,18 @@ export class QuoteConfirmTabComponent extends CommerceConfirmTab {
         }
       );
     });
+  }
+
+  public get showPricing(): Observable<boolean> {
+    return this.quoteService.data.map(quote => quote.data.purchaseType !== 'ProvisionalOrder');
+  }
+
+  public get quoteIsProvisionalOrder(): Observable<boolean> {
+    return this.quoteService.data.map(quote => quote.data.purchaseType === 'ProvisionalOrder');
+  }
+
+  public get canPurchase(): boolean {
+    return (this.quoteService.state.data.purchaseType === 'ProvisionalOrder') ||
+      (this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn());
   }
 }
