@@ -9,7 +9,7 @@ import { Gallery, GalleryPath } from '../../shared/interfaces/gallery-view.inter
 export class GalleryViewResolver {
   constructor(private galleryViewService: GalleryViewService) { }
 
-  public resolve(route: ActivatedRouteSnapshot): Observable<Gallery> {
+  public resolve(route: ActivatedRouteSnapshot): Observable<any> {
     const pathParameter: string = route.params['path'];
 
     return this.galleryViewService.load(pathParameter ? JSON.parse(pathParameter) : []);

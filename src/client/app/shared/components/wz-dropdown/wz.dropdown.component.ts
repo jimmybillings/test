@@ -5,8 +5,12 @@ import {
 } from '@angular/core';
 import {
   Overlay, OverlayRef, OriginConnectionPosition,
-  OverlayConnectionPosition, OverlayState, TemplatePortalDirective
-} from '@angular/material';
+  OverlayConnectionPosition, OverlayConfig
+} from '@angular/cdk/overlay';
+
+import {
+  TemplatePortalDirective
+} from '@angular/cdk/portal';
 
 @Directive({ selector: '[wzDropdownPortalDirective]' })
 export class WzDropdownPortalDirective extends TemplatePortalDirective {
@@ -27,7 +31,7 @@ export class WzDropdownPortalDirective extends TemplatePortalDirective {
 })
 
 export class WzDropdownComponent {
-  @Input() config = new OverlayState();
+  @Input() config: OverlayConfig = new OverlayConfig();
   @Input() message: string;
   @ViewChild(WzDropdownPortalDirective) public portal: WzDropdownPortalDirective;
   public active: boolean = false;

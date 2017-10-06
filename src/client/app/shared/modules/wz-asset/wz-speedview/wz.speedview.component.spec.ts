@@ -1,5 +1,4 @@
 import { WzSpeedviewComponent } from './wz.speedview.component';
-import { OverlayState } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
 export function main() {

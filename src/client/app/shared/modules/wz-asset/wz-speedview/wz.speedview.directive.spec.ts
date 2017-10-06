@@ -3,13 +3,16 @@ import { Observable } from 'rxjs/Observable';
 import { SpeedViewPositionCalculator } from './wz.speedview-position-calculator';
 import { ViewContainerRef } from '@angular/core';
 import {
-  OverlayState,
+  OverlayConfig,
   OverlayRef,
   Overlay,
   GlobalPositionStrategy,
+} from '@angular/cdk/overlay';
+
+import {
   TemplatePortalDirective,
   ComponentPortal
-} from '@angular/material';
+} from '@angular/cdk/portal';
 import { WzSpeedviewComponent } from './wz.speedview.component';
 import { MockAppStore } from '../../../../store/spec-helpers/mock-app.store';
 import { EnhancedAsset, enhanceAsset } from '../../../interfaces/enhanced-asset';
@@ -124,7 +127,7 @@ export function main() {
         });
 
         it('should create a new overlay', () => {
-          let overlayState: OverlayState = new OverlayState();
+          let overlayState: OverlayConfig = new OverlayConfig();
           overlayState.positionStrategy = { x: 100, y: 200 } as any;
           directiveUnderTest.onMouseEnter($event);
           expect(mockOverlay.create).toHaveBeenCalledWith(overlayState);
