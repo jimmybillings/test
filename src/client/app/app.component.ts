@@ -132,23 +132,6 @@ export class AppComponent implements OnInit {
         this.state = event.url;
         this.window.nativeWindow.scrollTo(0, 0);
       });
-
-    this.router.events
-      .filter((event: Event) => event instanceof RoutesRecognized)
-      .take(1)
-      .subscribe((event: RoutesRecognized) => this.loadCollections(event.url));
-  }
-
-  private loadCollections(url: string): void {
-    if (this.userCan.viewCollections()) {
-      if (!Common.onCollectionShowPage(url)) {
-        this.store.dispatch(factory => factory.activeCollection.load());
-      }
-
-      this.store.blockUntil(state => !state.activeCollection.loading).subscribe(() => {
-        this.collections.load().subscribe();
-      });
-    }
   }
 
   private processUser() {

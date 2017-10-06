@@ -6,6 +6,7 @@ import { CollectionGuard } from './services/collection-guard';
 import { CollectionComponent } from './collection.component';
 import { CollectionAssetComponent } from './components/collection-asset.component';
 import { CollectionAssetResolver } from './services/collection-asset.resolver';
+import { CollectionsResolver } from './services/collections.resolver';
 
 export const COLLECTION_ROUTES: Routes = [
   {
@@ -14,7 +15,8 @@ export const COLLECTION_ROUTES: Routes = [
       {
         path: '',
         component: CollectionsComponent,
-        canActivate: [CollectionGuard]
+        canActivate: [CollectionGuard],
+        resolve: { collections: CollectionsResolver }
       },
       {
         path: ':id',
