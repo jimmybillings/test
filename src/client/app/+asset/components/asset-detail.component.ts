@@ -1,7 +1,7 @@
-import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { Cart, Project } from '../../shared/interfaces/commerce.interface';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { Asset, Pojo } from '../../shared/interfaces/common.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
@@ -21,7 +21,7 @@ import { SearchState } from '../../shared/services/search-context.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class AssetDetailComponent {
+export class AssetDetailComponent implements OnInit {
   @Input() public set asset(asset: EnhancedAsset) {
     this._asset = asset;
     this.usagePrice = null;
@@ -51,6 +51,7 @@ export class AssetDetailComponent {
   @Output() onShowSnackBar = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
+  public shareComponentConfig: Pojo;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
   public subclipMarkers: SubclipMarkers;
@@ -64,6 +65,16 @@ export class AssetDetailComponent {
   private activeCollectionContainsAssetUuid: boolean = false;
 
   constructor(private store: AppStore) { }
+
+  ngOnInit() {
+    this.uiConfig.get('assetSharing')
+      .filter(config => config.config)
+      .map((config: Pojo) => config.config)
+      .take(1)
+      .subscribe((config: Pojo) => {
+        this.shareComponentConfig = config;
+      });
+  }
 
   public get asset(): EnhancedAsset {
     return this._asset;

@@ -27,9 +27,9 @@
       </header>
 
       <md-card class="wz-form-card cc-form">
-        <md-card-content>
-          <wz-cc-form 
-            [items]="formItems | async" 
+        <md-card-content *ngIf="fields | async as items">
+          <wz-cc-form
+            [items]="items" 
             [serverErrors]="serverErrors"
             [successfullyVerified]="successfullyVerified | async"
             submitLabel="{{'CART.PAYMENT.VERIFY' | translate}}"
