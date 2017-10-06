@@ -7,9 +7,12 @@ import {
   OverlayRef,
   Overlay,
   GlobalPositionStrategy,
+} from '@angular/cdk/overlay';
+
+import {
   TemplatePortalDirective,
   ComponentPortal
-} from '@angular/material';
+} from '@angular/cdk/portal';
 import { WzSpeedviewComponent } from './wz.speedview.component';
 import { MockAppStore } from '../../../../store/spec-helpers/mock-app.store';
 import { EnhancedAsset, enhanceAsset } from '../../../interfaces/enhanced-asset';

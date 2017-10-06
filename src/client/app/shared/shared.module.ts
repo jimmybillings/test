@@ -4,9 +4,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule, Http } from '@angular/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule } from './modules/wz-design/wz.design.module';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
@@ -258,7 +259,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
 import { ValuesPipe } from './pipes/values.pipe';
 
 // AoT requires an exported function for factories
-export function createTranslateLoader(http: Http) {
+export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'https://', '.json');
 }
 
@@ -267,14 +268,15 @@ export function createTranslateLoader(http: Http) {
     CommonModule,
     RouterModule,
     FormsModule,
+    HttpModule,
+    HttpClientModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [Http]
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
       }
     }),
-    HttpModule,
     ReactiveFormsModule,
     MaterialModule,
     WzPlayerModule,
@@ -312,6 +314,8 @@ export function createTranslateLoader(http: Http) {
   ],
   exports: [
     StoreModule,
+    HttpClientModule,
+    HttpModule,
     WzGalleryBreadcrumbComponent,
     WzBreadcrumbComponent,
     WzDropdownComponent,
@@ -325,7 +329,6 @@ export function createTranslateLoader(http: Http) {
     CommonModule,
     RouterModule,
     TranslateModule,
-    HttpModule,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,

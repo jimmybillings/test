@@ -10,14 +10,26 @@ import {
   OnInit
 } from '@angular/core';
 
+// import {
+//   OverlayState,
+//   OverlayRef,
+//   Overlay,
+//   GlobalPositionStrategy,
+//   TemplatePortalDirective,
+//   ComponentPortal
+// } from '@angular/material';
+
 import {
   OverlayState,
   OverlayRef,
   Overlay,
   GlobalPositionStrategy,
+} from '@angular/cdk/overlay';
+
+import {
   TemplatePortalDirective,
   ComponentPortal
-} from '@angular/material';
+} from '@angular/cdk/portal';
 
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';

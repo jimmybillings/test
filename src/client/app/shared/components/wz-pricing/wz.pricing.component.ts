@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { MdOption, MdOptionSelectionChange } from '@angular/material';
 import { FormGroup, AbstractControl, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -88,7 +87,7 @@ export class WzPricingComponent implements OnDestroy {
     }
   }
 
-  public handleSelect(event: MdOptionSelectionChange, attribute: PriceAttribute): void {
+  public handleSelect(event: any, attribute: PriceAttribute): void {
     if (event.isUserInput) {
       const controlNames: Array<string> = Object.keys(this.form.controls);
       const currentControlIndex: number = controlNames.indexOf(attribute.name);
