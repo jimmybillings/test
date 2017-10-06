@@ -243,7 +243,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
       ownerEmail: form.ownerEmail,
       expirationDate: new Date(form.expirationDate).toISOString(),
       purchaseType: form.purchaseType.split(' ').join(''),
-      externalAgreementIds: form.externalAgreementIds
+      offlineAgreementId: form.offlineAgreementId
     });
   }
 

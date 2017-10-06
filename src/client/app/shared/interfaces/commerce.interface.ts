@@ -199,7 +199,7 @@ export interface QuoteOptions {
   ownerEmail: string;
   expirationDate: string;
   purchaseType: string;
-  externalAgreementIds?: string | string[];
+  offlineAgreementId?: string;
   [index: string]: any;
 }
 

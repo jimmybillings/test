@@ -276,14 +276,14 @@ export function main() {
           ownerEmail: 'ross.edfort@wazeedigital.com',
           expirationDate: '2017/05/03',
           purchaseType: 'Provisional Order',
-          externalAgreementIds: 'abc123'
+          offlineAgreementId: 'abc123'
         });
 
         expect(mockQuoteEditService.sendQuote).toHaveBeenCalledWith({
           ownerEmail: 'ross.edfort@wazeedigital.com',
           expirationDate: '2017-05-03T06:00:00.000Z',
           purchaseType: 'ProvisionalOrder',
-          externalAgreementIds: 'abc123'
+          offlineAgreementId: 'abc123'
         });
       });
 
@@ -294,7 +294,7 @@ export function main() {
           ownerEmail: 'ross.edfort@wazeedigital.com',
           expirationDate: '2017/05/03',
           purchaseType: 'Provisional Order',
-          externalAgreementIds: 'abc123'
+          offlineAgreementId: 'abc123'
         });
 
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes/1']);
@@ -308,7 +308,7 @@ export function main() {
           ownerEmail: 'ross.edfort@wazeedigital.com',
           expirationDate: '2017/05/03',
           purchaseType: 'Provisional Order',
-          externalAgreementIds: 'abc123'
+          offlineAgreementId: 'abc123'
         });
 
         expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
