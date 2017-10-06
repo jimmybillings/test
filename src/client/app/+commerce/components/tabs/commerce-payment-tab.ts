@@ -25,10 +25,10 @@ export class CommercePaymentTab extends Tab implements OnInit {
     private ref: ChangeDetectorRef) {
     super();
     this.successfullyVerified.next(false);
-    this.fields = this.formItems;
   }
 
   ngOnInit() {
+    this.fields = this.formItems;
     this.loadStripe();
   }
 
