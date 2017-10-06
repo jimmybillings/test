@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { COLLECTION_ROUTES } from './collection.routes';
 import { CollectionShowResolver } from '../+collection/services/collection-show.resolver';
 import { CollectionAssetResolver } from '../+collection/services/collection-asset.resolver';
+import { CollectionsResolver } from '../+collection/services/collections.resolver';
 import { CollectionGuard } from './services/collection-guard';
 import { WzCollectionItemListComponent } from './components/wz.collection-item-list.component';
 import { CollectionDeleteComponent } from './components/collection-delete.component';
@@ -24,7 +25,7 @@ import { AssetModule } from '../+asset/asset.module';
     CollectionAssetComponent
   ],
   exports: [CollectionComponent, CollectionsComponent, CollectionShowComponent],
-  providers: [CollectionShowResolver, CollectionGuard, CollectionAssetResolver],
+  providers: [CollectionShowResolver, CollectionGuard, CollectionAssetResolver, CollectionsResolver],
   entryComponents: [CollectionDeleteComponent]
 })
 
