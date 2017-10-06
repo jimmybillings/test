@@ -140,6 +140,10 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
     }, this.extendQuoteExpiration);
   }
 
+  public get quoteIsProvisionalOrder(): Observable<boolean> {
+    return this.quote.map(quote => quote.purchaseType === 'ProvisionalOrder');
+  }
+
   private get isActiveQuote(): boolean {
     return this.quoteService.state.data.quoteStatus === 'ACTIVE';
   }

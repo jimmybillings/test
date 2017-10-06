@@ -15,7 +15,7 @@ export class CommerceConfirmTab extends Tab {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   public store: any;
   public storeSubscription: Subscription;
-  public licenseAgreement: boolean = false;
+  public licensesAreAgreedTo: boolean = false;
 
   constructor(
     protected router: Router,
