@@ -35,6 +35,7 @@ export class CollectionTrayComponent implements OnInit {
   constructor(private dialogService: WzDialogService, private store: AppStore) { }
 
   ngOnInit() {
+    this.store.dispatch(factory => factory.activeCollection.load());
     this.uiConfig.get('global').take(1).subscribe((config: any) => {
       this.pageSize = config.config.pageSize.value;
     });
