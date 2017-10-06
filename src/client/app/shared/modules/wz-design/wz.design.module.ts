@@ -29,7 +29,7 @@ import {
   MdTabsModule,
   MdToolbarModule,
   MdTooltipModule,
-  MdStepperModule,
+  // MdStepperModule,
 } from '@angular/material';
 
 import { MdNativeDateModule, MdRippleModule } from '@angular/material';
@@ -73,7 +73,7 @@ import { PortalModule } from '@angular/cdk/portal';
     MdSliderModule,
     MdSnackBarModule,
     MdSortModule,
-    MdStepperModule,
+    // MdStepperModule,
     MdTabsModule,
     MdToolbarModule,
     MdTooltipModule,
