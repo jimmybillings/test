@@ -301,7 +301,7 @@
     [userEmail]="userEmail | async" 
     [enhancedAsset]="asset" 
     [subclipMarkers]="subclipMarkers"
-    [config]="(uiConfig.get('assetSharing') | async).config" 
+    [config]="shareComponentConfig" 
     (close)="sharing.close()" 
     (onOpenSnackBar)="onShowSnackBar.emit($event)">
   </asset-share>

@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { QuoteState, CartState, CheckoutState, OrderType, PaymentOptions } from '../../../shared/interfaces/commerce.interface';
+import { Pojo } from '../../../shared/interfaces/common.interface';
 
 export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
@@ -14,6 +15,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
   public config: any;
   public successfullyVerified: Subject<any> = new Subject();
   public selectedPaymentOption: OrderType = null;
+  public fields: Observable<Pojo>;
   private configSubscription: Subscription;
 
   constructor(
@@ -23,6 +25,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
     private ref: ChangeDetectorRef) {
     super();
     this.successfullyVerified.next(false);
+    this.fields = this.formItems;
   }
 
   ngOnInit() {
@@ -31,10 +34,6 @@ export class CommercePaymentTab extends Tab implements OnInit {
 
   public get data(): Observable<any> {
     return this.commerceService.data.map((state: QuoteState | CartState) => state.data);
-  }
-
-  public get formItems(): Observable<any> {
-    return this.uiConfig.get('cart').map((config: any) => config.config.payment.items);
   }
 
   public get paymentOptions(): Observable<PaymentOptions> {
@@ -90,6 +89,12 @@ export class CommercePaymentTab extends Tab implements OnInit {
   public editCreditCard() {
     this.successfullyVerified.next(false);
     this.disableTab(3);
+  }
+
+  private get formItems(): Observable<any> {
+    return this.uiConfig.get('cart').map((config: any) => {
+      return config.config.payment.items;
+    });
   }
 
   private loadStripe() {

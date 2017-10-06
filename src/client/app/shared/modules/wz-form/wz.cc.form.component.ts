@@ -22,6 +22,7 @@ export class WzCcFormComponent extends WzFormBase {
       this.allowEdit = true;
       if (this.form) this.disableForm();
     } else {
+      console.log(this.form);
       this.allowEdit = false;
       if (this.form) this.activateForm();
     }
