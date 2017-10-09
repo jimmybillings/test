@@ -18,7 +18,7 @@
         linear-gradient(mat-color($foreground, base, .57), mat-color($foreground, base, .56))
       ;
       &::after {
-        background-image: url("assets/img/bk/tex/bktx_dgl_lines_light.png");
+        background-image: url("/assets/img/bk/tex/bktx_dgl_lines_light.png");
       }
       .mat-raised-button.mat-primary[disabled] {
         color: mat-color($mat-grey, 50, .4);

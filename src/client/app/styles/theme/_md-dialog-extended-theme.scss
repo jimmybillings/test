@@ -2,7 +2,7 @@
   $foreground: map-get($theme, foreground);
 
   .cdk-overlay-dark-backdrop.cdk-overlay-backdrop-showing {
-    background-image: url("assets/img/bk/tex/bktx_dgl_lines_light.png");
+    background-image: url("/assets/img/bk/tex/bktx_dgl_lines_light.png");
   }
   // This sets the defaults for dialogs. Override widths can be set on specific components.
   // like: md-dialog-content collection-form .wz-dialog {}
