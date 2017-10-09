@@ -105,6 +105,7 @@ export function main() {
         });
       });
     });
+
     describe('hasDiscount()', () => {
       it('should return false when discount does NOT exists', () => {
         expect(componentUnderTest.hasDiscount).toBe(false);
@@ -138,6 +139,96 @@ export function main() {
         mockAppStore.createStateSection('comment', { quote: { pagination: { totalCount: 10 } } });
 
         componentUnderTest.commentCount.take(1).subscribe(count => expect(count).toBe(10));
+      });
+    });
+
+    describe('offlineAgreementIds getter', () => {
+      describe('should return any externalAgreementIds from the quote\'s lineItems', () => {
+        it('for 1 lineItem in 1 project', () => {
+          mockQuoteService = {
+            data: Observable.of({ data: { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }] }] } })
+          };
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          let actualIds: string;
+          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
+
+          expect(actualIds).toEqual('abc-123');
+        });
+
+        it('for 1 lineItem in many projects', () => {
+          mockQuoteService = {
+            data: Observable.of({
+              data: {
+                projects: [
+                  { lineItems: [{ externalAgreementIds: ['abc-123'] }] },
+                  { lineItems: [{ externalAgreementIds: ['def-456'] }] }
+                ]
+              }
+            })
+          };
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          let actualIds: string;
+          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
+
+          expect(actualIds).toEqual('abc-123, def-456');
+        });
+
+        it('for many lineItems in 1 project', () => {
+          mockQuoteService = {
+            data: Observable.of({
+              data: { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['def-456'] }] }] }
+            })
+          };
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          let actualIds: string;
+          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
+
+          expect(actualIds).toEqual('abc-123, def-456');
+        });
+
+        it('for many lineItems in many projects', () => {
+          mockQuoteService = {
+            data: Observable.of({
+              data: {
+                projects: [
+                  { lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['def-456'] }] },
+                  { lineItems: [{ externalAgreementIds: ['fgh-789'] }, { externalAgreementIds: ['ijk-012'] }] }
+                ]
+              }
+            })
+          };
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          let actualIds: string;
+          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
+
+          expect(actualIds).toEqual('abc-123, def-456, fgh-789, ijk-012');
+        });
+
+        it('with duplicate identifiers', () => {
+          mockQuoteService = {
+            data: Observable.of({
+              data: { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['abc-123'] }] }] }
+            })
+          };
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          let actualIds: string;
+          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
+
+          expect(actualIds).toEqual('abc-123');
+        });
+
+        it('with no identifiers', () => {
+          mockQuoteService = {
+            data: Observable.of({
+              data: { projects: [{ lineItems: [{ some: 'lineItem' }, { some: 'lineItem' }] }] }
+            })
+          };
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          let actualIds: string;
+          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
+
+          expect(actualIds).toEqual('');
+        });
       });
     });
   });
