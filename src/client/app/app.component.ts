@@ -1,5 +1,5 @@
 import './operators';
-import { Component, OnInit, HostListener, NgZone } from '@angular/core';
+import { Component, OnInit, HostListener, NgZone, ChangeDetectorRef } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd, Event } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -57,7 +57,8 @@ export class AppComponent implements OnInit {
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private zone: NgZone,
-    private store: AppStore
+    private store: AppStore,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     this.loadConfig();
     this.loadActiveCollection();
@@ -72,7 +73,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.routerChanges();
     this.processUser();
-    this.showLoadingIndicator = this.uiState.data.map(data => data.loadingIndicator);
+    this.showLoadingIndicator = this.uiState.data
+      .map(data => data.loadingIndicator)
+      .do(() => this.changeDetectorRef.detectChanges());
   }
 
   public loadActiveCollection(): void {
