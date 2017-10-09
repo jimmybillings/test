@@ -6,7 +6,7 @@
     .mrkt-call-to-action {
       background-color: mat-color($primary, darker);
       color: mat-color($primary, darker-contrast);
-      background-image: url('assets/img/bk/tex/bktx_dgl_lines_light.png');
+      background-image: url('/assets/img/bk/tex/bktx_dgl_lines_light.png');
     }
     .conversion {
       &[md-button] {
