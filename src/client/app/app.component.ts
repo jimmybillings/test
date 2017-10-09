@@ -1,5 +1,5 @@
 import './operators';
-import { Component, OnInit, HostListener, NgZone, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, HostListener, NgZone } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd, Event } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -29,8 +29,7 @@ import { Common } from './shared/utilities/common.functions';
 @Component({
   moduleId: module.id,
   selector: 'wazee-digital-platform',
-  templateUrl: 'app.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: 'app.html'
 })
 
 export class AppComponent implements OnInit {
