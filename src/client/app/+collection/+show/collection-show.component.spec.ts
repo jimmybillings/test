@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { CollectionShowComponent } from './collection-show.component';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 import { ActionFactory } from '../../store/actions/active-collection.actions';
+import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
   describe('Collection Show Component', () => {
@@ -63,8 +64,15 @@ export function main() {
         collection: {
           id: 123, assets: {
             items: [
-              { id: 123, other: 'stuff', timeStart: 123, timeEnd: 456 },
-              { id: 456, other: 'stuff', timeStart: -1, timeEnd: -2 }
+              {
+                assetId: 123,
+                uuid: 'ABCD',
+                other: 'stuff',
+                timeStart: 1000,
+                timeEnd: 2000,
+                metadata: [{ name: 'Format.FrameRate', value: '30 fps' }]
+              },
+              { assetId: 456, uuid: 'EFFH', other: 'stuff', timeStart: -1, timeEnd: -2 }
             ]
           }
         }, loaded: true
@@ -259,23 +267,35 @@ export function main() {
     });
 
     describe('editAsset', () => {
+      beforeEach(() => {
+        componentUnderTest.ngOnInit();
+      });
+
       it('calls the api to get clip preview data with the correct asset id', () => {
-        componentUnderTest.editAsset({ assetId: 123, name: 'test asset' });
+        componentUnderTest.editAsset({ assetId: 123, name: 'test asset' } as any);
         expect(mockAsset.getClipPreviewData).toHaveBeenCalledWith(123);
       });
 
       it('updates the document body with a new class', () => {
-        componentUnderTest.editAsset({ assetId: 123, name: 'test asset' });
+        componentUnderTest.editAsset({ assetId: 123, name: 'test asset' } as any);
         expect(mockDocumentService.body.classList.add).toHaveBeenCalledWith('subclipping-edit-open');
       });
 
       it('opens a dialog to edit the asset inside', () => {
-        componentUnderTest.editAsset({ assetId: 123, name: 'test asset' });
+        componentUnderTest.editAsset({ assetId: 123, name: 'test asset' } as any);
         expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
       });
 
+      it('sends a list of already used markers for the asset in the active collection', () => {
+        componentUnderTest.editAsset({ assetId: 123, name: 'test asset' } as any);
+
+        // TODO: Test other arguments to this function.
+        expect(mockDialogService.openComponentInDialog.calls.mostRecent().args[0].inputOptions.alreadyUsedMarkersList)
+          .toEqual([{ in: new Frame(30).setFromFrameNumber(30), out: new Frame(30).setFromFrameNumber(60) }]);
+      })
+
       it('removes the document body with class added in the beginning', () => {
-        componentUnderTest.editAsset({ assetId: 123, name: 'test asset' });
+        componentUnderTest.editAsset({ assetId: 123, name: 'test asset' } as any);
         expect(mockDocumentService.body.classList.remove).toHaveBeenCalledWith('subclipping-edit-open');
       });
     });

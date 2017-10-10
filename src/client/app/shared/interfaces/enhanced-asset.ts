@@ -1,4 +1,5 @@
 import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
+import { SubclipMarkers } from '../interfaces/subclip-markers';
 import * as commerce from '../interfaces/commerce.interface';
 import * as common from '../interfaces/common.interface';
 
@@ -20,7 +21,7 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
   public readonly uuid?: string;
   public readonly timeStart?: number;
   public readonly timeEnd?: number;
-  public readonly clipUrl?: string;
+  public clipUrl?: string;  // not readonly because we might have to update after instantiation
   public readonly hasDownloadableComp?: boolean;
   public readonly name: string;  // clip name in common.Asset, something else in clip API response
   public readonly primary?: Array<{ value: string }> | commerce.Metadatum[];
@@ -133,6 +134,13 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
   }
 
   //// other assorted information
+
+  public get subclipMarkers(): SubclipMarkers {
+    return {
+      in: this.timeStart && this.timeStart >= 0 ? this.inMarkerFrame : undefined,
+      out: this.timeEnd && this.timeEnd >= 0 ? this.outMarkerFrame : undefined
+    };
+  }
 
   public get title(): string {
     return this.getCached('title');
