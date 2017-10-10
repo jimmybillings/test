@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 
-import { FutureApiService } from '../services/api.service';
+import { FutureApiService } from '../api/api.service';
 import { ApiResponse } from '../../shared/interfaces/api.interface';
 
 // Add these to a beforeEach() method with addMatchers(mockApiMatchers).

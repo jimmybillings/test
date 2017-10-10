@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
-import { AssetService } from '../store/services/asset.service';
+import { AssetService } from '../store/asset/asset.service';
 import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
 import { WzEvent, SelectedPriceAttributes } from '../shared/interfaces/common.interface';
 import { UiConfig } from '../shared/services/ui.config';

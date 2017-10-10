@@ -2,68 +2,68 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store, Action } from '@ngrx/store';
 
-import * as ActiveCollectionActions from './store/actions/active-collection.actions';
-import * as ActiveCollectionState from './store/states/active-collection.state';
+import * as ActiveCollectionActions from './store/active-collection/active-collection.actions';
+import * as ActiveCollectionState from './store/active-collection/active-collection.state';
 export type ActiveCollectionState = ActiveCollectionState.State;
 
-import * as ActiveCollectionAssetActions from './store/actions/active-collection-asset.actions';
-import * as ActiveCollectionAssetState from './store/states/active-collection-asset.state';
+import * as ActiveCollectionAssetActions from './store/active-collection-asset/active-collection-asset.actions';
+import * as ActiveCollectionAssetState from './store/active-collection-asset/active-collection-asset.state';
 export type ActiveCollectionAssetState = ActiveCollectionAssetState.State;
 
-import * as CartActions from './store/actions/cart.actions';
-import * as CartState from './store/states/cart.state';
+import * as CartActions from './store/cart/cart.actions';
+import * as CartState from './store/cart/cart.state';
 export type CartState = CartState.State;
 
-import * as CartAssetActions from './store/actions/cart-asset.actions';
-import * as CartAssetState from './store/states/cart-asset.state';
+import * as CartAssetActions from './store/cart-asset/cart-asset.actions';
+import * as CartAssetState from './store/cart-asset/cart-asset.state';
 export type CartAssetState = CartAssetState.State;
 
-import * as CommentActions from './store/actions/comment.actions';
-import * as CommentState from './store/states/comment.state';
+import * as CommentActions from './store/comment/comment.actions';
+import * as CommentState from './store/comment/comment.state';
 export type CommentState = CommentState.State;
 
-import * as DialogActions from './store/actions/dialog.actions';
+import * as DialogActions from './store/dialog/dialog.actions';
 
-import * as ErrorActions from './store/actions/error.actions';
+import * as ErrorActions from './store/error/error.actions';
 
-import * as NotifierActions from './store/actions/notifier.actions';
+import * as NotifierActions from './store/notifier/notifier.actions';
 
-import * as OrderActions from './store/actions/order.actions';
-import * as OrderState from './store/states/order.state';
+import * as OrderActions from './store/order/order.actions';
+import * as OrderState from './store/order/order.state';
 export type OrderState = OrderState.State;
 
-import * as OrderAssetActions from './store/actions/order-asset.actions';
-import * as OrderAssetState from './store/states/order-asset.state';
+import * as OrderAssetActions from './store/order-asset/order-asset.actions';
+import * as OrderAssetState from './store/order-asset/order-asset.state';
 export type OrderAssetState = OrderAssetState.State;
 
-import * as QuoteEditAssetActions from './store/actions/quote-edit-asset.actions';
-import * as QuoteEditAssetState from './store/states/quote-edit-asset.state';
+import * as QuoteEditAssetActions from './store/quote-edit-asset/quote-edit-asset.actions';
+import * as QuoteEditAssetState from './store/quote-edit-asset/quote-edit-asset.state';
 export type QuoteEditAssetState = QuoteEditAssetState.State;
 
-import * as QuoteEditActions from './store/actions/quote-edit.actions';
-import * as QuoteEditState from './store/states/quote-edit.state';
+import * as QuoteEditActions from './store/quote-edit/quote-edit.actions';
+import * as QuoteEditState from './store/quote-edit/quote-edit.state';
 export type QuoteEditState = QuoteEditState.State;
 
-import * as QuoteShowAssetActions from './store/actions/quote-show-asset.actions';
-import * as QuoteShowAssetState from './store/states/quote-show-asset.state';
+import * as QuoteShowAssetActions from './store/quote-show-asset/quote-show-asset.actions';
+import * as QuoteShowAssetState from './store/quote-show-asset/quote-show-asset.state';
 export type QuoteShowAssetState = QuoteShowAssetState.State;
 
-import * as QuoteShowActions from './store/actions/quote-show.actions';
-import * as QuoteShowState from './store/states/quote-show.state';
+import * as QuoteShowActions from './store/quote-show/quote-show.actions';
+import * as QuoteShowState from './store/quote-show/quote-show.state';
 export type QuoteShowState = QuoteShowState.State;
 
-import * as RouterActions from './store/actions/router.actions';
+import * as RouterActions from './store/router/router.actions';
 
-import * as SearchAssetActions from './store/actions/search-asset.actions';
-import * as SearchAssetState from './store/states/search-asset.state';
+import * as SearchAssetActions from './store/search-asset/search-asset.actions';
+import * as SearchAssetState from './store/search-asset/search-asset.state';
 export type SearchAssetState = SearchAssetState.State;
 
-import * as SnackbarActions from './store/actions/snackbar.actions';
-import * as SnackbarState from './store/states/snackbar.state';
+import * as SnackbarActions from './store/snackbar/snackbar.actions';
+import * as SnackbarState from './store/snackbar/snackbar.state';
 export type SnackbarState = SnackbarState.State;
 
-import * as SpeedPreviewActions from './store/actions/speed-preview.actions';
-import * as SpeedPreviewState from './store/states/speed-preview.state';
+import * as SpeedPreviewActions from './store/speed-preview/speed-preview.actions';
+import * as SpeedPreviewState from './store/speed-preview/speed-preview.state';
 export type SpeedPreviewState = SpeedPreviewState.State;
 
 export interface ActionFactory {

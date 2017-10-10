@@ -5,7 +5,7 @@ import { LicenseAgreements, Project } from '../../../../shared/interfaces/commer
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { AssetService } from '../../../../store/services/asset.service';
+import { AssetService } from '../../../../store/asset/asset.service';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../../shared/services/window-ref.service';

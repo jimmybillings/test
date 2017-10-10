@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UiConfig } from '../../shared/services/ui.config';
-import { AssetService } from '../../store/services/asset.service';
+import { AssetService } from '../../store/asset/asset.service';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';

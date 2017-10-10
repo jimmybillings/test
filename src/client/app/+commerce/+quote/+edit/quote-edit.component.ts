@@ -4,7 +4,7 @@ import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 import { Router } from '@angular/router';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { AssetService } from '../../../store/services/asset.service';
+import { AssetService } from '../../../store/asset/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';

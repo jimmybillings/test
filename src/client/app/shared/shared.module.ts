@@ -67,16 +67,16 @@ import { QuotesService } from './services/quotes.service';
 import { QuoteEditService } from './services/quote-edit.service';
 import { PricingService } from './services/pricing.service';
 // New-ish services
-import { AssetService } from '../store/services/asset.service';
-import { ActiveCollectionService } from '../store/services/active-collection.service';
-import { CommentService } from '../store/services/comment.service';
-import { FutureApiService } from '../store/services/api.service';
-import { FutureCartService } from '../store/services/cart.service';
-import { FutureQuoteEditService } from '../store/services/quote-edit.service';
-import { FutureQuoteShowService } from '../store/services/quote-show.service';
-import { OrderService } from '../store/services/order.service';
-import { SnackbarService } from '../store/services/snackbar.service';
-import { SpeedPreviewService } from '../store/services/speed-preview.service';
+import { AssetService } from '../store/asset/asset.service';
+import { ActiveCollectionService } from '../store/active-collection/active-collection.service';
+import { CommentService } from '../store/comment/comment.service';
+import { FutureApiService } from '../store/api/api.service';
+import { FutureCartService } from '../store/cart/cart.service';
+import { FutureQuoteEditService } from '../store/quote-edit/quote-edit.service';
+import { FutureQuoteShowService } from '../store/quote-show/quote-show.service';
+import { OrderService } from '../store/order/order.service';
+import { SnackbarService } from '../store/snackbar/snackbar.service';
+import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
 
 // WAZEE STORES
 import {
@@ -84,20 +84,20 @@ import {
   // reducers
 } from '../app.store';
 
-import * as ActiveCollectionState from '../store/states/active-collection.state';
-import * as ActiveCollectionAssetState from '../store/states/active-collection-asset.state';
-import * as CartState from '../store/states/cart.state';
-import * as CartAssetState from '../store/states/cart-asset.state';
-import * as CommentState from '../store/states/comment.state';
-import * as OrderState from '../store/states/order.state';
-import * as OrderAssetState from '../store/states/order-asset.state';
-import * as QuoteEditState from '../store/states/quote-edit.state';
-import * as QuoteShowState from '../store/states/quote-show.state';
-import * as QuoteEditAssetState from '../store/states/quote-edit-asset.state';
-import * as QuoteShowAssetState from '../store/states/quote-show-asset.state';
-import * as SearchAssetState from '../store/states/search-asset.state';
-import * as SnackbarState from '../store/states/snackbar.state';
-import * as SpeedPreviewState from '../store/states/speed-preview.state';
+import * as ActiveCollectionState from '../store/active-collection/active-collection.state';
+import * as ActiveCollectionAssetState from '../store/active-collection-asset/active-collection-asset.state';
+import * as CartState from '../store/cart/cart.state';
+import * as CartAssetState from '../store/cart-asset/cart-asset.state';
+import * as CommentState from '../store/comment/comment.state';
+import * as OrderState from '../store/order/order.state';
+import * as OrderAssetState from '../store/order-asset/order-asset.state';
+import * as QuoteEditState from '../store/quote-edit/quote-edit.state';
+import * as QuoteShowState from '../store/quote-show/quote-show.state';
+import * as QuoteEditAssetState from '../store/quote-edit-asset/quote-edit-asset.state';
+import * as QuoteShowAssetState from '../store/quote-show-asset/quote-show-asset.state';
+import * as SearchAssetState from '../store/search-asset/search-asset.state';
+import * as SnackbarState from '../store/snackbar/snackbar.state';
+import * as SpeedPreviewState from '../store/speed-preview/speed-preview.state';
 
 import { searchStore, SearchStore } from './stores/search.store';
 import { collections, CollectionsStore } from './stores/collections.store';
@@ -121,24 +121,24 @@ import { collectionOptions } from './services/collection-context.service';
 import { sortDefinitions } from './services/sort-definitions.service';
 
 // WAZEE EFFECTS
-import { ActiveCollectionAssetEffects } from '../store/effects/active-collection-asset.effects';
-import { ActiveCollectionEffects } from '../store/effects/active-collection.effects';
-import { CartEffects } from '../store/effects/cart.effects';
-import { CartAssetEffects } from '../store/effects/cart-asset.effects';
-import { CommentEffects } from '../store/effects/comment.effects';
-import { DialogEffects } from '../store/effects/dialog.effects';
-import { ErrorEffects } from '../store/effects/error.effects';
-import { NotifierEffects } from '../store/effects/notifier.effects';
-import { OrderEffects } from '../store/effects/order.effects';
-import { OrderAssetEffects } from '../store/effects/order-asset.effects';
-import { QuoteEditEffects } from '../store/effects/quote-edit.effects';
-import { QuoteShowEffects } from '../store/effects/quote-show.effects';
-import { QuoteEditAssetEffects } from '../store/effects/quote-edit-asset.effects';
-import { QuoteShowAssetEffects } from '../store/effects/quote-show-asset.effects';
-import { RouterEffects } from '../store/effects/router.effects';
-import { SearchAssetEffects } from '../store/effects/search-asset.effects';
-import { SnackbarEffects } from '../store/effects/snackbar.effects';
-import { SpeedPreviewEffects } from '../store/effects/speed-preview.effects';
+import { ActiveCollectionAssetEffects } from '../store/active-collection-asset/active-collection-asset.effects';
+import { ActiveCollectionEffects } from '../store/active-collection/active-collection.effects';
+import { CartEffects } from '../store/cart/cart.effects';
+import { CartAssetEffects } from '../store/cart-asset/cart-asset.effects';
+import { CommentEffects } from '../store/comment/comment.effects';
+import { DialogEffects } from '../store/dialog/dialog.effects';
+import { ErrorEffects } from '../store/error/error.effects';
+import { NotifierEffects } from '../store/notifier/notifier.effects';
+import { OrderEffects } from '../store/order/order.effects';
+import { OrderAssetEffects } from '../store/order-asset/order-asset.effects';
+import { QuoteEditEffects } from '../store/quote-edit/quote-edit.effects';
+import { QuoteShowEffects } from '../store/quote-show/quote-show.effects';
+import { QuoteEditAssetEffects } from '../store/quote-edit-asset/quote-edit-asset.effects';
+import { QuoteShowAssetEffects } from '../store/quote-show-asset/quote-show-asset.effects';
+import { RouterEffects } from '../store/router/router.effects';
+import { SearchAssetEffects } from '../store/search-asset/search-asset.effects';
+import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
+import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
 
 const WAZEE_SERVICES = [
   ApiConfig,
