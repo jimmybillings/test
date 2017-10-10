@@ -64,4 +64,12 @@ export class OrderShowComponent {
   public shouldShowDiscountFor(order: Order): boolean {
     return (order.discount || 0) > 0 && !order.creditMemoForOrderId;
   }
+
+  public offlineAgreementIdsFor(order: Order): string {
+    let ids: string[] = [];
+    order.projects.forEach(project => project.lineItems.forEach((lineItem: AssetLineItem) => {
+      if (lineItem.externalAgreementIds) lineItem.externalAgreementIds.forEach(id => ids.push(id));
+    }));
+    return ids.filter((id: string, index: number, ids: string[]) => id !== ids[index - 1]).join(', ');
+  }
 }

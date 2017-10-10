@@ -41,6 +41,9 @@
             <span>
               <strong>{{ 'ORDER.PURCHASE_TYPE_LABEL' | translate }} </strong>{{ order.orderType }}
             </span>
+            <span *ngIf="offlineAgreementIdsFor(order).length">
+              <strong>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }}</strong>{{ offlineAgreementIdsFor(order) }}
+            </span>
             <a *ngIf="isRefundedOrder(order)" class="indicate-refund" [routerLink]="['/orders/', order.creditMemoForOrderId]">
               <strong>{{ 'ORDER.SHOW.REFUND_FOR_ORDER' | translate }}</strong> {{ order.creditMemoForOrderId }}
             </a>
