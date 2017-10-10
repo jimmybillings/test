@@ -12,7 +12,7 @@ import { LicenseAgreementComponent } from '../../../components/license-agreement
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { FormFields } from '../../../../shared/interfaces/forms.interface';
 import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Pojo } from '../../../../shared/interfaces/common.interface';
 import { Subscription } from 'rxjs/Subscription';
