@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private terms: any;
 
   constructor(
-    public user: UserService,
+    public userService: UserService,
     public uiConfig: UiConfig,
     private dialogService: WzDialogService,
     private ref: ChangeDetectorRef) {
@@ -44,15 +44,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.configSubscription.unsubscribe();
   }
 
-  public downloadTos() {
-    return this.user.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
-      this.terms = terms;
-    });
-  }
-
   public onSubmit(user: any): void {
-    Object.assign(user, { termsAgreedTo: this.user.documentId });
-    this.user.create(user).take(1).subscribe((res: Response) => {
+    Object.assign(user, { termsAgreedTo: this.userService.documentId });
+    this.userService.create(user).take(1).subscribe((res: Response) => {
       this.successfullySubmitted = true;
       this.newUser = res;
       this.ref.markForCheck();
@@ -70,6 +64,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
         btnLabel: 'REGISTER.CLOSE_TOS_DIALOG',
         header: 'REGISTER.TOS_TITLE'
       }
+    });
+  }
+
+  private downloadTos(): void {
+    this.userService.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
+      this.terms = terms;
     });
   }
 }

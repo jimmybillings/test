@@ -25,17 +25,16 @@ export function main() {
 
     describe('ngOnInit()', () => {
       it('Grabs the component config and assigns to an instance variable', () => {
-        spyOn(componentUnderTest, 'downloadTos');
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.config).toEqual({ someConfig: 'test' });
-        expect(componentUnderTest.downloadTos).toHaveBeenCalled();
+        expect(mockUserService.downloadActiveTosDocument).toHaveBeenCalled();
       });
     });
 
     describe('onSubmit()', () => {
       it('Calls the server with user body to create user', () => {
         componentUnderTest.onSubmit(user);
-        expect(componentUnderTest.user.create).toHaveBeenCalledWith(user);
+        expect(componentUnderTest.userService.create).toHaveBeenCalledWith(user);
       });
 
       it('Sets a component variable flag to show a success dialog to user', () => {
