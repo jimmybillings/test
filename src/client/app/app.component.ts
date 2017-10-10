@@ -2,7 +2,6 @@ import './operators';
 import { Component, OnInit, HostListener, NgZone } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd, Event } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { MultilingualService } from './shared/services/multilingual.service';
 
 // Services
@@ -16,8 +15,6 @@ import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
-import { MdSnackBar } from '@angular/material';
-import { TranslateService } from '@ngx-translate/core';
 import { WindowRef } from './shared/services/window-ref.service';
 import { AppStore } from './app.store';
 import { enhanceAsset } from './shared/interfaces/enhanced-asset';
@@ -35,9 +32,7 @@ import { Common } from './shared/utilities/common.functions';
 export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
-  public userCan: Capabilities;
   public activeCollection: Collection;
-  private bootStrapUserDataSubscription: Subscription;
 
   constructor(
     public uiConfig: UiConfig,
@@ -48,19 +43,16 @@ export class AppComponent implements OnInit {
     public collections: CollectionsService,
     public uiState: UiState,
     public userPreference: UserPreferenceService,
+    public userCan: Capabilities,
     private apiConfig: ApiConfig,
-    private capabilities: Capabilities,
     private window: WindowRef,
     private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
-    private snackBar: MdSnackBar,
-    private translate: TranslateService,
     private zone: NgZone,
     private store: AppStore
   ) {
     this.loadConfig();
     this.loadActiveCollection();
-    this.userCan = capabilities;
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
         this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
@@ -114,13 +106,6 @@ export class AppComponent implements OnInit {
     this.userPreference.toggleFilterTree();
   }
 
-  public showSnackBar(message: any) {
-    this.translate.get(message.key, message.value)
-      .subscribe((res: string) => {
-        this.snackBar.open(res, '', { duration: 2000 });
-      });
-  }
-
   private routerChanges() {
     this.router.events
       .filter((event: Event) => event instanceof NavigationEnd)
@@ -133,7 +118,7 @@ export class AppComponent implements OnInit {
   }
 
   private processUser() {
-    this.bootStrapUserDataSubscription = this.currentUser.loggedInState()
+    this.currentUser.loggedInState()
       .subscribe((loggedIn: boolean) => (loggedIn) ? this.processLoggedInUser() : this.processLoggedOutUser());
   }
 

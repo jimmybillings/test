@@ -20,8 +20,7 @@
       [uiState]="uiState"
       [uiConfig]="uiConfig"
       [collection]="activeCollection"
-      [userPreference]="userPreference"
-      (onOpenSnackbar)="showSnackBar($event)">
+      [userPreference]="userPreference">
     </collection-tray>
      <wz-autocomplete-search
       *ngIf="uiState.headerIsExpanded()| async"

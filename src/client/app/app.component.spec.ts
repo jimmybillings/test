@@ -84,8 +84,8 @@ export function main() {
 
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-        mockCollections, mockUiState, mockUserPreference, mockApiConfig, mockUserCan, mockWindow,
-        mockFilter, mockSortDefinition, null, null, mockNgZone, mockStore
+        mockCollections, mockUiState, mockUserPreference, mockUserCan, mockApiConfig, mockWindow,
+        mockFilter, mockSortDefinition, mockNgZone, mockStore
       );
     });
 
@@ -191,8 +191,8 @@ export function main() {
       it('Should initialize the navigation immediatly if the config is already loaded', () => {
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUiState, mockUserPreference, mockApiConfig, mockUserCan,
-          mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, mockStore
+          mockCollections, mockUiState, mockUserPreference, mockUserCan, mockApiConfig,
+          mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
         );
 
         expect(mockRouter.initialNavigation).toHaveBeenCalled();
@@ -204,8 +204,8 @@ export function main() {
 
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUiState, mockUserPreference, mockApiConfig, mockUserCan,
-          mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, mockStore
+          mockCollections, mockUiState, mockUserPreference, mockUserCan, mockApiConfig,
+          mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
         );
 
         expect(mockUiConfig.load).toHaveBeenCalled();
