@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CollectionLinkComponent } from '../../+collection/components/collection-link.component';
 import { CollectionFormComponent } from './components/collection-form.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -22,7 +22,6 @@ export class CollectionTrayComponent implements OnInit {
     if (collection) this._collection = collection;
   };
   @Input() userPreference: any;
-  @Output() onOpenSnackbar = new EventEmitter();
   public pageSize: string;
 
   public get collection(): any {

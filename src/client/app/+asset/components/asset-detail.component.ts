@@ -221,7 +221,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canShare(): boolean {
-    return this.assetTypeIsOneOf('collectionAsset', 'searchAsset') && this.userCan.createAccessInfo();
+    return this.assetTypeIsOneOf('searchAsset') && this.userCan.createAccessInfo();
   }
 
   public get shareButtonLabelKey(): string {
