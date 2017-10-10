@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public newUser: any;
   public successfullySubmitted: boolean = false;
   private configSubscription: Subscription;
+  private terms: any;
 
   constructor(
     public user: UserService,
@@ -36,10 +37,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.configSubscription =
       this.uiConfig.get('register').subscribe((config: any) =>
         this.config = config.config);
+    this.downloadTos();
   }
 
   ngOnDestroy() {
     this.configSubscription.unsubscribe();
+  }
+
+  public downloadTos() {
+    return this.user.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
+      this.terms = terms;
+    });
   }
 
   public onSubmit(user: any): void {
@@ -55,15 +63,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   public openTermsDialog() {
-    this.user.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
-      this.dialogService.openComponentInDialog({
-        componentType: WzTermsComponent,
-        inputOptions: {
-          terms: terms,
-          btnLabel: 'REGISTER.CLOSE_TOS_DIALOG',
-          header: 'REGISTER.TOS_TITLE'
-        }
-      });
+    this.dialogService.openComponentInDialog({
+      componentType: WzTermsComponent,
+      inputOptions: {
+        terms: this.terms,
+        btnLabel: 'REGISTER.CLOSE_TOS_DIALOG',
+        header: 'REGISTER.TOS_TITLE'
+      }
     });
   }
 }
