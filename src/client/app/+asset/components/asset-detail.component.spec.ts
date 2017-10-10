@@ -240,7 +240,7 @@ export function main() {
     describe('canShare getter', () => {
       const tests: { assetType: AssetType, userCanShare: boolean, expectedResult: boolean }[] = [
         { assetType: 'cartAsset', userCanShare: true, expectedResult: false },
-        { assetType: 'collectionAsset', userCanShare: true, expectedResult: true },
+        { assetType: 'collectionAsset', userCanShare: true, expectedResult: false },
         { assetType: 'orderAsset', userCanShare: true, expectedResult: false },
         { assetType: 'quoteEditAsset', userCanShare: true, expectedResult: false },
         { assetType: 'quoteShowAsset', userCanShare: true, expectedResult: false },

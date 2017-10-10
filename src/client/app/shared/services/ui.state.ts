@@ -69,7 +69,7 @@ export class UiState {
 
   public showFixedHeader(offset: any): void {
     let isfixed: boolean;
-    this.data.take(1).subscribe(state => isfixed = state.showFixedHeader);
+    isfixed = this.state.showFixedHeader;
     let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.update({ showFixedHeader: !isfixed });
   }
