@@ -47,6 +47,7 @@ export interface AssetLineItem {
   price?: number;
   grossAssetPrice?: number;
   rightsManaged?: string;
+  externalAgreementIds?: string[];
 }
 
 export interface FeeLineItem {

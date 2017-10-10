@@ -1,3 +1,4 @@
+import { Headers } from '@angular/http';
 import { ApiConfig } from './api.config';
 
 export function main() {

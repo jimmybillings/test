@@ -15,12 +15,21 @@
   <section layout="row" layout-align="center start">
     <header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
       <div flex="100" layout="row" layout-align="space-between end">
-        <h2 *ngIf="shouldDisplayReview" flex="grow" class="md-display-1">
-          {{ 'QUOTE.REVIEW_HEADER' | translate }} <span *ngIf="hasPurchaseType">- {{ (quote | async).purchaseType }}</span>
-        </h2>
-        <h2 *ngIf="shouldDisplayPurchaseHeader" flex="grow" class="md-display-1">
-          {{ 'QUOTE.PURCHASE_HEADER' | translate }} <span *ngIf="hasPurchaseType">- {{ (quote | async).purchaseType }}</span>
-        </h2>
+        <div *ngIf="shouldDisplayReview" flex="grow">
+          <h2 class="md-display-1">
+            {{ 'QUOTE.REVIEW_HEADER' | translate }} 
+            <span *ngIf="hasPurchaseType">- {{ trStringForPurchaseType | translate }}</span>
+          </h2>
+        </div>
+        <div *ngIf="shouldDisplayPurchaseHeader" flex="grow">
+          <h2 class="md-display-1">
+            {{ 'QUOTE.PURCHASE_HEADER' | translate }} 
+            <span *ngIf="hasPurchaseType">- {{ trStringForPurchaseType | translate }}</span>
+          </h2>
+          <div *ngIf="(offlineAgreementIds | async).length" class="offline-id">
+            <span>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }} {{ offlineAgreementIds | async }}</span>
+          </div>
+        </div>
         <div 
           class="tools"
           flex="auto" 
@@ -69,7 +78,10 @@
             </span>
             <span>
               <strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
-              {{ (quote | async).purchaseType || 'N/A' }}
+              {{ trStringForPurchaseType | translate }}
+            </span>
+            <span *ngIf="(offlineAgreementIds | async).length">
+              <strong>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }}</strong>{{ offlineAgreementIds | async }}
             </span>
             <span>
               <strong>{{ 'QUOTE.RECIPIENT_NAME' | translate }} </strong>
@@ -77,7 +89,6 @@
             </span>
             <span>
               <strong>{{ 'QUOTE.RECIPIENT_EMAIL' | translate }} </strong>
-
               <a href="mailto: {{ (quote | async).createdUserEmailAddress }}">{{ (quote | async).createdUserEmailAddress}}</a> 
             </span>
             <span [ngClass]="{expired: isExpired}">
