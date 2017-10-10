@@ -1,5 +1,5 @@
 <div class="app">
-  <md-progress-bar mode="indeterminate" color="accent" *ngIf="showLoadingIndicator | async"></md-progress-bar>
+  <app-loading-indicator></app-loading-indicator>
   <header [ngClass]="{
     'fixed': (uiState.data | async).showFixedHeader,
     'collection-tray-closed': !(userPreference.data | async).collectionTrayIsOpen,
@@ -20,8 +20,7 @@
       [uiState]="uiState"
       [uiConfig]="uiConfig"
       [collection]="activeCollection"
-      [userPreference]="userPreference"
-      (onOpenSnackbar)="showSnackBar($event)">
+      [userPreference]="userPreference">
     </collection-tray>
      <wz-autocomplete-search
       *ngIf="uiState.headerIsExpanded()| async"
