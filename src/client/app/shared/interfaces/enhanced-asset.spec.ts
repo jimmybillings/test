@@ -365,7 +365,7 @@ export function main() {
               expect(assetUnderTest.subclipMarkers).toEqual({
                 in: test.expectedIn ? inMarkerFrame : undefined,
                 out: test.expectedOut ? outMarkerFrame : undefined
-              })
+              });
             });
         });
       });

@@ -335,7 +335,7 @@ export function main() {
               playerMarkersState = 'markers are both set';
               playerMarkers = { in: inMarkerFrame, out: outMarkerFrame };
               break;
-            default: throw new Error('Bad value for test.playerMarkersSet!')
+            default: throw new Error('Bad value for test.playerMarkersSet!');
           }
 
           describe(`when player ${playerMarkersState}`, () => {
@@ -368,7 +368,7 @@ export function main() {
                 assetIn = otherInMarkerFrame;
                 assetOut = otherOutMarkerFrame;
                 break;
-              default: throw new Error('Bad value for test.assetMarkers!')
+              default: throw new Error('Bad value for test.assetMarkers!');
             }
 
             describe(`when asset markers ${assetMarkersDescription}`, () => {

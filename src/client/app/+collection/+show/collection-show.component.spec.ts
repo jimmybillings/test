@@ -292,7 +292,7 @@ export function main() {
         // TODO: Test other arguments to this function.
         expect(mockDialogService.openComponentInDialog.calls.mostRecent().args[0].inputOptions.alreadyUsedMarkersList)
           .toEqual([{ in: new Frame(30).setFromFrameNumber(30), out: new Frame(30).setFromFrameNumber(60) }]);
-      })
+      });
 
       it('removes the document body with class added in the beginning', () => {
         componentUnderTest.editAsset({ assetId: 123, name: 'test asset' } as any);

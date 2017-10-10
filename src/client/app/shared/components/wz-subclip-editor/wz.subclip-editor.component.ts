@@ -16,16 +16,17 @@ import { Frame } from 'wazee-frame-formatter';
       (markerChange)="onPlayerMarkerChange($event)">
     </wz-advanced-player>
 
-    <section layout="row" layout-align="space-between">
-      <section layout="column" layout-align="start">
+    <section *ngIf="assetHasMarkers" layout="row" layout-align="start center" class="current-in-out-markers">
+      <div layout="row" layout-align="start">
         <span>{{ 'ASSET.SAVE_SUBCLIP.CURRENT_MARKERS.LABEL' | translate }}</span>
-        <span *ngIf="assetHasMarkers">
+        <span>
           {{ 'ASSET.SAVE_SUBCLIP.CURRENT_MARKERS.VALUE' | 
             translate:{ in: assetInMarker | timecode, out: assetOutMarker | timecode } }}
         </span>
-        <span *ngIf="!assetHasMarkers">{{ 'ASSET.SAVE_SUBCLIP.CURRENT_MARKERS.NONE' | translate }}</span>
-      </section>
-
+      </div>
+    </section>
+    
+    <section layout="row" layout-align="end">
       <section layout="row" layout-align="end">
         <button md-button color="primary"
           title="{{ cancelButtonHoverTextKey | translate }}"
