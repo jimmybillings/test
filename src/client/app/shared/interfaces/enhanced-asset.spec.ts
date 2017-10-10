@@ -305,6 +305,72 @@ export function main() {
       });
     });
 
+    describe('subclipMarkers getter', () => {
+      const tests: { hasFrameRate: boolean, timeStart: number, timeEnd: number, expectedIn: boolean, expectedOut: boolean }[] = [
+        { hasFrameRate: false, timeStart: undefined, timeEnd: undefined, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: undefined, timeEnd: null, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: undefined, timeEnd: -2, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: undefined, timeEnd: 2000, expectedIn: false, expectedOut: false },
+
+        { hasFrameRate: false, timeStart: null, timeEnd: undefined, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: null, timeEnd: null, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: null, timeEnd: -2, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: null, timeEnd: 2000, expectedIn: false, expectedOut: false },
+
+        { hasFrameRate: false, timeStart: -1, timeEnd: undefined, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: -1, timeEnd: null, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: -1, timeEnd: -2, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: -1, timeEnd: 2000, expectedIn: false, expectedOut: false },
+
+        { hasFrameRate: false, timeStart: 1000, timeEnd: undefined, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: 1000, timeEnd: null, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: 1000, timeEnd: -2, expectedIn: false, expectedOut: false },
+        { hasFrameRate: false, timeStart: 1000, timeEnd: 2000, expectedIn: false, expectedOut: false },
+
+        { hasFrameRate: true, timeStart: undefined, timeEnd: undefined, expectedIn: false, expectedOut: false },
+        { hasFrameRate: true, timeStart: undefined, timeEnd: null, expectedIn: false, expectedOut: false },
+        { hasFrameRate: true, timeStart: undefined, timeEnd: -2, expectedIn: false, expectedOut: false },
+        { hasFrameRate: true, timeStart: undefined, timeEnd: 2000, expectedIn: false, expectedOut: true },
+
+        { hasFrameRate: true, timeStart: null, timeEnd: undefined, expectedIn: false, expectedOut: false },
+        { hasFrameRate: true, timeStart: null, timeEnd: null, expectedIn: false, expectedOut: false },
+        { hasFrameRate: true, timeStart: null, timeEnd: -2, expectedIn: false, expectedOut: false },
+        { hasFrameRate: true, timeStart: null, timeEnd: 2000, expectedIn: false, expectedOut: true },
+
+        { hasFrameRate: true, timeStart: -1, timeEnd: undefined, expectedIn: false, expectedOut: false },
+        { hasFrameRate: true, timeStart: -1, timeEnd: null, expectedIn: false, expectedOut: false },
+        { hasFrameRate: true, timeStart: -1, timeEnd: -2, expectedIn: false, expectedOut: false },
+        { hasFrameRate: true, timeStart: -1, timeEnd: 2000, expectedIn: false, expectedOut: true },
+
+        { hasFrameRate: true, timeStart: 1000, timeEnd: undefined, expectedIn: true, expectedOut: false },
+        { hasFrameRate: true, timeStart: 1000, timeEnd: null, expectedIn: true, expectedOut: false },
+        { hasFrameRate: true, timeStart: 1000, timeEnd: -2, expectedIn: true, expectedOut: false },
+        { hasFrameRate: true, timeStart: 1000, timeEnd: 2000, expectedIn: true, expectedOut: true },
+      ];
+
+      tests.forEach(test => {
+        const inMarkerFrame = new Frame(30).setFromFrameNumber(30);
+        const outMarkerFrame = new Frame(30).setFromFrameNumber(60);
+
+        describe(`when asset has ${test.hasFrameRate ? 'a' : 'no'} frame rate`, () => {
+          it(`has ${test.expectedIn ? 'an' : 'no'} in marker and ${test.expectedIn ? 'an' : 'no'} out marker` +
+            ` when timeStart = ${test.timeStart} and timeEnd = ${test.timeEnd}`, () => {
+              if (test.hasFrameRate) {
+                Object.assign(assetUnderTest, { metadata: [] });
+                assetUnderTest.metadata[0] = { name: 'Format.FrameRate', value: '30 fps' };
+              }
+
+              Object.assign(assetUnderTest, { timeStart: test.timeStart, timeEnd: test.timeEnd });
+
+              expect(assetUnderTest.subclipMarkers).toEqual({
+                in: test.expectedIn ? inMarkerFrame : undefined,
+                out: test.expectedOut ? outMarkerFrame : undefined
+              });
+            });
+        });
+      });
+    });
+
     describe('title getter', () => {
       generateMetadataTestsFor('title', 'Title', { 'This Is a Title': 'This Is a Title' }, 0);
     });
