@@ -10,7 +10,7 @@ import { SortDefinitionsService } from '../shared/services/sort-definitions.serv
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { UiState } from '../shared/services/ui.state';
@@ -51,7 +51,7 @@ export class SearchComponent implements OnDestroy {
     private searchService: SearchService,
     private userPreferencesService: UserPreferenceService,
     private window: WindowRef,
-    private snackBar: MdSnackBar,
+    private snackBar: MatSnackBar,
     private translate: TranslateService,
     private route: ActivatedRoute,
     private router: Router,

@@ -1,11 +1,11 @@
 <div class="wz-dialog">
-  <button md-icon-button md-dialog-close title="{{ tr.close | translate }}" type="button" class="close">
-    <md-icon>close</md-icon>
+  <button mat-icon-button mat-dialog-close title="{{ tr.close | translate }}" type="button" class="close">
+    <mat-icon>close</mat-icon>
   </button>
-  <h1 md-dialog-title>
+  <h1 mat-dialog-title>
     {{ tr.title | translate }}
   </h1>
-  <md-dialog-content *ngIf="fields">
+  <mat-dialog-content *ngIf="fields">
     <wz-form 
       [items]="formItems"
       [serverErrors]= "serverErrors"
@@ -13,7 +13,7 @@
       (formSubmit)="collectionAction($event)"
       autocomplete="off">
     </wz-form>
-  </md-dialog-content>
+  </mat-dialog-content>
 </div>
 
 

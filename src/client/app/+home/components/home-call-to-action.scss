@@ -5,7 +5,7 @@ home-call-to-action {
   }
   // this should go in some kind of glb scss file
   .conversion {
-    &[md-button] {
+    &[mat-button] {
       font-size: rem(1.8);
       min-width: rem(30.0);
       padding: rem(.4) rem(4.0);

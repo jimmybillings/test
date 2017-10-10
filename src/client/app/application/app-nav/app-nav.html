@@ -1,4 +1,4 @@
-<md-toolbar *ngIf="config">
+<mat-toolbar *ngIf="config">
   <a flex="" [routerLink]="['/']" title="Home" class="home-link">
     <div class="logo-wrapper">
       <div class="logo">
@@ -13,38 +13,38 @@
   <!--THESE LINKS SHOW ONLY FOR LOGGED IN USERS-->
   <button
     hide
-    md-button
+    mat-button
     show-gt-xs
     data-pendo="user-menu-trigger"
     *ngIf="currentUser.loggedInState() | async"
-    [md-menu-trigger-for]="navigation"
+    [mat-menu-trigger-for]="navigation"
     [ngClass]="{'mat-primary': !(uiState.data | async).showFixedHeader}"
     class="is-dd nav-dropdown-btn">
     {{ currentUser.fullName() | async }}
   </button>
   
   <button
-    md-button
+    mat-button
     data-pendo="user-menu-trigger-mobile"
     *ngIf="currentUser.loggedInState() | async"
-    [md-menu-trigger-for]="navigation"
+    [mat-menu-trigger-for]="navigation"
     [ngClass]="{'mat-primary': !(uiState.data | async).showFixedHeader}"
     hide-gt-xs
     show-xs
     class="is-dd icon-dd-button">
-    <md-icon>person</md-icon>
+    <mat-icon>person</mat-icon>
   </button>
   
   <!--THESE LINKS SHOW ONLY FOR LOGGED OUT USERS-->
   <a
-    md-button
+    mat-button
     *ngIf="!(currentUser.loggedInState() | async)"
     [routerLink]="['/user/login']">
     {{ 'HEADER.LOGIN_LABEL' | translate}}
   </a>
   
   <a
-    md-button
+    mat-button
     [ngClass]="{'mat-accent': !(uiState.data | async).showFixedHeader}"
     *ngIf="!(currentUser.loggedInState() | async)"
     [routerLink]="['/user/register']"
@@ -56,28 +56,28 @@
 
   <button
     *ngIf="uiState.headerIsExpanded() | async"
-    md-icon-button title="Search"
+    mat-icon-button title="Search"
     (click)="toggleSearch()"
     class="open-search">
-    <md-icon>search</md-icon>
+    <mat-icon>search</mat-icon>
   </button>
   
   <button
     *ngIf="userCan.viewCollectionTray() | async"
-    md-icon-button
+    mat-icon-button
     title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}"
     (click)="toggleCollectionTray()"
     class="open-collection-tray">
-    <md-icon>folder_open</md-icon>
+    <mat-icon>folder_open</mat-icon>
   </button>
   
   <a 
     *ngIf="(userCan.viewCartIcon() | async) && !userCan.administerQuotes()" 
-    md-icon-button
+    mat-icon-button
     class="cart"
     title="{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}"
     [routerLink]="['/cart']">
-    <md-icon>shopping_cart</md-icon>
+    <mat-icon>shopping_cart</mat-icon>
     <span class="asset-count" *ngIf="cartSize && cartSize > 0">
       <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
     </span>
@@ -85,74 +85,74 @@
 
   <a 
     *ngIf="(userCan.viewCartIcon() | async) && userCan.administerQuotes()" 
-    md-icon-button
+    mat-icon-button
     class="cart"
     title="{{ 'HEADER.USER_DD_MENU.QUOTE_LINK'| translate}}"
     [routerLink]="['/active-quote']">
-    <md-icon>work</md-icon>
+    <mat-icon>work</mat-icon>
     <span class="asset-count" *ngIf="cartSize && cartSize > 0">
       <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
     </span>
   </a>
-</md-toolbar>
+</mat-toolbar>
 
-<md-menu x-position="before" #navigation="mdMenu">
+<mat-menu x-position="before" #navigation="matMenu">
   <a
     data-pendo="user-menu_profile-link"
-    md-menu-item
+    mat-menu-item
     *ngIf="currentUser.loggedInState() | async"
     [routerLink]="['/user']">
-    <md-icon>person</md-icon>{{ 'HEADER.USER_DD_MENU.PROFILE_LINK' | translate }}
+    <mat-icon>person</mat-icon>{{ 'HEADER.USER_DD_MENU.PROFILE_LINK' | translate }}
   </a>
 
   <a
     data-pendo="user-menu_collections-link"
-    md-menu-item
+    mat-menu-item
     *ngIf="userCan.viewCollections()"
     [routerLink]="['/collections']">
-    <md-icon>folder_open</md-icon>{{ 'HEADER.USER_DD_MENU.COLLECTIONS_LINK' | translate }}
+    <mat-icon>folder_open</mat-icon>{{ 'HEADER.USER_DD_MENU.COLLECTIONS_LINK' | translate }}
   </a>
 
   <a
     data-pendo="user-menu_cart-link"
-    md-menu-item
+    mat-menu-item
     *ngIf="userCan.addToCart() && !userCan.administerQuotes()"
     [routerLink]="['/cart']">
-    <md-icon>shopping_cart</md-icon>{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}
+    <mat-icon>shopping_cart</mat-icon>{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}
   </a>
   
   <a
     data-pendo="user-menu_active-quote-link"
-    md-menu-item
+    mat-menu-item
     *ngIf="userCan.addToCart() && userCan.administerQuotes()"
     [routerLink]="['/active-quote']">
-    <md-icon>work</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTE_LINK' | translate}}
+    <mat-icon>work</mat-icon>{{ 'HEADER.USER_DD_MENU.QUOTE_LINK' | translate}}
   </a>
 
   <a
     data-pendo="user-menu_quotes-link"
-    md-menu-item
+    mat-menu-item
     *ngIf="userCan.addToCart()"
     [routerLink]="['/quotes']">
-    <md-icon>inbox</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTES_SAVED_LINK' | translate }}
+    <mat-icon>inbox</mat-icon>{{ 'HEADER.USER_DD_MENU.QUOTES_SAVED_LINK' | translate }}
   </a>
 
   <a
     data-pendo="user-menu_orders-link"
-    md-menu-item
+    mat-menu-item
     *ngIf="userCan.addToCart()"
     [routerLink]="['/orders']">
-    <md-icon>description</md-icon>{{ 'HEADER.USER_DD_MENU.ORDERS_LINK' | translate }}
+    <mat-icon>description</mat-icon>{{ 'HEADER.USER_DD_MENU.ORDERS_LINK' | translate }}
   </a>
 
   <div class="divider"></div>
 
   <a
     data-pendo="user-menu_logout-link"
-    md-menu-item
+    mat-menu-item
     *ngIf="currentUser.loggedInState() | async"
     (click)="logOut()"
     [routerLink]="['/']">
-    <md-icon>power_settings_new</md-icon>{{ 'HEADER.LOGOUT_LABEL' | translate}}
+    <mat-icon>power_settings_new</mat-icon>{{ 'HEADER.LOGOUT_LABEL' | translate}}
   </a>
-</md-menu>
+</mat-menu>

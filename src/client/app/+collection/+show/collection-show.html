@@ -28,18 +28,18 @@
               </div>
             </div>
             <div flex-gt-xs="60" flex-lg="70" flex="100" layout-padding>
-              <h3 class="md-headline">{{activeCollection.name}}
+              <h3 class="mat-headline">{{activeCollection.name}}
                 <span class="asset-count">
                   <span class="count">{{activeCollection.assetsCount}}</span>
                 </span>
               </h3>
-              <div class="md-caption collection-info">
+              <div class="mat-caption collection-info">
                 <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ activeCollection.email }}</span>
                 <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ activeCollection.userRole }}</span>
                 <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ activeCollection.createdOn | date:'short' }}</span>
                 <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ activeCollection.lastUpdated | date:'short' }}</span>
               </div>
-              <div class="md-caption collection-tags">
+              <div class="mat-caption collection-tags">
                 <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
                 <ul class="meta-data-tags">
                   <li class="tag mat-elevation-z0" *ngFor="let tag of activeCollection.tags">{{tag}}</li>
@@ -56,57 +56,57 @@
           flex-order-xs="-1"
           [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
           <button
-            md-icon-button
+            mat-icon-button
             title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}"
             (click)="editCollection()">
-              <md-icon>edit</md-icon>
+              <mat-icon>edit</mat-icon>
           </button>
           <button
-            md-icon-button
+            mat-icon-button
             title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}"
             [disabled]="true">
-              <md-icon>share</md-icon>
+              <mat-icon>share</mat-icon>
           </button>
           <button
-            md-icon-button
+            mat-icon-button
             title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
             (click)="toggleCommentsVisibility()">
-              <md-icon>mode_comment</md-icon>
+              <mat-icon>mode_comment</mat-icon>
               <span *ngIf="(commentCount | async) > 0" class="comment-count">{{commentCount| async}}</span>
           </button>
           <button
-            md-icon-button
+            mat-icon-button
             title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}"
-            [md-menu-trigger-for]="moreShowCollectionOptions">
-              <md-icon>more_vert</md-icon>
+            [mat-menu-trigger-for]="moreShowCollectionOptions">
+              <mat-icon>more_vert</mat-icon>
           </button>
-          <md-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="mdMenu">
-            <button md-menu-item disabled>
-              <md-icon>file_download</md-icon>Download all comps
+          <mat-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="matMenu">
+            <button mat-menu-item disabled>
+              <mat-icon>file_download</mat-icon>Download all comps
             </button>
-            <button md-menu-item disabled>
-              <md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}
+            <button mat-menu-item disabled>
+              <mat-icon>history</mat-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}
             </button>
             <div class="divider"></div>
-            <button md-menu-item (click)="duplicateCollection()">
-              <md-icon>layers</md-icon>{{'COLLECTION.MORE_DD_MENU.DUPLICATE_COLLECTION' | translate }}
+            <button mat-menu-item (click)="duplicateCollection()">
+              <mat-icon>layers</mat-icon>{{'COLLECTION.MORE_DD_MENU.DUPLICATE_COLLECTION' | translate }}
             </button>
-            <button md-menu-item disabled>
-              <md-icon>import_export</md-icon>Export collection as XML
+            <button mat-menu-item disabled>
+              <mat-icon>import_export</mat-icon>Export collection as XML
             </button>
-            <button md-menu-item disabled>
-              <md-icon>print</md-icon>Print collection asset list
+            <button mat-menu-item disabled>
+              <mat-icon>print</mat-icon>Print collection asset list
             </button>
-            <button md-menu-item (click)="getAssetsForLink()">
-              <md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
+            <button mat-menu-item (click)="getAssetsForLink()">
+              <mat-icon>link</mat-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
             </button>
             <div *ngIf="!!activeCollection.owner">
               <div class="divider"></div>
-              <button md-menu-item class="delete" (click)="setCollectionForDelete()">
-                <md-icon>delete</md-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
+              <button mat-menu-item class="delete" (click)="setCollectionForDelete()">
+                <mat-icon>delete</mat-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
               </button>
             </div>
-          </md-menu>
+          </mat-menu>
         </div>
       </li>
     </ul>
@@ -116,14 +116,14 @@
 <section class="asset-results-header" layout="row" layout-align="center center">
   <header flex-lg="90" flex-gt-lg="90" flex-gt-md="95" flex="100">
     <div layout="row" layout-align="space-between end">
-      <h2 *ngIf="activeCollection.assetsCount == 0" flex="100" class="md-display-1 alert">
+      <h2 *ngIf="activeCollection.assetsCount == 0" flex="100" class="mat-display-1 alert">
         {{ 'COLLECTION.SHOW.EMPTY_PG_HEADING' | translate }}
       </h2>
       <div *ngIf="activeCollection.assetsCount > 0" class="asset-sort-by tools" flex="auto" layout-align="center end">
-        <button md-icon-button color="primary" title="{{ ((userPreference.data | async).assetView == 'grid' ? 
+        <button mat-icon-button color="primary" title="{{ ((userPreference.data | async).assetView == 'grid' ? 
           'SEARCH.ASSET_VIEW_LIST_BTN_TITLE' : 'SEARCH.ASSET_VIEW_GRID_BTN_TITLE') | translate }}" 
           (click)="onChangeAssetView(userPreference.state.assetView == 'grid' ? 'list' : 'grid')">
-          <md-icon>{{ (userPreference.data | async).assetView == 'grid' ? 'view_list' : 'view_comfy' }}</md-icon>
+          <mat-icon>{{ (userPreference.data | async).assetView == 'grid' ? 'view_list' : 'view_comfy' }}</mat-icon>
         </button>
       </div>
     </div>
@@ -131,7 +131,7 @@
 </section>
 
 <section class="search-results">
-  <div layout="row" md-scroll-y="" layout-align="center start">
+  <div layout="row" mat-scroll-y="" layout-align="center start">
     <div flex-lg="90" flex-gt-lg="90" flex-gt-md="95" flex="100">
       <div layout-gt-md="row" layout="column" layout-align="space-between" layout-align-gt-md="space-between end">
         <wz-pagination flex="noshrink" *ngIf="activeCollection.assets.pagination.totalCount > 0" [pagination]="activeCollection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>

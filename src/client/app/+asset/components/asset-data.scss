@@ -1,6 +1,6 @@
 
 .data-bk, .tabs-section {
-  md-tab-group {
+  mat-tab-group {
     min-width: 100%;
     & > div {
       margin-bottom: 0;
@@ -14,7 +14,7 @@
     .mat-tab-header .mat-tab-list .mat-tab-labels {
       text-transform: uppercase;
     }
-    md-content {
+    mat-content {
       min-width: 100%;
       m-data {
         min-width: 100%;

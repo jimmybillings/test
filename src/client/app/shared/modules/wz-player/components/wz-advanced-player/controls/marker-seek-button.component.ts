@@ -8,12 +8,12 @@ import { PlayerState, MarkerType, SeekToMarkerRequest } from '../../../interface
   selector: 'wz-marker-seek-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-icon-button
+    <button mat-icon-button
       [disabled]="!frame || alreadyAtMarker" 
       class="mat-icon-button {{ class }}" 
       title="{{ title | translate }}" 
       (click)="onClick()">
-        <md-icon>keyboard_tab</md-icon>
+        <mat-icon>keyboard_tab</mat-icon>
     </button>
   `
 })

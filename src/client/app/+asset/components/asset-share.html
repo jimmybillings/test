@@ -9,11 +9,11 @@
         (onOpenSnackbar)="onOpenSnackBar.emit($event)">
       </asset-share-link>
       <div flex="100" layout="row">
-        <h4 class="md-headline" flex="100" layout-align="start center">
+        <h4 class="mat-headline" flex="100" layout-align="start center">
             {{ shareAssetDialogTitle | translate}}
         </h4>
         <div class="tools" flex="auto" layout-align="end center">
-          <button md-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK_BTN_TITLE' | translate }}" (click)="showShareLink()"><md-icon>link</md-icon></button>
+          <button mat-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK_BTN_TITLE' | translate }}" (click)="showShareLink()"><mat-icon>link</mat-icon></button>
         </div>
       </div>
     </header>
@@ -34,7 +34,7 @@
     </div>
     <div class="form-panel" layout="column">
       <div class="wz-form-card">
-        <md-card-content>
+        <mat-card-content>
           <wz-form 
             [items]="config.form.items"
             includeCancel="true"
@@ -43,7 +43,7 @@
             (formCancel)="formCancel()"
             (formSubmit)="createShareLink($event)">
           </wz-form>
-        </md-card-content>
+        </mat-card-content>
       </div>
     </div>
   </div>

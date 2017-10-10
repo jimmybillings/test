@@ -11,7 +11,7 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *ngIf="readyToDisplay">
-      <md-slider
+      <mat-slider
         class="scrubber"
         min="0"
         max="{{ largestFrameNumber }}"
@@ -20,9 +20,9 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         (mouseover)="onMouseOver()"
         (mouseout)="onMouseOut()"
         (mousedown)="onMouseDown()">
-      </md-slider>
+      </mat-slider>
 
-      <md-slider
+      <mat-slider
         *ngIf="inMarkerIsSet"
         [disabled]="true"
         class="marker in"
@@ -32,9 +32,9 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         (click)="onInMarkerClick()"
         (mouseover)="onMouseOver()"
         (mouseout)="onMouseOut()">
-      </md-slider>
+      </mat-slider>
 
-      <md-slider
+      <mat-slider
         *ngIf="outMarkerIsSet"
         [disabled]="true"
         class="marker out"
@@ -44,7 +44,7 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         (click)="onOutMarkerClick()"
         (mouseover)="onMouseOver()"
         (mouseout)="onMouseOut()">
-      </md-slider>
+      </mat-slider>
 
       <span *ngIf="hoverFrameDisplayIsVisible" class="hover-frame-display" [style.left.px]="hoverFrameDisplayPosition">
         {{ hoverFrame | timecode }}

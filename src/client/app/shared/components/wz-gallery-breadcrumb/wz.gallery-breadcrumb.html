@@ -1,8 +1,8 @@
 <div layout="row" class="bread-crumb" flex="100">
-  <button md-button color="primary" (click)="clickBreadcrumb.emit(0)">Home</button>
+  <button mat-button color="primary" (click)="clickBreadcrumb.emit(0)">Home</button>
   <span class="breadcrumb-separator"></span>
   <ng-container *ngFor="let segment of path; let isLast = last; let index = index"> 
-    <button md-button color="primary" *ngIf="!isLast" (click)="clickBreadcrumb.emit(index + 1)">
+    <button mat-button color="primary" *ngIf="!isLast" (click)="clickBreadcrumb.emit(index + 1)">
       {{ breadcrumbLabelFor(segment) }}
     </button>
     <span class="breadcrumb-separator" *ngIf="!isLast"></span>

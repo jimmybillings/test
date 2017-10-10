@@ -4,7 +4,7 @@ import { Cart, Project } from '../../shared/interfaces/commerce.interface';
 import { Asset, Pojo } from '../../shared/interfaces/common.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
-import { MdMenuTrigger } from '@angular/material';
+import { MatMenuTrigger } from '@angular/material';
 import { SubclipMarkers, durationFrom } from '../../shared/interfaces/subclip-markers';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
@@ -50,7 +50,7 @@ export class AssetDetailComponent implements OnInit {
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onShowSnackBar = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
-  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   public shareComponentConfig: Pojo;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;

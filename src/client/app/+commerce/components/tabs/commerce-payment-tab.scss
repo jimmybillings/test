@@ -1,6 +1,6 @@
 cart-payment-tab-component, quote-payment-tab {
-  md-card.cc-form {
-    md-select:last-of-type {
+  mat-card.cc-form {
+    mat-select:last-of-type {
       padding-left: 12px;
     }
   }
@@ -21,13 +21,13 @@ cart-payment-tab-component, quote-payment-tab {
   }
   .credit-card-and-account-credit {
     min-height: 360px;
-    md-radio-group {
+    mat-radio-group {
       padding: 2px 0 0 18px;
     }
-    md-card.mat-card.wz-form-card,
-    md-card {
+    mat-card.mat-card.wz-form-card,
+    mat-card {
       margin: 38px 0 8px 0;
-      md-card-content {
+      mat-card-content {
         min-height: 150px;
       }
     }

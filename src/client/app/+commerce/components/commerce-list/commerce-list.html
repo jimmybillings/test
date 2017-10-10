@@ -10,10 +10,10 @@
         <div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding class="details">
           <div>
             <div class="item-number">
-              <span class="md-caption item-info heading">{{ type + '.NUMBER_LABEL' | translate }}</span>
+              <span class="mat-caption item-info heading">{{ type + '.NUMBER_LABEL' | translate }}</span>
               <span class="number">{{ item.id }}</span>
             </div>
-            <div class="md-caption item-info">
+            <div class="mat-caption item-info">
               <span><strong>{{ type + '.CREATED_ON_LABEL' | translate }} </strong>{{ item.createdOn | date:'short' }}</span>
               <span *ngIf="item.bulkOrderId">
                 <strong>{{ type + '.BULK_ORDER_NAME' | translate }} </strong>{{ item.bulkOrderId }}
@@ -30,7 +30,7 @@
         </div>
         <div flex-gt-xs="60" flex-gt-sm="70" flex-gt-md="80" flex="100" layout-padding>
           <section class="projects" *ngFor="let project of item.projects">
-            <h3 class="md-headline">
+            <h3 class="mat-headline">
               <span class="project-label">
                 {{ project.name }}
               </span>
@@ -41,7 +41,7 @@
                 <span class="count">0</span>
               </span>
             </h3>
-            <div class="md-caption item-info">
+            <div class="mat-caption item-info">
               <span><strong>{{ type + '.INDEX.PROJECTS.CLIENT_NAME' | translate }} </strong>{{ project.clientName }}</span>
               <span>
                 <strong>{{ type + '.INDEX.PROJECTS.SUBTOTAL_LABEL' | translate }} </strong>
@@ -53,10 +53,10 @@
       </div>
     </div>
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
-    <div flex-gt-sm="33" layout-sm="100" flex="auto" class="md-headline">
+    <div flex-gt-sm="33" layout-sm="100" flex="auto" class="mat-headline">
       <div class="total" layout="column" layout-align="right center" layout-align-gt-sm="space-between end">
         <div flex>
-          <h5 flex *ngIf="type === 'QUOTE'" class="md-subhead status {{ item.quoteStatus.toLowerCase() }}">
+          <h5 flex *ngIf="type === 'QUOTE'" class="mat-subhead status {{ item.quoteStatus.toLowerCase() }}">
             {{ item.quoteStatus }}
           </h5>
           <div flex *ngIf="shouldShowRefundIndicatorFor(item)" class="indicate-refund">
@@ -81,7 +81,7 @@
             *ngIf="shouldShowSetFocusedButton(item)"
             [disabled]="item.focused"
             (click)="setAsFocusedQuote.emit(item.id)"
-            md-button
+            mat-button
             class="is-outlined"
             color="primary">
             {{ 'QUOTE.INDEX.SET_AS_FOCUSED_BTN' | translate }}  
@@ -89,22 +89,22 @@
           <button
             *ngIf="shouldShowEditQuoteButton(item)"
             (click)="editQuote.emit(item.id)"
-            md-button
+            mat-button
             class="is-outlined"
             color="primary">
             {{ 'QUOTE.INDEX.EDIT_BTN_TITLE' | translate }}  
           </button>
           <!-- <button 
             *ngIf="shouldShowRejectQuoteButton(item)"
-            md-button 
+            mat-button 
             color="primary"
             class="reject-quote" 
             (click)="rejectQuote.emit(item)">
-            <md-icon>not_interested</md-icon>{{ 'QUOTE.REJECT_BTN' | translate }}
+            <mat-icon>not_interested</mat-icon>{{ 'QUOTE.REJECT_BTN' | translate }}
           </button> -->
           <a
             *ngIf="shouldShowViewQuoteButton(item)"
-            md-button
+            mat-button
             class="is-outlined"
             color="primary"
             [routerLink]="['/quotes', item.id]">
@@ -112,7 +112,7 @@
           </a>
           <button
             *ngIf="shouldShowViewOrderButton"
-            md-button
+            mat-button
             class="is-outlined"
             color="primary"
             [routerLink]="['/orders', item.id]">

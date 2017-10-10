@@ -12,8 +12,8 @@
 	<section class="commerce-list" layout-margin flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
 		<div layout-gt-xs="row" layout="column" layout-align="end end" layout-align-gt-xs="space-between end">
 			<div *ngIf="userCan.administerQuotes()" class="new-quote" flex-gt-xs="auto" flex="100">	
-				<button md-button color="primary" (click)="createNewQuote()">
-					<md-icon>add_circle_outline</md-icon>{{ 'QUOTE.INDEX.NEW_QUOTE_BTN' | translate }}
+				<button mat-button color="primary" (click)="createNewQuote()">
+					<mat-icon>add_circle_outline</mat-icon>{{ 'QUOTE.INDEX.NEW_QUOTE_BTN' | translate }}
 				</button>
 			</div>
 			<wz-pagination 
@@ -24,9 +24,9 @@
 				(getPage)="changePage($event)">
 			</wz-pagination>
 		</div>
-		<md-card *ngIf="!(quotes | async).items.length">
-			<md-card-title>You currently do not have any quotes</md-card-title>
-		</md-card>
+		<mat-card *ngIf="!(quotes | async).items.length">
+			<mat-card-title>You currently do not have any quotes</mat-card-title>
+		</mat-card>
 		<commerce-list
 			*ngIf="(quotes | async).items.length > 0"
 			[type]="'QUOTE'"

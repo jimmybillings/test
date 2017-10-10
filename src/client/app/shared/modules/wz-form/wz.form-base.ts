@@ -1,6 +1,6 @@
 import { Input, Output, EventEmitter, OnInit, OnChanges, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, AbstractControl, FormGroupDirective } from '@angular/forms';
-import { MdTextareaAutosize } from '@angular/material';
+import { MatTextareaAutosize } from '@angular/material';
 import { FormModel } from './wz.form.model';
 import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
 
@@ -17,7 +17,7 @@ export class WzFormBase implements OnInit, OnChanges {
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
-  @ViewChild(MdTextareaAutosize) private autosize: MdTextareaAutosize;
+  @ViewChild(MatTextareaAutosize) private autosize: MatTextareaAutosize;
   @ViewChild(FormGroupDirective) private internalForm: FormGroupDirective;
 
   constructor(

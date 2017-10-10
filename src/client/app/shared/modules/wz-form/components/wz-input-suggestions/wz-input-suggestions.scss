@@ -54,15 +54,15 @@
         }
       }
     }
-    md-list-item.focused .mat-list-item button {
-      md-icon {
+    mat-list-item.focused .mat-list-item button {
+      mat-icon {
         opacity: 1;
       }
       &:hover {
         cursor: default;
       }
     }
-    md-list-item:first-child .mat-list-item button {
+    mat-list-item:first-child .mat-list-item button {
       box-shadow: none;
     }
   }

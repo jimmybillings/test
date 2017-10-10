@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { MdMenuTrigger } from '@angular/material';
+import { MatMenuTrigger } from '@angular/material';
 
 @Component({
   moduleId: module.id,
@@ -21,7 +21,7 @@ export class AppNavComponent {
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
-  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 
   public logOut(event: Event) {
     this.onLogOut.emit(event);

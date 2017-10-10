@@ -13,7 +13,7 @@
   width: 100%;
   white-space: nowrap;
   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-    &.md-body-2 {
+    &.mat-body-2 {
       font-size: .76em;
       font-weight: normal;
     }
@@ -32,10 +32,10 @@ wz-pagination {
   span.current-page {
     margin-right: rem(2);
   }
-  button[md-icon-button] {
+  button[mat-icon-button] {
     margin: 0;
     transition: all .4s ease-in-out;
-    md-icon.material-icons {
+    mat-icon.material-icons {
       font-size: rem(3.0);
       width: 100%;
       opacity: .75;

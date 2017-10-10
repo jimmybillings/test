@@ -5,7 +5,7 @@ div.mat-menu-panel div.mat-menu-content wz-sort-component div.dense,
     // height: rem(3.2);
     // flex-direction: column;
     // justify-content: space-between;
-    button[md-menu-item]{
+    button[mat-menu-item]{
       font-size: .9em;
       height: rem(3.2);
       line-height: rem(3.2);
@@ -15,13 +15,13 @@ div.mat-menu-panel div.mat-menu-content wz-sort-component div.dense,
       }
     }
   }
-  .select-dd.active button[md-menu-item] {
+  .select-dd.active button[mat-menu-item] {
     background-color: transparent;
     .mat-icon.material-icons {
       opacity: 1;
     }
   }
-  md-divider {
+  mat-divider {
     margin-top: rem(.6);
     margin-bottom: rem(.6);
     border-top-width: 1px;

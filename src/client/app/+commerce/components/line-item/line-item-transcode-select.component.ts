@@ -6,17 +6,17 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="delivery-format">
-      <md-select *ngIf="!readOnly"
+      <mat-select *ngIf="!readOnly"
         placeholder="{{ 'ASSET.TRANSCODE_TARGETS.FORM_PLACEHOLDER' | translate }}"
         [(ngModel)]="selectedTarget"
         (change)="selectTarget.emit($event.value)">
-          <md-option
+          <mat-option
             *ngFor="let target of transcodeTargets"
             [value]="target">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
-          </md-option>
-      </md-select>
+          </mat-option>
+      </mat-select>
       <div *ngIf="readOnly" class="read-only-transcode">
-        <span class="cart-asset-metadata md-caption">
+        <span class="cart-asset-metadata mat-caption">
           <strong>{{ 'ASSET.TRANSCODE_TARGETS.FORM_PLACEHOLDER' | translate }}: </strong>
           {{ 'ASSET.TRANSCODE_TARGETS.' + selectedTarget | translate }}
         </span>

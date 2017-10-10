@@ -8,13 +8,13 @@
 			layout-align="space-between end" 
 			layout-align-xs="start" 
 			flex-order-xs="2">
-			<h2 flex="grow" class="md-display-1">{{ 'ORDER.SHOW.PAGE_TITLE' | translate }}</h2>
+			<h2 flex="grow" class="mat-display-1">{{ 'ORDER.SHOW.PAGE_TITLE' | translate }}</h2>
 			<div class="tools" flex="auto" flex-order-xs="-1">
-				<button md-button color="primary" class="is-outlined mini">
+				<button mat-button color="primary" class="is-outlined mini">
 					{{ 'ORDER.SHOW.PRINT_INVOICE_BTN_TITLE' | translate }}
 				</button>
-				<a [routerLink]="['/orders']" md-icon-button color="primary" title="{{ 'ORDER.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
-					<md-icon>description</md-icon>
+				<a [routerLink]="['/orders']" mat-icon-button color="primary" title="{{ 'ORDER.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
+					<mat-icon>description</mat-icon>
 				</a>
 			</div>
 		</div>
@@ -27,7 +27,7 @@
       <div layout="column" layout-gt-xs="row" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" 
           layout-align-gt-xs="space-between end">
         <div flex-gt-xs="40" flex="100" class="details">
-          <div class="md-caption order-info">
+          <div class="mat-caption order-info">
             <span class="order-number">
               <strong>{{ 'ORDER.SHOW.ORDER_NUMBER_LABEL' | translate }}</strong>
               <span class="number">{{ order.id }}</span>
@@ -49,7 +49,7 @@
         <div class="cart-total" flex-gt-xs="60" flex="100">
           <div 
             *ngIf="isRefundedOrder(order)" 
-            class="total md-headline indicate-refund" 
+            class="total mat-headline indicate-refund" 
             flex="auto" 
             layout="row" 
             layout-align="end center">
@@ -60,7 +60,7 @@
               {{ order.total | currency:'USD':true:'1.2-2' | slice:1 }}
             </span>
           </div>
-          <div *ngIf="shouldShowDiscountFor(order)" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+          <div *ngIf="shouldShowDiscountFor(order)" flex="100" layout="row" layout-align="end center" class="subtotal mat-headline">
             <span class="total-label" flex="100">
               {{ 'CART.CART_SUBTOTAL' | translate }} 
             </span>
@@ -68,14 +68,14 @@
               {{ order.subTotal | currency:'USD':true:'1.2-2' }}
             </span>
           </div>
-          <div *ngIf="shouldShowDiscountFor(order)" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+          <div *ngIf="shouldShowDiscountFor(order)" flex="100" layout="row" layout-align="end center" class="discount mat-headline">
             <span class="total-label" flex="100">
               {{ 'CART.CART_DISCOUNT' | translate }} 
             </span>
             <span class="total-amount" flex="nogrow">{{ order.discount }}</span>
           </div> 
           
-          <div *ngIf="!(isRefundedOrder(order))" class="total md-headline" flex="auto" layout="row" layout-align="end center">
+          <div *ngIf="!(isRefundedOrder(order))" class="total mat-headline" flex="auto" layout="row" layout-align="end center">
             <span class="total-label">
                 {{ 'ORDER.INDEX.ORDER_TOTAL_LABEL' | translate }}
             </span>
@@ -95,17 +95,17 @@
           <div class="project" *ngFor="let project of order.projects">
             <header class="project-info" layout-gt-xs="row" layout="column">
               <div flex="100" flex-gt-sm="70" flex-order-xs="2">
-                <h5 md-display-1>
-                  <span class="project-label md-caption">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
+                <h5 mat-display-1>
+                  <span class="project-label mat-caption">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
                   <span class="project-name">{{ project.name }}</span>
                 </h5>
-                <span class="project-client md-caption">
+                <span class="project-client mat-caption">
                   <strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> 
                   {{ project.clientName }}
                 </span>
               </div>
               <div flex="100" flex-gt-sm="30" flex-order-xs="-1" layout-padding>
-                <div class="project-subtotal md-caption">
+                <div class="project-subtotal mat-caption">
                   <strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
                   <span>{{ project.subTotal | currency:'USD':true:'1.2-2' }}</span>
                 </div>
@@ -139,12 +139,12 @@
                       <button
                         [disabled]="!lineItem.asset.masterDownloadUrl"
                         (click)="downloadMaster(lineItem.asset.masterDownloadUrl)"
-                        md-button
+                        mat-button
                         color="primary"
                         class="is-outlined download">
-                        <md-icon class="transcode-icon" [ngClass]="{'spinner': lineItem.transcodeStatus === 'Submitted'}">
+                        <mat-icon class="transcode-icon" [ngClass]="{'spinner': lineItem.transcodeStatus === 'Submitted'}">
                           {{ 'ORDER.SHOW.TRANSCODE_ICON.' + lineItem.transcodeStatus | translate }}
-                        </md-icon>
+                        </mat-icon>
                         <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.' +  lineItem.transcodeStatus | translate }}</span>
                       </button>
                       <button 
@@ -152,8 +152,8 @@
                         wzAsperaDownload 
                         [disabled]="!lineItem.asperaSpec" 
                         [asperaSpec]="lineItem.asperaSpec" 
-                        md-button>
-                        <md-icon>whatshot</md-icon>
+                        mat-button>
+                        <mat-icon>whatshot</mat-icon>
                         {{ 'ORDER.SHOW.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}
                       </button>
                     </div>
@@ -175,11 +175,11 @@
                       <div flex-gt-sm="30" flex-sm="40" flex="100" layout-padding>
                         <div class="fee-indicator" layout="column">
                           <span flex class="fee-title">{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.HEADING' | translate }}</span>
-                          <span flex class="fee-type md-caption">{{feeLineItem.feeType}}</span>
+                          <span flex class="fee-type mat-caption">{{feeLineItem.feeType}}</span>
                         </div>
                       </div>
                       <div flex-gt-sm="80" flex-sm="75" flex="100" layout-padding>
-                        <div class="md-caption fee-type">
+                        <div class="mat-caption fee-type">
                           {{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.TITLE' | translate:{type:feeLineItem.feeType} }}
                         </div>
                         <p class="fee-notes">{{ feeLineItem.notes }}</p>

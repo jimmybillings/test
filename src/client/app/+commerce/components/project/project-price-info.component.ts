@@ -5,7 +5,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   selector: 'project-price-info-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="project-subtotal md-caption">
+    <div class="project-subtotal mat-caption">
       <strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
       <span>{{ subtotal | currency:'USD':true:'1.2-2' }}</span>
     </div>

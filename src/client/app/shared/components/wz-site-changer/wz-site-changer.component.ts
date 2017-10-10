@@ -5,11 +5,11 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   selector: 'wz-site-changer-component',
   template: `
       <form *ngIf="isPocNineTeen()" class="language-selector">
-        <md-select [(ngModel)]="currentSite" name="currentSite" (change)="selectSite($event)">
-          <md-option *ngFor="let site of sites" [value]="site">
+        <mat-select [(ngModel)]="currentSite" name="currentSite" (change)="selectSite($event)">
+          <mat-option *ngFor="let site of sites" [value]="site">
             {{site}}
-          </md-option>
-        </md-select>
+          </mat-option>
+        </mat-select>
       </form>`,
   styles: [`
     form {

@@ -4,12 +4,12 @@ import { FormControl } from '@angular/forms';
 @Component({
   moduleId: module.id,
   selector: 'wz-input-tags',
-  template: `<div class="md-input-wrapper wz-tags">
+  template: `<div class="mat-input-wrapper wz-tags">
                 <ul *ngIf="tags.length > 0">
                   <li [ngClass]="{'ready-delete': checkBeforeDelete(tag)}" *ngFor="let tag of tags;">
                     {{tag}}
-                    <a class="button delete" md-icon-button (click)="delete($event, tag)">
-                      <md-icon>cancel</md-icon>
+                    <a class="button delete" mat-icon-button (click)="delete($event, tag)">
+                      <mat-icon>cancel</mat-icon>
                     </a>
                   </li>
                 </ul>

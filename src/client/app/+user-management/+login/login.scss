@@ -6,7 +6,7 @@ section.login.hero {
       font-weight: 400;
       line-height: rem(3.2);
       @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
-        @include md-body-1();
+        @include mat-body-1();
       }
     }
   }
@@ -30,16 +30,16 @@ section.login.hero {
     padding: rem(2.4) rem(2.2) rem(2.4) rem(2.2);
   }
   margin: rem(.8) 0;
-  md-card-title {
+  mat-card-title {
     text-align: center;
   }
-  button[md-icon-button].close {
+  button[mat-icon-button].close {
     position: absolute;
     right: rem(.5);
     top: rem(.5);
     font-size: rem(3.6);
     opacity: .5;
-    md-icon {
+    mat-icon {
       font-size: rem(3.6);
       height: rem(3.6);
       width: rem(3.6);
@@ -48,7 +48,7 @@ section.login.hero {
   }
 }
 
-md-card-header .logo-wrapper {
+mat-card-header .logo-wrapper {
   height: 60px;
   width: 100%;
   .logo {

@@ -1,16 +1,16 @@
 // this is can go away once the temporary legacy find assets in this collection goes away(post beta)
-.wz-dialog collection-link-component md-card {
+.wz-dialog collection-link-component mat-card {
   width: 32vw;
   padding: rem(3.2);
   padding-bottom: rem(3.8);
   padding-top: rem(3.8);
-  button[md-icon-button].close {
+  button[mat-icon-button].close {
     position: absolute;
     right: rem(.5);
     top: rem(.5);
     font-size: 36px;
     opacity: .5;
-    md-icon {
+    mat-icon {
       font-size: 1em;
       height: 1em;
       width: 1em;

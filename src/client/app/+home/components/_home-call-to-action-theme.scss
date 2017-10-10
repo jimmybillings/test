@@ -9,7 +9,7 @@
       background-image: url('/assets/img/bk/tex/bktx_dgl_lines_light.png');
     }
     .conversion {
-      &[md-button] {
+      &[mat-button] {
         background-color: mat-color($accent, darker, .8);
         &:hover {
           background-color: mat-color($accent, darker, .8);

@@ -1,23 +1,23 @@
 <section class="login hero" *ngIf="config">
-	<div layout="row" md-scroll-y="" layout-align="center start">
+	<div layout="row" mat-scroll-y="" layout-align="center start">
 		<div flex-gt-lg="25" flex-gt-md="30" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="90">
-			<md-card class="wz-form-card" *ngIf="!successfullySubmitted">
-				<md-card-title>
+			<mat-card class="wz-form-card" *ngIf="!successfullySubmitted">
+				<mat-card-title>
 					{{ 'REGISTER.TITLE' | translate }}
-				</md-card-title>
-				<md-card-content>
+				</mat-card-title>
+				<mat-card-content>
 					<wz-form [items]="config.form.items" [serverErrors]="serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" 
 					(formSubmit)="onSubmit($event)" (onAction)="openTermsDialog()"></wz-form>
-				</md-card-content>
-			</md-card>
+				</mat-card-content>
+			</mat-card>
 
-			<md-card class="registration-confirm" *ngIf="successfullySubmitted">
-				<md-card-title>{{ 'REGISTER.CONFIRMATION.TITLE' | translate }}</md-card-title>
-				<md-card-subtitle>{{ 'REGISTER.CONFIRMATION.MESSAGE' | translate }}</md-card-subtitle>
+			<mat-card class="registration-confirm" *ngIf="successfullySubmitted">
+				<mat-card-title>{{ 'REGISTER.CONFIRMATION.TITLE' | translate }}</mat-card-title>
+				<mat-card-subtitle>{{ 'REGISTER.CONFIRMATION.MESSAGE' | translate }}</mat-card-subtitle>
 				<span class="email">{{newUser.emailAddress}}</span>
-			</md-card>
+			</mat-card>
 
-			<div md-theme="docs-dark" layout="column" layout-align="center center" layout-wrap=""><span class="md-title">{{'REGISTER.ALREADY_HAVE_ACCOUNT' | translate }} <a md-button [routerLink]="['/user/login']" color="accent">{{'REGISTER.LOGIN' | translate }}</a></span></div>
+			<div mat-theme="docs-dark" layout="column" layout-align="center center" layout-wrap=""><span class="mat-title">{{'REGISTER.ALREADY_HAVE_ACCOUNT' | translate }} <a mat-button [routerLink]="['/user/login']" color="accent">{{'REGISTER.LOGIN' | translate }}</a></span></div>
 		</div>
 	</div>
 </section>

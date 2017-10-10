@@ -22,8 +22,8 @@ collection-tray {
         @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
           margin-right: 5px;         
         }
-        a[md-button],
-        button[md-button] {
+        a[mat-button],
+        button[mat-button] {
           @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
             max-width: 33px;
             min-width: 33px;
@@ -31,8 +31,8 @@ collection-tray {
             padding: 0 0 0 5px;         
           }
         }
-        a[md-button] .mat-icon,
-        button[md-button] .mat-icon {
+        a[mat-button] .mat-icon,
+        button[mat-button] .mat-icon {
           line-height: .88;
           margin-right: 0;
           margin-left: 0;
@@ -47,7 +47,7 @@ collection-tray {
           padding: 1px 3px; 
         }
       }
-      button.close-tray[md-icon-button] .mat-icon {
+      button.close-tray[mat-icon-button] .mat-icon {
         opacity: .75;
       }
     }

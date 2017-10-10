@@ -34,76 +34,76 @@
             data-pendo="asset-result_add-to-cart-btn"
             *ngIf="userCan.addToCart()"
             [disabled]="!canBePurchased(asset)"
-            md-icon-button
+            mat-icon-button
             title="{{ (userCan.administerQuotes() ? 'COLLECTION.SHOW.ADD_TO_QUOTE_BTN_TITLE' : 'COLLECTION.SHOW.ADD_TO_CART_BTN_TITLE') | translate}}"
             (click)="addAssetToCart(asset);">
-              <md-icon>{{userCan.administerQuotes() ? 'work': 'shopping_cart'}}</md-icon>
+              <mat-icon>{{userCan.administerQuotes() ? 'work': 'shopping_cart'}}</mat-icon>
           </button>
           <!-- DOWNLOAD COMPS-->
           <button
             data-pendo="asset-result_download-btn"
-            md-icon-button
+            mat-icon-button
             [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
             title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED') | translate }}"
             (click)="setAssetActiveId(asset)"
-            [md-menu-trigger-for]="downloadCompMenu">
-              <md-icon>file_download</md-icon>
+            [mat-menu-trigger-for]="downloadCompMenu">
+              <mat-icon>file_download</mat-icon>
           </button>
 
           <!-- ADD / ADD_AGAIN / REMOVE FROM COLLECTION -->
           <ng-container *ngIf="userCan.haveCollections()">
-            <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="canBeRemoved(asset)"
+            <button [disabled]="!userCan.editCollections()" mat-icon-button *ngIf="canBeRemoved(asset)"
               title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="removeFromActiveCollection(asset)">
-              <md-icon>remove_circle</md-icon>
+              <mat-icon>remove_circle</mat-icon>
             </button>
-            <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button 
+            <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" mat-icon-button 
               *ngIf="!inCollection(asset)"
               title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="addToActiveCollection(asset)">
-              <md-icon>add_box</md-icon>
+              <mat-icon>add_box</mat-icon>
             </button>
-            <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="canBeAddedAgain(asset)"
+            <button [disabled]="!userCan.editCollections()" mat-icon-button *ngIf="canBeAddedAgain(asset)"
               title="{{ 'COLLECTION.ADD_AGAIN_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="addToActiveCollection(asset)">
-              <md-icon>library_add</md-icon>
+              <mat-icon>library_add</mat-icon>
             </button>
           </ng-container>
 
-          <button md-icon-button 
+          <button mat-icon-button 
             *ngIf="assetType === 'collection' && userCan.createSubclips(asset)"
             title="{{'COLLECTION.SHOW.ASSET_MORE_BTN_TITLE' | translate}}"
-            [md-menu-trigger-for]="moreCollectionAssetMenu">
-            <md-icon>more_vert</md-icon>
+            [mat-menu-trigger-for]="moreCollectionAssetMenu">
+            <mat-icon>more_vert</mat-icon>
           </button>
-          <md-menu x-position="before" y-position="below" #moreCollectionAssetMenu="mdMenu">
-            <button md-menu-item (click)="editAsset(asset)">
-              <md-icon>theaters</md-icon>
+          <mat-menu x-position="before" y-position="below" #moreCollectionAssetMenu="matMenu">
+            <button mat-menu-item (click)="editAsset(asset)">
+              <mat-icon>theaters</mat-icon>
               <span>
                 {{ (isSubclipped(asset)
                     ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING'
                     : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
               </span>
             </button>
-            <button [disabled]="true" md-menu-item>
-              <md-icon>mode_comment</md-icon>
+            <button [disabled]="true" mat-menu-item>
+              <mat-icon>mode_comment</mat-icon>
               <span>
                 {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_COMMENTS' | translate }}
               </span>
             </button>
-            <button [disabled]="true" md-menu-item>
-              <md-icon>share</md-icon>
+            <button [disabled]="true" mat-menu-item>
+              <mat-icon>share</mat-icon>
               <span>
               {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.ASSET_SHARING' | translate }}
               </span>
             </button>
-            <a md-menu-item [routerLink]="routerLinkFor(asset)">
-              <md-icon>details</md-icon>
+            <a mat-menu-item [routerLink]="routerLinkFor(asset)">
+              <mat-icon>details</mat-icon>
               <span>
                 {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_DETAILS' | translate }}
               </span>
             </a>
-          </md-menu>
+          </mat-menu>
         </nav>
       </section>
       <a [routerLink]="[]" class="asset-desc">
@@ -115,73 +115,73 @@
   </li>
 </ul>
 
-<md-menu x-position="after" #downloadCompMenu="mdMenu">
-  <md-list class="aspera-download-options">
-    <md-list-item>
-      <span md-menu-item disabled flex>{{"COMPS.DOWNLOAD_WM_COMP" | translate }}</span>
+<mat-menu x-position="after" #downloadCompMenu="matMenu">
+  <mat-list class="aspera-download-options">
+    <mat-list-item>
+      <span mat-menu-item disabled flex>{{"COMPS.DOWNLOAD_WM_COMP" | translate }}</span>
       <div class="actions" flex>
         <button 
-          md-icon-button 
+          mat-icon-button 
           title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
           (click)="downloadComp('wm');" 
           [disabled]="!userCan.downloadWatermarkComps(hasComp)">
-            <md-icon>file_download</md-icon>
+            <mat-icon>file_download</mat-icon>
           </button>
         <button 
-          md-icon-button 
+          mat-icon-button 
           title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
           [disabled]="!userCan.downloadWatermarkComps(hasComp)"
           wzAsperaDownload 
           [asperaPreloaded]="'false'" 
           [renditionType]="'wm'" 
           [assetId]="assetId">
-            <md-icon>whatshot</md-icon>
+            <mat-icon>whatshot</mat-icon>
           </button>
         </div>
-    </md-list-item>
-    <md-list-item>
-      <span md-menu-item disabled flex>{{"COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</span>
+    </mat-list-item>
+    <mat-list-item>
+      <span mat-menu-item disabled flex>{{"COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</span>
       <div class="actions" flex>
         <button 
-          md-icon-button 
+          mat-icon-button 
           title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
           (click)="downloadComp('clean');" 
           [disabled]="!userCan.downloadCleanComps(hasComp)">
-            <md-icon>file_download</md-icon>
+            <mat-icon>file_download</mat-icon>
         </button>
         <button 
-          md-icon-button 
+          mat-icon-button 
           title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
           [disabled]="!userCan.downloadCleanComps(hasComp)"
           wzAsperaDownload 
           [asperaPreloaded]="'false'" 
           [renditionType]="'clean'" 
           [assetId]="assetId">
-          <md-icon>whatshot</md-icon>
+          <mat-icon>whatshot</mat-icon>
         </button>
       </div>
-    </md-list-item>
-    <md-list-item>
-      <span md-menu-item disabled flex>{{"COMPS.DOWNLOAD_FULL_COMP" | translate }}</span>
+    </mat-list-item>
+    <mat-list-item>
+      <span mat-menu-item disabled flex>{{"COMPS.DOWNLOAD_FULL_COMP" | translate }}</span>
       <div class="actions" flex>
         <button 
-          md-icon-button 
+          mat-icon-button 
           title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
           [disabled]="!userCan.downloadFullComps(hasComp)"
           (click)="downloadComp('full');">
-          <md-icon>file_download</md-icon>
+          <mat-icon>file_download</mat-icon>
         </button>
         <button 
-          md-icon-button 
+          mat-icon-button 
           title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
           [disabled]="!userCan.downloadFullComps(hasComp)"
           wzAsperaDownload 
           [asperaPreloaded]="'false'" 
           [renditionType]="'full'" 
           [assetId]="assetId">
-            <md-icon>whatshot</md-icon>
+            <mat-icon>whatshot</mat-icon>
         </button>
       </div>
-    </md-list-item>
-  </md-list>
-</md-menu>
+    </mat-list-item>
+  </mat-list>
+</mat-menu>

@@ -5,11 +5,11 @@
         <div flex-gt-sm="30" flex-sm="40" flex="100" layout-padding>
           <div class="fee-indicator" layout="column">
             <span flex class="fee-title">{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.HEADING' | translate }}</span>
-            <span flex class="fee-type md-caption">{{feeLineItem.feeType}}</span>
+            <span flex class="fee-type mat-caption">{{feeLineItem.feeType}}</span>
           </div>
         </div>
         <div flex-gt-sm="80" flex-sm="75" flex="100" layout-padding>
-          <div class="md-caption fee-type">
+          <div class="mat-caption fee-type">
             {{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.TITLE' | translate:{type:feeLineItem.feeType} }}
           </div>
           <p class="fee-notes">{{ feeLineItem.notes }}</p>
@@ -21,10 +21,10 @@
       <div class="tools" flex="100">
         <button 
           *ngIf="!readOnly"
-          md-icon-button
+          mat-icon-button
           title="{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.REMOVE_BTN_HOVER' | translate }}"
           (click)="onRemove(feeLineItem)">
-            <md-icon>remove_circle</md-icon>
+            <mat-icon>remove_circle</mat-icon>
         </button>
       </div>
       <div *ngIf="!readOnly" flex="100" layout="row" layout-xs="column" class="divider"></div>

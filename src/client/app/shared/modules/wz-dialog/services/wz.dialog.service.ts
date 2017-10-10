@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { FormFields } from '../../../../shared/interfaces/forms.interface';
-import { MdDialogRef, MdDialog, MdDialogConfig, DialogPosition } from '@angular/material';
+import { MatDialogRef, MatDialog, MatDialogConfig, DialogPosition } from '@angular/material';
 
 import {
   WzFormDialogComponent,
@@ -29,13 +29,13 @@ import {
 
 @Injectable()
 export class WzDialogService {
-  constructor(private dialog: MdDialog) { }
+  constructor(private dialog: MatDialog) { }
 
   public openNotificationDialog(options: NotificationDialogOptions): Observable<any> {
-    const mergedDialogConfig: MdDialogConfig = this.mergeDialogConfigs(defaultNotificationDialogOptions, options);
+    const mergedDialogConfig: MatDialogConfig = this.mergeDialogConfigs(defaultNotificationDialogOptions, options);
     const mergedOptions: NotificationDialogOptions = Object.assign({}, defaultNotificationDialogOptions, options);
 
-    const dialogRef: MdDialogRef<WzNotificationDialogComponent> = this.dialog.open(
+    const dialogRef: MatDialogRef<WzNotificationDialogComponent> = this.dialog.open(
       WzNotificationDialogComponent,
       mergedDialogConfig
     );
@@ -54,10 +54,10 @@ export class WzDialogService {
     onAccept: DialogNoResultCallback,
     onDecline: DialogNoResultCallback = () => { }
   ): Observable<any> {
-    const mergedDialogConfig: MdDialogConfig = this.mergeDialogConfigs(defaultConfirmationDialogOptions, options);
+    const mergedDialogConfig: MatDialogConfig = this.mergeDialogConfigs(defaultConfirmationDialogOptions, options);
     const mergedOptions: ConfirmationDialogOptions = Object.assign({}, defaultConfirmationDialogOptions, options);
 
-    const dialogRef: MdDialogRef<WzConfirmationDialogComponent> = this.dialog.open(
+    const dialogRef: MatDialogRef<WzConfirmationDialogComponent> = this.dialog.open(
       WzConfirmationDialogComponent,
       mergedDialogConfig
     );
@@ -84,10 +84,10 @@ export class WzDialogService {
     onSubmit: DialogResultCallback,
     onCancel: DialogNoResultCallback = () => { }
   ): Observable<any> {
-    const mergedDialogConfig: MdDialogConfig = this.mergeDialogConfigs(defaultFormDialogOptions, options);
+    const mergedDialogConfig: MatDialogConfig = this.mergeDialogConfigs(defaultFormDialogOptions, options);
     const mergedOptions: FormDialogOptions = Object.assign({}, defaultFormDialogOptions, options);
 
-    const dialogRef: MdDialogRef<WzFormDialogComponent> = this.dialog.open(WzFormDialogComponent, mergedDialogConfig);
+    const dialogRef: MatDialogRef<WzFormDialogComponent> = this.dialog.open(WzFormDialogComponent, mergedDialogConfig);
     const component: WzFormDialogComponent = dialogRef.componentInstance;
 
     Object.assign(component, { formItems: formItems }, mergedOptions);
@@ -101,9 +101,9 @@ export class WzDialogService {
   }
 
   public openComponentInDialog(options: DefaultComponentOptions) {
-    const mergedDialogConfig: MdDialogConfig = this.mergeDialogConfigs(
+    const mergedDialogConfig: MatDialogConfig = this.mergeDialogConfigs(
       {}, { dialogConfig: options.dialogConfig } || {});
-    const dialogRef: MdDialogRef<any> = this.dialog.open(options.componentType, mergedDialogConfig);
+    const dialogRef: MatDialogRef<any> = this.dialog.open(options.componentType, mergedDialogConfig);
     const component: any = dialogRef.componentInstance;
 
     if (options.inputOptions) Object.assign(component, options.inputOptions);
@@ -112,7 +112,7 @@ export class WzDialogService {
     return dialogRef.afterClosed();
   }
 
-  private setupCallbacks(component: any, dialogRef: MdDialogRef<any>, outputOptions: Array<DialogCallback>): void {
+  private setupCallbacks(component: any, dialogRef: MatDialogRef<any>, outputOptions: Array<DialogCallback>): void {
     outputOptions.forEach((cb: DialogCallback) => {
       component[cb.event].subscribe((event?: any) => {
         if (cb.closeOnEvent) dialogRef.close(event);
@@ -121,7 +121,7 @@ export class WzDialogService {
     });
   }
 
-  private mergeDialogConfigs(defaultOptions: DialogOptions, options: DialogOptions): MdDialogConfig {
+  private mergeDialogConfigs(defaultOptions: DialogOptions, options: DialogOptions): MatDialogConfig {
     const mergedDialogPosition: DialogPosition =
       Object.assign({}, (defaultOptions.dialogConfig || {}).position, (options.dialogConfig || {}).position);
 

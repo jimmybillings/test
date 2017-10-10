@@ -4,7 +4,7 @@ profile-component .profile-head {
   header {
     padding-top: rem(.6);
     padding-bottom: rem(.5);
-    .md-display-1 {
+    .mat-display-1 {
       margin: 0;
       width: calc(100% - 120px);
       font-size: rem(2.6);
@@ -14,7 +14,7 @@ profile-component .profile-head {
     text-align: right;
     white-space: nowrap;
   }
-  header div[flex="100"] > button[md-icon-button] {
+  header div[flex="100"] > button[mat-icon-button] {
     margin-right: rem(1.6);
   }
 }
@@ -29,6 +29,6 @@ profile-component .mat-primary.edit-basic {
     top:rem(.3);
   }
 }
-profile-component md-tab-body {
+profile-component mat-tab-body {
   min-height: 604px;
 }

@@ -46,7 +46,7 @@ wz-advanced-player {
       min-width: 0;
     }
   }
-  [md-button].is-outlined {
+  [mat-button].is-outlined {
     line-height: 23px;
     min-width: 44px;
     padding: 0 7px;
@@ -54,12 +54,12 @@ wz-advanced-player {
     vertical-align: middle;
   }
 
-  [md-icon-button] {
+  [mat-icon-button] {
     line-height: 33px;
     height: $mat-icon-button-height;
     width: $mat-icon-button-width;
     position: relative;
-    &.seek-out md-icon {
+    &.seek-out mat-icon {
       transform: rotate(180deg);
       line-height: 25px;
     }

@@ -11,12 +11,12 @@ export type StepSize = '-5s' | '-1s' | '-1f' | '+1f' | '+1s' | '+5s';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button 
-      md-icon-button 
+      mat-icon-button 
       [disabled]="!canStep" 
       class="mat-icon-button {{ direction }}" 
       title="{{ title | translate }}" 
       (click)="onClick()">
-      <md-icon class="{{ iconClass }} material-icons">play_arrow</md-icon>
+      <mat-icon class="{{ iconClass }} material-icons">play_arrow</mat-icon>
     </button>
   `
 })

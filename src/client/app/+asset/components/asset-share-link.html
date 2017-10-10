@@ -2,13 +2,13 @@
   <header>
     <div flex="100" layout="row">
         <div class="tools" flex="auto" layout-align="start center">
-          <button md-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK.PREVIOUS_HOVER_TITLE' | translate }}" (click)="close.emit()"><md-icon>arrow_back</md-icon></button>
+          <button mat-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK.PREVIOUS_HOVER_TITLE' | translate }}" (click)="close.emit()"><mat-icon>arrow_back</mat-icon></button>
         </div>
-        <h4 class="md-headline" flex="100" layout-align="start center">
+        <h4 class="mat-headline" flex="100" layout-align="start center">
           {{ 'ASSET.SHARING.SHARE_LINK.HEADING' | translate }}
         </h4>
         <div class="tools" flex="auto" layout-align="end center">
-          <button md-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK.CLOSE_HOVER_TITLE' | translate }}" (click)="close.emit()"><md-icon>close</md-icon></button>
+          <button mat-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK.CLOSE_HOVER_TITLE' | translate }}" (click)="close.emit()"><mat-icon>close</mat-icon></button>
         </div>
       </div>
   </header>
@@ -26,11 +26,11 @@
         layout-align="end center"
         class="clipboard-copy"
         wzClipboard
-        md-icon-button
+        mat-icon-button
         data-clipboard-target="#shareLink"
         title="{{ 'ASSET.SHARING.SHARE_LINK.COPY_BTN_TITLE' | translate }}" 
         (click)="onOpenSnackbar.emit({key: 'ASSET.SHARING.SHARE_LINK.COPIED_CONFIRMED_MESSAGE'})">
-        <md-icon>content_copy</md-icon>
+        <mat-icon>content_copy</mat-icon>
       </button>
     </div>
   </section>

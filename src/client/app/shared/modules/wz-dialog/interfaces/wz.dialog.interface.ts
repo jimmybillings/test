@@ -1,12 +1,12 @@
-import { MdDialogConfig } from '@angular/material';
+import { MatDialogConfig } from '@angular/material';
 
 export interface DialogConfig {
-  mergedDialogConfig: MdDialogConfig;
+  mergedDialogConfig: MatDialogConfig;
   mergedOptions: DialogOptions;
 }
 
 export interface BaseDialogConfig {
-  dialogConfig?: MdDialogConfig;
+  dialogConfig?: MatDialogConfig;
 }
 
 export interface FormDialogOptions extends BaseDialogConfig {
@@ -68,7 +68,7 @@ export interface DialogCallback {
 
 export interface DefaultComponentOptions {
   componentType: any;
-  dialogConfig?: MdDialogConfig;
+  dialogConfig?: MatDialogConfig;
   inputOptions?: { [index: string]: any };
   outputOptions?: Array<DialogCallback>;
 };

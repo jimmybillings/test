@@ -1,24 +1,24 @@
-@mixin wz-md-dialog-extended-theme($theme) {
+@mixin wz-mat-dialog-extended-theme($theme) {
   $foreground: map-get($theme, foreground);
 
   .cdk-overlay-dark-backdrop.cdk-overlay-backdrop-showing {
     background-image: url("/assets/img/bk/tex/bktx_dgl_lines_light.png");
   }
   // This sets the defaults for dialogs. Override widths can be set on specific components.
-  // like: md-dialog-content collection-form .wz-dialog {}
+  // like: mat-dialog-content collection-form .wz-dialog {}
   .mat-dialog-container .wz-dialog {
     color: mat-color($foreground, secondary-text);
     .mat-select-value {
       color: mat-color($foreground, secondary-text);
     }
   }
-  // For the notification dialog, these match the MD specs. The md-dialog currently does not.
-  md-dialog-container.mat-dialog-container wz-confirmation-dialog,
-  md-dialog-container.mat-dialog-container wz-notification-dialog {
-    [md-dialog-title] {
+  // For the notification dialog, these match the MD specs. The mat-dialog currently does not.
+  mat-dialog-container.mat-dialog-container wz-confirmation-dialog,
+  mat-dialog-container.mat-dialog-container wz-notification-dialog {
+    [mat-dialog-title] {
       color: mat-color($foreground, text);
     }
-    md-dialog-content {
+    mat-dialog-content {
       color: mat-color($foreground, secondary-text);
     }
   }

@@ -46,10 +46,10 @@ app-footer {
         min-width: 167px;
       }  
     }
-    h3.md-title {
+    h3.mat-title {
       margin-bottom: .5em;
     }
-    h3.md-title + .md-body-1 {
+    h3.mat-title + .mat-body-1 {
       margin: rem(1.4) 0 0 0;
       font-size: .9em;
     }
@@ -59,41 +59,41 @@ app-footer {
       transition: $swift-ease-in;
     }
     .sales {
-      md-list {
+      mat-list {
         padding: 0;
       }
-      md-list-item, .mat-list-item-content {
+      mat-list-item, .mat-list-item-content {
         padding: 0;
         min-height: 0;
       }
-      md-list md-list-item .mat-list-item {
+      mat-list mat-list-item .mat-list-item {
         height: rem(4.0);
         padding: 0;
       }
-      h5.md-subhead {
+      h5.mat-subhead {
         margin: 0 0 0 rem(2.6);
         font-weight: 500;
         opacity: .8;
       }
-      *[md-button] {
+      *[mat-button] {
         margin: 0;
         padding: 9px 6px;
         &.phone:hover {
           cursor: default;
           background: transparent;
         }
-        &.phone:hover .md-body-1 md-icon {
+        &.phone:hover .mat-body-1 mat-icon {
           opacity: .25;
         }
-        &:hover .md-body-1 md-icon {
+        &:hover .mat-body-1 mat-icon {
           opacity: .8;
         }
-        .md-body-1 {
+        .mat-body-1 {
           text-transform: initial;
           margin: 0;
           padding: 0 0 0 30px;
           position: relative;
-          md-icon {
+          mat-icon {
             position: absolute;
             top: -3px;
             left: -1px;

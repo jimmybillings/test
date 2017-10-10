@@ -33,10 +33,10 @@
     }
     .toolbar-actions {
       nav.asset-options {
-        button[md-icon-button] {
+        button[mat-icon-button] {
           @include text-contrast(mat-color($foreground, base));
           &:disabled {
-            md-icon {
+            mat-icon {
               color: rgba(mat-color($background, background),.2);
             }
           }
@@ -55,8 +55,8 @@
         .contact-us-pricing {
           color: rgba(mat-color($accent, 500), .75);
         }
-        md-card-actions {
-          md-select {
+        mat-card-actions {
+          mat-select {
             .mat-select-underline {
               background-color: mat-color($background, background, .2);
             }

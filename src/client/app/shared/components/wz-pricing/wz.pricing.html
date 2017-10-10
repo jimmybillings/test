@@ -1,32 +1,32 @@
 <div class="wz-dialog pricing">
-  <button md-dialog-close md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
-  <h1 md-dialog-title>{{ 'PRICING.CALCULATE_HEADING' | translate }}</h1>
-  <md-dialog-content> 
+  <button mat-dialog-close mat-icon-button title="close dialog" type="button" class="close"><mat-icon>close</mat-icon></button>
+  <h1 mat-dialog-title>{{ 'PRICING.CALCULATE_HEADING' | translate }}</h1>
+  <mat-dialog-content> 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div *ngFor="let attribute of attributes" class="input">
         <div layout="row" layout-align="center center">
-          <md-select
+          <mat-select
             required
             placeholder="{{attribute.name}}"
             formControlName="{{attribute.name}}">
-            <md-option
+            <mat-option
               *ngFor="let option of validOptionsFor(attribute)"
               (onSelectionChange)="handleSelect($event, attribute)"
               [value]="option.value">
                 {{ option.name }}
-            </md-option>
-          </md-select>
+            </mat-option>
+          </mat-select>
         </div>
         <br>
       </div>
       <div class="submit-btn" layout="row" layout-align="center center">
-        <button [disabled]="!form.valid" class="submit" md-button md-raised-button color="primary" type="submit">
+        <button [disabled]="!form.valid" class="submit" mat-button mat-raised-button color="primary" type="submit">
           {{ 'PRICING.CALCULATE_BTN_LABEL' | translate }}
         </button>
       </div>
     </form>
     <div class="price-info" layout="row" layout-align="center center">
-      <p *ngIf="usagePrice | async" class="md-body-3">{{ usagePrice | async | currency:'USD':true:'1.2-2' }}</p>
+      <p *ngIf="usagePrice | async" class="mat-body-3">{{ usagePrice | async | currency:'USD':true:'1.2-2' }}</p>
     </div>
-  </md-dialog-content>
+  </mat-dialog-content>
 </div>

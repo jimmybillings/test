@@ -20,7 +20,7 @@
           }
         }
       }
-      md-list-item.focused .mat-list-item button {
+      mat-list-item.focused .mat-list-item button {
         color: mat-color($primary);
         background-color: rgba(mat-color($foreground, base), .07);
         box-shadow: inset 0 1px 0 0 mat-color($foreground, base), .05;

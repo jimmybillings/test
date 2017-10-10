@@ -1,6 +1,6 @@
 
 /************
- * md-dialog-container overrides
+ * mat-dialog-container overrides
  * make dialogs wider for mobile
  ************/
 
@@ -9,7 +9,7 @@
   opacity: 0.78;
 }
 // make max-width on very small screens a little bigger than their default 
-md-dialog-container.mat-dialog-container {
+mat-dialog-container.mat-dialog-container {
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     width: 94vw;
     min-width: rem(33.0);
@@ -17,7 +17,7 @@ md-dialog-container.mat-dialog-container {
   }
 }
 // This sets the defaults for dialogs. Override widths can be set on specific components.
-// like: md-dialog-content collection-form .wz-dialog {}
+// like: mat-dialog-content collection-form .wz-dialog {}
 .mat-dialog-container .wz-dialog {
   box-sizing: border-box;
   padding: rem(1.6) rem(1.5) rem(1.6);
@@ -33,14 +33,14 @@ md-dialog-container.mat-dialog-container {
     padding: rem(.6) rem(.8) rem(.8);
     width: 100%;
   }
-  button[md-icon-button].close {
+  button[mat-icon-button].close {
     position: absolute;
     right: rem(-2.0);
     top: rem(-2.0);
     font-size: rem(3.6);
     line-height: rem(4.6);
     opacity: .5;
-    md-icon {
+    mat-icon {
       font-size: 1em;
       height: 1em;
       width: 1em;
@@ -50,7 +50,7 @@ md-dialog-container.mat-dialog-container {
         opacity: 0;
     }
   }
-  [md-dialog-title] {
+  [mat-dialog-title] {
     text-align: center;
     margin: 0 0 rem(.6) 0;
     font-size: rem(2.4);
@@ -58,18 +58,18 @@ md-dialog-container.mat-dialog-container {
   }
 }
 
-// For the notification dialog, these match the MD specs. The md-dialog currently does not.
-md-dialog-container.mat-dialog-container wz-confirmation-dialog,
-md-dialog-container.mat-dialog-container wz-notification-dialog {
-  [md-dialog-title] {
+// For the notification dialog, these match the MD specs. The mat-dialog currently does not.
+mat-dialog-container.mat-dialog-container wz-confirmation-dialog,
+mat-dialog-container.mat-dialog-container wz-notification-dialog {
+  [mat-dialog-title] {
     font-weight: 500;
     margin-bottom: rem(1.2);
   }
-  md-dialog-content {
+  mat-dialog-content {
     margin-bottom: rem(.8);
     line-height: 1.44;
   }
-  md-dialog-actions button:last-child {
+  mat-dialog-actions button:last-child {
     margin-right: rem(-1.2);
   }
 }

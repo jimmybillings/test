@@ -7,11 +7,11 @@ import { PlayerState, PlayerRequest, TogglePlaybackRequest } from '../../../inte
   selector: 'wz-playback-toggle-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-icon-button 
+    <button mat-icon-button 
       title="{{ (playerState.playing ? 
         'ASSET.ADV_PLAYER.PAUSE_BTN_TITLE' : 'ASSET.ADV_PLAYER.PLAY_BTN_TITLE') | translate }}" 
       (click)="onClick()">
-      <md-icon>{{ playerState.playing ? 'pause' : 'play_arrow' }}</md-icon>
+      <mat-icon>{{ playerState.playing ? 'pause' : 'play_arrow' }}</mat-icon>
     </button>
   `
 })

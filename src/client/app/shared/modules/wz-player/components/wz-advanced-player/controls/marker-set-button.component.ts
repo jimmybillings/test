@@ -8,7 +8,7 @@ import { MarkerType, PlayerState, SetMarkerToCurrentFrameRequest } from '../../.
   selector: 'wz-marker-set-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-button
+    <button mat-button
       class="is-outlined set-marker"
       [disabled]="alreadyAtMarker"
       title="{{ title | translate }}"

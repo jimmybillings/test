@@ -7,9 +7,9 @@
 			(getPage)="changePage($event)">
 		</wz-pagination>
 		<!-- Current user has no orders-->
-		<md-card *ngIf="(orders | async).items.length == 0">
-			<md-card-title>You currently do not have any orders</md-card-title>
-		</md-card>
+		<mat-card *ngIf="(orders | async).items.length == 0">
+			<mat-card-title>You currently do not have any orders</mat-card-title>
+		</mat-card>
 		<!-- ORDER LIST -->
 		<commerce-list
 			*ngIf="(orders | async).items.length > 0"

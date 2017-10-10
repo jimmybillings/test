@@ -51,17 +51,17 @@ export class ProjectConfig extends SeedConfig {
         path: 'node_modules/wazee-frame-formatter/dist/index.js'
       },
       {
-        name: '@angular/material',
-        path: 'node_modules/@angular/material/bundles/material.umd.js'
+        name: '@angular/material/core',
+        path: 'node_modules/@angular/material/core.js'
       },
       {
         name: '@angular/cdk',
         path: 'node_modules/@angular/cdk/bundles/cdk.umd.js'
       },
-      // {
-      //   name: '@angular/cdk/stepper',
-      //   path: 'node_modules/@angular/cdk/bundles/cdk-stepper.umd.js'
-      // },
+      {
+        name: '@angular/cdk/stepper',
+        path: 'node_modules/@angular/cdk/bundles/cdk-stepper.umd.js'
+      },
       {
         name: '@angular/cdk/a11y',
         path: 'node_modules/@angular/cdk/bundles/cdk-a11y.umd.js'

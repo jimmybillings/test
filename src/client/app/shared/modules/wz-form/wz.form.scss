@@ -11,20 +11,20 @@ wz-form {
   display: block;
   position: relative;
   form {
-    md-select,
-    .mat-input-container {
+    mat-select,
+    .mat-form-field {
       width: 100%;
       margin-top: 6px;
       margin-bottom: 6px;
     }
-    md-select {
+    mat-select {
       position: relative;
     }
     a.view-tos {
       text-decoration: underline;
       cursor: pointer;
     }
-    md-card-actions.mat-card-actions {
+    mat-card-actions.mat-card-actions {
       display: flex;
       margin: 16px 0 0 0;
       padding: 4px 0;
@@ -65,12 +65,12 @@ wz-cc-form button.mini.is-outlined {
   }
 }
 
-*[md-button] {
+*[mat-button] {
   text-transform: uppercase;
 }
 
-md-checkbox.ng-dirty.ng-invalid {  
-  md-hint.mat-hint.error {
+mat-checkbox.ng-dirty.ng-invalid {  
+  mat-hint.mat-hint.error {
     bottom: 100px;
   }  
 }

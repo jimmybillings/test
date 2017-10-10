@@ -1,6 +1,6 @@
 
 cart-confirm-tab-component, quote-confirm-tab {
-  .md-title {
+  .mat-title {
     opacity: .6;
     margin: .3em 0;
     &.order-summary {
@@ -42,7 +42,7 @@ cart-confirm-tab-component, quote-confirm-tab {
     button.is-outlined.mini {
       margin-right: 0;
     }
-    .md-title {
+    .mat-title {
       margin-top: 0;
     }
     .payment-info,
@@ -97,12 +97,12 @@ cart-confirm-tab-component, quote-confirm-tab {
   }
   .cart-total, .quote-total span {
     display: flex;
-    &.mat-button-wrapper md-icon{
+    &.mat-button-wrapper mat-icon{
       padding: rem(.6) rem(.3) 0 0
     }
   }
 }
-cart-component .tabs-section md-tab-group > div cart-confirm-tab-component .project:first-child,
-quote-show-component .tabs-section md-tab-group > div quote-confirm-tab .project:first-child {
+cart-component .tabs-section mat-tab-group > div cart-confirm-tab-component .project:first-child,
+quote-show-component .tabs-section mat-tab-group > div quote-confirm-tab .project:first-child {
   margin-top: rem(.2);
 }

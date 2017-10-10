@@ -50,7 +50,7 @@
         }
       }
       .selected {
-        md-icon {
+        mat-icon {
           @include text-contrast(mat-color($foreground, base));
         }
       }
@@ -82,7 +82,7 @@
   // Copy legacy link.This may change into copy share link
   .mat-dialog-container collection-delete-component .wz-dialog,
   .mat-dialog-container .wz-dialog.wz-legacy-link {
-    [md-dialog-title] {
+    [mat-dialog-title] {
       color: mat-color($foreground, text);
     }
   }

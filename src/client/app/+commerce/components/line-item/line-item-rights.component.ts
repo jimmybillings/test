@@ -14,11 +14,11 @@ import { SelectedPriceAttributes } from '../../../shared/interfaces/common.inter
       (click)="showPricingDialog.emit()">
       <ng-container *ngIf="!isOrder">
         <header>{{'QUOTE.RIGHTS_PACKAGE_TITLE' | translate}}</header>
-        <span *ngIf="!hasAttributes" class="cart-asset-metadata md-caption">
+        <span *ngIf="!hasAttributes" class="cart-asset-metadata mat-caption">
           <strong>{{'QUOTE.RIGHTS_PACKAGE_NOT_SELECTED_MSG' | translate}}</strong>
         </span>
       </ng-container>
-      <span *ngFor="let right of rights" class="cart-asset-metadata md-caption">
+      <span *ngFor="let right of rights" class="cart-asset-metadata mat-caption">
         <strong>{{right.priceAttributeName}}: </strong> {{right.selectedAttributeValue}}
       </span>
     </section>

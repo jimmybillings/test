@@ -35,12 +35,12 @@
           class="back-to-search"
           *ngIf="hasPageHistory && asset.type == 'collectionAsset'"
           title="Back to search results"
-          md-icon-button 
+          mat-icon-button 
           (click)="previousPage()">
-            <md-icon>arrow_back</md-icon>
+            <mat-icon>arrow_back</mat-icon>
         </a> -->
         <a
-          md-button
+          mat-button
           [routerLink]="routerLinkForAssetParent">
           {{ breadcrumbLabel[0] | uppercase | translate:{id: breadcrumbLabel[1]} }}
         </a>
@@ -60,126 +60,126 @@
           <button
             data-pendo='asset-detail_download-btn'
             [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
-            md-icon-button
-            [md-menu-trigger-for]="downloadCompMenu"
+            mat-icon-button
+            [mat-menu-trigger-for]="downloadCompMenu"
             title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 
               'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED') | translate }}">
-              <md-icon>file_download</md-icon>
+              <mat-icon>file_download</mat-icon>
           </button>
 
-          <md-menu x-position="before" #downloadCompMenu="mdMenu">
-            <md-list class="aspera-download-options">
-              <md-list-item>
-                <span md-menu-item disabled flex>{{"COMPS.DOWNLOAD_WM_COMP" | translate }}</span>
+          <mat-menu x-position="before" #downloadCompMenu="matMenu">
+            <mat-list class="aspera-download-options">
+              <mat-list-item>
+                <span mat-menu-item disabled flex>{{"COMPS.DOWNLOAD_WM_COMP" | translate }}</span>
                 <div class="actions" flex>
                   <button 
-                    md-icon-button
+                    mat-icon-button
                     title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
                     (click)="downloadComp(asset.assetId, 'wm');" 
                     [disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)">
-                      <md-icon>file_download</md-icon>
+                      <mat-icon>file_download</mat-icon>
                     </button>
                   <button 
-                    md-icon-button
+                    mat-icon-button
                     title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
                     [disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)"
                     wzAsperaDownload 
                     [asperaPreloaded]="'false'" 
                     [renditionType]="'wm'" 
                     [assetId]="asset.assetId">
-                      <md-icon>whatshot</md-icon>
+                      <mat-icon>whatshot</mat-icon>
                     </button>
                 </div>
-              </md-list-item>
-              <md-list-item>
-                <span md-menu-item disabled flex>{{"COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</span>
+              </mat-list-item>
+              <mat-list-item>
+                <span mat-menu-item disabled flex>{{"COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</span>
                 <div class="actions" flex>
                   <button 
-                    md-icon-button
+                    mat-icon-button
                     title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
                     (click)="downloadComp(asset.assetId, 'clean');" 
                     [disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)">
-                      <md-icon>file_download</md-icon>
+                      <mat-icon>file_download</mat-icon>
                   </button>
                   <button 
-                    md-icon-button
+                    mat-icon-button
                     title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
                     [disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)"
                     wzAsperaDownload 
                     [asperaPreloaded]="'false'" 
                     [renditionType]="'clean'" 
                     [assetId]="asset.assetId">
-                    <md-icon>whatshot</md-icon>
+                    <mat-icon>whatshot</mat-icon>
                   </button>
                 </div>
-              </md-list-item>
-              <md-list-item>
-                <span md-menu-item disabled flex>{{"COMPS.DOWNLOAD_FULL_COMP" | translate }}</span>
+              </mat-list-item>
+              <mat-list-item>
+                <span mat-menu-item disabled flex>{{"COMPS.DOWNLOAD_FULL_COMP" | translate }}</span>
                 <div class="actions" flex>
                   <button 
-                    md-icon-button
+                    mat-icon-button
                     title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
                     [disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)"
                     (click)="downloadComp(asset.assetId, 'full');">
-                    <md-icon>file_download</md-icon>
+                    <mat-icon>file_download</mat-icon>
                   </button>
                   <button 
-                    md-icon-button
+                    mat-icon-button
                     title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
                     [disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)"
                     wzAsperaDownload 
                     [asperaPreloaded]="'false'" 
                     [renditionType]="'full'" 
                     [assetId]="asset.assetId">
-                      <md-icon>whatshot</md-icon>
+                      <mat-icon>whatshot</mat-icon>
                   </button>
                 </div>
-              </md-list-item>
-            </md-list>
-          </md-menu>
+              </mat-list-item>
+            </mat-list>
+          </mat-menu>
 
-          <button md-icon-button *ngIf="canShare" title="{{ shareButtonLabelKey | translate }}" (click)="sharing.show($event)">
-            <md-icon>share</md-icon>
+          <button mat-icon-button *ngIf="canShare" title="{{ shareButtonLabelKey | translate }}" (click)="sharing.show($event)">
+            <mat-icon>share</mat-icon>
           </button>
 
-          <button md-icon-button
+          <button mat-icon-button
             (click)="toggleCommentsVisibility()"
             *ngIf="canComment"
             title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
-              <md-icon>mode_comment</md-icon>
+              <mat-icon>mode_comment</mat-icon>
               <span *ngIf="(commentCount | async) > 0" class="comment-count">{{commentCount| async}}</span>
           </button>
 
           <ng-container *ngIf="userCan.haveCollections()">
             <button
               data-pendo='asset-detail_add-to-collection-btn'
-              md-icon-button 
+              mat-icon-button 
               *ngIf="canAddToActiveCollection"
               [disabled]="!userCan.editCollections()" 
               title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
               (click)="addAssetToActiveCollection()">
-              <md-icon>add_box</md-icon>
+              <mat-icon>add_box</mat-icon>
             </button>
-            <button md-icon-button 
+            <button mat-icon-button 
               *ngIf="canAddAgainToActiveCollection"
               [disabled]="!userCan.editCollections()" 
               title="{{ 'COLLECTION.ADD_AGAIN_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
               (click)="addAssetToActiveCollection()">
-              <md-icon>library_add</md-icon>
+              <mat-icon>library_add</mat-icon>
             </button>
-            <button md-icon-button 
+            <button mat-icon-button 
               *ngIf="canUpdateInActiveCollection"  
               [disabled]="!userCan.editCollections()"
               title="{{ 'COLLECTION.UPDATE_IN_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
               (click)="updateAssetInActiveCollection()">
-              <md-icon>update</md-icon>
+              <mat-icon>update</mat-icon>
             </button>
-            <button md-icon-button 
+            <button mat-icon-button 
               *ngIf="canRemoveFromActiveCollection"  
               [disabled]="!userCan.editCollections()"
               title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
               (click)="removeAssetFromActiveCollection()">
-              <md-icon>remove_circle</md-icon>
+              <mat-icon>remove_circle</mat-icon>
             </button>
           </ng-container>
         </nav>
@@ -199,7 +199,7 @@
                 <div [ngClass]="{image: asset.primary[0].value == 'Image'}" class="photo"
                   *ngIf="asset.primary[0].value != null && asset.primary[0].value == 'Image'">
                 </div>
-                <div flex="none" class="rights md-caption">{{rights}}</div>
+                <div flex="none" class="rights mat-caption">{{rights}}</div>
                 <div flex="none" class="restriction-banner" *ngIf="asset.primary[4].value != null && asset.primary[4].value != 'Needs calculation'">{{asset.primary[4].value}}</div>
               </div>
             </div>
@@ -248,20 +248,20 @@
                 {{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}
               </div>
 
-              <md-card-actions *ngIf="canPerformCartActions" layout="column" layout-align="center center" layout-wrap="">
-                <md-select *ngIf="canSelectTranscodeTarget" (change)="onSelectTarget($event)" [(ngModel)]="selectedTarget">
-                  <md-option *ngFor="let target of asset.transcodeTargets" [value]="target">
+              <mat-card-actions *ngIf="canPerformCartActions" layout="column" layout-align="center center" layout-wrap="">
+                <mat-select *ngIf="canSelectTranscodeTarget" (change)="onSelectTarget($event)" [(ngModel)]="selectedTarget">
+                  <mat-option *ngFor="let target of asset.transcodeTargets" [value]="target">
                     {{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
-                  </md-option>
-                </md-select>
+                  </mat-option>
+                </mat-select>
 
-                <button *ngIf="canCalculatePrice" md-button (click)="getPricingAttributes()" class="is-outlined">
+                <button *ngIf="canCalculatePrice" mat-button (click)="getPricingAttributes()" class="is-outlined">
                   {{ 'PRICING.CALCULATE_HEADING' | translate }}
                 </button>
 
                 <button *ngIf="canUpdateCartAsset"
                   [disabled]="assetMatchesCartAsset"
-                  md-raised-button
+                  mat-raised-button
                   (click)="updateCartAsset()"
                   color="primary">
                   {{ updateCartAssetButtonLabelKey | translate }}
@@ -270,7 +270,7 @@
                 <button
                   data-pendo='asset-detail_add-to-cart-btn'
                   *ngIf="canAddToCart"
-                  md-raised-button
+                  mat-raised-button
                   (click)="addAssetToCart()"
                   color="primary">
                   {{ addToCartOrQuoteButtonLabelKey | translate }}
@@ -278,16 +278,16 @@
 
                 <button
                   *ngIf="canUpdateCartAsset"
-                  md-raised-button
+                  mat-raised-button
                   (click)="removeAssetFromCartOrQuote()"
                   color="accent">
                   {{ removeFromCartOrQuoteButtonLabelKey | translate }}
                 </button>
 
-                <button *ngIf="canGoToSearchAssetDetails" class="is-outlined" md-button (click)="goToSearchAssetDetails()">
+                <button *ngIf="canGoToSearchAssetDetails" class="is-outlined" mat-button (click)="goToSearchAssetDetails()">
                   {{ 'ASSET.DETAIL.BUTTON.GO_TO_SEARCH_ASSET_DETAILS' | translate }}
                 </button>
-              </md-card-actions>                  
+              </mat-card-actions>                  
             </div>              
           </div>
         </div>

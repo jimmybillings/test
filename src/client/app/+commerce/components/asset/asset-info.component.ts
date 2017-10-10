@@ -5,11 +5,11 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   selector: 'asset-info-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="md-caption asset-name">{{ asset.assetName }}</div>
+    <div class="mat-caption asset-name">{{ asset.assetName }}</div>
     <p class="asset-description">
       {{ (asset.metadata ? asset.metadata[0].value : '') | slice:0:100 }}
     </p>
-    <div class="cart-asset-metadata md-caption">
+    <div class="cart-asset-metadata mat-caption">
       <span *ngFor="let meta of asset.metadata">
         <ng-container *ngIf="shouldDisplay(meta)">
           <strong>{{ translationReady(meta.name) | uppercase | translate }}: </strong> {{ meta.value | slice:0:80 }}

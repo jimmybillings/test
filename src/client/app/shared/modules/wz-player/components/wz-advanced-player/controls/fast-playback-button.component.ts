@@ -7,8 +7,8 @@ import { PlayerState, PlaybackDirection, PlayAtSpeedRequest } from '../../../int
   selector: 'wz-fast-playback-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-icon-button [disabled]="!canPlayFast()" title="{{ title | translate }}" (click)="onClick()">
-      <md-icon>{{ iconName }}</md-icon>
+    <button mat-icon-button [disabled]="!canPlayFast()" title="{{ title | translate }}" (click)="onClick()">
+      <mat-icon>{{ iconName }}</mat-icon>
     </button>
   `
 })

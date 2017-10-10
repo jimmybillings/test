@@ -24,13 +24,13 @@
       .asset section.actions {
         nav.asset-options {
           background-color: rgba(mat-color($foreground, base), .6);
-          button[md-icon-button] {
+          button[mat-icon-button] {
             @include text-contrast(mat-color($foreground, base));
             &:hover {
               background-color: rgba(mat-color($foreground, base), .18);
             }
             &:disabled {
-              md-icon {
+              mat-icon {
                 color: rgba(mat-color($background, background),.2);;
               }
             }

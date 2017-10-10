@@ -1,9 +1,9 @@
 <div class="wz-dialog wz-legacy-link">
-    <button md-icon-button md-dialog-close title="close" type="button" class="close">
-      <md-icon>close</md-icon>
+    <button mat-icon-button mat-dialog-close title="close" type="button" class="close">
+      <mat-icon>close</mat-icon>
     </button>
-  <md-dialog-content>
-    <h1 md-dialog-title class="dialog-title">{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</h1>
+  <mat-dialog-content>
+    <h1 mat-dialog-title class="dialog-title">{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</h1>
     <p class="dialog-summary">{{ 'COLLECTION.COPY_LEGACY_LINK_DESCRIPTION' | translate }}</p>
     <section class="dd-menu-wrapper">
       <div class="link-wrapper" flex="100" layout="row">
@@ -19,13 +19,13 @@
           layout-align="end center"
           wzClipboard
           class="clipboard-copy"
-          md-icon-button
+          mat-icon-button
           data-clipboard-target="#legacyLink"
           title="{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}"
           (click)="onOpenSnackbar.emit({key: 'COLLECTION.LINK_COPIED_TOAST'})">
-          <md-icon>content_copy</md-icon>
+          <mat-icon>content_copy</mat-icon>
         </button>
       </div>
     </section>
-  </md-dialog-content>
+  </mat-dialog-content>
 </div>

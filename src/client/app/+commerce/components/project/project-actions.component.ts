@@ -6,43 +6,43 @@ import { AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.in
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
-      md-button
+      mat-button
       type="button"
       data-pendo="cart-project_pricing-btn"
       *ngIf="showRightsPricingBtn"
       (click)="editProjectPricing()" 
       class="is-outlined rights-pkg"
       [ngClass]="{'select-usage': !rmAssetsHaveAttributes }">
-      <md-icon>assignment</md-icon>
+      <mat-icon>assignment</mat-icon>
       {{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
     </button>
     <button
       data-pendo="cart-project_options-menu-trigger"
-      md-icon-button 
-      [md-menu-trigger-for]="projectOptionsMenu" 
+      mat-icon-button 
+      [mat-menu-trigger-for]="projectOptionsMenu" 
       title="{{ 'CART.PROJECTS.MORE_OPTIONS_BTN_TITLE' | translate }}">
-      <md-icon>more_vert</md-icon>
+      <mat-icon>more_vert</mat-icon>
     </button>
 
-    <md-menu x-position="before" #projectOptionsMenu="mdMenu">
-      <button md-menu-item (click)="onEditButtonClick()">
-        <md-icon>edit</md-icon>{{ 'CART.PROJECTS.EDIT_PROJECT_BTN_TITLE' | translate }}
+    <mat-menu x-position="before" #projectOptionsMenu="matMenu">
+      <button mat-menu-item (click)="onEditButtonClick()">
+        <mat-icon>edit</mat-icon>{{ 'CART.PROJECTS.EDIT_PROJECT_BTN_TITLE' | translate }}
       </button>
       <ng-container *ngIf="allowQuoteAdministration">
-        <button md-menu-item (click)="onAddFeeButtonClick()">
-          <md-icon>note_add</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}
+        <button mat-menu-item (click)="onAddFeeButtonClick()">
+          <mat-icon>note_add</mat-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}
         </button>
-        <button md-menu-item (click)="onBulkImportClick()">
-          <md-icon>library_add</md-icon>{{ 'QUOTE.BULK_IMPORT.TITLE' | translate }}
+        <button mat-menu-item (click)="onBulkImportClick()">
+          <mat-icon>library_add</mat-icon>{{ 'QUOTE.BULK_IMPORT.TITLE' | translate }}
         </button>
         <div class="divider"></div>
       </ng-container>
       <button
-        md-menu-item
+        mat-menu-item
         (click)="onRemoveButtonClick()">
-        <md-icon>delete</md-icon>{{ 'CART.PROJECTS.DELETE_PROJECT_BTN' | translate }}
+        <mat-icon>delete</mat-icon>{{ 'CART.PROJECTS.DELETE_PROJECT_BTN' | translate }}
       </button>
-    </md-menu>
+    </mat-menu>
   `
 })
 export class ProjectActionsComponent {

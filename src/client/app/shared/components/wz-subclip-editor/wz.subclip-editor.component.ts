@@ -16,18 +16,18 @@ import { EnhancedAsset } from '../../interfaces/enhanced-asset';
     </wz-advanced-player>
 
     <section layout="row" layout-align="end">
-      <button md-button color="primary" (click)="onCancelButtonClick()">
+      <button mat-button color="primary" (click)="onCancelButtonClick()">
         {{ 'ASSET.SAVE_SUBCLIP.EDIT_ACTIONS.CANCEL_BTN_LABEL' | translate }}
       </button>
 
-      <button md-button class="is-outlined" color="primary"
+      <button mat-button class="is-outlined" color="primary"
         *ngIf="!markersAreRemovable"
         [disabled]="!markersAreSavable"
         (click)="onSaveButtonClick()">
         {{ 'ASSET.SAVE_SUBCLIP.EDIT_ACTIONS.SAVE_BTN_LABEL' | translate }}
       </button>
       
-      <button md-button class="is-outlined" color="accent"
+      <button mat-button class="is-outlined" color="accent"
         *ngIf="markersAreRemovable"
         (click)="onRemoveButtonClick()">
         {{ 'ASSET.SAVE_SUBCLIP.EDIT_ACTIONS.REMOVE_BTN_LABEL' | translate }}

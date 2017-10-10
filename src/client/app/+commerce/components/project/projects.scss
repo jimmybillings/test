@@ -1,6 +1,6 @@
 projects-component .add-project button {
   margin: rem(.2) 0 rem(.2) 0;
-  md-icon {
+  mat-icon {
     padding: 0 rem(.4) rem(.2) 0;
   }
 }  
@@ -12,7 +12,7 @@ projects-component section.header {
     padding-top: rem(.6);
     padding-bottom: rem(.5);
     position: relative;
-    .md-display-1 {
+    .mat-display-1 {
       margin: 0;
       width: calc(100% - 120px);
       font-size: rem(2.6);
@@ -25,7 +25,7 @@ projects-component section.header {
 div.project {
   margin-bottom: 0;
   header.project-info {
-    h5[md-display-1] {
+    h5[mat-display-1] {
       margin: 0 0 2px 0;
       white-space: nowrap;
       .project-name {

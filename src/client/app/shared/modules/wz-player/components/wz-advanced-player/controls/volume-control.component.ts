@@ -18,13 +18,13 @@ import { PlayerState, PlayerVolumeRequest } from '../../../interfaces/player.int
   selector: 'wz-volume-control',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-icon-button *ngIf="volumeState ==='inactive'" title="{{ buttonTitle | translate }}" (mouseover)="onMouseOver()">
-      <md-icon>{{ iconName }}</md-icon>
+    <button mat-icon-button *ngIf="volumeState ==='inactive'" title="{{ buttonTitle | translate }}" (mouseover)="onMouseOver()">
+      <mat-icon>{{ iconName }}</mat-icon>
     </button>
     <div class="volume-control" [@volumeState]="volumeState" (mouseleave)="onMouseLeave()">
-      <md-slider vertical min="0" max="100" value="{{ playerState.volume }}" (input)="onSliderInput($event)"></md-slider>
-      <button md-icon-button title="{{ buttonTitle | translate }}" (click)="onButtonClick()">
-        <md-icon>{{ iconName }}</md-icon>
+      <mat-slider vertical min="0" max="100" value="{{ playerState.volume }}" (input)="onSliderInput($event)"></mat-slider>
+      <button mat-icon-button title="{{ buttonTitle | translate }}" (click)="onButtonClick()">
+        <mat-icon>{{ iconName }}</mat-icon>
       </button>
     </div>
   `,
