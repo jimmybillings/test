@@ -69,11 +69,11 @@ cart-component section.header, quote-edit-component section.header {
     text-align: right;
     letter-spacing: -.02em;
     line-height: 48px;
+    margin: 0;
     .total-label {
       line-height: 40px;
       font-weight: 300;
       letter-spacing: 0;
-      // padding-right: rem(1.4);
       opacity: .7;
     }
     .total-amount {

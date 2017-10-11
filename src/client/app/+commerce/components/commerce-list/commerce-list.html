@@ -56,7 +56,7 @@
     <div flex-gt-sm="33" layout-sm="100" flex="auto" class="mat-headline">
       <div class="total" layout="column" layout-align="right center" layout-align-gt-sm="space-between end">
         <div flex>
-          <h5 flex *ngIf="type === 'QUOTE'" class="mat-subhead status {{ item.quoteStatus.toLowerCase() }}">
+          <h5 flex *ngIf="type === 'QUOTE'" class="status {{ item.quoteStatus.toLowerCase() }}">
             {{ item.quoteStatus }}
           </h5>
           <div flex *ngIf="shouldShowRefundIndicatorFor(item)" class="indicate-refund">

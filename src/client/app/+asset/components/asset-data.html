@@ -7,10 +7,10 @@
           <div class="m-data" *ngFor='let sData of secondaryMdata[key].data; let i=index'>
             <div class="row" *ngFor='let m of sData.section'>
               <div class="cell">
-                <h5 class="mat-subhead">{{translationReady(m.name) | uppercase | translate }}</h5>
+                <h5 class="mat-subheading-1">{{translationReady(m.name) | uppercase | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="mat-body-1">{{m.value}}</p>
+                <p class="mat-subheading-1">{{m.value}}</p>
               </div>
             </div>
           </div>

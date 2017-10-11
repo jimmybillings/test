@@ -3,6 +3,7 @@ cart-confirm-tab-component, quote-confirm-tab {
   .mat-title {
     opacity: .6;
     margin: .3em 0;
+    line-height: 1;
     &.order-summary {
       display: inline-block;
       margin-top: rem(4.4);

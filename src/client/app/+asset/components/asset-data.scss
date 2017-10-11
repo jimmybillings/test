@@ -43,12 +43,13 @@
       border-right: 1px solid rgba(mat-color($mat-grey, 400),.5);
       border-bottom: 1px solid rgba(mat-color($mat-grey, 400),.5);
       display: table-cell;
-      padding: 10px 20px 10px 12px;
+      padding: 8px 20px 8px 11px;
       vertical-align: top;
       p {
         margin: 0;
         line-height: 24px;
-        opacity: .9;
+        opacity: .85;
+        font-weight: 300;
       }
     }
     .cell:first-child {
@@ -56,7 +57,7 @@
       background: rgba(mat-color($mat-grey, 300),.6);
       text-align: right;
       white-space: nowrap;
-      padding: 10px 12px 10px 40px;
+      padding: 8px 11px 8px 30px;
       width: 33%;
       h5 {
         margin: 0;

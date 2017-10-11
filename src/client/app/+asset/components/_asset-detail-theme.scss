@@ -57,14 +57,14 @@
         }
         mat-card-actions {
           mat-select {
-            .mat-select-underline {
-              background-color: mat-color($background, background, .2);
-            }
             .mat-select-placeholder.mat-floating-placeholder,
             .mat-select-value,
             .mat-select-arrow {
               color: mat-color($background, background, .7);
             }
+          }
+          .mat-form-field-underline {
+            background-color: mat-color($background, background, .2);
           }
           button {
             &.mat-primary.mat-hue-7 {
