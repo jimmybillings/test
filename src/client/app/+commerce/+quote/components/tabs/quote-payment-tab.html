@@ -38,9 +38,9 @@
         flex-md="40"
         flex="100">
         <md-card class="wz-form-card cc-form">
-          <md-card-content>
-            <wz-cc-form 
-              [items]="formItems | async" 
+          <md-card-content *ngIf="fields | async as items">
+            <wz-cc-form
+              [items]="items" 
               [serverErrors]="serverErrors"
               [successfullyVerified]="successfullyVerified | async"
               submitLabel="{{'CART.PAYMENT.VERIFY' | translate}}"
@@ -90,9 +90,9 @@
       </header>
 
       <md-card class="wz-form-card cc-form">
-        <md-card-content>
-          <wz-cc-form 
-            [items]="formItems | async" 
+        <md-card-content *ngIf="fields | async as items">
+          <wz-cc-form
+            [items]="items" 
             [serverErrors]="serverErrors"
             [successfullyVerified]="successfullyVerified | async"
             submitLabel="{{'CART.PAYMENT.VERIFY' | translate}}"
@@ -128,15 +128,14 @@
         flex-md="40"
         flex="100">
         <md-card class="wz-form-card cc-form">
-          <md-card-content>
-            <wz-cc-form 
-              [items]="formItems | async" 
+          <md-card-content *ngIf="fields | async as items">
+            <wz-cc-form
+              [items]="items" 
               [serverErrors]="serverErrors"
               [successfullyVerified]="successfullyVerified | async"
               submitLabel="{{'CART.PAYMENT.VERIFY' | translate}}"
               (onEdit)="editCreditCard()"
-              (formSubmit)="preAuthorize($event)">
-            </wz-cc-form>
+              (formSubmit)="preAuthorize($event)"></wz-cc-form>
           </md-card-content>
         </md-card>
       </section>
