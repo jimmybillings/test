@@ -17,8 +17,7 @@ export class TimecodeParser {
     this.framesPerSecond = framesPerSecond;
     this._time = new Time(this.framesPerSecond);
     integralFramesPerSecond = MATH.round(this.framesPerSecond);
-    this.accurateFramesPerSecond = this.framesPerSecond === integralFramesPerSecond ?
-      this.framesPerSecond : integralFramesPerSecond * 1000 / 1001;
+    this.accurateFramesPerSecond = this.framesPerSecond === integralFramesPerSecond ? this.framesPerSecond : integralFramesPerSecond * 1000 / 1001;
   }
 
   public asFrameNumber(string: string, format: string): number {
@@ -34,7 +33,7 @@ export class TimecodeParser {
       return this;
     }
     if (format === TimecodeFormat.MINIMAL_TIME_CONVERSION) {
-      if (!(string.indexOf(';') >= 0 || ((ref = string.match(/:/g)) !== null ? ref.length : void 0) === 3)) {
+      if (!(string.indexOf(';') >= 0 || ((ref = string.match(/:/g)) != null ? ref.length : void 0) === 3)) {
         string += ';00';
       }
     }
@@ -59,7 +58,7 @@ export class TimecodeParser {
     var adjustedFrames;
     switch (format) {
       case TimecodeFormat.NONDROPFRAME:
-        // null;
+        null;
         break;
       case TimecodeFormat.DROPFRAME:
         this._time.addFrames(-TimecodeGenerator.extraFramesNeededForDropFrame(this.framesPerSecond, this._time));

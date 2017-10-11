@@ -13,7 +13,7 @@ export class Frame {
   public frameNumber: number;
 
   constructor(framesPerSecond: number, sourceBasedOffset?: string | number) {
-    if (sourceBasedOffset === null) {
+    if (sourceBasedOffset == null) {
       sourceBasedOffset = 0;
     }
     this.setFramesPerSecondTo(framesPerSecond);
@@ -21,17 +21,17 @@ export class Frame {
   }
 
   stringToFrameNumber(framesPerSecond: number, string: string, format?: any, base?: any): number {
-    if (format === null) {
+    if (format == null) {
       format = TimecodeFormat.SIMPLE_TIME_CONVERSION;
     }
-    if (base === null) {
+    if (base == null) {
       base = TimecodeBase.STREAM_BASED;
     }
     return new Frame(framesPerSecond).setFromString(string, format, base).asFrameNumber();
   };
 
   setFramesPerSecondTo(value: number): Frame {
-    if (value === null) {
+    if (value == null) {
       return this;
     }
     this.framesPerSecond = value;
@@ -49,7 +49,7 @@ export class Frame {
 
   setFromFrameNumber(frameNumber: number, base?: string): Frame {
     this.frameNumber = frameNumber;
-    if (base === null) {
+    if (base == null) {
       base = TimecodeBase.STREAM_BASED;
     }
     if (base === TimecodeBase.SOURCE_BASED) {
@@ -62,7 +62,7 @@ export class Frame {
   };
 
   setFromSeconds(value: number, base?: string): Frame {
-    if (base === null) {
+    if (base == null) {
       base = TimecodeBase.STREAM_BASED;
     }
     this.setFromFrameNumber(MATH.round(this.framesPerSecond * value), base);
@@ -70,7 +70,7 @@ export class Frame {
   };
 
   setFromString(string: string, format: string, base?: string): Frame {
-    if (base === null) {
+    if (base == null) {
       base = TimecodeBase.STREAM_BASED;
     }
     this.setFromFrameNumber(this._timecodeParser.asFrameNumber(string, format), base);
@@ -83,7 +83,7 @@ export class Frame {
   };
 
   asFrameNumber(base?: string): number {
-    if (base === null) {
+    if (base == null) {
       base = TimecodeBase.STREAM_BASED;
     }
     return this._frameNumberFor(base);
@@ -91,10 +91,10 @@ export class Frame {
 
   asSeconds(digitsAfterDecimal?: number, base?: string): number {
     var multiplier, seconds;
-    if (digitsAfterDecimal === null) {
+    if (digitsAfterDecimal == null) {
       digitsAfterDecimal = -1;
     }
-    if (base === null) {
+    if (base == null) {
       base = TimecodeBase.STREAM_BASED;
     }
     seconds = this._frameNumberFor(base) / this.framesPerSecond;
@@ -108,22 +108,23 @@ export class Frame {
   asMilliseconds(digitsAfterDecimal?: number, base?: string): number {
     var multiplier, seconds;
 
-    if (digitsAfterDecimal === null) {
+    if (digitsAfterDecimal == null) {
       digitsAfterDecimal = 0;
     }
-
-    if (base === null) {
+    
+    if (base == null) {
       base = TimecodeBase.STREAM_BASED;
     }
 
     multiplier = MATH.pow(10, digitsAfterDecimal);
 
     seconds = this._frameNumberFor(base) / this.framesPerSecond;
+    
     return MATH.round(1000 * multiplier * seconds) / multiplier;
   };
 
   asString(format: string, base?: string) {
-    if (base === null) {
+    if (base == null) {
       base = TimecodeBase.STREAM_BASED;
     }
     switch (format) {

@@ -4,11 +4,7 @@ const SECONDS_IN_A_MINUTE = 60;
 const SECONDS_IN_AN_HOUR = SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR;
 
 const slice = [].slice;
-const indexOf = [].indexOf ||
-  function (item) {
-    for (var i = 0, l = this.length; i < l; i++) {
-      if (i in this && this[i] === item) return i;
-    } return -1; };
+const indexOf = [].indexOf || function (item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 export class Time {
   public _integralFramesPerSecond: number;
@@ -62,7 +58,7 @@ export class Time {
     return this._minutes;
   };
 
-  public setHours(_hours: number) {
+  public setHours(_hours:any) {
     this._hours = _hours;
     return this;
   };

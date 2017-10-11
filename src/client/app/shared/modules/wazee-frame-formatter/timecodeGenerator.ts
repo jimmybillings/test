@@ -10,7 +10,55 @@ export class TimecodeGenerator {
   public frameNumber: number;
   public _time: Time;
 
+  constructor(framesPerSecond1?: number) {
+    var integralFramesPerSecond;
+    this.framesPerSecond = framesPerSecond1;
+    this._time = new Time(this.framesPerSecond);
+    integralFramesPerSecond = MATH.round(this.framesPerSecond);
+    this.accurateFramesPerSecond = this.framesPerSecond === integralFramesPerSecond ? this.framesPerSecond : integralFramesPerSecond * 1000 / 1001;
+  }
+
+  // ------- PUBLIC INTERFACE -------
+
+  public setFromFrameNumber(frameNumber: number): TimecodeGenerator {
+    this.frameNumber = frameNumber;
+    return this;
+  };
+
+  public asString(format: string, minLength?: number): string {
+    var frameDelimiter, frames, rawSeconds, truncatedSeconds;
+    if (minLength == null) {
+      minLength = DEFAULT_TIME_CODE_LENGTH;
+    }
+    frameDelimiter = ':';
+    this._time.clear();
+    switch (format) {
+      case TimecodeFormat.NONDROPFRAME:
+        this._time.setFrames(this.frameNumber);
+        break;
+      case TimecodeFormat.DROPFRAME:
+        this._time.setFrames(this.frameNumber);
+        this._addDropFramesIfNecessary();
+        frameDelimiter = ';';
+        break;
+      case TimecodeFormat.SIMPLE_TIME_CONVERSION:
+      case TimecodeFormat.MINIMAL_TIME_CONVERSION:
+        rawSeconds = this.frameNumber / this.accurateFramesPerSecond;
+        truncatedSeconds = MATH.floor(rawSeconds);
+        frames = MATH.round((rawSeconds - truncatedSeconds) * this.framesPerSecond);
+        this._time.setSeconds(truncatedSeconds).setFrames(frames);
+        frameDelimiter = ';';
+    }
+    switch (format) {
+      case TimecodeFormat.MINIMAL_TIME_CONVERSION:
+        return this._minimallyFormatTime();
+      default:
+        return this._formatTime(minLength, frameDelimiter);
+    }
+  };
+
   // ------- STATIC (CLASS) METHODS -------
+
   static extraFramesNeededForDropFrame(framesPerSecond: number, time: Time): number {
     switch (framesPerSecond) {
       case 29.97:
@@ -56,63 +104,10 @@ export class TimecodeGenerator {
     return extra;
   };
 
-  constructor(framesPerSecond1?: number) {
-    var integralFramesPerSecond;
-    this.framesPerSecond = framesPerSecond1;
-    this._time = new Time(this.framesPerSecond);
-    integralFramesPerSecond = MATH.round(this.framesPerSecond);
-    this.accurateFramesPerSecond = this.framesPerSecond === integralFramesPerSecond ?
-      this.framesPerSecond : integralFramesPerSecond * 1000 / 1001;
-  }
-
-  // ------- PUBLIC INTERFACE -------
-
-  public setFromFrameNumber(frameNumber: number): TimecodeGenerator {
-    this.frameNumber = frameNumber;
-    return this;
-  };
-
-  public asString(format: string, minLength?: number): string {
-    var frameDelimiter, frames, rawSeconds, truncatedSeconds;
-    if (minLength === null) {
-      minLength = DEFAULT_TIME_CODE_LENGTH;
-    }
-    frameDelimiter = ':';
-    this._time.clear();
-    switch (format) {
-      case TimecodeFormat.NONDROPFRAME:
-        this._time.setFrames(this.frameNumber);
-        break;
-      case TimecodeFormat.DROPFRAME:
-        this._time.setFrames(this.frameNumber);
-        this._addDropFramesIfNecessary();
-        frameDelimiter = ';';
-        break;
-      case TimecodeFormat.SIMPLE_TIME_CONVERSION:
-      case TimecodeFormat.MINIMAL_TIME_CONVERSION:
-        rawSeconds = this.frameNumber / this.accurateFramesPerSecond;
-        truncatedSeconds = MATH.floor(rawSeconds);
-        frames = MATH.round((rawSeconds - truncatedSeconds) * this.framesPerSecond);
-        this._time.setSeconds(truncatedSeconds).setFrames(frames);
-        frameDelimiter = ';';
-    }
-    switch (format) {
-      case TimecodeFormat.MINIMAL_TIME_CONVERSION:
-        return this._minimallyFormatTime();
-      default:
-        return this._formatTime(minLength, frameDelimiter);
-    }
-  };
-
   // ------- PRIVATE METHODS -------
 
-  private _addDropFramesIfNecessary(): void {
-    var extraExtraFrames: number,
-    extraFrames: number,
-    hours: number,
-    minutes: number,
-    originalHours: number,
-    originalMinutes: number;
+  public _addDropFramesIfNecessary(): void {
+    var extraExtraFrames: number, extraFrames: number, hours: number, minutes: number, originalHours: number, originalMinutes: number;
     originalMinutes = this._time.getMinutes();
     originalHours = this._time.getHours();
     extraFrames = TimecodeGenerator.extraFramesNeededForDropFrame(this.framesPerSecond, this._time);
@@ -137,9 +132,7 @@ export class TimecodeGenerator {
         hours = this._time.getHours();
         if (minutes > originalMinutes) {
           extraExtraFrames += minutes - originalMinutes;
-          if (!this._time.hoursMultipleOf(3) &&
-            this._time.minutesMultipleOf(2) &&
-            !this._time.minutesOneOf([0, 16, 30, 44])) {
+          if (!this._time.hoursMultipleOf(3) && this._time.minutesMultipleOf(2) && !this._time.minutesOneOf([0, 16, 30, 44])) {
             extraExtraFrames += 1;
           }
         }
@@ -150,26 +143,16 @@ export class TimecodeGenerator {
     }
   };
 
-  private _formatTime(minLength: number, frameDelimiter: string): string {
-    if (frameDelimiter === null) {
+  public _formatTime(minLength: number, frameDelimiter: string): string {
+    if (frameDelimiter == null) {
       frameDelimiter = ':';
     }
-    return this._zeroFillTo(minLength, this._time.getHours() + ':' +
-      this._zeroFillTo(2, this._time.getMinutes()) + ':' +
-      this._zeroFillTo(2, this._time.getSeconds()) +
-      frameDelimiter + this._zeroFillTo(2, this._time.getFrames()));
+    return this._zeroFillTo(minLength, this._time.getHours() + ':' + this._zeroFillTo(2, this._time.getMinutes()) + ':' + this._zeroFillTo(2, this._time.getSeconds()) + frameDelimiter + this._zeroFillTo(2, this._time.getFrames()));
   };
 
-  private _minimallyFormatTime(): string {
-    var frames: number,
-    hours: number,
-    minutes: number,
-    outputPieces: Array<string>,
-    ref: Array<number>;
-    ref = [this._time.getHours(),this._time.getMinutes(),this._time.getFrames()];
-    hours = ref[0];
-    minutes = ref[1];
-    frames = ref[2];
+  public _minimallyFormatTime(): string {
+    var frames: number, hours: number, minutes: number, outputPieces: Array<string>, ref: Array<number>;
+    ref = [this._time.getHours(), this._time.getMinutes(), this._time.getFrames()], hours = ref[0], minutes = ref[1], frames = ref[2];
     outputPieces = [this._zeroFillTo(2, this._time.getSeconds())];
     if (minutes > 0) {
       outputPieces.unshift(this._zeroFillTo(2, minutes) + ':');
@@ -183,7 +166,7 @@ export class TimecodeGenerator {
     return outputPieces.join('');
   };
 
-  private _zeroFillTo(minNumberOfDigits: number, number: number | string): string {
+  public _zeroFillTo(minNumberOfDigits: number, number: number | string): string {
     var output: string;
     output = number + '';
     while (output.length < minNumberOfDigits) {
