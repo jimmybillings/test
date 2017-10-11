@@ -5,7 +5,7 @@ export function main() {
     let serviceUnderTest: FutureApiService;
 
     beforeEach(() => {
-      serviceUnderTest = new FutureApiService(null, null, null, null);
+      serviceUnderTest = new FutureApiService(null, null, null);
     });
 
     it('***** HASN\'T BEEN TESTED YET! *****', () => {
