@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 
 import { SubclipMarkers, bothMarkersAreSet, neitherMarkersAreSet, markersMatch } from '../../interfaces/subclip-markers';
 import { EnhancedAsset } from '../../interfaces/enhanced-asset';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../modules/wazee-frame-formatter/index';
 
 @Component({
   moduleId: module.id,
@@ -75,7 +75,8 @@ export class WzSubclipEditorComponent {
   }
 
   public get markersAreAlreadyUsed(): boolean {
-    return this.alreadyUsedMarkersList.some(alreadyUsedMarkers => markersMatch(this.playerMarkers, alreadyUsedMarkers));
+    return this.alreadyUsedMarkersList
+      .some(alreadyUsedMarkers => markersMatch(this.playerMarkers, alreadyUsedMarkers));
   }
 
   public get cancelButtonHoverTextKey(): string {
