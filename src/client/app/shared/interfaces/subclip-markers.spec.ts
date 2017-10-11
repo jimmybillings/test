@@ -472,5 +472,301 @@ export function main() {
           });
       });
     });
+
+    describe('markersMatch()', () => {
+      const inFrame: Frame = new Frame(30).setFromFrameNumber(30);
+      const outFrame: Frame = new Frame(30).setFromFrameNumber(60);
+      const nonmatchingInFrame: Frame = new Frame(30).setFromFrameNumber(31);
+      const nonmatchingOutFrame: Frame = new Frame(30).setFromFrameNumber(61);
+
+      const tests: { these: any, those: any, expectedResult: boolean }[] = [
+        { these: undefined, those: undefined, expectedResult: true },
+        { these: undefined, those: null, expectedResult: true },
+
+        { these: undefined, those: { in: undefined, out: undefined }, expectedResult: true },
+        { these: undefined, those: { in: undefined, out: null }, expectedResult: true },
+        { these: undefined, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: undefined, those: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { these: undefined, those: { in: null, out: undefined }, expectedResult: true },
+        { these: undefined, those: { in: null, out: null }, expectedResult: true },
+        { these: undefined, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: undefined, those: { in: null, out: 'matching' }, expectedResult: false },
+
+        { these: undefined, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: undefined, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: undefined, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: undefined, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: undefined, those: { in: 'matching', out: undefined }, expectedResult: false },
+        { these: undefined, those: { in: 'matching', out: null }, expectedResult: false },
+        { these: undefined, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: undefined, those: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { these: null, those: undefined, expectedResult: true },
+        { these: null, those: null, expectedResult: true },
+
+        { these: null, those: { in: undefined, out: undefined }, expectedResult: true },
+        { these: null, those: { in: undefined, out: null }, expectedResult: true },
+        { these: null, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: null, those: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { these: null, those: { in: null, out: undefined }, expectedResult: true },
+        { these: null, those: { in: null, out: null }, expectedResult: true },
+        { these: null, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: null, those: { in: null, out: 'matching' }, expectedResult: false },
+
+        { these: null, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: null, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: null, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: null, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: null, those: { in: 'matching', out: undefined }, expectedResult: false },
+        { these: null, those: { in: 'matching', out: null }, expectedResult: false },
+        { these: null, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: null, those: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: undefined, out: undefined }, those: undefined, expectedResult: true },
+        { these: { in: undefined, out: undefined }, those: null, expectedResult: true },
+
+        { these: { in: undefined, out: undefined }, those: { in: undefined, out: undefined }, expectedResult: true },
+        { these: { in: undefined, out: undefined }, those: { in: undefined, out: null }, expectedResult: true },
+        { these: { in: undefined, out: undefined }, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: undefined }, those: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { these: { in: undefined, out: undefined }, those: { in: null, out: undefined }, expectedResult: true },
+        { these: { in: undefined, out: undefined }, those: { in: null, out: null }, expectedResult: true },
+        { these: { in: undefined, out: undefined }, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: undefined }, those: { in: null, out: 'matching' }, expectedResult: false },
+
+        { these: { in: undefined, out: undefined }, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: { in: undefined, out: undefined }, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: { in: undefined, out: undefined }, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: undefined }, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: undefined, out: undefined }, those: { in: 'matching', out: undefined }, expectedResult: false },
+        { these: { in: undefined, out: undefined }, those: { in: 'matching', out: null }, expectedResult: false },
+        { these: { in: undefined, out: undefined }, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: undefined }, those: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: undefined, out: null }, those: undefined, expectedResult: true },
+        { these: { in: undefined, out: null }, those: null, expectedResult: true },
+
+        { these: { in: undefined, out: null }, those: { in: undefined, out: undefined }, expectedResult: true },
+        { these: { in: undefined, out: null }, those: { in: undefined, out: null }, expectedResult: true },
+        { these: { in: undefined, out: null }, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: null }, those: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { these: { in: undefined, out: null }, those: { in: null, out: undefined }, expectedResult: true },
+        { these: { in: undefined, out: null }, those: { in: null, out: null }, expectedResult: true },
+        { these: { in: undefined, out: null }, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: null }, those: { in: null, out: 'matching' }, expectedResult: false },
+
+        { these: { in: undefined, out: null }, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: { in: undefined, out: null }, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: { in: undefined, out: null }, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: null }, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: undefined, out: null }, those: { in: 'matching', out: undefined }, expectedResult: false },
+        { these: { in: undefined, out: null }, those: { in: 'matching', out: null }, expectedResult: false },
+        { these: { in: undefined, out: null }, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: null }, those: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: undefined, out: 'set' }, those: undefined, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: null, expectedResult: false },
+
+        { these: { in: undefined, out: 'set' }, those: { in: undefined, out: undefined }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: undefined, out: null }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: undefined, out: 'matching' }, expectedResult: true },
+
+        { these: { in: undefined, out: 'set' }, those: { in: null, out: undefined }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: null, out: null }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: null, out: 'matching' }, expectedResult: true },
+
+        { these: { in: undefined, out: 'set' }, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: undefined, out: 'set' }, those: { in: 'matching', out: undefined }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: 'matching', out: null }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: undefined, out: 'set' }, those: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: null, out: undefined }, those: undefined, expectedResult: true },
+        { these: { in: null, out: undefined }, those: null, expectedResult: true },
+
+        { these: { in: null, out: undefined }, those: { in: undefined, out: undefined }, expectedResult: true },
+        { these: { in: null, out: undefined }, those: { in: undefined, out: null }, expectedResult: true },
+        { these: { in: null, out: undefined }, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: undefined }, those: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { these: { in: null, out: undefined }, those: { in: null, out: undefined }, expectedResult: true },
+        { these: { in: null, out: undefined }, those: { in: null, out: null }, expectedResult: true },
+        { these: { in: null, out: undefined }, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: undefined }, those: { in: null, out: 'matching' }, expectedResult: false },
+
+        { these: { in: null, out: undefined }, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: { in: null, out: undefined }, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: { in: null, out: undefined }, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: undefined }, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: null, out: undefined }, those: { in: 'matching', out: undefined }, expectedResult: false },
+        { these: { in: null, out: undefined }, those: { in: 'matching', out: null }, expectedResult: false },
+        { these: { in: null, out: undefined }, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: undefined }, those: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: null, out: null }, those: undefined, expectedResult: true },
+        { these: { in: null, out: null }, those: null, expectedResult: true },
+
+        { these: { in: null, out: null }, those: { in: undefined, out: undefined }, expectedResult: true },
+        { these: { in: null, out: null }, those: { in: undefined, out: null }, expectedResult: true },
+        { these: { in: null, out: null }, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: null }, those: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { these: { in: null, out: null }, those: { in: null, out: undefined }, expectedResult: true },
+        { these: { in: null, out: null }, those: { in: null, out: null }, expectedResult: true },
+        { these: { in: null, out: null }, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: null }, those: { in: null, out: 'matching' }, expectedResult: false },
+
+        { these: { in: null, out: null }, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: { in: null, out: null }, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: { in: null, out: null }, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: null }, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: null, out: null }, those: { in: 'matching', out: undefined }, expectedResult: false },
+        { these: { in: null, out: null }, those: { in: 'matching', out: null }, expectedResult: false },
+        { these: { in: null, out: null }, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: null }, those: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: null, out: 'set' }, those: undefined, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: null, expectedResult: false },
+
+        { these: { in: null, out: 'set' }, those: { in: undefined, out: undefined }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: undefined, out: null }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: undefined, out: 'matching' }, expectedResult: true },
+
+        { these: { in: null, out: 'set' }, those: { in: null, out: undefined }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: null, out: null }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: null, out: 'matching' }, expectedResult: true },
+
+        { these: { in: null, out: 'set' }, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: null, out: 'set' }, those: { in: 'matching', out: undefined }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: 'matching', out: null }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: null, out: 'set' }, those: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: undefined }, those: undefined, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: null, expectedResult: false },
+
+        { these: { in: 'set', out: undefined }, those: { in: undefined, out: undefined }, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: { in: undefined, out: null }, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: undefined }, those: { in: null, out: undefined }, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: { in: null, out: null }, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: { in: null, out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: undefined }, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: undefined }, those: { in: 'matching', out: undefined }, expectedResult: true },
+        { these: { in: 'set', out: undefined }, those: { in: 'matching', out: null }, expectedResult: true },
+        { these: { in: 'set', out: undefined }, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: undefined }, those: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: null }, those: undefined, expectedResult: false },
+        { these: { in: 'set', out: null }, those: null, expectedResult: false },
+
+        { these: { in: 'set', out: null }, those: { in: undefined, out: undefined }, expectedResult: false },
+        { these: { in: 'set', out: null }, those: { in: undefined, out: null }, expectedResult: false },
+        { these: { in: 'set', out: null }, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: null }, those: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: null }, those: { in: null, out: undefined }, expectedResult: false },
+        { these: { in: 'set', out: null }, those: { in: null, out: null }, expectedResult: false },
+        { these: { in: 'set', out: null }, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: null }, those: { in: null, out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: null }, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: { in: 'set', out: null }, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: { in: 'set', out: null }, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: null }, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: null }, those: { in: 'matching', out: undefined }, expectedResult: true },
+        { these: { in: 'set', out: null }, those: { in: 'matching', out: null }, expectedResult: true },
+        { these: { in: 'set', out: null }, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: null }, those: { in: 'matching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: 'set' }, those: undefined, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: null, expectedResult: false },
+
+        { these: { in: 'set', out: 'set' }, those: { in: undefined, out: undefined }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: undefined, out: null }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: undefined, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: undefined, out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: 'set' }, those: { in: null, out: undefined }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: null, out: null }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: null, out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: null, out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: 'set' }, those: { in: 'nonmatching', out: undefined }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: 'nonmatching', out: null }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: 'nonmatching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: 'nonmatching', out: 'matching' }, expectedResult: false },
+
+        { these: { in: 'set', out: 'set' }, those: { in: 'matching', out: undefined }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: 'matching', out: null }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: 'matching', out: 'nonmatching' }, expectedResult: false },
+        { these: { in: 'set', out: 'set' }, those: { in: 'matching', out: 'matching' }, expectedResult: true },
+      ];
+
+      tests.forEach(test => {
+        const theseDescription: string = test.these
+          ? `{ in: ${test.these.in}, out: ${test.these.out} }`
+          : test.these;
+
+        const thoseDescription: string = test.those
+          ? `{ in: ${test.those.in}, out: ${test.those.out} }`
+          : test.those;
+
+        it(`returns ${test.expectedResult} for ${theseDescription} and ${thoseDescription}`, () => {
+          const these: SubclipMarkers.SubclipMarkers =
+            test.these
+              ? {
+                in: test.these.in === 'set' ? inFrame : test.these.in,
+                out: test.these.out === 'set' ? outFrame : test.these.out
+              }
+              : test.these;
+
+          const those: SubclipMarkers.SubclipMarkers =
+            test.those
+              ? {
+                in: test.those.in === 'matching'
+                  ? inFrame
+                  : (test.those.in === 'nonmatching' ? nonmatchingInFrame : test.those.in),
+                out: test.those.out === 'matching'
+                  ? outFrame
+                  : (test.those.out === 'nonmatching' ? nonmatchingOutFrame : test.those.out)
+              }
+              : test.those;
+
+          expect(SubclipMarkers.markersMatch(these, those)).toBe(test.expectedResult);
+        });
+      });
+    });
   });
 }

@@ -56,6 +56,10 @@ export function matches(timeStart: number, timeEnd: number, markers: SubclipMark
   return timeStartFrom(markers) === (timeStart || -1) && timeEndFrom(markers) === (timeEnd || -2);
 }
 
+export function markersMatch(markers: SubclipMarkers, otherMarkers: SubclipMarkers): boolean {
+  return timeStartFrom(markers) === timeStartFrom(otherMarkers) && timeEndFrom(markers) === timeEndFrom(otherMarkers);
+}
+
 export function bothMarkersAreSet(markers: SubclipMarkers): boolean {
   return !!markers && !!markers.in && !!markers.out;
 }
@@ -73,9 +77,9 @@ function deserializeSingle(serializedMarker: SerializedSubclipMarker): Frame {
 }
 
 function timeStartFrom(markers: SubclipMarkers): number {
-  return markers && markers.in ? markers.in.asMilliseconds() : -1;
+  return (markers && markers.in) ? markers.in.asMilliseconds() : -1;
 }
 
 function timeEndFrom(markers: SubclipMarkers): number {
-  return markers && markers.out ? markers.out.asMilliseconds() : -2;
+  return (markers && markers.out) ? markers.out.asMilliseconds() : -2;
 }

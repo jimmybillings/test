@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { QuoteService } from '../../../shared/services/quote.service';
-import { Quote } from '../../../shared/interfaces/commerce.interface';
+import { Quote, QuoteState, AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.interface';
 import { Observable } from 'rxjs/Observable';
 import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
@@ -66,6 +66,10 @@ export class QuoteShowComponent implements OnInit {
     return !this.userCan.administerQuotes() && this.quoteService.state.data.quoteStatus === 'ACTIVE';
   }
 
+  public get trStringForPurchaseType(): string {
+    return `QUOTE.${this.quoteService.state.data.purchaseType}`;
+  }
+
   public onNotification(message: CommerceMessage): void {
     switch (message.type) {
       case 'GO_TO_NEXT_TAB': {
@@ -92,6 +96,16 @@ export class QuoteShowComponent implements OnInit {
 
   public get commentCount(): Observable<number> {
     return this.appStore.select(state => state.comment.quote.pagination.totalCount);
+  }
+
+  public get offlineAgreementIds(): Observable<string> {
+    return this.quoteService.data.map((data: QuoteState) => {
+      let ids: string[] = [];
+      data.data.projects.forEach(project => project.lineItems.forEach((lineItem: AssetLineItem) => {
+        if (lineItem.externalAgreementIds) lineItem.externalAgreementIds.forEach(id => ids.push(id));
+      }));
+      return ids.filter((id: string, index: number, ids: string[]) => id !== ids[index - 1]).join(', ');
+    });
   }
 
   private goToNextTab(): void {
