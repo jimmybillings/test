@@ -249,12 +249,13 @@
               </div>
 
               <mat-card-actions *ngIf="canPerformCartActions" layout="column" layout-align="center center" layout-wrap="">
-                <mat-select *ngIf="canSelectTranscodeTarget" (change)="onSelectTarget($event)" [(ngModel)]="selectedTarget">
-                  <mat-option *ngFor="let target of asset.transcodeTargets" [value]="target">
-                    {{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
-                  </mat-option>
-                </mat-select>
-
+                  <mat-form-field>
+                    <mat-select *ngIf="canSelectTranscodeTarget" (change)="onSelectTarget($event)" [(ngModel)]="selectedTarget">
+                      <mat-option *ngFor="let target of asset.transcodeTargets" [value]="target">
+                        {{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 <button *ngIf="canCalculatePrice" mat-button (click)="getPricingAttributes()" class="is-outlined">
                   {{ 'PRICING.CALCULATE_HEADING' | translate }}
                 </button>

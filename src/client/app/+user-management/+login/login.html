@@ -1,12 +1,12 @@
 <section class="login hero" #target *ngIf="config">
   <div *ngIf="displayWelcomeMessage" layout="row" mat-scroll-y="" layout-align="center center">
-    <div flex-gt-lg="50" flex-gt-md="60" flex-gt-sm="75" flex="95" class="user-message">
-      <p>{{ 'LOGIN.NEW_USER' | translate }}</p>
+    <div flex-gt-md="45" flex-gt-sm="75" flex="95" class="user-message">
+      <p class="mat-headline">{{ 'LOGIN.NEW_USER' | translate }}</p>
     </div> 
   </div>
   <div *ngIf="displayErrorMessage" layout="row" mat-scroll-y="" layout-align="center center">
-    <div flex-gt-lg="50" flex-gt-md="60" flex-gt-sm="75" flex="95" class="user-message">
-      <p>{{ 'NOTIFICATION.REQUIRE_LOGIN' | translate }}</p>
+    <div flex-gt-md="45" flex-gt-sm="75" flex="95" class="user-message">
+      <p class="mat-headline">{{ 'NOTIFICATION.REQUIRE_LOGIN' | translate }}</p>
     </div> 
   </div>
   <div layout="row" mat-scroll-y="" layout-align="center start">

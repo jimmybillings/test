@@ -2,6 +2,9 @@ home-call-to-action {
   .mrkt-call-to-action {
     min-height: rem(44.0);
     text-align: center;
+    .mat-display-1 {
+      margin: .6em 0 .9em 0;
+    }
   }
   // this should go in some kind of glb scss file
   .conversion {
