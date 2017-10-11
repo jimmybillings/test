@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
     public userCan: Capabilities,
     private apiConfig: ApiConfig,
     private window: WindowRef,
-    private filt: FilterService,
+    private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
     private zone: NgZone,
     private store: AppStore
