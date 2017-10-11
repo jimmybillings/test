@@ -149,13 +149,13 @@
   },
   "dependencies": {
     "@angular/animations": "4.4.4",
+    "@angular/cdk": "^2.0.0-beta.12",
     "@angular/common": "4.4.4",
     "@angular/compiler": "4.4.4",
     "@angular/core": "4.4.4",
     "@angular/forms": "4.4.4",
     "@angular/http": "4.4.4",
-    "@angular/material": "2.0.0-beta.12",
-    "@angular/cdk": "2.0.0-beta.12",
+    "@angular/material": "^2.0.0-beta.12",
     "@angular/platform-browser": "4.4.4",
     "@angular/platform-browser-dynamic": "4.4.4",
     "@angular/router": "4.4.4",
@@ -174,7 +174,7 @@
     "reflect-metadata": "0.1.10",
     "rxjs": "5.4.3",
     "systemjs": "0.19.41",
-    "wazee-frame-formatter": "git@github.com:t3mediacorp/wazee-frame-formatter.git#typescript-version",
+    "wazee-frame-formatter": "git+ssh://git@github.com/t3mediacorp/wazee-frame-formatter.git#typescript-version",
     "zone.js": "0.8.12"
   }
 }

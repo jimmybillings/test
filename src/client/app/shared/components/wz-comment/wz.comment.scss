@@ -77,9 +77,9 @@ wz-comment {
         margin: 0 20px;
         padding: 4px 0;
         font-size: .8em;
-        button[mat-icon-button] mat-icon {
-          @include mat-title();
-        }
+        // button[mat-icon-button] mat-icon {
+        //   @include mat-title();
+        // }
         div.avatar {
           position: relative;
           width: 40px;

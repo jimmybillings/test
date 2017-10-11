@@ -1,14 +1,14 @@
 section.login.hero {
   div.user-message {
     text-align: center;
-    p {
-      font-size: $headline-font-size-base;
-      font-weight: 400;
-      line-height: rem(3.2);
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
-        @include mat-body-1();
-      }
-    }
+    // p {
+    //   font-size: $headline-font-size-base;
+    //   font-weight: 400;
+    //   line-height: rem(3.2);
+    //   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
+    //     @include mat-body-1();
+    //   }
+    // }
   }
   overflow: hidden;
   width: 100%;

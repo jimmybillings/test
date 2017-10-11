@@ -1,6 +1,9 @@
 [mat-raised-button] {
   text-transform: uppercase;
 }
+.mat-button,.mat-raised-button,.mat-icon-button,.mat-fab,.mat-mini-fab {
+  font-weight: 400;
+}
 [mat-button] {
 // drop down indicator on a button
   &.is-dd {
