@@ -91,5 +91,17 @@ export function main() {
       serviceUnderTest.checkForFilters('search/234');
       expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.UPDATE', payload: { filtersAreAvailable: true } });
     });
+
+    it('Should not show the filter button if on the search asset detail page and headerIsExpanded is true', () => {
+      mockState = { headerIsExpanded: true };
+      mockStore = {
+        select: jasmine.createSpy('select').and.returnValue(Observable.of(mockState)),
+        dispatch: jasmine.createSpy('dispatch')
+      };
+      serviceUnderTest = new UiState(mockStore);
+
+      serviceUnderTest.checkForFilters('search/asset');
+      expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.UPDATE', payload: { filtersAreAvailable: true } });
+    });
   });
 }
