@@ -6,7 +6,6 @@ import { LegacyAction } from '../interfaces/common.interface';
 export const InitUiState: any = {
   headerIsExpanded: false,
   showFixedHeader: false,
-  loadingIndicator: false,
   filtersAreAvailable: false
 };
 
@@ -38,10 +37,6 @@ export class UiState {
 
   public update(payload: Object): void {
     this.store.dispatch({ type: 'UI.STATE.UPDATE', payload: payload });
-  }
-
-  public loadingIndicator(state: boolean): void {
-    this.data.take(1).subscribe(s => this.update({ loadingIndicator: state }));
   }
 
   public headerIsExpanded(): Observable<boolean> {

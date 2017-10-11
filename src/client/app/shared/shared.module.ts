@@ -89,6 +89,7 @@ import * as ActiveCollectionAssetState from '../store/active-collection-asset/ac
 import * as CartState from '../store/cart/cart.state';
 import * as CartAssetState from '../store/cart-asset/cart-asset.state';
 import * as CommentState from '../store/comment/comment.state';
+import * as LoadingIndicatorState from '../store/loading-indicator/loading-indicator.state';
 import * as OrderState from '../store/order/order.state';
 import * as OrderAssetState from '../store/order-asset/order-asset.state';
 import * as QuoteEditState from '../store/quote-edit/quote-edit.state';
@@ -223,6 +224,7 @@ const WAZEE_STORES: any = {
   cart: CartState.reducer,
   cartAsset: CartAssetState.reducer,
   comment: CommentState.reducer,
+  loadingIndicator: LoadingIndicatorState.reducer,
   order: OrderState.reducer,
   orderAsset: OrderAssetState.reducer,
   quoteEdit: QuoteEditState.reducer,

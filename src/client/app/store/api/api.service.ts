@@ -3,14 +3,13 @@ import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSe
 import { Observable } from 'rxjs/Observable';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Api, ApiOptions, ApiParameters, ApiBody, ApiErrorResponse } from '../../shared/interfaces/api.interface';
-import { UiState } from '../../shared/services/ui.state';
 import { ApiService } from '../../shared/services/api.service';
 import { AppStore } from '../../app.store';
 
 @Injectable()
 export class FutureApiService extends ApiService {
-  constructor(protected http: Http, protected apiConfig: ApiConfig, protected uiState: UiState, protected store: AppStore) {
-    super(http, apiConfig, uiState, store);
+  constructor(protected http: Http, protected apiConfig: ApiConfig, protected store: AppStore) {
+    super(http, apiConfig, store);
   }
 
   protected call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<any> {
