@@ -54,8 +54,8 @@ export function main() {
           expect(componentUnderTest.showRightsPricingBtn).toBe(true);
         });
 
-        it('when the quote type is standard and project has rights managed assets', () => {
-          componentUnderTest.quoteType = 'standard';
+        it('when the quote type is Standard and project has rights managed assets', () => {
+          componentUnderTest.quoteType = 'Standard';
           componentUnderTest.projectHasRmAssets = true;
           expect(componentUnderTest.showRightsPricingBtn).toBe(true);
         });

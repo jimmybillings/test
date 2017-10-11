@@ -197,6 +197,7 @@ export class QuoteEditService {
   }
 
   public sendQuote(options: QuoteOptions): Observable<any> {
+    if (options.purchaseType === 'Standard') delete options.purchaseType;
     return this.api.put(
       Api.Orders,
       `quote/send/${this.quoteId}`,
