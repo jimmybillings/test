@@ -17,13 +17,13 @@
       <div flex="100" layout="row" layout-align="space-between end">
 
         <div *ngIf="shouldDisplayReview" flex="grow">
-          <h2 class="md-display-1">
+          <h2 class="mat-display-1">
             {{ 'QUOTE.REVIEW_HEADER' | translate }} 
             <span *ngIf="hasPurchaseType">- {{ trStringForPurchaseType | translate }}</span>
           </h2>
         </div>
         <div *ngIf="shouldDisplayPurchaseHeader" flex="grow">
-          <h2 class="md-display-1">
+          <h2 class="mat-display-1">
             {{ 'QUOTE.PURCHASE_HEADER' | translate }} 
             <span *ngIf="hasPurchaseType">- {{ trStringForPurchaseType | translate }}</span>
           </h2>

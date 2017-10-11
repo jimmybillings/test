@@ -81,12 +81,8 @@ collection-show .collections-list {
 // When the edit sub-clipping dialog is opened
 // override dialog container padding as well as specific styles for the editing dialog
 wz-subclip-editor > section {
-// <<<<<<< HEAD
-//   padding: 14px 12px 11px 0;
-//   [mat-button].is-outlined {
-// =======
   padding: 14px 12px 11px 12px;
-  [md-button].is-outlined {
+  [mat-button].is-outlined {
     line-height: 35px;
     padding: 0 16px;
     height: 35px;
@@ -113,11 +109,7 @@ wz-subclip-editor > section {
     }
   }
 }
-// <<<<<<< HEAD
-// .subclipping-edit-open .cdk-overlay-pane mat-dialog-container.mat-dialog-container {
-// =======
-
-.subclipping-edit-open .cdk-overlay-pane md-dialog-container.mat-dialog-container {
+.subclipping-edit-open .cdk-overlay-pane mat-dialog-container.mat-dialog-container {
   padding: 2px;
   min-height: 330px;
   wz-subclip-edit-actions {
