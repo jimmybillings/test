@@ -107,22 +107,106 @@ export function main() {
     });
 
     describe('hasDiscount()', () => {
-      it('should return false when discount does NOT exists', () => {
-        expect(componentUnderTest.hasDiscount).toBe(false);
-      });
-
-      it('should return true if discount has a value', () => {
-        let mockState = { data: { discount: 12.0 } };
-
-        mockQuoteService = {
-          data: Observable.of({ data: {} }),
-          state: mockState,
-        };
+      it('is true when discount exists in quoteService state data', () => {
+        mockQuoteService = { data: Observable.of({}), state: { data: { discount: 20 } } };
         componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
         expect(componentUnderTest.hasDiscount).toBe(true);
       });
+
+      it('is false when discount does not exist in quoteService state data', () => {
+        mockQuoteService = { data: Observable.of({}), state: { data: {} } };
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        expect(componentUnderTest.hasDiscount).toBe(false);
+      });
     });
 
+    describe('hasPurchaseType()', () => {
+      it('is true when purchase type exists in quoteService state data', () => {
+        mockQuoteService = { data: Observable.of({}), state: { data: { purchaseType: 'Standard' } } };
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        expect(componentUnderTest.hasPurchaseType).toBe(true);
+      });
+
+      it('is false when purchase type does not exist in quoteService state data', () => {
+        mockQuoteService = { data: Observable.of({}), state: { data: {} } };
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        expect(componentUnderTest.hasPurchaseType).toBe(false);
+      });
+    });
+
+    describe('isExpired()', () => {
+      it('is true when quote status is expired', () => {
+        mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'EXPIRED' } } };
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        expect(componentUnderTest.isExpired).toBe(true);
+      });
+
+      it('is false when quote status is not expired', () => {
+        mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'ACTIVE' } } };
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        expect(componentUnderTest.isExpired).toBe(false);
+      });
+    });
+
+    describe('shouldDisplayReview()', () => {
+      it('is true if the user can administer quotes', () => {
+        mockCapabilities = { administerQuotes: () => true };
+        mockQuoteService = { data: Observable.of({}), state: { data: {} } };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        expect(componentUnderTest.shouldDisplayReview).toBe(true);
+      });
+
+      it('is true if the quote status is not active', () => {
+        mockCapabilities = { administerQuotes: () => false };
+        mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'EXPIRED' } } };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        expect(componentUnderTest.shouldDisplayReview).toBe(true);
+      });
+
+      it('is false when the user cannot administer quotes and the quote status is active', () => {
+        mockCapabilities = { administerQuotes: () => false };
+        mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'ACTIVE' } } };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        expect(componentUnderTest.shouldDisplayReview).toBe(false);
+      });
+    });
+
+    describe('shouldDisplayPurchaseHeader()', () => {
+      it('is true if the user cannot administer quotes and the quote status is active', () => {
+        mockCapabilities = { administerQuotes: () => false };
+        mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'ACTIVE' } } };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        expect(componentUnderTest.shouldDisplayPurchaseHeader).toBe(true);
+      });
+
+      it('is false if the user can administer quotes and the quote status is active', () => {
+        mockCapabilities = { administerQuotes: () => true };
+        mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'ACTIVE' } } };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        expect(componentUnderTest.shouldDisplayPurchaseHeader).toBe(false);
+      });
+
+      it('is false if the user cannot administer quotes and the quote status is not active', () => {
+        mockCapabilities = { administerQuotes: () => false };
+        mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'EXPIRED' } } };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        expect(componentUnderTest.shouldDisplayPurchaseHeader).toBe(false);
+      });
+    });
+
+    describe('trStringForPurchaseType()', () => {
+      it('is the standard translation if the purchase type is not an attribute of the quote', () => {
+        mockQuoteService = { data: Observable.of({}), state: { data: {} } };
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        expect(componentUnderTest.trStringForPurchaseType).toBe('QUOTE.Standard');
+      });
+
+      it('is whatever the purchase type is for set purchase types', () => {
+        mockQuoteService = { data: Observable.of({}), state: { data: { purchaseType: 'ProvisionalOrder' } } };
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        expect(componentUnderTest.trStringForPurchaseType).toBe('QUOTE.ProvisionalOrder');
+      });
+    });
 
     describe('toggleCommentVisibility', () => {
       it('should toggle the showComments flag', () => {

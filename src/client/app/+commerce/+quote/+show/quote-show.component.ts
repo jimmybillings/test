@@ -67,7 +67,7 @@ export class QuoteShowComponent implements OnInit {
   }
 
   public get trStringForPurchaseType(): string {
-    return `QUOTE.${this.quoteService.state.data.purchaseType}`;
+    return `QUOTE.${this.hasPurchaseType ? this.quoteService.state.data.purchaseType : 'Standard'}`;
   }
 
   public onNotification(message: CommerceMessage): void {
