@@ -1,4 +1,4 @@
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 import { EnhancedAsset } from './enhanced-asset';
 
 export function main() {

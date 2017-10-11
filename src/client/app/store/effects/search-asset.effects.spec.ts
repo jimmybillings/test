@@ -1,7 +1,7 @@
 import { SearchAssetEffects } from './search-asset.effects';
 import * as SearchAssetActions from '../actions/search-asset.actions';
 import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 
 export function main() {
   let mockLocation: any, mockRouter: any;

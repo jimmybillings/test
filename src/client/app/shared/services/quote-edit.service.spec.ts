@@ -2,7 +2,7 @@ import { QuoteEditService } from './quote-edit.service';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api } from '../interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../modules/wazee-frame-formatter/index';
 import { Common } from '../utilities/common.functions';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 

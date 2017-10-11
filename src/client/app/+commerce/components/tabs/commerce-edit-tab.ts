@@ -8,7 +8,8 @@ import {
   Project, AssetLineItem, Cart, QuoteType, QuoteOptions, Asset, PriceAttribute
 } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { MatSnackBar, MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { AssetService } from '../../../store/services/asset.service';

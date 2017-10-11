@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../../wazee-frame-formatter/index';
 import { MarkerType, PlayerState, SetMarkerToCurrentFrameRequest } from '../../../interfaces/player.interface';
 
 @Component({

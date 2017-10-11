@@ -1,5 +1,5 @@
 import { WzSubclipEditorComponent } from './wz.subclip-editor.component';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../modules/wazee-frame-formatter/index';
 import { EnhancedAsset } from '../../interfaces/enhanced-asset';
 
 export function main() {

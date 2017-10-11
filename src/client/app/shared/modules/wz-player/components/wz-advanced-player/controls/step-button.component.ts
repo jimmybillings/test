@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../../wazee-frame-formatter/index';
 import { PlayerState, SeekToFrameRequest } from '../../../interfaces/player.interface';
 
 export type StepSize = '-5s' | '-1s' | '-1f' | '+1f' | '+1s' | '+5s';

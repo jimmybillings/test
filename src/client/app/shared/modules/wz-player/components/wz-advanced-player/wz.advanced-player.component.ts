@@ -5,7 +5,7 @@ import { WzPlayerComponent } from '../wz-player/wz.player.component';
 import { SubclipMarkers } from '../../../../interfaces/subclip-markers';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../wazee-frame-formatter/index';
 import { PlayerState, PlayerStateChanges, PlayerRequest } from '../../interfaces/player.interface';
 
 @Component({

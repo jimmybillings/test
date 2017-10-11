@@ -268,8 +268,8 @@ export function createTranslateLoader(http: HttpClient) {
     CommonModule,
     RouterModule,
     FormsModule,
-    HttpModule,
-    HttpClientModule,
+    // HttpModule,
+    // HttpClientModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -281,7 +281,7 @@ export function createTranslateLoader(http: HttpClient) {
     MaterialModule,
     WzPlayerModule,
     WzFormModule,
-    WzAssetModule,
+    // WzAssetModule,
     WzDialogModule,
     StoreModule.forRoot(WAZEE_STORES),  // Eventually this will be just the reducers object from app.store.ts
     // TODO: Get StoreDevtoolsModule out of production!!!  (Looks scary, though:

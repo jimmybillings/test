@@ -1,4 +1,4 @@
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../wazee-frame-formatter/index';
 
 export type PlayerMode = 'basic' | 'advanced';
 

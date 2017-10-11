@@ -1,7 +1,7 @@
 import { FutureCartService } from './cart.service';
 import { MockApiService, mockApiMatchers } from '../spec-helpers/mock-api.service';
 import { Api } from '../../shared/interfaces/api.interface';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 
 export function main() {
   describe('Future Cart Service', () => {

@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { WzAdvancedPlayerComponent } from './wz.advanced-player.component';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../wazee-frame-formatter/index';
 import { PlayerStateChanges } from '../../interfaces/player.interface';
 
 export function main() {

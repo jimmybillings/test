@@ -2,7 +2,7 @@ import {
   Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef, Renderer, ChangeDetectorRef
 } from '@angular/core';
 
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../../wazee-frame-formatter/index';
 import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.interface';
 
 @Component({

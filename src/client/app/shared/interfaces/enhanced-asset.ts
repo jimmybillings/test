@@ -1,4 +1,4 @@
-import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
+import { Frame, TimecodeFormat } from '../../shared/modules/wazee-frame-formatter/index';
 import * as commerce from '../interfaces/commerce.interface';
 import * as common from '../interfaces/common.interface';
 

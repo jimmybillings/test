@@ -24,7 +24,7 @@ import {
   LicenseAgreements
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../modules/wazee-frame-formatter/index';
 import { enhanceAsset } from '../interfaces/enhanced-asset';
 import { Common } from '../utilities/common.functions';
 

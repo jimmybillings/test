@@ -15,7 +15,7 @@ import {
   LicenseAgreements
 } from '../interfaces/commerce.interface';
 import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../modules/wazee-frame-formatter/index';
 import { AppStore, QuoteEditState } from '../../app.store';
 import { FeeConfigStore } from '../stores/fee-config.store';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';

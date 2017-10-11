@@ -4,7 +4,7 @@ import { ActiveCollectionService } from './active-collection.service';
 import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.service';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { Api } from '../../shared/interfaces/api.interface';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 
 export function main() {
   describe('Active Collection Service', () => {

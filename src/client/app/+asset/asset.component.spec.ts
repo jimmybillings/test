@@ -4,7 +4,7 @@ import { AssetComponent } from './asset.component';
 import { MockAppStore } from '../store/spec-helpers/mock-app.store';
 import * as EnhancedMock from '../shared/interfaces/enhanced-asset';
 import { mockAsset } from '../shared/mocks/mock-asset';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../shared/modules/wazee-frame-formatter/index';
 
 export function main() {
   describe('Asset Component', () => {

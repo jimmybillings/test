@@ -7,7 +7,7 @@ import { Capabilities } from '../../shared/services/capabilities.service';
 import { MatMenuTrigger } from '@angular/material';
 import { SubclipMarkers, durationFrom } from '../../shared/interfaces/subclip-markers';
 import { Observable } from 'rxjs/Observable';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 import { AppStore, ActionFactoryMapper } from '../../app.store';
 import { EnhancedAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
