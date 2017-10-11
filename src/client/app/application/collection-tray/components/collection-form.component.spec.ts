@@ -37,7 +37,7 @@ export function main() {
       });
       activeCollectionLoadSpy = mockStore.createActionFactoryMethod('activeCollection', 'load');
       componentUnderTest =
-        new CollectionFormComponent(mockCollections, null, mockDetector, mockCollectionContext, mockStore);
+        new CollectionFormComponent(mockCollections, mockDetector, mockCollectionContext, mockStore);
       componentUnderTest.dialog = { close: () => { } };
     });
 
@@ -196,7 +196,7 @@ export function main() {
             };
 
             componentUnderTest =
-              new CollectionFormComponent(mockCollections, null, mockDetector, mockCollectionContext, mockStore);
+              new CollectionFormComponent(mockCollections, mockDetector, mockCollectionContext, mockStore);
             componentUnderTest.collectionActionType = 'create';
           });
           it('Should assign a create collection error response to the serverError variable', () => {
@@ -280,7 +280,7 @@ export function main() {
             };
 
             componentUnderTest =
-              new CollectionFormComponent(mockCollections, null, mockDetector, mockCollectionContext, mockStore);
+              new CollectionFormComponent(mockCollections, mockDetector, mockCollectionContext, mockStore);
             componentUnderTest.collectionActionType = 'edit';
           });
 
@@ -341,7 +341,7 @@ export function main() {
             };
 
             componentUnderTest =
-              new CollectionFormComponent(mockCollections, null, mockDetector, mockCollectionContext, mockStore);
+              new CollectionFormComponent(mockCollections, mockDetector, mockCollectionContext, mockStore);
             componentUnderTest.collectionActionType = 'duplicate';
           });
           it('Should assign a create collection error response to the serverError variable', () => {

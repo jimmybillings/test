@@ -11,7 +11,6 @@ export function main() {
     let mockCurrentUserService: any;
     let mockCapabilities: any;
     let mockSearchContext: any;
-    let mockUiState: any;
     let mockUserPreference: any;
     let mockAssetService: any;
     let mockUiConfig: any;
@@ -30,7 +29,6 @@ export function main() {
     beforeEach(() => {
       mockCurrentUserService = {};
       mockCapabilities = { administerQuotes: () => false };
-      mockUiState = {};
       mockUserPreference = {
         openCollectionTray: jasmine.createSpy('openCollectionTray'),
         state: { pricingPreferences: 'thePricingPreferences' },
@@ -62,7 +60,7 @@ export function main() {
       };
       mockStore = new MockAppStore();
       componentUnderTest = new AssetComponent(
-        mockCurrentUserService, mockCapabilities, mockUiState,
+        mockCurrentUserService, mockCapabilities,
         mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
         mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
         null
@@ -163,7 +161,7 @@ export function main() {
             Observable.of({ url: 'http://downloadcomp.url' }))
         };
         componentUnderTest = new AssetComponent(
-          mockCurrentUserService, mockCapabilities, mockUiState,
+          mockCurrentUserService, mockCapabilities,
           mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
           mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
           null
@@ -300,7 +298,7 @@ export function main() {
               });
 
             componentUnderTest = new AssetComponent(
-              mockCurrentUserService, mockCapabilities, mockUiState,
+              mockCurrentUserService, mockCapabilities,
               mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
               mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
               null
@@ -427,7 +425,8 @@ export function main() {
         mockStore.createActionFactoryMethod('quoteEdit', 'editLineItemFromDetails');
 
         componentUnderTest = new AssetComponent(
-          null, mockCapabilities, null, null, null, null, null, null, mockStore, null, null, null, null, null, null, null
+          null, mockCapabilities, null, null, null, null, null,
+          mockStore, null, null, null, null, null, null, null
         );
         componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');
         componentUnderTest.onUpdateAssetLineItem();

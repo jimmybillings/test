@@ -85,8 +85,9 @@ export function main() {
       };
       mockStore = new MockAppStore();
       componentUnderTest = new SearchComponent(
-        null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-        mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
+        mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+        mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+        mockStore
       );
     });
 
@@ -94,8 +95,9 @@ export function main() {
       it('should not set the path if the "gq" parameter doesn\'t exist', () => {
         mockActivatedRoute = { snapshot: { params: { i: 1, n: 100 } } };
         componentUnderTest = new SearchComponent(
-          null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+          mockStore
         );
 
         expect(componentUnderTest.path).toEqual('');
@@ -225,8 +227,9 @@ export function main() {
           enhancedAssets: Observable.of([])
         };
         componentUnderTest = new SearchComponent(
-          null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+          mockStore
         );
         componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
         mockStore.expectDispatchFor(errorSpy, 'COMPS.NO_COMP');
@@ -273,8 +276,9 @@ export function main() {
       it('Should reset the page number to page 1', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
-          null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+          mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ i: 1 });
@@ -283,8 +287,9 @@ export function main() {
       it('Should update the search context with the filter ids', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [1, 2, 3], values: [] });
         componentUnderTest = new SearchComponent(
-          null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+          mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ 'filterIds': '1,2,3' });
@@ -293,8 +298,10 @@ export function main() {
       it('Should remove the filterIds from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(
-          null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore);
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+          mockStore
+        );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.remove).toEqual('filterIds');
       });
@@ -302,8 +309,9 @@ export function main() {
       it('Should update the search context with the filter values', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(
-          null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+          mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ 'filterValues': 'cat,dog' });
@@ -312,8 +320,9 @@ export function main() {
       it('Should remove the filterValues from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
-          null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+          mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.remove).toEqual('filterValues');
@@ -322,14 +331,30 @@ export function main() {
       it('Should call go on search context when it has filtered the assets', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
-          null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+          mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.go).toHaveBeenCalled();
       });
     });
 
+    describe('filtersAreAvailable', () => {
+      it('returns observable of true when the \'filtersAreAvailable\'in the store is true', () => {
+        mockStore.createStateSection('headerDisplayOptions', { filtersAreAvailable: true });
+        let areAvailable: boolean;
+        componentUnderTest.filtersAreAvailable.take(1).subscribe(available => areAvailable = available);
+        expect(areAvailable).toBe(true);
+      });
+
+      it('returns observable of false when the \'filtersAreAvailable\'in the store is false', () => {
+        mockStore.createStateSection('headerDisplayOptions', { filtersAreAvailable: false });
+        let areAvailable: boolean;
+        componentUnderTest.filtersAreAvailable.take(1).subscribe(available => areAvailable = available);
+        expect(areAvailable).toBe(false);
+      });
+    });
   });
 }
 

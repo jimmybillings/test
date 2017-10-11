@@ -18,7 +18,7 @@
     data-pendo="user-menu-trigger"
     *ngIf="currentUser.loggedInState() | async"
     [mat-menu-trigger-for]="navigation"
-    [ngClass]="{'mat-primary': !(uiState.data | async).showFixedHeader}"
+    [ngClass]="{'mat-primary': !(headerIsFixed | async) }"
     class="is-dd nav-dropdown-btn">
     {{ currentUser.fullName() | async }}
   </button>
@@ -28,7 +28,7 @@
     data-pendo="user-menu-trigger-mobile"
     *ngIf="currentUser.loggedInState() | async"
     [mat-menu-trigger-for]="navigation"
-    [ngClass]="{'mat-primary': !(uiState.data | async).showFixedHeader}"
+    [ngClass]="{'mat-primary': !(headerIsFixed | async) }"
     hide-gt-xs
     show-xs
     class="is-dd icon-dd-button">
@@ -45,7 +45,7 @@
   
   <a
     mat-button
-    [ngClass]="{'mat-accent': !(uiState.data | async).showFixedHeader}"
+    [ngClass]="{'mat-accent': !(headerIsFixed | async) }"
     *ngIf="!(currentUser.loggedInState() | async)"
     [routerLink]="['/user/register']"
     class="is-outlined">
@@ -55,7 +55,7 @@
   <!--THESE LINKS ONLY SHOW IF THE SEARCH BAR IS ACTIVE-->
 
   <button
-    *ngIf="uiState.headerIsExpanded() | async"
+    *ngIf="headerCanBeFixed | async"
     mat-icon-button title="Search"
     (click)="toggleSearch()"
     class="open-search">
@@ -63,7 +63,7 @@
   </button>
   
   <button
-    *ngIf="userCan.viewCollectionTray() | async"
+    *ngIf="userCan.viewCollectionTray"
     mat-icon-button
     title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}"
     (click)="toggleCollectionTray()"
@@ -72,7 +72,7 @@
   </button>
   
   <a 
-    *ngIf="(userCan.viewCartIcon() | async) && !userCan.administerQuotes()" 
+    *ngIf="userCan.viewCartIcon() && !userCan.administerQuotes()" 
     mat-icon-button
     class="cart"
     title="{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}"
@@ -84,7 +84,7 @@
   </a>
 
   <a 
-    *ngIf="(userCan.viewCartIcon() | async) && userCan.administerQuotes()" 
+    *ngIf="userCan.viewCartIcon() && userCan.administerQuotes()" 
     mat-icon-button
     class="cart"
     title="{{ 'HEADER.USER_DD_MENU.QUOTE_LINK'| translate}}"

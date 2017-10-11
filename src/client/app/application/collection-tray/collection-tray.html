@@ -85,7 +85,6 @@
 
 <wz-dropdown #list>
   <collections-list-dd
-    [uiState]="uiState"
     [focusedCollection]="collection"
     [config]="(uiConfig.get('collection') | async).config"
     (close)="list.close()"

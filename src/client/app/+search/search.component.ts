@@ -11,7 +11,6 @@ import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { WindowRef } from '../shared/services/window-ref.service';
-import { UiState } from '../shared/services/ui.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
@@ -39,7 +38,6 @@ export class SearchComponent implements OnDestroy {
   @ViewChild(WzSpeedviewComponent) public wzSpeedview: WzSpeedviewComponent;
 
   constructor(
-    public uiState: UiState,
     public userCan: Capabilities,
     public filter: FilterService,
     private cart: CartService,
@@ -147,6 +145,10 @@ export class SearchComponent implements OnDestroy {
     let pathSegment: any = this.path.slice(0, index);
     if (pathSegment && pathSegment.length > 0) route.push({ path: JSON.stringify(pathSegment) });
     this.router.navigate(route);
+  }
+
+  public get filtersAreAvailable(): Observable<boolean> {
+    return this.store.select(state => state.headerDisplayOptions.filtersAreAvailable);
   }
 
   private filterAssets(): void {

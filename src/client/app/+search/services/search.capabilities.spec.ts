@@ -5,7 +5,7 @@ export function main() {
     let capabilitiesUnderTest: SearchCapabilities;
 
     beforeEach(() => {
-      capabilitiesUnderTest = new SearchCapabilities(null, null);
+      capabilitiesUnderTest = new SearchCapabilities(null);
     });
 
     it('***** HASN\'T BEEN TESTED YET! *****', () => {

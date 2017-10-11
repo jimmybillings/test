@@ -8,11 +8,15 @@ export function main() {
   describe('App Component', () => {
     (<any>window).portal = 'core';
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUserService: any,
-      mockCollections: any, mockUiState: any, mockUserPreference: any, mockNotification: any,
+      mockCollections: any, mockUserPreference: any, mockNotification: any,
       mockUserCan: any, mockWindow: any, mockNgZone: any, componentUnderTest: AppComponent, mockStore: MockAppStore,
       mockFilter: any, mockSortDefinition: any, cartLoadSpy: jasmine.Spy, collectionLoadSpy: jasmine.Spy,
       quoteLoadSpy: jasmine.Spy;
 
+    let setHeaderPositionSpy: jasmine.Spy;
+    let checkIfFiltersAreAvailableSpy: jasmine.Spy;
+    let checkIfHeaderCanBeFixedSpy: jasmine.Spy;
+    let resetSpy: jasmine.Spy;
     let loggedInState: boolean = false, canViewCollections: boolean = true, canAdministerQuotes: boolean = false;
     let nextNavigation: Event;
     let configHasLoaded: boolean = true;
@@ -47,14 +51,6 @@ export function main() {
         destroyAll: jasmine.createSpy('destroyAll')
       };
 
-      mockUiState = {
-        showFixedHeader: jasmine.createSpy('showFixedHeader'),
-        checkRouteForSearchBar: jasmine.createSpy('checkRouteForSearchBar'),
-        checkForFilters: jasmine.createSpy('checkForFilters'),
-        reset: jasmine.createSpy('reset'),
-        data: Observable.of({ loadingIndicator: true })
-      };
-
       mockUserPreference = {
         state: {
           sortId: 23,
@@ -76,10 +72,14 @@ export function main() {
       collectionLoadSpy = mockStore.createActionFactoryMethod('activeCollection', 'load');
       cartLoadSpy = mockStore.createActionFactoryMethod('cart', 'load');
       quoteLoadSpy = mockStore.createActionFactoryMethod('quoteEdit', 'load');
+      setHeaderPositionSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'setHeaderPosition');
+      checkIfHeaderCanBeFixedSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'checkIfHeaderCanBeFixed');
+      checkIfFiltersAreAvailableSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'checkIfFiltersAreAvailable');
+      resetSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'reset');
 
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-        mockCollections, mockUiState, mockUserPreference, mockUserCan, mockWindow,
+        mockCollections, mockUserPreference, mockUserCan, mockWindow,
         mockFilter, mockSortDefinition, mockNgZone, mockStore
       );
     });
@@ -95,7 +95,7 @@ export function main() {
           loggedInState = false;
           componentUnderTest.ngOnInit();
           expect(mockCollections.destroyAll).toHaveBeenCalled();
-          expect(mockUiState.reset).toHaveBeenCalled();
+          mockStore.expectDispatchFor(resetSpy);
           expect(mockUserPreference.reset).toHaveBeenCalled();
         });
 
@@ -134,11 +134,11 @@ export function main() {
           });
 
           it('Pass the current state url to see if we should display the search bar', () => {
-            expect(mockUiState.checkRouteForSearchBar).toHaveBeenCalledWith('/');
+            mockStore.expectDispatchFor(checkIfHeaderCanBeFixedSpy, '/');
           });
 
           it('Pass the current state url to see if we should display the filters', () => {
-            expect(mockUiState.checkForFilters).toHaveBeenCalledWith('/');
+            mockStore.expectDispatchFor(checkIfFiltersAreAvailableSpy, '/');
           });
 
           it('Assign the current url state to an instance variable', () => {
@@ -186,7 +186,7 @@ export function main() {
       it('Should initialize the navigation immediatly if the config is already loaded', () => {
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUiState, mockUserPreference, mockUserCan,
+          mockCollections, mockUserPreference, mockUserCan,
           mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
         );
 
@@ -199,7 +199,7 @@ export function main() {
 
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUiState, mockUserPreference, mockUserCan,
+          mockCollections, mockUserPreference, mockUserCan,
           mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
         );
 
@@ -208,5 +208,36 @@ export function main() {
       });
     });
 
+    describe('headerIsFixed getter', () => {
+      it('should return observable of true if the isFixed property of the headerDisplayOptions is true', () => {
+        mockStore.createStateSection('headerDisplayOptions', { isFixed: true });
+        let isFixed: boolean;
+        componentUnderTest.headerIsFixed.take(1).subscribe(fixed => isFixed = fixed);
+        expect(isFixed).toBe(true);
+      });
+
+      it('should return observable of false if the isFixed property of the headerDisplayOptions is false', () => {
+        mockStore.createStateSection('headerDisplayOptions', { isFixed: false });
+        let isFixed: boolean;
+        componentUnderTest.headerIsFixed.take(1).subscribe(fixed => isFixed = fixed);
+        expect(isFixed).toBe(false);
+      });
+    });
+
+    describe('headerCanBeFixed getter', () => {
+      it('should return observable of true if the canBeFixed property of the headerDisplayOptions is true', () => {
+        mockStore.createStateSection('headerDisplayOptions', { canBeFixed: true });
+        let canBeFixed: boolean;
+        componentUnderTest.headerCanBeFixed.take(1).subscribe(fixed => canBeFixed = fixed);
+        expect(canBeFixed).toBe(true);
+      });
+
+      it('should return observable of false if the canBeFixed property of the headerDisplayOptions is false', () => {
+        mockStore.createStateSection('headerDisplayOptions', { canBeFixed: false });
+        let canBeFixed: boolean;
+        componentUnderTest.headerCanBeFixed.take(1).subscribe(fixed => canBeFixed = fixed);
+        expect(canBeFixed).toBe(false);
+      });
+    });
   });
 }

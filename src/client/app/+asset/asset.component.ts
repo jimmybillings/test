@@ -8,7 +8,6 @@ import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
-import { UiState } from '../shared/services/ui.state';
 import { Observable } from 'rxjs/Observable';
 import { MatDialogRef } from '@angular/material';
 import { WzDialogService } from '../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -67,7 +66,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   constructor(
     public currentUser: CurrentUserService,
     public userCan: Capabilities,
-    public uiState: UiState,
     public assetService: AssetService,
     public uiConfig: UiConfig,
     public window: WindowRef,

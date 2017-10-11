@@ -11,7 +11,6 @@ import { SearchContext } from './shared/services/search-context.service';
 import { FilterService } from './shared/services/filter.service';
 import { SortDefinitionsService } from './shared/services/sort-definitions.service';
 import { CollectionsService } from './shared/services/collections.service';
-import { UiState } from './shared/services/ui.state';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
 import { WindowRef } from './shared/services/window-ref.service';
@@ -37,7 +36,6 @@ export class AppComponent implements OnInit {
     public searchContext: SearchContext,
     public currentUser: CurrentUserService,
     public collections: CollectionsService,
-    public uiState: UiState,
     public userPreference: UserPreferenceService,
     public userCan: Capabilities,
     private window: WindowRef,
@@ -49,7 +47,7 @@ export class AppComponent implements OnInit {
     this.loadConfig();
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
-        this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
+        this.store.dispatch(factory => factory.headerDisplayOptions.setHeaderPosition(this.window.nativeWindow.pageYOffset));
       });
     });
   }
@@ -86,12 +84,20 @@ export class AppComponent implements OnInit {
     this.userPreference.toggleFilterTree();
   }
 
+  public get headerIsFixed(): Observable<boolean> {
+    return this.store.select(state => state.headerDisplayOptions.isFixed);
+  }
+
+  public get headerCanBeFixed(): Observable<boolean> {
+    return this.store.select(state => state.headerDisplayOptions.canBeFixed);
+  }
+
   private routerChanges() {
     this.router.events
       .filter((event: Event) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
-        this.uiState.checkRouteForSearchBar(event.url);
-        this.uiState.checkForFilters(event.url);
+        this.store.dispatch(factory => factory.headerDisplayOptions.checkIfHeaderCanBeFixed(event.url));
+        this.store.dispatch(factory => factory.headerDisplayOptions.checkIfFiltersAreAvailable(event.url));
         this.state = event.url;
         this.window.nativeWindow.scrollTo(0, 0);
       });
@@ -120,7 +126,7 @@ export class AppComponent implements OnInit {
   private processLoggedOutUser() {
     this.userPreference.reset();
     this.collections.destroyAll();
-    this.uiState.reset();
+    this.store.dispatch(factory => factory.headerDisplayOptions.reset());
     this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });

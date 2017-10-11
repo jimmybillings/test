@@ -22,7 +22,6 @@ declare var jwplayer: any;
             <wz-autocomplete-search
               [config]="config"
               [currentUser]="currentUser" 
-              [uiState]="uiState"
               (searchContext)="searchContext.emit($event)">
             </wz-autocomplete-search>
             <h4 class="mat-headline">{{ 'HOME.SEARCH_HEADING' | translate }}</h4>
@@ -37,7 +36,6 @@ declare var jwplayer: any;
 export class HomeHeroComponent {
   @Input() config: any;
   @Input() currentUser: any;
-  @Input() uiState: any;
   @Input() isVideo: boolean;
   @Input()
   set playlist(value: any) {

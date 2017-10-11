@@ -49,7 +49,6 @@ import { UserService } from './services/user.service';
 import { UiConfig } from './services/ui.config';
 import { SearchContext } from './services/search-context.service';
 import { CollectionsService } from './services/collections.service';
-import { UiState } from './services/ui.state';
 import { UserPreferenceService } from './services/user-preference.service';
 import { ApiService } from './services/api.service';
 import { SortDefinitionsService } from './services/sort-definitions.service';
@@ -89,6 +88,7 @@ import * as ActiveCollectionAssetState from '../store/active-collection-asset/ac
 import * as CartState from '../store/cart/cart.state';
 import * as CartAssetState from '../store/cart-asset/cart-asset.state';
 import * as CommentState from '../store/comment/comment.state';
+import * as HeaderDisplayOptions from '../store/header-display-options/header-display-options.state';
 import * as LoadingIndicatorState from '../store/loading-indicator/loading-indicator.state';
 import * as OrderState from '../store/order/order.state';
 import * as OrderAssetState from '../store/order-asset/order-asset.state';
@@ -112,7 +112,6 @@ import { pricingReducer, PricingStore } from './stores/pricing.store';
 
 import { currentUser } from './services/current-user.service';
 import { config } from './services/ui.config';
-import { uiState } from './services/ui.state';
 import { Capabilities } from './services/capabilities.service';
 import { searchContext } from './services/search-context.service';
 import { multilingualActionReducer } from './services/multilingual.service';
@@ -129,6 +128,7 @@ import { CartAssetEffects } from '../store/cart-asset/cart-asset.effects';
 import { CommentEffects } from '../store/comment/comment.effects';
 import { DialogEffects } from '../store/dialog/dialog.effects';
 import { ErrorEffects } from '../store/error/error.effects';
+import { HeaderDisplayOptionsEffects } from '../store/header-display-options/header-display-options.effects';
 import { NotifierEffects } from '../store/notifier/notifier.effects';
 import { OrderEffects } from '../store/order/order.effects';
 import { OrderAssetEffects } from '../store/order-asset/order-asset.effects';
@@ -150,7 +150,6 @@ const WAZEE_SERVICES = [
   ActiveCollectionService,
   SearchContext,
   MultilingualService,
-  UiState,
   UserPreferenceService,
   CollectionContextService,
   ApiService,
@@ -205,7 +204,6 @@ const WAZEE_STORES: any = {
   currentUser: currentUser,
   searchContext: searchContext,
   collections: collections,
-  uiState: uiState,
   filters: filters,
   userPreferences: userPreferences,
   collectionOptions: collectionOptions,
@@ -224,6 +222,7 @@ const WAZEE_STORES: any = {
   cart: CartState.reducer,
   cartAsset: CartAssetState.reducer,
   comment: CommentState.reducer,
+  headerDisplayOptions: HeaderDisplayOptions.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
   order: OrderState.reducer,
   orderAsset: OrderAssetState.reducer,
@@ -244,6 +243,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   CommentEffects,
   DialogEffects,
   ErrorEffects,
+  HeaderDisplayOptionsEffects,
   NotifierEffects,
   OrderEffects,
   OrderAssetEffects,

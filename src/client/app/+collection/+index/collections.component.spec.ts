@@ -56,8 +56,9 @@ export function main() {
         }
       });
       activeCollectionSetter = mockStore.createActionFactoryMethod('activeCollection', 'set');
-      componentUnderTest = new CollectionsComponent(null, mockCollectionsService, mockCollectionContext, null,
-        mockUiConfig, null, mockDialogService, mockStore);
+      componentUnderTest = new CollectionsComponent(
+        null, mockCollectionsService, mockCollectionContext, null, mockUiConfig, mockDialogService, mockStore
+      );
     });
 
     describe('activeCollection() - get', () => {

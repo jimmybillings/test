@@ -1,5 +1,8 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material';
+
+import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -12,7 +15,6 @@ export class AppNavComponent {
   @Input() currentUser: any;
   @Input() config: any;
   @Input() supportedLanguages: any;
-  @Input() uiState: any;
   @Input() userPreference: any;
   @Input() cartSize: any;
   @Input() userCan: any;
@@ -20,6 +22,8 @@ export class AppNavComponent {
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
+
+  constructor(private store: AppStore) { }
 
   public logOut(event: Event) {
     this.onLogOut.emit(event);
@@ -34,11 +38,15 @@ export class AppNavComponent {
     this.userPreference.toggleCollectionTray();
   }
 
-  public showNewCollection() {
-    this.uiState.showNewCollection();
-  }
-
   public formatBadgeNumber(size: any): string {
     return (size > 99) ? '99+' : size.toString();
+  }
+
+  public get headerIsFixed(): Observable<boolean> {
+    return this.store.select(state => state.headerDisplayOptions.isFixed);
+  }
+
+  public get headerCanBeFixed(): Observable<boolean> {
+    return this.store.select(state => state.headerDisplayOptions.canBeFixed);
   }
 }

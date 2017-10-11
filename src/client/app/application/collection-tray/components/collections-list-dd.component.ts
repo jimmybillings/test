@@ -6,7 +6,6 @@ import { Collection } from '../../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../../shared/services/collections.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
-import { UiState } from '../../../shared/services/ui.state';
 import { Common } from '../../../shared/utilities/common.functions';
 import { AppStore } from '../../../app.store';
 
@@ -22,7 +21,6 @@ import { AppStore } from '../../../app.store';
 
 export class CollectionListDdComponent implements OnInit, OnDestroy {
   @Input() focusedCollection: Collection;
-  @Input() uiState: UiState;
   @Input() config: any;
   @Output() close = new EventEmitter();
   @Output() onCreateCollection = new EventEmitter();

@@ -4,7 +4,6 @@ import { MockBackend } from '@angular/http/testing';
 import { ApiService } from './api.service';
 import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
-import { UiState } from './ui.state';
 import { AppStore } from '../../app.store';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 

@@ -1,17 +1,19 @@
 import { AppNavComponent } from './app-nav.component';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('App Nav Component', () => {
     let componentUnderTest: AppNavComponent;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
-      componentUnderTest = new AppNavComponent();
+      mockStore = new MockAppStore();
+      componentUnderTest = new AppNavComponent(mockStore);
       componentUnderTest.trigger = { closeMenu: jasmine.createSpy('closeMenu') } as any;
       componentUnderTest.userPreference = {
         toggleSearch: jasmine.createSpy('toggleSearch'),
         toggleCollectionTray: jasmine.createSpy('toggleCollectionTray')
       };
-      componentUnderTest.uiState = { showNewCollection: jasmine.createSpy('showNewCollection') };
     });
 
     describe('logOut()', () => {
@@ -41,13 +43,6 @@ export function main() {
       });
     });
 
-    describe('showNewCollection()', () => {
-      it('should call showNewCollection() on the uiState object', () => {
-        componentUnderTest.showNewCollection();
-        expect(componentUnderTest.uiState.showNewCollection).toHaveBeenCalled();
-      });
-    });
-
     describe('formatBadgeNumber()', () => {
       const numbers = [0, 1, 99];
 
@@ -59,6 +54,38 @@ export function main() {
 
       it('should return "99+" if the number is larger than 99', () => {
         expect(componentUnderTest.formatBadgeNumber(100)).toBe('99+');
+      });
+    });
+
+    describe('headerIsFixed getter', () => {
+      it('returns observable of true when the \'isFixed\' value is true in the store', () => {
+        mockStore.createStateSection('headerDisplayOptions', { isFixed: true });
+        let isFixed: boolean;
+        componentUnderTest.headerIsFixed.take(1).subscribe(fixed => isFixed = fixed);
+        expect(isFixed).toBe(true);
+      });
+
+      it('returns observable of false when the \'isFixed\' value is false in the store', () => {
+        mockStore.createStateSection('headerDisplayOptions', { isFixed: false });
+        let isFixed: boolean;
+        componentUnderTest.headerIsFixed.take(1).subscribe(fixed => isFixed = fixed);
+        expect(isFixed).toBe(false);
+      });
+    });
+
+    describe('headerCanBeFixed getter', () => {
+      it('returns observable of true when the \'isFixed\' value is true in the store', () => {
+        mockStore.createStateSection('headerDisplayOptions', { canBeFixed: true });
+        let canBeFixed: boolean;
+        componentUnderTest.headerCanBeFixed.take(1).subscribe(fixed => canBeFixed = fixed);
+        expect(canBeFixed).toBe(true);
+      });
+
+      it('returns observable of false when the \'canBeFixed\' value is false in the store', () => {
+        mockStore.createStateSection('headerDisplayOptions', { canBeFixed: false });
+        let canBeFixed: boolean;
+        componentUnderTest.headerCanBeFixed.take(1).subscribe(fixed => canBeFixed = fixed);
+        expect(canBeFixed).toBe(false);
       });
     });
   });

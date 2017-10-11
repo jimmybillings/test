@@ -16,7 +16,6 @@ import { Common } from '../../shared/utilities/common.functions';
 })
 
 export class CollectionTrayComponent implements OnInit {
-  @Input() uiState: any;
   @Input() uiConfig: any;
   @Input() userPreference: any;
   public pageSize: string;

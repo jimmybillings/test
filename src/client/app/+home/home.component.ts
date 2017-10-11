@@ -6,7 +6,6 @@ import { SearchContext } from '../shared/services/search-context.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 
-import { UiState } from '../shared/services/ui.state';
 import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { Router } from '@angular/router';
@@ -32,7 +31,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     public currentUser: CurrentUserService,
-    public uiState: UiState,
     private uiConfig: UiConfig,
     private searchContext: SearchContext,
     private userPreference: UserPreferenceService,

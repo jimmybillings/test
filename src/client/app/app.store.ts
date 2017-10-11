@@ -26,6 +26,10 @@ import * as DialogActions from './store/dialog/dialog.actions';
 
 import * as ErrorActions from './store/error/error.actions';
 
+import * as HeaderDisplayOptionsActions from './store/header-display-options/header-display-options.actions';
+import * as HeaderDisplayOptionsState from './store/header-display-options/header-display-options.state';
+export type HeaderDisplayOptionsState = HeaderDisplayOptionsState.State;
+
 import * as NotifierActions from './store/notifier/notifier.actions';
 
 import * as LoadingIndicatorActions from './store/loading-indicator/loading-indicator.actions';
@@ -78,6 +82,7 @@ export interface ActionFactory {
   readonly comment: CommentActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
   readonly error: ErrorActions.ActionFactory;
+  readonly headerDisplayOptions: HeaderDisplayOptionsActions.ActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
   readonly orderAsset: OrderAssetActions.ActionFactory;
@@ -100,6 +105,7 @@ export interface InternalActionFactory {
   readonly comment: CommentActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
   readonly error: ErrorActions.InternalActionFactory;
+  readonly headerDisplayOptions: HeaderDisplayOptionsActions.InternalActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
@@ -120,6 +126,7 @@ export interface AppState {
   readonly cart: CartState;
   readonly cartAsset: CartAssetState;
   readonly comment: CommentState;
+  readonly headerDisplayOptions: HeaderDisplayOptionsState;
   readonly loadingIndicator: LoadingIndicatorState;
   readonly order: OrderState;
   readonly orderAsset: OrderAssetState;
@@ -142,6 +149,7 @@ export const reducers: AppReducers = {
   asset: SearchAssetState.reducer,
   cart: CartState.reducer,
   comment: CommentState.reducer,
+  headerDisplayOptions: HeaderDisplayOptionsState.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
   order: OrderState.reducer,
   orderState: OrderAssetState.reducer,
@@ -167,6 +175,7 @@ export class AppStore {
     comment: new CommentActions.ActionFactory(),
     dialog: new DialogActions.ActionFactory(),
     error: new ErrorActions.ActionFactory(),
+    headerDisplayOptions: new HeaderDisplayOptionsActions.ActionFactory(),
     loadingIndicator: new LoadingIndicatorActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
@@ -189,6 +198,7 @@ export class AppStore {
     comment: new CommentActions.InternalActionFactory(),
     dialog: new DialogActions.InternalActionFactory(),
     error: new ErrorActions.InternalActionFactory(),
+    headerDisplayOptions: new HeaderDisplayOptionsActions.InternalActionFactory(),
     loadingIndicator: new LoadingIndicatorActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),

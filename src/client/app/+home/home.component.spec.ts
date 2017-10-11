@@ -13,8 +13,8 @@ export function main() {
       mockGalleryView: any,
       mockHomeVideo: any,
       mockRouter: any,
-      mockFilter: any
-      ;
+      mockFilter: any;
+
     mockUiConfig = {
       get: jasmine.createSpy('get').and.returnValue(
         Observable.of(
@@ -49,7 +49,7 @@ export function main() {
     mockFilter = { set: jasmine.createSpy('set'), clear: jasmine.createSpy('clear') };
 
     beforeEach(() => {
-      componentUnderTest = new HomeComponent(mockCurrentUser, null, mockUiConfig, mockSearchContext,
+      componentUnderTest = new HomeComponent(mockCurrentUser, mockUiConfig, mockSearchContext,
         mockUserPreference, mockGalleryView, mockHomeVideo, null, mockFilter);
     });
 
@@ -81,7 +81,8 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
         componentUnderTest = new HomeComponent(
-          mockCurrentUser, null, mockUiConfig, mockSearchContext, mockUserPreference, mockGalleryView, mockHomeVideo, null, mockFilter);
+          mockCurrentUser, mockUiConfig, mockSearchContext, mockUserPreference, mockGalleryView, mockHomeVideo, null, mockFilter
+        );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();

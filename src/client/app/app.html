@@ -1,12 +1,11 @@
 <div class="app">
   <app-loading-indicator></app-loading-indicator>
   <header [ngClass]="{
-    'fixed': (uiState.data | async).showFixedHeader,
+    'fixed': headerIsFixed | async,
     'collection-tray-closed': !(userPreference.data | async).collectionTrayIsOpen,
     'search-closed': !(userPreference.data | async).searchIsOpen
     }" class="app-header">
     <app-nav
-      [uiState]="uiState"
       [currentUser]="currentUser"
       [userPreference]="userPreference"
       [config]="(uiConfig.get('header') | async).config"
@@ -15,16 +14,14 @@
       (onLogOut)="logout()">
     </app-nav>
     <collection-tray
-      *ngIf="userCan.viewCollectionTray() | async"
-      [uiState]="uiState"
+      *ngIf="userCan.viewCollectionTray()"
       [uiConfig]="uiConfig"
       [userPreference]="userPreference">
     </collection-tray>
      <wz-autocomplete-search
-      *ngIf="uiState.headerIsExpanded()| async"
+      *ngIf="headerCanBeFixed | async"
       [currentUser]="currentUser"
       [userPreference]="userPreference"
-      [uiState]="uiState"
       [state]="state"
       [config]="(uiConfig.get('searchBox') | async).config"
       (searchContext)="newSearchContext($event)"
