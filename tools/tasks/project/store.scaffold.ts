@@ -5,15 +5,18 @@ import { argv } from 'yargs';
 import Config from '../../config';
 
 export = () => {
-  gutil.log(argv);
   const section: string = kebab(argv['section']);
   const path: string = join(Config.APP_SRC, 'app/store/', section);
 
   return mkdir(path, () => {
     writeFileSync(join(path, `${section}.actions.ts`), actionFileFor(section));
+    gutil.log(`created ${join(path, `${section}.actions.ts`)}`);
     writeFileSync(join(path, `${section}.effects.ts`), effectFileFor(section));
+    gutil.log(`created ${join(path, `${section}.effects.ts`)}`);
     writeFileSync(join(path, `${section}.service.ts`), serviceFileFor(section));
+    gutil.log(`created ${join(path, `${section}.service.ts`)}`);
     writeFileSync(join(path, `${section}.state.ts`), stateFileFor(section));
+    gutil.log(`created ${join(path, `${section}.state.ts`)}`);
   });
 }
 
@@ -118,6 +121,5 @@ const actionTypeFrom = (section: string): string => {
 }
 
 const kebab = (s: string): string => {
-  gutil.log(`\n\n${s}\n\n`);
   return s.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').toLowerCase();
 }
