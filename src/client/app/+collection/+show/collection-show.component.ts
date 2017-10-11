@@ -26,7 +26,7 @@ import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dial
 import { WzEvent, Coords, Pojo, Asset } from '../../shared/interfaces/common.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { AppStore } from '../../app.store';
-import { enhanceAsset } from '../../shared/interfaces/enhanced-asset';
+import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 import { Common } from '../../shared/utilities/common.functions';
 
 @Component({
@@ -158,7 +158,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     );
   }
 
-  public editAsset(asset: Asset) {
+  public editAsset(asset: EnhancedAsset) {
     this.asset.getClipPreviewData(asset.assetId)
       .subscribe(data => {
         this.document.body.classList.add('subclipping-edit-open');
@@ -170,7 +170,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
             inputOptions: {
               window: this.window.nativeWindow,
               enhancedAsset: asset,
-              usagePrice: null
+              alreadyUsedMarkersList: this.getAlreadyUsedMarkersListFor(asset)
             },
             outputOptions: [
               {
@@ -252,5 +252,14 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       .subscribe((config: Pojo) => fields = config.config);
 
     return fields;
+  }
+
+  private getAlreadyUsedMarkersListFor(asset: EnhancedAsset): SubclipMarkers[] {
+    return this.activeCollection.assets.items
+      .filter((collectionAsset: EnhancedAsset) =>
+        collectionAsset.assetId === asset.assetId && collectionAsset.uuid !== asset.uuid
+      ).map((collectionAsset: EnhancedAsset) =>
+        collectionAsset.subclipMarkers
+      );
   }
 }

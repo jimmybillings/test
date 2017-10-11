@@ -24,9 +24,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public newUser: any;
   public successfullySubmitted: boolean = false;
   private configSubscription: Subscription;
+  private terms: any;
 
   constructor(
-    public user: UserService,
+    public userService: UserService,
     public uiConfig: UiConfig,
     private dialogService: WzDialogService,
     private ref: ChangeDetectorRef) {
@@ -36,6 +37,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.configSubscription =
       this.uiConfig.get('register').subscribe((config: any) =>
         this.config = config.config);
+    this.downloadTos();
   }
 
   ngOnDestroy() {
@@ -43,8 +45,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(user: any): void {
-    Object.assign(user, { termsAgreedTo: this.user.documentId });
-    this.user.create(user).take(1).subscribe((res: Response) => {
+    Object.assign(user, { termsAgreedTo: this.userService.documentId });
+    this.userService.create(user).take(1).subscribe((res: Response) => {
       this.successfullySubmitted = true;
       this.newUser = res;
       this.ref.markForCheck();
@@ -55,15 +57,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   public openTermsDialog() {
-    this.user.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
-      this.dialogService.openComponentInDialog({
-        componentType: WzTermsComponent,
-        inputOptions: {
-          terms: terms,
-          btnLabel: 'REGISTER.CLOSE_TOS_DIALOG',
-          header: 'REGISTER.TOS_TITLE'
-        }
-      });
+    this.dialogService.openComponentInDialog({
+      componentType: WzTermsComponent,
+      inputOptions: {
+        terms: this.terms,
+        btnLabel: 'REGISTER.CLOSE_TOS_DIALOG',
+        header: 'REGISTER.TOS_TITLE'
+      }
+    });
+  }
+
+  private downloadTos(): void {
+    this.userService.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
+      this.terms = terms;
     });
   }
 }

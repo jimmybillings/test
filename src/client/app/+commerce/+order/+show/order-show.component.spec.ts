@@ -7,7 +7,9 @@ export function main() {
   describe('Order Show Component', () => {
     let componentUnderTest: OrderShowComponent;
     let mockAppStore: MockAppStore;
-    let mockOrderService: any, mockWindow: any;
+    let mockOrderService: any;
+    let mockWindow: any;
+    let mockOrder: any;
 
     beforeEach(() => {
       mockWindow = {
@@ -114,6 +116,62 @@ export function main() {
 
       it('returns false if the order has a no discount value', () => {
         expect(componentUnderTest.shouldShowDiscountFor({} as any)).toBe(false);
+      });
+    });
+
+    describe('offlineAgreementIds getter', () => {
+      describe('should return any externalAgreementIds from the quote\'s lineItems', () => {
+        it('for 1 lineItem in 1 project', () => {
+          mockOrder = { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }] }] };
+
+          expect(componentUnderTest.offlineAgreementIdsFor(mockOrder)).toEqual('abc-123');
+        });
+
+        it('for 1 lineItem in many projects', () => {
+          mockOrder = {
+            projects: [
+              { lineItems: [{ externalAgreementIds: ['abc-123'] }] },
+              { lineItems: [{ externalAgreementIds: ['def-456'] }] }
+            ]
+          };
+
+          expect(componentUnderTest.offlineAgreementIdsFor(mockOrder)).toEqual('abc-123, def-456');
+        });
+
+        it('for many lineItems in 1 project', () => {
+          mockOrder = {
+            projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['def-456'] }] }]
+          };
+
+          expect(componentUnderTest.offlineAgreementIdsFor(mockOrder)).toEqual('abc-123, def-456');
+        });
+
+        it('for many lineItems in many projects', () => {
+          mockOrder = {
+            projects: [
+              { lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['def-456'] }] },
+              { lineItems: [{ externalAgreementIds: ['fgh-789'] }, { externalAgreementIds: ['ijk-012'] }] }
+            ]
+          };
+
+          expect(componentUnderTest.offlineAgreementIdsFor(mockOrder)).toEqual('abc-123, def-456, fgh-789, ijk-012');
+        });
+
+        it('with duplicate identifiers', () => {
+          mockOrder = {
+            projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['abc-123'] }] }]
+          };
+
+          expect(componentUnderTest.offlineAgreementIdsFor(mockOrder)).toEqual('abc-123');
+        });
+
+        it('with no identifiers', () => {
+          mockOrder = {
+            projects: [{ lineItems: [{ some: 'lineItem' }, { some: 'lineItem' }] }]
+          };
+
+          expect(componentUnderTest.offlineAgreementIdsFor(mockOrder)).toEqual('');
+        });
       });
     });
   });

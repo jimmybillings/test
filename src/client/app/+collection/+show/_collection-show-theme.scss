@@ -23,8 +23,15 @@
   wz-subclip-editor > section [mat-button].is-outlined[disabled] {
     color: mat-color($foreground, text);
   }
-  .subclipping-edit-open .cdk-overlay-pane mat-dialog-container.mat-dialog-container 
-  wz-subclip-edit-actions [mat-button].is-outlined[disabled] {
+// <<<<<<< HEAD
+//   .subclipping-edit-open .cdk-overlay-pane mat-dialog-container.mat-dialog-container 
+//   wz-subclip-edit-actions [mat-button].is-outlined[disabled] {
+// =======
+  wz-subclip-editor section.current-in-out-markers {
+    background-color: mat-color($primary, darker, .15);
+  }
+  .subclipping-edit-open .cdk-overlay-pane md-dialog-container.mat-dialog-container 
+  wz-subclip-edit-actions [md-button].is-outlined[disabled] {
     color: mat-color($foreground, text);
   }
 
