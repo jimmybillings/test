@@ -12,7 +12,7 @@
     "build.prod": "npm test && npm run spec.validate && gulp build.prod --color --env-config prod --build-type prod",
     "build.prod.exp": "gulp build.prod.aot --color --env-config prod --build-type prod",
     "build.library": "gulp build.library.export --env library",
-    "build.prod.rollup.aot": "gulp build.prod.rollup.aot --color --env-config prod --build-type prod",
+    "build.prod.rollup.aot": "npm test && npm run spec.validate && gulp build.prod.rollup.aot --color --env-config prod --build-type prod",
     "build.prod.aot": "npm test && npm run spec.validate && gulp build.prod.aot --color --env-config prod --build-type prod",
     "build.prod.aot.publish": "npm test && npm run spec.validate && gulp build.prod.aot.publish --color --env-config prod, --build-type prod",
     "build.all.scss": "gulp build.all.scss",
