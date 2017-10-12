@@ -61,6 +61,21 @@ export function main() {
     });
 
     effectsSpecHelper.generateTestsFor({
+      effectName: 'loadIfNeeded',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: ActiveCollectionActions.LoadIfNeeded.Type,
+        pagination: { some: 'pagination' }
+      },
+      state: {
+        storeSectionName: 'activeCollection',
+        propertyName: 'collection',
+        value: { id: 123 }
+      },
+      expectToEmitAction: false
+    });
+
+    effectsSpecHelper.generateTestsFor({
       effectName: 'set',
       effectsInstantiator: instantiator,
       inputAction: {
