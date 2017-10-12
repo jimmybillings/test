@@ -43,8 +43,7 @@
           <button
             data-pendo="asset-result_download-btn"
             mat-icon-button
-            [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
-            title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED') | translate }}"
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
             (click)="setAssetActiveId(asset)"
             [mat-menu-trigger-for]="downloadCompMenu">
               <mat-icon>file_download</mat-icon>
