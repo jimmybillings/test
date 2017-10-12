@@ -16,7 +16,6 @@ export function main() {
 
     beforeEach(() => {
       mockUserPreferenceService = { openCollectionTray: jasmine.createSpy('openCollectionTray') };
-      spyOn(instantiator, 'load').and.callThrough();
     });
 
     effectsSpecHelper.generateTestsFor({
