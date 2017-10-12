@@ -3,14 +3,14 @@ header.app-header + div.main-content home-component .gallery-home .hero {
 }
 
 home-hero.gallery-home .hero {
-  min-height: rem(40.8);
+  min-height: 408px;
   background-position: 0 0, center 60%;
-  margin-top:  rem(-5.0);
+  margin-top:  -50px;
   .logo-wrapper {
-    height: rem(23.0);
+    height: 230px;
     .logo {
-      background-size: rem(22.0);
-      height:  rem(23.8);
+      background-size: 220px;
+      height:  238px;
       opacity: .3;
     }
   }

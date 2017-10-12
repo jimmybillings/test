@@ -1,9 +1,9 @@
 .wz-speedview {
-  padding: rem(1.2) rem(1.2) rem(1) rem(1.2);
+  padding: 12px 12px 10px 12px;
   @include mat-elevation(6);
   div.image-bg {
-    width: rem(40.0);
-    height: rem(22.5);
+    width: 400px;
+    height: 225px;
     position: relative;
     background-image: linear-gradient(rgba(mat-color($mat-grey, 900),1), rgba(mat-color($mat-grey, 900),.6)),
       linear-gradient(rgba(mat-color($mat-grey, 900),.5), rgba(mat-color($mat-grey, 900),1));
@@ -30,9 +30,9 @@
       linear-gradient(rgba(mat-color($mat-grey, 900),.5), rgba(mat-color($mat-grey, 900),1));
   }
   .info {
-    min-height: rem(5.5);
+    min-height: 55px;
     min-width: 100%;
-    padding: rem(.5) rem(.1) 0;
+    padding: 5px 1px 0;
     position: relative;
     ul.metadata {
       list-style: none;
@@ -49,13 +49,13 @@
       text-align: right;
       .clip-rights {
         font-size: 0.875em;
-        margin-right: rem(-.1);
+        margin-right: -1px;
         text-transform: uppercase;
       }
       .price {
         display: block;
         position: absolute;
-        bottom: rem(-.3);
+        bottom: -3px;
         right: 0;
         font-size: 1.78em;
         font-weight: 400;

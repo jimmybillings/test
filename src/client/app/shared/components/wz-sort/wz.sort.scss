@@ -1,17 +1,17 @@
 div.mat-menu-panel div.mat-menu-content wz-sort-component div.dense,
 .mat-menu.dd-menu-wrapper.dense {
-  min-width: rem(27.5);
+  min-width: 275px;
   .select-dd {
-    // height: rem(3.2);
+    // height: 32px;
     // flex-direction: column;
     // justify-content: space-between;
     button[mat-menu-item]{
       font-size: .9em;
-      height: rem(3.2);
-      line-height: rem(3.2);
+      height: 32px;
+      line-height: 32px;
       .mat-icon.material-icons {
         opacity: 0;
-        margin-top: rem(-.8);
+        margin-top: -8px;
       }
     }
   }
@@ -22,8 +22,8 @@ div.mat-menu-panel div.mat-menu-content wz-sort-component div.dense,
     }
   }
   mat-divider {
-    margin-top: rem(.6);
-    margin-bottom: rem(.6);
+    margin-top: 6px;
+    margin-bottom: 6px;
     border-top-width: 1px;
     border-top-style: solid;
   }

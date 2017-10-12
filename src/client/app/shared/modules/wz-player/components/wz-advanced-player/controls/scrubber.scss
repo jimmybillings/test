@@ -1,6 +1,6 @@
 wz-advanced-player {  
-  $scrubber-slider-height: rem(1.0);
-  $thumb-width: rem(0.3);
+  $scrubber-slider-height: 10px;
+  $thumb-width: 3px;
   $scrubber-thumb-height: $scrubber-slider-height;
   $marker-slider-height: 0;
   $marker-thumb-height: $thumb-width;
@@ -105,10 +105,10 @@ wz-advanced-player {
   }
   .hover-frame-display {
     position: absolute;
-    top: rem(-3.5);
+    top: -35px;
     border-radius: 2px;
-    font-size: rem(1.1);
+    font-size: 11px;
     line-height: 1;
-    padding: rem(.8) rem(1.0);
+    padding: 8px 10px;
   }
 }
