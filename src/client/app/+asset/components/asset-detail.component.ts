@@ -48,7 +48,6 @@ export class AssetDetailComponent implements OnInit {
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
-  @Output() onShowSnackBar = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   public shareComponentConfig: Pojo;

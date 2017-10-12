@@ -1,17 +1,26 @@
-// TODO: Uncomment all commented lines after fixing 'require' issue.
 import { AssetShareLinkComponent } from './asset-share-link.component';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Asset Share Link Component', () => {
     let componentUnderTest: AssetShareLinkComponent;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
-      componentUnderTest = new AssetShareLinkComponent();
+      mockStore = new MockAppStore();
+      componentUnderTest = new AssetShareLinkComponent(mockStore);
     });
 
-    it('***** HASN\'T BEEN TESTED YET! *****', () => {
-      expect(true).toBe(true);
+    describe('onCopyShareLinkButtonClick()', () => {
+      it('displays a snackbar with the expected message', () => {
+        const snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
+
+        componentUnderTest.onCopyShareLinkButtonClick();
+
+        expect(snackbarSpy).toHaveBeenCalledWith('ASSET.SHARING.SHARE_LINK.COPIED_CONFIRMED_MESSAGE');
+      });
     });
+
   });
 };
 

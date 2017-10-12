@@ -9,7 +9,7 @@ export function main() {
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
 
     beforeEach(() => {
-      componentUnderTest = new AssetShareComponent(null, null);
+      componentUnderTest = new AssetShareComponent(null, null, null);
     });
 
     describe('enhancedAsset setter', () => {
