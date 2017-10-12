@@ -22,7 +22,7 @@
           mat-icon-button
           data-clipboard-target="#legacyLink"
           title="{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}"
-          (click)="onOpenSnackbar.emit({key: 'COLLECTION.LINK_COPIED_TOAST'})">
+          (click)="onCopyLegacyLinkButtonClick()">
           <mat-icon>content_copy</mat-icon>
         </button>
       </div>
