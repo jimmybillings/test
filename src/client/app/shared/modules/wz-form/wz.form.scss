@@ -8,17 +8,11 @@ form {
 }
 wz-cc-form,
 wz-form {
-  display: block;
-  position: relative;
   form {
-    mat-select,
     .mat-form-field {
       width: 100%;
       margin-top: 6px;
       margin-bottom: 6px;
-    }
-    mat-select {
-      position: relative;
     }
     a.view-tos {
       text-decoration: underline;
@@ -56,13 +50,9 @@ wz-cc-form form {
   //show hide edit button 
 wz-cc-form button.mini.is-outlined {
   position: absolute;
-  top: -22px;
-  right: -24px;
+  top: 8px;
+  right: 8px;
   margin-right: 0;
-  @media screen and (max-width: $layout-breakpoint-xs) {
-    top: -12px;
-    right: -9px;
-  }
 }
 
 *[mat-button] {

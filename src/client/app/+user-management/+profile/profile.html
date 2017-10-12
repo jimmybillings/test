@@ -18,44 +18,44 @@
           <div class="m-data">
             <div class="row">
               <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.FIRST_NAME_LABEL' | translate }}</h5>
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.FIRST_NAME_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="mat-body-1">{{user.firstName}}</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.LAST_NAME_LABEL' | translate }}</h5>
-              </div>
-              <div class="cell">
-                <p class="mat-body-1">{{user.lastName}}</p>
+                <p class="mat-subheading-1">{{user.firstName}}</p>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.EMAIL_LABEL' | translate }}</h5>
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.LAST_NAME_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="mat-body-1">{{user.emailAddress}}</p>
+                <p class="mat-subheading-1">{{user.lastName}}</p>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.ACCOUNT_LABEL' | translate }}</h5>
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.EMAIL_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="mat-body-1">
+                <p class="mat-subheading-1">{{user.emailAddress}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cell">
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.ACCOUNT_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="mat-subheading-1">
                   {{userAccountName(user.accountId)}}
                 </p>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.PASSWORD_LABEL' | translate }}</h5>
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.PASSWORD_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="mat-body-1">
+                <p class="mat-subheading-1">
                   <button mat-button class="is-outlined" color="primary" [routerLink]="['/user/reset-password']">{{'PROFILE.BASIC_INFO.CHANGE_PASSWORD_BTN_LABEL' | translate }}</button>
                 </p>
               </div>
@@ -70,50 +70,50 @@
           <div class="m-data">
             <div class="row">
               <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_LABEL' | translate }}</h5>
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="mat-body-1">{{getBillingAddressInfo('address') + ' ' + getBillingAddressInfo('address2')}}</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_CITY_LABEL' | translate }}</h5>
-              </div>
-              <div class="cell">
-                <p class="mat-body-1">{{getBillingAddressInfo('city')}}</p>
+                <p class="mat-subheading-1">{{getBillingAddressInfo('address') + ' ' + getBillingAddressInfo('address2')}}</p>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_STATE_LABEL' | translate }}</h5>
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_CITY_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="mat-body-1">{{getBillingAddressInfo('state')}}</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_ZIPCODE_LABEL' | translate }}</h5>
-              </div>
-              <div class="cell">
-                <p class="mat-body-1">{{getBillingAddressInfo('zipcode')}}</p>
+                <p class="mat-subheading-1">{{getBillingAddressInfo('city')}}</p>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_COUNTRY_LABEL' | translate }}</h5>
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_STATE_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="mat-body-1">{{getBillingAddressInfo('country')}}</p>
+                <p class="mat-subheading-1">{{getBillingAddressInfo('state')}}</p>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <h5 class="mat-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_PHONE_LABEL' | translate }}</h5>
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_ZIPCODE_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="mat-body-1">{{getBillingAddressInfo('phone')}}</p>
+                <p class="mat-subheading-1">{{getBillingAddressInfo('zipcode')}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cell">
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_COUNTRY_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="mat-subheading-1">{{getBillingAddressInfo('country')}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cell">
+                <h5 class="mat-subheading-1">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_PHONE_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="mat-subheading-1">{{getBillingAddressInfo('phone')}}</p>
               </div>
             </div>
           </div>

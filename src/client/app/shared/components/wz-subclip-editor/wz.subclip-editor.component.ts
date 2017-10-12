@@ -29,13 +29,13 @@ import { Frame } from '../../modules/wazee-frame-formatter/index';
     <section layout="row" layout-align="end">
 
       <section layout="row" layout-align="end">
-        <button md-button color="primary"
+        <button mat-button color="primary"
           title="{{ cancelButtonHoverTextKey | translate }}"
           (click)="onCancelButtonClick()">
           {{ 'ASSET.SAVE_SUBCLIP.ACTION_BUTTON.CANCEL.LABEL' | translate }}
         </button>
 
-        <button md-button class="is-outlined" color="primary"
+        <button mat-button class="is-outlined" color="primary"
           *ngIf="!markersAreRemovable"
           [disabled]="!markersAreSavable"
           title="{{ markersSaveButtonHoverTextKey |
@@ -44,7 +44,7 @@ import { Frame } from '../../modules/wazee-frame-formatter/index';
           {{ markersSaveButtonLabelKey | translate }}
         </button>
         
-        <button md-button class="is-outlined" color="accent"
+        <button mat-button class="is-outlined" color="accent"
           *ngIf="markersAreRemovable"
           [disabled]="markersAreAlreadyUsed"
           title="{{ markersRemoveButtonHoverTextKey | translate }}"
@@ -75,7 +75,8 @@ export class WzSubclipEditorComponent {
   }
 
   public get markersAreAlreadyUsed(): boolean {
-    return this.alreadyUsedMarkersList.some(alreadyUsedMarkers => markersMatch(this.playerMarkers, alreadyUsedMarkers));
+    return this.alreadyUsedMarkersList
+      .some(alreadyUsedMarkers => markersMatch(this.playerMarkers, alreadyUsedMarkers));
   }
 
   public get cancelButtonHoverTextKey(): string {

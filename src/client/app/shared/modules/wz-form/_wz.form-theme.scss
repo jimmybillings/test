@@ -43,5 +43,8 @@
       color: mat-color($warn, 600);
     }  
   }
+  .mat-form-field {
+    width: 100%;
+  }
 }
 

@@ -11,8 +11,8 @@
  ************/
 .mat-menu-content .divider {
   width: 100%;
-  margin-top: rem(0);
-  padding-bottom: rem(.1);
+  margin-top: 0;
+  padding-bottom: 1px;
 }
 /************
  * Aspera download options
@@ -23,13 +23,13 @@
   align-content: center;
   justify-content: space-between;
   [mat-menu-item][disabled] {
-    padding: 0 rem(.5) 0 0;
+    padding: 0 5px 0 0;
   }
   .actions {
-    max-width: rem(8.5);
-    min-width: rem(8.5);
-    margin-right: rem(-1.0);
-    margin-bottom: rem(.4);
+    max-width: 85px;
+    min-width: 85px;
+    margin-right: -10px;
+    margin-bottom: 4px;
     text-align: right;
   }
 }

@@ -32,7 +32,7 @@ wz-step-button {
     }
     &.reverse mat-icon {
       transform: rotate(180deg);
-      margin-left: rem(-1.4);
+      margin-left: -14px;
       &::before {
         transform: rotate(180deg);
         margin-top: -1px;

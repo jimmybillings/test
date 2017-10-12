@@ -12,7 +12,7 @@
 mat-dialog-container.mat-dialog-container {
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     width: 94vw;
-    min-width: rem(33.0);
+    min-width: 330px;
     max-width: 94vw;
   }
 }
@@ -20,25 +20,25 @@ mat-dialog-container.mat-dialog-container {
 // like: mat-dialog-content collection-form .wz-dialog {}
 .mat-dialog-container .wz-dialog {
   box-sizing: border-box;
-  padding: rem(1.6) rem(1.5) rem(1.6);
+  padding: 16px 15px 16px;
   position: relative;
-  width: rem(37.8);
+  width: 378px;
   @media screen and (max-width: $layout-breakpoint-md) and (min-width: 0)  {
-    width: rem(36.5);
+    width: 365px;
   }
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
-    width: rem(34);
+    width: 340px;
   }
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-    padding: rem(.6) rem(.8) rem(.8);
+    padding: 6px 8px 8px;
     width: 100%;
   }
   button[mat-icon-button].close {
     position: absolute;
-    right: rem(-2.0);
-    top: rem(-2.0);
-    font-size: rem(3.6);
-    line-height: rem(4.6);
+    right: -20px;
+    top: -20px;
+    font-size: 36px;
+    line-height: 46px;
     opacity: .5;
     mat-icon {
       font-size: 1em;
@@ -52,8 +52,8 @@ mat-dialog-container.mat-dialog-container {
   }
   [mat-dialog-title] {
     text-align: center;
-    margin: 0 0 rem(.6) 0;
-    font-size: rem(2.4);
+    margin: 0 0 6px 0;
+    font-size: 24px;
     font-weight: 400;
   }
 }
@@ -63,13 +63,13 @@ mat-dialog-container.mat-dialog-container wz-confirmation-dialog,
 mat-dialog-container.mat-dialog-container wz-notification-dialog {
   [mat-dialog-title] {
     font-weight: 500;
-    margin-bottom: rem(1.2);
+    margin-bottom: 12px;
   }
   mat-dialog-content {
-    margin-bottom: rem(.8);
+    margin-bottom: 8px;
     line-height: 1.44;
   }
   mat-dialog-actions button:last-child {
-    margin-right: rem(-1.2);
+    margin-right: -12px;
   }
 }

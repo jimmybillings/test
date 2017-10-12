@@ -2,11 +2,8 @@ section.login.hero {
   div.user-message {
     text-align: center;
     p {
-      font-size: $headline-font-size-base;
-      font-weight: 400;
-      line-height: rem(3.2);
+      margin-top: 25px;
       @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
-        @include mat-body-1();
       }
     }
   }
@@ -20,29 +17,29 @@ section.login.hero {
   margin-bottom: 0;
   min-height: 1000px;
   & > div {
-    margin-top: rem(1.1);
+    margin-top: 11px;
   }
 }
 .mat-card.wz-form-card {
   @include mat-elevation(0);
-  padding: rem(3.6) rem(4.0) rem(3.6) rem(4.0);
+  padding: 36px 40px 36px 40px;
   @media screen and (max-width: $layout-breakpoint-xs) {
-    padding: rem(2.4) rem(2.2) rem(2.4) rem(2.2);
+    padding: 24px 22px 24px 22px;
   }
-  margin: rem(.8) 0;
+  margin: 8px 0;
   mat-card-title {
     text-align: center;
   }
   button[mat-icon-button].close {
     position: absolute;
-    right: rem(.5);
-    top: rem(.5);
-    font-size: rem(3.6);
+    right: 5px;
+    top: 5px;
+    font-size: 36px;
     opacity: .5;
     mat-icon {
-      font-size: rem(3.6);
-      height: rem(3.6);
-      width: rem(3.6);
+      font-size: 36px;
+      height: 36px;
+      width: 36px;
       line-height: .835
     }
   }

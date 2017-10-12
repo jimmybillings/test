@@ -3,22 +3,19 @@
   <h1 mat-dialog-title>{{ 'PRICING.CALCULATE_HEADING' | translate }}</h1>
   <mat-dialog-content> 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div *ngFor="let attribute of attributes" class="input">
-        <div layout="row" layout-align="center center">
-          <mat-select
-            required
-            placeholder="{{attribute.name}}"
-            formControlName="{{attribute.name}}">
-            <mat-option
-              *ngFor="let option of validOptionsFor(attribute)"
-              (onSelectionChange)="handleSelect($event, attribute)"
-              [value]="option.value">
-                {{ option.name }}
-            </mat-option>
-          </mat-select>
-        </div>
-        <br>
-      </div>
+      <mat-form-field *ngFor="let attribute of attributes">
+        <mat-select
+          required
+          placeholder="{{attribute.name}}"
+          formControlName="{{attribute.name}}">
+          <mat-option
+            *ngFor="let option of validOptionsFor(attribute)"
+            (onSelectionChange)="handleSelect($event, attribute)"
+            [value]="option.value">
+              {{ option.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <div class="submit-btn" layout="row" layout-align="center center">
         <button [disabled]="!form.valid" class="submit" mat-button mat-raised-button color="primary" type="submit">
           {{ 'PRICING.CALCULATE_BTN_LABEL' | translate }}

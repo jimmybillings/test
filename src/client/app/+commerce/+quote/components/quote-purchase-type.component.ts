@@ -6,23 +6,22 @@ import { MdSelectOption } from '../../../shared/interfaces/forms.interface';
   moduleId: module.id,
   selector: 'quote-purchase-type-component',
   template: `
-    <div class="quote-purchase-types" layout="row" layout-align="start center">
+    <mat-form-field class="quote-purchase-types">  
       <mat-select 
-        (change)="onSelectChange($event)" 
-        [(ngModel)]="selectedType" 
-        placeholder="{{ 'QUOTE.PURCHASE_TYPE_SELECT' | translate }}">
-        <mat-option
-          *ngFor="let type of types"
-          [value]="type.value">{{ type.viewValue }}
-        </mat-option>
+      (change)="onSelectChange($event)" 
+      [(ngModel)]="selectedType" 
+      placeholder="{{ 'QUOTE.PURCHASE_TYPE_SELECT' | translate }}">
+      <mat-option
+      *ngFor="let type of types"
+      [value]="type.value">{{ type.viewValue }}
+      </mat-option>
       </mat-select>
-    </div>
+    </mat-form-field>  
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
-    `mat-select { width: 200px; margin-top: 11px; margin-bottom: 11px; }`,
-    `.quote-purchase-types { padding: 12px 5px 0 5px; }`,
-    `:host { margin-bottom: -38px; min-width: 284px; }`
+    `mat-form-field { width: 200px; padding: 20px 5px 0 5px;}`,
+    `:host { margin-bottom: -48px; min-width: 284px; }`
   ]
 })
 export class QuotePurchaseTypeComponent {

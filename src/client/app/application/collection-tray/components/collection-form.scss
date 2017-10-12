@@ -1,13 +1,13 @@
 // this is can go away once the temporary legacy find assets in this collection goes away(post beta)
 .wz-dialog collection-link-component mat-card {
   width: 32vw;
-  padding: rem(3.2);
-  padding-bottom: rem(3.8);
-  padding-top: rem(3.8);
+  padding: 32px;
+  padding-bottom: 38px;
+  padding-top: 38px;
   button[mat-icon-button].close {
     position: absolute;
-    right: rem(.5);
-    top: rem(.5);
+    right: 5px;
+    top: 5px;
     font-size: 36px;
     opacity: .5;
     mat-icon {
@@ -27,6 +27,6 @@
   }
   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
     width: calc(100% - 80px);
-    margin: rem(.8);
+    margin: 8px;
   }
 } 

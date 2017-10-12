@@ -3,12 +3,12 @@
     ul {
       list-style: none;
       padding: 0;
-      margin: rem(.6) 0 0 rem(-1.2);
+      margin: 6px 0 0 -12px;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
         margin-left: 0;
       }
       li {
-        margin: rem(.2) 0 0 rem(1.2);
+        margin: 2px 0 0 12px;
         display: inline-block;
         max-width: calc(100% - 12px);
         min-width: calc(100% - 12px);
@@ -31,37 +31,37 @@
         @media screen and (max-width: $layout-breakpoint-xs)  {
           min-width: 100%;
           max-width: 100%;
-          margin: rem(1.0) 0 0 0;
+          margin: 10px 0 0 0;
         }
         section {
           position: relative;
-          padding: rem(1.4);
+          padding: 14px;
           border-radius: 2px;
           transition: $swift-ease-out;
-          min-height: rem(21.5);
-          margin-bottom: rem(1.0);
+          min-height: 215px;
+          margin-bottom: 10px;
           &.active {
             @include mat-elevation(2);
           }
           header > span:last-child {
-            font-size: rem(2.0);
+            font-size: 20px;
             font-weight: 600;
           }
           header > span:first-child {
-            font-size: rem(1.05);
+            font-size: 11px;
             font-weight: 300;
             display: block;
             text-transform: capitalize;
-            margin-top: rem(-.6);
+            margin-top: -6px;
             &.user {
               display: none;
             }
           }
           address {
-            font-size: rem(1.4);
+            font-size: 14px;
             line-height: 1.55;
-            padding-top: rem(.8);
-            margin-bottom: rem(2.4);
+            padding-top: 8px;
+            margin-bottom: 24px;
             span {
               display: flex;
             }
@@ -75,17 +75,17 @@
             bottom: 0;
             right: 0;
             min-width: 100%;
-            padding: rem(1.6);
+            padding: 16px;
             button {
-              margin-left: rem(.5);
+              margin-left: 5px;
               &:first-child {
                 margin-left: 0;
               }
             }
           }
           .divider {
-            margin: rem(.8) 0 rem(.7) 0;
-            padding-bottom: rem(.7);
+            margin: 8px 0 7px 0;
+            padding-bottom: 7px;
           }
         }
       }

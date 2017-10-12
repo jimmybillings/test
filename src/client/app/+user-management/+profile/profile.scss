@@ -1,13 +1,13 @@
 profile-component .profile-head {
-  padding-left: rem(.4);
-  padding-right: rem(.4);
+  padding-left: 4px;
+  padding-right: 4px;
   header {
-    padding-top: rem(.6);
-    padding-bottom: rem(.5);
+    padding-top: 6px;
+    padding-bottom: 5px;
     .mat-display-1 {
       margin: 0;
       width: calc(100% - 120px);
-      font-size: rem(2.6);
+      font-size: 26px;
     }
   } 
   .tools {
@@ -15,18 +15,18 @@ profile-component .profile-head {
     white-space: nowrap;
   }
   header div[flex="100"] > button[mat-icon-button] {
-    margin-right: rem(1.6);
+    margin-right: 16px;
   }
 }
 
 profile-component .mat-primary.edit-basic {
-  margin-top: rem(.6);
-  margin-bottom: rem(-3.0);
-  padding-left: rem(4.0);
+  margin-top: 6px;
+  margin-bottom: -30px;
+  padding-left: 40px;
   .material-icons {
     position: absolute;
-    left:rem(1.0);
-    top:rem(.3);
+    left:10px;
+    top:3px;
   }
 }
 profile-component mat-tab-body {

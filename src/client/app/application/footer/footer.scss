@@ -5,7 +5,7 @@ app-footer {
       height: 170px;
       width: 100%;
       .logo {
-        margin: rem(.3) 0 0 0;
+        margin: 3px 0 0 0;
         background-position: center center;
         background-repeat:no-repeat;
         background-size: 133px;
@@ -15,7 +15,7 @@ app-footer {
       }
     }
     ul.social {
-      margin: 0 0 rem(-1.0) 0;
+      margin: 0 0 -10px 0;
       padding:0;
       li {
         list-style: none;
@@ -47,10 +47,11 @@ app-footer {
       }  
     }
     h3.mat-title {
-      margin-bottom: .5em;
+      margin-bottom: .2em;
+      margin-top: .2em;
     }
     h3.mat-title + .mat-body-1 {
-      margin: rem(1.4) 0 0 0;
+      margin: 14px 0 0 0;
       font-size: .9em;
     }
     .help-link {
@@ -67,11 +68,11 @@ app-footer {
         min-height: 0;
       }
       mat-list mat-list-item .mat-list-item {
-        height: rem(4.0);
+        height: 40px;
         padding: 0;
       }
-      h5.mat-subhead {
-        margin: 0 0 0 rem(2.6);
+      h5.mat-subheading-1 {
+        margin: 0 0 0 26px;
         font-weight: 500;
         opacity: .8;
       }
