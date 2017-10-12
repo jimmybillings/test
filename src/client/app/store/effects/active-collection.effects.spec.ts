@@ -16,6 +16,7 @@ export function main() {
 
     beforeEach(() => {
       mockUserPreferenceService = { openCollectionTray: jasmine.createSpy('openCollectionTray') };
+      spyOn(instantiator, 'load').and.callThrough();
     });
 
     effectsSpecHelper.generateTestsFor({
@@ -35,6 +36,27 @@ export function main() {
           sectionName: 'activeCollection',
           methodName: 'loadSuccess',
           expectedArguments: [{ some: 'collection' }]
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'loadIfNeeded',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: ActiveCollectionActions.LoadIfNeeded.Type,
+        pagination: { some: 'pagination' }
+      },
+      state: {
+        storeSectionName: 'activeCollection',
+        propertyName: 'collection',
+        value: { id: null }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'activeCollection',
+          methodName: 'load',
+          expectedArguments: [{ some: 'pagination' }]
         }
       }
     });
