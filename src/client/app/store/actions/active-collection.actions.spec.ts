@@ -19,6 +19,18 @@ export function main() {
     });
 
     actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'loadIfNeeded',
+        parameters: [{ currentPage: 42, pageSize: 50 }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Load If Needed',
+        pagination: { currentPage: 42, pageSize: 50 }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
       comment: 'with default parameters',
       factoryMethod: {
         class: ActionFactory,
