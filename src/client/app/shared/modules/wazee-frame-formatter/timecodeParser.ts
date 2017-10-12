@@ -74,8 +74,10 @@ export class TimecodeParser {
 
       case TimecodeFormat.SIMPLE_TIME_CONVERSION:
       case TimecodeFormat.MINIMAL_TIME_CONVERSION:
+        const adjustedFrames = Math.round(this.time.totalWholeSeconds() * this.accurateFramesPerSecond) + this.time.frames;
+
         this.time.clear();
-        this.time.frames += Math.round(this.time.totalWholeSeconds() * this.accurateFramesPerSecond);
+        this.time.frames = adjustedFrames;
     }
 
     return this;
