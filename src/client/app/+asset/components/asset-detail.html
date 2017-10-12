@@ -249,8 +249,8 @@
               </div>
 
               <mat-card-actions *ngIf="canPerformCartActions" layout="column" layout-align="center center" layout-wrap="">
-                  <mat-form-field>
-                    <mat-select *ngIf="canSelectTranscodeTarget" (change)="onSelectTarget($event)" [(ngModel)]="selectedTarget">
+                  <mat-form-field *ngIf="canSelectTranscodeTarget">
+                    <mat-select (change)="onSelectTarget($event)" [(ngModel)]="selectedTarget">
                       <mat-option *ngFor="let target of asset.transcodeTargets" [value]="target">
                         {{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
                       </mat-option>
