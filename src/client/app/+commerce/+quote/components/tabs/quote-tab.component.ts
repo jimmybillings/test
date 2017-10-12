@@ -12,11 +12,10 @@ import { LicenseAgreementComponent } from '../../../components/license-agreement
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { FormFields } from '../../../../shared/interfaces/forms.interface';
 import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
-import { MatSnackBar } from '@angular/material';
-import { TranslateService } from '@ngx-translate/core';
 import { Pojo } from '../../../../shared/interfaces/common.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Common } from '../../../../shared/utilities/common.functions';
+import { AppStore } from '../../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -29,6 +28,7 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
   public projects: Project[];
   private config: any;
   private projectSubscription: Subscription;
+
   constructor(
     public quoteService: QuoteService,
     public userCan: CommerceCapabilities,
@@ -36,8 +36,8 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
     private router: Router,
     private uiConfig: UiConfig,
     private quoteEditService: QuoteEditService,
-    private snackBar: MatSnackBar,
-    private translate: TranslateService) {
+    private store: AppStore
+  ) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
     this.projectSubscription = this.quoteService.projects.subscribe(projects => this.projects = projects);
@@ -61,10 +61,7 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
     this.quoteEditService.cloneQuote(this.quoteService.state.data)
       .do(() => {
         this.router.navigate(['/active-quote']);
-        this.showSnackBar({
-          key: 'QUOTE.CLONE_SUCCESS',
-          value: null
-        });
+        this.store.dispatch(factory => factory.snackbar.display('QUOTE.CLONE_SUCCESS'));
       })
       .subscribe();
   }
@@ -170,12 +167,5 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
     this.quoteService.rejectQuote().take(1).subscribe(() => {
       this.router.navigate(['/quotes']);
     });
-  }
-
-  private showSnackBar(message: Pojo) {
-    this.translate.get(message.key, message.value)
-      .subscribe((res: string) => {
-        this.snackBar.open(res, '', { duration: 2000 });
-      });
   }
 }
