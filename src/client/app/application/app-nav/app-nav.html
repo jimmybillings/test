@@ -63,7 +63,7 @@
   </button>
   
   <button
-    *ngIf="userCan.viewCollectionTray"
+    *ngIf="userCan.viewCollectionTray()"
     mat-icon-button
     title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}"
     (click)="toggleCollectionTray()"
