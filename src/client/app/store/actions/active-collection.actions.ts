@@ -14,6 +14,10 @@ export class ActionFactory {
     return new Load(pagination);
   }
 
+  public loadIfNeeded(pagination: CollectionPaginationParameters = defaultPagination): LoadIfNeeded {
+    return new LoadIfNeeded(pagination);
+  }
+
   public set(collectionId: number, pagination: CollectionPaginationParameters = defaultPagination): Set {
     return new Set(collectionId, pagination);
   }
@@ -92,6 +96,12 @@ export class InternalActionFactory extends ActionFactory {
 export class Load implements Action {
   public static readonly Type = '[Active Collection] Load';
   public readonly type = Load.Type;
+  constructor(public readonly pagination: CollectionPaginationParameters) { }
+}
+
+export class LoadIfNeeded implements Action {
+  public static readonly Type = '[Active Collection] Load If Needed';
+  public readonly type = LoadIfNeeded.Type;
   constructor(public readonly pagination: CollectionPaginationParameters) { }
 }
 

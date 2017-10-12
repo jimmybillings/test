@@ -40,6 +40,27 @@ export function main() {
     });
 
     effectsSpecHelper.generateTestsFor({
+      effectName: 'loadIfNeeded',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: ActiveCollectionActions.LoadIfNeeded.Type,
+        pagination: { some: 'pagination' }
+      },
+      state: {
+        storeSectionName: 'activeCollection',
+        propertyName: 'collection',
+        value: { id: null }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'activeCollection',
+          methodName: 'load',
+          expectedArguments: [{ some: 'pagination' }]
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
       effectName: 'set',
       effectsInstantiator: instantiator,
       inputAction: {

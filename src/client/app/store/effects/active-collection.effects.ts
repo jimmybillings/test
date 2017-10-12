@@ -22,6 +22,16 @@ export class ActiveCollectionEffects {
     );
 
   @Effect()
+  public loadIfNeeded: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadIfNeeded.Type)
+    .withLatestFrom(this.store.select(state => state.activeCollection.collection.id))
+    .filter(([action, collectionId]: [ActiveCollectionActions.LoadIfNeeded, number]) =>
+      collectionId === null
+    )
+    .map(([action, collectionId]: [ActiveCollectionActions.LoadIfNeeded, number]) =>
+      this.store.create(factory => factory.activeCollection.load(action.pagination))
+    );
+
+  @Effect()
   public set: Observable<Action> = this.actions.ofType(ActiveCollectionActions.Set.Type)
     .switchMap((action: ActiveCollectionActions.Set) =>
       this.service.set(action.collectionId, action.pagination)
