@@ -1,177 +1,174 @@
 import { TimecodeFormat } from './timecodeFormat';
 import { Time } from './time';
 
-const MATH = Math;
-const DEFAULT_TIME_CODE_LENGTH = 'hh:mm:ss:ff'.length;
+export const DEFAULT_TIME_CODE_LENGTH = 'hh:mm:ss:ff'.length;
 
 export class TimecodeGenerator {
   public framesPerSecond: number;
   public accurateFramesPerSecond: number;
   public frameNumber: number;
-  public _time: Time;
 
-  constructor(framesPerSecond1?: number) {
-    var integralFramesPerSecond;
-    this.framesPerSecond = framesPerSecond1;
-    this._time = new Time(this.framesPerSecond);
-    integralFramesPerSecond = MATH.round(this.framesPerSecond);
-    this.accurateFramesPerSecond = this.framesPerSecond === integralFramesPerSecond ? this.framesPerSecond : integralFramesPerSecond * 1000 / 1001;
+  private time: Time;
+
+  // ------- STATIC (CLASS) METHODS -------
+
+  public static extraFramesNeededForDropFrame(framesPerSecond: number, time: Time): number {
+    switch (framesPerSecond) {
+      case 29.97: return TimecodeGenerator.extraFramesNeededFor2997DropFrame(time);
+      case 59.94: return TimecodeGenerator.extraFramesNeededFor5994DropFrame(time);
+      case 23.976: return TimecodeGenerator.extraFramesNeededFor23976DropFrame(time);
+      default: return 0;
+    }
+  }
+
+  public static extraFramesNeededFor2997DropFrame(time: Time): number {
+    const minutes = time.minutes;
+    const minutesTensDigit = Math.floor(minutes / 10);
+    const minutesOnesDigit = minutes % 10;
+
+    return (time.hours * 108) + (minutesTensDigit * 18) + (minutesOnesDigit * 2);
+  }
+
+  public static extraFramesNeededFor5994DropFrame(time: Time): number {
+    return TimecodeGenerator.extraFramesNeededFor2997DropFrame(time) * 2;
+  }
+
+  public static extraFramesNeededFor23976DropFrame(time: Time): number {
+    const hours = time.hours;
+    const minutes = time.minutes;
+
+    let extra = hours * 60;
+    extra += (Math.floor((hours + 1) / 3) + Math.floor(hours / 3)) * 26;
+    extra += minutes;
+
+    if (!time.hoursMultipleOf(3)) {
+      extra += Math.floor(minutes * 0.5);
+
+      [16, 30, 44].forEach(specialMinute => { if (minutes >= specialMinute) extra -= 1; });
+    }
+
+    return extra;
   }
 
   // ------- PUBLIC INTERFACE -------
 
+  constructor(framesPerSecond: number) {
+    this.framesPerSecond = framesPerSecond;
+    this.time = new Time(this.framesPerSecond);
+
+    const integralFramesPerSecond = Math.round(this.framesPerSecond);
+    this.accurateFramesPerSecond =
+      this.framesPerSecond === integralFramesPerSecond ? this.framesPerSecond : integralFramesPerSecond * 1000 / 1001;
+  }
+
   public setFromFrameNumber(frameNumber: number): TimecodeGenerator {
     this.frameNumber = frameNumber;
     return this;
-  };
+  }
 
-  public asString(format: string, minLength?: number): string {
-    var frameDelimiter, frames, rawSeconds, truncatedSeconds;
-    if (minLength == null) {
-      minLength = DEFAULT_TIME_CODE_LENGTH;
-    }
-    frameDelimiter = ':';
-    this._time.clear();
+  public asString(format: TimecodeFormat, minLength: number = DEFAULT_TIME_CODE_LENGTH): string {
+    let frameDelimiter = ':';
+    this.time.clear();
+
     switch (format) {
       case TimecodeFormat.NONDROPFRAME:
-        this._time.setFrames(this.frameNumber);
+        this.time.frames = this.frameNumber;
         break;
+
       case TimecodeFormat.DROPFRAME:
-        this._time.setFrames(this.frameNumber);
-        this._addDropFramesIfNecessary();
+        this.time.frames = this.frameNumber;
+        this.addDropFramesIfNecessary();
         frameDelimiter = ';';
         break;
+
       case TimecodeFormat.SIMPLE_TIME_CONVERSION:
       case TimecodeFormat.MINIMAL_TIME_CONVERSION:
-        rawSeconds = this.frameNumber / this.accurateFramesPerSecond;
-        truncatedSeconds = MATH.floor(rawSeconds);
-        frames = MATH.round((rawSeconds - truncatedSeconds) * this.framesPerSecond);
-        this._time.setSeconds(truncatedSeconds).setFrames(frames);
+        const rawSeconds = this.frameNumber / this.accurateFramesPerSecond;
+        const truncatedSeconds = Math.floor(rawSeconds);
+
+        this.time.seconds = truncatedSeconds;
+        this.time.frames = Math.round((rawSeconds - truncatedSeconds) * this.framesPerSecond);;
         frameDelimiter = ';';
     }
-    switch (format) {
-      case TimecodeFormat.MINIMAL_TIME_CONVERSION:
-        return this._minimallyFormatTime();
-      default:
-        return this._formatTime(minLength, frameDelimiter);
-    }
-  };
 
-  // ------- STATIC (CLASS) METHODS -------
-
-  static extraFramesNeededForDropFrame(framesPerSecond: number, time: Time): number {
-    switch (framesPerSecond) {
-      case 29.97:
-        return TimecodeGenerator.extraFramesNeededFor2997DropFrame(time);
-      case 59.94:
-        return TimecodeGenerator.extraFramesNeededFor5994DropFrame(time);
-      case 23.976:
-        return TimecodeGenerator.extraFramesNeededFor23976DropFrame(time);
-      default:
-        return 0;
-    }
-  };
-
-  static extraFramesNeededFor2997DropFrame(time: Time): number {
-    var minutes, minutesOnesDigit, minutesTensDigit;
-    minutes = time.getMinutes();
-    minutesTensDigit = MATH.floor(minutes / 10);
-    minutesOnesDigit = minutes % 10;
-    return (time.getHours() * 108) + (minutesTensDigit * 18) + (minutesOnesDigit * 2);
-  };
-
-  static extraFramesNeededFor5994DropFrame(time: Time): number {
-    return TimecodeGenerator.extraFramesNeededFor2997DropFrame(time) * 2;
-  };
-
-  static extraFramesNeededFor23976DropFrame(time: Time): number {
-    var extra, hours, i, len, minutes, ref, specialMinute;
-    hours = time.getHours();
-    minutes = time.getMinutes();
-    extra = hours * 60;
-    extra += (MATH.floor((hours + 1) / 3) + MATH.floor(hours / 3)) * 26;
-    extra += minutes;
-    if (!time.hoursMultipleOf(3)) {
-      extra += MATH.floor(minutes * 0.5);
-      ref = [16, 30, 44];
-      for (i = 0, len = ref.length; i < len; i++) {
-        specialMinute = ref[i];
-        if (minutes >= specialMinute) {
-          extra -= 1;
-        }
-      }
-    }
-    return extra;
-  };
+    return format === TimecodeFormat.MINIMAL_TIME_CONVERSION
+      ? this.minimallyFormatTime()
+      : this.formatTime(minLength, frameDelimiter);
+  }
 
   // ------- PRIVATE METHODS -------
 
-  public _addDropFramesIfNecessary(): void {
-    var extraExtraFrames: number, extraFrames: number, hours: number, minutes: number, originalHours: number, originalMinutes: number;
-    originalMinutes = this._time.getMinutes();
-    originalHours = this._time.getHours();
-    extraFrames = TimecodeGenerator.extraFramesNeededForDropFrame(this.framesPerSecond, this._time);
-    if (!(extraFrames > 0)) {
-      return null;
-    }
-    this._time.addFrames(extraFrames);
+  private addDropFramesIfNecessary(): void {
+    const originalHours: number = this.time.hours;
+    const originalMinutes: number = this.time.minutes;
+    const extraFrames: number = TimecodeGenerator.extraFramesNeededForDropFrame(this.framesPerSecond, this.time);
+
+    if (extraFrames <= 0) return null;
+
+    this.time.addFrames(extraFrames);
+    const newHours = this.time.hours;
+    const newMinutes = this.time.minutes;
+
     switch (this.framesPerSecond) {
       case 29.97:
-        if (this._time.getMinutes() > originalMinutes && !this._time.minutesMultipleOf(10)) {
-          this._time.addFrames(2);
-        }
+        if (newMinutes > originalMinutes && !this.time.minutesMultipleOf(10)) this.time.addFrames(2);
         break;
+
       case 59.94:
-        if (this._time.getMinutes() > originalMinutes && !this._time.minutesMultipleOf(10)) {
-          this._time.addFrames(4);
-        }
+        if (newMinutes > originalMinutes && !this.time.minutesMultipleOf(10)) this.time.addFrames(4);
         break;
+
       case 23.976:
-        extraExtraFrames = 0;
-        minutes = this._time.getMinutes();
-        hours = this._time.getHours();
-        if (minutes > originalMinutes) {
-          extraExtraFrames += minutes - originalMinutes;
-          if (!this._time.hoursMultipleOf(3) && this._time.minutesMultipleOf(2) && !this._time.minutesOneOf([0, 16, 30, 44])) {
+        let extraExtraFrames = 0;
+
+        if (newMinutes > originalMinutes) {
+          extraExtraFrames += newMinutes - originalMinutes;
+          if (!this.time.hoursMultipleOf(3) && this.time.minutesMultipleOf(2) && !this.time.minutesOneOf(0, 16, 30, 44)) {
             extraExtraFrames += 1;
           }
         }
-        if (hours > originalHours) {
+
+        if (newHours > originalHours) {
           extraExtraFrames += 1;
         }
-        this._time.addFrames(extraExtraFrames);
-    }
-  };
 
-  public _formatTime(minLength: number, frameDelimiter: string): string {
-    if (frameDelimiter == null) {
-      frameDelimiter = ':';
+        this.time.addFrames(extraExtraFrames);
     }
-    return this._zeroFillTo(minLength, this._time.getHours() + ':' + this._zeroFillTo(2, this._time.getMinutes()) + ':' + this._zeroFillTo(2, this._time.getSeconds()) + frameDelimiter + this._zeroFillTo(2, this._time.getFrames()));
-  };
+  }
 
-  public _minimallyFormatTime(): string {
-    var frames: number, hours: number, minutes: number, outputPieces: Array<string>, ref: Array<number>;
-    ref = [this._time.getHours(), this._time.getMinutes(), this._time.getFrames()], hours = ref[0], minutes = ref[1], frames = ref[2];
-    outputPieces = [this._zeroFillTo(2, this._time.getSeconds())];
-    if (minutes > 0) {
-      outputPieces.unshift(this._zeroFillTo(2, minutes) + ':');
-    }
-    if (hours > 0) {
-      outputPieces.unshift(this._zeroFillTo(2, hours) + ':');
-    }
-    if (frames > 0) {
-      outputPieces.push(';' + this._zeroFillTo(2, frames));
-    }
+  private formatTime(minLength: number, frameDelimiter: string = ':'): string {
+    const timecode: string =
+      [
+        this.time.hours,
+        ':',
+        this.zeroFillTo(2, this.time.minutes),
+        ':',
+        this.zeroFillTo(2, this.time.seconds),
+        frameDelimiter,
+        this.zeroFillTo(2, this.time.frames)
+      ].join('');
+
+    return this.zeroFillTo(minLength, timecode);
+  }
+
+  private minimallyFormatTime(): string {
+    const { hours, minutes, seconds, frames } = this.time;
+
+    let outputPieces: string[] = [this.zeroFillTo(2, seconds)];
+    if (minutes > 0) outputPieces.unshift(this.zeroFillTo(2, minutes) + ':');
+    if (hours > 0) outputPieces.unshift(this.zeroFillTo(2, hours) + ':');
+    if (frames > 0) outputPieces.push(';' + this.zeroFillTo(2, frames));
+
     return outputPieces.join('');
-  };
+  }
 
-  public _zeroFillTo(minNumberOfDigits: number, number: number | string): string {
-    var output: string;
-    output = number + '';
+  private zeroFillTo(minNumberOfDigits: number, input: number | string): string {
+    let output: string = String(input);
+
     while (output.length < minNumberOfDigits) {
-      output = '0' + output;
+      output = `0${output}`;
     }
+
     return output;
-  };
+  }
 }
