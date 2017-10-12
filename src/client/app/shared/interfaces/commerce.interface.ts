@@ -2,7 +2,7 @@ import { ViewAddress, Pagination, Common, SelectedPriceAttributes, Store } from 
 import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
 
-export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement' | 'RevenueOnly';
+export type QuoteType = 'Standard' | 'ProvisionalOrder' | 'OfflineAgreement' | 'RevenueOnly';
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
 export type TranscodeStatus = 'Submitted' | 'Completed' | 'Failed' | 'UrlError' | 'Deleted';
 export type OrderType = 'PurchaseOnCredit' | 'CreditCard' | 'BadDebt' | 'ChannelOrder' | 'FulfillmentOrder' | 'OfflineAgreement'
