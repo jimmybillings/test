@@ -5,22 +5,22 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   selector: 'line-item-transcode-select-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="delivery-format">
-      <md-select *ngIf="!readOnly"
+    <mat-form-field *ngIf="!readOnly" class="delivery-format">
+      <mat-select
         placeholder="{{ 'ASSET.TRANSCODE_TARGETS.FORM_PLACEHOLDER' | translate }}"
         [(ngModel)]="selectedTarget"
         (change)="selectTarget.emit($event.value)">
-          <md-option
+          <mat-option
             *ngFor="let target of transcodeTargets"
             [value]="target">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
-          </md-option>
-      </md-select>
-      <div *ngIf="readOnly" class="read-only-transcode">
-        <span class="cart-asset-metadata md-caption">
-          <strong>{{ 'ASSET.TRANSCODE_TARGETS.FORM_PLACEHOLDER' | translate }}: </strong>
-          {{ 'ASSET.TRANSCODE_TARGETS.' + selectedTarget | translate }}
-        </span>
-      </div>
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="readOnly" class="read-only-transcode">
+      <span class="cart-asset-metadata mat-caption">
+        <strong>{{ 'ASSET.TRANSCODE_TARGETS.FORM_PLACEHOLDER' | translate }}: </strong>
+        {{ 'ASSET.TRANSCODE_TARGETS.' + selectedTarget | translate }}
+      </span>
     </div>
   `
 })

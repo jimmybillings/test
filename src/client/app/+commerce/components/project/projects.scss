@@ -1,21 +1,21 @@
 projects-component .add-project button {
-  margin: rem(.2) 0 rem(.2) 0;
-  md-icon {
-    padding: 0 rem(.4) rem(.2) 0;
+  margin: 2px 0 2px 0;
+  mat-icon {
+    padding: 0 4px 2px 0;
   }
 }  
 
 projects-component section.header {
-  padding-left: rem(.8);
-  padding-right: rem(.8);
+  padding-left: 8px;
+  padding-right: 8px;
   header {
-    padding-top: rem(.6);
-    padding-bottom: rem(.5);
+    padding-top: 6px;
+    padding-bottom: 5px;
     position: relative;
-    .md-display-1 {
+    .mat-display-1 {
       margin: 0;
       width: calc(100% - 120px);
-      font-size: rem(2.6);
+      font-size: 26px;
     }
   }
   .tools {
@@ -25,11 +25,11 @@ projects-component section.header {
 div.project {
   margin-bottom: 0;
   header.project-info {
-    h5[md-display-1] {
+    h5[mat-display-1] {
       margin: 0 0 2px 0;
       white-space: nowrap;
       .project-name {
-        font-size: rem(1.8);
+        font-size: 18px;
         font-weight: 400;
       }
     }
@@ -68,39 +68,39 @@ div.project {
       }
     }
     div:nth-child(2n) {
-      padding: rem(.2) rem(.2) rem(.4) 0;
+      padding: 2px 2px 4px 0;
       text-align: right;
     }
     div.project-asset-count {
-      font-size: rem(1.4);
-      padding: rem(.3) rem(.9) 0 0;
+      font-size: 14px;
+      padding: 3px 9px 0 0;
     }
     div.project-subtotal {
-      bottom: rem(.3);
-      right: rem(.2);
-      padding: rem(.2) rem(.2) rem(.2) 0;
+      bottom: 3px;
+      right: 2px;
+      padding: 2px 2px 2px 0;
       span {
-        font-size: rem(1.8);
+        font-size: 18px;
         display: inline-block;
-        padding: rem(.1) rem(.6) 0 0;
+        padding: 1px 6px 0 0;
         &::first-letter {
           font-size: .83em;
           vertical-align: top;
         }
       }
       strong {
-        padding-right: rem(.5);
+        padding-right: 5px;
       }
     }
     button.is-outlined {
-      line-height: rem(2.4);
-      min-width: rem(5.0);
+      line-height: 24px;
+      min-width: 50px;
       &.select-usage {
         border: none;
       }
     }
     button.rights-pkg .mat-icon {
-      font-size: rem(1.8);
+      font-size: 18px;
       line-height: 1.32em;
     }
   }

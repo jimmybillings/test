@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { TranslateService } from '@ngx-translate/core';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class SnackbarService {
-  constructor(private translateService: TranslateService, private snackBar: MdSnackBar) { }
+  constructor(private translateService: TranslateService, private snackBar: MatSnackBar) { }
 
   public display(messageKey: string, messageParameters: object): Observable<String> {
     return this.translateService.get(messageKey, messageParameters)

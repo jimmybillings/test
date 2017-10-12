@@ -5,7 +5,7 @@ import { UiState } from '../../shared/services/ui.state';
 @Component({
   moduleId: module.id,
   selector: 'app-loading-indicator',
-  template: `<md-progress-bar mode="indeterminate" color="accent" *ngIf="showLoadingIndicator | async"></md-progress-bar>`,
+  template: `<mat-progress-bar mode="indeterminate" color="accent" *ngIf="showLoadingIndicator | async"></mat-progress-bar>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppLoadingIndicatorComponent {

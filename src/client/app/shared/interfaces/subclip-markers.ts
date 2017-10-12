@@ -1,4 +1,4 @@
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 
 export interface Markers {
   startTime?: number;

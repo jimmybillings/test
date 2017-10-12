@@ -1,39 +1,39 @@
 register-component {
-  md-card.wz-form-card {
-    md-card-content {
+  mat-card.wz-form-card {
+    mat-card-content {
       button.terms-button {
         position: absolute;
-        top: rem(38);
-        right: rem(6);
+        top: 380px;
+        right: 60px;
       }
     }
   }
-  md-card.registration-confirm {
-    padding: rem(4.2);
-    margin-top:rem(4.2);
+  mat-card.registration-confirm {
+    padding: 42px;
+    margin-top:42px;
     .email {
       display: block;
       font-weight: 500;
-      margin-top: rem(-.4);
-      margin-bottom: rem(.8);
+      margin-top: -4px;
+      margin-bottom: 8px;
     }
   }
 }
 
 // terms agreement
 .mat-dialog-container .wz-dialog.terms-dialog {
-  padding: rem(.4) rem(.8) rem(.6);
-  width: rem(50.0);
+  padding: 4px 8px 6px;
+  width: 500px;
   height: 70vh;
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     width: 100%;
   }
   .content {
     font-size: .84em;
-    padding: 0 rem(1.4);
+    padding: 0 14px;
     overflow-y: scroll;
     height: calc(100% - 114px);
-    margin-bottom: rem(2.2);
+    margin-bottom: 22px;
   }
   .terms-actions button.mat-primary {
     width: 66%;

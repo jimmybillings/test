@@ -4,7 +4,7 @@ import { CommerceEditTab } from '../../../components/tabs/commerce-edit-tab';
 import { LicenseAgreements, Project } from '../../../../shared/interfaces/commerce.interface';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { AssetService } from '../../../../store/services/asset.service';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
@@ -40,7 +40,7 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
     public window: WindowRef,
     public userPreference: UserPreferenceService,
     @Inject(DOCUMENT) public document: any,
-    public snackBar: MdSnackBar,
+    public snackBar: MatSnackBar,
     public translate: TranslateService,
     public pricingStore: PricingStore,
     public featureStore: FeatureStore,

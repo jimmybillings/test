@@ -13,7 +13,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
           <a *ngIf="config" [routerLink]="['/search', buildSearchContext(highlight.searchContext)]">
             <div class="mrkt-collections__highlight_img"></div>
             <div class="mrkt-collections__highlight_content">
-              <h5 class="md-title">{{ 'HOME.HIGHLIGHT.'+(i+1) | translate }}</h5>
+              <h5 class="mat-title">{{ 'HOME.HIGHLIGHT.'+(i+1) | translate }}</h5>
             </div>
           </a>
         </div>

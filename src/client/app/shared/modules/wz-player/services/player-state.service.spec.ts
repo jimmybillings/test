@@ -1,5 +1,5 @@
 import { PlayerStateService } from './player-state.service';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../wazee-frame-formatter/index';
 import { PlayerState, PlayerStateChanges } from '../interfaces/player.interface';
 
 export function main() {

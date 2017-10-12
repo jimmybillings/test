@@ -3,7 +3,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 import { Router } from '@angular/router';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { AssetService } from '../../../store/services/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
@@ -45,7 +45,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public window: WindowRef,
     public userPreference: UserPreferenceService,
     @Inject(DOCUMENT) public document: any,
-    public snackBar: MdSnackBar,
+    public snackBar: MatSnackBar,
     public translate: TranslateService,
     public pricingStore: PricingStore,
     public router: Router,

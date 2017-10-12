@@ -1,8 +1,8 @@
-@mixin wz-md-menu-extended-theme($theme) {
+@mixin wz-mat-menu-extended-theme($theme) {
   $foreground: map-get($theme, foreground);
 
-  .mat-menu-content a[md-menu-item][disabled] md-icon.material-icons,
-  .mat-menu-content button[md-menu-item][disabled] md-icon.material-icons {
+  .mat-menu-content a[mat-menu-item][disabled] mat-icon.material-icons,
+  .mat-menu-content button[mat-menu-item][disabled] mat-icon.material-icons {
     color: mat-color($foreground, disabled);
   }
   .mat-menu-content .divider {
@@ -13,13 +13,13 @@
   * unique menu list. they have an inactive label width two buttons as icon for each menu item
   ************/
   .mat-list.aspera-download-options .mat-list-item {
-    [md-menu-item][disabled] {
+    [mat-menu-item][disabled] {
       color: mat-color($foreground, secondary-text);
     }
-    .actions button[md-icon-button] {
+    .actions button[mat-icon-button] {
       color: mat-color($foreground, base, .7);
     }
-    .actions button[md-icon-button][disabled] {
+    .actions button[mat-icon-button][disabled] {
       color: mat-color($foreground, disabled);
     }
   }

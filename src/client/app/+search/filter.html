@@ -1,4 +1,4 @@
-<md-nav-list>
+<mat-nav-list>
   <li *ngFor="let filter of filters.subFilters">
     <div [ngSwitch]="filter.type">
       <div *ngSwitchCase="'ExclusiveList'" class="exclusive-list">
@@ -10,15 +10,15 @@
           </div>
         </div>
 
-        <md-list-item *ngFor="let subFilter of filter.subFilters">
-          <button md-button (click)="applyExclusiveFilter(subFilter)" [ngClass]="{'active': subFilter.active}" color="primary">
+        <mat-list-item *ngFor="let subFilter of filter.subFilters">
+          <button mat-button (click)="applyExclusiveFilter(subFilter)" [ngClass]="{'active': subFilter.active}" color="primary">
             {{subFilter.name}}
             <span class="filter-count" *ngIf="counted && subFilter.count > -1">
               &nbsp;({{subFilter.count | number}})
             </span>
           </button>
-        </md-list-item>
-        <md-divider></md-divider>
+        </mat-list-item>
+        <mat-divider></mat-divider>
       </div>
 
       <span *ngSwitchCase="'None'" class="none">
@@ -32,7 +32,7 @@
 
         <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [filters]="filter" [counted]="counted"></filter-component>
 
-        <md-divider></md-divider>
+        <mat-divider></mat-divider>
       </span>
 
       <span *ngSwitchCase="'List'" class="list">
@@ -70,20 +70,20 @@
       </span>
 
       <span *ngSwitchCase="'Text'" class="text">
-        <md-input-container>
-            <input mdInput
+        <mat-form-field>
+            <input matInput
             name="filterValue"
             color="primary"
             placeholder="{{filter.name}}"
             [value]=  "filter.filterValue || ''"
             (keypress)="applyCustomValue($event, filter)">
-        </md-input-container>
+        </mat-form-field>
 
         <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [filters]="filter" [counted]="counted"></filter-component>
       </span>
 
       <span *ngSwitchDefault>
-        <md-checkbox
+        <mat-checkbox
           [disabled]="counted && filter.count < 1"
           [checked]="filter.active"
           color="primary"
@@ -92,10 +92,10 @@
            <span class="filter-count" *ngIf="counted && filter.count > -1">
              ({{filter.count | number}})
            </span>
-        </md-checkbox>
+        </mat-checkbox>
 
         <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [filters]="filter" [counted]="counted"></filter-component>
       </span>
     </div>
   </li>
-</md-nav-list>
+</mat-nav-list>

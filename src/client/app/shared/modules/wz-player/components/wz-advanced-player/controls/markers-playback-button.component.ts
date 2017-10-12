@@ -8,11 +8,11 @@ import { PlayerState, PlayerRequest, ToggleMarkersPlaybackRequest }
   selector: 'wz-markers-playback-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-icon-button
+    <button mat-icon-button
       [disabled]="!playerState.inMarkerFrame || !playerState.outMarkerFrame"
       title="{{ 'ASSET.ADV_PLAYER.PLAY_IN_OUT_BTN_TITLE' | translate }}"
       (click)="onClick()">
-      <md-icon>{{ playerState.playingMarkers && playerState.playing ? 'pause_circle_filled' : 'play_circle_filled' }}</md-icon>
+      <mat-icon>{{ playerState.playingMarkers && playerState.playing ? 'pause_circle_filled' : 'play_circle_filled' }}</mat-icon>
     </button>
   `
 })

@@ -35,7 +35,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
     }
     header, .subhead {
       padding: 6px 10px 6px 14px;
-      .md-headline {
+      .mat-headline {
         font-size: 20px;
         margin: 0;
         margin-top: 5px;
@@ -46,7 +46,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
         text-align: right;
         button {
           transition: $swift-ease-out;
-          &[md-icon-button]:hover::after {
+          &[mat-icon-button]:hover::after {
             background-color: transparent;
           }
         }
@@ -143,8 +143,8 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
             }
           }
         }
-        md-icon.not-owner,
-        md-icon.select-indicator {
+        mat-icon.not-owner,
+        mat-icon.select-indicator {
           transition: $swift-ease-out;
           opacity: .15;
           margin-right: 14px;
@@ -167,8 +167,8 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
           }
         }
       }
-      md-list-item.active .mat-list-item-content button {
-        md-icon.select-indicator {
+      mat-list-item.active .mat-list-item-content button {
+        mat-icon.select-indicator {
           opacity: 1;
         }
         &:hover {
@@ -177,13 +177,13 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
 
 
       }
-      md-list-item:first-child .mat-list-item-content button {
+      mat-list-item:first-child .mat-list-item-content button {
         box-shadow: none;
       }
     }
     footer .actions {
       margin-bottom: 16px;
-      [md-button], button {
+      [mat-button], button {
         transition: $swift-ease-out;
         line-height: 1;
         white-space: normal;
@@ -195,12 +195,12 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
         margin-left: 4px;
         margin-right: 4px;
         &:hover {
-          md-icon {
+          mat-icon {
             opacity: 1;
           }
         }
       }
-      md-icon {
+      mat-icon {
         font-size: 32px;
         width: 32px;
         height: 32px;
@@ -237,7 +237,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
     display: flex;
     padding-left: 3px;
     padding-right: 3px;
-    .md-headline {
+    .mat-headline {
       margin-left: 21px;
     }
     .tools button.back {
@@ -248,15 +248,15 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
     min-width: 100%;
     box-shadow: none;
     &.dd-menu-wrapper wz-sort-component div.dense {
-      .select-dd md-icon.material-icons {
+      .select-dd mat-icon.material-icons {
         opacity: 0;
       }
-      .select-dd md-icon.material-icons {
+      .select-dd mat-icon.material-icons {
         opacity: 0;
       }
-      .select-dd.active button[md-menu-item] {
+      .select-dd.active button[mat-menu-item] {
         background-color: transparent;
-        md-icon.material-icons {
+        mat-icon.material-icons {
           opacity: 1;
         }
       }

@@ -1,6 +1,6 @@
 import { MarkerSetButtonComponent } from './marker-set-button.component';
 import { PlayerState } from '../../../interfaces/player.interface';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../../wazee-frame-formatter/index';
 
 export function main() {
   describe('Marker Set Button Component', () => {

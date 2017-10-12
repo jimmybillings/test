@@ -1,18 +1,18 @@
 .wz-dialog.pricing {
   form {
-    .input md-select {
-      padding: rem(1);
+    .input mat-select {
+      padding: 10px;
       width: 100%;
     }
     .submit-btn button.submit {
       width: 88%;
-      margin: rem(1.2) 0 0;
+      margin: 12px 0 0;
     }
   }
   div.price-info {
-    min-height: rem(7.2);
-    padding-top: rem(1.6);
-    p.md-body-2.disabled {
+    min-height: 72px;
+    padding-top: 16px;
+    p.mat-body-2.disabled {
       color: mat-color($mat-grey, 400);
     }
   }

@@ -1,14 +1,14 @@
-<form layout="column" [formGroup]="form" novalidate class="md-inline-form" autocomplete="{{autocomplete}}" (ngSubmit)="onSubmit()">
+<form layout="column" [formGroup]="form" novalidate class="mat-inline-form" autocomplete="{{autocomplete}}" (ngSubmit)="onSubmit()">
 
 	<div *ngFor="let field of items; let i=index">
 
 		<!--
         START: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
-      <md-input-container
+      <mat-input-container
         *ngIf="(field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')">
-        <input mdInput
-        class="md-block"
+        <input matInput
+        class="mat-block"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
         type="{{field.type}}"
@@ -17,14 +17,14 @@
         id="{{field.name}}">
 
 			<!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
-			<md-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
+			<mat-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
 				{{ field.hintTextStart | translate }}
-			</md-hint>
-			<md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
+			</mat-hint>
+			<mat-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
 				{{ field.hintTextEnd | translate }}
-			</md-hint>
+			</mat-hint>
 
-			<md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
+			<mat-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
 				align="start" class="error">
 				<span *ngIf="form.controls[field.name].hasError('required')">
               {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
@@ -44,8 +44,8 @@
 				<span *ngIf="form.controls[field.name].hasError('serverError')">
               {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
             </span>
-			</md-hint>
-		</md-input-container>
+			</mat-hint>
+		</mat-input-container>
 		<!--
         END: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
@@ -53,11 +53,11 @@
     <!--    
       START: FORM INPUT FOR NUMBER
     -->
-    <md-input-container *ngIf="field.type === 'number'">
+    <mat-input-container *ngIf="field.type === 'number'">
       <input
-        mdInput
+        matInput
         type="number"
-        class="md-block"
+        class="mat-block"
         name={{field.name}}
         id="{{field.name}}"
         min="{{field.min}}"
@@ -66,7 +66,7 @@
         placeholder="{{field.label | translate}}"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         [required]="isRequiredField(field)">
-      <md-hint
+      <mat-hint
         *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
         [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
 				align="start"
@@ -77,8 +77,8 @@
         <span *ngIf="form.controls[field.name].hasError('tooLow')">
           {{ 'ERRORS.NUMBER_TOO_LOW' | translate:{min:field.min} }}
         </span>
-      </md-hint>
-    </md-input-container>
+      </mat-hint>
+    </mat-input-container>
     <!--
       END: FORM INPUT FOR NUMBER
     -->
@@ -86,15 +86,15 @@
 		<!--
         START: FORM INPUT FOR wzdate
       -->
-    <md-input-container *ngIf="(field.type == 'wzdate')">
-      <input mdInput
+    <mat-input-container *ngIf="(field.type == 'wzdate')">
+      <input matInput
       wzPikaday
       [readonly]="true"
       [minDate]="calculateDateFor(field.minimum)"
       [maxDate]="calculateDateFor(field.maximum)"
       [defaultDate]="calculateDateFor(field.default)"
       (pikadayChange)="updateDateValueFor(field.name, $event.value)"
-      class="md-block"
+      class="mat-block"
       name="{{field.name}}"
       [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
       placeholder="{{field.label | translate}}"
@@ -102,7 +102,7 @@
       formControlName="{{field.name}}"
       [required]="isRequiredField(field)"
       id="{{field.name}}">
-    </md-input-container>
+    </mat-input-container>
 		<!--
         END: FORM INPUT FOR wzdate
       -->
@@ -110,10 +110,10 @@
 		<!--
         START: FORM INPUT FOR dollars
       -->
-    <md-input-container *ngIf="(field.type == 'dollars')">
-      <input mdInput
+    <mat-input-container *ngIf="(field.type == 'dollars')">
+      <input matInput
       type="text"
-      class="md-block"
+      class="mat-block"
       name="{{field.name}}"
       [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
       placeholder="{{field.label | translate}}"
@@ -122,7 +122,7 @@
       id="{{field.name}}"
       (input)="onDollarsInput($event, field)"
       >
-    </md-input-container>
+    </mat-input-container>
 		<!--
         END: FORM INPUT FOR dollars
       -->
@@ -130,9 +130,9 @@
 		<!--
         START: FORM INPUT FOR textarea
       -->
-    <md-input-container *ngIf="(field.type == 'textarea')">
+    <mat-input-container *ngIf="(field.type == 'textarea')">
       <textarea
-        mdInput
+        matInput
         name="{{field.name}}"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
@@ -141,15 +141,15 @@
         mdTextareaAutosize
         id="{{field.name}}">
       </textarea>
-      <md-hint
+      <mat-hint
         *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart"
         align="start">
         {{ field.hintTextStart | translate }}
-      </md-hint>
-      <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
+      </mat-hint>
+      <mat-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
         {{ field.hintTextEnd | translate }}
-      </md-hint>
-    </md-input-container>
+      </mat-hint>
+    </mat-input-container>
 		<!--
         END: FORM INPUT FOR textarea
       -->
@@ -157,9 +157,9 @@
       <!--
         START: FORM CONFIRM PASSWORD DOUBLE FIELD
       -->
-      <md-input-container *ngIf="field.name == 'confirmPassword'">
-        <input mdInput
-        class="md-block"
+      <mat-input-container *ngIf="field.name == 'confirmPassword'">
+        <input matInput
+        class="mat-block"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
         type="password"
@@ -168,15 +168,15 @@
         validateEqual="newPassword">
 
         <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
-        <md-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
+        <mat-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
           {{ field.hintTextStart | translate }}
-        </md-hint>
-        <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
+        </mat-hint>
+        <mat-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
           {{ field.hintTextEnd | translate }}
-        </md-hint>
+        </mat-hint>
 
         
-        <md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
+        <mat-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
           [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
           align="start" 
           class="error">
@@ -192,12 +192,12 @@
             <span *ngIf="form.controls[field.name].hasError('serverError')">
               {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
             </span>  
-        </md-hint>
-      </md-input-container>
+        </mat-hint>
+      </mat-input-container>
 
-      <md-input-container *ngIf="field.name == 'newPassword'">
-        <input mdInput
-        class="md-block"
+      <mat-input-container *ngIf="field.name == 'newPassword'">
+        <input matInput
+        class="mat-block"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
         type="password"
@@ -208,14 +208,14 @@
         
 
         <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
-        <md-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
+        <mat-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
           {{ field.hintTextStart | translate }}
-        </md-hint>
-        <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
+        </mat-hint>
+        <mat-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
           {{ field.hintTextEnd | translate }}
-        </md-hint>
+        </mat-hint>
 
-        <md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
+        <mat-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
           [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
           align="start" 
           class="error">
@@ -228,8 +228,8 @@
             <span *ngIf="form.controls[field.name].hasError('serverError')">
               {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
             </span>   
-        </md-hint>
-      </md-input-container>
+        </mat-hint>
+      </mat-input-container>
       <!--
         END: FORM CONFIRM PASSWORD DOUBLE FIELD
       -->
@@ -238,21 +238,21 @@
         START: FORM SELECT
       -->
 		<div *ngIf="field.type == 'select'">
-			<div class="md-group">
-        <md-select
+			<!-- <div class="mat-group"> -->
+      <mat-form-field>
+        <mat-select
           [value]="field.value"
-          class="md-block"
+          class="mat-block"
           [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
           placeholder="{{field.label | translate}}"
           formControlName="{{field.name}}"
           [required]="isRequiredField(field)"
           id="{{field.name}}"
           (change)="onSelectChange($event, field)">
-          <ng-container *ngFor="let option of parseOptions(field.options)">
-            <md-option [value]="option">{{option}}</md-option>
-          </ng-container>
-        </md-select>
-			</div>
+          <mat-option *ngFor="let option of parseOptions(field.options)" [value]="option">{{option}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+			<!-- </div> -->
 		</div>
 		<!--
         END: FORM SELECT
@@ -261,12 +261,12 @@
 		<!--
         START: FORM RADIO BUTTONS
       -->
-		<md-radio-group *ngIf="field.type == 'radio'" layout="row" formControlName="{{field.name}}">
-			<md-radio-button style="margin-right: 1rem;" *ngFor="let option of parseOptions(field.options)" [checked]="parseOptions(field.options)[0]==option"
-				[value]="option" class="md-primary" (click)="radioSelect(field.name, option)">
+		<mat-radio-group *ngIf="field.type == 'radio'" layout="row" formControlName="{{field.name}}">
+			<mat-radio-button style="margin-right: 1rem;" *ngFor="let option of parseOptions(field.options)" [checked]="parseOptions(field.options)[0]==option"
+				[value]="option" class="mat-primary" (click)="radioSelect(field.name, option)">
 				{{option}}
-			</md-radio-button>
-		</md-radio-group>
+			</mat-radio-button>
+		</mat-radio-group>
 		<!--
         END: FORM RADIO BUTTONS
       -->
@@ -275,16 +275,16 @@
         START: FORM CHECKBOX
       -->
 		<span *ngIf="field.type == 'checkbox'" layout="row" layout-align="start center">
-			<md-checkbox layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked" color="primary" [required]="isRequiredField(field)">
+			<mat-checkbox layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked" color="primary" [required]="isRequiredField(field)">
 				{{ field.label | translate }}&nbsp;
 
-				<md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
+				<mat-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
 					align="start" class="error">
 					<span *ngIf="form.controls[field.name].hasError('mustBeCheckedError')">
 						{{ 'ERRORS.AGREE_TO_TOS' | translate }}
 					</span>
-				</md-hint>
-			</md-checkbox>
+				</mat-hint>
+			</mat-checkbox>
 			<a *ngIf="field.name == 'tos'" class="view-tos" (click)="onAction.emit(field)">{{ field.link | translate }}</a>
 		</span>
 		<!--
@@ -306,9 +306,9 @@
       -->
 		<wz-input-tags *ngIf="field.type == 'tags'" #tags [tags]="field.tags" [fControl]="form.controls[field.name]">
 			<input type="hidden" formControlName="{{field.name}}">
-      <md-input-container>
-        <input mdInput placeholder="{{field.label | translate}}" (keydown)="tags.submit($event)" id="{{field.name}}">
-      </md-input-container>
+      <mat-input-container>
+        <input matInput placeholder="{{field.label | translate}}" (keydown)="tags.submit($event)" id="{{field.name}}">
+      </mat-input-container>
 		</wz-input-tags>
 		<!--
         END: CUSTOM FOR ELEMENT FOR CREATING TAGS
@@ -319,14 +319,14 @@
       -->
 		<wz-input-suggestions
       *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [rawField]="field">
-			<md-input-container>
-        <input mdInput placeholder="{{field.label | translate}}" 
+			<mat-input-container>
+        <input matInput placeholder="{{field.label | translate}}" 
 				(keydown)="suggestions.inputKeyDown($event)"
 				[ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
 				formControlName="{{field.name}}"
 				type="text"
 				[required]="isRequiredField(field)">
-				<md-hint *ngIf="hasErrorType(form.controls[field.name])" 
+				<mat-hint *ngIf="hasErrorType(form.controls[field.name])" 
 					align="start" 
 					class="error">
 						<span *ngIf="form.controls[field.name].hasError('required')">
@@ -335,8 +335,8 @@
 						<span *ngIf="form.controls[field.name].hasError('serverError')">
 							{{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
 						</span>
-				</md-hint>
-			</md-input-container>
+				</mat-hint>
+			</mat-input-container>
 		</wz-input-suggestions>
 	</div>
 	<!--
@@ -350,12 +350,12 @@
 		<span>{{ 'ERRORS.INDICATES_REQUIRED_FIELD' | translate }}</span>
 	</div>
 
-	<md-card-actions layout="row" layout-align="end center" *ngIf="includeCancel">
-		<button md-button type="reset" color="primary" (click)="formCancel.emit($event)">{{cancelLabel | translate}}</button>
-		<button md-button type="submit" color="primary">{{submitLabel | translate}}</button>
-	</md-card-actions>
+	<mat-card-actions layout="row" layout-align="end center" *ngIf="includeCancel">
+		<button mat-button type="reset" color="primary" (click)="formCancel.emit($event)">{{cancelLabel | translate}}</button>
+		<button mat-button type="submit" color="primary">{{submitLabel | translate}}</button>
+	</mat-card-actions>
 
-	<md-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel">
-		<button md-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
-	</md-card-actions>
+	<mat-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel">
+		<button mat-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
+	</mat-card-actions>
 </form>

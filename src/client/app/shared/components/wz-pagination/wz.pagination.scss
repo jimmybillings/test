@@ -3,17 +3,17 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  min-height: rem(3.4);
+  min-height: 34px;
   // @jimmybillings 01/08/17
   // This causes double scroll bars to appear on the search page when you add 
   // the pagination component to the bottom of the search page results. Adding to the top 
   // is fine.
-    // max-height: rem(3.4);
+    // max-height: 34px;
   opacity: .75;
   width: 100%;
   white-space: nowrap;
   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-    &.md-body-2 {
+    &.mat-body-2 {
       font-size: .76em;
       font-weight: normal;
     }
@@ -21,22 +21,22 @@
 }
 wz-pagination {
   display: block;
-  margin-right: rem(-.6);
-  margin-top: rem(.3);
+  margin-right: -6px;
+  margin-top: 3px;
   .divider {
     display: none;
-    width: rem(.2);
-    height: rem(2.4);
-    margin-right: rem(.2);
+    width: 2px;
+    height: 24px;
+    margin-right: 2px;
   }
   span.current-page {
-    margin-right: rem(2);
+    margin-right: 20px;
   }
-  button[md-icon-button] {
+  button[mat-icon-button] {
     margin: 0;
     transition: all .4s ease-in-out;
-    md-icon.material-icons {
-      font-size: rem(3.0);
+    mat-icon.material-icons {
+      font-size: 30px;
       width: 100%;
       opacity: .75;
     }
@@ -49,15 +49,15 @@ wz-pagination {
   }
 }
 .results-count {
-  min-height: rem(3.4);
-  max-height: rem(3.4);
-  line-height: rem(3.4);
-  padding-right: rem(2.4);
+  min-height: 34px;
+  max-height: 34px;
+  line-height: 34px;
+  padding-right: 24px;
 }  
 
 app .app {
   wz-pagination:last-child {
     margin-top: 0;
-    margin-bottom: rem(.6);
+    margin-bottom: 6px;
   }
 }

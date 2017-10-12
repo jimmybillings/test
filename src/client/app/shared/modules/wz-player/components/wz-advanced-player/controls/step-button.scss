@@ -1,10 +1,10 @@
 wz-step-button {    
-  .mat-icon-button[md-icon-button] {
+  .mat-icon-button[mat-icon-button] {
     height: 31px;
     width: 31px;
     margin: 0 1px;
     line-height: 1.55;
-    md-icon {
+    mat-icon {
       line-height: 16px;
       height: 16px;
       margin-left: 10px;
@@ -30,9 +30,9 @@ wz-step-button {
         content: "1s";
       }
     }
-    &.reverse md-icon {
+    &.reverse mat-icon {
       transform: rotate(180deg);
-      margin-left: rem(-1.4);
+      margin-left: -14px;
       &::before {
         transform: rotate(180deg);
         margin-top: -1px;

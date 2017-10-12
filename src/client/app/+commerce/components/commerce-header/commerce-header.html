@@ -9,50 +9,50 @@
 			(closeSearch)="toggleSearch()">
 		</wz-item-search-form>
 		<div flex="100" layout="row" layout-align="space-between end">
-			<h2 flex="grow" class="md-display-1">{{ type + '.INDEX.PAGE_TITLE' | translate }}</h2>
+			<h2 flex="grow" class="mat-display-1">{{ type + '.INDEX.PAGE_TITLE' | translate }}</h2>
 			<div class="tools" flex="auto">
 				<button
 					color="primary"
-					md-icon-button
+					mat-icon-button
 					*ngIf="!itemSearchIsShowing"
 					title="{{ type + '.INDEX.SEARCH_BTN_TITLE' | translate }}"
 					type="button"
 					(click)="toggleSearch()">
-					<md-icon *ngIf="!itemSearchIsShowing">search</md-icon>
+					<mat-icon *ngIf="!itemSearchIsShowing">search</mat-icon>
         </button>
 				<button
 					color="primary"
-					md-icon-button
+					mat-icon-button
 					*ngIf="itemSearchIsShowing"
 					class="collapse-search"
 					title="{{ type + '.INDEX.COLLAPSE_SEARCH_BTN_TITLE' | translate }}"
 					type="button"
 					(click)="toggleSearch()">
-					<md-icon>arrow_drop_up</md-icon>
+					<mat-icon>arrow_drop_up</mat-icon>
         </button>
 				<button
 					color="primary"
 					*ngIf="filterOptions"
-					md-icon-button
+					mat-icon-button
 					title="{{ type + '.INDEX.FILTER_BTN_TITLE' | translate }}"
-					[md-menu-trigger-for]="commerceFilterMenu"><md-icon>filter_list</md-icon>
+					[mat-menu-trigger-for]="commerceFilterMenu"><mat-icon>filter_list</mat-icon>
 				</button>
 				<button
 				*ngIf="sortOptions"
 					color="primary"
-					md-icon-button
+					mat-icon-button
 					title="{{ type + '.INDEX.SORT_BTN_TITLE' | translate }}"
-					[md-menu-trigger-for]="commerceSortMenu"><md-icon>sort</md-icon>
+					[mat-menu-trigger-for]="commerceSortMenu"><mat-icon>sort</mat-icon>
 				</button>
 			</div>
 		</div>
 	</header>
 </section>
 
-<md-menu x-position="after" #commerceFilterMenu="mdMenu">
+<mat-menu x-position="after" #commerceFilterMenu="matMenu">
 	<wz-sort-component [current]="currentFilter" [items]="filterOptions" (sort)="onFilterResults.emit($event)"></wz-sort-component>
-</md-menu>
+</mat-menu>
 
-<md-menu x-position="after" #commerceSortMenu="mdMenu">
+<mat-menu x-position="after" #commerceSortMenu="matMenu">
 	<wz-sort-component [current]="currentSort" [items]="sortOptions" (sort)="onSortResults.emit($event)"></wz-sort-component>
-</md-menu>
+</mat-menu>

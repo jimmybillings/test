@@ -7,11 +7,11 @@ import { PlayerState, PlayerRequest, ClearMarkersRequest } from '../../../interf
   selector: 'wz-markers-clear-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-icon-button
+    <button mat-icon-button
       [disabled]="!playerState.inMarkerFrame && !playerState.outMarkerFrame"
       title="{{ 'ASSET.ADV_PLAYER.CLEAR_IN_OUT_BTN_TITLE' | translate }}"
       (click)="onClick()">
-      <md-icon>cancel</md-icon>
+      <mat-icon>cancel</mat-icon>
     </button>
   `
 })

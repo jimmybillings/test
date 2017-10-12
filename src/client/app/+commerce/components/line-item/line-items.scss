@@ -31,18 +31,6 @@ li.cart-asset {
       margin-bottom: 3px;
     }
   }
-  md-select {
-    margin-top: 14px;
-    width: 100%;
-    padding-left: 8px;
-    max-width: 290px;
-    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-      margin-top: 30px;
-      margin-bottom: 30px;
-      max-width: 99%;
-      padding-left: 0;
-    }
-  }
   .asset-description {
     font-size: 14px;
     line-height: 15.5px;

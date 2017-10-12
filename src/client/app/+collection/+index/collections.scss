@@ -5,7 +5,7 @@ collections-component .collection-head {
     padding-top: 6px;
     padding-bottom: 5px;
     position: relative;
-    .md-display-1 {
+    .mat-display-1 {
       margin: 0;
       font-size: 26px;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
@@ -16,11 +16,11 @@ collections-component .collection-head {
   .tools {
     text-align: right;
     white-space: nowrap;
-    button.collapse-search[md-icon-button] {
+    button.collapse-search[mat-icon-button] {
       transform: rotate(90deg);
     }
   }
-  header div[flex="100"] > button[md-icon-button] {
+  header div[flex="100"] > button[mat-icon-button] {
     margin-right: 16px;
   }
   collections-filter-dd.revealed {
@@ -130,7 +130,7 @@ collections-component .query-details {
       display: inline-block;
       text-align: center;
     }
-    .md-caption span {
+    .mat-caption span {
       display: block;
     }
     &.focused {
@@ -203,7 +203,7 @@ collections-component .query-details {
       left: 0;
       z-index: 2;
       line-height: 0;
-      md-icon {
+      mat-icon {
         font-size: 32px;
         opacity: .9;
       }
@@ -285,7 +285,7 @@ wz-item-search-form {
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     width: 100%;
   }
-  [md-dialog-title] {
+  [mat-dialog-title] {
     text-align: left;
     margin-bottom: 10px;
   }
@@ -316,7 +316,7 @@ wz-item-search-form {
     button {
       transition: $swift-ease-out;
       // once they put a transition into the ::after pseudo class this can go away
-      &[md-icon-button]:hover::after {
+      &[mat-icon-button]:hover::after {
         background-color: transparent;
       }
     }

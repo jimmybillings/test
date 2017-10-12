@@ -11,6 +11,11 @@ const config = {
   entry: join(Config.TMP_DIR, Config.BOOTSTRAP_FACTORY_PROD_MODULE),
   sourceMap: true,
   treeshake: true,
+  onwarn: (warning:any) => {        
+    if (warning.code === 'THIS_IS_UNDEFINED') {
+        return;
+    }
+  },
   moduleName: 'main',
   plugins: [
     includePaths({

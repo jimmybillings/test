@@ -8,55 +8,55 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
   template: `
     <div class="tools" flex="100">
       <button 
-        md-icon-button
+        mat-icon-button
         (click)="remove.emit()"
         title="{{ 'CART.PROJECTS.REMOVE_ASSET_BTN_HOVER' | translate }}">
-          <md-icon>remove_circle</md-icon>
+          <mat-icon>remove_circle</mat-icon>
         </button>
       <button
         data-pendo="cart-lineitem_options-menu-trigger"
-        md-icon-button
-        [md-menu-trigger-for]="lineItemOptionsMenu"
+        mat-icon-button
+        [mat-menu-trigger-for]="lineItemOptionsMenu"
         title="{{ 'CART.PROJECTS.MORE_OPTIONS_BTN_HOVER' | translate }}">
-          <md-icon>more_vert</md-icon>
+          <mat-icon>more_vert</mat-icon>
       </button>
     </div>
 
-    <md-menu x-position="before" #lineItemOptionsMenu="mdMenu">
-      <button md-menu-item (click)="clone.emit()">
-        <md-icon>layers</md-icon>{{ 'CART.PROJECTS.DUPLICATE_ASSET_BTN_LABEL' | translate }}
+    <mat-menu x-position="before" #lineItemOptionsMenu="matMenu">
+      <button mat-menu-item (click)="clone.emit()">
+        <mat-icon>layers</mat-icon>{{ 'CART.PROJECTS.DUPLICATE_ASSET_BTN_LABEL' | translate }}
       </button>
       <div class="divider" *ngIf="otherProjectsExist"></div>
-      <button md-menu-item *ngFor="let otherProject of otherProjects" (click)="moveTo.emit(otherProject)">
-        <md-icon>swap_vert_circle</md-icon>
+      <button mat-menu-item *ngFor="let otherProject of otherProjects" (click)="moveTo.emit(otherProject)">
+        <mat-icon>swap_vert_circle</mat-icon>
         {{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProject.name} | slice:0:28 }}
       </button>
       <div class="divider" *ngIf="shouldShowSubclipButton"></div>
-      <button md-menu-item (click)="editMarkers.emit()" *ngIf="userCanCreateSubclips">
-        <md-icon>access_time</md-icon>
+      <button mat-menu-item (click)="editMarkers.emit()" *ngIf="userCanCreateSubclips">
+        <mat-icon>access_time</mat-icon>
         <span>{{ trStringForSubclipping | translate }}</span>
       </button>
-      <button md-menu-item 
+      <button mat-menu-item 
         *ngIf="displayPriceButton"
         (click)="showPricingDialog.emit()"
         [ngClass]="{'select-usage': needsAttributes }">
-        <md-icon>assignment</md-icon>
+        <mat-icon>assignment</mat-icon>
         <span>{{ trStringForRightsPackage | translate }}</span>
       </button>
       <div class="divider"></div>
-      <button md-menu-item (click)="openCostMultiplierForm.emit()" *ngIf="userCanAdministerQuotes">
-        <md-icon>attach_money</md-icon>
+      <button mat-menu-item (click)="openCostMultiplierForm.emit()" *ngIf="userCanAdministerQuotes">
+        <mat-icon>attach_money</mat-icon>
         <span>{{ trStringForCostMultiplier | translate }}</span>
       </button>
-      <button md-menu-item (click)="removeCostMultiplier.emit()" *ngIf="showDeleteCostMultiplierBtn">
-        <md-icon>remove_circle</md-icon>
+      <button mat-menu-item (click)="removeCostMultiplier.emit()" *ngIf="showDeleteCostMultiplierBtn">
+        <mat-icon>remove_circle</mat-icon>
         <span>{{ 'QUOTE.REMOVE_MULTIPLIER' | translate }}</span>
       </button>
-      <button md-menu-item (click)="onClickAddCustomPrice()" *ngIf="userCanAdministerQuotes">
-        <md-icon>monetization_on</md-icon>
+      <button mat-menu-item (click)="onClickAddCustomPrice()" *ngIf="userCanAdministerQuotes">
+        <mat-icon>monetization_on</mat-icon>
         <span>{{ 'QUOTE.ADD_CUSTOM_PRICE_TITLE' | translate }}</span>
       </button>
-    </md-menu>
+    </mat-menu>
   `
 })
 export class LineItemActionsComponent {

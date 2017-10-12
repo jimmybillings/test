@@ -7,11 +7,11 @@ import { FormFields } from '../../../../shared/interfaces/forms.interface';
   selector: 'wz-form-dialog',
   template: `
     <div class="wz-dialog">
-      <button md-icon-button md-dialog-close title="Close" type="button" class="close">
-        <md-icon>close</md-icon>
+      <button mat-icon-button mat-dialog-close title="Close" type="button" class="close">
+        <mat-icon>close</mat-icon>
       </button>
-      <h1 *ngIf="title" md-dialog-title>{{ title | translate }}</h1>
-      <md-dialog-content layout="row">
+      <h1 *ngIf="title" mat-dialog-title>{{ title | translate }}</h1>
+      <mat-dialog-content layout="row">
         <wz-form
           [items]="formItems"
           [includeCancel]="displayCancelButton"
@@ -21,7 +21,7 @@ import { FormFields } from '../../../../shared/interfaces/forms.interface';
           (formCancel)="onFormCancel()"
           (formSubmit)="onFormSubmit($event)">
         </wz-form>
-      </md-dialog-content>
+      </mat-dialog-content>
     </div>
   `
 })

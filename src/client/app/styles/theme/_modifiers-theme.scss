@@ -4,7 +4,7 @@
   $accent: map-get($theme, accent);
   $warn: map-get($theme, warn);
 
-  [md-button] {
+  [mat-button] {
   // outlined button
     &.is-outlined {
       border: 1px solid mat-color($foreground, divider);

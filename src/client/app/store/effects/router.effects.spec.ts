@@ -3,7 +3,7 @@ import { Subject } from 'rxjs/Subject';
 import { RouterEffects } from './router.effects';
 import * as RouterActions from '../actions/router.actions';
 import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 
 export function main() {
   describe('Router Effects', () => {

@@ -1,5 +1,5 @@
 fee-line-items-component {
-  padding: 0 rem(1.2) 0 rem(1.2);
+  padding: 0 12px 0 12px;
   display: flex;
 }
 ul.fee-list {
@@ -9,33 +9,33 @@ ul.fee-list {
   min-width: 100%;
 }
 li.fee-item {
-  margin-bottom: rem(1.2);
+  margin-bottom: 12px;
   position: relative;
-  padding: rem(.2);
+  padding: 2px;
   border-radius: 2px;
   transition: $swift-ease-out;
   .fee-indicator {
     height: 100%;
     position: relative;
     margin-right: 2px;
-    padding: rem(.8) 0 rem(.8) rem(3.5);
+    padding: 8px 0 8px 35px;
     .fee-title {
       font-weight: 500;
-      padding: 0 0 rem(.2) 0;
+      padding: 0 0 2px 0;
       flex: 0 0 0%;
     }
     &::after {
       content: "\e89c";
       // content: "\e8b0";
       font-family: 'Material Icons';
-      font-size: rem(2.5);
+      font-size: 25px;
       font-weight: 100;
-      line-height: rem(2.5);
-      height: rem(2.5);
-      width: rem(2.5);
+      line-height: 25px;
+      height: 25px;
+      width: 25px;
       position: absolute;
-      left: rem(.6);
-      top: rem(.6);
+      left: 6px;
+      top: 6px;
     }
   }
   & > div > div  > div + div {
@@ -45,17 +45,17 @@ li.fee-item {
     }
   } 
 
-  .md-caption.fee-type {
-    font-size: rem(1.1);
+  .mat-caption.fee-type {
+    font-size: 11px;
     opacity: .7;
   }
 
   .fee-notes {
-    font-size: rem(1.4);
-    line-height: rem(1.55);
-    margin-top: rem(.3);
-    margin-bottom: rem(1.1);
-    min-height: rem(4.5);
+    font-size: 14px;
+    line-height: 1.21;
+    margin-top: 3px;
+    margin-bottom: 11px;
+    min-height: 45px;
   }
 
   .fee-line-item-amount {
@@ -74,10 +74,10 @@ li.fee-item {
     }
   }
   .actions {
-    min-height: rem(4.5);
+    min-height: 45px;
     position: relative;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-      padding-top: rem(.4);
+      padding-top: 4px;
     }
   }
   .tools {
@@ -95,13 +95,13 @@ li.fee-item {
 
 
   .divider {
-    margin: rem(.6) rem(.8) 0 rem(.8);
-    padding-bottom: rem(.6);
+    margin: 6px 8px 0 8px;
+    padding-bottom: 6px;
     display: none;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       display: flex;
       position: absolute;
-      bottom: rem(3.2);
+      bottom: 32px;
       width: calc(100% - 16px);
     }
   }

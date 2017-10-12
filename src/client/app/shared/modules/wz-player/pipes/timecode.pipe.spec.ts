@@ -1,5 +1,5 @@
 import { TimecodePipe } from './timecode.pipe';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../wazee-frame-formatter/index';
 
 export function main() {
   describe('Timecode Pipe', () => {

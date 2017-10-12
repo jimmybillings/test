@@ -6,8 +6,8 @@
   <div layout="column" layout-gt-xs="row" class="billing-payment">
     <section class="billing" flex="auto">
       <div layout="row" layout-align="space-between">
-        <h5 class="md-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
-        <button md-button class="mini is-outlined" color="primary" (click)="goToTab(1)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
+        <h5 class="mat-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
+        <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(1)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
       </div>
       <address *ngIf="(orderInProgress | async).selectedAddress.address">
         <span class="line-1">{{ (orderInProgress | async).selectedAddress.address.address }}</span>
@@ -19,8 +19,8 @@
     </section>
     <section *ngIf="(paymentType | async) !== 'ProvisionalOrder'" class="payment" flex="auto">
       <div layout="row" layout-align="space-between">
-        <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
-        <button md-button class="mini is-outlined" color="primary" (click)="goToTab(2)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
+        <h5 class="mat-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
+        <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(2)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
       </div>
       <div class="payment-info">
         <div 
@@ -50,8 +50,8 @@
   </div>
 </div>
 
-<h5 class="md-title order-summary">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
-<button *ngIf="!(data | async).expirationDate" md-button class="mini is-outlined" color="primary" (click)="goToTab(0)">
+<h5 class="mat-title order-summary">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
+<button *ngIf="!(data | async).expirationDate" mat-button class="mini is-outlined" color="primary" (click)="goToTab(0)">
   {{ 'CART.CONFIRM.EDIT' | translate }}
 </button>
 <projects-component
@@ -64,7 +64,7 @@
 
 <section class="commerce-total" layout="column" layout-align="end end">
   <ng-container *ngIf="showPricing | async">
-    <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+    <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal mat-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_SUBTOTAL' | translate }} 
       </span>
@@ -72,13 +72,13 @@
         {{ (data | async).subTotal | currency:'USD':true:'1.2-2' }}
       </span>
     </div>
-    <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+    <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount mat-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_DISCOUNT' | translate }} 
       </span>
       <span class="total-amount" flex="nogrow">{{ (data | async).discount }}</span>
     </div> 
-    <div class="total md-headline" layout="row" flex="100" layout-align="end center">
+    <div class="total mat-headline" layout="row" flex="100" layout-align="end center">
       <span class="total-label" flex="100">
         {{ 'CART.CONFIRM.TOTAL' | translate }} 
       </span>
@@ -87,13 +87,13 @@
       </span>
     </div>
     <div *ngIf="shouldShowLicenseDetailsBtn()" flex="100" class="license-agreement-ckbox">
-      <md-checkbox [(ngModel)]="licensesAreAgreedTo" color="primary">
+      <mat-checkbox [(ngModel)]="licensesAreAgreedTo" color="primary">
         {{'CART.CONFIRM.AGREE_TO_LIC_PLEDGE_TXT' | translate}}
-      </md-checkbox>
+      </mat-checkbox>
     </div>
   </ng-container>
   <ng-container *ngIf="quoteIsProvisionalOrder | async">
-    <div flex="100" layout="row" layout-align="end center" class="provisional md-headline">
+    <div flex="100" layout="row" layout-align="end center" class="provisional mat-headline">
       <span class="provisional-msg" flex="100">
         {{ 'QUOTE.PROVISIONAL_USE_ONLY_MSG' | translate }}
       </span>
@@ -101,7 +101,7 @@
   </ng-container>
   <div flex="100">
     <button
-      md-button
+      mat-button
       color="primary"
       class="is-outlined"
       *ngIf="shouldShowLicenseDetailsBtn()"
@@ -109,7 +109,7 @@
       {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
     </button>
     <button
-      md-raised-button
+      mat-raised-button
       class="checkout"
       (click)="purchase()"
       [disabled]="!canPurchase">

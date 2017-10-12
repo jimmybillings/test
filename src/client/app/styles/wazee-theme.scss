@@ -61,8 +61,8 @@
 @import '../shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player-theme';
 
 
-@import 'theme/md-dialog-extended-theme';
-@import 'theme/md-menu-extended-theme';
+@import 'theme/mat-dialog-extended-theme';
+@import 'theme/mat-menu-extended-theme';
 @import 'theme/modifiers-theme';
 @import 'theme/sticky-footer-theme';
 
@@ -128,8 +128,8 @@
   @include wz-volume-control-theme($theme);
   @include wz-advanced-player-theme($theme);
   
-  @include wz-md-dialog-extended-theme($theme);
-  @include wz-md-menu-extended-theme($theme);
+  @include wz-mat-dialog-extended-theme($theme);
+  @include wz-mat-menu-extended-theme($theme);
   @include wz-modifiers-theme($theme);
   @include wz-sticky-footer-theme($theme);
 }

@@ -10,17 +10,8 @@ import {
   OnInit
 } from '@angular/core';
 
-// import {
-//   OverlayState,
-//   OverlayRef,
-//   Overlay,
-//   GlobalPositionStrategy,
-//   TemplatePortalDirective,
-//   ComponentPortal
-// } from '@angular/material';
-
 import {
-  OverlayState,
+  OverlayConfig,
   OverlayRef,
   Overlay,
   GlobalPositionStrategy,
@@ -55,7 +46,7 @@ export class WzSpeedviewDirective implements OnDestroy, OnInit {
     this.enhancedAsset = value;
   }
 
-  private config: OverlayState;
+  private config: OverlayConfig;
   private speedViewInstance: WzSpeedviewComponent;
   private overlayRef: OverlayRef;
   private speedViewDataSubscription: Subscription;
@@ -70,7 +61,7 @@ export class WzSpeedviewDirective implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.config = new OverlayState();
+    this.config = new OverlayConfig();
   }
 
   ngOnDestroy() {

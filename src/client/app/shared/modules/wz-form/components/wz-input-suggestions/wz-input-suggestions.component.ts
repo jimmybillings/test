@@ -13,7 +13,7 @@ import { Api, ApiResponse } from '../../../../interfaces/api.interface';
   selector: 'wz-input-suggestions',
   templateUrl: 'wz-input-suggestions.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: ['md-list-item:first-child{ display: none;}']
+  styles: ['mat-list-item:first-child{ display: none;}']
 })
 
 export class WzInputSuggestionsComponent implements OnInit, OnDestroy {

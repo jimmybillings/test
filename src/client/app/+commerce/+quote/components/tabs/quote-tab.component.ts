@@ -12,7 +12,7 @@ import { LicenseAgreementComponent } from '../../../components/license-agreement
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { FormFields } from '../../../../shared/interfaces/forms.interface';
 import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Pojo } from '../../../../shared/interfaces/common.interface';
 import { Subscription } from 'rxjs/Subscription';
@@ -36,7 +36,7 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
     private router: Router,
     private uiConfig: UiConfig,
     private quoteEditService: QuoteEditService,
-    private snackBar: MdSnackBar,
+    private snackBar: MatSnackBar,
     private translate: TranslateService) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);

@@ -3,7 +3,7 @@
   $primary: map-get($theme, primary);
 
   register-component {
-    md-card.registration-confirm {
+    mat-card.registration-confirm {
       .email {
         color:  mat-color($primary, default);
       }

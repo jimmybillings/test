@@ -1,21 +1,21 @@
 search-component .search-header {
-  padding-left: rem(.8);
-  padding-right: rem(.8);
+  padding-left: 8px;
+  padding-right: 8px;
   header {
-    padding-top: rem(.6);
-    padding-bottom: rem(.5);
+    padding-top: 6px;
+    padding-bottom: 5px;
     position: relative;
-    .md-display-1 {
+    .mat-display-1 {
       margin: 0;
       width: calc(100% - 120px);
-      font-size: rem(2.6);
+      font-size: 26px;
     }
   } 
   .tools {
     text-align: right;
     white-space: nowrap;
-    margin-top: rem(-.3);
-    margin-bottom: rem(-.1);
+    margin-top: -3px;
+    margin-bottom: -1px;
   }
 }
 .asset-sort-by button {
@@ -32,35 +32,35 @@ search-component .search-header {
 }
 
 search-component .search-breadcrumbs {
-  padding-right: rem(.8);
+  padding-right: 8px;
   // testing
-  padding-top: rem(1.0);
-  margin-bottom: rem(-.3);
+  padding-top: 10px;
+  margin-bottom: -3px;
   header {
-    padding-top: rem(0.6);
-    padding-bottom: rem(0.2);
+    padding-top: 6px;
+    padding-bottom: 2px;
   }
 }
 search-component .search-results > div > div {
-  padding-left: rem(.8);
-  padding-right: rem(.8);
+  padding-left: 8px;
+  padding-right: 8px;
 }
 .mat-slide-toggle.count-toggle {
   width: 100%;
   margin: 0;
-  padding: rem(.7) rem(1.6);
+  padding: 7px 16px;
   .mat-slide-toggle-content {
     opacity: .75
   }
 }
 
 no-results > div {
-  h2.md-display-1 {
-    margin-bottom: rem(0.8);
+  h2.mat-display-1 {
+    margin-bottom: 8px;
   }
-  h3.md-headline {
-    margin-top: rem(0.7);
-    margin-bottom: rem(2.4);
+  h3.mat-headline {
+    margin-top: 7px;
+    margin-bottom: 24px;
     a {
       text-decoration: none;
       &:hover {
@@ -68,12 +68,12 @@ no-results > div {
       }
     }
   }
-  margin-bottom: rem(5.5);
+  margin-bottom: 55px;
   ul {
-    font-size: rem(1.7);
+    font-size: 17px;
     line-height: 1.5;
     li {
-      margin: rem(1.0) 0;
+      margin: 10px 0;
     }
   }
 }

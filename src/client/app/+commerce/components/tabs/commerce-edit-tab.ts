@@ -8,7 +8,8 @@ import {
   Project, AssetLineItem, Cart, QuoteType, QuoteOptions, Asset, PriceAttribute
 } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { MdSnackBar, MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { AssetService } from '../../../store/services/asset.service';
@@ -44,7 +45,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     protected window: WindowRef,
     protected userPreference: UserPreferenceService,
     protected document: any,
-    protected snackBar: MdSnackBar,
+    protected snackBar: MatSnackBar,
     protected translate: TranslateService,
     protected pricingStore: PricingStore,
     protected store: AppStore,
@@ -208,7 +209,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     );
   }
 
-  protected applyProjectPricing(event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>, project: Project) {
+  protected applyProjectPricing(event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>, project: Project) {
     switch (event.type) {
       case 'APPLY_PRICE':
         this.commerceService.updateProjectPriceAttributes(event.payload.attributes, project);
@@ -244,7 +245,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     );
   }
 
-  protected applyPricing(event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>, lineItem: AssetLineItem) {
+  protected applyPricing(event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>, lineItem: AssetLineItem) {
     switch (event.type) {
       case 'CALCULATE_PRICE':
         this.calculatePrice(event.payload, lineItem).subscribe((price: number) => {
@@ -293,7 +294,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
               }
             ]
           }
-        ).subscribe(_ => {
+        ).subscribe(() => {
           this.document.body.classList.remove('subclipping-edit-open');
         });
       });

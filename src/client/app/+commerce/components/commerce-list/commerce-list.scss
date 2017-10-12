@@ -15,6 +15,9 @@
     padding: 2px;
     border-radius: 2px;
     transition: $swift-ease-out;
+    .mat-headline {
+      margin-bottom: 0;
+    }
     &.focused {
       @include mat-elevation(2);
     }
@@ -122,7 +125,7 @@
         top: 4px;
       }
     }
-    .md-caption span {
+    .mat-caption span {
       display: block;
     }
     .divider {

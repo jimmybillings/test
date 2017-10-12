@@ -4,15 +4,15 @@ import { Component, Input, Output, ChangeDetectionStrategy, EventEmitter } from 
   moduleId: module.id,
   selector: 'collection-delete-component',
   template: `<div class="wz-dialog">
-    <h1 md-dialog-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collection.name} }}</h1>
+    <h1 mat-dialog-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collection.name} }}</h1>
     <p class="dialog-summary">{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</p>
-    <md-dialog-actions align="end" class="confirmation-buttons">
-      <button md-button color="primary" md-dialog-close>
+    <mat-dialog-actions align="end" class="confirmation-buttons">
+      <button mat-button color="primary" mat-dialog-close>
         {{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}
       </button>
-      <button md-button color="primary" md-dialog-close (click)="deleteCollection()">
+      <button mat-button color="primary" mat-dialog-close (click)="deleteCollection()">
       {{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
-    </md-dialog-actions>
+    </mat-dialog-actions>
 	</div>`,
   styles: [
     '.wz-dialog{padding:0 5px 10px}'

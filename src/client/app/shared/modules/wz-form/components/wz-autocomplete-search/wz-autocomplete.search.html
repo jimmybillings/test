@@ -2,7 +2,7 @@
   <form
     [formGroup]="searchForm"
     (ngSubmit)="onSubmit(searchForm.value.query)"
-    class="md-inline-form"
+    class="mat-inline-form"
     autocomplete="off">
     <wz-input-suggestions
       #suggestions 
@@ -15,14 +15,14 @@
 
       <button
         data-pendo="search-bar_toggle-filters-btn"
-        md-button
+        mat-button
         title="show filters"
         type="button"
         *ngIf="(uiState.data | async).filtersAreAvailable"
         (click)="toggleFilters()"
         class="filter-toggle"
         tabindex="-1">
-          {{ 'SEARCH.FILTERS.FILTERS_BTN_LABEL' | translate }}<md-icon>arrow_drop_down</md-icon>
+          {{ 'SEARCH.FILTERS.FILTERS_BTN_LABEL' | translate }}<mat-icon>arrow_drop_down</mat-icon>
       </button>
 
       <input
@@ -31,18 +31,18 @@
         placeholder="{{ 'HOME.SEARCH_BOX_LABEL' | translate }}"
         formControlName="query"/>
         
-      <button data-pendo="search-bar_search-btn" type="submit" tabindex="-1"><md-icon>search</md-icon></button>
+      <button data-pendo="search-bar_search-btn" type="submit" tabindex="-1"><mat-icon>search</mat-icon></button>
     </wz-input-suggestions>
   </form>
 
   <div class="close-search" flex="none"> 
     <button
       flex="none"
-      md-icon-button
+      mat-icon-button
       class="close-btn"
       (click)="toggleSearch()"
       title="close search">
-      <md-icon>close</md-icon>
+      <mat-icon>close</mat-icon>
     </button>
   </div>
 </div>

@@ -19,14 +19,14 @@
     flex="100" 
     flex-order-xs="2" 
     layout-padding>	
-    <button md-button color="primary" (click)="showExpireConfirmationDialog()">
-      <md-icon>hourglass_empty</md-icon>{{ 'QUOTE.EXPIRE_BTN' | translate }}
+    <button mat-button color="primary" (click)="showExpireConfirmationDialog()">
+      <mat-icon>hourglass_empty</mat-icon>{{ 'QUOTE.EXPIRE_BTN' | translate }}
     </button>
   </div>
   <section flex-gt-xs="65" flex="100" class="action-items" flex-order-xs="-1" layout-padding>
     <button
       *ngIf="shouldShowCloneButton | async"
-      md-button
+      mat-button
       color="primary"
       (click)="onCloneQuote()">
       {{ 'QUOTE.CLONE_QUOTE' | translate }}
@@ -34,7 +34,7 @@
     <button
       *ngIf="shouldShowResendButton"
       (click)="openResendDialog()"
-      md-button
+      mat-button
       color="primary"
       class="is-outlined">
       {{ 'QUOTE.EXTEND_EXPIRATION' | translate }}
@@ -47,7 +47,7 @@
   class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
     <ng-container *ngIf="!(quoteIsProvisionalOrder | async)">
-      <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+      <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal mat-headline">
         <span class="total-label" flex="100">
           {{ 'CART.CART_SUBTOTAL' | translate }} 
         </span>
@@ -55,13 +55,13 @@
           {{ (quote | async).subTotal | currency:'USD':true:'1.2-2' }}
         </span>
       </div>
-      <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+      <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount mat-headline">
         <span class="total-label" flex="100">
           {{ 'CART.CART_DISCOUNT' | translate }} 
         </span>
         <span class="total-amount" flex="nogrow">{{ (quote | async).discount }}</span>
       </div> 
-      <div flex="100" layout="row" layout-align="end center" class="total md-headline">
+      <div flex="100" layout="row" layout-align="end center" class="total mat-headline">
         <span class="total-label">
           {{ 'CART.CART_TOTAL' | translate }} 
         </span>
@@ -71,7 +71,7 @@
       </div>
     </ng-container>
     <ng-container *ngIf="quoteIsProvisionalOrder | async">
-      <div flex="100" layout="row" layout-align="end center" class="provisional md-headline">
+      <div flex="100" layout="row" layout-align="end center" class="provisional mat-headline">
         <span class="provisional-msg" flex="100">
           {{ 'QUOTE.PROVISIONAL_USE_ONLY_MSG' | translate }}
         </span>
@@ -80,13 +80,13 @@
     <div flex="100" layout="row" layout-align="end center">
       <div flex="100" layout-gt-xs="row" layout="column" layout-align="space-between end" layout-align-xs="end end">
         <div *ngIf="shouldShowRejectQuoteButton" class="reject-quote" flex-gt-xs="auto" flex="100" flex-order-xs="2">	
-          <button md-button color="primary" (click)="openRejectQuoteDialog()">
-            <md-icon>not_interested</md-icon>{{ 'QUOTE.REJECT_BTN' | translate }}
+          <button mat-button color="primary" (click)="openRejectQuoteDialog()">
+            <mat-icon>not_interested</mat-icon>{{ 'QUOTE.REJECT_BTN' | translate }}
           </button>
         </div>
         <section flex-gt-xs="50" flex="100" class="action-items" flex-order-xs="-1">
           <button
-            md-button
+            mat-button
             *ngIf="shouldShowLicenseDetailsBtn"
             color="primary"
             class="is-outlined"
@@ -94,7 +94,7 @@
               {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
           </button>
           <button
-            md-raised-button 
+            mat-raised-button 
             color="primary"
             (click)="checkout()">
               {{ 'CART.PROCEED_BTN_LABEL' | translate }}

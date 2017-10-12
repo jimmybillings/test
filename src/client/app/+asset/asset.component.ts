@@ -10,7 +10,8 @@ import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { UiState } from '../shared/services/ui.state';
 import { Observable } from 'rxjs/Observable';
-import { MdSnackBar, MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { WzDialogService } from '../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
@@ -77,7 +78,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     private store: AppStore,
     private userPreference: UserPreferenceService,
     private cartService: CartService,
-    private snackBar: MdSnackBar,
+    private snackBar: MatSnackBar,
     private translate: TranslateService,
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
@@ -227,7 +228,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     );
   }
 
-  private applyPricing = (event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>) => {
+  private applyPricing = (event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>) => {
     switch (event.type) {
       case 'CALCULATE_PRICE':
         this.calculatePrice(event.payload).subscribe((price: number) => {

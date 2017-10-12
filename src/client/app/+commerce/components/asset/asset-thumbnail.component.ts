@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../shared/modules/wazee-frame-formatter/index';
 import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 
 @Component({

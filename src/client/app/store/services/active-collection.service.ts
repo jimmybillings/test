@@ -9,7 +9,7 @@ import {
 } from '../../shared/interfaces/collection.interface';
 import { Asset, Pagination } from '../../shared/interfaces/common.interface';
 import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 
 @Injectable()
 export class ActiveCollectionService {

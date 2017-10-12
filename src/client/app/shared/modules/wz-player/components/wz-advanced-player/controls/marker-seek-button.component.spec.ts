@@ -1,6 +1,6 @@
 import { MarkerSeekButtonComponent } from './marker-seek-button.component';
 import { PlayerState } from '../../../interfaces/player.interface';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../../wazee-frame-formatter/index';
 
 export function main() {
   describe('Marker Seek Button Component', () => {

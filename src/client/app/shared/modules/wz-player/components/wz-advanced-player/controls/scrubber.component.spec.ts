@@ -1,5 +1,5 @@
 import { ScrubberComponent } from './scrubber.component';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../../wazee-frame-formatter/index';
 import { PlayerState } from '../../../interfaces/player.interface';
 
 export function main() {

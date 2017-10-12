@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../wazee-frame-formatter/index';
 import { PlayerState, PlayerStateChanges } from '../interfaces/player.interface';
 
 @Injectable()

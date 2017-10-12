@@ -5,7 +5,7 @@ import { UserService } from '../../shared/services/user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -28,7 +28,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     private router: Router,
     private currentUser: CurrentUserService,
     private translate: TranslateService,
-    private snackbar: MdSnackBar,
+    private snackbar: MatSnackBar,
     private ref: ChangeDetectorRef) {
 
   }

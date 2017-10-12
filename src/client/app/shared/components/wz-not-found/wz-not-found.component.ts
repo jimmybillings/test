@@ -7,35 +7,35 @@ import { Capabilities } from '../../services/capabilities.service';
   template: `<div layout="column" layout-align="center center">
               <div flex="85">
                 <div layout="column" layout-align="center center">
-                  <h3 class="md-display not-found-header">{{ 'NOT_FOUND.HEADER' | translate }}</h3>
+                  <h3 class="mat-display not-found-header">{{ 'NOT_FOUND.HEADER' | translate }}</h3>
                 </div>
                 <div layout="row" layout-align="center center">
                   <button
                     color="primary"
-                    md-icon-button
+                    mat-icon-button
                     [routerLink]="['/']">
-                      <md-icon>home</md-icon>
+                      <mat-icon>home</mat-icon>
                   </button>
                   <button
                     color="primary"
                     *ngIf="showCartLink"
-                    md-icon-button
+                    mat-icon-button
                     [routerLink]="['/cart']">
-                      <md-icon>shopping_cart</md-icon>
+                      <mat-icon>shopping_cart</mat-icon>
                   </button>
                   <button
                     color="primary"
                     *ngIf="showCollectionsLink"
-                    md-icon-button
+                    mat-icon-button
                     [routerLink]="['/collections']">
-                      <md-icon>folder_open</md-icon>  
+                      <mat-icon>folder_open</mat-icon>  
                   </button>
                   <button
                     color="primary"
                     *ngIf="showQuotesLink"
-                    md-icon-button
+                    mat-icon-button
                     [routerLink]="['/quotes']">
-                      <md-icon>inbox</md-icon>
+                      <mat-icon>inbox</mat-icon>
                   </button>
                 </div>
               </div>

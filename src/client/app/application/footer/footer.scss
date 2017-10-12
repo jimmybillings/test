@@ -5,7 +5,7 @@ app-footer {
       height: 170px;
       width: 100%;
       .logo {
-        margin: rem(.3) 0 0 0;
+        margin: 3px 0 0 0;
         background-position: center center;
         background-repeat:no-repeat;
         background-size: 133px;
@@ -15,7 +15,7 @@ app-footer {
       }
     }
     ul.social {
-      margin: 0 0 rem(-1.0) 0;
+      margin: 0 0 -10px 0;
       padding:0;
       li {
         list-style: none;
@@ -46,11 +46,12 @@ app-footer {
         min-width: 167px;
       }  
     }
-    h3.md-title {
-      margin-bottom: .5em;
+    h3.mat-title {
+      margin-bottom: .2em;
+      margin-top: .2em;
     }
-    h3.md-title + .md-body-1 {
-      margin: rem(1.4) 0 0 0;
+    h3.mat-title + .mat-body-1 {
+      margin: 14px 0 0 0;
       font-size: .9em;
     }
     .help-link {
@@ -59,41 +60,41 @@ app-footer {
       transition: $swift-ease-in;
     }
     .sales {
-      md-list {
+      mat-list {
         padding: 0;
       }
-      md-list-item, .mat-list-item-content {
+      mat-list-item, .mat-list-item-content {
         padding: 0;
         min-height: 0;
       }
-      md-list md-list-item .mat-list-item {
-        height: rem(4.0);
+      mat-list mat-list-item .mat-list-item {
+        height: 40px;
         padding: 0;
       }
-      h5.md-subhead {
-        margin: 0 0 0 rem(2.6);
+      h5.mat-subheading-1 {
+        margin: 0 0 0 26px;
         font-weight: 500;
         opacity: .8;
       }
-      *[md-button] {
+      *[mat-button] {
         margin: 0;
         padding: 9px 6px;
         &.phone:hover {
           cursor: default;
           background: transparent;
         }
-        &.phone:hover .md-body-1 md-icon {
+        &.phone:hover .mat-body-1 mat-icon {
           opacity: .25;
         }
-        &:hover .md-body-1 md-icon {
+        &:hover .mat-body-1 mat-icon {
           opacity: .8;
         }
-        .md-body-1 {
+        .mat-body-1 {
           text-transform: initial;
           margin: 0;
           padding: 0 0 0 30px;
           position: relative;
-          md-icon {
+          mat-icon {
             position: absolute;
             top: -3px;
             left: -1px;

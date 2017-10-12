@@ -7,11 +7,11 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     <section class="mrkt-call-to-action">
       <div layout="row" layout-align="center start" layout-padding="">
         <div flex-gt-lg="60" flex-gt-md="70" flex="95" layout-align="center start">
-          <h2 class="md-display-1">{{ 'HOME.DESCRIPTION' | translate}}</h2>
-          <button *ngIf="!currentUser.loggedIn()" md-button [routerLink]="['/user/register']" class="md-block conversion">
+          <h2 class="mat-display-1">{{ 'HOME.DESCRIPTION' | translate}}</h2>
+          <button *ngIf="!currentUser.loggedIn()" mat-button [routerLink]="['/user/register']" class="mat-block conversion">
             {{'HOME.START_PROJECT' | translate }}
           </button>
-          <button *ngIf="currentUser.loggedIn()" md-button [routerLink]="['/user']" class="md-block conversion">
+          <button *ngIf="currentUser.loggedIn()" mat-button [routerLink]="['/user']" class="mat-block conversion">
             {{'HOME.START_PROJECT' | translate }}
           </button>
         </div>

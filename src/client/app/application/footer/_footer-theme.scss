@@ -44,7 +44,7 @@
         }
       }
       .sales {
-        *[md-button] {
+        *[mat-button] {
           
           @include text-contrast(mat-color($primary, 900), mat-color($foreground, secondary-text), mat-color($mat-grey, 400, .8));
           &:hover {

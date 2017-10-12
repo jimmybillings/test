@@ -9,7 +9,7 @@ collection-show .asset-results-header {
     padding-top: 6px;
     padding-bottom: 5px;
     position: relative;
-    .md-display-1 {
+    .mat-display-1 {
       margin: 0;
       width: calc(100% - 120px);
       font-size: 26px;
@@ -82,7 +82,7 @@ collection-show .collections-list {
 // override dialog container padding as well as specific styles for the editing dialog
 wz-subclip-editor > section {
   padding: 14px 12px 11px 12px;
-  [md-button].is-outlined {
+  [mat-button].is-outlined {
     line-height: 35px;
     padding: 0 16px;
     height: 35px;
@@ -109,14 +109,13 @@ wz-subclip-editor > section {
     }
   }
 }
-
-.subclipping-edit-open .cdk-overlay-pane md-dialog-container.mat-dialog-container {
+.subclipping-edit-open .cdk-overlay-pane mat-dialog-container.mat-dialog-container {
   padding: 2px;
   min-height: 330px;
   wz-subclip-edit-actions {
     text-align: right;
     padding: 16px 16px 16px 0;
-    [md-button].is-outlined {
+    [mat-button].is-outlined {
       line-height: 35px;
       padding: 0 16px;
       height: 35px;

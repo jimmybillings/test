@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
+import { Frame, TimecodeFormat } from '../../../shared/modules/wazee-frame-formatter/index';
 import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 
 @Component({
@@ -7,7 +7,7 @@ import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
   selector: 'asset-subclip-display-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div *ngIf="isSubclipped" class="asset-sub-clip md-caption">
+    <div *ngIf="isSubclipped" class="asset-sub-clip mat-caption">
       <strong>{{ 'COLLECTION.SHOW.SUB_CLIPPING_LABEL' | translate }}</strong>
       <div class="subclip-timeline">
         <span class="subclip-segment" [ngStyle]="subclipSegmentStyles"></span>

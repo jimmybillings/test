@@ -1,4 +1,4 @@
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 import * as SubclipMarkers from './subclip-markers';
 
 export function main() {

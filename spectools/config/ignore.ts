@@ -13,6 +13,10 @@ export const ignoredFilePatterns: string[] = [
   'main-prod',
   'operators',
   'shared/modules/wz-dialog/components/index',
+  'shared/modules/wazee-frame-formatter/index',
+  'shared/modules/wazee-frame-formatter/support/customMatchers',
+  'shared/modules/wazee-frame-formatter/timecodeBase',
+  'shared/modules/wazee-frame-formatter/timecodeFormat',
   'application',
   'app.store'
 ];

@@ -12,7 +12,7 @@
     "build.prod": "npm test && npm run spec.validate && gulp build.prod --color --env-config prod --build-type prod",
     "build.prod.exp": "gulp build.prod.aot --color --env-config prod --build-type prod",
     "build.library": "gulp build.library.export --env library",
-    "build.prod.rollup.aot": "gulp build.prod.rollup.aot --color --env-config prod --build-type prod",
+    "build.prod.rollup.aot": "npm test && npm run spec.validate && gulp build.prod.rollup.aot --color --env-config prod --build-type prod",
     "build.prod.aot": "npm test && npm run spec.validate && gulp build.prod.aot --color --env-config prod --build-type prod",
     "build.prod.aot.publish": "npm test && npm run spec.validate && gulp build.prod.aot.publish --color --env-config prod, --build-type prod",
     "build.all.scss": "gulp build.all.scss",
@@ -47,7 +47,8 @@
     "webdriver-start": "webdriver-manager start",
     "webdriver-update": "webdriver-manager update",
     "compodoc": "node_modules/.bin/compodoc -p src/client/tsconfig.json",
-    "serve.compodoc": "node_modules/.bin/compodoc -s"
+    "serve.compodoc": "node_modules/.bin/compodoc -s",
+    "aot": "node --max-old-space-size=8192 ./node_modules/gulp/bin/gulp.js build.prod.rollup.aot"
   },
   "author": "Minko Gechev <mgechev>",
   "license": "MIT",
@@ -149,13 +150,13 @@
   },
   "dependencies": {
     "@angular/animations": "4.4.4",
+    "@angular/cdk": "^2.0.0-beta.12",
     "@angular/common": "4.4.4",
     "@angular/compiler": "4.4.4",
     "@angular/core": "4.4.4",
     "@angular/forms": "4.4.4",
     "@angular/http": "4.4.4",
-    "@angular/material": "2.0.0-beta.10",
-    "@angular/cdk": "2.0.0-beta.10",
+    "@angular/material": "^2.0.0-beta.12",
     "@angular/platform-browser": "4.4.4",
     "@angular/platform-browser-dynamic": "4.4.4",
     "@angular/router": "4.4.4",
@@ -174,7 +175,6 @@
     "reflect-metadata": "0.1.10",
     "rxjs": "5.4.3",
     "systemjs": "0.19.41",
-    "wazee-frame-formatter": "git@github.com:t3mediacorp/wazee-frame-formatter.git#typescript-version",
     "zone.js": "0.8.12"
   }
 }

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Collection } from '../../interfaces/collection.interface';
 import { Asset } from '../../interfaces/common.interface';
 import { Capabilities } from '../../services/capabilities.service';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../shared/modules/wazee-frame-formatter/index';
 import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 import { AppStore } from '../../../app.store';
 import { Metadatum } from '../../../shared/interfaces/commerce.interface';

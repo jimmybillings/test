@@ -59,6 +59,7 @@
     "tslint",
     "build.assets.prod",
     "build.html_css",
+    "build.all.scss",
     "copy.prod.rollup.aot",
     "compile.ahead.prod",
     "build.js.prod.rollup.aot",

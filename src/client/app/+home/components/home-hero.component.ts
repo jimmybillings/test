@@ -13,7 +13,7 @@ declare var jwplayer: any;
       <div class="hero-image"></div>
     </div>
     <header class="hero">
-      <div layout="row" md-scroll-y="" layout-align="center start" layout-padding>
+      <div layout="row" mat-scroll-y="" layout-align="center start" layout-padding>
         <div flex-gt-lg="35" flex-lg="40" flex-md="50" flex-gt-sm="55" flex-gt-xs="70" flex="100">
           <div layout="column" layout-align="center">
             <div class="logo-wrapper">
@@ -25,7 +25,7 @@ declare var jwplayer: any;
               [uiState]="uiState"
               (searchContext)="searchContext.emit($event)">
             </wz-autocomplete-search>
-            <h4 class="md-headline">{{ 'HOME.SEARCH_HEADING' | translate }}</h4>
+            <h4 class="mat-headline">{{ 'HOME.SEARCH_HEADING' | translate }}</h4>
           </div>
         </div>
       </div>

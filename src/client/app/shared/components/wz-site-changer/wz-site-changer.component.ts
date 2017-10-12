@@ -5,16 +5,17 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   selector: 'wz-site-changer-component',
   template: `
       <form *ngIf="isPocNineTeen()" class="language-selector">
-        <md-select [(ngModel)]="currentSite" name="currentSite" (change)="selectSite($event)">
-          <md-option *ngFor="let site of sites" [value]="site">
-            {{site}}
-          </md-option>
-        </md-select>
+        <mat-form-field>
+          <mat-select [(ngModel)]="currentSite" name="currentSite" (change)="selectSite($event)">
+            <mat-option *ngFor="let site of sites" [value]="site">
+              {{site}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </form>`,
   styles: [`
-    form {
-      padding:0;
-    }
+    mat-form-field {width: 175px; font-size: 16px;},
+    form {padding:0;}
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

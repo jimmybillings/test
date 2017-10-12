@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { CollectionShowComponent } from './collection-show.component';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 import { ActionFactory } from '../../store/actions/active-collection.actions';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 
 export function main() {
   describe('Collection Show Component', () => {

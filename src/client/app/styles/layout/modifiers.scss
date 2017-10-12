@@ -1,7 +1,10 @@
-[md-raised-button] {
+[mat-raised-button] {
   text-transform: uppercase;
 }
-[md-button] {
+.mat-button,.mat-raised-button,.mat-icon-button,.mat-fab,.mat-mini-fab {
+  font-weight: 400;
+}
+[mat-button] {
 // drop down indicator on a button
   &.is-dd {
     position: relative;
@@ -35,4 +38,4 @@
 }
 
 /* TODO - Should look at removing this in the future. The overlay index clashes with our header.*/
-.md-menu-click-catcher { z-index: 5; }
+.mat-menu-click-catcher { z-index: 5; }

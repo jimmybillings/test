@@ -38,14 +38,14 @@
             }
           }
         }
-        md-list-item.active .mat-list-item-content button {
+        mat-list-item.active .mat-list-item-content button {
           color: mat-color($primary);
           background-color: rgba(mat-color($foreground, base), .07);
           box-shadow: inset 0 1px 0 0 mat-color($foreground, base), .05;
         }
       }
       footer .actions {
-        [md-button], button {
+        [mat-button], button {
           &:hover {
             color: mat-color($primary);
           }
@@ -67,9 +67,9 @@
     }
     .sub-menu {
       &.dd-menu-wrapper wz-sort-component div.dense {
-        .select-dd.active button[md-menu-item] {
+        .select-dd.active button[mat-menu-item] {
           color: mat-color($primary);
-          md-icon.material-icons {
+          mat-icon.material-icons {
             color: mat-color($primary);
           }
         }
@@ -92,7 +92,7 @@
     }
     form {
       button[type="submit"],button[type="reset"] {
-        md-icon.material-icons {
+        mat-icon.material-icons {
           color: mat-color($primary);
         }
       }

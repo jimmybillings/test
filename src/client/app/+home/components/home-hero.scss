@@ -53,6 +53,11 @@ home-hero {
         }
       }
     }
+    .mat-headline {
+      line-height: 1.4;
+      margin-top: 1.3em;
+      margin-bottom: .9em;
+    }
   }
   .hero-video-container {
     background: mat-color($mat-grey, 900, .9);

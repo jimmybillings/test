@@ -9,7 +9,7 @@ section.preview-bk {
     padding: 5px 0;
     position: relative;
     .breadcrumb {
-      a[md-button] {
+      a[mat-button] {
         line-height: 40px;
         min-width: 60px;
 
@@ -213,11 +213,7 @@ section.preview-bk {
           right: 0;
         } 
       }
-      md-card-actions {
-        md-select {
-          width: 100%;
-          margin-bottom: 20px;
-        }
+      mat-card-actions {
         width: calc(100% - 42px);
         margin: 0;
         padding: 0 8px 6px 16px;

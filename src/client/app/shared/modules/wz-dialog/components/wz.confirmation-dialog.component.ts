@@ -5,18 +5,18 @@ import { ConfirmationDialogStrings } from '../interfaces/wz.dialog.interface';
   moduleId: module.id,
   selector: 'wz-confirmation-dialog',
   template: `
-    <h1 md-dialog-title>{{ strings.title | translate }}</h1>
-    <md-dialog-content layout="row">
+    <h1 mat-dialog-title>{{ strings.title | translate }}</h1>
+    <mat-dialog-content layout="row">
       <div flex>{{ strings.message | translate }}</div>
-    </md-dialog-content>
-    <md-dialog-actions layout="row" layout-align="end end">
-      <button (click)="onClickDecline()" md-button md-dialog-close color="primary">
+    </mat-dialog-content>
+    <mat-dialog-actions layout="row" layout-align="end end">
+      <button (click)="onClickDecline()" mat-button mat-dialog-close color="primary">
         {{ strings.decline | translate }}
       </button>
-      <button (click)="onClickAccept()" md-button md-dialog-close color="primary">
+      <button (click)="onClickAccept()" mat-button mat-dialog-close color="primary">
         {{ strings.accept | translate }}
       </button>
-    </md-dialog-actions>
+    </mat-dialog-actions>
   `
 })
 export class WzConfirmationDialogComponent {

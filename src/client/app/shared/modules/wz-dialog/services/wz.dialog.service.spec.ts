@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { MdDialogConfig } from '@angular/material';
+import { MatDialogConfig } from '@angular/material';
 import { Component, Output } from '@angular/core';
 import { WzDialogService } from '../services/wz.dialog.service';
 
@@ -138,7 +138,7 @@ export function main() {
         });
 
         it('can override and add several properties at once', () => {
-          const dialogConfig: MdDialogConfig = {
+          const dialogConfig: MatDialogConfig = {
             disableClose: false, height: '300px', width: '900px', position: { left: '23%', top: '5%' }
           };
 
@@ -315,7 +315,7 @@ export function main() {
         });
 
         it('can override and add several properties at once', () => {
-          const dialogConfig: MdDialogConfig = {
+          const dialogConfig: MatDialogConfig = {
             disableClose: false, height: '300px', width: '900px', position: { left: '23%', top: '5%' }
           };
 

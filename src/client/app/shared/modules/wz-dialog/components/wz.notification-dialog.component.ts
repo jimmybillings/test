@@ -4,15 +4,15 @@ import { Component, Input } from '@angular/core';
   moduleId: module.id,
   selector: 'wz-notification-dialog',
   template: `
-    <h1 md-dialog-title>{{ strings.title | translate }}</h1>
-    <md-dialog-content layout="row">
+    <h1 mat-dialog-title>{{ strings.title | translate }}</h1>
+    <mat-dialog-content layout="row">
       <div flex>{{ strings.message | translate }}</div>
-    </md-dialog-content>
-    <md-dialog-actions layout="row" layout-align="end end">
-      <button md-button md-dialog-close color="primary" title="{{ strings.prompt | translate }}">
+    </mat-dialog-content>
+    <mat-dialog-actions layout="row" layout-align="end end">
+      <button mat-button mat-dialog-close color="primary" title="{{ strings.prompt | translate }}">
         {{ strings.prompt | translate }}
       </button>
-    </md-dialog-actions>
+    </mat-dialog-actions>
   `
 })
 export class WzNotificationDialogComponent {

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { Frame } from 'wazee-frame-formatter';
+import { Frame } from '../../../../wazee-frame-formatter/index';
 import { MarkerType, PlayerState, SetMarkerToCurrentFrameRequest } from '../../../interfaces/player.interface';
 
 @Component({
@@ -8,7 +8,7 @@ import { MarkerType, PlayerState, SetMarkerToCurrentFrameRequest } from '../../.
   selector: 'wz-marker-set-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-button
+    <button mat-button
       class="is-outlined set-marker"
       [disabled]="alreadyAtMarker"
       title="{{ title | translate }}"

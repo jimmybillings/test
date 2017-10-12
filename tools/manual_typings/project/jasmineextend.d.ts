@@ -18,6 +18,9 @@ declare module jasmine {
     toHaveBeenCalledWithLoading(...args: any[]): any;
     toHaveBeenCalledWithHeaderType(...args: any[]): any;
     toHaveBeenCalledWithOverridingToken(...args: any[]): any;
+
+    // from wazee-frame-formatter:
+    toRoundTripViaStringForFrameNumber(...args: any[]): any;
   }
 
   interface SpyAnd {

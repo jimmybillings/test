@@ -2,7 +2,7 @@ cart-component .tabs-section,
 quote-show-component .tabs-section,
 quote-edit-component .tabs-section {
   padding-bottom: 60px;
-  md-tab-group > div {
+  mat-tab-group > div {
     margin-bottom: 0;
     margin-top: 0;
     margin-left: 26px;
@@ -16,7 +16,7 @@ quote-edit-component .tabs-section {
     }
   }
 }
-quote-show-component .tabs-section md-tab-group > div {
+quote-show-component .tabs-section mat-tab-group > div {
   margin-top: 22px;
 }
 cart-component section.header, quote-edit-component section.header {
@@ -28,7 +28,7 @@ cart-component section.header, quote-edit-component section.header {
       padding-right: 8px;
       padding-left: 8px;
     }
-    .md-display-1 {
+    .mat-display-1 {
       margin: 0;
       width: calc(100% - 120px);
       max-width: 198px;
@@ -69,11 +69,11 @@ cart-component section.header, quote-edit-component section.header {
     text-align: right;
     letter-spacing: -.02em;
     line-height: 48px;
+    margin: 0;
     .total-label {
       line-height: 40px;
       font-weight: 300;
       letter-spacing: 0;
-      // padding-right: rem(1.4);
       opacity: .7;
     }
     .total-amount {

@@ -1,9 +1,9 @@
-<div class="pagination md-body-2" layout-align="end center">
+<div class="pagination mat-body-2" layout-align="end center">
 	<div *ngIf="pagination.totalCount" class="results-count">{{ pagination.totalCount | number }} results</div>
 	<nav layout="row" layout-align="end center">
 		<span class="current-page">page {{ pagination.currentPage | number }} of {{ pagination.numberOfPages | number }}</span>
-		<button [disabled]="!pagination.hasPreviousPage" md-icon-button title="previous page" (click)="getPageNumber(pagination.currentPage - 1)"><md-icon>keyboard_arrow_left</md-icon></button>
+		<button [disabled]="!pagination.hasPreviousPage" mat-icon-button title="previous page" (click)="getPageNumber(pagination.currentPage - 1)"><mat-icon>keyboard_arrow_left</mat-icon></button>
 		<div class="divider"></div>
-		<button [disabled]="!pagination.hasNextPage" md-icon-button title="next page" (click)="getPageNumber(pagination.currentPage + 1)"><md-icon>keyboard_arrow_right</md-icon></button>
+		<button [disabled]="!pagination.hasNextPage" mat-icon-button title="next page" (click)="getPageNumber(pagination.currentPage + 1)"><mat-icon>keyboard_arrow_right</mat-icon></button>
 	</nav>
 </div>

@@ -12,7 +12,7 @@
           <a class="asset" [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">
             <div class="asset-thb">
               <div class="selected" *ngIf="activeCollection === collection.id" title="Selected collection">
-                <md-icon>star</md-icon>
+                <mat-icon>star</mat-icon>
               </div>
               <span class="asset-id"><span class="id">{{collection.id}}</span></span>
               <img src="{{thumbnail(collection.collectionThumbnail)}}" />
@@ -21,19 +21,19 @@
         </div>
         <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" layout-padding>
           <a class="collection-name" [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">
-            <h3 class="md-headline">{{collection.name}}
+            <h3 class="mat-headline">{{collection.name}}
               <span class="asset-count">
                 <span class="count">{{collection.assetsCount || 0}}</span>
               </span>
             </h3>
           </a>
-          <div class="md-caption collection-info">
+          <div class="mat-caption collection-info">
             <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{collection.email}}</span>
             <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{collection.userRole}}</span>
             <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ collection.createdOn | date:'short' }}</span>
             <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ collection.lastUpdated | date:'short' }}</span>
           </div>
-          <div *ngIf="collection.tags" class="md-caption collection-tags">
+          <div *ngIf="collection.tags" class="mat-caption collection-tags">
             <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
             <ul class="meta-data-tags">
               <li class="tag mat-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
@@ -45,40 +45,40 @@
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
     <div flex-gt-xs="33" layout-sm="100" flex="auto" class="actions">
       <div class="tools" hide-xs flex="100">
-        <button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="edit(collection)"><md-icon>edit</md-icon></button>
-        <button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><md-icon>share</md-icon></button>
-        <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreCollectionOptions"
-        (click)="setCurrentCollection(collection)"><md-icon>more_vert</md-icon></button>
+        <button mat-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="edit(collection)"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><mat-icon>share</mat-icon></button>
+        <button mat-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [mat-menu-trigger-for]="moreCollectionOptions"
+        (click)="setCurrentCollection(collection)"><mat-icon>more_vert</mat-icon></button>
       </div>
       <div class="premiere-actions">
-        <button md-button class="is-outlined" color="primary" [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">{{'COLLECTION.INDEX.VIEW_BTN_LABEL' | translate }}</button>
-        <button md-button class="is-outlined" (click)="selectActiveCollection(collection.id)">{{'COLLECTION.INDEX.SELECT_BTN_LABEL' | translate }}</button>
+        <button mat-button class="is-outlined" color="primary" [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">{{'COLLECTION.INDEX.VIEW_BTN_LABEL' | translate }}</button>
+        <button mat-button class="is-outlined" (click)="selectActiveCollection(collection.id)">{{'COLLECTION.INDEX.SELECT_BTN_LABEL' | translate }}</button>
       </div>
     </div>
   </li>
 </ul>
 
-<md-menu class="more-collections-menu" x-position="before" #moreCollectionOptions="mdMenu">
-  <button *ngIf="currentCollection" md-menu-item (click)="selectActiveCollection(currentCollection.id)">
-    <md-icon>star_border</md-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.SELECT' | translate }}
+<mat-menu class="more-collections-menu" x-position="before" #moreCollectionOptions="matMenu">
+  <button *ngIf="currentCollection" mat-menu-item (click)="selectActiveCollection(currentCollection.id)">
+    <mat-icon>star_border</mat-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.SELECT' | translate }}
   </button>
-  <a *ngIf="currentCollection" md-menu-item [routerLink]="['/collections/', currentCollection.id, {i: 1, n: 100}]" disableRipple="true">
-    <md-icon>open_in_browser</md-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.VIEW' | translate }}
+  <a *ngIf="currentCollection" mat-menu-item [routerLink]="['/collections/', currentCollection.id, {i: 1, n: 100}]" disableRipple="true">
+    <mat-icon>open_in_browser</mat-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.VIEW' | translate }}
   </a>
   <div class="divider"></div>
-    <button md-menu-item (click)="duplicate()">
-      <md-icon>layers</md-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.DUPLICATE_COLLECTION' | translate }}
+    <button mat-menu-item (click)="duplicate()">
+      <mat-icon>layers</mat-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.DUPLICATE_COLLECTION' | translate }}
     </button>
-  <button md-menu-item disabled>
-    <md-icon>history</md-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.HISTORY' | translate }}
+  <button mat-menu-item disabled>
+    <mat-icon>history</mat-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.HISTORY' | translate }}
   </button>
-  <button (click)="generateLegacyLink()" md-menu-item>
-    <md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
+  <button (click)="generateLegacyLink()" mat-menu-item>
+    <mat-icon>link</mat-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
   </button>
   <div *ngIf="currentCollection && !!currentCollection.owner">
     <div class="divider"></div>
-    <button md-menu-item class="delete" (click)="delete(currentCollection)">
-      <md-icon>delete</md-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
+    <button mat-menu-item class="delete" (click)="delete(currentCollection)">
+      <mat-icon>delete</mat-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
     </button>
   </div>
-</md-menu>
+</mat-menu>
