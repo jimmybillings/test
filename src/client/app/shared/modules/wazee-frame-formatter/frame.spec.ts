@@ -170,7 +170,7 @@ describe('Frame', function () {
           const seconds = frame.asSeconds();
 
           expect(frame.setFromSeconds(seconds).asFrameNumber()).toBe(frameNumber);
-        })
+        });
       });
     });
 
@@ -224,31 +224,52 @@ describe('Frame', function () {
   describe('minimal timecode', function () {
     describe('conversion to a simple timecode:', function () {
       it('works with s format', function () {
-        expect(new Frame(23.976).setFromString('23', TimecodeFormat.MINIMAL_TIME_CONVERSION).asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)).toEqual('00:00:23;00');
+        expect(new Frame(23.976)
+          .setFromString('23', TimecodeFormat.MINIMAL_TIME_CONVERSION)
+          .asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)
+        ).toEqual('00:00:23;00');
       });
 
       it('works with s;f format', function () {
-        expect(new Frame(23.976).setFromString('23;17', TimecodeFormat.MINIMAL_TIME_CONVERSION).asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)).toEqual('00:00:23;17');
+        expect(new Frame(23.976)
+          .setFromString('23;17', TimecodeFormat.MINIMAL_TIME_CONVERSION)
+          .asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)
+        ).toEqual('00:00:23;17');
       });
 
       it('works with m:s format', function () {
-        expect(new Frame(23.976).setFromString('23:17', TimecodeFormat.MINIMAL_TIME_CONVERSION).asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)).toEqual('00:23:17;00');
+        expect(new Frame(23.976)
+          .setFromString('23:17', TimecodeFormat.MINIMAL_TIME_CONVERSION)
+          .asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)
+        ).toEqual('00:23:17;00');
       });
 
       it('works with m:s;f format', function () {
-        expect(new Frame(23.976).setFromString('23:17;05', TimecodeFormat.MINIMAL_TIME_CONVERSION).asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)).toEqual('00:23:17;05');
+        expect(new Frame(23.976)
+          .setFromString('23:17;05', TimecodeFormat.MINIMAL_TIME_CONVERSION)
+          .asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)
+        ).toEqual('00:23:17;05');
       });
 
       it('works with h:m:s format', function () {
-        expect(new Frame(23.976).setFromString('23:17:05', TimecodeFormat.MINIMAL_TIME_CONVERSION).asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)).toEqual('23:17:05;00');
+        expect(new Frame(23.976)
+          .setFromString('23:17:05', TimecodeFormat.MINIMAL_TIME_CONVERSION)
+          .asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)
+        ).toEqual('23:17:05;00');
       });
 
       it('works with h:m:s;f format', function () {
-        expect(new Frame(23.976).setFromString('23:17:05;12', TimecodeFormat.MINIMAL_TIME_CONVERSION).asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)).toEqual('23:17:05;12');
+        expect(new Frame(23.976)
+          .setFromString('23:17:05;12', TimecodeFormat.MINIMAL_TIME_CONVERSION)
+          .asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)
+        ).toEqual('23:17:05;12');
       });
 
-      it('works with h:m:s;f format', function () {
-        expect(new Frame(23.976).setFromString('23:17:05:12', TimecodeFormat.MINIMAL_TIME_CONVERSION).asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)).toEqual('23:17:05;12');
+      it('works with h:m:s:f format', function () {
+        expect(new Frame(23.976)
+          .setFromString('23:17:05:12', TimecodeFormat.MINIMAL_TIME_CONVERSION)
+          .asString(TimecodeFormat.SIMPLE_TIME_CONVERSION)
+        ).toEqual('23:17:05;12');
       });
 
     });
@@ -257,27 +278,45 @@ describe('Frame', function () {
   describe('simple timecode', function () {
     describe('conversion to a minimal timecode:', function () {
       it('works with s format', function () {
-        expect(new Frame(23.976).setFromString('00:00:23:00', TimecodeFormat.SIMPLE_TIME_CONVERSION).asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)).toEqual('23');
+        expect(new Frame(23.976)
+          .setFromString('00:00:23:00', TimecodeFormat.SIMPLE_TIME_CONVERSION)
+          .asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)
+        ).toEqual('23');
       });
 
       it('works with s;f format', function () {
-        expect(new Frame(23.976).setFromString('00:00:23:17', TimecodeFormat.SIMPLE_TIME_CONVERSION).asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)).toEqual('23;17');
+        expect(new Frame(23.976)
+          .setFromString('00:00:23:17', TimecodeFormat.SIMPLE_TIME_CONVERSION)
+          .asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)
+        ).toEqual('23;17');
       });
 
       it('works with m:s format', function () {
-        expect(new Frame(23.976).setFromString('00:23:17:00', TimecodeFormat.SIMPLE_TIME_CONVERSION).asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)).toEqual('23:17');
+        expect(new Frame(23.976)
+          .setFromString('00:23:17:00', TimecodeFormat.SIMPLE_TIME_CONVERSION)
+          .asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)
+        ).toEqual('23:17');
       });
 
       it('works with m:s;f format', function () {
-        expect(new Frame(23.976).setFromString('00:23:17:05', TimecodeFormat.SIMPLE_TIME_CONVERSION).asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)).toEqual('23:17;05');
+        expect(new Frame(23.976)
+          .setFromString('00:23:17:05', TimecodeFormat.SIMPLE_TIME_CONVERSION)
+          .asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)
+        ).toEqual('23:17;05');
       });
 
       it('works with h:m:s format', function () {
-        expect(new Frame(23.976).setFromString('23:17:05:00', TimecodeFormat.SIMPLE_TIME_CONVERSION).asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)).toEqual('23:17:05');
+        expect(new Frame(23.976)
+          .setFromString('23:17:05:00', TimecodeFormat.SIMPLE_TIME_CONVERSION)
+          .asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)
+        ).toEqual('23:17:05');
       });
 
       it('works with h:m:s;f format', function () {
-        expect(new Frame(23.976).setFromString('23:17:05:12', TimecodeFormat.SIMPLE_TIME_CONVERSION).asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)).toEqual('23:17:05;12');
+        expect(new Frame(23.976)
+          .setFromString('23:17:05:12', TimecodeFormat.SIMPLE_TIME_CONVERSION)
+          .asString(TimecodeFormat.MINIMAL_TIME_CONVERSION)
+        ).toEqual('23:17:05;12');
       });
     });
   });
