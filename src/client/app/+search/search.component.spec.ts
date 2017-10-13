@@ -8,7 +8,7 @@ export function main() {
     let mockSearchService: any, mockUiConfig: any, mockUserCan: any,
       mockSearchContext: any, mockFilter: any, mockUserPreferences: any,
       mockSortDefinition: any, mockCart: any, mockAssetService: any, mockRenderer: any,
-      mockWindow: any, mockTranslate: any, mockSnackBar: any, mockRouter: any, mockActivatedRoute: any, MockRefDetecor: any;
+      mockWindow: any, mockRouter: any, mockActivatedRoute: any, MockRefDetecor: any;
     let mockStore: MockAppStore;
 
     beforeEach(() => {
@@ -67,12 +67,6 @@ export function main() {
           innerWidth: 500
         }
       };
-      mockTranslate = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
-      };
-      mockSnackBar = {
-        open: () => { }
-      };
       mockActivatedRoute = {
         snapshot: {
           params: {
@@ -92,8 +86,7 @@ export function main() {
       mockStore = new MockAppStore();
       componentUnderTest = new SearchComponent(
         null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-        mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null,
-        mockStore
+        mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
       );
     });
 
@@ -102,8 +95,7 @@ export function main() {
         mockActivatedRoute = { snapshot: { params: { i: 1, n: 100 } } };
         componentUnderTest = new SearchComponent(
           null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null,
-          mockStore
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
         );
 
         expect(componentUnderTest.path).toEqual('');
@@ -234,8 +226,7 @@ export function main() {
         };
         componentUnderTest = new SearchComponent(
           null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null,
-          mockStore
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
         );
         componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
         mockStore.expectDispatchFor(errorSpy, 'COMPS.NO_COMP');
@@ -283,8 +274,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
           null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null,
-          mockStore
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ i: 1 });
@@ -294,8 +284,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [1, 2, 3], values: [] });
         componentUnderTest = new SearchComponent(
           null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null,
-          mockStore
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ 'filterIds': '1,2,3' });
@@ -305,9 +294,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(
           null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null,
-          mockStore
-        );
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.remove).toEqual('filterIds');
       });
@@ -316,8 +303,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(
           null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null,
-          mockStore
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ 'filterValues': 'cat,dog' });
@@ -327,8 +313,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
           null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null,
-          mockStore
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.remove).toEqual('filterValues');
@@ -338,8 +323,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
           null, mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
-          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null,
-          mockStore
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null, mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.go).toHaveBeenCalled();

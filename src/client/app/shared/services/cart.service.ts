@@ -131,7 +131,12 @@ export class CartService {
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' },
         loadingIndicator: true
       }
-    ).subscribe(this.replaceCartWith);
+    ).subscribe(cartResponse => {
+      this.replaceCartWith(cartResponse);
+      this.store.dispatch(
+        factory => factory.snackbar.display('ASSET.ADD_TO_CART_TOAST', { assetId: addAssetParameters.lineItem.asset.assetId })
+      );
+    });
   }
 
   public updateProject(project: Project): void {

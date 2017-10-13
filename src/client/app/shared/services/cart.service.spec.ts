@@ -78,8 +78,11 @@ export function main() {
     });
 
     describe('addAssetToProjectInCart()', () => {
+      let snackbarSpy: jasmine.Spy;
+
       beforeEach(() => {
         mockStore.createStateSection('cart', { data: { projects: [mockProjectB] } });
+        snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
       });
 
       it('calls the api service correctly', () => {
@@ -130,6 +133,15 @@ export function main() {
           .toHaveBeenCalledWith({ lineItem: { asset: { assetId: 10836 } } });
       });
 
+      it('displays a snackbar with the expected message', () => {
+        const addAssetParameters: AddAssetParameters = {
+          lineItem: { asset: { assetId: 10836 }, selectedTranscodeTarget: '1080p' }
+        };
+
+        serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
+
+        expect(snackbarSpy).toHaveBeenCalledWith('ASSET.ADD_TO_CART_TOAST', { assetId: 10836 });
+      });
     });
 
     describe('addProject()', () => {

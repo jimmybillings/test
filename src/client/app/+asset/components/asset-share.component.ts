@@ -10,6 +10,7 @@ import { Pojo } from '../../shared/interfaces/common.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
+import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -29,7 +30,6 @@ export class AssetShareComponent implements OnDestroy {
   };
   @Input() subclipMarkers: SubclipMarkersInterface.SubclipMarkers;
   @Output() close = new EventEmitter();
-  @Output() onOpenSnackBar = new EventEmitter();
   public currentAsset: EnhancedAsset;
   public assetLinkIsShowing: boolean = false;
   public assetShareLink: string;
@@ -40,6 +40,7 @@ export class AssetShareComponent implements OnDestroy {
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
 
   constructor(
+    private store: AppStore,
     private asset: AssetService,
     private changeDetector: ChangeDetectorRef) {
   }
@@ -69,7 +70,7 @@ export class AssetShareComponent implements OnDestroy {
     this.asset.createShareLink(this.prepareShareLink(shareLink))
       .subscribe((res) => {
         this.resetForm();
-        this.onOpenSnackBar.emit({ key: 'ASSET.SHARING.SHARED_CONFIRMED_MESSAGE' });
+        this.store.dispatch(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE'));
       }, this.error.bind(this));
   }
 

@@ -3,13 +3,11 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 import { Router } from '@angular/router';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { MatSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { AssetService } from '../../../store/services/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
-import { TranslateService } from '@ngx-translate/core';
 import { QuoteOptions, Project, QuoteType, Quote, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
@@ -45,8 +43,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public window: WindowRef,
     public userPreference: UserPreferenceService,
     @Inject(DOCUMENT) public document: any,
-    public snackBar: MatSnackBar,
-    public translate: TranslateService,
     public pricingStore: PricingStore,
     public router: Router,
     protected store: AppStore,
@@ -54,7 +50,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   ) {
     super(
       userCan, quoteEditService, uiConfig, dialogService, assetService, window,
-      userPreference, document, snackBar, translate, pricingStore, store, pricingService
+      userPreference, document, pricingStore, store, pricingService
     );
     this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
@@ -193,13 +189,13 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
 
   public onCloneQuote() {
     this.quoteEditService.cloneQuote(this.quoteEditService.state.data)
-      .do(() => this.showSnackBar({ key: 'QUOTE.CLONE_SUCCESS' }))
+      .do(() => this.store.dispatch(factory => factory.snackbar.display('QUOTE.CLONE_SUCCESS')))
       .subscribe();
   }
 
   public onCreateQuote() {
     this.quoteEditService.createQuote()
-      .do(() => this.showSnackBar({ key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED' }))
+      .do(() => this.store.dispatch(factory => factory.snackbar.display('QUOTE.QUOTE_CREATED_PREVIOUS_SAVED')))
       .subscribe();
   }
 
@@ -208,12 +204,14 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
       this.config.bulkImport.items,
       { title: 'QUOTE.BULK_IMPORT.TITLE', submitLabel: 'QUOTE.BULK_IMPORT.SUBMIT_BTN', autocomplete: 'off' },
       (form: { lineItemAttributes: string }) => {
-        this.quoteEditService.bulkImport(form, projectId).do(() => {
-          this.showSnackBar({
-            key: 'QUOTE.BULK_IMPORT.CONFIRMATION',
-            value: { numOfAssets: form.lineItemAttributes.split('\n').length }
-          });
-        }).subscribe();
+        this.quoteEditService.bulkImport(form, projectId)
+          .do(() =>
+            this.store.dispatch(factory => factory.snackbar.display(
+              'QUOTE.BULK_IMPORT.CONFIRMATION',
+              { numOfAssets: form.lineItemAttributes.split('\n').length })
+            )
+          )
+          .subscribe();
       }
     );
   }
@@ -251,10 +249,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     this.quoteEditService.sendQuote(options)
       .do(() => {
         this.router.navigate([`/quotes/${this.quoteEditService.quoteId}`]);
-        this.showSnackBar({
-          key: 'QUOTE.CREATED_FOR_TOAST',
-          value: { emailAddress: options.ownerEmail }
-        });
+        this.store.dispatch(factory => factory.snackbar.display('QUOTE.CREATED_FOR_TOAST', { emailAddress: options.ownerEmail }));
       }).subscribe();
   }
 

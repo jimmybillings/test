@@ -8,6 +8,7 @@ export function main() {
     let componentUnderTest: QuoteEditComponent;
     let deleteQuoteDispatchSpy: jasmine.Spy;
     let addCustomPriceDispatchSpy: jasmine.Spy;
+    let snackbarSpy: jasmine.Spy;
     let mockStore: MockAppStore;
     let mockCapabilities: any;
     let mockQuoteEditService: any;
@@ -18,8 +19,6 @@ export function main() {
     let mockUserPreference: any;
     let mockRouter: any;
     let mockDocument: any;
-    let mockSnackbar: any;
-    let mockTranslateService: any;
     let mockPricingService: any;
 
     beforeEach(() => {
@@ -68,10 +67,6 @@ export function main() {
 
       mockUserPreference = { data: Observable.of({ pricingPreferences: { some: 'preference' } }) };
 
-      mockSnackbar = { open: jasmine.createSpy('open') };
-
-      mockTranslateService = { get: jasmine.createSpy('createQuote').and.returnValue(Observable.of('')) };
-
       mockRouter = { navigate: jasmine.createSpy('navigate') };
 
       mockPricingService = {
@@ -83,12 +78,12 @@ export function main() {
 
       deleteQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'delete');
       addCustomPriceDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addCustomPriceToLineItem');
+      snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
 
       componentUnderTest =
         new QuoteEditComponent(
           mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
-          mockWindow, mockUserPreference, mockDocument, mockSnackbar, mockTranslateService,
-          null, mockRouter, mockStore, mockPricingService
+          mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
         );
     });
 
@@ -102,8 +97,7 @@ export function main() {
       };
       componentUnderTest = new QuoteEditComponent(
         mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
-        mockWindow, mockUserPreference, mockDocument, mockSnackbar, mockTranslateService,
-        null, mockRouter, mockStore, mockPricingService
+        mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
       );
       return componentUnderTest;
     };
@@ -302,7 +296,6 @@ export function main() {
 
       it('Shows a success snack bar notification on succesfull submit', () => {
         componentUnderTest.onOpenQuoteDialog();
-        spyOn(componentUnderTest, 'showSnackBar');
 
         mockDialogService.onSubmitCallback({
           ownerEmail: 'ross.edfort@wazeedigital.com',
@@ -311,10 +304,7 @@ export function main() {
           offlineAgreementId: 'abc123'
         });
 
-        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
-          key: 'QUOTE.CREATED_FOR_TOAST',
-          value: { emailAddress: 'ross.edfort@wazeedigital.com' }
-        });
+        expect(snackbarSpy).toHaveBeenCalledWith('QUOTE.CREATED_FOR_TOAST', { emailAddress: 'ross.edfort@wazeedigital.com' });
       });
     });
 
@@ -511,10 +501,9 @@ export function main() {
       });
 
       it('Shows a snack bar after creating a quote', () => {
-        spyOn(componentUnderTest, 'showSnackBar');
         componentUnderTest.onCreateQuote();
 
-        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({ key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED' });
+        expect(snackbarSpy).toHaveBeenCalledWith('QUOTE.QUOTE_CREATED_PREVIOUS_SAVED');
       });
     });
 
@@ -526,10 +515,9 @@ export function main() {
       });
 
       it('Shows a snack bar after creating a quote', () => {
-        spyOn(componentUnderTest, 'showSnackBar');
         componentUnderTest.onCloneQuote();
 
-        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({ key: 'QUOTE.CLONE_SUCCESS' });
+        expect(snackbarSpy).toHaveBeenCalledWith('QUOTE.CLONE_SUCCESS');
       });
     });
 
@@ -590,14 +578,10 @@ export function main() {
         expect(mockQuoteEditService.bulkImport).toHaveBeenCalledWith({ lineItemAttributes: 'one\ntwo' }, 'abcd-1234');
       });
 
-      it('calls the showSnackBar() in the callback', () => {
-        spyOn(componentUnderTest, 'showSnackBar');
+      it('displays a snackbar in the callback', () => {
         mockDialogService.onSubmitCallback({ lineItemAttributes: 'one\ntwo' });
 
-        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
-          key: 'QUOTE.BULK_IMPORT.CONFIRMATION',
-          value: { numOfAssets: 2 }
-        });
+        expect(snackbarSpy).toHaveBeenCalledWith('QUOTE.BULK_IMPORT.CONFIRMATION', { numOfAssets: 2 });
       });
     });
   });

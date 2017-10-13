@@ -11,8 +11,6 @@ import { UserPreferenceService } from '../shared/services/user-preference.servic
 import { UiState } from '../shared/services/ui.state';
 import { Observable } from 'rxjs/Observable';
 import { MatDialogRef } from '@angular/material';
-import { MatSnackBar } from '@angular/material';
-import { TranslateService } from '@ngx-translate/core';
 import { WzDialogService } from '../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
 import { WindowRef } from '../shared/services/window-ref.service';
@@ -78,8 +76,6 @@ export class AssetComponent implements OnInit, OnDestroy {
     private store: AppStore,
     private userPreference: UserPreferenceService,
     private cartService: CartService,
-    private snackBar: MatSnackBar,
-    private translate: TranslateService,
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
     private pricingStore: PricingStore,
@@ -122,13 +118,6 @@ export class AssetComponent implements OnInit, OnDestroy {
     return this.searchContext.state;
   }
 
-  public showSnackBar(message: any): void {
-    this.translate.get(message.key, message.value)
-      .subscribe((res: string) => {
-        this.snackBar.open(res, '', { duration: 2000 });
-      });
-  }
-
   public downloadComp(params: any): void {
     this.assetService.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
@@ -153,10 +142,6 @@ export class AssetComponent implements OnInit, OnDestroy {
       this.userCan.administerQuotes() ?
         this.quoteEditService.addAssetToProjectInQuote(options) :
         this.cartService.addAssetToProjectInCart(options);
-    });
-    this.showSnackBar({
-      key: this.userCan.administerQuotes() ? 'ASSET.ADD_TO_QUOTE_TOAST' : 'ASSET.ADD_TO_CART_TOAST',
-      value: { assetId: parameters.assetId }
     });
   }
 

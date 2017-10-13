@@ -129,7 +129,12 @@ export class QuoteEditService {
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' },
         loadingIndicator: true
       }
-    ).subscribe(this.replaceQuote);
+    ).subscribe(quoteResponse => {
+      this.replaceQuote(quoteResponse);
+      this.store.dispatch(
+        factory => factory.snackbar.display('ASSET.ADD_TO_QUOTE_TOAST', { assetId: addAssetParameters.lineItem.asset.assetId })
+      );
+    });
   }
 
   public updateProject(project: Project): void {

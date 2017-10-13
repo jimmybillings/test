@@ -1,11 +1,18 @@
 import { Observable } from 'rxjs/Observable';
 import { ResetPasswordComponent } from './reset-password.component';
 import { Response, ResponseOptions } from '@angular/http';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Reset Password Component', () => {
-    let mockUiConfig: any, mockUser: any, mockActivatedRoute: any, mockRouter: any, mockRef: any,
-      mockCurrentUserService: any, mockNotification: any, mockTranslate: any, mockSnackbar: any;
+    let mockUiConfig: any;
+    let mockUser: any;
+    let mockActivatedRoute: any;
+    let mockRouter: any;
+    let mockRef: any;
+    let mockCurrentUserService: any;
+    let mockNotification: any;
+    let mockStore: MockAppStore;
     let componentUnderTest: ResetPasswordComponent;
 
     beforeEach(() => {
@@ -33,13 +40,9 @@ export function main() {
         set: jasmine.createSpy('set'),
         loggedIn: jasmine.createSpy('loggedIn').and.returnValue(true)
       };
-      mockTranslate = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of('translation'))
-      };
-      mockSnackbar = { open: jasmine.createSpy('open') };
+      mockStore = new MockAppStore();
       componentUnderTest = new ResetPasswordComponent(
-        mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-        mockCurrentUserService, mockTranslate, mockSnackbar, mockRef
+        mockStore, mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUserService, mockRef
       );
     });
 
@@ -51,6 +54,12 @@ export function main() {
     });
 
     describe('onSubmit() success', () => {
+      let snackbarSpy: jasmine.Spy;
+
+      beforeEach(() => {
+        snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
+      });
+
       describe('with a share token', () => {
         beforeEach(() => {
           componentUnderTest.ngOnInit();
@@ -74,8 +83,7 @@ export function main() {
 
         it('Displays a snackbar that the password was sucessfully changed', () => {
           componentUnderTest.onSubmit({ newPassword: 'myNewTestPassword' });
-          expect(mockTranslate.get).toHaveBeenCalledWith('RESETPASSWORD.PASSWORD_CHANGED');
-          expect(mockSnackbar.open).toHaveBeenCalledWith('translation', '', { duration: 2000 });
+          expect(snackbarSpy).toHaveBeenCalledWith('RESETPASSWORD.PASSWORD_CHANGED');
         });
       });
 
@@ -83,8 +91,7 @@ export function main() {
         beforeEach(() => {
           mockActivatedRoute = { snapshot: { params: {} } };
           componentUnderTest = new ResetPasswordComponent(
-            mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-            mockCurrentUserService, mockTranslate, mockSnackbar, mockRef
+            mockStore, mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUserService, mockRef
           );
           componentUnderTest.ngOnInit();
         });
@@ -107,8 +114,7 @@ export function main() {
             Observable.throw(errorResponse))
         };
         componentUnderTest = new ResetPasswordComponent(
-          mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-          mockCurrentUserService, mockTranslate, mockSnackbar, mockRef
+          mockStore, mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUserService, mockRef
         );
         componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
         expect(componentUnderTest.serverErrors).toEqual({ newPassword: 'Needs a number and letter' });
@@ -121,8 +127,7 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
         componentUnderTest = new ResetPasswordComponent(
-          mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-          mockCurrentUserService, mockTranslate, mockSnackbar, mockRef
+          mockStore, mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUserService, mockRef
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();

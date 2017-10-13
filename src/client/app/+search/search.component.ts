@@ -10,8 +10,6 @@ import { SortDefinitionsService } from '../shared/services/sort-definitions.serv
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
-import { MatSnackBar } from '@angular/material';
-import { TranslateService } from '@ngx-translate/core';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { UiState } from '../shared/services/ui.state';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -51,8 +49,6 @@ export class SearchComponent implements OnDestroy {
     private searchService: SearchService,
     private userPreferencesService: UserPreferenceService,
     private window: WindowRef,
-    private snackBar: MatSnackBar,
-    private translate: TranslateService,
     private route: ActivatedRoute,
     private router: Router,
     private detector: ChangeDetectorRef,
@@ -81,13 +77,6 @@ export class SearchComponent implements OnDestroy {
     return this.store.select(state => state.activeCollection.collection);
   }
 
-  public showSnackBar(message: any) {
-    this.translate.get(message.key, message.value)
-      .subscribe((res: string) => {
-        this.snackBar.open(res, '', { duration: 2000 });
-      });
-  }
-
   public countToggle(): void {
     this.filter.load(this.searchContext.state, !this.userPreferences.state.displayFilterCounts)
       .subscribe((_) => { return _; });
@@ -101,10 +90,6 @@ export class SearchComponent implements OnDestroy {
     } else {
       this.cart.addAssetToProjectInCart(params);
     }
-    this.showSnackBar({
-      key: this.userCan.administerQuotes() ? 'ASSET.ADD_TO_QUOTE_TOAST' : 'ASSET.ADD_TO_CART_TOAST',
-      value: { assetId: asset.assetId }
-    });
   }
 
   public downloadComp(params: any): void {
