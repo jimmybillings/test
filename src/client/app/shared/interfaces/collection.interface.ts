@@ -7,6 +7,7 @@ export interface Collection extends Common {
   email?: string;
   userRole?: string;
   editors?: number[];
+  viewers?: number[];
   assets?: CollectionItems;
   tags?: any;
   assetCount?: number;

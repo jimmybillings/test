@@ -224,6 +224,10 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     return this.userCan.editCollection(this.activeCollection);
   }
 
+  public collectionIsShared(collection: Collection): boolean {
+    return !!collection.editors || !!collection.viewers ? true : false;
+  }
+
   private buildRouteParams(params: Pojo): void {
     this.routeParams = Object.assign({}, this.routeParams, params);
     delete this.routeParams['id'];

@@ -20,6 +20,10 @@
             <div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding>
               <div class="asset">
                 <div class="asset-thb">
+                  <div class="selected">
+                    <!-- <mat-icon *ngIf="activeCollection === collection.id" title="Selected collection">star</mat-icon> -->
+                    <mat-icon *ngIf="collectionIsShared(activeCollection)" title="Collection is shared">share</mat-icon>
+                  </div>
                   <!-- I don't think this needs to be here anymore. It was more for troubleshooting JH -->
                   <!-- <span class="asset-id"><span class="id">{{activeCollection.id}}</span></span> -->
                   <img *ngIf="(activeCollection.collectionThumbnail | json) != '{}'" src="{{activeCollection?.collectionThumbnail?.urls?.https}}" />
@@ -39,7 +43,16 @@
                 <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ activeCollection.createdOn | date:'short' }}</span>
                 <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ activeCollection.lastUpdated | date:'short' }}</span>
               </div>
-              <div class="mat-caption collection-tags">
+              <button
+                mat-button
+                color="primary"
+                type="button"
+                *ngIf="collectionIsShared(activeCollection)"
+                (click)="editCollection()" 
+                class="is-outlined mini shared-members">
+                Members
+              </button>
+              <div *ngIf="activeCollection.tags" class="mat-caption collection-tags">
                 <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
                 <ul class="meta-data-tags">
                   <li class="tag mat-elevation-z0" *ngFor="let tag of activeCollection.tags">{{tag}}</li>

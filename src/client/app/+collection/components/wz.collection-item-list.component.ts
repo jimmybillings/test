@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-
+import { Collection } from '../../shared/interfaces/collection.interface';
 @Component({
   moduleId: module.id,
   selector: 'wz-collection-item-list',
@@ -31,6 +31,10 @@ export class WzCollectionItemListComponent {
 
   public setCurrentCollection(collection: any) {
     this.currentCollection = collection;
+  }
+
+  public collectionIsShared(collection: Collection): boolean {
+    return !!collection.editors || !!collection.viewers ? true : false;
   }
 
   public edit(collection: any) {
