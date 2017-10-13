@@ -13,7 +13,6 @@ export function main() {
     let mockSearchContext: any;
     let mockUserPreference: any;
     let mockAssetService: any;
-    let mockUiConfig: any;
     let mockCartService: any;
     let mockWindow: any;
     let mockRouter: any;
@@ -39,7 +38,6 @@ export function main() {
         state: { asset: { assetId: 123456 } },
         priceForDetails: Observable.of(100)
       };
-      mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockCartService = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
@@ -61,9 +59,8 @@ export function main() {
       mockStore = new MockAppStore();
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities,
-        mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-        mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
-        null
+        mockAssetService, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
+        mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService, null
       );
     });
 
@@ -81,11 +78,6 @@ export function main() {
     });
 
     describe('ngOnInit()', () => {
-      it('Should call the config service to get global configurations', () => {
-        componentUnderTest.ngOnInit();
-        expect(mockUiConfig.get).toHaveBeenCalledWith('global');
-      });
-
       describe('sets up the commentParentObject', () => {
         it('for a collection asset', () => {
           componentUnderTest.assetType = 'collectionAsset';
@@ -162,9 +154,8 @@ export function main() {
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities,
-          mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-          mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
-          null
+          mockAssetService, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
+          mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService, null
         );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
@@ -299,9 +290,8 @@ export function main() {
 
             componentUnderTest = new AssetComponent(
               mockCurrentUserService, mockCapabilities,
-              mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-              mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
-              null
+              mockAssetService, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
+              mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService, null
             );
 
             componentUnderTest.assetType = assetType;
@@ -425,7 +415,7 @@ export function main() {
         mockStore.createActionFactoryMethod('quoteEdit', 'editLineItemFromDetails');
 
         componentUnderTest = new AssetComponent(
-          null, mockCapabilities, null, null, null, null, null,
+          null, mockCapabilities, null, null, null, null,
           mockStore, null, null, null, null, null, null, null
         );
         componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');

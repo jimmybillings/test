@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
-import { UiConfig } from '../../../shared/services/ui.config';
 import { AppStore } from '../../../app.store';
 
 @Component({
@@ -28,8 +27,7 @@ export class QuoteShowComponent implements OnInit {
   constructor(
     public userCan: CommerceCapabilities,
     public quoteService: QuoteService,
-    private uiConfig: UiConfig,
-    private appStore: AppStore,
+    private store: AppStore,
     private detector: ChangeDetectorRef
   ) {
     this.quote = this.quoteService.data.map(state => state.data);
@@ -43,7 +41,7 @@ export class QuoteShowComponent implements OnInit {
 
     this.selectedTabIndex = 0;
 
-    this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+    this.commentFormConfig = this.store.snapshot(state => state.uiConfig.components.quoteComment.config.form.items);
 
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteService.state.data.id };
   }
@@ -97,7 +95,7 @@ export class QuoteShowComponent implements OnInit {
   }
 
   public get commentCount(): Observable<number> {
-    return this.appStore.select(state => state.comment.quote.pagination.totalCount);
+    return this.store.select(state => state.comment.quote.pagination.totalCount);
   }
 
   public get offlineAgreementIds(): Observable<string> {

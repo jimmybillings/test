@@ -6,7 +6,6 @@ import { MultilingualService } from './shared/services/multilingual.service';
 
 // Services
 import { CurrentUserService } from './shared/services/current-user.service';
-import { UiConfig } from './shared/services/ui.config';
 import { SearchContext } from './shared/services/search-context.service';
 import { FilterService } from './shared/services/filter.service';
 import { SortDefinitionsService } from './shared/services/sort-definitions.service';
@@ -30,7 +29,6 @@ export class AppComponent implements OnInit {
   public state: string = '';
 
   constructor(
-    public uiConfig: UiConfig,
     public router: Router,
     public multiLingual: MultilingualService,
     public searchContext: SearchContext,
@@ -92,6 +90,14 @@ export class AppComponent implements OnInit {
     return this.store.select(state => state.headerDisplayOptions.canBeFixed);
   }
 
+  public get headerConfig(): any {
+    return this.store.snapshot(state => state.uiConfig.components.header.config);
+  }
+
+  public get searchBoxConfig(): any {
+    return this.store.snapshot(state => state.uiConfig.components.searchBox.config);
+  }
+
   private routerChanges() {
     this.router.events
       .filter((event: Event) => event instanceof NavigationEnd)
@@ -133,10 +139,10 @@ export class AppComponent implements OnInit {
   }
 
   private loadConfig() {
-    if (this.uiConfig.hasLoaded()) {
+    if (this.store.snapshot(state => state.uiConfig.loaded)) {
       this.router.initialNavigation();
     } else {
-      this.uiConfig.load().subscribe(() => this.router.initialNavigation());
+      this.store.dispatch(factory => factory.uiConfig.load());
     }
   }
 }

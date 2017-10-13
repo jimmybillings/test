@@ -7,7 +7,6 @@ import { CartService } from '../../../shared/services/cart.service';
 import {
   Project, AssetLineItem, Cart, QuoteType, QuoteOptions, Asset, PriceAttribute
 } from '../../../shared/interfaces/commerce.interface';
-import { UiConfig } from '../../../shared/services/ui.config';
 import { MatDialogRef } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
@@ -30,14 +29,12 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public priceAttributes: Array<PriceAttribute> = null;
   public pricingPreferences: Pojo;
   public quoteType: QuoteType = null;
-  protected configSubscription: Subscription;
   protected preferencesSubscription: Subscription;
   protected usagePrice: Observable<number>;
 
   constructor(
     public userCan: CommerceCapabilities,
     protected commerceService: CartService | QuoteEditService,
-    protected uiConfig: UiConfig,
     protected dialogService: WzDialogService,
     protected assetService: AssetService,
     protected window: WindowRef,
@@ -53,11 +50,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     this.preferencesSubscription = this.userPreference.data.subscribe((data: any) => {
       this.pricingPreferences = data.pricingPreferences;
     });
-    this.configSubscription = this.uiConfig.get('cart').subscribe((config: any) => this.config = config.config);
+    this.config = this.store.snapshot(state => state.uiConfig.components.cart.config);
   }
 
   public ngOnDestroy() {
-    this.configSubscription.unsubscribe();
     this.preferencesSubscription.unsubscribe();
   }
 

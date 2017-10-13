@@ -42,6 +42,7 @@ export class MockAppStore extends AppStore {
       searchAsset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
+      uiConfig: {} as any
     };
 
     this._internalActionFactory = {
@@ -66,6 +67,7 @@ export class MockAppStore extends AppStore {
       searchAsset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
+      uiConfig: {} as any
     };
 
     this._state = {
@@ -85,7 +87,8 @@ export class MockAppStore extends AppStore {
       quoteShowAsset: {} as any,
       searchAsset: {} as any,
       snackbar: {} as any,
-      speedPreview: {} as any
+      speedPreview: {} as any,
+      uiConfig: {} as any
     };
 
     this._ngrxDispatch = jasmine.createSpy('ngrx dispatch');

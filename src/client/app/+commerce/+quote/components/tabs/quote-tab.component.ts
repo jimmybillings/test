@@ -9,7 +9,7 @@ import { Feature } from '../../../../shared/interfaces/feature.interface';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
-import { UiConfig } from '../../../../shared/services/ui.config';
+import { AppStore } from '../../../../app.store';
 import { FormFields } from '../../../../shared/interfaces/forms.interface';
 import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
 import { Pojo } from '../../../../shared/interfaces/common.interface';
@@ -35,14 +35,13 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
     public userCan: CommerceCapabilities,
     private dialogService: WzDialogService,
     private router: Router,
-    private uiConfig: UiConfig,
     private quoteEditService: QuoteEditService,
     private store: AppStore
   ) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
     this.projectSubscription = this.quoteService.projects.subscribe(projects => this.projects = projects);
-    this.uiConfig.get('cart').take(1).subscribe((config: any) => this.config = config.config);
+    this.config = this.store.snapshot(state => state.uiConfig.components.cart.config);
   }
 
   ngOnDestroy() {
@@ -133,9 +132,11 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
   }
 
   public openResendDialog(): void {
-    this.dialogService.openFormDialog(this.config.extendQuote.items, {
-      title: 'QUOTE.EXTEND_EXPIRATION'
-    }, this.extendQuoteExpiration);
+    this.dialogService.openFormDialog(
+      this.config.extendQuote.items,
+      { title: 'QUOTE.EXTEND_EXPIRATION' },
+      this.extendQuoteExpiration
+    );
   }
 
   public get quoteIsProvisionalOrder(): Observable<boolean> {

@@ -74,6 +74,10 @@ import * as SpeedPreviewActions from './store/speed-preview/speed-preview.action
 import * as SpeedPreviewState from './store/speed-preview/speed-preview.state';
 export type SpeedPreviewState = SpeedPreviewState.State;
 
+import * as UiConfigActions from './store/ui-config/ui-config.actions';
+import * as UiConfigState from './store/ui-config/ui-config.state';
+export type UiConfigState = UiConfigState.State;
+
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly activeCollectionAsset: ActiveCollectionAssetActions.ActionFactory;
@@ -95,6 +99,7 @@ export interface ActionFactory {
   readonly searchAsset: SearchAssetActions.ActionFactory;
   readonly snackbar: SnackbarActions.ActionFactory;
   readonly speedPreview: SpeedPreviewActions.ActionFactory;
+  readonly uiConfig: UiConfigActions.ActionFactory;
 };
 
 export interface InternalActionFactory {
@@ -118,6 +123,7 @@ export interface InternalActionFactory {
   readonly searchAsset: SearchAssetActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
+  readonly uiConfig: UiConfigActions.InternalActionFactory;
 };
 
 export interface AppState {
@@ -137,6 +143,7 @@ export interface AppState {
   readonly snackbar: SnackbarState;
   readonly searchAsset: SearchAssetState;
   readonly speedPreview: SpeedPreviewState;
+  readonly uiConfig: UiConfigState;
 }
 
 export interface AppReducers {
@@ -158,7 +165,8 @@ export const reducers: AppReducers = {
   quoteShow: QuoteShowState.reducer,
   quoteShowAsset: QuoteShowAssetState.reducer,
   snackbar: SnackbarState.reducer,
-  speedPreview: SpeedPreviewState.reducer
+  speedPreview: SpeedPreviewState.reducer,
+  uiConfig: UiConfigState.reducer
 };
 
 export type ActionFactoryMapper = (factory: ActionFactory) => Action;
@@ -187,7 +195,8 @@ export class AppStore {
     router: new RouterActions.ActionFactory(),
     searchAsset: new SearchAssetActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
-    speedPreview: new SpeedPreviewActions.ActionFactory()
+    speedPreview: new SpeedPreviewActions.ActionFactory(),
+    uiConfig: new UiConfigActions.ActionFactory()
   };
 
   private readonly internalActionFactory: InternalActionFactory = {
@@ -210,7 +219,8 @@ export class AppStore {
     router: new RouterActions.InternalActionFactory(),
     searchAsset: new SearchAssetActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
-    speedPreview: new SpeedPreviewActions.InternalActionFactory()
+    speedPreview: new SpeedPreviewActions.InternalActionFactory(),
+    uiConfig: new UiConfigActions.InternalActionFactory()
   };
 
   constructor(private ngrxStore: Store<AppState>) { }

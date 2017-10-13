@@ -1,9 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { Authentication } from '../../shared/services/authentication.data.service';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
-import { UiConfig } from '../../shared/services/ui.config';
 import { UserService } from '../../shared/services/user.service';
 import { PendoService } from '../../shared/services/pendo.service';
 import { Session, Credentials } from '../../shared/interfaces/session.interface';
@@ -20,19 +18,16 @@ import { AppStore } from '../../app.store';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
   public config: any;
   public displayWelcomeMessage: boolean;
   public displayErrorMessage: boolean;
-  private configSubscription: Subscription;
-  private routeSubscription: Subscription;
 
   constructor(
     private authentication: Authentication,
     private router: Router,
     private currentUser: CurrentUserService,
     private user: UserService,
-    private uiConfig: UiConfig,
     private pendo: PendoService,
     private dialogService: WzDialogService,
     private feature: FeatureStore,
@@ -42,13 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.displayWelcomeMessage = this.router.routerState.snapshot.url.includes('newUser=true');
     this.displayErrorMessage = this.router.routerState.snapshot.url.includes('requireLogin=true');
 
-    this.configSubscription =
-      this.uiConfig.get('login').subscribe((config: any) =>
-        this.config = config.config);
-  }
-
-  ngOnDestroy() {
-    this.configSubscription.unsubscribe();
+    this.config = this.store.snapshot(state => state.uiConfig.components.login.config);
   }
 
   public onSubmit(user: Credentials): void {
@@ -80,7 +69,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private redirectUserAppropriately(): void {
     this.store.dispatch(factory => factory.router.followRedirect());
-    this.uiConfig.load().subscribe((_: any) => _);
+    // TODO: make this a side effect
+    this.store.dispatch(factory => factory.uiConfig.load());
   }
 
   private agreeToTermsAndClose = (): void => {

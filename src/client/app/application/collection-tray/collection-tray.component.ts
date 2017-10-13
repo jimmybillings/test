@@ -16,10 +16,10 @@ import { Common } from '../../shared/utilities/common.functions';
 })
 
 export class CollectionTrayComponent implements OnInit {
-  @Input() uiConfig: any;
   @Input() userPreference: any;
   public pageSize: string;
   public collection: any;
+  public collectionFormConfig: any;
   private enhancedAssets: { [uuid: string]: EnhancedAsset } = {};
 
   constructor(private dialogService: WzDialogService, private store: AppStore) { }
@@ -27,8 +27,9 @@ export class CollectionTrayComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(factory => factory.activeCollection.loadIfNeeded());
     this.setCollection();
-    this.uiConfig.get('global').take(1).subscribe((config: any) => {
-      this.pageSize = config.config.pageSize.value;
+    this.store.select(state => state.uiConfig.components).take(1).subscribe(config => {
+      this.pageSize = config.global.config.pageSize.value;
+      this.collectionFormConfig = config.collection.config;
     });
   }
 
@@ -60,20 +61,18 @@ export class CollectionTrayComponent implements OnInit {
   }
 
   public createCollection() {
-    this.uiConfig.get('collection').take(1).subscribe((config: any) => {
-      this.dialogService.openComponentInDialog({
-        componentType: CollectionFormComponent,
-        dialogConfig: { position: { top: '10%' } },
-        inputOptions: {
-          fields: config.config,
-          collectionActionType: 'create'
-        },
-        outputOptions: [{
-          event: 'collectionSaved',
-          callback: (collection: Collection) => this.store.dispatch(factory => factory.router.goToCollection(collection.id)),
-          closeOnEvent: true
-        }]
-      });
+    this.dialogService.openComponentInDialog({
+      componentType: CollectionFormComponent,
+      dialogConfig: { position: { top: '10%' } },
+      inputOptions: {
+        fields: this.collectionFormConfig,
+        collectionActionType: 'create'
+      },
+      outputOptions: [{
+        event: 'collectionSaved',
+        callback: (collection: Collection) => this.store.dispatch(factory => factory.router.goToCollection(collection.id)),
+        closeOnEvent: true
+      }]
     });
   }
 

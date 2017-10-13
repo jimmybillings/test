@@ -2,33 +2,31 @@ import { Output, EventEmitter, NgZone, OnInit, ChangeDetectorRef } from '@angula
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
 import { QuoteService } from '../../../shared/services/quote.service';
-import { UiConfig } from '../../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { QuoteState, CartState, CheckoutState, OrderType, PaymentOptions } from '../../../shared/interfaces/commerce.interface';
-import { Pojo } from '../../../shared/interfaces/common.interface';
+import { FormFields } from '../../../shared/interfaces/forms.interface';
+import { AppStore } from '../../../app.store';
 
 export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   public serverErrors: any = null;
-  public config: any;
   public successfullyVerified: Subject<any> = new Subject();
   public selectedPaymentOption: OrderType = null;
-  public fields: Observable<Pojo>;
-  private configSubscription: Subscription;
+  public fields: Observable<FormFields>;
 
   constructor(
     private _zone: NgZone,
     private commerceService: CartService | QuoteService,
-    private uiConfig: UiConfig,
+    private store: AppStore,
     private ref: ChangeDetectorRef) {
     super();
     this.successfullyVerified.next(false);
   }
 
   ngOnInit() {
-    this.fields = this.formItems;
+    this.fields = this.store.select(state => state.uiConfig.components.cart.config.payment.items).take(1);
     this.loadStripe();
   }
 
@@ -89,12 +87,6 @@ export class CommercePaymentTab extends Tab implements OnInit {
   public editCreditCard() {
     this.successfullyVerified.next(false);
     this.disableTab(3);
-  }
-
-  private get formItems(): Observable<any> {
-    return this.uiConfig.get('cart').map((config: any) => {
-      return config.config.payment.items;
-    });
   }
 
   private loadStripe() {

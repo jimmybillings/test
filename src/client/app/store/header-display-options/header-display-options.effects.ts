@@ -45,7 +45,6 @@ export class HeaderDisplayOptionsEffects {
     );
 
   private readonly urlsWhereHeaderCannotBeFixed: string[] = [
-    '/user',
     '/user/forgot-password',
     '/user/register',
     '/user/login',

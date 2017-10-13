@@ -6,7 +6,6 @@ import { CollectionsService } from '../../shared/services/collections.service';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { WzEvent, Pojo } from '../../shared/interfaces/common.interface';
-import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Subscription';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
 import { CollectionLinkComponent } from '../components/collection-link.component';
@@ -33,9 +32,9 @@ export class CollectionsComponent {
     public collections: CollectionsService,
     public collectionContext: CollectionContextService,
     public currentUser: CurrentUserService,
-    public uiConfig: UiConfig,
     private dialogService: WzDialogService,
-    private store: AppStore) {
+    private store: AppStore
+  ) {
     this.filterOptions = [
       {
         'first': {
@@ -225,11 +224,6 @@ export class CollectionsComponent {
   }
 
   private get formFields() {
-    let fields: Pojo;
-
-    this.uiConfig.get('collection').take(1)
-      .subscribe((config: Pojo) => fields = config.config);
-
-    return fields;
+    return this.store.snapshot(state => state.uiConfig.components.collection.config);
   }
 }

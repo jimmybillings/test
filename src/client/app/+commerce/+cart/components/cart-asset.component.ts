@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { StateMapper } from '../../../app.store';
 import { Asset } from '../../../shared/interfaces/common.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
-import { UiConfig } from '../../../shared/services/ui.config';
+import { AppStore } from '../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -20,12 +20,10 @@ import { UiConfig } from '../../../shared/services/ui.config';
 export class CartAssetComponent implements OnInit {
   public commentFormConfig: FormFields;
 
-  constructor(private uiConfig: UiConfig) { }
+  constructor(private store: AppStore) { }
 
   public ngOnInit(): void {
-    this.uiConfig.get('cartComment').take(1).subscribe((config: any) => {
-      this.commentFormConfig = config.config.form.items;
-    });
+    this.commentFormConfig = this.store.snapshot(state => state.uiConfig.components.cartComment.config.form.items);
   }
 
   public stateMapper: StateMapper<Asset> = (state) => state.cartAsset.activeAsset;

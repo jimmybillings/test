@@ -5,10 +5,28 @@ import { MockAppStore } from '../store/spec-helpers/mock-app.store';
 export function main() {
   describe('Search Component', () => {
     let componentUnderTest: SearchComponent;
+<<<<<<< HEAD
     let mockSearchService: any, mockUiConfig: any, mockUserCan: any,
       mockSearchContext: any, mockFilter: any, mockUserPreferences: any,
       mockSortDefinition: any, mockCart: any, mockAssetService: any, mockRenderer: any,
       mockWindow: any, mockRouter: any, mockActivatedRoute: any, MockRefDetecor: any;
+=======
+    let mockSearchService: any;
+    let mockUserCan: any;
+    let mockSearchContext: any;
+    let mockFilter: any;
+    let mockUserPreferences: any;
+    let mockSortDefinition: any;
+    let mockCart: any;
+    let mockAssetService: any;
+    let mockRenderer: any;
+    let mockWindow: any;
+    let mockTranslate: any;
+    let mockSnackBar: any;
+    let mockRouter: any;
+    let mockActivatedRoute: any;
+    let mockRefDetector: any;
+>>>>>>> CRUX-2753 - deprecate old UiConfig service
     let mockStore: MockAppStore;
 
     beforeEach(() => {
@@ -19,11 +37,9 @@ export function main() {
           Observable.of({ url: 'mockUrl' })),
         enhancedAssets: Observable.of([])
       };
-      mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(
-          Observable.of({ config: { config: 'mockSearchConfig' } }))
-      };
+
       mockUserCan = { administerQuotes: () => false };
+
       mockSearchContext = {
         update: null,
         go: jasmine.createSpy('go'),
@@ -33,6 +49,7 @@ export function main() {
           filterValues: '1517:2015-12-10 - 2016-12-12'
         }
       };
+
       mockFilter = {
         load: jasmine.createSpy('load').and.returnValue(Observable.of([])),
         set: jasmine.createSpy('set'),
@@ -45,6 +62,7 @@ export function main() {
         clear: jasmine.createSpy('clear'),
         toggleFilterGroup: jasmine.createSpy('toggleFilterGroup')
       };
+
       mockUserPreferences = {
         data: Observable.of({ displayFilterCounts: false, displayFilterTree: true }),
         toggleFilterCount: jasmine.createSpy('toggleFilterCount'),
@@ -53,20 +71,35 @@ export function main() {
         state: { displayFilterCounts: false, displayFilterTree: true },
         updateAssetViewPreference: jasmine.createSpy('updateAssetViewPreference')
       };
+
       mockSortDefinition = {
         updateSortPreference: jasmine.createSpy('updateSortPreference'),
         update: jasmine.createSpy('update'),
         data: Observable.of({ currentSort: 'mockSort' })
       };
+
       mockCart = {
         addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart')
       };
+
       mockWindow = {
         nativeWindow: {
           location: { href: null },
           innerWidth: 500
         }
       };
+<<<<<<< HEAD
+=======
+
+      mockTranslate = {
+        get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
+      };
+
+      mockSnackBar = {
+        open: () => { }
+      };
+
+>>>>>>> CRUX-2753 - deprecate old UiConfig service
       mockActivatedRoute = {
         snapshot: {
           params: {
@@ -76,17 +109,25 @@ export function main() {
           }
         }
       };
+
       mockRouter = {
         navigate: jasmine.createSpy('navigate'),
         events: Observable.of({})
       };
-      MockRefDetecor = {
+
+      mockRefDetector = {
         markForCheck: () => { return true; }
       };
+
       mockStore = new MockAppStore();
       componentUnderTest = new SearchComponent(
+<<<<<<< HEAD
         mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
         mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+=======
+        mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+        mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, mockRefDetector, null,
+>>>>>>> CRUX-2753 - deprecate old UiConfig service
         mockStore
       );
     });
@@ -95,8 +136,13 @@ export function main() {
       it('should not set the path if the "gq" parameter doesn\'t exist', () => {
         mockActivatedRoute = { snapshot: { params: { i: 1, n: 100 } } };
         componentUnderTest = new SearchComponent(
+<<<<<<< HEAD
           mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+=======
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, mockRefDetector, null,
+>>>>>>> CRUX-2753 - deprecate old UiConfig service
           mockStore
         );
 
@@ -227,8 +273,13 @@ export function main() {
           enhancedAssets: Observable.of([])
         };
         componentUnderTest = new SearchComponent(
+<<<<<<< HEAD
           mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
+=======
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserPreferences, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, mockRefDetector, null,
+>>>>>>> CRUX-2753 - deprecate old UiConfig service
           mockStore
         );
         componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
@@ -276,7 +327,7 @@ export function main() {
       it('Should reset the page number to page 1', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
           mockStore
         );
@@ -287,7 +338,7 @@ export function main() {
       it('Should update the search context with the filter ids', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [1, 2, 3], values: [] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
           mockStore
         );
@@ -298,7 +349,7 @@ export function main() {
       it('Should remove the filterIds from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
           mockStore
         );
@@ -309,7 +360,7 @@ export function main() {
       it('Should update the search context with the filter values', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
           mockStore
         );
@@ -320,7 +371,7 @@ export function main() {
       it('Should remove the filterValues from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
           mockStore
         );
@@ -331,7 +382,7 @@ export function main() {
       it('Should call go on search context when it has filtered the assets', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockUiConfig, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, MockRefDetecor, null,
           mockStore
         );

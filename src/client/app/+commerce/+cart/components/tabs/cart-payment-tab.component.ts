@@ -1,7 +1,7 @@
 import { Component, Inject, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommercePaymentTab } from '../../../components/tabs/commerce-payment-tab';
 import { CartService } from '../../../../shared/services/cart.service';
-import { UiConfig } from '../../../../shared/services/ui.config';
+import { AppStore } from '../../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -14,9 +14,9 @@ export class CartPaymentTabComponent extends CommercePaymentTab {
   constructor(
     _zone: NgZone,
     cartService: CartService,
-    uiConfig: UiConfig,
+    store: AppStore,
     ref: ChangeDetectorRef
   ) {
-    super(_zone, cartService, uiConfig, ref);
+    super(_zone, cartService, store, ref);
   }
 }

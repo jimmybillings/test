@@ -5,7 +5,6 @@ import { StateMapper, AppStore } from '../../app.store';
 import { Asset } from '../../shared/interfaces/common.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
-import { UiConfig } from '../../shared/services/ui.config';
 
 @Component({
   moduleId: module.id,
@@ -21,12 +20,10 @@ import { UiConfig } from '../../shared/services/ui.config';
 export class CollectionAssetComponent implements OnInit {
   public commentFormConfig: FormFields;
 
-  constructor(private store: AppStore, private uiConfig: UiConfig) { }
+  constructor(private store: AppStore) { }
 
   public ngOnInit(): void {
-    this.uiConfig.get('collectionComment').take(1).subscribe((config: any) => {
-      this.commentFormConfig = config.config.form.items;
-    });
+    this.commentFormConfig = this.store.snapshot(state => state.uiConfig.components.collectionComment.config.form.items);
   }
 
   public stateMapper: StateMapper<Asset> = (state) => state.activeCollectionAsset.activeAsset;

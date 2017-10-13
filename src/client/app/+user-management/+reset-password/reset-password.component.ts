@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 import { UserService } from '../../shared/services/user.service';
-import { UiConfig } from '../../shared/services/ui.config';
+import { AppStore } from '../../app.store';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
 import { AppStore } from '../../app.store';
@@ -14,16 +13,14 @@ import { AppStore } from '../../app.store';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class ResetPasswordComponent implements OnInit, OnDestroy {
+export class ResetPasswordComponent implements OnInit {
   public config: any;
   public serverErrors: ServerErrors = null;
   public shareKey: string;
-  private configSubscription: Subscription;
 
   constructor(
-    private store: AppStore,
     private user: UserService,
-    private uiConfig: UiConfig,
+    private store: AppStore,
     private route: ActivatedRoute,
     private router: Router,
     private currentUser: CurrentUserService,
@@ -32,14 +29,9 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.shareKey = this.route.snapshot.params['share_key'] || null;
-    const configSegment: string = this.currentUser.loggedIn() ? 'changePassword' : 'resetPassword';
-    this.configSubscription =
-      this.uiConfig.get(configSegment)
-        .subscribe((config: any) => this.config = config.config);
-  }
-
-  ngOnDestroy() {
-    this.configSubscription.unsubscribe();
+    this.store.select(state => state.uiConfig.components).take(1).subscribe(config => {
+      this.config = this.currentUser.loggedIn() ? config.changePassword.config : config.resetPassword.config;
+    });
   }
 
   public onSubmit(form: any): void {

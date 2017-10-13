@@ -46,7 +46,6 @@ import { MultilingualService } from './services/multilingual.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CurrentUserService } from './services/current-user.service';
 import { UserService } from './services/user.service';
-import { UiConfig } from './services/ui.config';
 import { SearchContext } from './services/search-context.service';
 import { CollectionsService } from './services/collections.service';
 import { UserPreferenceService } from './services/user-preference.service';
@@ -76,6 +75,7 @@ import { FutureQuoteShowService } from '../store/quote-show/quote-show.service';
 import { OrderService } from '../store/order/order.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
 import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
+import { UiConfigService } from '../store/ui-config/ui-config.service';
 
 // WAZEE STORES
 import {
@@ -99,6 +99,7 @@ import * as QuoteShowAssetState from '../store/quote-show-asset/quote-show-asset
 import * as SearchAssetState from '../store/search-asset/search-asset.state';
 import * as SnackbarState from '../store/snackbar/snackbar.state';
 import * as SpeedPreviewState from '../store/speed-preview/speed-preview.state';
+import * as UiConfigState from '../store/ui-config/ui-config.state';
 
 import { searchStore, SearchStore } from './stores/search.store';
 import { collections, CollectionsStore } from './stores/collections.store';
@@ -111,7 +112,6 @@ import { feeConfig, FeeConfigStore } from './stores/fee-config.store';
 import { pricingReducer, PricingStore } from './stores/pricing.store';
 
 import { currentUser } from './services/current-user.service';
-import { config } from './services/ui.config';
 import { Capabilities } from './services/capabilities.service';
 import { searchContext } from './services/search-context.service';
 import { multilingualActionReducer } from './services/multilingual.service';
@@ -140,11 +140,11 @@ import { RouterEffects } from '../store/router/router.effects';
 import { SearchAssetEffects } from '../store/search-asset/search-asset.effects';
 import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
+import { UiConfigEffects } from '../store/ui-config/ui-config.effects';
 
 const WAZEE_SERVICES = [
   ApiConfig,
   CurrentUserService,
-  UiConfig,
   AssetService,
   CollectionsService,
   ActiveCollectionService,
@@ -176,6 +176,7 @@ const WAZEE_SERVICES = [
   CommentService,
   FutureCartService,
   SpeedPreviewService,
+  UiConfigService,
   PricingService
 ];
 
@@ -199,7 +200,6 @@ const WAZEE_PROVIDERS: any = [
 
 
 const WAZEE_STORES: any = {
-  config: config,
   searchStore: searchStore,
   currentUser: currentUser,
   searchContext: searchContext,
@@ -232,7 +232,8 @@ const WAZEE_STORES: any = {
   quoteShowAsset: QuoteShowAssetState.reducer,
   searchAsset: SearchAssetState.reducer,
   snackbar: SnackbarState.reducer,
-  speedPreview: SpeedPreviewState.reducer
+  speedPreview: SpeedPreviewState.reducer,
+  uiConfig: UiConfigState.reducer
 };
 
 const WAZEE_EFFECTS = EffectsModule.forRoot([
@@ -254,7 +255,8 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   RouterEffects,
   SearchAssetEffects,
   SnackbarEffects,
-  SpeedPreviewEffects
+  SpeedPreviewEffects,
+  UiConfigEffects
 ]);
 
 // Shared pipes

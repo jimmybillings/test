@@ -6,28 +6,34 @@ import { MockAppStore } from './store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('App Component', () => {
-    (<any>window).portal = 'core';
-    let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUserService: any,
-      mockCollections: any, mockUserPreference: any, mockNotification: any,
-      mockUserCan: any, mockWindow: any, mockNgZone: any, componentUnderTest: AppComponent, mockStore: MockAppStore,
-      mockFilter: any, mockSortDefinition: any, cartLoadSpy: jasmine.Spy, collectionLoadSpy: jasmine.Spy,
-      quoteLoadSpy: jasmine.Spy;
-
+    let mockRouter: any;
+    let mockMultiLingual: any;
+    let mockSearchContext: any;
+    let mockCurrentUserService: any;
+    let mockCollections: any;
+    let mockUserPreference: any;
+    let mockNotification: any;
+    let mockUserCan: any;
+    let mockWindow: any;
+    let mockNgZone: any;
+    let componentUnderTest: AppComponent;
+    let mockStore: MockAppStore;
+    let mockFilter: any;
+    let mockSortDefinition: any;
+    let cartLoadSpy: jasmine.Spy;
+    let collectionLoadSpy: jasmine.Spy;
+    let quoteLoadSpy: jasmine.Spy;
     let setHeaderPositionSpy: jasmine.Spy;
     let checkIfFiltersAreAvailableSpy: jasmine.Spy;
     let checkIfHeaderCanBeFixedSpy: jasmine.Spy;
+    let configLoadSpy: jasmine.Spy;
     let resetSpy: jasmine.Spy;
-    let loggedInState: boolean = false, canViewCollections: boolean = true, canAdministerQuotes: boolean = false;
+    let loggedInState: boolean = false;
+    let canViewCollections: boolean = true;
+    let canAdministerQuotes: boolean = false;
     let nextNavigation: Event;
-    let configHasLoaded: boolean = true;
 
     beforeEach(() => {
-      mockUiConfig = {
-        initialize: jasmine.createSpy('initialize').and.returnValue(Observable.of({})),
-        hasLoaded: () => configHasLoaded,
-        load: jasmine.createSpy('load').and.returnValue(Observable.of({}))
-      };
-
       mockRouter = { events: Observable.of(nextNavigation), initialNavigation: jasmine.createSpy('initialNavigation') };
 
       mockMultiLingual = { setLanguage: jasmine.createSpy('setLanguage'), setBaseUrl: jasmine.createSpy('setBaseUrl') };
@@ -67,8 +73,9 @@ export function main() {
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       mockNgZone = { runOutsideAngular: () => true };
-      mockStore = new MockAppStore();
 
+      mockStore = new MockAppStore();
+      configLoadSpy = mockStore.createActionFactoryMethod('uiConfig', 'load');
       collectionLoadSpy = mockStore.createActionFactoryMethod('activeCollection', 'load');
       cartLoadSpy = mockStore.createActionFactoryMethod('cart', 'load');
       quoteLoadSpy = mockStore.createActionFactoryMethod('quoteEdit', 'load');
@@ -78,7 +85,7 @@ export function main() {
       resetSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'reset');
 
       componentUnderTest = new AppComponent(
-        mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
+        mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
         mockCollections, mockUserPreference, mockUserCan, mockWindow,
         mockFilter, mockSortDefinition, mockNgZone, mockStore
       );
@@ -183,28 +190,32 @@ export function main() {
     });
 
     describe('loadConfig', () => {
+      beforeEach(() => {
+        mockStore = new MockAppStore();
+        configLoadSpy = mockStore.createActionFactoryMethod('uiConfig', 'load');
+      });
+
       it('Should initialize the navigation immediatly if the config is already loaded', () => {
+        mockStore.createStateSection('uiConfig', { loaded: true });
         componentUnderTest = new AppComponent(
-          mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUserPreference, mockUserCan,
-          mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
+          mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
+          mockCollections, mockUserPreference, mockUserCan, mockWindow,
+          mockFilter, mockSortDefinition, mockNgZone, mockStore
         );
 
         expect(mockRouter.initialNavigation).toHaveBeenCalled();
-        expect(mockUiConfig.load).not.toHaveBeenCalled();
+        mockStore.expectNoDispatchFor(configLoadSpy);
       });
 
       it('Should load the config if it is not loaded and then initialize the navigation', () => {
-        configHasLoaded = false;
-
+        mockStore.createStateSection('uiConfig', { loaded: false });
         componentUnderTest = new AppComponent(
-          mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUserPreference, mockUserCan,
-          mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
+          mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
+          mockCollections, mockUserPreference, mockUserCan, mockWindow,
+          mockFilter, mockSortDefinition, mockNgZone, mockStore
         );
 
-        expect(mockUiConfig.load).toHaveBeenCalled();
-        expect(mockRouter.initialNavigation).toHaveBeenCalled();
+        mockStore.expectDispatchFor(configLoadSpy);
       });
     });
 

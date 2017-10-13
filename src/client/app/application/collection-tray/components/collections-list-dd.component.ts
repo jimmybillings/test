@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../../shared/services/collections.service';
-import { UiConfig } from '../../../shared/services/ui.config';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { Common } from '../../../shared/utilities/common.functions';
 import { AppStore } from '../../../app.store';
@@ -35,15 +34,12 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
     public router: Router,
     public collections: CollectionsService,
     public collectionContext: CollectionContextService,
-    public uiConfig: UiConfig,
     private store: AppStore
   ) { }
 
   ngOnInit(): void {
     this.collections.load().subscribe();
-    this.uiConfig.get('global').take(1).subscribe(config => {
-      this.pageSize = config.config.pageSize.value;
-    });
+    this.pageSize = this.store.snapshot(state => state.uiConfig.components.global.config.pageSize.value);
     this.optionsSubscription = this.collectionContext.data.subscribe(data => this.options = data);
   }
 

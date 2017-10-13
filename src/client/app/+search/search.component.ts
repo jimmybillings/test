@@ -1,6 +1,5 @@
 import { Component, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { SearchService } from '../shared/services/search.service';
-import { UiConfig } from '../shared/services/ui.config';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { SearchContext } from '../shared/services/search-context.service';
@@ -43,7 +42,6 @@ export class SearchComponent implements OnDestroy {
     private cart: CartService,
     private sortDefinitionService: SortDefinitionsService,
     private searchContext: SearchContext,
-    private uiConfig: UiConfig,
     private searchService: SearchService,
     private userPreferencesService: UserPreferenceService,
     private window: WindowRef,

@@ -16,7 +16,7 @@ import { GalleryViewModule } from './+gallery-view/gallery-view.module';
 
 import { CurrentUserService } from './shared/services/current-user.service';
 import { ApiConfig } from './shared/services/api.config';
-import { UiConfig } from './shared/services/ui.config';
+import { AppStore } from './app.store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { APP_ROUTES } from './app.routes';
 
@@ -44,9 +44,10 @@ import { APP_ROUTES } from './app.routes';
 })
 export class AppModule {
   constructor(
-    private uiConfig: UiConfig,
+    private store: AppStore,
     private apiConfig: ApiConfig,
-    private currentUser: CurrentUserService) {
+    private currentUser: CurrentUserService
+  ) {
     let attrs = document.querySelector('wazee-digital-platform').attributes;
     Object.keys(attrs).forEach((key: any) => {
       switch (attrs[key].name) {
@@ -59,6 +60,6 @@ export class AppModule {
       }
     });
     currentUser.set();
-    uiConfig.initialize(apiConfig.portal);
+    this.store.dispatch(state => state.uiConfig.initialize(apiConfig.portal));
   }
 }

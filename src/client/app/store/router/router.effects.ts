@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import * as RouterActions from './router.actions';
+import * as UiConfigActions from '../ui-config/ui-config.actions';
 import { bothMarkersAreSet, durationFrom } from '../../shared/interfaces/subclip-markers';
 
 @Injectable()
@@ -68,6 +69,10 @@ export class RouterEffects {
   @Effect({ dispatch: false })
   public goToCart: Observable<Action> = this.actions.ofType(RouterActions.GoToCart.Type)
     .do((action: RouterActions.GoToCart) => this.router.navigate([this.CartPath]));
+
+  @Effect({ dispatch: false })
+  public initialNavigation: Observable<Action> = this.actions.ofType(UiConfigActions.LoadSuccess.Type)
+    .do((action: UiConfigActions.LoadSuccess) => this.router.initialNavigation());
 
   private readonly LoginPath: string = '/user/login';
   private readonly PageNotFoundPath: string = '/404';

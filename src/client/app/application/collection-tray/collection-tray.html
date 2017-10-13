@@ -86,7 +86,7 @@
 <wz-dropdown #list>
   <collections-list-dd
     [focusedCollection]="collection"
-    [config]="(uiConfig.get('collection') | async).config"
+    [config]="collectionFormConfig"
     (close)="list.close()"
     (onCreateCollection)="createCollection()"
     layout="row" layout-align="end start" class="revealed">

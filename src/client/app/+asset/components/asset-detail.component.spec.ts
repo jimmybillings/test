@@ -11,8 +11,11 @@ export function main() {
   describe('Asset Detail Component', () => {
     let componentUnderTest: AssetDetailComponent;
     let mockStore: MockAppStore;
-    let asset: any, collection: any;
-    let transcodeTargets: any, detailTypeMap: any, finalAsset: any;
+    let asset: any;
+    let collection: any;
+    let transcodeTargets: any;
+    let detailTypeMap: any;
+    let finalAsset: any;
 
     beforeEach(() => {
       collection = {
@@ -26,7 +29,9 @@ export function main() {
           ]
         }
       };
+
       transcodeTargets = ['master_copy', '1080i', '1080p'];
+
       detailTypeMap = {
         common: ['field'], filter: true, id: 13, name: 'Core Packages', primary: [], secondary: [], siteName: 'core'
       };
@@ -34,12 +39,20 @@ export function main() {
       finalAsset = {
         assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl',
         transcodeTargets: ['master_copy', '1080i', '1080p']
+
       };
       asset = { assetId: 1, timeStart: 102, timeEnd: 1000, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl' };
       asset.detailTypeMap = detailTypeMap;
       asset.transcodeTargets = transcodeTargets;
 
       mockStore = new MockAppStore();
+      mockStore.createStateSection('uiConfig', {
+        components: {
+          global: { config: { pageSize: { value: '50' } } },
+          assetSharing: { config: {} }
+        }
+      });
+
       componentUnderTest = new AssetDetailComponent(mockStore);
 
       componentUnderTest.asset = {
@@ -837,8 +850,11 @@ export function main() {
 
     describe('routerLinkForAssetParent()', () => {
       describe('returns the correct routerLink', () => {
+        beforeEach(() => {
+          componentUnderTest.ngOnInit();
+        });
+
         it('for a collection asset', () => {
-          componentUnderTest.pageSize = 50;
           componentUnderTest.asset = enhanceAsset(mockAsset, 'collectionAsset', 100);
 
           expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/collections', 100, { i: 1, n: 50 }]);

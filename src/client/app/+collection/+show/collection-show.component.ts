@@ -8,7 +8,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UiConfig } from '../../shared/services/ui.config';
 import { AssetService } from '../../store/asset/asset.service';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';
@@ -39,6 +38,7 @@ import { Common } from '../../shared/utilities/common.functions';
 export class CollectionShowComponent implements OnInit, OnDestroy {
   public activeCollection: Collection;
   public commentFormConfig: FormFields;
+  public newCollectionFormConfig: any;
   public commentParentObject: CommentParentObject;
   public showComments: boolean = null;
   private activeCollectionSubscription: Subscription;
@@ -49,7 +49,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public userCan: Capabilities,
     public router: Router,
     public collections: CollectionsService,
-    public uiConfig: UiConfig,
     public cart: CartService,
     public userPreference: UserPreferenceService,
     private asset: AssetService,
@@ -86,7 +85,11 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         });
 
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
-    this.uiConfig.get('collectionComment').take(1).subscribe((config: Pojo) => this.commentFormConfig = config.config.form.items);
+
+    this.store.select(state => state.uiConfig.components).take(1).subscribe(config => {
+      this.commentFormConfig = config.collectionComment.config.form.items;
+      this.newCollectionFormConfig = config.collection.config;
+    });
   }
 
   ngOnDestroy() {
@@ -234,7 +237,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       componentType: CollectionFormComponent,
       inputOptions: {
         collection: collection,
-        fields: this.formFields,
+        fields: this.newCollectionFormConfig,
         collectionActionType: actionType
       },
       outputOptions: [{
@@ -243,15 +246,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         closeOnEvent: true
       }]
     };
-  }
-
-  private get formFields() {
-    let fields: Pojo;
-
-    this.uiConfig.get('collection').take(1)
-      .subscribe((config: Pojo) => fields = config.config);
-
-    return fields;
   }
 
   private getAlreadyUsedMarkersListFor(asset: EnhancedAsset): SubclipMarkers[] {

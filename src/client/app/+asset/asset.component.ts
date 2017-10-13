@@ -4,7 +4,6 @@ import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../store/asset/asset.service';
 import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
 import { WzEvent, SelectedPriceAttributes } from '../shared/interfaces/common.interface';
-import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
@@ -53,7 +52,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   public pricingAttributes: Array<PriceAttribute>;
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
-  public pageSize: number = 50;
   public commentParentObject: CommentParentObject;
   private assetSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -67,7 +65,6 @@ export class AssetComponent implements OnInit, OnDestroy {
     public currentUser: CurrentUserService,
     public userCan: Capabilities,
     public assetService: AssetService,
-    public uiConfig: UiConfig,
     public window: WindowRef,
     private router: Router,
     private route: ActivatedRoute,
@@ -82,10 +79,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit(): void {
-    this.uiConfig.get('global').take(1).subscribe(config => {
-      this.pageSize = config.config.pageSize.value;
-    });
-
     this.routeSubscription = this.route.params.subscribe((params: any) => {
       this.commentParentObject = this.commentParentObjectFromRoute(params);
     });
