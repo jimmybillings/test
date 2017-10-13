@@ -17,12 +17,10 @@ export class WzCcFormComponent extends WzFormBase {
   public allowEdit: boolean = false;
   @Input()
   set successfullyVerified(formSent: boolean) {
-    console.log(formSent);
     if (formSent) {
       this.allowEdit = true;
       if (this.form) this.disableForm();
     } else {
-      console.log(this.form);
       this.allowEdit = false;
       if (this.form) this.activateForm();
     }

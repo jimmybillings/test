@@ -152,8 +152,6 @@ export class WzFormBase implements OnInit, OnChanges {
     this.markFieldsAsDirty();
     if (this.form.valid) {
       this.formSubmit.emit(this.form.value);
-    } else {
-      console.log(this.form);
     }
   }
 
