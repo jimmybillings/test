@@ -20,8 +20,6 @@ export function main() {
     let mockRouter: any;
     let mockRoute: any;
     let mockDialogService: any;
-    let mockTranslate: any;
-    let mockSnackBar: any;
     let mockQuoteEditService: any;
     let mockPricingStore: any;
     let mockPricingService: any;
@@ -48,12 +46,6 @@ export function main() {
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockRoute = { params: Observable.of({ id: '100', uuid: 'abc-123' }), snapshot: { params: { id: '100' } } };
-      mockTranslate = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
-      };
-      mockSnackBar = {
-        open: () => { }
-      };
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
@@ -72,7 +64,7 @@ export function main() {
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
+        mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
         null
       );
     });
@@ -173,7 +165,7 @@ export function main() {
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockUiState,
           mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-          mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
+          mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
           null
         );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
@@ -310,7 +302,7 @@ export function main() {
             componentUnderTest = new AssetComponent(
               mockCurrentUserService, mockCapabilities, mockUiState,
               mockAssetService, mockUiConfig, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-              mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
+              mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService,
               null
             );
 
@@ -435,8 +427,7 @@ export function main() {
         mockStore.createActionFactoryMethod('quoteEdit', 'editLineItemFromDetails');
 
         componentUnderTest = new AssetComponent(
-          null, mockCapabilities, null, null, null, null, null, null,
-          mockStore, null, null, null, null, null, null, null, null, null
+          null, mockCapabilities, null, null, null, null, null, null, mockStore, null, null, null, null, null, null, null
         );
         componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');
         componentUnderTest.onUpdateAssetLineItem();

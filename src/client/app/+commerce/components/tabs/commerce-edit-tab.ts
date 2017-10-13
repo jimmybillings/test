@@ -9,14 +9,12 @@ import {
 } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { MatDialogRef } from '@angular/material';
-import { MatSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { AssetService } from '../../../store/services/asset.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
-import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 import { SelectedPriceAttributes, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
@@ -45,8 +43,6 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     protected window: WindowRef,
     protected userPreference: UserPreferenceService,
     protected document: any,
-    protected snackBar: MatSnackBar,
-    protected translate: TranslateService,
     protected pricingStore: PricingStore,
     protected store: AppStore,
     protected pricingService: PricingService) {
@@ -137,13 +133,6 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
   public get showUsageWarning(): boolean {
     return !this.cartContainsNoAssets && !this.userCanProceed;
-  }
-
-  public showSnackBar(message: Pojo) {
-    this.translate.get(message.key, message.value)
-      .subscribe((res: string) => {
-        this.snackBar.open(res, '', { duration: 2000 });
-      });
   }
 
   protected editProjectPricing(project: Project) {

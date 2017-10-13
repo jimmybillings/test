@@ -180,6 +180,12 @@ export function main() {
     });
 
     describe('addAssetToProjectInQuote()', () => {
+      let snackbarSpy: jasmine.Spy;
+
+      beforeEach(() => {
+        snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
+      });
+
       it('should call the API service correctly', () => {
         serviceUnderTest.addAssetToProjectInQuote({
           lineItem: { id: '123', asset: { assetId: 456 } }, attributes: { Distribution: 'Online Streaming' }
@@ -240,6 +246,12 @@ export function main() {
         serviceUnderTest.addAssetToProjectInQuote({ lineItem: { id: '123', asset: { assetId: 456 } } });
 
         expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(mockApi.putResponse);
+      });
+
+      it('displays a snackbar with the expected message', () => {
+        serviceUnderTest.addAssetToProjectInQuote({ lineItem: { id: '123', asset: { assetId: 456 } } });
+
+        expect(snackbarSpy).toHaveBeenCalledWith('ASSET.ADD_TO_QUOTE_TOAST', { assetId: 456 });
       });
     });
 

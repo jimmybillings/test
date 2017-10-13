@@ -1,4 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -12,9 +13,10 @@ export class CollectionLinkComponent {
   set assets(value: any) {
     this.buildLegacyLink(value);
   }
-  @Output() onOpenSnackbar = new EventEmitter();
 
   public legacyLink: string;
+
+  constructor(private store: AppStore) { }
 
   public buildLegacyLink(assets: any): void {
     let filterSegment: string;
@@ -27,5 +29,9 @@ export class CollectionLinkComponent {
 
   public selectInputForCopy(event: any): void {
     event.target.select();
+  }
+
+  public onCopyLegacyLinkButtonClick(): void {
+    this.store.dispatch(factory => factory.snackbar.display('COLLECTION.LINK_COPIED_TOAST'));
   }
 }

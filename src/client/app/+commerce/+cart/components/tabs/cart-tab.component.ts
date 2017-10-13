@@ -4,13 +4,11 @@ import { CommerceEditTab } from '../../../components/tabs/commerce-edit-tab';
 import { LicenseAgreements, Project } from '../../../../shared/interfaces/commerce.interface';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
-import { MatSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { AssetService } from '../../../../store/services/asset.service';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
-import { TranslateService } from '@ngx-translate/core';
 import { PricingStore } from '../../../../shared/stores/pricing.store';
 import { FeatureStore } from '../../../../shared/stores/feature.store';
 import { Feature } from '../../../../shared/interfaces/feature.interface';
@@ -40,8 +38,6 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
     public window: WindowRef,
     public userPreference: UserPreferenceService,
     @Inject(DOCUMENT) public document: any,
-    public snackBar: MatSnackBar,
-    public translate: TranslateService,
     public pricingStore: PricingStore,
     public featureStore: FeatureStore,
     public pricingService: PricingService,
@@ -49,7 +45,7 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
   ) {
     super(
       userCan, cartService, uiConfig, dialogService, assetService, window,
-      userPreference, document, snackBar, translate, pricingStore,
+      userPreference, document, pricingStore,
       store, pricingService
     );
     this.projectSubscription = this.cartService.projects.subscribe(projects => this.projects = projects);

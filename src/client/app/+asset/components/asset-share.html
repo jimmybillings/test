@@ -5,8 +5,7 @@
         *ngIf="assetLinkIsShowing"
         flex="100"
         [assetLink]="assetShareLink"
-        (close)="resetShareLinkShowing()"
-        (onOpenSnackbar)="onOpenSnackBar.emit($event)">
+        (close)="resetShareLinkShowing()">
       </asset-share-link>
       <div flex="100" layout="row">
         <h4 class="mat-headline" flex="100" layout-align="start center">

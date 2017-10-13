@@ -5,8 +5,7 @@ import { UserService } from '../../shared/services/user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
-import { MatSnackBar } from '@angular/material';
-import { TranslateService } from '@ngx-translate/core';
+import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -22,16 +21,14 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   private configSubscription: Subscription;
 
   constructor(
+    private store: AppStore,
     private user: UserService,
     private uiConfig: UiConfig,
     private route: ActivatedRoute,
     private router: Router,
     private currentUser: CurrentUserService,
-    private translate: TranslateService,
-    private snackbar: MatSnackBar,
-    private ref: ChangeDetectorRef) {
-
-  }
+    private ref: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.shareKey = this.route.snapshot.params['share_key'] || null;
@@ -57,18 +54,12 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   private handleSuccess = () => {
     this.router.navigate(['/']);
-    this.showSnackbar('RESETPASSWORD.PASSWORD_CHANGED');
+    this.store.dispatch(factory => factory.snackbar.display('RESETPASSWORD.PASSWORD_CHANGED'));
     this.ref.markForCheck();
   }
 
   private handleError = (error: any) => {
     this.serverErrors = error.json();
     this.ref.markForCheck();
-  }
-
-  private showSnackbar(message: any): void {
-    this.translate.get(message).subscribe((res) => {
-      this.snackbar.open(res, '', { duration: 2000 });
-    });
   }
 }
