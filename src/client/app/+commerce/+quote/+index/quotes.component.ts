@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QuotesService } from '../../../shared/services/quotes.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
@@ -10,7 +10,8 @@ import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.d
 @Component({
   selector: 'quotes-component',
   templateUrl: 'quotes.html',
-  moduleId: module.id
+  moduleId: module.id,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QuotesComponent {
   public quotes: Observable<Quotes>;

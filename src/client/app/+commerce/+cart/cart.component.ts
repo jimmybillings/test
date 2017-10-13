@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { CommerceCapabilities } from '../services/commerce.capabilities';
 import { CommerceMessage } from '../../shared/interfaces/commerce.interface';
@@ -11,7 +11,8 @@ import { CartService } from '../../shared/services/cart.service';
 @Component({
   moduleId: module.id,
   selector: 'cart-component',
-  templateUrl: 'cart.html'
+  templateUrl: 'cart.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CartComponent implements OnInit {
@@ -26,7 +27,8 @@ export class CartComponent implements OnInit {
     public userCan: CommerceCapabilities,
     private appStore: AppStore,
     private uiConfig: UiConfig,
-    private cartService: CartService
+    private cartService: CartService,
+    private detector: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -79,22 +81,23 @@ export class CartComponent implements OnInit {
     if (nextSelectedTabIndex >= this.tabLabelKeys.length) return;
 
     this.tabEnabled[nextSelectedTabIndex] = true;
-
-    // Ick!  Have to wait for the tab to be enabled before we can select it.
-    // TODO: There must be a better way...
-    setTimeout(_ => this.selectedTabIndex = nextSelectedTabIndex, 50);
+    this.selectedTabIndex = nextSelectedTabIndex;
+    this.detector.markForCheck();
   }
 
   private goToPreviousTab(): void {
     if (this.selectedTabIndex === 0) return;
     this.selectedTabIndex -= 1;
+    this.detector.markForCheck();
   }
 
   private disableTab(tabIndex: number) {
     this.tabEnabled[tabIndex] = false;
+    this.detector.markForCheck();
   }
 
   private goToTab(tabIndex: number) {
     this.selectedTabIndex = tabIndex;
+    this.detector.markForCheck();
   }
 }

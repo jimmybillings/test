@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { Quote, QuoteState, AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.interface';
@@ -12,7 +12,8 @@ import { AppStore } from '../../../app.store';
 @Component({
   moduleId: module.id,
   selector: 'quote-show-component',
-  templateUrl: 'quote-show.html'
+  templateUrl: 'quote-show.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class QuoteShowComponent implements OnInit {
@@ -28,7 +29,8 @@ export class QuoteShowComponent implements OnInit {
     public userCan: CommerceCapabilities,
     public quoteService: QuoteService,
     private uiConfig: UiConfig,
-    private appStore: AppStore
+    private appStore: AppStore,
+    private detector: ChangeDetectorRef
   ) {
     this.quote = this.quoteService.data.map(state => state.data);
   }
@@ -113,22 +115,23 @@ export class QuoteShowComponent implements OnInit {
     if (nextSelectedTabIndex >= this.tabLabelKeys.length) return;
 
     this.tabEnabled[nextSelectedTabIndex] = true;
-
-    // Ick!  Have to wait for the tab to be enabled before we can select it.
-    // TODO: There must be a better way...
-    setTimeout(_ => this.selectedTabIndex = nextSelectedTabIndex, 50);
+    this.selectedTabIndex = nextSelectedTabIndex;
+    this.detector.markForCheck();
   }
 
   private goToPreviousTab(): void {
     if (this.selectedTabIndex === 0) return;
     this.selectedTabIndex -= 1;
+    this.detector.markForCheck();
   }
 
   private disableTab(tabIndex: number) {
     this.tabEnabled[tabIndex] = false;
+    this.detector.markForCheck();
   }
 
   private goToTab(tabIndex: number) {
     this.selectedTabIndex = tabIndex;
+    this.detector.markForCheck();
   }
 }
