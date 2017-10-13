@@ -2,7 +2,6 @@ import './operators';
 import { Component, OnInit, HostListener, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd, Event } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { MultilingualService } from './shared/services/multilingual.service';
 
 // Services
 import { CurrentUserService } from './shared/services/current-user.service';
@@ -27,13 +26,11 @@ import { ILang } from './shared/interfaces/language.interface';
 })
 
 export class AppComponent implements OnInit {
-  public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
 
   constructor(
     public uiConfig: UiConfig,
     public router: Router,
-    public multiLingual: MultilingualService,
     public searchContext: SearchContext,
     public currentUser: CurrentUserService,
     public collections: CollectionsService,
@@ -46,17 +43,18 @@ export class AppComponent implements OnInit {
     private zone: NgZone,
     private store: AppStore
   ) {
-    this.loadConfig();
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
-        this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
+        this.uiState.showFixedHeader(window.nativeWindow.pageYOffset);
       });
     });
   }
 
   ngOnInit() {
+    this.loadConfig();
     this.routerChanges();
     this.processUser();
+    this.store.dispatch(factory => factory.multiLingual.setLanguage('en'));
   }
 
   public get cartCount(): Observable<any> {
@@ -69,10 +67,6 @@ export class AppComponent implements OnInit {
 
   public logout(): void {
     this.currentUser.destroy();
-  }
-
-  public changeLang(data: any) {
-    this.multiLingual.setLanguage(data);
   }
 
   public newSearchContext(query: any) {
