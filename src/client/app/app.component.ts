@@ -6,7 +6,6 @@ import { MultilingualService } from './shared/services/multilingual.service';
 
 // Services
 import { CurrentUserService } from './shared/services/current-user.service';
-import { ApiConfig } from './shared/services/api.config';
 import { UiConfig } from './shared/services/ui.config';
 import { SearchContext } from './shared/services/search-context.service';
 import { FilterService } from './shared/services/filter.service';
@@ -17,11 +16,8 @@ import { UserPreferenceService } from './shared/services/user-preference.service
 import { Capabilities } from './shared/services/capabilities.service';
 import { WindowRef } from './shared/services/window-ref.service';
 import { AppStore } from './app.store';
-import { enhanceAsset } from './shared/interfaces/enhanced-asset';
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
-import { Collection } from './shared/interfaces/collection.interface';
-import { Common } from './shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -32,7 +28,6 @@ import { Common } from './shared/utilities/common.functions';
 export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
-  public activeCollection: Collection;
 
   constructor(
     public uiConfig: UiConfig,
@@ -44,7 +39,6 @@ export class AppComponent implements OnInit {
     public uiState: UiState,
     public userPreference: UserPreferenceService,
     public userCan: Capabilities,
-    private apiConfig: ApiConfig,
     private window: WindowRef,
     private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
@@ -52,7 +46,6 @@ export class AppComponent implements OnInit {
     private store: AppStore
   ) {
     this.loadConfig();
-    this.loadActiveCollection();
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
         this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
@@ -63,20 +56,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.routerChanges();
     this.processUser();
-  }
-
-  public loadActiveCollection(): void {
-    this.store.select(state => state.activeCollection)
-      .filter(state => state.collection !== undefined)
-      .map(state => {
-        let collection: Collection = Common.clone(state.collection);
-        if (collection.assets && collection.assets.items) {
-          collection.assets.items = collection.assets.items
-            .map(item => enhanceAsset(item, 'collectionAsset', collection.id));
-        }
-        return collection;
-      })
-      .subscribe(collection => this.activeCollection = collection);
   }
 
   public get cartCount(): Observable<any> {
@@ -119,7 +98,8 @@ export class AppComponent implements OnInit {
 
   private processUser() {
     this.currentUser.loggedInState()
-      .subscribe((loggedIn: boolean) => (loggedIn) ? this.processLoggedInUser() : this.processLoggedOutUser());
+      .subscribe((loggedIn: boolean) => (loggedIn) ?
+        this.processLoggedInUser() : this.processLoggedOutUser());
   }
 
   private processLoggedInUser() {

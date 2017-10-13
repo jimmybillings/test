@@ -10,7 +10,6 @@
       [currentUser]="currentUser"
       [userPreference]="userPreference"
       [config]="(uiConfig.get('header') | async).config"
-      [collection]="activeCollection"
       [userCan]="userCan"
       [cartSize]="cartCount | async"
       (onLogOut)="logout()">
@@ -19,7 +18,6 @@
       *ngIf="userCan.viewCollectionTray() | async"
       [uiState]="uiState"
       [uiConfig]="uiConfig"
-      [collection]="activeCollection"
       [userPreference]="userPreference">
     </collection-tray>
      <wz-autocomplete-search
