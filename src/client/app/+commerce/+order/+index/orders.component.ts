@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrdersService } from '../../../shared/services/orders.service';
 import { UrlParams } from '../../../shared/interfaces/common.interface';
@@ -8,7 +8,8 @@ import { Observable } from 'rxjs/Observable';
 @Component({
   moduleId: module.id,
   selector: 'orders-component',
-  templateUrl: 'orders.html'
+  templateUrl: 'orders.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class OrdersComponent implements OnInit {

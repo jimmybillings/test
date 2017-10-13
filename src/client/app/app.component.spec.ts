@@ -8,7 +8,7 @@ export function main() {
   describe('App Component', () => {
     (<any>window).portal = 'core';
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUserService: any,
-      mockCollections: any, mockUiState: any, mockUserPreference: any, mockNotification: any, mockApiConfig: any,
+      mockCollections: any, mockUiState: any, mockUserPreference: any, mockNotification: any,
       mockUserCan: any, mockWindow: any, mockNgZone: any, componentUnderTest: AppComponent, mockStore: MockAppStore,
       mockFilter: any, mockSortDefinition: any, cartLoadSpy: jasmine.Spy, collectionLoadSpy: jasmine.Spy,
       quoteLoadSpy: jasmine.Spy;
@@ -66,11 +66,6 @@ export function main() {
         updateSortPreference: jasmine.createSpy('updateSortPreference')
       };
 
-      mockApiConfig = {
-        getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal'),
-        baseUrl: () => jasmine.createSpy('baseUrl')
-      };
-
       mockUserCan = { viewCollections: () => canViewCollections, administerQuotes: () => canAdministerQuotes };
       mockWindow = { nativeWindow: { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') } };
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
@@ -84,7 +79,7 @@ export function main() {
 
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-        mockCollections, mockUiState, mockUserPreference, mockUserCan, mockApiConfig, mockWindow,
+        mockCollections, mockUiState, mockUserPreference, mockUserCan, mockWindow,
         mockFilter, mockSortDefinition, mockNgZone, mockStore
       );
     });
@@ -191,7 +186,7 @@ export function main() {
       it('Should initialize the navigation immediatly if the config is already loaded', () => {
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUiState, mockUserPreference, mockUserCan, mockApiConfig,
+          mockCollections, mockUiState, mockUserPreference, mockUserCan,
           mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
         );
 
@@ -204,7 +199,7 @@ export function main() {
 
         componentUnderTest = new AppComponent(
           mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUiState, mockUserPreference, mockUserCan, mockApiConfig,
+          mockCollections, mockUiState, mockUserPreference, mockUserCan,
           mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
         );
 

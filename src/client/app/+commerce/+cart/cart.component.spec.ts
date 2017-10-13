@@ -6,7 +6,7 @@ import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 export function main() {
   describe('Cart Component', () => {
     let componentUnderTest: CartComponent, mockCapabilities: any, mockAppStore: MockAppStore, mockUiConfig: any,
-      mockCartService: any;
+      mockCartService: any, mockChangeDetectorRef: any;
 
     beforeEach(() => {
       mockCapabilities = { administerQuotes: () => false };
@@ -15,8 +15,9 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: ['config'] } } }))
       };
       mockCartService = { state: { data: { id: 77 } } };
+      mockChangeDetectorRef = { markForCheck: () => { } };
       componentUnderTest = new CartComponent(
-        mockCapabilities, mockAppStore, mockUiConfig, mockCartService
+        mockCapabilities, mockAppStore, mockUiConfig, mockCartService, mockChangeDetectorRef
       );
     });
 

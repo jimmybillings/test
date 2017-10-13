@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   describe('Quote Show Component', () => {
     let componentUnderTest: QuoteShowComponent, mockCapabilities: any, mockQuoteService: any, mockUiConfig: any,
-      mockAppStore: MockAppStore;
+      mockAppStore: MockAppStore, mockChangeDetectorRef: any;
 
     beforeEach(() => {
       mockCapabilities = { administerQuotes: () => false };
@@ -18,9 +18,9 @@ export function main() {
       };
 
       mockAppStore = new MockAppStore();
-
+      mockChangeDetectorRef = { markForCheck: () => { } };
       componentUnderTest = new QuoteShowComponent(
-        mockCapabilities, mockQuoteService, mockUiConfig, mockAppStore
+        mockCapabilities, mockQuoteService, mockUiConfig, mockAppStore, mockChangeDetectorRef
       );
     });
 
@@ -109,13 +109,13 @@ export function main() {
     describe('hasDiscount()', () => {
       it('is true when discount exists in quoteService state data', () => {
         mockQuoteService = { data: Observable.of({}), state: { data: { discount: 20 } } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.hasDiscount).toBe(true);
       });
 
       it('is false when discount does not exist in quoteService state data', () => {
         mockQuoteService = { data: Observable.of({}), state: { data: {} } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.hasDiscount).toBe(false);
       });
     });
@@ -123,13 +123,13 @@ export function main() {
     describe('hasPurchaseType()', () => {
       it('is true when purchase type exists in quoteService state data', () => {
         mockQuoteService = { data: Observable.of({}), state: { data: { purchaseType: 'Standard' } } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.hasPurchaseType).toBe(true);
       });
 
       it('is false when purchase type does not exist in quoteService state data', () => {
         mockQuoteService = { data: Observable.of({}), state: { data: {} } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.hasPurchaseType).toBe(false);
       });
     });
@@ -137,13 +137,13 @@ export function main() {
     describe('isExpired()', () => {
       it('is true when quote status is expired', () => {
         mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'EXPIRED' } } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.isExpired).toBe(true);
       });
 
       it('is false when quote status is not expired', () => {
         mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'ACTIVE' } } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.isExpired).toBe(false);
       });
     });
@@ -152,21 +152,21 @@ export function main() {
       it('is true if the user can administer quotes', () => {
         mockCapabilities = { administerQuotes: () => true };
         mockQuoteService = { data: Observable.of({}), state: { data: {} } };
-        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.shouldDisplayReview).toBe(true);
       });
 
       it('is true if the quote status is not active', () => {
         mockCapabilities = { administerQuotes: () => false };
         mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'EXPIRED' } } };
-        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.shouldDisplayReview).toBe(true);
       });
 
       it('is false when the user cannot administer quotes and the quote status is active', () => {
         mockCapabilities = { administerQuotes: () => false };
         mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'ACTIVE' } } };
-        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.shouldDisplayReview).toBe(false);
       });
     });
@@ -175,21 +175,21 @@ export function main() {
       it('is true if the user cannot administer quotes and the quote status is active', () => {
         mockCapabilities = { administerQuotes: () => false };
         mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'ACTIVE' } } };
-        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.shouldDisplayPurchaseHeader).toBe(true);
       });
 
       it('is false if the user can administer quotes and the quote status is active', () => {
         mockCapabilities = { administerQuotes: () => true };
         mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'ACTIVE' } } };
-        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.shouldDisplayPurchaseHeader).toBe(false);
       });
 
       it('is false if the user cannot administer quotes and the quote status is not active', () => {
         mockCapabilities = { administerQuotes: () => false };
         mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'EXPIRED' } } };
-        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.shouldDisplayPurchaseHeader).toBe(false);
       });
     });
@@ -197,13 +197,13 @@ export function main() {
     describe('trStringForPurchaseType()', () => {
       it('is the standard translation if the purchase type is not an attribute of the quote', () => {
         mockQuoteService = { data: Observable.of({}), state: { data: {} } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.trStringForPurchaseType).toBe('QUOTE.Standard');
       });
 
       it('is whatever the purchase type is for set purchase types', () => {
         mockQuoteService = { data: Observable.of({}), state: { data: { purchaseType: 'ProvisionalOrder' } } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
         expect(componentUnderTest.trStringForPurchaseType).toBe('QUOTE.ProvisionalOrder');
       });
     });
@@ -232,7 +232,7 @@ export function main() {
           mockQuoteService = {
             data: Observable.of({ data: { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }] }] } })
           };
-          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
           let actualIds: string;
           componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
@@ -250,7 +250,7 @@ export function main() {
               }
             })
           };
-          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
           let actualIds: string;
           componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
@@ -263,7 +263,7 @@ export function main() {
               data: { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['def-456'] }] }] }
             })
           };
-          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
           let actualIds: string;
           componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
@@ -281,7 +281,7 @@ export function main() {
               }
             })
           };
-          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
           let actualIds: string;
           componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
@@ -294,7 +294,7 @@ export function main() {
               data: { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['abc-123'] }] }] }
             })
           };
-          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
           let actualIds: string;
           componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
@@ -307,7 +307,7 @@ export function main() {
               data: { projects: [{ lineItems: [{ some: 'lineItem' }, { some: 'lineItem' }] }] }
             })
           };
-          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null);
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, null, mockChangeDetectorRef);
           let actualIds: string;
           componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 

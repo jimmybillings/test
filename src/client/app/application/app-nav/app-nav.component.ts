@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import { Collection } from '../../shared/interfaces/collection.interface';
 import { MatMenuTrigger } from '@angular/material';
 
 @Component({
@@ -13,7 +12,6 @@ export class AppNavComponent {
   @Input() currentUser: any;
   @Input() config: any;
   @Input() supportedLanguages: any;
-  @Input() collection: Collection;
   @Input() uiState: any;
   @Input() userPreference: any;
   @Input() cartSize: any;

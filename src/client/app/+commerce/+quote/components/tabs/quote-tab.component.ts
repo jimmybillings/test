@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuoteService } from '../../../../shared/services/quote.service';
 import { Quote, QuoteState, Project, AssetLineItem, FeeLineItem } from '../../../../shared/interfaces/commerce.interface';
@@ -21,7 +21,8 @@ import { Common } from '../../../../shared/utilities/common.functions';
 @Component({
   moduleId: module.id,
   selector: 'quote-tab',
-  templateUrl: 'quote-tab.html'
+  templateUrl: 'quote-tab.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class QuoteTabComponent extends Tab implements OnDestroy {

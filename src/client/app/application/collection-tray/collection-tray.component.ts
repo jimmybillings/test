@@ -4,8 +4,9 @@ import { CollectionFormComponent } from './components/collection-form.component'
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Asset, WzEvent } from '../../shared/interfaces/common.interface';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
+import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 import { AppStore } from '../../app.store';
+import { Common } from '../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -17,25 +18,16 @@ import { AppStore } from '../../app.store';
 export class CollectionTrayComponent implements OnInit {
   @Input() uiState: any;
   @Input() uiConfig: any;
-
-  @Input() public set collection(collection: any) {
-    if (collection) this._collection = collection;
-  };
   @Input() userPreference: any;
   public pageSize: string;
-
-  public get collection(): any {
-    return this._collection;
-  }
-
-  private _collection: any;
+  public collection: any;
   private enhancedAssets: { [uuid: string]: EnhancedAsset } = {};
 
   constructor(private dialogService: WzDialogService, private store: AppStore) { }
 
   ngOnInit() {
     this.store.dispatch(factory => factory.activeCollection.loadIfNeeded());
-
+    this.setCollection();
     this.uiConfig.get('global').take(1).subscribe((config: any) => {
       this.pageSize = config.config.pageSize.value;
     });
@@ -84,5 +76,18 @@ export class CollectionTrayComponent implements OnInit {
         }]
       });
     });
+  }
+
+  private setCollection() {
+    this.store.select(state => state.activeCollection)
+      .filter(state => state.collection !== undefined)
+      .map(state => {
+        let collection: Collection = Common.clone(state.collection);
+        if (collection.assets && collection.assets.items) {
+          collection.assets.items = collection.assets.items
+            .map(item => enhanceAsset(item, 'collectionAsset', collection.id));
+        }
+        return collection;
+      }).subscribe((collection) => this.collection = collection);
   }
 }
