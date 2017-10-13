@@ -42,7 +42,6 @@ import { WzCommentComponent } from './components/wz-comment/wz.comment.component
 
 // WAZEE SERVICES
 import { ApiConfig } from './services/api.config';
-import { MultilingualService } from './services/multilingual.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CurrentUserService } from './services/current-user.service';
 import { UserService } from './services/user.service';
@@ -89,6 +88,7 @@ import * as ActiveCollectionAssetState from '../store/states/active-collection-a
 import * as CartState from '../store/states/cart.state';
 import * as CartAssetState from '../store/states/cart-asset.state';
 import * as CommentState from '../store/states/comment.state';
+import * as MultiLingualState from '../store/states/multi-lingual.state';
 import * as OrderState from '../store/states/order.state';
 import * as OrderAssetState from '../store/states/order-asset.state';
 import * as QuoteEditState from '../store/states/quote-edit.state';
@@ -114,7 +114,6 @@ import { config } from './services/ui.config';
 import { uiState } from './services/ui.state';
 import { Capabilities } from './services/capabilities.service';
 import { searchContext } from './services/search-context.service';
-import { multilingualActionReducer } from './services/multilingual.service';
 import { filters } from './services/filter.service';
 import { userPreferences } from './services/user-preference.service';
 import { collectionOptions } from './services/collection-context.service';
@@ -129,6 +128,7 @@ import { CommentEffects } from '../store/effects/comment.effects';
 import { DialogEffects } from '../store/effects/dialog.effects';
 import { ErrorEffects } from '../store/effects/error.effects';
 import { NotifierEffects } from '../store/effects/notifier.effects';
+import { MultiLingualEffects } from '../store/effects/multi-lingual.effects';
 import { OrderEffects } from '../store/effects/order.effects';
 import { OrderAssetEffects } from '../store/effects/order-asset.effects';
 import { QuoteEditEffects } from '../store/effects/quote-edit.effects';
@@ -148,7 +148,6 @@ const WAZEE_SERVICES = [
   CollectionsService,
   ActiveCollectionService,
   SearchContext,
-  MultilingualService,
   UiState,
   UserPreferenceService,
   CollectionContextService,
@@ -208,7 +207,6 @@ const WAZEE_STORES: any = {
   filters: filters,
   userPreferences: userPreferences,
   collectionOptions: collectionOptions,
-  i18n: multilingualActionReducer,
   sortDefinitions: sortDefinitions,
   orders: orders,
   features: features,
@@ -223,6 +221,7 @@ const WAZEE_STORES: any = {
   cart: CartState.reducer,
   cartAsset: CartAssetState.reducer,
   comment: CommentState.reducer,
+  multiLingual: MultiLingualState.reducer,
   order: OrderState.reducer,
   orderAsset: OrderAssetState.reducer,
   quoteEdit: QuoteEditState.reducer,
@@ -242,6 +241,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   CommentEffects,
   DialogEffects,
   ErrorEffects,
+  MultiLingualEffects,
   NotifierEffects,
   OrderEffects,
   OrderAssetEffects,
