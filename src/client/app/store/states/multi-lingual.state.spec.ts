@@ -16,9 +16,9 @@ export function main() {
       customTests: [
         {
           it: 'returns the state with a correct language code',
-          actionParameters: { lang: 'en' },
+          actionParameters: { lang: 'fr' },
           previousState: MultiLingualState.initialState,
-          expectedNextState: { ...MultiLingualState.initialState, lang: 'en' }
+          expectedNextState: { lang: 'fr' }
         }
       ]
     });

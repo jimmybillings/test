@@ -100,7 +100,7 @@ export interface InternalActionFactory {
   readonly comment: CommentActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
   readonly error: ErrorActions.InternalActionFactory;
-  // readonly multiLingual: MultiLingualActions.InternalActionFactory;
+  readonly multiLingual: MultiLingualActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
   readonly orderAsset: OrderAssetActions.InternalActionFactory;
@@ -189,7 +189,7 @@ export class AppStore {
     comment: new CommentActions.InternalActionFactory(),
     dialog: new DialogActions.InternalActionFactory(),
     error: new ErrorActions.InternalActionFactory(),
-    // multiLingual: new MultiLingualActions.InternalActionFactory(),
+    multiLingual: new MultiLingualActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
     orderAsset: new OrderAssetActions.InternalActionFactory(),

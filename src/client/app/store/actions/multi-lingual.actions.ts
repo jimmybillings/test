@@ -6,6 +6,8 @@ export class ActionFactory {
   }
 }
 
+export class InternalActionFactory extends ActionFactory { }
+
 export class SetLanguage implements Action {
   public static readonly Type = '[Multilingual] Set Language';
   public readonly type = SetLanguage.Type;

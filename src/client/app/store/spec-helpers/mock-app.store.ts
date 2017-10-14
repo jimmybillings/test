@@ -52,6 +52,7 @@ export class MockAppStore extends AppStore {
       comment: {} as any,
       dialog: {} as any,
       error: {} as any,
+      multiLingual: {} as any,
       notifier: {} as any,
       order: {} as any,
       orderAsset: {} as any,
