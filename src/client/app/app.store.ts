@@ -78,6 +78,10 @@ import * as UiConfigActions from './store/ui-config/ui-config.actions';
 import * as UiConfigState from './store/ui-config/ui-config.state';
 export type UiConfigState = UiConfigState.State;
 
+import * as MultiLingualActions from './store/multi-lingual/multi-lingual.actions';
+import * as MultiLingualState from './store/multi-lingual/multi-lingual.state';
+export type MultiLingualState = MultiLingualState.State;
+
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly activeCollectionAsset: ActiveCollectionAssetActions.ActionFactory;
@@ -88,6 +92,7 @@ export interface ActionFactory {
   readonly error: ErrorActions.ActionFactory;
   readonly headerDisplayOptions: HeaderDisplayOptionsActions.ActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.ActionFactory;
+  readonly multiLingual: MultiLingualActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
   readonly orderAsset: OrderAssetActions.ActionFactory;
   readonly quoteEdit: QuoteEditActions.ActionFactory;
@@ -112,6 +117,7 @@ export interface InternalActionFactory {
   readonly error: ErrorActions.InternalActionFactory;
   readonly headerDisplayOptions: HeaderDisplayOptionsActions.InternalActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.InternalActionFactory;
+  readonly multiLingual: MultiLingualActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
   readonly orderAsset: OrderAssetActions.InternalActionFactory;
@@ -134,6 +140,7 @@ export interface AppState {
   readonly comment: CommentState;
   readonly headerDisplayOptions: HeaderDisplayOptionsState;
   readonly loadingIndicator: LoadingIndicatorState;
+  readonly multiLingual: MultiLingualState;
   readonly order: OrderState;
   readonly orderAsset: OrderAssetState;
   readonly quoteEdit: QuoteEditState;
@@ -159,6 +166,7 @@ export const reducers: AppReducers = {
   headerDisplayOptions: HeaderDisplayOptionsState.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
   order: OrderState.reducer,
+  multiLingual: MultiLingualState.reducer,
   orderState: OrderAssetState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteEditAsset: QuoteEditAssetState.reducer,
@@ -185,6 +193,7 @@ export class AppStore {
     error: new ErrorActions.ActionFactory(),
     headerDisplayOptions: new HeaderDisplayOptionsActions.ActionFactory(),
     loadingIndicator: new LoadingIndicatorActions.ActionFactory(),
+    multiLingual: new MultiLingualActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
     orderAsset: new OrderAssetActions.ActionFactory(),
@@ -209,6 +218,7 @@ export class AppStore {
     error: new ErrorActions.InternalActionFactory(),
     headerDisplayOptions: new HeaderDisplayOptionsActions.InternalActionFactory(),
     loadingIndicator: new LoadingIndicatorActions.InternalActionFactory(),
+    multiLingual: new MultiLingualActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
     orderAsset: new OrderAssetActions.InternalActionFactory(),
