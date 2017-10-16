@@ -66,6 +66,10 @@ import * as SpeedPreviewActions from './store/actions/speed-preview.actions';
 import * as SpeedPreviewState from './store/states/speed-preview.state';
 export type SpeedPreviewState = SpeedPreviewState.State;
 
+import * as MultiLingualActions from './store/actions/multi-lingual.actions';
+import * as MultiLingualState from './store/states/multi-lingual.state';
+export type MultiLingualState = MultiLingualState.State;
+
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly activeCollectionAsset: ActiveCollectionAssetActions.ActionFactory;
@@ -74,6 +78,7 @@ export interface ActionFactory {
   readonly comment: CommentActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
   readonly error: ErrorActions.ActionFactory;
+  readonly multiLingual: MultiLingualActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
   readonly orderAsset: OrderAssetActions.ActionFactory;
   readonly quoteEdit: QuoteEditActions.ActionFactory;
@@ -95,6 +100,7 @@ export interface InternalActionFactory {
   readonly comment: CommentActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
   readonly error: ErrorActions.InternalActionFactory;
+  readonly multiLingual: MultiLingualActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
   readonly orderAsset: OrderAssetActions.InternalActionFactory;
@@ -106,6 +112,7 @@ export interface InternalActionFactory {
   readonly searchAsset: SearchAssetActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
+
 };
 
 export interface AppState {
@@ -114,6 +121,7 @@ export interface AppState {
   readonly cart: CartState;
   readonly cartAsset: CartAssetState;
   readonly comment: CommentState;
+  readonly multiLingual: MultiLingualState;
   readonly order: OrderState;
   readonly orderAsset: OrderAssetState;
   readonly quoteEdit: QuoteEditState;
@@ -135,7 +143,7 @@ export const reducers: AppReducers = {
   asset: SearchAssetState.reducer,
   cart: CartState.reducer,
   comment: CommentState.reducer,
-  order: OrderState.reducer,
+  multiLingual: MultiLingualState.reducer,
   orderState: OrderAssetState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteEditAsset: QuoteEditAssetState.reducer,
@@ -159,6 +167,7 @@ export class AppStore {
     comment: new CommentActions.ActionFactory(),
     dialog: new DialogActions.ActionFactory(),
     error: new ErrorActions.ActionFactory(),
+    multiLingual: new MultiLingualActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
     orderAsset: new OrderAssetActions.ActionFactory(),
@@ -180,6 +189,7 @@ export class AppStore {
     comment: new CommentActions.InternalActionFactory(),
     dialog: new DialogActions.InternalActionFactory(),
     error: new ErrorActions.InternalActionFactory(),
+    multiLingual: new MultiLingualActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
     orderAsset: new OrderAssetActions.InternalActionFactory(),

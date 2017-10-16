@@ -7,11 +7,11 @@ import { MockAppStore } from './store/spec-helpers/mock-app.store';
 export function main() {
   describe('App Component', () => {
     (<any>window).portal = 'core';
-    let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUserService: any,
+    let mockUiConfig: any, mockRouter: any, mockSearchContext: any, mockCurrentUserService: any,
       mockCollections: any, mockUiState: any, mockUserPreference: any, mockNotification: any,
       mockUserCan: any, mockWindow: any, mockNgZone: any, componentUnderTest: AppComponent, mockStore: MockAppStore,
       mockFilter: any, mockSortDefinition: any, cartLoadSpy: jasmine.Spy, collectionLoadSpy: jasmine.Spy,
-      quoteLoadSpy: jasmine.Spy;
+      quoteLoadSpy: jasmine.Spy, setLanguageSpy: jasmine.Spy;
 
     let loggedInState: boolean = false, canViewCollections: boolean = true, canAdministerQuotes: boolean = false;
     let nextNavigation: Event;
@@ -25,8 +25,6 @@ export function main() {
       };
 
       mockRouter = { events: Observable.of(nextNavigation), initialNavigation: jasmine.createSpy('initialNavigation') };
-
-      mockMultiLingual = { setLanguage: jasmine.createSpy('setLanguage'), setBaseUrl: jasmine.createSpy('setBaseUrl') };
 
       mockSearchContext = {
         update: null,
@@ -76,9 +74,10 @@ export function main() {
       collectionLoadSpy = mockStore.createActionFactoryMethod('activeCollection', 'load');
       cartLoadSpy = mockStore.createActionFactoryMethod('cart', 'load');
       quoteLoadSpy = mockStore.createActionFactoryMethod('quoteEdit', 'load');
+      setLanguageSpy = mockStore.createActionFactoryMethod('multiLingual', 'setLanguage');
 
       componentUnderTest = new AppComponent(
-        mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
+        mockUiConfig, mockRouter, mockSearchContext, mockCurrentUserService,
         mockCollections, mockUiState, mockUserPreference, mockUserCan, mockWindow,
         mockFilter, mockSortDefinition, mockNgZone, mockStore
       );
@@ -86,6 +85,12 @@ export function main() {
 
 
     describe('ngOnInit()', () => {
+      describe('Set the default language', () => {
+        it('dispatchs the default language to be set', () => {
+          componentUnderTest.ngOnInit();
+          expect(setLanguageSpy).toHaveBeenCalledWith('en');
+        });
+      });
       describe('processUser()', () => {
         beforeEach(() => {
           nextNavigation = new NavigationEnd(1, '/', '/');
@@ -159,13 +164,6 @@ export function main() {
       });
     });
 
-    describe('changeLang()', () => {
-      it('Should change the current language', () => {
-        componentUnderTest.changeLang({ lang: 'fr' });
-        expect(mockMultiLingual.setLanguage).toHaveBeenCalledWith({ lang: 'fr' });
-      });
-    });
-
     describe('newSearchContext()', () => {
       it('Should merge the searchContext with a new query and get a new filter tree', () => {
         componentUnderTest.newSearchContext('dogs');
@@ -184,11 +182,7 @@ export function main() {
 
     describe('loadConfig', () => {
       it('Should initialize the navigation immediatly if the config is already loaded', () => {
-        componentUnderTest = new AppComponent(
-          mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUiState, mockUserPreference, mockUserCan,
-          mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
-        );
+        componentUnderTest.ngOnInit();
 
         expect(mockRouter.initialNavigation).toHaveBeenCalled();
         expect(mockUiConfig.load).not.toHaveBeenCalled();
@@ -198,11 +192,11 @@ export function main() {
         configHasLoaded = false;
 
         componentUnderTest = new AppComponent(
-          mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
+          mockUiConfig, mockRouter, mockSearchContext, mockCurrentUserService,
           mockCollections, mockUiState, mockUserPreference, mockUserCan,
           mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
         );
-
+        componentUnderTest.ngOnInit();
         expect(mockUiConfig.load).toHaveBeenCalled();
         expect(mockRouter.initialNavigation).toHaveBeenCalled();
       });
