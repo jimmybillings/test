@@ -84,12 +84,16 @@ export class AppComponent implements OnInit {
     return this.store.select(state => state.headerDisplayOptions.canBeFixed);
   }
 
-  public get headerConfig(): any {
-    return this.store.snapshot(state => state.uiConfig.components.header.config);
+  public get headerConfig(): Observable<any> {
+    return this.store.select(state => state.uiConfig)
+      .filter(state => state.loaded)
+      .map(state => state.components.header.config).take(1);
   }
 
-  public get searchBoxConfig(): any {
-    return this.store.snapshot(state => state.uiConfig.components.searchBox.config);
+  public get searchBoxConfig(): Observable<any> {
+    return this.store.select(state => state.uiConfig)
+      .filter(state => state.loaded)
+      .map(state => state.components.searchBox.config).take(1);
   }
 
   private routerChanges() {

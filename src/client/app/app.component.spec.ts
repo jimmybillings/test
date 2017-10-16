@@ -207,6 +207,26 @@ export function main() {
       });
     });
 
+    describe('headerConfig getter', () => {
+      it('returns the right part of the UiConfig store when the config is loaded', () => {
+        mockStore.createStateSection('uiConfig', { loaded: true, components: { header: { config: { some: 'header' } } } });
+
+        let config: any;
+        componentUnderTest.headerConfig.take(1).subscribe(c => config = c);
+        expect(config).toEqual({ some: 'header' });
+      });
+    });
+
+    describe('searchBoxConfig getter', () => {
+      it('returns the right part of the UiConfig store when the config is loaded', () => {
+        mockStore.createStateSection('uiConfig', { loaded: true, components: { searchBox: { config: { some: 'searchBox' } } } });
+
+        let config: any;
+        componentUnderTest.searchBoxConfig.take(1).subscribe(c => config = c);
+        expect(config).toEqual({ some: 'searchBox' });
+      });
+    });
+
     describe('headerIsFixed getter', () => {
       it('should return observable of true if the isFixed property of the headerDisplayOptions is true', () => {
         mockStore.createStateSection('headerDisplayOptions', { isFixed: true });

@@ -9,7 +9,7 @@ export function main() {
   describe('Footer Component', () => {
     beforeEach(() => {
       mockStore = new MockAppStore();
-      mockStore.createStateSection('uiConfig', { components: { footer: { config: { some: 'config' } } } });
+      mockStore.createStateSection('uiConfig', { loaded: true, components: { footer: { config: { some: 'config' } } } });
 
       componentUnderTest = new FooterComponent(mockStore);
     });
