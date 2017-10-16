@@ -21,10 +21,6 @@ export class InternalActionFactory extends ActionFactory {
   public loadFailure(error: ApiErrorResponse): LoadFailure {
     return new LoadFailure(error);
   }
-
-  public setDeliveryOptions(flag: boolean): SetDeliveryOptions {
-    return new SetDeliveryOptions(flag);
-  }
 }
 
 export class Load implements Action {
@@ -45,12 +41,6 @@ export class LoadFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export class SetDeliveryOptions implements Action {
-  public static readonly Type = '[Search Asset] Set Delivery Options';
-  public readonly type = SetDeliveryOptions.Type;
-  constructor(public readonly flag: boolean) { }
-}
-
 export class UpdateMarkersInUrl implements Action {
   public static readonly Type = '[Search Asset] Update Markers In URL';
   public readonly type = UpdateMarkersInUrl.Type;
@@ -58,4 +48,4 @@ export class UpdateMarkersInUrl implements Action {
   }
 }
 
-export type Any = Load | LoadSuccess | LoadFailure | UpdateMarkersInUrl | SetDeliveryOptions;
+export type Any = Load | LoadSuccess | LoadFailure | UpdateMarkersInUrl;
