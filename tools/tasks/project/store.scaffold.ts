@@ -44,7 +44,7 @@ const makeFilesFor = (path: string, section: string, skips: string[]): void => {
     makeStateFiles(path, section, skips);
   }
 
-  if (skips.indexOf('state') === -1) {
+  if (skips.indexOf('service') === -1) {
     makeServiceFiles(path, section, skips);
   }
 }
