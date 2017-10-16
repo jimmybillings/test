@@ -75,7 +75,7 @@ export class AssetDetailComponent implements OnInit {
       .subscribe((config: Pojo) => {
         this.shareComponentConfig = config;
       });
-    this.hasDeliveryOptions = this.store.select(state => state.searchAsset.hasDeliveryOptions);
+    this.setDeliveryOptionsFlag();
   }
 
   public get asset(): EnhancedAsset {
@@ -376,5 +376,9 @@ export class AssetDetailComponent implements OnInit {
 
   private get markersAreDefined(): boolean {
     return !!this.subclipMarkers && !!this.subclipMarkers.in && !!this.subclipMarkers.out;
+  }
+
+  private setDeliveryOptionsFlag(): void {
+    this.hasDeliveryOptions = this.store.select(state => state.asset.hasDeliveryOptions);
   }
 }
