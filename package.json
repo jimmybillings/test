@@ -40,7 +40,7 @@
     "spec.validate": "ts-node spectools/validateSpecs.ts",
     "start": "gulp serve.dev --color",
     "start.deving": "gulp start.deving --color",
-    "store.scaffold": "gulp store.scaffold --section",
+    "store.scaffold": "gulp store.scaffold",
     "tasks.list": "gulp --tasks-simple --color",
     "test": "gulp test --color",
     "e2e.ci": "gulp build.prod --color && gulp build.e2e --color && gulp e2e --color",

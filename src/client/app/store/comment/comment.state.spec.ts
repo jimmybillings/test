@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs/Observable';
-
 import * as CommentState from './comment.state';
 import * as CommentActions from './comment.actions';
 import { Comment } from '../../shared/interfaces/comment.interface';

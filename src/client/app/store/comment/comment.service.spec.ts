@@ -1,5 +1,5 @@
 import { CommentService } from './comment.service';
-import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.service';
+import { MockApiService, mockApiMatchers } from '../spec-helpers/mock-api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
