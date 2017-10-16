@@ -18,13 +18,16 @@ export function main() {
 
     beforeEach(() => {
       mockRef = { markForCheck: function () { } };
+
       mockUserService = {
         create: jasmine.createSpy('create').and.returnValue(Observable.of(user)),
         downloadActiveTosDocument: jasmine.createSpy('downloadActiveTosDocument').and.returnValue(Observable.of('some-terms'))
       };
+
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({}))
       };
+
       mockStore = new MockAppStore();
       mockStore.createStateSection('uiConfig', { components: { register: { config: { someConfig: 'test' } } } });
 

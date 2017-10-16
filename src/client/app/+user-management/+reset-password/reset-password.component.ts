@@ -4,7 +4,6 @@ import { UserService } from '../../shared/services/user.service';
 import { AppStore } from '../../app.store';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
-import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,

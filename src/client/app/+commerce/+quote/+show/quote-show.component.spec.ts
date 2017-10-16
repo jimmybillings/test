@@ -23,7 +23,7 @@ export function main() {
 
       componentUnderTest = new QuoteShowComponent(
         mockCapabilities, mockQuoteService, mockAppStore, mockChangeDetectorRef
-      )
+      );
     });
 
     describe('Initialization', () => {

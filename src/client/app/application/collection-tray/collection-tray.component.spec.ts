@@ -25,7 +25,7 @@ export function main() {
         }
       });
       navigateDispatchSpy = mockAppStore.createActionFactoryMethod('router', 'goToCollection');
-      mockAppStore.createActionFactoryMethod('activeCollection', 'load');
+      mockAppStore.createActionFactoryMethod('activeCollection', 'loadIfNeeded');
 
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.callFake((_: any) => {

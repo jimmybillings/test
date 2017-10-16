@@ -9,7 +9,6 @@ import { Feature } from '../../../../shared/interfaces/feature.interface';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
-import { AppStore } from '../../../../app.store';
 import { FormFields } from '../../../../shared/interfaces/forms.interface';
 import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
 import { Pojo } from '../../../../shared/interfaces/common.interface';
