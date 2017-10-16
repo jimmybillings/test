@@ -1,5 +1,5 @@
 import * as gutil from 'gulp-util';
-import { writeFileSync, mkdir } from 'fs';
+import { writeFile, mkdir } from 'fs';
 import { join } from 'path';
 import { argv } from 'yargs';
 import Config from '../../config';
@@ -12,7 +12,7 @@ export = () => {
   validateInput();
 
   return mkdir(path, () => {
-    makeFilesFor(path, section, skips);
+    makeFiles();
   });
 }
 
@@ -21,9 +21,11 @@ const validateInput = (): void => {
     gutil.log('Please provide a store section name');
     process.exit(1);
   }
+
   section = kebab(argv['section']);
   path = join(Config.APP_SRC, 'app/store/', section);
-  if (!argv['section']) {
+
+  if (!argv['skip']) {
     gutil.log(`Creating all store files ${section}`);
     skips = [];
   } else {
@@ -31,57 +33,106 @@ const validateInput = (): void => {
   }
 }
 
-const makeFilesFor = (path: string, section: string, skips: string[]): void => {
+const makeFiles = (): void => {
+  makeActionFiles();
+  makeEffectsFiles();
+  makeStateFiles();
+  makeServiceFiles();
+}
+
+const makeActionFiles = (): void => {
+  const fullPath: string = join(path, `${section}.actions.ts`);
+  const fullSpecPath: string = join(path, `${section}.actions.spec.ts`);
+
   if (skips.indexOf('actions') === -1) {
-    makeActionFiles(path, section, skips);
+    writeFile(fullPath, actionFileFor(section), { flag: 'wx' }, (err) => {
+      if (err) {
+        gutil.log(`Skipping ${fullPath}, it already exists`);
+      } else {
+        gutil.log(`Created ${fullPath}`);
+      }
+    });
+    if (skips.indexOf('specs') === -1) {
+      writeFile(fullSpecPath, actionSpecFileFor(section), { flag: 'wx' }, (err) => {
+        if (err) {
+          gutil.log(`Skipping ${fullSpecPath}, it already exists`);
+        } else {
+          gutil.log(`Created ${fullSpecPath}`);
+        }
+      });
+    }
   }
+}
+
+const makeEffectsFiles = (): void => {
+  const fullPath: string = join(path, `${section}.effects.ts`);
+  const fullSpecPath: string = join(path, `${section}.effects.spec.ts`);
 
   if (skips.indexOf('effects') === -1) {
-    makeEffectsFiles(path, section, skips);
+    writeFile(fullPath, effectFileFor(section), { flag: 'wx' }, (err) => {
+      if (err) {
+        gutil.log(`Skipping ${fullPath}, it already exists`);
+      } else {
+        gutil.log(`Created ${fullPath}`);
+      }
+    });
+    if (skips.indexOf('specs') === -1) {
+      writeFile(fullSpecPath, effectSpecFileFor(section), { flag: 'wx' }, (err) => {
+        if (err) {
+          gutil.log(`Skipping ${fullSpecPath}, it already exists`);
+        } else {
+          gutil.log(`Created ${fullSpecPath}`);
+        }
+      });
+    }
   }
+}
+
+const makeStateFiles = (): void => {
+  const fullPath: string = join(path, `${section}.state.ts`);
+  const fullSpecPath: string = join(path, `${section}.state.spec.ts`);
 
   if (skips.indexOf('state') === -1) {
-    makeStateFiles(path, section, skips);
+    writeFile(fullPath, stateFileFor(section), { flag: 'wx' }, (err) => {
+      if (err) {
+        gutil.log(`Skipping ${fullPath}, it already exists`);
+      } else {
+        gutil.log(`Created ${fullPath}`);
+      }
+    });
+    if (skips.indexOf('specs') === -1) {
+      writeFile(fullSpecPath, stateSpecFileFor(section), { flag: 'wx' }, (err) => {
+        if (err) {
+          gutil.log(`Skipping ${fullSpecPath}, it already exists`);
+        } else {
+          gutil.log(`Created ${fullSpecPath}`);
+        }
+      });
+    }
   }
+}
+
+const makeServiceFiles = (): void => {
+  const fullPath: string = join(path, `${section}.service.ts`);
+  const fullSpecPath: string = join(path, `${section}.service.spec.ts`);
 
   if (skips.indexOf('service') === -1) {
-    makeServiceFiles(path, section, skips);
-  }
-}
-
-const makeActionFiles = (path: string, section: string, skips: string[]): void => {
-  writeFileSync(join(path, `${section}.actions.ts`), actionFileFor(section));
-  gutil.log(`created ${join(path, `${section}.actions.ts`)}`);
-  if (skips.indexOf('specs') === -1) {
-    writeFileSync(join(path, `${section}.actions.spec.ts`), actionSpecFileFor(section));
-    gutil.log(`created ${join(path, `${section}.actions.spec.ts`)}`);
-  }
-}
-
-const makeEffectsFiles = (path: string, section: string, skips: string[]): void => {
-  writeFileSync(join(path, `${section}.effects.ts`), effectFileFor(section));
-  gutil.log(`created ${join(path, `${section}.effects.ts`)}`);
-  if (skips.indexOf('specs') === -1) {
-    writeFileSync(join(path, `${section}.effects.spec.ts`), effectSpecFileFor(section));
-    gutil.log(`created ${join(path, `${section}.effects.spec.ts`)}`);
-  }
-}
-
-const makeStateFiles = (path: string, section: string, skips: string[]): void => {
-  writeFileSync(join(path, `${section}.state.ts`), stateFileFor(section));
-  gutil.log(`created ${join(path, `${section}.state.ts`)}`);
-  if (skips.indexOf('specs') === -1) {
-    writeFileSync(join(path, `${section}.state.spec.ts`), stateSpecFileFor(section));
-    gutil.log(`created ${join(path, `${section}.state.spec.ts`)}`);
-  }
-}
-
-const makeServiceFiles = (path: string, section: string, skips: string[]): void => {
-  writeFileSync(join(path, `${section}.service.ts`), serviceFileFor(section));
-  gutil.log(`created ${join(path, `${section}.service.ts`)}`);
-  if (skips.indexOf('specs') === -1) {
-    writeFileSync(join(path, `${section}.service.spec.ts`), serviceSpecFileFor(section));
-    gutil.log(`created ${join(path, `${section}.service.spec.ts`)}`);
+    writeFile(fullPath, serviceFileFor(section), { flag: 'wx' }, (err) => {
+      if (err) {
+        gutil.log(`Skipping ${fullPath}, it already exists`);
+      } else {
+        gutil.log(`Created ${fullPath}`);
+      }
+    });
+    if (skips.indexOf('specs') === -1) {
+      writeFile(fullSpecPath, serviceSpecFileFor(section), { flag: 'wx' }, (err) => {
+        if (err) {
+          gutil.log(`Skipping ${fullSpecPath}, it already exists`);
+        } else {
+          gutil.log(`Created ${fullSpecPath}`);
+        }
+      });
+    }
   }
 }
 
@@ -113,6 +164,10 @@ const actionTypeFor = (section: string): string => {
   return section.split('-').map(capitalize).join(' ');
 }
 
+const describeHeaderFor = (section: string): string => {
+  return actionTypeFor(section);
+}
+
 const kebab = (s: string): string => {
   return s.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').toLowerCase();
 }
@@ -140,13 +195,13 @@ export type Any = SomeAction;
 }
 
 const actionSpecFileFor = (section: string): string => {
-  const capitalizedSectionName = capitalize(section);
+  const describeHeader = describeHeaderFor(section);
 
   return `import { ActionFactory, InternalActionFactory } from './${section}.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
   export function main() {
-    describe('${capitalizedSectionName} Actions', () => {
+    describe('${describeHeader} Actions', () => {
       let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
     });
   }
@@ -175,16 +230,16 @@ const effectSpecFileFor = (section: string): string => {
   const className: string = classNameFor(section);
   const effectsName: string = effectsNameFor(className);
   const actionsName: string = actionsNameFor(className);
-  const capitalizedSectionName = capitalize(section);
+  const describeHeader = describeHeaderFor(section);
 
   return `import { ${effectsName} } from './${section}.effects';
 import * as ${actionsName} from './${section}.actions';
 import { EffectsSpecHelper, EffectTestParameters } from '../spec-helpers/effects.spec-helper';
 
 export function main() {
-  describe('${capitalizedSectionName} Effects', () => {
+  describe('${describeHeader} Effects', () => {
     const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
-    
+
     function instantiator(): ${effectsName} {
       return new ${effectsName}(
         effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
@@ -213,16 +268,16 @@ export class ${serviceName} {
 }
 
 const serviceSpecFileFor = (section: string): string => {
-  const capitalizedSectionName = capitalize(section);
   const className: string = classNameFor(section);
   const serviceName: string = serviceNameFor(className);
+  const describeHeader = describeHeaderFor(section);
 
   return `import { ${serviceName} } from './${section}.service';
 import { MockApiService, mockApiMatchers } from '../spec-helpers/mock-api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
-  describe('${capitalizedSectionName} Service', () => {
+  describe('${describeHeader} Service', () => {
     let serviceUnderTest: ${serviceName}, mockApiService: MockApiService;
 
     beforeEach(() => {
@@ -261,7 +316,7 @@ export function reducer(state: State = initialState, action: ${actionsName}.Any)
 
 const stateSpecFileFor = (section: string): string => {
   const className: string = classNameFor(section);
-  const capitalizedSectionName = capitalize(section);
+  const describeHeader = describeHeaderFor(section);
   const stateName = stateNameFor(className);
   const actionsName: string = actionsNameFor(className);
 
@@ -272,7 +327,7 @@ import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 export function main() {
   const stateSpecHelper: StateSpecHelper = new StateSpecHelper();
 
-  describe('${capitalizedSectionName} Reducer', () => {
+  describe('${describeHeader} Reducer', () => {
     stateSpecHelper.setReducerTestModules({
       actions: ${actionsName},
       state: ${stateName},
