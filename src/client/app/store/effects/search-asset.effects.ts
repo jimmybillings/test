@@ -33,6 +33,15 @@ export class SearchAssetEffects {
       this.navigateWithUpdatedMarkers(action.assetId, updatedTimeStart, updatedTimeEnd);
     });
 
+  @Effect()
+  public getDeliveryOptions: Observable<Action> = this.actions.ofType(SearchAssetActions.LoadSuccess.Type)
+    .switchMap((action: SearchAssetActions.LoadSuccess) =>
+      this.service.getDeliveryOptions(action.activeAsset.assetId)
+        .map(res => {
+          return this.store.create(factory => factory.searchAsset.setDeliveryOptions(!!res.list));
+        })
+    );
+
   constructor(
     private actions: Actions,
     private store: AppStore,

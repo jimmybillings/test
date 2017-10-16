@@ -31,6 +31,10 @@ export class AssetService {
     return this.apiService.get(Api.Assets, `renditionType/${assetId}`, viewType);
   }
 
+  public getDeliveryOptions(assetId: number): Observable<any> {
+    return this.apiService.get(Api.Assets, `renditionType/deliveryOptions/${assetId}`);
+  }
+
   private merge(asset: Asset, parameters: AssetLoadParameters): Asset {
     return {
       ...asset,

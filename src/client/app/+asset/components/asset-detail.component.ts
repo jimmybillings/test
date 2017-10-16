@@ -57,6 +57,7 @@ export class AssetDetailComponent implements OnInit {
   public subclipMarkers: SubclipMarkers;
   public activeCollectionName: string;
   public showComments: boolean;
+  public hasDeliveryOptions: Observable<boolean>;
   @Output() public updateAssetLineItem: EventEmitter<null> = new EventEmitter();
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   private _asset: EnhancedAsset;
@@ -74,6 +75,7 @@ export class AssetDetailComponent implements OnInit {
       .subscribe((config: Pojo) => {
         this.shareComponentConfig = config;
       });
+    this.hasDeliveryOptions = this.store.select(state => state.searchAsset.hasDeliveryOptions);
   }
 
   public get asset(): EnhancedAsset {
