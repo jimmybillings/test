@@ -14,7 +14,7 @@ export function reducer(state: State = initialState, action: MultiLingualActions
 
     case MultiLingualActions.SetLanguage.Type: {
 
-      return Object.assign({}, state, { lang: action.lang });
+      return { lang: action.lang };
     }
 
     default: {
