@@ -42,7 +42,6 @@ import { WzCommentComponent } from './components/wz-comment/wz.comment.component
 
 // WAZEE SERVICES
 import { ApiConfig } from './services/api.config';
-import { MultilingualService } from './services/multilingual.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CurrentUserService } from './services/current-user.service';
 import { UserService } from './services/user.service';
@@ -90,6 +89,7 @@ import * as CartAssetState from '../store/cart-asset/cart-asset.state';
 import * as CommentState from '../store/comment/comment.state';
 import * as HeaderDisplayOptions from '../store/header-display-options/header-display-options.state';
 import * as LoadingIndicatorState from '../store/loading-indicator/loading-indicator.state';
+import * as MultiLingualState from '../store/multi-lingual/multi-lingual.state';
 import * as OrderState from '../store/order/order.state';
 import * as OrderAssetState from '../store/order-asset/order-asset.state';
 import * as QuoteEditState from '../store/quote-edit/quote-edit.state';
@@ -114,7 +114,6 @@ import { pricingReducer, PricingStore } from './stores/pricing.store';
 import { currentUser } from './services/current-user.service';
 import { Capabilities } from './services/capabilities.service';
 import { searchContext } from './services/search-context.service';
-import { multilingualActionReducer } from './services/multilingual.service';
 import { filters } from './services/filter.service';
 import { userPreferences } from './services/user-preference.service';
 import { collectionOptions } from './services/collection-context.service';
@@ -129,6 +128,7 @@ import { CommentEffects } from '../store/comment/comment.effects';
 import { DialogEffects } from '../store/dialog/dialog.effects';
 import { ErrorEffects } from '../store/error/error.effects';
 import { HeaderDisplayOptionsEffects } from '../store/header-display-options/header-display-options.effects';
+import { MultiLingualEffects } from '../store/multi-lingual/multi-lingual.effects';
 import { NotifierEffects } from '../store/notifier/notifier.effects';
 import { OrderEffects } from '../store/order/order.effects';
 import { OrderAssetEffects } from '../store/order-asset/order-asset.effects';
@@ -149,7 +149,6 @@ const WAZEE_SERVICES = [
   CollectionsService,
   ActiveCollectionService,
   SearchContext,
-  MultilingualService,
   UserPreferenceService,
   CollectionContextService,
   ApiService,
@@ -207,7 +206,6 @@ const WAZEE_STORES: any = {
   filters: filters,
   userPreferences: userPreferences,
   collectionOptions: collectionOptions,
-  i18n: multilingualActionReducer,
   sortDefinitions: sortDefinitions,
   orders: orders,
   features: features,
@@ -224,6 +222,7 @@ const WAZEE_STORES: any = {
   comment: CommentState.reducer,
   headerDisplayOptions: HeaderDisplayOptions.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
+  multiLingual: MultiLingualState.reducer,
   order: OrderState.reducer,
   orderAsset: OrderAssetState.reducer,
   quoteEdit: QuoteEditState.reducer,
@@ -245,6 +244,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   DialogEffects,
   ErrorEffects,
   HeaderDisplayOptionsEffects,
+  MultiLingualEffects,
   NotifierEffects,
   OrderEffects,
   OrderAssetEffects,

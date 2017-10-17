@@ -2,7 +2,6 @@ import * as UiConfigActions from './ui-config.actions';
 import { Common } from '../../shared/interfaces/common.interface';
 
 export interface UiConfigSegment {
-  loaded: boolean;
   config: {
     [index: string]: any;
   };
@@ -41,12 +40,18 @@ export function reducer(state: State = initialState, action: UiConfigActions.Any
 
   switch (action.type) {
 
-    case UiConfigActions.InitializeSuccess.Type:
     case UiConfigActions.LoadSuccess.Type: {
       return {
         ...state,
         ...action.config,
         loaded: true
+      };
+    }
+
+    case UiConfigActions.InitializeSuccess.Type: {
+      return {
+        ...state,
+        ...action.config
       };
     }
 

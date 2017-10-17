@@ -10,6 +10,8 @@ export class UiConfigService {
   constructor(private apiService: FutureApiService) { }
 
   public load(): Observable<UiConfig> {
-    return this.apiService.get(Api.Identities, 'configuration/site');
+    return this.apiService.get(Api.Identities, 'configuration/site').map((config: UiConfig) => {
+      return { ...config, loaded: true };
+    });
   }
 }

@@ -28,6 +28,7 @@ export function main() {
     let checkIfHeaderCanBeFixedSpy: jasmine.Spy;
     let configLoadSpy: jasmine.Spy;
     let resetSpy: jasmine.Spy;
+    let setLanguageSpy: jasmine.Spy;
     let loggedInState: boolean = false;
     let canViewCollections: boolean = true;
     let canAdministerQuotes: boolean = false;
@@ -35,8 +36,6 @@ export function main() {
 
     beforeEach(() => {
       mockRouter = { events: Observable.of(nextNavigation), initialNavigation: jasmine.createSpy('initialNavigation') };
-
-      mockMultiLingual = { setLanguage: jasmine.createSpy('setLanguage'), setBaseUrl: jasmine.createSpy('setBaseUrl') };
 
       mockSearchContext = {
         update: null,
@@ -83,9 +82,10 @@ export function main() {
       checkIfHeaderCanBeFixedSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'checkIfHeaderCanBeFixed');
       checkIfFiltersAreAvailableSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'checkIfFiltersAreAvailable');
       resetSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'reset');
+      setLanguageSpy = mockStore.createActionFactoryMethod('multiLingual', 'setLanguage');
 
       componentUnderTest = new AppComponent(
-        mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
+        mockRouter, mockSearchContext, mockCurrentUserService,
         mockCollections, mockUserPreference, mockUserCan, mockWindow,
         mockFilter, mockSortDefinition, mockNgZone, mockStore
       );
@@ -93,6 +93,13 @@ export function main() {
 
 
     describe('ngOnInit()', () => {
+      describe('Set the default language', () => {
+        it('dispatchs the default language to be set', () => {
+          componentUnderTest.ngOnInit();
+          expect(setLanguageSpy).toHaveBeenCalledWith('en');
+        });
+      });
+
       describe('processUser()', () => {
         beforeEach(() => {
           nextNavigation = new NavigationEnd(1, '/', '/');
@@ -157,19 +164,30 @@ export function main() {
           });
         });
       });
+
+      describe('loadConfig', () => {
+        it('Should initialize the navigation immediately if the config is already loaded', () => {
+          mockStore.createStateSection('uiConfig', { loaded: true });
+          componentUnderTest.ngOnInit();
+
+          expect(mockRouter.initialNavigation).toHaveBeenCalled();
+          mockStore.expectNoDispatchFor(configLoadSpy);
+        });
+
+        it('Should load the config if it is not loaded and then initialize the navigation', () => {
+          mockStore.createStateSection('uiConfig', { loaded: false });
+          componentUnderTest.ngOnInit();
+
+          expect(mockRouter.initialNavigation).not.toHaveBeenCalled();
+          mockStore.expectDispatchFor(configLoadSpy);
+        });
+      });
     });
 
     describe('logout()', () => {
       it('Should log out the user in the browser', () => {
         componentUnderTest.logout();
         expect(mockCurrentUserService.destroy).toHaveBeenCalled();
-      });
-    });
-
-    describe('changeLang()', () => {
-      it('Should change the current language', () => {
-        componentUnderTest.changeLang({ lang: 'fr' });
-        expect(mockMultiLingual.setLanguage).toHaveBeenCalledWith({ lang: 'fr' });
       });
     });
 
@@ -189,33 +207,23 @@ export function main() {
       });
     });
 
-    describe('loadConfig', () => {
-      beforeEach(() => {
-        mockStore = new MockAppStore();
-        configLoadSpy = mockStore.createActionFactoryMethod('uiConfig', 'load');
+    describe('headerConfig getter', () => {
+      it('returns the right part of the UiConfig store when the config is loaded', () => {
+        mockStore.createStateSection('uiConfig', { loaded: true, components: { header: { config: { some: 'header' } } } });
+
+        let config: any;
+        componentUnderTest.headerConfig.take(1).subscribe(c => config = c);
+        expect(config).toEqual({ some: 'header' });
       });
+    });
 
-      it('Should initialize the navigation immediatly if the config is already loaded', () => {
-        mockStore.createStateSection('uiConfig', { loaded: true });
-        componentUnderTest = new AppComponent(
-          mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUserPreference, mockUserCan, mockWindow,
-          mockFilter, mockSortDefinition, mockNgZone, mockStore
-        );
+    describe('searchBoxConfig getter', () => {
+      it('returns the right part of the UiConfig store when the config is loaded', () => {
+        mockStore.createStateSection('uiConfig', { loaded: true, components: { searchBox: { config: { some: 'searchBox' } } } });
 
-        expect(mockRouter.initialNavigation).toHaveBeenCalled();
-        mockStore.expectNoDispatchFor(configLoadSpy);
-      });
-
-      it('Should load the config if it is not loaded and then initialize the navigation', () => {
-        mockStore.createStateSection('uiConfig', { loaded: false });
-        componentUnderTest = new AppComponent(
-          mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUserPreference, mockUserCan, mockWindow,
-          mockFilter, mockSortDefinition, mockNgZone, mockStore
-        );
-
-        mockStore.expectDispatchFor(configLoadSpy);
+        let config: any;
+        componentUnderTest.searchBoxConfig.take(1).subscribe(c => config = c);
+        expect(config).toEqual({ some: 'searchBox' });
       });
     });
 

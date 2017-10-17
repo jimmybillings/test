@@ -8,7 +8,7 @@
     <app-nav
       [currentUser]="currentUser"
       [userPreference]="userPreference"
-      [config]="headerConfig"
+      [config]="headerConfig | async"
       [userCan]="userCan"
       [cartSize]="cartCount | async"
       (onLogOut)="logout()">
@@ -22,7 +22,7 @@
       [currentUser]="currentUser"
       [userPreference]="userPreference"
       [state]="state"
-      [config]="searchBoxConfig"
+      [config]="searchBoxConfig | async"
       (searchContext)="newSearchContext($event)"
       (toggleFilterTree)="toggleFilterTreePreference()">
     </wz-autocomplete-search>
@@ -33,9 +33,5 @@
     }" class="main-content">
     <router-outlet></router-outlet>
   </div>
-  <app-footer
-    [currentUser]="currentUser"
-    [supportedLanguages]="supportedLanguages"
-    (onChangeLang)="changeLang($event)">
-  </app-footer>
+  <app-footer></app-footer>
 </div>

@@ -2,7 +2,6 @@ import './operators';
 import { Component, OnInit, HostListener, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd, Event } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { MultilingualService } from './shared/services/multilingual.service';
 
 // Services
 import { CurrentUserService } from './shared/services/current-user.service';
@@ -25,12 +24,10 @@ import { ILang } from './shared/interfaces/language.interface';
 })
 
 export class AppComponent implements OnInit {
-  public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
 
   constructor(
     public router: Router,
-    public multiLingual: MultilingualService,
     public searchContext: SearchContext,
     public currentUser: CurrentUserService,
     public collections: CollectionsService,
@@ -42,7 +39,6 @@ export class AppComponent implements OnInit {
     private zone: NgZone,
     private store: AppStore
   ) {
-    this.loadConfig();
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
         this.store.dispatch(factory => factory.headerDisplayOptions.setHeaderPosition(this.window.nativeWindow.pageYOffset));
@@ -51,8 +47,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadConfig();
     this.routerChanges();
     this.processUser();
+    this.store.dispatch(factory => factory.multiLingual.setLanguage('en'));
   }
 
   public get cartCount(): Observable<any> {
@@ -65,10 +63,6 @@ export class AppComponent implements OnInit {
 
   public logout(): void {
     this.currentUser.destroy();
-  }
-
-  public changeLang(data: any) {
-    this.multiLingual.setLanguage(data);
   }
 
   public newSearchContext(query: any) {
@@ -90,12 +84,16 @@ export class AppComponent implements OnInit {
     return this.store.select(state => state.headerDisplayOptions.canBeFixed);
   }
 
-  public get headerConfig(): any {
-    return this.store.snapshot(state => state.uiConfig.components.header.config);
+  public get headerConfig(): Observable<any> {
+    return this.store.select(state => state.uiConfig)
+      .filter(state => state.loaded)
+      .map(state => state.components.header.config).take(1);
   }
 
-  public get searchBoxConfig(): any {
-    return this.store.snapshot(state => state.uiConfig.components.searchBox.config);
+  public get searchBoxConfig(): Observable<any> {
+    return this.store.select(state => state.uiConfig)
+      .filter(state => state.loaded)
+      .map(state => state.components.searchBox.config).take(1);
   }
 
   private routerChanges() {

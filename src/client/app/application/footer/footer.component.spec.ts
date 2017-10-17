@@ -9,18 +9,12 @@ export function main() {
   describe('Footer Component', () => {
     beforeEach(() => {
       mockStore = new MockAppStore();
-      mockStore.createStateSection('uiConfig', { components: { footer: { config: { some: 'config' } } } });
+      mockStore.createStateSection('uiConfig', { loaded: true, components: { footer: { config: { some: 'config' } } } });
 
       componentUnderTest = new FooterComponent(mockStore);
-      componentUnderTest.supportedLanguages = [{ code: 'en', title: 'English' }, { code: 'fr', title: 'French' }];
     });
 
     describe('ngOnInit()', () => {
-      it('should assign the "lang" variable', () => {
-        componentUnderTest.ngOnInit();
-        expect(componentUnderTest.lang).toBe('en');
-      });
-
       it('should assign the "config" variable', () => {
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.config).toEqual({ some: 'config' });
