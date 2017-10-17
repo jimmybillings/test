@@ -43,15 +43,6 @@
                 <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ activeCollection.createdOn | date:'short' }}</span>
                 <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ activeCollection.lastUpdated | date:'short' }}</span>
               </div>
-              <button
-                mat-button
-                color="primary"
-                type="button"
-                *ngIf="collectionIsShared(activeCollection)"
-                (click)="editCollection()" 
-                class="is-outlined mini shared-members">
-                Members
-              </button>
               <div *ngIf="activeCollection.tags" class="mat-caption collection-tags">
                 <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
                 <ul class="meta-data-tags">
@@ -79,6 +70,13 @@
             title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}"
             [disabled]="true">
               <mat-icon>share</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            title="{{ 'COLLECTION.SHARE_MEMBERS_HOVER_TITLE' | translate }}"
+            *ngIf="collectionIsShared(activeCollection)"
+            (click)="showShareMembers(activeCollection)">
+              <mat-icon>group</mat-icon>
           </button>
           <button
             mat-icon-button

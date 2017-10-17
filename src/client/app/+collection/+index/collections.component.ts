@@ -13,6 +13,7 @@ import { UiState } from '../../shared/services/ui.state';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
+import { CollectionShareMembersComponent } from '../components/collection-share-members.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { AppStore } from '../../app.store';
 import { Common } from '../../shared/utilities/common.functions';
@@ -192,6 +193,23 @@ export class CollectionsComponent {
   public editCollection(collection: CollectionSummaryItem) {
     this.dialogService.openComponentInDialog(
       this.collectionFormComponentOptions('edit', Common.clone(collection))
+    );
+  }
+
+  public showShareMembers(collection: CollectionSummaryItem) {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: CollectionShareMembersComponent,
+        dialogConfig: { position: { top: '12%' } },
+        inputOptions: {
+          collection: Common.clone(collection),
+        },
+        outputOptions: [{
+          event: 'close',
+          callback: () => true,
+          closeOnEvent: true
+        }]
+      }
     );
   }
 

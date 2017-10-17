@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { CollectionShowComponent } from './collection-show.component';
+import { Collection } from '../../shared/interfaces/collection.interface';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 import { ActionFactory } from '../../store/actions/active-collection.actions';
 import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
@@ -306,5 +307,48 @@ export function main() {
         expect(mockUserPreferenceService.updateAssetViewPreference).toHaveBeenCalledWith('grid');
       });
     });
+
+    describe('showShareMembers()', () => {
+
+      it('Should call the dialog service to open the share members dialog', () => {
+        componentUnderTest.showShareMembers(({ id: 123, name: 'Collection name', owner: 123 }));
+        expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
+      });
+    });
+
+    describe('collectionIsShared()', () => {
+      it('should return true when collection has editors or viewers', () => {
+
+        expect(componentUnderTest.collectionIsShared(mockCollection())).toBe(true);
+      });
+      it('should return false when collection does not have editors or viewers', () => {
+
+        expect(componentUnderTest.collectionIsShared(mockCollectionNotShared())).toBe(false);
+      });
+    });
+
   });
+}
+
+function mockCollection(): Collection {
+  return {
+    id: 3,
+    siteName: 'core',
+    name: 'Jane Doe',
+    createdOn: new Date('2017-10-12T14:20:25.083Z'),
+    owner: 333,
+    userRole: 'owner',
+    editors: [6, 7, 800],
+    viewers: [5]
+  };
+}
+function mockCollectionNotShared(): Collection {
+  return {
+    id: 4,
+    siteName: 'core',
+    name: 'Bob Dole',
+    createdOn: new Date('2017-07-12T14:20:25.083Z'),
+    owner: 7676,
+    userRole: 'owner'
+  };
 }

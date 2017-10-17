@@ -357,8 +357,6 @@ export function main() {
         });
       });
     });
-
-
   });
 }
 
@@ -367,8 +365,12 @@ function mockCollection(): Collection {
     id: 2,
     siteName: 'core',
     name: 'james billings',
+    createdOn: new Date('2017-10-17T19:20:25.083Z'),
     owner: 123,
-    tags: 'cat, dog, cow'
+    tags: 'cat, dog, cow',
+    userRole: 'owner',
+    editors: [1, 2, 300],
+    viewers: [4]
   };
 }
 

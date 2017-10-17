@@ -39,7 +39,7 @@
               <strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ collection.lastUpdated | date:'short' }}
             </span>
           </div>
-          <button
+          <!-- <button
             mat-button
             color="primary"
             type="button"
@@ -47,7 +47,7 @@
             (click)="edit(collection)" 
             class="is-outlined mini shared-members">
             Members
-          </button>
+          </button> -->
           <div *ngIf="collection.tags" class="mat-caption collection-tags">
             <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
             <ul class="meta-data-tags">
@@ -60,10 +60,29 @@
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
     <div flex-gt-xs="33" layout-sm="100" flex="auto" class="actions">
       <div class="tools" hide-xs flex="100">
-        <button mat-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="edit(collection)"><mat-icon>edit</mat-icon></button>
-        <button mat-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><mat-icon>share</mat-icon></button>
-        <button mat-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [mat-menu-trigger-for]="moreCollectionOptions"
-        (click)="setCurrentCollection(collection)"><mat-icon>more_vert</mat-icon></button>
+        <button mat-icon-button
+          title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" 
+          (click)="edit(collection)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button 
+          title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" 
+          (click)="showShare(collection)" 
+          [disabled]="true">
+          <mat-icon>share</mat-icon></button>
+        <button
+          mat-icon-button
+          title="{{ 'COLLECTION.SHARE_MEMBERS_HOVER_TITLE' | translate }}"
+          *ngIf="collectionIsShared(collection)"
+          (click)="sharedMembers(collection)">
+          <mat-icon>group</mat-icon>
+        </button>
+        <button mat-icon-button 
+          title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" 
+          [mat-menu-trigger-for]="moreCollectionOptions"
+          (click)="setCurrentCollection(collection)">
+          <mat-icon>more_vert</mat-icon>
+        </button>
       </div>
       <div class="premiere-actions">
         <button mat-button class="is-outlined" color="primary" [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">{{'COLLECTION.INDEX.VIEW_BTN_LABEL' | translate }}</button>
