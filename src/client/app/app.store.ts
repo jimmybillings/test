@@ -10,6 +10,10 @@ import * as ActiveCollectionAssetActions from './store/actions/active-collection
 import * as ActiveCollectionAssetState from './store/states/active-collection-asset.state';
 export type ActiveCollectionAssetState = ActiveCollectionAssetState.State;
 
+import * as AssetActions from './store/actions/asset.actions';
+import * as AssetState from './store/states/asset.state';
+export type AssetState = AssetState.State;
+
 import * as CartActions from './store/actions/cart.actions';
 import * as CartState from './store/states/cart.state';
 export type CartState = CartState.State;
@@ -73,6 +77,7 @@ export type MultiLingualState = MultiLingualState.State;
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly activeCollectionAsset: ActiveCollectionAssetActions.ActionFactory;
+  readonly asset: AssetActions.ActionFactory;
   readonly cart: CartActions.ActionFactory;
   readonly cartAsset: CartAssetActions.ActionFactory;
   readonly comment: CommentActions.ActionFactory;
@@ -95,6 +100,7 @@ export interface ActionFactory {
 export interface InternalActionFactory {
   readonly activeCollection: ActiveCollectionActions.InternalActionFactory;
   readonly activeCollectionAsset: ActiveCollectionAssetActions.InternalActionFactory;
+  readonly asset: AssetActions.InternalActionFactory;
   readonly cart: CartActions.InternalActionFactory;
   readonly cartAsset: CartAssetActions.InternalActionFactory;
   readonly comment: CommentActions.InternalActionFactory;
@@ -118,6 +124,7 @@ export interface InternalActionFactory {
 export interface AppState {
   readonly activeCollection: ActiveCollectionState;
   readonly activeCollectionAsset: ActiveCollectionAssetState;
+  readonly asset: AssetState;
   readonly cart: CartState;
   readonly cartAsset: CartAssetState;
   readonly comment: CommentState;
@@ -162,6 +169,7 @@ export class AppStore {
   private readonly actionFactory: ActionFactory = {
     activeCollection: new ActiveCollectionActions.ActionFactory(),
     activeCollectionAsset: new ActiveCollectionAssetActions.ActionFactory(),
+    asset: new AssetActions.ActionFactory(),
     cart: new CartActions.ActionFactory(),
     cartAsset: new CartAssetActions.ActionFactory(),
     comment: new CommentActions.ActionFactory(),
@@ -184,6 +192,7 @@ export class AppStore {
   private readonly internalActionFactory: InternalActionFactory = {
     activeCollection: new ActiveCollectionActions.InternalActionFactory(),
     activeCollectionAsset: new ActiveCollectionAssetActions.InternalActionFactory(),
+    asset: new AssetActions.InternalActionFactory(),
     cart: new CartActions.InternalActionFactory(),
     cartAsset: new CartAssetActions.InternalActionFactory(),
     comment: new CommentActions.InternalActionFactory(),

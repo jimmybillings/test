@@ -81,5 +81,40 @@ export function main() {
         });
       });
     });
+
+    describe('downloadComp()', () => {
+      it('calls the API correctly', () => {
+        serviceUnderTest.downloadComp(47, 'someCompType');
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('renditionType/downloadUrl/47');
+        expect(mockApiService.get).toHaveBeenCalledWithParameters({ type: 'someCompType' });
+      });
+    });
+
+    describe('createShareLink()', () => {
+      it('calls the API correctly', () => {
+        serviceUnderTest.createShareLink({ some: 'pojo' });
+        expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApiService.post).toHaveBeenCalledWithEndpoint('accessInfo');
+        expect(mockApiService.post).toHaveBeenCalledWithBody({ some: 'pojo' });
+      });
+    });
+
+    describe('getClipPreviewData()', () => {
+      it('calls the API correctly', () => {
+        serviceUnderTest.getClipPreviewData(47);
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('renditionType/47');
+        expect(mockApiService.get).toHaveBeenCalledWithParameters({ useType: 'clipPreview' });
+      });
+    });
+
+    describe('getDeliveryOptions()', () => {
+      it('calls the API correctly', () => {
+        serviceUnderTest.getDeliveryOptions(47);
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('renditionType/deliveryOptions/47');
+      });
+    });
   });
 }

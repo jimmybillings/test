@@ -85,6 +85,7 @@ import {
 
 import * as ActiveCollectionState from '../store/states/active-collection.state';
 import * as ActiveCollectionAssetState from '../store/states/active-collection-asset.state';
+import * as AssetState from '../store/states/asset.state';
 import * as CartState from '../store/states/cart.state';
 import * as CartAssetState from '../store/states/cart-asset.state';
 import * as CommentState from '../store/states/comment.state';
@@ -122,6 +123,7 @@ import { sortDefinitions } from './services/sort-definitions.service';
 // WAZEE EFFECTS
 import { ActiveCollectionAssetEffects } from '../store/effects/active-collection-asset.effects';
 import { ActiveCollectionEffects } from '../store/effects/active-collection.effects';
+import { AssetEffects } from '../store/effects/asset.effects';
 import { CartEffects } from '../store/effects/cart.effects';
 import { CartAssetEffects } from '../store/effects/cart-asset.effects';
 import { CommentEffects } from '../store/effects/comment.effects';
@@ -218,6 +220,7 @@ const WAZEE_STORES: any = {
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
   activeCollectionAsset: ActiveCollectionAssetState.reducer,
+  asset: AssetState.reducer,
   cart: CartState.reducer,
   cartAsset: CartAssetState.reducer,
   comment: CommentState.reducer,
@@ -236,6 +239,7 @@ const WAZEE_STORES: any = {
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
   ActiveCollectionAssetEffects,
+  AssetEffects,
   CartEffects,
   CartAssetEffects,
   CommentEffects,
