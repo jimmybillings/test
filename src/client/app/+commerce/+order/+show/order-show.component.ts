@@ -61,6 +61,10 @@ export class OrderShowComponent {
     return !!order.creditMemoForOrderId;
   }
 
+  public shouldShowPaymentBalanceFor(item: Order): boolean {
+    return !!item.paymentDueDate && !!item.paymentBalance;
+  }
+
   public shouldShowDiscountFor(order: Order): boolean {
     return (order.discount || 0) > 0 && !order.creditMemoForOrderId;
   }

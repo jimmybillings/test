@@ -86,6 +86,15 @@
                 {{ order.total | currency:'USD':true:'1.2-2' }}
             </span>
           </div>
+          <span class="payment-balance" *ngIf="shouldShowPaymentBalanceFor(order)">
+            <span class="payment-balance-amount">
+              Balance: <span>{{order.paymentBalance | currency:'USD':true:'1.2-2'}}</span>
+            </span>
+            <span class="payment-balance-due-date">
+              Due Date: <span>{{order.paymentDueDate | date: 'MM/dd/yyyy'}}</span>
+            </span>
+          </span>        
+
         </div>
       </div>
     </div>

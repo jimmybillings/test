@@ -101,6 +101,16 @@ export function main() {
       });
     });
 
+    describe('shouldShowPaymentBalanceFor()', () => {
+      it('returns true if the order has a paymentBalance and a paymentDueDate', () => {
+        expect(componentUnderTest.shouldShowPaymentBalanceFor({ paymentBalance: 12345, paymentDueDate: 'test date' } as any)).toBe(true);
+      });
+
+      it('returns false if the order doesn\'t have both a paymentBalance and a paymentDueDate', () => {
+        expect(componentUnderTest.shouldShowPaymentBalanceFor({ paymentBalance: 12345 } as any)).toBe(false);
+      });
+    });
+
     describe('shouldShowDiscountFor()', () => {
       it('returns true if the order has a discount value greater than zero', () => {
         expect(componentUnderTest.shouldShowDiscountFor({ discount: 16 } as any)).toBe(true);

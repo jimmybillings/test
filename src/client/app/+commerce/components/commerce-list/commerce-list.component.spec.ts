@@ -98,6 +98,23 @@ export function main() {
       });
     });
 
+    describe('shouldShowPaymentBalanceFor()', () => {
+      it('returns true if the order is of type ORDER and has a paymentBalance and a paymentDueDate', () => {
+        componentUnderTest.type = 'ORDER';
+        expect(componentUnderTest.shouldShowPaymentBalanceFor({ paymentBalance: 12345, paymentDueDate: 'test date' } as any)).toBe(true);
+      });
+
+      it('returns false if the order is not of type ORDER but does have both a paymentBalance and a paymentDueDate', () => {
+        componentUnderTest.type = 'QUOTE';
+        expect(componentUnderTest.shouldShowPaymentBalanceFor({ paymentBalance: 12345, paymentDueDate: 'test date' } as any)).toBe(false);
+      });
+
+      it('returns false if the order is of type ORDER but does not have both a paymentBalance and a paymentDueDate', () => {
+        componentUnderTest.type = 'ORDER';
+        expect(componentUnderTest.shouldShowPaymentBalanceFor({ paymentBalance: 12345 } as any)).toBe(false);
+      });
+    });
+
     describe('shouldShowViewOrderButton()', () => {
       it('should return true if the type is order', () => {
         componentUnderTest.type = 'ORDER';
