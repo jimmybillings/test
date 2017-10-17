@@ -22,7 +22,7 @@ import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
 import { QuoteEditService } from '../../shared/services/quote-edit.service';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { WzEvent, Coords, Pojo, Asset } from '../../shared/interfaces/common.interface';
+import { WzEvent, Coords, Pojo, Asset, UiConfigComponents } from '../../shared/interfaces/common.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { AppStore } from '../../app.store';
 import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
@@ -86,10 +86,9 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
 
-    this.store.selectCloned(state => state.uiConfig.components).take(1).subscribe(config => {
-      this.commentFormConfig = config.collectionComment.config.form.items;
-      this.newCollectionFormConfig = config.collection.config;
-    });
+    const config: UiConfigComponents = this.store.snapshotCloned(state => state.uiConfig.components);
+    this.commentFormConfig = config.collectionComment.config.form.items;
+    this.newCollectionFormConfig = config.collection.config;
   }
 
   ngOnDestroy() {

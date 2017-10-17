@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { Cart, Project } from '../../shared/interfaces/commerce.interface';
-import { Asset, Pojo } from '../../shared/interfaces/common.interface';
+import { Asset, Pojo, UiConfigComponents } from '../../shared/interfaces/common.interface';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MatMenuTrigger } from '@angular/material';
 import { SubclipMarkers, durationFrom } from '../../shared/interfaces/subclip-markers';
@@ -64,10 +64,9 @@ export class AssetDetailComponent implements OnInit {
   constructor(private store: AppStore) { }
 
   ngOnInit() {
-    this.store.selectCloned(state => state.uiConfig.components).take(1).subscribe(config => {
-      this.pageSize = parseInt(config.global.config.pageSize.value);
-      this.shareComponentConfig = config.assetSharing.config;
-    });
+    const config: UiConfigComponents = this.store.snapshotCloned(state => state.uiConfig.components);
+    this.pageSize = parseInt(config.global.config.pageSize.value);
+    this.shareComponentConfig = config.assetSharing.config;
   }
 
   public get asset(): EnhancedAsset {
