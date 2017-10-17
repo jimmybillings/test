@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { UiConfig } from '../../shared/services/ui.config';
+import { AppStore } from '../../app.store';
 /**
  * site footer component - renders the footer information
  */
@@ -13,11 +13,12 @@ import { UiConfig } from '../../shared/services/ui.config';
 export class FooterComponent implements OnInit {
   public config: any;
 
-  constructor(public uiConfig: UiConfig) { }
+  constructor(public store: AppStore) { }
 
   ngOnInit() {
-    this.uiConfig.get('footer').take(1).subscribe((config) => {
-      this.config = config.config;
-    });
+    this.store.selectCloned(state => state.uiConfig)
+      .filter(state => state.loaded)
+      .do(config => this.config = config.components.footer.config)
+      .take(1).subscribe();
   }
 }

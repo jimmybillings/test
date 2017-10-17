@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Response } from '@angular/http';
 import { UserService } from '../../shared/services/user.service';
-import { Subscription } from 'rxjs/Subscription';
-import { UiConfig } from '../../shared/services/ui.config';
+import { AppStore } from '../../app.store';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
 import { Observable } from 'rxjs/Observable';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
@@ -18,30 +17,23 @@ import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dial
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit {
   public config: any;
   public serverErrors: ServerErrors = null;
   public newUser: any;
   public successfullySubmitted: boolean = false;
-  private configSubscription: Subscription;
   private terms: any;
 
   constructor(
     public userService: UserService,
-    public uiConfig: UiConfig,
+    public store: AppStore,
     private dialogService: WzDialogService,
-    private ref: ChangeDetectorRef) {
-  }
+    private ref: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
-    this.configSubscription =
-      this.uiConfig.get('register').subscribe((config: any) =>
-        this.config = config.config);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.register.config);
     this.downloadTos();
-  }
-
-  ngOnDestroy() {
-    this.configSubscription.unsubscribe();
   }
 
   public onSubmit(user: any): void {

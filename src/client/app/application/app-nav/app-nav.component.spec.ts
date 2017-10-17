@@ -1,17 +1,57 @@
 import { AppNavComponent } from './app-nav.component';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('App Nav Component', () => {
     let componentUnderTest: AppNavComponent;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
-      componentUnderTest = new AppNavComponent();
+      mockStore = new MockAppStore();
+      componentUnderTest = new AppNavComponent(mockStore);
       componentUnderTest.trigger = { closeMenu: jasmine.createSpy('closeMenu') } as any;
       componentUnderTest.userPreference = {
         toggleSearch: jasmine.createSpy('toggleSearch'),
         toggleCollectionTray: jasmine.createSpy('toggleCollectionTray')
       };
-      componentUnderTest.uiState = { showNewCollection: jasmine.createSpy('showNewCollection') };
+    });
+
+    describe('constructor', () => {
+      describe('sets the headerIsFixed instance variable', () => {
+        it('to observable of true when the \'isFixed\' value is true in the store', () => {
+          mockStore.createStateSection('headerDisplayOptions', { isFixed: true });
+          componentUnderTest = new AppNavComponent(mockStore);
+          let isFixed: boolean;
+          componentUnderTest.headerIsFixed.take(1).subscribe(fixed => isFixed = fixed);
+          expect(isFixed).toBe(true);
+        });
+
+        it('to observable of false when the \'isFixed\' value is false in the store', () => {
+          mockStore.createStateSection('headerDisplayOptions', { isFixed: false });
+          componentUnderTest = new AppNavComponent(mockStore);
+          let isFixed: boolean;
+          componentUnderTest.headerIsFixed.take(1).subscribe(fixed => isFixed = fixed);
+          expect(isFixed).toBe(false);
+        });
+      });
+
+      describe('sets the headerCanBeFixed instance variable', () => {
+        it('to observable of true when the \'canBeFixed\' value is true in the store', () => {
+          mockStore.createStateSection('headerDisplayOptions', { canBeFixed: true });
+          componentUnderTest = new AppNavComponent(mockStore);
+          let canBeFixed: boolean;
+          componentUnderTest.headerCanBeFixed.take(1).subscribe(fixed => canBeFixed = fixed);
+          expect(canBeFixed).toBe(true);
+        });
+
+        it('to observable of false when the \'canBeFixed\' value is false in the store', () => {
+          mockStore.createStateSection('headerDisplayOptions', { canBeFixed: false });
+          componentUnderTest = new AppNavComponent(mockStore);
+          let canBeFixed: boolean;
+          componentUnderTest.headerCanBeFixed.take(1).subscribe(fixed => canBeFixed = fixed);
+          expect(canBeFixed).toBe(false);
+        });
+      });
     });
 
     describe('logOut()', () => {
@@ -38,13 +78,6 @@ export function main() {
       it('should call toggleCollectionTray() on the user preference object', () => {
         componentUnderTest.toggleCollectionTray();
         expect(componentUnderTest.userPreference.toggleCollectionTray).toHaveBeenCalled();
-      });
-    });
-
-    describe('showNewCollection()', () => {
-      it('should call showNewCollection() on the uiState object', () => {
-        componentUnderTest.showNewCollection();
-        expect(componentUnderTest.uiState.showNewCollection).toHaveBeenCalled();
       });
     });
 

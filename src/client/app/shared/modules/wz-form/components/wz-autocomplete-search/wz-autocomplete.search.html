@@ -18,7 +18,7 @@
         mat-button
         title="show filters"
         type="button"
-        *ngIf="(uiState.data | async).filtersAreAvailable"
+        *ngIf="filtersAreAvailable | async"
         (click)="toggleFilters()"
         class="filter-toggle"
         tabindex="-1">

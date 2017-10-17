@@ -1,59 +1,50 @@
 import { Observable } from 'rxjs/Observable';
 
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 import { CommerceCapabilities } from './commerce.capabilities';
 import { QuoteState } from '../../shared/interfaces/commerce.interface';
 
 export function main() {
-  describe('Cart Capabilities', () => {
+  describe('Commerce Capabilities', () => {
     let mockCurrentUserService: any;
-    let mockUiState: any;
+    let mockStore: MockAppStore;
     let mockFeature: any;
     let capabilitiesUnderTest: CommerceCapabilities;
 
     beforeEach(() => {
-      capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature);
+      mockStore = new MockAppStore();
       mockCurrentUserService = {};
-      mockUiState = {};
       mockFeature = {};
+
+      capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, mockStore, mockFeature);
     });
 
     describe('viewCartIcon()', () => {
-      let loggedIn: boolean;
-      let permission: boolean;
-      let headerIsExpanded: boolean;
-
-      beforeEach(() => {
+      function instantiator(loggedIn: boolean, canBeFixed: boolean, permission: boolean) {
         mockCurrentUserService = { loggedIn: () => loggedIn, hasPermission: () => permission };
-        mockUiState = { headerIsExpanded: () => Observable.of(headerIsExpanded) };
+        mockStore.createStateSection('headerDisplayOptions', { canBeFixed: canBeFixed });
         mockFeature = { isAvailable: () => true };
+        return capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, mockStore, mockFeature);
+      }
+
+      it('returns false when header can\'t be fixed and no permission', () => {
+        capabilitiesUnderTest = instantiator(true, false, false);
+        expect(capabilitiesUnderTest.viewCartIcon()).toBe(false);
       });
 
-      it('returns observable of false when header not expanded and no permission', () => {
-        loggedIn = true;
-        headerIsExpanded = false;
-        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
-          .subscribe(answer => expect(answer).toBe(false));
+      it('returns false when header can be fixed but no permission', () => {
+        capabilitiesUnderTest = instantiator(false, true, false);
+        expect(capabilitiesUnderTest.viewCartIcon()).toBe(false);
       });
 
-      it('returns observable of false when header is expanded but no permission', () => {
-        loggedIn = false;
-        headerIsExpanded = true;
-        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
-          .subscribe(answer => expect(answer).toBe(false));
+      it('returns false when header not expanded but has permission', () => {
+        capabilitiesUnderTest = instantiator(false, false, true);
+        expect(capabilitiesUnderTest.viewCartIcon()).toBe(false);
       });
 
-      it('returns observable of false when header not expanded but has permission', () => {
-        loggedIn = false;
-        headerIsExpanded = false;
-        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
-          .subscribe(answer => expect(answer).toBe(false));
-      });
-
-      it('returns observable of true when header is expanded and has permission', () => {
-        loggedIn = true;
-        headerIsExpanded = true;
-        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
-          .subscribe(answer => expect(answer).toBe(true));
+      it('returns true when header is expanded and has permission', () => {
+        capabilitiesUnderTest = instantiator(true, true, true);
+        expect(capabilitiesUnderTest.viewCartIcon()).toBe(true);
       });
     });
 
@@ -68,14 +59,14 @@ export function main() {
       it('returns false when User does not have purchaseOnCredit', () => {
         hasPurchaseOnCredit = false;
 
-        expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).purchaseOnCredit())
+        expect(new CommerceCapabilities(mockCurrentUserService, mockStore, mockFeature).purchaseOnCredit())
           .toBe(false);
       });
 
       it('returns true when User has purchaseOnCredit', () => {
         hasPurchaseOnCredit = true;
 
-        expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).purchaseOnCredit())
+        expect(new CommerceCapabilities(mockCurrentUserService, mockStore, mockFeature).purchaseOnCredit())
           .toBe(true);
       });
     });
@@ -299,7 +290,7 @@ export function main() {
       });
 
       it('Should return true if a user has at least one asset', () => {
-        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature)
+        new CommerceCapabilities(mockCurrentUserService, mockStore, mockFeature)
           .cloneQuote(Observable.of(oneAsset) as any)
           .subscribe((result: boolean) => {
             expect(result).toBe(true);
@@ -307,7 +298,7 @@ export function main() {
       });
 
       it('Should return true if a user has at least one fee item', () => {
-        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature)
+        new CommerceCapabilities(mockCurrentUserService, mockStore, mockFeature)
           .cloneQuote(Observable.of(oneFeeItem) as any)
           .subscribe((result: boolean) => {
             expect(result).toBe(true);
@@ -315,7 +306,7 @@ export function main() {
       });
 
       it('Should return true if a user has both at least one asset AND one fee item', () => {
-        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature)
+        new CommerceCapabilities(mockCurrentUserService, mockStore, mockFeature)
           .cloneQuote(Observable.of(oneFeeItemAndOneAsset) as any)
           .subscribe((result: boolean) => {
             expect(result).toBe(true);
@@ -323,7 +314,7 @@ export function main() {
       });
 
       it('Should return false if a user no assets or fee items', () => {
-        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature)
+        new CommerceCapabilities(mockCurrentUserService, mockStore, mockFeature)
           .cloneQuote(Observable.of(noFeeItemOrAsset) as any)
           .subscribe((result: boolean) => {
             expect(result).toBe(false);
@@ -341,14 +332,14 @@ export function main() {
       it('returns false when User does not have permission', () => {
         hasPermission = false;
 
-        expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).userHas('whatever'))
+        expect(new CommerceCapabilities(mockCurrentUserService, mockStore, mockFeature).userHas('whatever'))
           .toBe(false);
       });
 
       it('returns true when User has permission', () => {
         hasPermission = true;
 
-        expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).userHas('whatever'))
+        expect(new CommerceCapabilities(mockCurrentUserService, mockStore, mockFeature).userHas('whatever'))
           .toBe(true);
       });
     });

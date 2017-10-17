@@ -1,25 +1,38 @@
 import { QuotesComponent } from './quotes.component';
 import { Observable } from 'rxjs/Observable';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Quotes Component', () => {
-    let componentUnderTest: QuotesComponent, mockQuotesService: any, mockUiConfig: any,
-      mockUserCapabilities: any, mockRouter: any, hasPermission: boolean, mockDialogService: any;
+    let componentUnderTest: QuotesComponent;
+    let mockStore: MockAppStore;
+    let mockQuotesService: any;
+    let mockUserCapabilities: any;
+    let mockRouter: any;
+    let hasPermission: boolean;
+    let mockDialogService: any;
 
     beforeEach(() => {
       hasPermission = false;
+
       mockUserCapabilities = { administerQuotes: jasmine.createSpy('administerQuotes').and.returnValue(hasPermission) };
+
       mockQuotesService = {
         data: Observable.of({}),
         getQuotes: jasmine.createSpy('getQuotes').and.returnValue(Observable.of({})),
         setFocused: jasmine.createSpy('setFocused').and.returnValue(Observable.of({})),
         createEmpty: jasmine.createSpy('createEmpty').and.returnValue(Observable.of({}))
       };
-      mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({})) };
+
       mockRouter = { navigate: jasmine.createSpy('navigate') };
+
       mockDialogService = { openConfirmationDialog: jasmine.createSpy('openConfirmationDialog') };
+
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('uiConfig', { components: { cart: { config: { some: 'config' } } } });
+
       componentUnderTest = new QuotesComponent(
-        mockUserCapabilities, mockQuotesService, mockUiConfig, mockRouter, mockDialogService
+        mockUserCapabilities, mockQuotesService, mockStore, mockRouter, mockDialogService
       );
     });
 

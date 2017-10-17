@@ -4,16 +4,16 @@ import { MockBackend } from '@angular/http/testing';
 import { ApiService } from './api.service';
 import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
-import { UiState } from './ui.state';
 import { AppStore } from '../../app.store';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Api Service', () => {
     let mockApiConfig: any;
-    let mockUiState: any;
     let mockStore: MockAppStore;
     let connection: any;
+    let loadingShowSpy: jasmine.Spy;
+    let loadingHideSpy: jasmine.Spy;
 
     const mockBackEnd: MockBackend = new MockBackend();
     const successResponse: Response = new Response(new ResponseOptions({ body: '{"status":200}' }));
@@ -26,11 +26,11 @@ export function main() {
         portal: 'PORTAL'
       };
 
-      mockUiState = jasmine.createSpyObj('mockUiState', ['loadingIndicator']);
-
       mockBackEnd.connections.subscribe((c: any) => connection = c);
 
       mockStore = new MockAppStore();
+      loadingShowSpy = mockStore.createActionFactoryMethod('loadingIndicator', 'show');
+      loadingHideSpy = mockStore.createActionFactoryMethod('loadingIndicator', 'hide');
 
       TestBed.configureTestingModule({
         providers: [
@@ -46,7 +46,6 @@ export function main() {
           BaseRequestOptions,
           { provide: ApiConfig, useValue: mockApiConfig },
           { provide: MockBackend, useValue: mockBackEnd },
-          { provide: UiState, useValue: mockUiState },
           { provide: AppStore, useValue: mockStore }
         ]
       });
@@ -211,35 +210,44 @@ export function main() {
               describe('when loadingIndicator option is not specified', () => {
                 it('is not affected', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loadingIndicator).not.toHaveBeenCalled());
+                    .subscribe(noOp, noOp, () => {
+                      mockStore.expectNoDispatchFor(loadingHideSpy);
+                      mockStore.expectNoDispatchFor(loadingShowSpy);
+                    });
                 });
               });
 
               describe('when loadingIndicator option is false', () => {
                 it('is not affected', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: false })
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loadingIndicator).not.toHaveBeenCalled());
+                    .subscribe(noOp, noOp, () => {
+                      mockStore.expectNoDispatchFor(loadingHideSpy);
+                      mockStore.expectNoDispatchFor(loadingShowSpy);
+                    });
                 });
               });
 
               describe('when loadingIndicator option is true', () => {
                 it('is started with the request and stopped when the response is returned', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: true })
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loadingIndicator.calls.allArgs()).toEqual([[true], [false]]));
+                    .subscribe(noOp, noOp, () => {
+                      mockStore.expectDispatchFor(loadingShowSpy);
+                      mockStore.expectDispatchFor(loadingHideSpy);
+                    });
                 });
               });
 
               describe('when loadingIndicator option is onBeforeRequest', () => {
                 it('is only started with the request and not turned off when the response is returned', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: 'onBeforeRequest' })
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loadingIndicator.calls.allArgs()).toEqual([[true]]));
+                    .subscribe(noOp, noOp, () => mockStore.expectDispatchFor(loadingShowSpy));
                 });
               });
 
               describe('when loadingIndicator option is offAfterResponse', () => {
                 it('is not started with the request but is stopped when the response is returned', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: 'offAfterResponse' })
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loadingIndicator.calls.allArgs()).toEqual([[false]]));
+                    .subscribe(noOp, noOp, () => mockStore.expectDispatchFor(loadingHideSpy));
                 });
               });
             });

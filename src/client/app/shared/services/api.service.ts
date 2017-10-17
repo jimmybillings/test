@@ -3,7 +3,6 @@ import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSe
 import { Observable } from 'rxjs/Observable';
 import { ApiConfig } from './api.config';
 import { Api, ApiOptions, ApiParameters, ApiBody, ApiErrorResponse } from '../interfaces/api.interface';
-import { UiState } from './ui.state';
 import { AppStore } from '../../app.store';
 
 @Injectable()
@@ -14,7 +13,6 @@ export class ApiService {
   constructor(
     protected http: Http,
     protected apiConfig: ApiConfig,
-    protected uiState: UiState,
     protected store: AppStore
   ) {
   }
@@ -68,11 +66,11 @@ export class ApiService {
   }
 
   protected showLoadingIf(loadingOption: boolean) {
-    if (loadingOption) this.uiState.loadingIndicator(true);
+    if (loadingOption) this.store.dispatch(factory => factory.loadingIndicator.show());
   }
 
   protected hideLoadingIf(loadingOption: boolean) {
-    if (loadingOption) this.uiState.loadingIndicator(false);
+    if (loadingOption) this.store.dispatch(factory => factory.loadingIndicator.hide());
   }
 
   protected urlFor(api: Api, endpoint: string) {

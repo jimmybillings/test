@@ -1,32 +1,47 @@
 import { Observable } from 'rxjs/Observable';
 import { CollectionShowComponent } from './collection-show.component';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
-import { ActionFactory } from '../../store/actions/active-collection.actions';
 import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 
 export function main() {
   describe('Collection Show Component', () => {
-    let componentUnderTest: CollectionShowComponent, mockWindow: any, mockStore: MockAppStore,
-      mockCapabilitiesService: any, mockChangeDetectorRef: any, mockRoute: any, mockUiConfig: any, getCountsSpy: jasmine.Spy,
-      mockCollectionsService: any, mockDialogService: any, mockRouter: any, mockAsset: any, handleCustomErrorSpy: jasmine.Spy,
-      snackBarDisplaySpy: jasmine.Spy, canAdministerQuotes: boolean = true, mockQuoteEditService: any,
-      mockDownloadcompResponse: any = {}, mockCartService: any, mockDocumentService: any,
-      mockUserPreferenceService: any;
+    let componentUnderTest: CollectionShowComponent;
+    let mockStore: MockAppStore;
+    let mockWindow: any;
+    let mockCapabilitiesService: any;
+    let mockChangeDetectorRef: any;
+    let mockRoute: any;
+    let getCountsSpy: jasmine.Spy;
+    let mockCollectionsService: any;
+    let mockDialogService: any;
+    let mockRouter: any;
+    let mockAsset: any;
+    let handleCustomErrorSpy: jasmine.Spy;
+    let snackBarDisplaySpy: jasmine.Spy;
+    let canAdministerQuotes: boolean = true;
+    let mockQuoteEditService: any;
+    let mockDownloadcompResponse: any = {};
+    let mockCartService: any;
+    let mockDocumentService: any;
+    let mockUserPreferenceService: any;
 
     beforeEach(() => {
       mockWindow = { nativeWindow: { location: { href: {} }, innerWidth: 200 } };
-      mockRouter = {
-        navigate: jasmine.createSpy('navigate')
-      };
+
+      mockRouter = { navigate: jasmine.createSpy('navigate') };
+
       mockCapabilitiesService = {
         editCollection: jasmine.createSpy('editCollection').and.returnValue(Observable.of(true)),
         administerQuotes: () => canAdministerQuotes
       };
+
       mockAsset = {
         downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of(mockDownloadcompResponse)),
         getClipPreviewData: jasmine.createSpy('getClipPreviewData').and.returnValue(Observable.of({ url: 'test url' }))
       };
+
       mockChangeDetectorRef = { markForCheck: jasmine.createSpy('markForCheck') };
+
       mockCollectionsService = {
         getByIdAndDuplicate: jasmine.createSpy('getByIdAndDuplicate').and.returnValue(Observable.of({
           collection: {
@@ -40,26 +55,31 @@ export function main() {
         })),
         delete: jasmine.createSpy('delete').and.returnValue(Observable.of({}))
       };
+
       mockRoute = { params: Observable.of({ id: 1, some: 'params' }) };
-      mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: [{ some: 'item' }] } } }))
-      };
+
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({}))
       };
+
       mockQuoteEditService = {
         addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote')
       };
+
       mockCartService = {
         addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart')
       };
+
       mockDocumentService = {
         body: { classList: { add: jasmine.createSpy('add'), remove: jasmine.createSpy('remove') } }
       };
+
       mockUserPreferenceService = {
         updateAssetViewPreference: jasmine.createSpy('updateAssetViewPreference')
       };
+
       mockStore = new MockAppStore();
+
       mockStore.createStateSection('activeCollection', {
         collection: {
           id: 123, assets: {
@@ -77,14 +97,23 @@ export function main() {
           }
         }, loaded: true
       });
+
+      mockStore.createStateSection('uiConfig', {
+        components: {
+          collectionComment: { config: { form: { items: [{ some: 'commentConfig' }] } } },
+          collection: { config: { some: 'collectionConfig' } }
+        }
+      });
       mockStore.createStateSection('comment', { collection: { pagination: { totalCount: 3 } } });
       getCountsSpy = mockStore.createActionFactoryMethod('comment', 'getCounts');
       handleCustomErrorSpy = mockStore.createActionFactoryMethod('error', 'handleCustomError');
       snackBarDisplaySpy = mockStore.createActionFactoryMethod('snackbar', 'display');
-      componentUnderTest = new CollectionShowComponent(mockCapabilitiesService, mockRouter,
-        mockCollectionsService, mockUiConfig, mockCartService, mockUserPreferenceService,
-        mockAsset, mockRoute, mockWindow, mockDialogService, mockQuoteEditService,
-        mockDocumentService, mockStore, mockChangeDetectorRef);
+
+      componentUnderTest = new CollectionShowComponent(
+        mockCapabilitiesService, mockRouter, mockCollectionsService, mockCartService,
+        mockUserPreferenceService, mockAsset, mockRoute, mockWindow, mockDialogService,
+        mockQuoteEditService, mockDocumentService, mockStore, mockChangeDetectorRef
+      );
     });
 
     describe('ngOnInit()', () => {
@@ -99,6 +128,11 @@ export function main() {
 
         it('sets up the commentParentObject instance variable', () => {
           expect(componentUnderTest.commentParentObject).toEqual({ objectType: 'collection', objectId: 123 });
+        });
+
+        it('sets up the config instance vars', () => {
+          expect(componentUnderTest.commentFormConfig).toEqual([{ some: 'commentConfig' }]);
+          expect(componentUnderTest.newCollectionFormConfig).toEqual({ some: 'collectionConfig' });
         });
       });
 
@@ -197,9 +231,10 @@ export function main() {
         mockAsset = {
           downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of(mockDownloadcompResponse))
         };
-        componentUnderTest = new CollectionShowComponent(mockCapabilitiesService, mockRouter,
-          mockCollectionsService, mockUiConfig, null, null, mockAsset, mockRoute, mockWindow,
-          mockDialogService, null, null, mockStore, mockChangeDetectorRef);
+        componentUnderTest = new CollectionShowComponent(
+          mockCapabilitiesService, mockRouter, mockCollectionsService, null, null,
+          mockAsset, mockRoute, mockWindow, mockDialogService, null, null, mockStore, mockChangeDetectorRef
+        );
 
         componentUnderTest.downloadComp({ assetId: 1, compType: 'comp' });
         expect(handleCustomErrorSpy).toHaveBeenCalledWith('COMPS.NO_COMP');
