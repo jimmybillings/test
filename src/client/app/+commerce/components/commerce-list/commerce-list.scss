@@ -77,6 +77,26 @@
           letter-spacing: 0;
         }
       }
+      .payment-balance {
+        display: block;
+        margin-top: -10px;
+        .payment-balance-amount {
+          font-size: 12px;
+          display: block;
+          height: 20px;
+          span {
+            font-weight: bold;
+          }
+        }
+        .payment-balance-due-date {
+          font-size: 12px;
+          display: block;
+          height: 30px;
+          span {
+            font-weight: bold;
+          }
+        }
+      }
       a, button {
         margin-bottom: 10px;
         &:last-child {

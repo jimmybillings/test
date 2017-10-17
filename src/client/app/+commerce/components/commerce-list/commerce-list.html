@@ -5,7 +5,7 @@
     flex="100" layout="row"
     layout-xs="column"
     [ngClass]="{'focused': type === 'QUOTE' && item.focused}">
-    <div flex="100" flex-gt-sm="66">
+    <div flex="100" flex-gt-sm="55">
       <div flex="100" layout="row" layout-xs="column">
         <div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding class="details">
           <div>
@@ -53,7 +53,7 @@
       </div>
     </div>
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
-    <div flex-gt-sm="33" layout-sm="100" flex="auto" class="mat-headline">
+    <div flex-gt-sm="45" layout-sm="100" flex="auto" class="mat-headline">
       <div class="total" layout="column" layout-align="right center" layout-align-gt-sm="space-between end">
         <div flex>
           <h5 flex *ngIf="type === 'QUOTE'" class="status {{ item.quoteStatus.toLowerCase() }}">
@@ -75,6 +75,14 @@
               {{ item.total | currency:'USD':true:'1.2-2' }}
             </span>
           </div>
+          <span class="payment-balance" *ngIf="shouldShowPaymentBalanceFor(item)">
+            <span class="payment-balance-amount">
+              Balance: <span>{{item.paymentBalance | currency:'USD':true:'1.2-2'}}</span>
+            </span>
+            <span class="payment-balance-due-date">
+              Due Date: <span>{{item.paymentDueDate | date: 'MM/dd/yyyy'}}</span>
+            </span>
+          </span>
         </div>
         <div flex layout="row" layout-align="end end" layout-sm="column">
           <button

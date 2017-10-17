@@ -46,6 +46,33 @@ order-show-component .project li.fee-item > div > div > div  {
     padding-left: 16px;
   }
 }
+order-show-component {
+  .payment-balance {
+    display: block;
+    margin-top: -5px;
+    text-align: right;
+    .payment-balance-amount {
+      font-size: 12px;
+      display: block;
+      height: 20px;
+      span {
+        font-weight: bold;
+        min-width: 130px;
+        display: inline-block;
+      }
+    }
+    .payment-balance-due-date {
+      font-size: 12px;
+      display: block;
+      height: 20px;
+      span {
+        font-weight: bold;
+        min-width: 130px;
+        display: inline-block;
+      }
+    }
+  }
+}
 order-show-component .project li.cart-asset .transcode-icon {
   margin-right: 6px;
   font-size: 22px;
