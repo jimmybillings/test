@@ -148,6 +148,7 @@
             </quote-tab>
             <quote-billing-tab 
               *ngIf="tabLabelKey === 'billing'"
+              [loaded]="selectedTabIndex === 1"
               (notify)="onNotification($event)">
             </quote-billing-tab>
             <quote-payment-tab 
