@@ -200,11 +200,11 @@ const actionSpecFileFor = (section: string): string => {
   return `import { ActionFactory, InternalActionFactory } from './${section}.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
-  export function main() {
-    describe('${describeHeader} Actions', () => {
-      let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
-    });
-  }
+export function main() {
+  describe('${describeHeader} Actions', () => {
+    let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
+  });
+}
 `;
 }
 
