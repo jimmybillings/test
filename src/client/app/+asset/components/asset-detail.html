@@ -62,8 +62,7 @@
             [disabled]="!(hasDeliveryOptions | async)"
             mat-icon-button
             [mat-menu-trigger-for]="downloadCompMenu"
-            title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 
-              'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED') | translate }}">
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}">
               <mat-icon>file_download</mat-icon>
           </button>
 

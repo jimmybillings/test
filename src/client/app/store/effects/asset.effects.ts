@@ -13,8 +13,6 @@ import * as CartAssetActions from '../actions/cart-asset.actions';
 import * as ActiveCollectionAssetActions from '../actions/active-collection-asset.actions';
 import * as OrderAssetActions from '../actions/order-asset.actions';
 
-
-
 @Injectable()
 export class AssetEffects {
   public loadSuccessActions: any = [
@@ -39,9 +37,8 @@ export class AssetEffects {
   public getDeliveryOptionsOnLoadSuccess: Observable<Action> = this.actions.ofType(... this.loadSuccessActions)
     .switchMap((action: any) =>
       this.service.getDeliveryOptions(action.activeAsset.assetId)
-        .map(res => {
-          return this.store.create(factory => factory.asset.setDeliveryOptions(!!res.list));
-        })
+        .map(res => this.store.create(factory => factory.asset.setDeliveryOptions(!!res.list)))
+        .catch(error => Observable.of(this.store.create(factory => factory.asset.setDeliveryOptionsFailure(error))))
     );
 
   @Effect()
