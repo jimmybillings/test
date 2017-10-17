@@ -5,8 +5,11 @@ import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 export function main() {
   describe('Collections Component', () => {
     let componentUnderTest: CollectionsComponent;
-    let mockCollectionsService: any, mockDialogService: any, mockUiConfig: any, mockCollectionContext: any,
-      mockStore: any, activeCollectionSetter: jasmine.Spy;
+    let mockCollectionsService: any;
+    let mockDialogService: any;
+    let mockCollectionContext: any;
+    let mockStore: MockAppStore;
+    let activeCollectionSetter: jasmine.Spy;
 
     beforeEach(() => {
       mockCollectionsService = {
@@ -32,16 +35,16 @@ export function main() {
         delete: jasmine.createSpy('delete').and.returnValue(Observable.of({})),
         load: jasmine.createSpy('load').and.returnValue(Observable.of({}))
       };
+
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog')
       };
+
       mockCollectionContext = {
         data: Observable.of({ mockCollectionContext: 'mock data' }),
         updateCollectionOptions: jasmine.createSpy('updateCollectionOptions')
       };
-      mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: [{ some: 'item' }] } } }))
-      };
+
       mockStore = new MockAppStore();
       mockStore.createStateSection('activeCollection', {
         collection: {
@@ -55,9 +58,12 @@ export function main() {
           loaded: true
         }
       });
+      mockStore.createStateSection('uiConfig', { components: { collection: { config: { some: 'config' } } } });
       activeCollectionSetter = mockStore.createActionFactoryMethod('activeCollection', 'set');
-      componentUnderTest = new CollectionsComponent(null, mockCollectionsService, mockCollectionContext, null,
-        mockUiConfig, null, mockDialogService, mockStore);
+
+      componentUnderTest = new CollectionsComponent(
+        null, mockCollectionsService, mockCollectionContext, null, mockDialogService, mockStore
+      );
     });
 
     describe('activeCollection() - get', () => {

@@ -11,7 +11,6 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
 })
 
 export class CollectionSortDdComponent {
-  @Input() uiState: any;
   @Input() currentSort: any;
   @Output() sort = new EventEmitter();
   @Output() close = new EventEmitter();
@@ -62,10 +61,6 @@ export class CollectionSortDdComponent {
         }
       }
     ];
-  }
-
-  public closeCollectionsSortDd(): void {
-    this.uiState.closeCollectionsSortDd();
   }
 
   public onSortResults(sortId: any) {

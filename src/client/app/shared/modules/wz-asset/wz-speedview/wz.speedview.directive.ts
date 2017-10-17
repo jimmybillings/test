@@ -33,7 +33,6 @@ import {
 import { Coords, Viewport, Asset } from '../../../interfaces/common.interface';
 import { EnhancedAsset } from '../../../interfaces/enhanced-asset';
 import { SpeedViewPositionCalculator } from './wz.speedview-position-calculator';
-import { State as SpeedPreviewStore } from '../../../../store/states/speed-preview.state';
 import { WzSpeedviewComponent } from './wz.speedview.component';
 
 import { AppStore } from '../../../../app.store';

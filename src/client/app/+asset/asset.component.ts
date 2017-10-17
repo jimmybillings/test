@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
-import { AssetService } from '../store/services/asset.service';
+import { AssetService } from '../store/asset/asset.service';
 import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
 import { WzEvent, SelectedPriceAttributes } from '../shared/interfaces/common.interface';
-import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
-import { UiState } from '../shared/services/ui.state';
 import { Observable } from 'rxjs/Observable';
 import { MatDialogRef } from '@angular/material';
 import { WzDialogService } from '../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -54,7 +52,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   public pricingAttributes: Array<PriceAttribute>;
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
-  public pageSize: number = 50;
   public commentParentObject: CommentParentObject;
   private assetSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -67,9 +64,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   constructor(
     public currentUser: CurrentUserService,
     public userCan: Capabilities,
-    public uiState: UiState,
     public assetService: AssetService,
-    public uiConfig: UiConfig,
     public window: WindowRef,
     private router: Router,
     private route: ActivatedRoute,
@@ -84,10 +79,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit(): void {
-    this.uiConfig.get('global').take(1).subscribe(config => {
-      this.pageSize = config.config.pageSize.value;
-    });
-
     this.routeSubscription = this.route.params.subscribe((params: any) => {
       this.commentParentObject = this.commentParentObjectFromRoute(params);
     });

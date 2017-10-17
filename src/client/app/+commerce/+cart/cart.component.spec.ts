@@ -5,19 +5,22 @@ import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Cart Component', () => {
-    let componentUnderTest: CartComponent, mockCapabilities: any, mockAppStore: MockAppStore, mockUiConfig: any,
-      mockCartService: any, mockChangeDetectorRef: any;
+    let componentUnderTest: CartComponent;
+    let mockCapabilities: any;
+    let mockAppStore: MockAppStore;
+    let mockCartService: any;
+    let mockChangeDetectorRef: any;
 
     beforeEach(() => {
       mockCapabilities = { administerQuotes: () => false };
+
       mockAppStore = new MockAppStore();
-      mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: ['config'] } } }))
-      };
+      mockAppStore.createStateSection('uiConfig', { components: { cartComment: { config: { form: { items: ['config'] } } } } });
+
       mockCartService = { state: { data: { id: 77 } } };
       mockChangeDetectorRef = { markForCheck: () => { } };
       componentUnderTest = new CartComponent(
-        mockCapabilities, mockAppStore, mockUiConfig, mockCartService, mockChangeDetectorRef
+        mockCapabilities, mockAppStore, mockCartService, mockChangeDetectorRef
       );
     });
 
@@ -39,7 +42,6 @@ export function main() {
       });
 
       it('gets the uiConfig for the comment form', () => {
-        expect(mockUiConfig.get).toHaveBeenCalledWith('cartComment');
         expect(componentUnderTest.commentFormConfig).toEqual(['config']);
       });
 

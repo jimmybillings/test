@@ -1,7 +1,8 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, ViewChild } from '@angular/core';
-import { UiState } from '../../../../services/ui.state';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { WzInputSuggestionsComponent } from '../wz-input-suggestions/wz-input-suggestions.component';
+import { AppStore } from '../../../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -13,7 +14,6 @@ export class WzAutocompleteSearchComponent {
   @Input() public config: any;
   @Input() public currentUser: any;
   @Input() userPreference: any;
-  @Input() public uiState: UiState;
   @Input()
   set state(value: string) {
     this.updateSearchBoxValue(value);
@@ -32,7 +32,7 @@ export class WzAutocompleteSearchComponent {
 
   @ViewChild(WzInputSuggestionsComponent) public wzInputSuggestions: WzInputSuggestionsComponent;
 
-  constructor(public fb: FormBuilder) {
+  constructor(public fb: FormBuilder, private store: AppStore) {
     this.searchForm = this.fb.group({ query: ['', Validators.required] });
   }
 
@@ -51,6 +51,10 @@ export class WzAutocompleteSearchComponent {
 
   public toggleSearch(): void {
     this.userPreference.toggleSearch();
+  }
+
+  public get filtersAreAvailable(): Observable<boolean> {
+    return this.store.select(state => state.headerDisplayOptions.filtersAreAvailable);
   }
 
   private updateSearchBoxValue(searchParams: any) {

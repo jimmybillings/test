@@ -5,21 +5,18 @@ import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Reset Password Component', () => {
-    let mockUiConfig: any;
     let mockUser: any;
     let mockActivatedRoute: any;
     let mockRouter: any;
     let mockRef: any;
     let mockCurrentUserService: any;
     let mockNotification: any;
-    let mockStore: MockAppStore;
     let componentUnderTest: ResetPasswordComponent;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
       mockRef = { markForCheck: function () { } };
-      mockUiConfig = {
-        get: () => { return Observable.of({ config: { someConfig: 'test' } }); }
-      };
+
       mockUser = {
         resetPassword: jasmine.createSpy('resetPassword').and.returnValue(
           Observable.of({
@@ -32,24 +29,32 @@ export function main() {
           Observable.of({})
         )
       };
+
       mockActivatedRoute = {
         snapshot: { params: { share_key: 'sldkjf2938sdlkjf289734' } }
       };
+
       mockRouter = { navigate: jasmine.createSpy('navigate') };
+
       mockCurrentUserService = {
         set: jasmine.createSpy('set'),
         loggedIn: jasmine.createSpy('loggedIn').and.returnValue(true)
       };
+
       mockStore = new MockAppStore();
+      mockStore.createStateSection('uiConfig', { components: { changePassword: { config: { some: 'config' } } } });
+
       componentUnderTest = new ResetPasswordComponent(
-        mockStore, mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUserService, mockRef
+        mockUser, mockStore, mockActivatedRoute, mockRouter,
+        mockCurrentUserService, mockRef
       );
     });
 
     describe('ngOnInit()', () => {
       it('Grabs the component config and assigns to an instance variable', () => {
         componentUnderTest.ngOnInit();
-        expect(componentUnderTest.config).toEqual({ someConfig: 'test' });
+
+        expect(componentUnderTest.config).toEqual({ some: 'config' });
       });
     });
 
@@ -91,7 +96,7 @@ export function main() {
         beforeEach(() => {
           mockActivatedRoute = { snapshot: { params: {} } };
           componentUnderTest = new ResetPasswordComponent(
-            mockStore, mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUserService, mockRef
+            mockUser, mockStore, mockActivatedRoute, mockRouter, mockCurrentUserService, mockRef
           );
           componentUnderTest.ngOnInit();
         });
@@ -114,26 +119,11 @@ export function main() {
             Observable.throw(errorResponse))
         };
         componentUnderTest = new ResetPasswordComponent(
-          mockStore, mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUserService, mockRef
+          mockUser, mockStore, mockActivatedRoute, mockRouter, mockCurrentUserService, mockRef
         );
         componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
         expect(componentUnderTest.serverErrors).toEqual({ newPassword: 'Needs a number and letter' });
       });
     });
-
-    describe('ngOnDestroy()', () => {
-      it('unsubscribes from the UI config to prevent memory leakage', () => {
-        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
-        let mockObservable = { subscribe: () => mockSubscription };
-        mockUiConfig = { get: () => mockObservable };
-        componentUnderTest = new ResetPasswordComponent(
-          mockStore, mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUserService, mockRef
-        );
-        componentUnderTest.ngOnInit();
-        componentUnderTest.ngOnDestroy();
-        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
-      });
-    });
-
   });
 }

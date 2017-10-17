@@ -29,6 +29,9 @@ export class MockAppStore extends AppStore {
       comment: {} as any,
       dialog: {} as any,
       error: {} as any,
+      headerDisplayOptions: {} as any,
+      loadingIndicator: {} as any,
+      multiLingual: {} as any,
       notifier: {} as any,
       order: {} as any,
       orderAsset: {} as any,
@@ -40,6 +43,7 @@ export class MockAppStore extends AppStore {
       searchAsset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
+      uiConfig: {} as any
     };
 
     this._internalActionFactory = {
@@ -51,6 +55,9 @@ export class MockAppStore extends AppStore {
       comment: {} as any,
       dialog: {} as any,
       error: {} as any,
+      headerDisplayOptions: {} as any,
+      loadingIndicator: {} as any,
+      multiLingual: {} as any,
       notifier: {} as any,
       order: {} as any,
       orderAsset: {} as any,
@@ -62,6 +69,7 @@ export class MockAppStore extends AppStore {
       searchAsset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
+      uiConfig: {} as any
     };
 
     this._state = {
@@ -71,6 +79,9 @@ export class MockAppStore extends AppStore {
       cart: {} as any,
       cartAsset: {} as any,
       comment: {} as any,
+      headerDisplayOptions: {} as any,
+      loadingIndicator: {} as any,
+      multiLingual: {} as any,
       order: {} as any,
       orderAsset: {} as any,
       quoteEdit: {} as any,
@@ -79,7 +90,8 @@ export class MockAppStore extends AppStore {
       quoteShowAsset: {} as any,
       searchAsset: {} as any,
       snackbar: {} as any,
-      speedPreview: {} as any
+      speedPreview: {} as any,
+      uiConfig: {} as any
     };
 
     this._ngrxDispatch = jasmine.createSpy('ngrx dispatch');
@@ -97,6 +109,14 @@ export class MockAppStore extends AppStore {
     });
 
     spyOn(this, 'snapshot').and.callFake((stateMapper: StateMapper<any>) =>
+      stateMapper(this._state)
+    );
+
+    spyOn(this, 'selectCloned').and.callFake((stateMapper: StateMapper<any>) => {
+      try { return Observable.of(stateMapper(this._state)); } catch (exception) { return Observable.empty(); };
+    });
+
+    spyOn(this, 'snapshotCloned').and.callFake((stateMapper: StateMapper<any>) =>
       stateMapper(this._state)
     );
 
@@ -130,7 +150,8 @@ export class MockAppStore extends AppStore {
       throw new Error(`Section '${sectionName}' does not exist in the ActionFactory`);
     }
     return this._actionFactory[sectionName][methodName] =
-      jasmine.createSpy(`'${methodName} action creator'`).and.returnValue(this.mockActionFrom(methodName));
+      jasmine.createSpy(`'${sectionName}.${methodName} action creator'`)
+        .and.returnValue(this.mockActionFrom(sectionName, methodName));
   }
 
   public createInternalActionFactoryMethod(sectionName: string, methodName: string): jasmine.Spy {
@@ -138,7 +159,8 @@ export class MockAppStore extends AppStore {
       throw new Error(`Section '${sectionName}' does not exist in the InternalActionFactory`);
     }
     return this._internalActionFactory[sectionName][methodName] =
-      jasmine.createSpy(`'${methodName} internal action creator'`).and.returnValue(this.mockActionFrom(methodName));
+      jasmine.createSpy(`'${sectionName}.${methodName} internal action creator'`)
+        .and.returnValue(this.mockActionFrom(sectionName, methodName));
   }
 
   public expectDispatchFor(actionFactoryMethod: jasmine.Spy, ...expectedParameters: any[]): void {
@@ -151,10 +173,10 @@ export class MockAppStore extends AppStore {
   }
 
   public getActionCreatedBy(actionFactoryMethod: jasmine.Spy): any {
-    return this.mockActionFrom(actionFactoryMethod.and.identity().replace('\'', '').split(' ')[0]);
+    return { actionFrom: actionFactoryMethod.and.identity().replace('\'', '').split(' ')[0] };
   }
 
-  private mockActionFrom(actionFactoryMethodName: string): any {
-    return { actionFrom: actionFactoryMethodName };
+  private mockActionFrom(actionFactorySectionName: string, actionFactoryMethodName: string): any {
+    return { actionFrom: `${actionFactorySectionName}.${actionFactoryMethodName}` };
   }
 }

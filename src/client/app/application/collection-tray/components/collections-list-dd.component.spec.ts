@@ -6,7 +6,7 @@ export function main() {
     let componentUnderTest: CollectionListDdComponent;
 
     beforeEach(() => {
-      componentUnderTest = new CollectionListDdComponent(null, null, null, null, null);
+      componentUnderTest = new CollectionListDdComponent(null, null, null, null);
     });
 
     it('***** HASN\'T BEEN TESTED YET! *****', () => {

@@ -6,7 +6,6 @@ import { CurrentUserService } from '../../../shared/services/current-user.servic
 import { Address, User, ViewAddress, AddressKeys } from '../../../shared/interfaces/user.interface';
 import { RowFormFields } from '../../../shared/interfaces/forms.interface';
 import { CheckoutState } from '../../../shared/interfaces/commerce.interface';
-import { UiConfig } from '../../../shared/services/ui.config';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzAddressFormComponent } from '../../../shared/modules/wz-form/components/wz-address-form/wz.address-form.component';
 import { Observable } from 'rxjs/Observable';
@@ -25,16 +24,15 @@ export class CommerceBillingTab extends Tab implements OnInit {
   constructor(
     public userCan: CommerceCapabilities,
     protected commerceService: CartService | QuoteService,
-    protected uiConfig: UiConfig,
     protected user: UserService,
     protected currentUser: CurrentUserService,
-    protected dialog: WzDialogService) {
+    protected dialog: WzDialogService
+  ) {
     super();
   }
 
   ngOnInit() {
     this.orderInProgress = this.commerceService.checkoutData;
-    // this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
     this.fetchAddresses().subscribe();
   }
 

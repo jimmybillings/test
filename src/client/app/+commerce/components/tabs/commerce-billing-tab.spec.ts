@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   describe('Billing Tab Component', () => {
     let componentUnderTest: CommerceBillingTab;
-    let mockCartService: any, mockUiConfig: any, mockUserService: any, mockDialogService: any, mockCurrentUserService: any;
+    let mockCartService: any, mockUserService: any, mockDialogService: any, mockCurrentUserService: any;
     let mockUserAccountPermission: boolean;
 
     let mockEmptyAddress: ViewAddress = {
@@ -57,10 +57,6 @@ export function main() {
         updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
       };
 
-      mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { rows: [{ name: '', value: '' }] } } }))
-      };
-
       mockUserService = {
         getAddresses: jasmine.createSpy('getAddresses').and.returnValue(Observable.of([mockAddressA, mockAddressB])),
         addBillingAddress: jasmine.createSpy('addBillingAddress').and.returnValue(Observable.of({})),
@@ -76,7 +72,7 @@ export function main() {
       };
 
       componentUnderTest = new CommerceBillingTab(
-        null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, mockDialogService
+        null, mockCartService, mockUserService, mockCurrentUserService, mockDialogService
       );
     });
 
@@ -288,7 +284,7 @@ export function main() {
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
         componentUnderTest = new CommerceBillingTab(
-          null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
+          null, mockCartService, mockUserService, mockCurrentUserService, null
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.userCanProceed.take(1).subscribe((data: any) => {
@@ -305,7 +301,7 @@ export function main() {
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
         componentUnderTest = new CommerceBillingTab(
-          null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
+          null, mockCartService, mockUserService, mockCurrentUserService, null
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.userCanProceed.take(1).subscribe((data: any) => {
