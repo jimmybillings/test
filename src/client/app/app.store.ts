@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store, Action } from '@ngrx/store';
+import { Common } from './shared/utilities/common.functions';
 
 import * as ActiveCollectionActions from './store/active-collection/active-collection.actions';
 import * as ActiveCollectionState from './store/active-collection/active-collection.state';
@@ -250,6 +251,16 @@ export class AppStore {
   public snapshot<T>(stateMapper: StateMapper<T>): T {
     let snapshot: T;
     this.select(stateMapper).take(1).subscribe((latest: T) => snapshot = latest);
+    return snapshot;
+  }
+
+  public selectCloned<T>(stateMapper: StateMapper<T>): Observable<T> {
+    return this.ngrxStore.select(stateMapper).map(state => Common.clone(state));
+  }
+
+  public snapshotCloned<T>(stateMapper: StateMapper<T>): T {
+    let snapshot: T;
+    this.select(stateMapper).take(1).subscribe((latest: T) => snapshot = Common.clone(latest));
     return snapshot;
   }
 

@@ -5,7 +5,7 @@ import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 export function main() {
   const stateSpecHelper: StateSpecHelper = new StateSpecHelper();
 
-  describe('Order Reducer', () => {
+  describe('Loading Indicator Reducer', () => {
     stateSpecHelper.setReducerTestModules({
       actions: LoadingIndicatorActions,
       state: LoadingIndicatorState,

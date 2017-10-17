@@ -14,11 +14,11 @@ export function reducer(state: State = initialState, action: LoadingIndicatorAct
   switch (action.type) {
 
     case LoadingIndicatorActions.Show.Type: {
-      return { ...state, show: true };
+      return { show: true };
     }
 
     case LoadingIndicatorActions.Hide.Type: {
-      return { ...state, show: false };
+      return { show: false };
     }
 
     default: {

@@ -32,7 +32,7 @@ export class QuotesComponent {
     this.quotes = this.quotesService.data;
     this.buildFilterOptions();
     this.buildSortOptions();
-    this.config = this.store.snapshot(state => state.uiConfig.components.cart.config);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
   }
 
   public changePage(i: string): void {

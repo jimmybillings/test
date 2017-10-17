@@ -31,8 +31,8 @@ export class InternalActionFactory extends ActionFactory {
     return new Fix();
   }
 
-  public unFix(): UnFix {
-    return new UnFix();
+  public unfix(): Unfix {
+    return new Unfix();
   }
 
   public enableFilters(): EnableFilters {
@@ -87,9 +87,9 @@ export class Fix implements Action {
   public readonly type = Fix.Type;
 }
 
-export class UnFix implements Action {
-  public static readonly Type = '[Header Display Options] UnFix';
-  public readonly type = UnFix.Type;
+export class Unfix implements Action {
+  public static readonly Type = '[Header Display Options] Unfix';
+  public readonly type = Unfix.Type;
 }
 
 export class Reset implements Action {
@@ -97,4 +97,4 @@ export class Reset implements Action {
   public readonly type = Reset.Type;
 }
 
-export type Any = DisableFix | EnableFix | Fix | UnFix | DisableFilters | EnableFilters | Reset;
+export type Any = DisableFix | EnableFix | Fix | Unfix | DisableFilters | EnableFilters | Reset;

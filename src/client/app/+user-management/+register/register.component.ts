@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.config = this.store.snapshot(state => state.uiConfig.components.register.config);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.register.config);
     this.downloadTos();
   }
 

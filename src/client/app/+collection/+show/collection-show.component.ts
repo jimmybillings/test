@@ -86,7 +86,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
 
-    this.store.select(state => state.uiConfig.components).take(1).subscribe(config => {
+    this.store.selectCloned(state => state.uiConfig.components).take(1).subscribe(config => {
       this.commentFormConfig = config.collectionComment.config.form.items;
       this.newCollectionFormConfig = config.collection.config;
     });

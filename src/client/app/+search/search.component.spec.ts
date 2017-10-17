@@ -117,11 +117,21 @@ export function main() {
       });
 
       it('should set the path if there is a "gq" parameter', () => {
-
         expect(componentUnderTest.path).toEqual([
           { 'ids': [13, 18], 'names': ['press packet', 'day 04'] },
           { 'ids': [3], 'names': ['adam scott'] }
         ]);
+      });
+
+      it('returns observable of true when the \'filtersAreAvailable\'in the store is true', () => {
+        mockStore.createStateSection('headerDisplayOptions', { filtersAreAvailable: true });
+        componentUnderTest = new SearchComponent(
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector, null, mockStore
+        );
+        let areAvailable: boolean;
+        componentUnderTest.filtersAreAvailable.take(1).subscribe(available => areAvailable = available);
+        expect(areAvailable).toBe(true);
       });
     });
 
@@ -349,22 +359,6 @@ export function main() {
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.go).toHaveBeenCalled();
-      });
-    });
-
-    describe('filtersAreAvailable', () => {
-      it('returns observable of true when the \'filtersAreAvailable\'in the store is true', () => {
-        mockStore.createStateSection('headerDisplayOptions', { filtersAreAvailable: true });
-        let areAvailable: boolean;
-        componentUnderTest.filtersAreAvailable.take(1).subscribe(available => areAvailable = available);
-        expect(areAvailable).toBe(true);
-      });
-
-      it('returns observable of false when the \'filtersAreAvailable\'in the store is false', () => {
-        mockStore.createStateSection('headerDisplayOptions', { filtersAreAvailable: false });
-        let areAvailable: boolean;
-        componentUnderTest.filtersAreAvailable.take(1).subscribe(available => areAvailable = available);
-        expect(areAvailable).toBe(false);
       });
     });
   });

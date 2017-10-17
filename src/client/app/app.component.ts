@@ -85,13 +85,13 @@ export class AppComponent implements OnInit {
   }
 
   public get headerConfig(): Observable<any> {
-    return this.store.select(state => state.uiConfig)
+    return this.store.selectCloned(state => state.uiConfig)
       .filter(state => state.loaded)
       .map(state => state.components.header.config).take(1);
   }
 
   public get searchBoxConfig(): Observable<any> {
-    return this.store.select(state => state.uiConfig)
+    return this.store.selectCloned(state => state.uiConfig)
       .filter(state => state.loaded)
       .map(state => state.components.searchBox.config).take(1);
   }
@@ -137,7 +137,7 @@ export class AppComponent implements OnInit {
   }
 
   private loadConfig() {
-    if (this.store.snapshot(state => state.uiConfig.loaded)) {
+    if (this.store.snapshotCloned(state => state.uiConfig.loaded)) {
       this.router.initialNavigation();
     } else {
       this.store.dispatch(factory => factory.uiConfig.load());

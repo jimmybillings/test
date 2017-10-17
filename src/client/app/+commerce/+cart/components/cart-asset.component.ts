@@ -23,7 +23,7 @@ export class CartAssetComponent implements OnInit {
   constructor(private store: AppStore) { }
 
   public ngOnInit(): void {
-    this.commentFormConfig = this.store.snapshot(state => state.uiConfig.components.cartComment.config.form.items);
+    this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.cartComment.config.form.items);
   }
 
   public stateMapper: StateMapper<Asset> = (state) => state.cartAsset.activeAsset;

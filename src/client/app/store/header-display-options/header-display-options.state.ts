@@ -37,7 +37,7 @@ export function reducer(state: State = initialState, action: HeaderDisplayOption
       return { ...state, isFixed: true };
     }
 
-    case HeaderDisplayOptionsActions.UnFix.Type: {
+    case HeaderDisplayOptionsActions.Unfix.Type: {
       return { ...state, isFixed: false };
     }
 

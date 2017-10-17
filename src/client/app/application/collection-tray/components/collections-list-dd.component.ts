@@ -39,7 +39,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.collections.load().subscribe();
-    this.pageSize = this.store.snapshot(state => state.uiConfig.components.global.config.pageSize.value);
+    this.pageSize = this.store.snapshotCloned(state => state.uiConfig.components.global.config.pageSize.value);
     this.optionsSubscription = this.collectionContext.data.subscribe(data => this.options = data);
   }
 

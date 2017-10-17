@@ -27,7 +27,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'headerDisplayOptions',
-          methodName: 'unFix',
+          methodName: 'unfix',
           expectedArguments: []
         }
       }

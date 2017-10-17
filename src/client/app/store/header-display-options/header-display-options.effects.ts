@@ -18,7 +18,7 @@ export class HeaderDisplayOptionsEffects {
         .map((shouldBeFixed: boolean) => {
           return shouldBeFixed ?
             this.store.create(factory => factory.headerDisplayOptions.fix()) :
-            this.store.create(factory => factory.headerDisplayOptions.unFix());
+            this.store.create(factory => factory.headerDisplayOptions.unfix());
         })
     );
 

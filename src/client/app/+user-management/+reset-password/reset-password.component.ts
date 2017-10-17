@@ -28,9 +28,8 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.shareKey = this.route.snapshot.params['share_key'] || null;
-    this.store.select(state => state.uiConfig.components).take(1).subscribe(config => {
-      this.config = this.currentUser.loggedIn() ? config.changePassword.config : config.resetPassword.config;
-    });
+    const configSegment: string = this.currentUser.loggedIn() ? 'changePassword' : 'resetPassword';
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components[configSegment].config);
   }
 
   public onSubmit(form: any): void {

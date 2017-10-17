@@ -60,6 +60,6 @@ export class AppModule {
       }
     });
     currentUser.set();
-    this.store.dispatch(state => state.uiConfig.initialize(apiConfig.portal));
+    this.store.dispatch(factory => factory.uiConfig.initialize(apiConfig.portal));
   }
 }

@@ -88,11 +88,11 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
-        name: 'unFix',
+        name: 'unfix',
         parameters: []
       },
       expectedAction: {
-        type: '[Header Display Options] UnFix'
+        type: '[Header Display Options] Unfix'
       }
     });
 

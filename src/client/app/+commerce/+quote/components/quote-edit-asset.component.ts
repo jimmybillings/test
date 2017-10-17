@@ -22,6 +22,6 @@ export class QuoteEditAssetComponent implements OnInit {
   constructor(private store: AppStore) { }
 
   ngOnInit() {
-    this.commentFormConfig = this.store.snapshot(state => state.uiConfig.components.quoteComment.config.form.items);
+    this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.quoteComment.config.form.items);
   }
 }

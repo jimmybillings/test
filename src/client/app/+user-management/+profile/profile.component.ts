@@ -35,7 +35,7 @@ export class ProfileComponent implements OnDestroy, OnInit {
       this.user = user;
       this.changeDetectorRef.detectChanges();
     });
-    this.basicInfoConfig = this.store.snapshot(state => state.uiConfig.components.userBasicInfo.config.form.items);
+    this.basicInfoConfig = this.store.snapshotCloned(state => state.uiConfig.components.userBasicInfo.config.form.items);
   }
 
   ngOnDestroy() {

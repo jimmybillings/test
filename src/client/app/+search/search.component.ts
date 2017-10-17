@@ -34,6 +34,7 @@ export class SearchComponent implements OnDestroy {
   public sortDefinition: SortDefinitionsService;
   public enhancedAssets: EnhancedAsset[];
   public enhancedAssetsSubScription: Subscription;
+  public filtersAreAvailable: Observable<boolean>;
   @ViewChild(WzSpeedviewComponent) public wzSpeedview: WzSpeedviewComponent;
 
   constructor(
@@ -62,6 +63,7 @@ export class SearchComponent implements OnDestroy {
       this.path = (this.route.snapshot.params['gq']) ? JSON.parse(this.route.snapshot.params['gq']) : '';
       this.detector.markForCheck();
     });
+    this.filtersAreAvailable = this._filtersAreAvailable();
   }
 
   ngOnDestroy(): void {
@@ -145,7 +147,7 @@ export class SearchComponent implements OnDestroy {
     this.router.navigate(route);
   }
 
-  public get filtersAreAvailable(): Observable<boolean> {
+  private _filtersAreAvailable(): Observable<boolean> {
     return this.store.select(state => state.headerDisplayOptions.filtersAreAvailable);
   }
 

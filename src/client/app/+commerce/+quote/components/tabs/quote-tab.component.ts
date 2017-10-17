@@ -40,7 +40,7 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
     this.projectSubscription = this.quoteService.projects.subscribe(projects => this.projects = projects);
-    this.config = this.store.snapshot(state => state.uiConfig.components.cart.config);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
   }
 
   ngOnDestroy() {

@@ -41,7 +41,7 @@ export class CartComponent implements OnInit {
 
     this.selectedTabIndex = 0;
 
-    this.commentFormConfig = this.store.snapshot(state => state.uiConfig.components.cartComment.config.form.items);
+    this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.cartComment.config.form.items);
 
     this.commentParentObject = { objectType: 'cart', objectId: this.cartService.state.data.id };
   }

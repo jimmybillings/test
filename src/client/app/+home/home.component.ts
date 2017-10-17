@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.config = this.store.snapshot(state => state.uiConfig.components.home.config);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.home.config);
 
     if (this.currentUser.loggedIn() && this.config.galleryView) {
       this.data = this.galleryViewService.data;

@@ -224,6 +224,6 @@ export class CollectionsComponent {
   }
 
   private get formFields() {
-    return this.store.snapshot(state => state.uiConfig.components.collection.config);
+    return this.store.snapshotCloned(state => state.uiConfig.components.collection.config);
   }
 }

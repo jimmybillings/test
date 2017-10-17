@@ -26,7 +26,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
   }
 
   ngOnInit() {
-    this.fields = this.store.select(state => state.uiConfig.components.cart.config.payment.items).take(1);
+    this.fields = this.store.selectCloned(state => state.uiConfig.components.cart.config.payment.items).take(1);
     this.loadStripe();
   }
 

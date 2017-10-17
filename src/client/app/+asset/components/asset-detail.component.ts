@@ -64,7 +64,7 @@ export class AssetDetailComponent implements OnInit {
   constructor(private store: AppStore) { }
 
   ngOnInit() {
-    this.store.select(state => state.uiConfig.components).take(1).subscribe(config => {
+    this.store.selectCloned(state => state.uiConfig.components).take(1).subscribe(config => {
       this.pageSize = parseInt(config.global.config.pageSize.value);
       this.shareComponentConfig = config.assetSharing.config;
     });

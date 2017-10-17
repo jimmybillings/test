@@ -73,7 +73,7 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'UnFix',
+      actionClassName: 'Unfix',
       mutationTestData: {
         previousState: { isFixed: true }
       },

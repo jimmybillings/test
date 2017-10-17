@@ -50,7 +50,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     this.preferencesSubscription = this.userPreference.data.subscribe((data: any) => {
       this.pricingPreferences = data.pricingPreferences;
     });
-    this.config = this.store.snapshot(state => state.uiConfig.components.cart.config);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
   }
 
   public ngOnDestroy() {

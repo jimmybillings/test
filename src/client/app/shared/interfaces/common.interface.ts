@@ -141,3 +141,32 @@ export interface Autocomplete {
 export interface LegacyAction extends Action {
   payload?: any;
 }
+
+export interface UiConfigSegment {
+  config: {
+    [index: string]: any;
+  };
+};
+
+export interface UiConfigComponents {
+  'cart': UiConfigSegment;
+  'billing': UiConfigSegment;
+  'global': UiConfigSegment;
+  'header': UiConfigSegment;
+  'footer': UiConfigSegment;
+  'searchBox': UiConfigSegment;
+  'search': UiConfigSegment;
+  'home': UiConfigSegment;
+  'userBasicInfo': UiConfigSegment;
+  'register': UiConfigSegment;
+  'login': UiConfigSegment;
+  'forgotPassword': UiConfigSegment;
+  'resetPassword': UiConfigSegment;
+  'changePassword': UiConfigSegment;
+  'collection': UiConfigSegment;
+  'assetSharing': UiConfigSegment;
+  'cartComment': UiConfigSegment;
+  'collectionComment': UiConfigSegment;
+  'quoteComment': UiConfigSegment;
+  [index: string]: UiConfigSegment;
+};

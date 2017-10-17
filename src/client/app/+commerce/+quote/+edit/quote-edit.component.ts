@@ -50,7 +50,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
       userCan, quoteEditService, dialogService, assetService, window,
       userPreference, document, pricingStore, store, pricingService
     );
-    this.commentFormConfig = this.store.snapshot(state => state.uiConfig.components.quoteComment.config.form.items);
+    this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.quoteComment.config.form.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
     this.projectSubscription = this.quoteEditService.projects.subscribe(projects => this.projects = projects);
   }

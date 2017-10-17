@@ -21,7 +21,7 @@ export class ForgotPasswordComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.config = this.store.snapshot(state => state.uiConfig.components.forgotPassword.config);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.forgotPassword.config);
   }
 
   public onSubmit(user: Object): void {

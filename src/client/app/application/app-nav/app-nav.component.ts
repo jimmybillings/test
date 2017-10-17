@@ -22,8 +22,13 @@ export class AppNavComponent {
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
+  public headerCanBeFixed: Observable<boolean>;
+  public headerIsFixed: Observable<boolean>;
 
-  constructor(private store: AppStore) { }
+  constructor(private store: AppStore) {
+    this.headerCanBeFixed = this._headerCanBeFixed();
+    this.headerIsFixed = this._headerIsFixed();
+  }
 
   public logOut(event: Event) {
     this.onLogOut.emit(event);
@@ -42,11 +47,11 @@ export class AppNavComponent {
     return (size > 99) ? '99+' : size.toString();
   }
 
-  public get headerIsFixed(): Observable<boolean> {
+  private _headerIsFixed(): Observable<boolean> {
     return this.store.select(state => state.headerDisplayOptions.isFixed);
   }
 
-  public get headerCanBeFixed(): Observable<boolean> {
+  private _headerCanBeFixed(): Observable<boolean> {
     return this.store.select(state => state.headerDisplayOptions.canBeFixed);
   }
 }

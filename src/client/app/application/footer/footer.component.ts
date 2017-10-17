@@ -16,7 +16,7 @@ export class FooterComponent implements OnInit {
   constructor(public store: AppStore) { }
 
   ngOnInit() {
-    this.store.select(state => state.uiConfig)
+    this.store.selectCloned(state => state.uiConfig)
       .filter(state => state.loaded)
       .do(config => this.config = config.components.footer.config)
       .take(1).subscribe();

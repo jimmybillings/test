@@ -42,7 +42,7 @@ export class WzAsset implements OnInit {
   constructor(private store: AppStore, private detector: ChangeDetectorRef) { }
 
   public ngOnInit(): void {
-    this.store.select(state => state.uiConfig.components.search.config)
+    this.store.selectCloned(state => state.uiConfig.components.search.config)
       .filter(config => !!config.showAssetNameGridView && !!config.showAssetNameGridView.value)
       .map(config => config.showAssetNameGridView.value)
       .take(1).subscribe((value: 'true' | 'false') => {

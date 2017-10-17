@@ -112,6 +112,14 @@ export class MockAppStore extends AppStore {
       stateMapper(this._state)
     );
 
+    spyOn(this, 'selectCloned').and.callFake((stateMapper: StateMapper<any>) => {
+      try { return Observable.of(stateMapper(this._state)); } catch (exception) { return Observable.empty(); };
+    });
+
+    spyOn(this, 'snapshotCloned').and.callFake((stateMapper: StateMapper<any>) =>
+      stateMapper(this._state)
+    );
+
     spyOn(this, 'completeSnapshot').and.returnValue(
       this._state
     );

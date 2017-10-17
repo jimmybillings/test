@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     this.displayWelcomeMessage = this.router.routerState.snapshot.url.includes('newUser=true');
     this.displayErrorMessage = this.router.routerState.snapshot.url.includes('requireLogin=true');
 
-    this.config = this.store.snapshot(state => state.uiConfig.components.login.config);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.login.config);
   }
 
   public onSubmit(user: Credentials): void {

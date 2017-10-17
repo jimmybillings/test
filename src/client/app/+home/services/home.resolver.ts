@@ -14,7 +14,7 @@ export class HomeResolver implements Resolve<any> {
     private store: AppStore,
     private galleryViewService: GalleryViewService
   ) {
-    this.config = this.store.snapshot(state => state.uiConfig.components.home.config);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.home.config);
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {

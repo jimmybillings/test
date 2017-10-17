@@ -41,7 +41,7 @@ export class QuoteShowComponent implements OnInit {
 
     this.selectedTabIndex = 0;
 
-    this.commentFormConfig = this.store.snapshot(state => state.uiConfig.components.quoteComment.config.form.items);
+    this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.quoteComment.config.form.items);
 
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteService.state.data.id };
   }
