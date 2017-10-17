@@ -25,4 +25,4 @@ export class SetDeliveryOptionsFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export type Any = SetDeliveryOptions;
+export type Any = SetDeliveryOptions | SetDeliveryOptionsFailure;

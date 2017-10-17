@@ -15,24 +15,6 @@ import * as OrderAssetActions from '../actions/order-asset.actions';
 
 @Injectable()
 export class AssetEffects {
-  public loadSuccessActions: any = [
-    SearchAssetActions.LoadSuccess.Type,
-    QuoteEditAssetActions.LoadSuccess.Type,
-    QuoteShowAssetActions.LoadSuccess.Type,
-    CartAssetActions.LoadSuccess.Type,
-    ActiveCollectionAssetActions.LoadSuccess.Type,
-    OrderAssetActions.LoadSuccess.Type,
-  ];
-
-  public loadActions: any = [
-    SearchAssetActions.Load.Type,
-    QuoteEditAssetActions.Load.Type,
-    QuoteShowAssetActions.Load.Type,
-    CartAssetActions.Load.Type,
-    ActiveCollectionAssetActions.Load.Type,
-    OrderAssetActions.Load.Type,
-  ];
-
   @Effect()
   public getDeliveryOptionsOnLoadSuccess: Observable<Action> = this.actions.ofType(... this.loadSuccessActions)
     .switchMap((action: any) =>
@@ -46,6 +28,28 @@ export class AssetEffects {
     .map((action: any) =>
       this.store.create(factory => factory.asset.setDeliveryOptions(false))
     );
+
+  private get loadActions(): Array<string> {
+    return [
+      SearchAssetActions.Load.Type,
+      QuoteEditAssetActions.Load.Type,
+      QuoteShowAssetActions.Load.Type,
+      CartAssetActions.Load.Type,
+      ActiveCollectionAssetActions.Load.Type,
+      OrderAssetActions.Load.Type,
+    ];
+  };
+
+  private get loadSuccessActions(): Array<string> {
+    return [
+      SearchAssetActions.LoadSuccess.Type,
+      QuoteEditAssetActions.LoadSuccess.Type,
+      QuoteShowAssetActions.LoadSuccess.Type,
+      CartAssetActions.LoadSuccess.Type,
+      ActiveCollectionAssetActions.LoadSuccess.Type,
+      OrderAssetActions.LoadSuccess.Type,
+    ];
+  };
 
   constructor(private actions: Actions, private store: AppStore, private service: AssetService) { }
 }
