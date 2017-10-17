@@ -4,18 +4,18 @@ import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.comp
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
-
   describe('Login Component', () => {
-    (<any>window).pendo = { initialize: jasmine.createSpy('initialize') };
-    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUserService: any,
-      mockUserService: any, mockPendo: any, mockDialog: any, mockFeatureStore: any, mockStore: MockAppStore;
+    let mockAuthentication: any;
+    let mockRouter: any;
+    let mockCurrentUserService: any;
+    let mockUserService: any;
+    let mockPendo: any;
+    let mockDialog: any;
+    let mockFeatureStore: any;
+    let mockStore: MockAppStore;
     let componentUnderTest: LoginComponent;
 
     beforeEach(() => {
-      mockUiConfig = {
-        get: () => { return Observable.of({ config: { someConfig: 'test' } }); },
-        load: () => { return Observable.of({ config: { someConfig: 'test' } }); }
-      };
       mockAuthentication = {
         create: jasmine.createSpy('create').and.returnValue(Observable.of({
           user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 },
@@ -28,6 +28,7 @@ export function main() {
           }
         }))
       };
+
       mockRouter = {
         navigate: jasmine.createSpy('navigate').and.returnValue(Promise.resolve()),
         navigateByUrl: jasmine.createSpy('navigateByUrl'),
@@ -37,24 +38,34 @@ export function main() {
           }
         }
       };
+
       mockCurrentUserService = { set: jasmine.createSpy('set') };
+
       mockUserService = {
         downloadActiveTosDocument: jasmine.createSpy('downloadActiveTosDocument').and.returnValue(Observable.of('SOME TEST TERMS')),
         agreeUserToTerms: jasmine.createSpy('agreeUserToTerms')
       };
+
       mockPendo = { initialize: jasmine.createSpy('initialize') };
+
       mockDialog = {
         close: jasmine.createSpy('close'),
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({}))
       };
+
       mockFeatureStore = { set: jasmine.createSpy('set'), setInLocalStorage: jasmine.createSpy('setInLocalStorage') };
+
       mockStore = new MockAppStore();
-      componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-        mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
+      mockStore.createStateSection('uiConfig', { components: { login: { config: { someConfig: 'test' } } } });
+      mockStore.createActionFactoryMethod('uiConfig', 'load');
+
+      componentUnderTest = new LoginComponent(
+        mockAuthentication, mockRouter, mockCurrentUserService, mockUserService,
+        mockPendo, mockDialog, mockFeatureStore, mockStore
+      );
     });
 
     describe('ngOnInit()', () => {
-
       it('Grabs the component config and assigns to an instance variable', () => {
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.config).toEqual({ someConfig: 'test' });
@@ -70,8 +81,10 @@ export function main() {
             }
           }
         };
-        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
+        componentUnderTest = new LoginComponent(
+          mockAuthentication, mockRouter, mockCurrentUserService, mockUserService,
+          mockPendo, mockDialog, mockFeatureStore, mockStore
+        );
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.displayWelcomeMessage).toBe(true);
       });
@@ -116,8 +129,10 @@ export function main() {
             userPreferences: { pref: 1 }
           }))
         };
-        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
+        componentUnderTest = new LoginComponent(
+          mockAuthentication, mockRouter, mockCurrentUserService, mockUserService,
+          mockPendo, mockDialog, mockFeatureStore, mockStore
+        );
         componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
         expect(mockFeatureStore.set).not.toHaveBeenCalled();
       });
@@ -133,8 +148,10 @@ export function main() {
                 documentsRequiringAgreement: ['TOS']
               }))
           };
-          componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-            mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
+          componentUnderTest = new LoginComponent(
+            mockAuthentication, mockRouter, mockCurrentUserService, mockUserService,
+            mockPendo, mockDialog, mockFeatureStore, mockStore
+          );
         });
 
         it('Calls the API form the terms content to pass to the dialog', () => {
@@ -171,19 +188,6 @@ export function main() {
 
           mockStore.expectDispatchFor(spy);
         });
-      });
-    });
-
-    describe('ngOnDestroy()', () => {
-      it('unsubscribes from the UI config to prevent memory leakage', () => {
-        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
-        let mockObservable = { subscribe: () => mockSubscription };
-        mockUiConfig = { get: () => mockObservable };
-        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUserService, mockUserService, mockUiConfig, mockPendo, mockDialog, mockFeatureStore, mockStore);
-        componentUnderTest.ngOnInit();
-        componentUnderTest.ngOnDestroy();
-        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
       });
     });
   });

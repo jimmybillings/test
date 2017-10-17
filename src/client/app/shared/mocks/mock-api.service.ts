@@ -86,7 +86,7 @@ export class MockApiService {
   public get delete(): jasmine.Spy { return this.spies.delete; }
 
   private initialize() {
-    this.apiService = new ApiService(null, null, null, null);
+    this.apiService = new ApiService(null, null, null);
 
     this.spies = {
       get: spyOn(this.apiService, 'get').and.callFake((): any => {

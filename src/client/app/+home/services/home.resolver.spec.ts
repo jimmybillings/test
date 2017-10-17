@@ -1,25 +1,28 @@
 import { HomeResolver } from './home.resolver';
 import { Observable } from 'rxjs/Observable';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Home Resolver', () => {
     let resolverUnderTest: HomeResolver;
-    let mockUiConfig: any;
+    let mockStore: MockAppStore;
 
-    mockUiConfig = {
-      get: jasmine.createSpy('get').and.returnValue(
-        Observable.of(
-          {
-            'config': {
-              'pageSize': { 'value': '100' },
-              'notifications': {
-                'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }]
+    beforeEach(() => {
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('uiConfig', {
+        components: {
+          home: {
+            config: {
+              pageSize: { value: '100' },
+              notifications: {
+                items: [{ trString: 'NOTIFICATION.NEW_USER' }]
               }
             }
-          }))
-    };
-    beforeEach(() => {
-      resolverUnderTest = new HomeResolver(null, mockUiConfig, null);
+          }
+        }
+      });
+
+      resolverUnderTest = new HomeResolver(null, mockStore, null);
     });
 
     it('***** HASN\'T BEEN TESTED YET! *****', () => {

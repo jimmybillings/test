@@ -9,7 +9,6 @@ import { Asset } from '../../../shared/interfaces/common.interface';
 
 import { CollectionsService } from '../../../shared/services/collections.service';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
-import { UiState } from '../../../shared/services/ui.state';
 import { AppStore } from '../../../app.store';
 import { Common } from '../../../shared/utilities/common.functions';
 
@@ -48,7 +47,6 @@ export class CollectionFormComponent implements OnInit {
 
   constructor(
     public collections: CollectionsService,
-    public uiState: UiState,
     private detector: ChangeDetectorRef,
     private collectionContext: CollectionContextService,
     private store: AppStore

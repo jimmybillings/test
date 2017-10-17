@@ -6,24 +6,35 @@ import { MockAppStore } from './store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('App Component', () => {
-    (<any>window).portal = 'core';
-    let mockUiConfig: any, mockRouter: any, mockSearchContext: any, mockCurrentUserService: any,
-      mockCollections: any, mockUiState: any, mockUserPreference: any, mockNotification: any,
-      mockUserCan: any, mockWindow: any, mockNgZone: any, componentUnderTest: AppComponent, mockStore: MockAppStore,
-      mockFilter: any, mockSortDefinition: any, cartLoadSpy: jasmine.Spy, collectionLoadSpy: jasmine.Spy,
-      quoteLoadSpy: jasmine.Spy, setLanguageSpy: jasmine.Spy;
-
-    let loggedInState: boolean = false, canViewCollections: boolean = true, canAdministerQuotes: boolean = false;
+    let mockRouter: any;
+    let mockMultiLingual: any;
+    let mockSearchContext: any;
+    let mockCurrentUserService: any;
+    let mockCollections: any;
+    let mockUserPreference: any;
+    let mockNotification: any;
+    let mockUserCan: any;
+    let mockWindow: any;
+    let mockNgZone: any;
+    let componentUnderTest: AppComponent;
+    let mockStore: MockAppStore;
+    let mockFilter: any;
+    let mockSortDefinition: any;
+    let cartLoadSpy: jasmine.Spy;
+    let collectionLoadSpy: jasmine.Spy;
+    let quoteLoadSpy: jasmine.Spy;
+    let setHeaderPositionSpy: jasmine.Spy;
+    let checkIfFiltersAreAvailableSpy: jasmine.Spy;
+    let checkIfHeaderCanBeFixedSpy: jasmine.Spy;
+    let configLoadSpy: jasmine.Spy;
+    let resetSpy: jasmine.Spy;
+    let setLanguageSpy: jasmine.Spy;
+    let loggedInState: boolean = false;
+    let canViewCollections: boolean = true;
+    let canAdministerQuotes: boolean = false;
     let nextNavigation: Event;
-    let configHasLoaded: boolean = true;
 
     beforeEach(() => {
-      mockUiConfig = {
-        initialize: jasmine.createSpy('initialize').and.returnValue(Observable.of({})),
-        hasLoaded: () => configHasLoaded,
-        load: jasmine.createSpy('load').and.returnValue(Observable.of({}))
-      };
-
       mockRouter = { events: Observable.of(nextNavigation), initialNavigation: jasmine.createSpy('initialNavigation') };
 
       mockSearchContext = {
@@ -45,14 +56,6 @@ export function main() {
         destroyAll: jasmine.createSpy('destroyAll')
       };
 
-      mockUiState = {
-        showFixedHeader: jasmine.createSpy('showFixedHeader'),
-        checkRouteForSearchBar: jasmine.createSpy('checkRouteForSearchBar'),
-        checkForFilters: jasmine.createSpy('checkForFilters'),
-        reset: jasmine.createSpy('reset'),
-        data: Observable.of({ loadingIndicator: true })
-      };
-
       mockUserPreference = {
         state: {
           sortId: 23,
@@ -69,16 +72,21 @@ export function main() {
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       mockNgZone = { runOutsideAngular: () => true };
-      mockStore = new MockAppStore();
 
+      mockStore = new MockAppStore();
+      configLoadSpy = mockStore.createActionFactoryMethod('uiConfig', 'load');
       collectionLoadSpy = mockStore.createActionFactoryMethod('activeCollection', 'load');
       cartLoadSpy = mockStore.createActionFactoryMethod('cart', 'load');
       quoteLoadSpy = mockStore.createActionFactoryMethod('quoteEdit', 'load');
+      setHeaderPositionSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'setHeaderPosition');
+      checkIfHeaderCanBeFixedSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'checkIfHeaderCanBeFixed');
+      checkIfFiltersAreAvailableSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'checkIfFiltersAreAvailable');
+      resetSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'reset');
       setLanguageSpy = mockStore.createActionFactoryMethod('multiLingual', 'setLanguage');
 
       componentUnderTest = new AppComponent(
-        mockUiConfig, mockRouter, mockSearchContext, mockCurrentUserService,
-        mockCollections, mockUiState, mockUserPreference, mockUserCan, mockWindow,
+        mockRouter, mockSearchContext, mockCurrentUserService,
+        mockCollections, mockUserPreference, mockUserCan, mockWindow,
         mockFilter, mockSortDefinition, mockNgZone, mockStore
       );
     });
@@ -91,6 +99,7 @@ export function main() {
           expect(setLanguageSpy).toHaveBeenCalledWith('en');
         });
       });
+
       describe('processUser()', () => {
         beforeEach(() => {
           nextNavigation = new NavigationEnd(1, '/', '/');
@@ -100,7 +109,7 @@ export function main() {
           loggedInState = false;
           componentUnderTest.ngOnInit();
           expect(mockCollections.destroyAll).toHaveBeenCalled();
-          expect(mockUiState.reset).toHaveBeenCalled();
+          mockStore.expectDispatchFor(resetSpy);
           expect(mockUserPreference.reset).toHaveBeenCalled();
         });
 
@@ -139,11 +148,11 @@ export function main() {
           });
 
           it('Pass the current state url to see if we should display the search bar', () => {
-            expect(mockUiState.checkRouteForSearchBar).toHaveBeenCalledWith('/');
+            mockStore.expectDispatchFor(checkIfHeaderCanBeFixedSpy, '/');
           });
 
           it('Pass the current state url to see if we should display the filters', () => {
-            expect(mockUiState.checkForFilters).toHaveBeenCalledWith('/');
+            mockStore.expectDispatchFor(checkIfFiltersAreAvailableSpy, '/');
           });
 
           it('Assign the current url state to an instance variable', () => {
@@ -153,6 +162,24 @@ export function main() {
           it('Should make sure the page is scrolled to the top on each successful state change', () => {
             expect(mockWindow.nativeWindow.scrollTo).toHaveBeenCalledWith(0, 0);
           });
+        });
+      });
+
+      describe('loadConfig', () => {
+        it('Should initialize the navigation immediately if the config is already loaded', () => {
+          mockStore.createStateSection('uiConfig', { loaded: true });
+          componentUnderTest.ngOnInit();
+
+          expect(mockRouter.initialNavigation).toHaveBeenCalled();
+          mockStore.expectNoDispatchFor(configLoadSpy);
+        });
+
+        it('Should load the config if it is not loaded and then initialize the navigation', () => {
+          mockStore.createStateSection('uiConfig', { loaded: false });
+          componentUnderTest.ngOnInit();
+
+          expect(mockRouter.initialNavigation).not.toHaveBeenCalled();
+          mockStore.expectDispatchFor(configLoadSpy);
         });
       });
     });
@@ -180,27 +207,56 @@ export function main() {
       });
     });
 
-    describe('loadConfig', () => {
-      it('Should initialize the navigation immediatly if the config is already loaded', () => {
-        componentUnderTest.ngOnInit();
+    describe('headerConfig getter', () => {
+      it('returns the right part of the UiConfig store when the config is loaded', () => {
+        mockStore.createStateSection('uiConfig', { loaded: true, components: { header: { config: { some: 'header' } } } });
 
-        expect(mockRouter.initialNavigation).toHaveBeenCalled();
-        expect(mockUiConfig.load).not.toHaveBeenCalled();
-      });
-
-      it('Should load the config if it is not loaded and then initialize the navigation', () => {
-        configHasLoaded = false;
-
-        componentUnderTest = new AppComponent(
-          mockUiConfig, mockRouter, mockSearchContext, mockCurrentUserService,
-          mockCollections, mockUiState, mockUserPreference, mockUserCan,
-          mockWindow, mockFilter, mockSortDefinition, mockNgZone, mockStore
-        );
-        componentUnderTest.ngOnInit();
-        expect(mockUiConfig.load).toHaveBeenCalled();
-        expect(mockRouter.initialNavigation).toHaveBeenCalled();
+        let config: any;
+        componentUnderTest.headerConfig.take(1).subscribe(c => config = c);
+        expect(config).toEqual({ some: 'header' });
       });
     });
 
+    describe('searchBoxConfig getter', () => {
+      it('returns the right part of the UiConfig store when the config is loaded', () => {
+        mockStore.createStateSection('uiConfig', { loaded: true, components: { searchBox: { config: { some: 'searchBox' } } } });
+
+        let config: any;
+        componentUnderTest.searchBoxConfig.take(1).subscribe(c => config = c);
+        expect(config).toEqual({ some: 'searchBox' });
+      });
+    });
+
+    describe('headerIsFixed getter', () => {
+      it('should return observable of true if the isFixed property of the headerDisplayOptions is true', () => {
+        mockStore.createStateSection('headerDisplayOptions', { isFixed: true });
+        let isFixed: boolean;
+        componentUnderTest.headerIsFixed.take(1).subscribe(fixed => isFixed = fixed);
+        expect(isFixed).toBe(true);
+      });
+
+      it('should return observable of false if the isFixed property of the headerDisplayOptions is false', () => {
+        mockStore.createStateSection('headerDisplayOptions', { isFixed: false });
+        let isFixed: boolean;
+        componentUnderTest.headerIsFixed.take(1).subscribe(fixed => isFixed = fixed);
+        expect(isFixed).toBe(false);
+      });
+    });
+
+    describe('headerCanBeFixed getter', () => {
+      it('should return observable of true if the canBeFixed property of the headerDisplayOptions is true', () => {
+        mockStore.createStateSection('headerDisplayOptions', { canBeFixed: true });
+        let canBeFixed: boolean;
+        componentUnderTest.headerCanBeFixed.take(1).subscribe(fixed => canBeFixed = fixed);
+        expect(canBeFixed).toBe(true);
+      });
+
+      it('should return observable of false if the canBeFixed property of the headerDisplayOptions is false', () => {
+        mockStore.createStateSection('headerDisplayOptions', { canBeFixed: false });
+        let canBeFixed: boolean;
+        componentUnderTest.headerCanBeFixed.take(1).subscribe(fixed => canBeFixed = fixed);
+        expect(canBeFixed).toBe(false);
+      });
+    });
   });
 }

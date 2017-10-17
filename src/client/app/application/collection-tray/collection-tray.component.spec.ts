@@ -16,15 +16,26 @@ export function main() {
 
     beforeEach(() => {
       mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset');
+
       mockAppStore = new MockAppStore();
+      mockAppStore.createStateSection('uiConfig', {
+        components: {
+          global: { config: { pageSize: { value: 10 } } },
+          collection: { config: { some: 'config' } }
+        }
+      });
       navigateDispatchSpy = mockAppStore.createActionFactoryMethod('router', 'goToCollection');
+      mockAppStore.createActionFactoryMethod('activeCollection', 'loadIfNeeded');
+
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.callFake((_: any) => {
           mockDialogService.onSubmitCallback = _.outputOptions[0].callback;
         })
       };
+
       componentUnderTest = new CollectionTrayComponent(mockDialogService, mockAppStore);
-      componentUnderTest.collection = { assets: { items: [EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset')] } };
+
+      componentUnderTest.collection = { assets: { items: [EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset')] } } as any;
     });
 
     describe('hasId()', () => {
@@ -65,15 +76,10 @@ export function main() {
 
     describe('createCollection', () => {
       beforeEach(() => {
-        componentUnderTest.uiConfig = {
-          get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { some: 'config' } }))
-        };
+        componentUnderTest.ngOnInit();
         componentUnderTest.createCollection();
       });
 
-      it('gets the UI config', () => {
-        expect(componentUnderTest.uiConfig.get).toHaveBeenCalledWith('collection');
-      });
 
       it('calls openComponentInDialog on the dialog service', () => {
         expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({

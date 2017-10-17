@@ -1,5 +1,5 @@
 import { MockApiService, mockApiMatchers } from './mock-api.service';
-import { FutureApiService } from '../services/api.service';
+import { FutureApiService } from '../api/api.service';
 import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
 
 export function main() {

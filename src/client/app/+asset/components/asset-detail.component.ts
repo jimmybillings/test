@@ -1,8 +1,7 @@
 import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { Cart, Project } from '../../shared/interfaces/commerce.interface';
-import { Asset, Pojo } from '../../shared/interfaces/common.interface';
-import { UiConfig } from '../../shared/services/ui.config';
+import { Asset, Pojo, UiConfigComponents } from '../../shared/interfaces/common.interface';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MatMenuTrigger } from '@angular/material';
 import { SubclipMarkers, durationFrom } from '../../shared/interfaces/subclip-markers';
@@ -37,11 +36,9 @@ export class AssetDetailComponent implements OnInit {
 
   @Input() public userEmail: Observable<string>;
   @Input() public userCan: Capabilities;
-  @Input() public uiConfig: UiConfig;
   @Input() public usagePrice: number;
   @Input() public window: Window;
   @Input() public searchContext: SearchState;
-  @Input() public pageSize: number;
   @Input() public assetMatchesCartAsset: boolean;
   @Input() public commentParentObject: CommentParentObject;
   @Input() public commentFormConfig: FormFields;
@@ -63,17 +60,14 @@ export class AssetDetailComponent implements OnInit {
   private _activeCollection: Collection;
   private activeCollectionContainsAssetId: boolean = false;
   private activeCollectionContainsAssetUuid: boolean = false;
+  private pageSize: number;
 
   constructor(private store: AppStore) { }
 
   ngOnInit() {
-    this.uiConfig.get('assetSharing')
-      .filter(config => config.config)
-      .map((config: Pojo) => config.config)
-      .take(1)
-      .subscribe((config: Pojo) => {
-        this.shareComponentConfig = config;
-      });
+    const config: UiConfigComponents = this.store.snapshotCloned(state => state.uiConfig.components);
+    this.pageSize = parseInt(config.global.config.pageSize.value);
+    this.shareComponentConfig = config.assetSharing.config;
     this.setDeliveryOptionsFlag();
   }
 

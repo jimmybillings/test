@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { UserService } from '../../shared/services/user.service';
-import { UiConfig } from '../../shared/services/ui.config';
+import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -10,26 +9,19 @@ import { UiConfig } from '../../shared/services/ui.config';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class ForgotPasswordComponent implements OnInit, OnDestroy {
+export class ForgotPasswordComponent implements OnInit {
   public config: any;
   public successfullySubmitted: boolean = false;
   public serverErrors: any;
-  private configSubscription: Subscription;
 
   constructor(
     public user: UserService,
-    public uiConfig: UiConfig,
-    private ref: ChangeDetectorRef) {
-  }
+    public store: AppStore,
+    private ref: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
-    this.configSubscription =
-      this.uiConfig.get('forgotPassword').subscribe((config: any) =>
-        this.config = config.config);
-  }
-
-  ngOnDestroy() {
-    this.configSubscription.unsubscribe();
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.forgotPassword.config);
   }
 
   public onSubmit(user: Object): void {

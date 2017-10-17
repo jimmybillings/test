@@ -1,26 +1,37 @@
 import { Observable } from 'rxjs/Observable';
 import { RegisterComponent } from './register.component';
 import { Response, ResponseOptions } from '@angular/http';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 const user: any = {
   emailAddress: 'jamesbonline@yahoo.com', firstName: 'james',
   lastName: 'billigns', password: '3978f324e14ac256b2994b754586e05f'
 };
+
 export function main() {
   describe('Register Component', () => {
-    let mockUiConfig: any, mockUserService: any, mockDialogService: any, mockRef: any;
+    let mockUserService: any;
+    let mockDialogService: any;
+    let mockRef: any;
     let componentUnderTest: RegisterComponent;
+    let mockStore: MockAppStore;
+
     beforeEach(() => {
       mockRef = { markForCheck: function () { } };
-      mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
+
       mockUserService = {
         create: jasmine.createSpy('create').and.returnValue(Observable.of(user)),
         downloadActiveTosDocument: jasmine.createSpy('downloadActiveTosDocument').and.returnValue(Observable.of('some-terms'))
       };
+
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({}))
       };
-      componentUnderTest = new RegisterComponent(mockUserService, mockUiConfig, mockDialogService, mockRef);
+
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('uiConfig', { components: { register: { config: { someConfig: 'test' } } } });
+
+      componentUnderTest = new RegisterComponent(mockUserService, mockStore, mockDialogService, mockRef);
     });
 
     describe('ngOnInit()', () => {
@@ -50,7 +61,7 @@ export function main() {
       it('Sets a errors variable to display errors if the server doesnt pass', () => {
         const errorResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify({ email: 'Not Unique' }) }));
         mockUserService = { create: jasmine.createSpy('create').and.returnValue(Observable.throw(errorResponse)) };
-        componentUnderTest = new RegisterComponent(mockUserService, mockUiConfig, mockDialogService, mockRef);
+        componentUnderTest = new RegisterComponent(mockUserService, mockStore, mockDialogService, mockRef);
         componentUnderTest.onSubmit(user);
         expect(componentUnderTest.serverErrors).toEqual({ email: 'Not Unique' });
       });
@@ -60,7 +71,7 @@ export function main() {
           new ResponseOptions({ status: 451, body: JSON.stringify({ email: 'Not Unique' }) })
         );
         mockUserService = { create: jasmine.createSpy('create').and.returnValue(Observable.throw(errorResponse)) };
-        componentUnderTest = new RegisterComponent(mockUserService, mockUiConfig, mockDialogService, mockRef);
+        componentUnderTest = new RegisterComponent(mockUserService, mockStore, mockDialogService, mockRef);
         componentUnderTest.onSubmit(user);
         expect(componentUnderTest.serverErrors).toEqual(null);
       });
@@ -78,18 +89,6 @@ export function main() {
             header: 'REGISTER.TOS_TITLE'
           }
         });
-      });
-    });
-
-    describe('ngOnDestroy()', () => {
-      it('unsubscribes from the UI config to prevent memory leakage', () => {
-        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
-        let mockObservable = { subscribe: () => mockSubscription };
-        mockUiConfig = { get: () => mockObservable };
-        componentUnderTest = new RegisterComponent(mockUserService, mockUiConfig, mockDialogService, mockRef);
-        componentUnderTest.ngOnInit();
-        componentUnderTest.ngOnDestroy();
-        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
       });
     });
   });

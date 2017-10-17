@@ -6,10 +6,19 @@ import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Commerce Edit tab', () => {
-    let componentUnderTest: CommerceEditTab, mockCartService: any, mockUiConfig: any, mockDialogService: any,
-      mockAssetService: any, mockUserPreference: any, mockDocument: any, mockWindow: any, mockState: any,
-      mockQuoteService: any, mockPricingStore: any, mockCurrentUserService: any,
-      mockPricingService: any, mockAppStore: MockAppStore;
+    let componentUnderTest: CommerceEditTab;
+    let mockCartService: any;
+    let mockDialogService: any;
+    let mockAssetService: any;
+    let mockUserPreference: any;
+    let mockDocument: any;
+    let mockWindow: any;
+    let mockState: any;
+    let mockQuoteService: any;
+    let mockPricingStore: any;
+    let mockCurrentUserService: any;
+    let mockPricingService: any;
+    let mockAppStore: MockAppStore;
 
     beforeEach(() => {
       mockState = {
@@ -34,12 +43,6 @@ export function main() {
         removeLineItem: jasmine.createSpy('removeLineItem'),
         editLineItem: jasmine.createSpy('editLineItem'),
         state: mockState
-      };
-
-      mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({
-          config: { form: 'SOME_CONFIG', createQuote: { items: [] } }
-        }))
       };
 
       mockDocument = {
@@ -81,45 +84,23 @@ export function main() {
       };
 
       mockAppStore = new MockAppStore();
+      mockAppStore.createStateSection('uiConfig', {
+        components: { cart: { config: { form: 'SOME_CONFIG', createQuote: { items: [] } } } }
+      });
 
       componentUnderTest = new CommerceEditTab(
-        null, mockCartService, mockUiConfig, mockDialogService, mockAssetService, mockWindow, mockUserPreference,
+        null, mockCartService, mockDialogService, mockAssetService, mockWindow, mockUserPreference,
         mockDocument, mockPricingStore, mockAppStore, mockPricingService
       );
     });
 
     describe('Initialization', () => {
-
-      it('gets the UI config specifically for the cart', () => {
-        componentUnderTest.ngOnInit();
-
-        expect(mockUiConfig.get).toHaveBeenCalledWith('cart');
-      });
-
       it('caches the cart UI config', () => {
         componentUnderTest.ngOnInit();
 
         expect(componentUnderTest.config).toEqual({ form: 'SOME_CONFIG', createQuote: { items: [] } });
       });
     });
-
-    describe('Destruction', () => {
-      it('unsubscribes from the UI config to prevent memory leakage', () => {
-        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
-        let mockObservable = { subscribe: () => mockSubscription, take: () => mockObservable };
-        mockUiConfig = { get: () => mockObservable };
-
-        componentUnderTest = new CommerceEditTab(
-          null, mockCartService, mockUiConfig, mockDialogService, mockAssetService, mockWindow, mockUserPreference,
-          mockDocument, mockPricingStore, mockAppStore, mockPricingService
-        );
-        componentUnderTest.ngOnInit();
-        componentUnderTest.ngOnDestroy();
-
-        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
-      });
-    });
-
 
     describe('rmAssetsHaveAttributes()', () => {
       it('should return false if there is an RM asset without attributes', () => {
@@ -145,7 +126,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -159,7 +140,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -178,7 +159,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(true);
@@ -192,7 +173,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(false);
@@ -210,7 +191,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -235,7 +216,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(true);
@@ -260,7 +241,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);

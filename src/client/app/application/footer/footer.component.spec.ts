@@ -1,13 +1,17 @@
 import { FooterComponent } from './footer.component';
 import { Observable } from 'rxjs/Observable';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
-  let componentUnderTest: FooterComponent, mockUiConfig: any;
+  let componentUnderTest: FooterComponent;
+  let mockStore: MockAppStore;
 
   describe('Footer Component', () => {
     beforeEach(() => {
-      mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { some: 'config' } })) };
-      componentUnderTest = new FooterComponent(mockUiConfig);
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('uiConfig', { loaded: true, components: { footer: { config: { some: 'config' } } } });
+
+      componentUnderTest = new FooterComponent(mockStore);
     });
 
     describe('ngOnInit()', () => {

@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { UiState } from '../../shared/services/ui.state';
+import { AppStore } from '../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -9,9 +9,9 @@ import { UiState } from '../../shared/services/ui.state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppLoadingIndicatorComponent {
-  constructor(private uiState: UiState) { }
+  constructor(private store: AppStore) { }
 
   public get showLoadingIndicator(): Observable<boolean> {
-    return this.uiState.data.map(data => data.loadingIndicator);
+    return this.store.select(state => state.loadingIndicator.show);
   }
 }

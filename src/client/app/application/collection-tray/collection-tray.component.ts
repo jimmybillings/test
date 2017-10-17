@@ -2,7 +2,7 @@ import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core
 import { CollectionLinkComponent } from '../../+collection/components/collection-link.component';
 import { CollectionFormComponent } from './components/collection-form.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { Asset, WzEvent } from '../../shared/interfaces/common.interface';
+import { Asset, WzEvent, UiConfigComponents } from '../../shared/interfaces/common.interface';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 import { AppStore } from '../../app.store';
@@ -16,11 +16,10 @@ import { Common } from '../../shared/utilities/common.functions';
 })
 
 export class CollectionTrayComponent implements OnInit {
-  @Input() uiState: any;
-  @Input() uiConfig: any;
   @Input() userPreference: any;
   public pageSize: string;
   public collection: any;
+  public collectionFormConfig: any;
   private enhancedAssets: { [uuid: string]: EnhancedAsset } = {};
 
   constructor(private dialogService: WzDialogService, private store: AppStore) { }
@@ -28,9 +27,9 @@ export class CollectionTrayComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(factory => factory.activeCollection.loadIfNeeded());
     this.setCollection();
-    this.uiConfig.get('global').take(1).subscribe((config: any) => {
-      this.pageSize = config.config.pageSize.value;
-    });
+    const config: UiConfigComponents = this.store.snapshotCloned(state => state.uiConfig.components);
+    this.pageSize = config.global.config.pageSize.value;
+    this.collectionFormConfig = config.collection.config;
   }
 
   public toggleCollectionTray(): void {
@@ -61,20 +60,18 @@ export class CollectionTrayComponent implements OnInit {
   }
 
   public createCollection() {
-    this.uiConfig.get('collection').take(1).subscribe((config: any) => {
-      this.dialogService.openComponentInDialog({
-        componentType: CollectionFormComponent,
-        dialogConfig: { position: { top: '10%' } },
-        inputOptions: {
-          fields: config.config,
-          collectionActionType: 'create'
-        },
-        outputOptions: [{
-          event: 'collectionSaved',
-          callback: (collection: Collection) => this.store.dispatch(factory => factory.router.goToCollection(collection.id)),
-          closeOnEvent: true
-        }]
-      });
+    this.dialogService.openComponentInDialog({
+      componentType: CollectionFormComponent,
+      dialogConfig: { position: { top: '10%' } },
+      inputOptions: {
+        fields: this.collectionFormConfig,
+        collectionActionType: 'create'
+      },
+      outputOptions: [{
+        event: 'collectionSaved',
+        callback: (collection: Collection) => this.store.dispatch(factory => factory.router.goToCollection(collection.id)),
+        closeOnEvent: true
+      }]
     });
   }
 

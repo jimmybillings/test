@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CurrentUserService } from '../../shared/services/current-user.service';
-import { UiState } from '../../shared/services/ui.state';
+import { AppStore } from '../../app.store';
 import { FeatureStore } from '../../shared/stores/feature.store';
 import { Feature } from '../../shared/interfaces/feature.interface';
 import { Collection } from '../../shared/interfaces/collection.interface';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class CollectionCapabilities {
-  constructor(public currentUser: CurrentUserService, public uiState: UiState, public feature: FeatureStore) { }
+  constructor(public currentUser: CurrentUserService, public store: AppStore, public feature: FeatureStore) { }
 
   public haveCollections(): boolean {
     return this.feature.isAvailable('disableCollectionAccess');
@@ -23,10 +23,10 @@ export class CollectionCapabilities {
     return this.haveCollections() && this.userHas('EditCollections');
   }
 
-  public viewCollectionTray(): Observable<boolean> {
-    return this.uiState.headerIsExpanded().map((headerIsExpanded) => {
-      return this.haveCollections() && headerIsExpanded && this.userHas('ViewCollections');
-    });
+  public viewCollectionTray(): boolean {
+    return this.store.snapshot(state => state.headerDisplayOptions.canBeFixed) &&
+      this.haveCollections() &&
+      this.userHas('ViewCollections');
   }
 
   public editCollection(collection: Collection): Observable<boolean> {

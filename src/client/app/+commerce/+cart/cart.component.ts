@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import { CommerceCapabilities } from '../services/commerce.capabilities';
 import { CommerceMessage } from '../../shared/interfaces/commerce.interface';
 import { AppStore } from '../../app.store';
-import { UiConfig } from '../../shared/services/ui.config';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
 import { CartService } from '../../shared/services/cart.service';
@@ -25,8 +24,7 @@ export class CartComponent implements OnInit {
 
   constructor(
     public userCan: CommerceCapabilities,
-    private appStore: AppStore,
-    private uiConfig: UiConfig,
+    private store: AppStore,
     private cartService: CartService,
     private detector: ChangeDetectorRef
   ) { }
@@ -43,7 +41,7 @@ export class CartComponent implements OnInit {
 
     this.selectedTabIndex = 0;
 
-    this.uiConfig.get('cartComment').take(1).subscribe(config => this.commentFormConfig = config.config.form.items);
+    this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.cartComment.config.form.items);
 
     this.commentParentObject = { objectType: 'cart', objectId: this.cartService.state.data.id };
   }
@@ -73,7 +71,7 @@ export class CartComponent implements OnInit {
   }
 
   public get commentCount(): Observable<number> {
-    return this.appStore.select(state => state.comment.cart.pagination.totalCount);
+    return this.store.select(state => state.comment.cart.pagination.totalCount);
   }
 
   private goToNextTab(): void {

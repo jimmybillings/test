@@ -1,9 +1,10 @@
 import { Component, Inject, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
 import { CommercePaymentTab } from '../../../components/tabs/commerce-payment-tab';
 import { QuoteService } from '../../../../shared/services/quote.service';
 import { QuoteState, QuoteType } from '../../../../shared/interfaces/commerce.interface';
-import { UiConfig } from '../../../../shared/services/ui.config';
-import { Observable } from 'rxjs/Observable';
+import { AppStore } from '../../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -16,10 +17,10 @@ export class QuotePaymentTabComponent extends CommercePaymentTab {
   constructor(
     _zone: NgZone,
     protected quoteService: QuoteService,
-    uiConfig: UiConfig,
+    store: AppStore,
     ref: ChangeDetectorRef
   ) {
-    super(_zone, quoteService, uiConfig, ref);
+    super(_zone, quoteService, store, ref);
   }
 
   public get showProvisionalOrderMessage(): Observable<boolean> {

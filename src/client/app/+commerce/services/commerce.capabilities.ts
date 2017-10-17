@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { Observable } from 'rxjs/Observable';
-import { UiState } from '../../shared/services/ui.state';
+import { AppStore } from '../../app.store';
 import { FeatureStore } from '../../shared/stores/feature.store';
 import { Feature } from '../../shared/interfaces/feature.interface';
 import { Address, ViewAddress } from '../../shared/interfaces/user.interface';
@@ -9,16 +9,14 @@ import { Project, Quote, QuoteState } from '../../shared/interfaces/commerce.int
 
 @Injectable()
 export class CommerceCapabilities {
-  constructor(public currentUser: CurrentUserService, public uiState: UiState, public feature: FeatureStore) { }
+  constructor(public currentUser: CurrentUserService, public store: AppStore, public feature: FeatureStore) { }
 
   public haveCart(): boolean {
     return this.feature.isAvailable('disableCartAccess');
   }
 
-  public viewCartIcon(): Observable<boolean> {
-    return this.uiState.headerIsExpanded().map((headerIsExpanded) => {
-      return this.haveCart() && headerIsExpanded && this.addToCart();
-    });
+  public viewCartIcon(): boolean {
+    return this.store.snapshot(state => state.headerDisplayOptions.canBeFixed) && this.haveCart() && this.addToCart();
   }
 
   public addToCart(): boolean {
