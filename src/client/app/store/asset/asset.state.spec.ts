@@ -1,4 +1,4 @@
-import * as AssetActions from '../actions/asset.actions';
+import * as AssetActions from './asset.actions';
 import * as AssetState from './asset.state';
 import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 

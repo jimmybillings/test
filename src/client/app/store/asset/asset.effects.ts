@@ -4,14 +4,14 @@ import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
 
 import { AppStore } from '../../app.store';
-import { AssetService } from '../services/asset.service';
+import { AssetService } from './asset.service';
 
-import * as SearchAssetActions from '../actions/search-asset.actions';
-import * as QuoteEditAssetActions from '../actions/quote-edit-asset.actions';
-import * as QuoteShowAssetActions from '../actions/quote-show-asset.actions';
-import * as CartAssetActions from '../actions/cart-asset.actions';
-import * as ActiveCollectionAssetActions from '../actions/active-collection-asset.actions';
-import * as OrderAssetActions from '../actions/order-asset.actions';
+import * as SearchAssetActions from '../search-asset/search-asset.actions';
+import * as QuoteEditAssetActions from '../quote-edit-asset/quote-edit-asset.actions';
+import * as QuoteShowAssetActions from '../quote-show-asset/quote-show-asset.actions';
+import * as CartAssetActions from '../cart-asset/cart-asset.actions';
+import * as ActiveCollectionAssetActions from '../active-collection-asset/active-collection-asset.actions';
+import * as OrderAssetActions from '../order-asset/order-asset.actions';
 
 @Injectable()
 export class AssetEffects {

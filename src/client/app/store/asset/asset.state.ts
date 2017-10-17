@@ -1,4 +1,4 @@
-import * as AssetActions from '../actions/asset.actions';
+import * as AssetActions from './asset.actions';
 import { Asset } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
 
