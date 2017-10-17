@@ -9,7 +9,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MaterialModule } from './modules/wz-design/wz.design.module';
 import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
 // Shared Wazee Modules
@@ -84,6 +84,7 @@ import {
 
 import * as ActiveCollectionState from '../store/active-collection/active-collection.state';
 import * as ActiveCollectionAssetState from '../store/active-collection-asset/active-collection-asset.state';
+import * as AssetState from '../store/asset/asset.state';
 import * as CartState from '../store/cart/cart.state';
 import * as CartAssetState from '../store/cart-asset/cart-asset.state';
 import * as CommentState from '../store/comment/comment.state';
@@ -122,6 +123,7 @@ import { sortDefinitions } from './services/sort-definitions.service';
 // WAZEE EFFECTS
 import { ActiveCollectionAssetEffects } from '../store/active-collection-asset/active-collection-asset.effects';
 import { ActiveCollectionEffects } from '../store/active-collection/active-collection.effects';
+import { AssetEffects } from '../store/asset/asset.effects';
 import { CartEffects } from '../store/cart/cart.effects';
 import { CartAssetEffects } from '../store/cart-asset/cart-asset.effects';
 import { CommentEffects } from '../store/comment/comment.effects';
@@ -217,6 +219,7 @@ const WAZEE_STORES: any = {
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
   activeCollectionAsset: ActiveCollectionAssetState.reducer,
+  asset: AssetState.reducer,
   cart: CartState.reducer,
   cartAsset: CartAssetState.reducer,
   comment: CommentState.reducer,
@@ -238,6 +241,7 @@ const WAZEE_STORES: any = {
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
   ActiveCollectionAssetEffects,
+  AssetEffects,
   CartEffects,
   CartAssetEffects,
   CommentEffects,
@@ -290,7 +294,7 @@ export function createTranslateLoader(http: HttpClient) {
     StoreModule.forRoot(WAZEE_STORES),  // Eventually this will be just the reducers object from app.store.ts
     // TODO: Get StoreDevtoolsModule out of production!!!  (Looks scary, though:
     // https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md)
-    StoreDevtoolsModule.instrument(),
+    // StoreDevtoolsModule.instrument(),
     WAZEE_EFFECTS
   ],
   declarations: [

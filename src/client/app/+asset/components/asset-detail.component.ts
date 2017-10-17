@@ -53,6 +53,7 @@ export class AssetDetailComponent implements OnInit {
   public subclipMarkers: SubclipMarkers;
   public activeCollectionName: string;
   public showComments: boolean;
+  public hasDeliveryOptions: Observable<boolean>;
   @Output() public updateAssetLineItem: EventEmitter<null> = new EventEmitter();
   @Output() private markersChange: EventEmitter<SubclipMarkers> = new EventEmitter();
   private _asset: EnhancedAsset;
@@ -67,6 +68,7 @@ export class AssetDetailComponent implements OnInit {
     const config: UiConfigComponents = this.store.snapshotCloned(state => state.uiConfig.components);
     this.pageSize = parseInt(config.global.config.pageSize.value);
     this.shareComponentConfig = config.assetSharing.config;
+    this.setDeliveryOptionsFlag();
   }
 
   public get asset(): EnhancedAsset {
@@ -367,5 +369,9 @@ export class AssetDetailComponent implements OnInit {
 
   private get markersAreDefined(): boolean {
     return !!this.subclipMarkers && !!this.subclipMarkers.in && !!this.subclipMarkers.out;
+  }
+
+  private setDeliveryOptionsFlag(): void {
+    this.hasDeliveryOptions = this.store.select(state => state.asset.hasDeliveryOptions);
   }
 }
