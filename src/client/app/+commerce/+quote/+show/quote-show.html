@@ -84,7 +84,7 @@
             <span *ngIf="(offlineAgreementIds | async).length">
               <strong>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }}</strong>{{ offlineAgreementIds | async }}
             </span>
-            <ng-container *ngIf="userCan.administerQuotes()">
+            <ng-container *ngIf="shouldShowRecipientInfo">
               <span>
                 <strong>{{ 'QUOTE.RECIPIENT_NAME' | translate }} </strong>
                 {{ (quote | async).createdUserFullName || 'N/A' }}
