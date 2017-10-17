@@ -192,6 +192,20 @@ export function main() {
       });
     });
 
+    describe('shouldShowRecipientInfo()', () => {
+      it('is true if the user can administer quotes', () => {
+        mockCapabilities = { administerQuotes: () => true };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, mockChangeDetectorRef);
+        expect(componentUnderTest.shouldShowRecipientInfo).toBe(true);
+      });
+
+      it('is false if the user cannot administer quotes', () => {
+        mockCapabilities = { administerQuotes: () => false };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, mockChangeDetectorRef);
+        expect(componentUnderTest.shouldShowRecipientInfo).toBe(false);
+      });
+    });
+
     describe('trStringForPurchaseType()', () => {
       it('is the standard translation if the purchase type is not an attribute of the quote', () => {
         mockQuoteService = { data: Observable.of({}), state: { data: {} } };
