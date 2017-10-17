@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QuotesService } from '../../../shared/services/quotes.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
-import { UiConfig } from '../../../shared/services/ui.config';
+import { AppStore } from '../../../app.store';
 import { Quote, Quotes } from '../../../shared/interfaces/commerce.interface';
 import { Observable } from 'rxjs/Observable';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -25,14 +25,14 @@ export class QuotesComponent {
   constructor(
     public userCan: CommerceCapabilities,
     private quotesService: QuotesService,
-    private uiConfig: UiConfig,
+    private store: AppStore,
     private router: Router,
-    private dialogService: WzDialogService) {
+    private dialogService: WzDialogService
+  ) {
     this.quotes = this.quotesService.data;
     this.buildFilterOptions();
     this.buildSortOptions();
-    this.config = this.uiConfig.get('cart')
-      .take(1).subscribe((config: any) => this.config = config.config);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
   }
 
   public changePage(i: string): void {

@@ -1,7 +1,7 @@
 <mat-sidenav-container>
 	<mat-sidenav
 		#searchFilter
-		[opened]="(userPreferences.data | async).displayFilterTree && (uiState.data | async).filtersAreAvailable"
+		[opened]="(userPreferences.data | async).displayFilterTree && filtersAreAvailable | async"
 		align="start"
 		[mode]="(screenWidth > 600) ? 'side' : 'over'">
 		<mat-slide-toggle

@@ -2,9 +2,8 @@ import { Component, Inject, ChangeDetectionStrategy, OnDestroy } from '@angular/
 import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 import { Router } from '@angular/router';
-import { UiConfig } from '../../../shared/services/ui.config';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { AssetService } from '../../../store/services/asset.service';
+import { AssetService } from '../../../store/asset/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
@@ -37,7 +36,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   constructor(
     public userCan: Capabilities,
     public quoteEditService: QuoteEditService,
-    public uiConfig: UiConfig,
     public dialogService: WzDialogService,
     public assetService: AssetService,
     public window: WindowRef,
@@ -49,10 +47,10 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public pricingService: PricingService
   ) {
     super(
-      userCan, quoteEditService, uiConfig, dialogService, assetService, window,
+      userCan, quoteEditService, dialogService, assetService, window,
       userPreference, document, pricingStore, store, pricingService
     );
-    this.uiConfig.get('quoteComment').take(1).subscribe((config: any) => this.commentFormConfig = config.config.form.items);
+    this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.quoteComment.config.form.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
     this.projectSubscription = this.quoteEditService.projects.subscribe(projects => this.projects = projects);
   }

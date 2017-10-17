@@ -3,9 +3,8 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../../components/tabs/commerce-edit-tab';
 import { LicenseAgreements, Project } from '../../../../shared/interfaces/commerce.interface';
 import { CartService } from '../../../../shared/services/cart.service';
-import { UiConfig } from '../../../../shared/services/ui.config';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { AssetService } from '../../../../store/services/asset.service';
+import { AssetService } from '../../../../store/asset/asset.service';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
@@ -32,7 +31,6 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
   constructor(
     public userCan: CommerceCapabilities,
     public cartService: CartService,
-    public uiConfig: UiConfig,
     public dialogService: WzDialogService,
     public assetService: AssetService,
     public window: WindowRef,
@@ -44,7 +42,7 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
     protected store: AppStore
   ) {
     super(
-      userCan, cartService, uiConfig, dialogService, assetService, window,
+      userCan, cartService, dialogService, assetService, window,
       userPreference, document, pricingStore,
       store, pricingService
     );

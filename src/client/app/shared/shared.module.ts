@@ -9,7 +9,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MaterialModule } from './modules/wz-design/wz.design.module';
 import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
 // Shared Wazee Modules
@@ -42,14 +42,11 @@ import { WzCommentComponent } from './components/wz-comment/wz.comment.component
 
 // WAZEE SERVICES
 import { ApiConfig } from './services/api.config';
-import { MultilingualService } from './services/multilingual.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CurrentUserService } from './services/current-user.service';
 import { UserService } from './services/user.service';
-import { UiConfig } from './services/ui.config';
 import { SearchContext } from './services/search-context.service';
 import { CollectionsService } from './services/collections.service';
-import { UiState } from './services/ui.state';
 import { UserPreferenceService } from './services/user-preference.service';
 import { ApiService } from './services/api.service';
 import { SortDefinitionsService } from './services/sort-definitions.service';
@@ -67,16 +64,17 @@ import { QuotesService } from './services/quotes.service';
 import { QuoteEditService } from './services/quote-edit.service';
 import { PricingService } from './services/pricing.service';
 // New-ish services
-import { AssetService } from '../store/services/asset.service';
-import { ActiveCollectionService } from '../store/services/active-collection.service';
-import { CommentService } from '../store/services/comment.service';
-import { FutureApiService } from '../store/services/api.service';
-import { FutureCartService } from '../store/services/cart.service';
-import { FutureQuoteEditService } from '../store/services/quote-edit.service';
-import { FutureQuoteShowService } from '../store/services/quote-show.service';
-import { OrderService } from '../store/services/order.service';
-import { SnackbarService } from '../store/services/snackbar.service';
-import { SpeedPreviewService } from '../store/services/speed-preview.service';
+import { AssetService } from '../store/asset/asset.service';
+import { ActiveCollectionService } from '../store/active-collection/active-collection.service';
+import { CommentService } from '../store/comment/comment.service';
+import { FutureApiService } from '../store/api/api.service';
+import { FutureCartService } from '../store/cart/cart.service';
+import { FutureQuoteEditService } from '../store/quote-edit/quote-edit.service';
+import { FutureQuoteShowService } from '../store/quote-show/quote-show.service';
+import { OrderService } from '../store/order/order.service';
+import { SnackbarService } from '../store/snackbar/snackbar.service';
+import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
+import { UiConfigService } from '../store/ui-config/ui-config.service';
 
 // WAZEE STORES
 import {
@@ -84,20 +82,25 @@ import {
   // reducers
 } from '../app.store';
 
-import * as ActiveCollectionState from '../store/states/active-collection.state';
-import * as ActiveCollectionAssetState from '../store/states/active-collection-asset.state';
-import * as CartState from '../store/states/cart.state';
-import * as CartAssetState from '../store/states/cart-asset.state';
-import * as CommentState from '../store/states/comment.state';
-import * as OrderState from '../store/states/order.state';
-import * as OrderAssetState from '../store/states/order-asset.state';
-import * as QuoteEditState from '../store/states/quote-edit.state';
-import * as QuoteShowState from '../store/states/quote-show.state';
-import * as QuoteEditAssetState from '../store/states/quote-edit-asset.state';
-import * as QuoteShowAssetState from '../store/states/quote-show-asset.state';
-import * as SearchAssetState from '../store/states/search-asset.state';
-import * as SnackbarState from '../store/states/snackbar.state';
-import * as SpeedPreviewState from '../store/states/speed-preview.state';
+import * as ActiveCollectionState from '../store/active-collection/active-collection.state';
+import * as ActiveCollectionAssetState from '../store/active-collection-asset/active-collection-asset.state';
+import * as AssetState from '../store/asset/asset.state';
+import * as CartState from '../store/cart/cart.state';
+import * as CartAssetState from '../store/cart-asset/cart-asset.state';
+import * as CommentState from '../store/comment/comment.state';
+import * as HeaderDisplayOptions from '../store/header-display-options/header-display-options.state';
+import * as LoadingIndicatorState from '../store/loading-indicator/loading-indicator.state';
+import * as MultiLingualState from '../store/multi-lingual/multi-lingual.state';
+import * as OrderState from '../store/order/order.state';
+import * as OrderAssetState from '../store/order-asset/order-asset.state';
+import * as QuoteEditState from '../store/quote-edit/quote-edit.state';
+import * as QuoteShowState from '../store/quote-show/quote-show.state';
+import * as QuoteEditAssetState from '../store/quote-edit-asset/quote-edit-asset.state';
+import * as QuoteShowAssetState from '../store/quote-show-asset/quote-show-asset.state';
+import * as SearchAssetState from '../store/search-asset/search-asset.state';
+import * as SnackbarState from '../store/snackbar/snackbar.state';
+import * as SpeedPreviewState from '../store/speed-preview/speed-preview.state';
+import * as UiConfigState from '../store/ui-config/ui-config.state';
 
 import { searchStore, SearchStore } from './stores/search.store';
 import { collections, CollectionsStore } from './stores/collections.store';
@@ -110,46 +113,44 @@ import { feeConfig, FeeConfigStore } from './stores/fee-config.store';
 import { pricingReducer, PricingStore } from './stores/pricing.store';
 
 import { currentUser } from './services/current-user.service';
-import { config } from './services/ui.config';
-import { uiState } from './services/ui.state';
 import { Capabilities } from './services/capabilities.service';
 import { searchContext } from './services/search-context.service';
-import { multilingualActionReducer } from './services/multilingual.service';
 import { filters } from './services/filter.service';
 import { userPreferences } from './services/user-preference.service';
 import { collectionOptions } from './services/collection-context.service';
 import { sortDefinitions } from './services/sort-definitions.service';
 
 // WAZEE EFFECTS
-import { ActiveCollectionAssetEffects } from '../store/effects/active-collection-asset.effects';
-import { ActiveCollectionEffects } from '../store/effects/active-collection.effects';
-import { CartEffects } from '../store/effects/cart.effects';
-import { CartAssetEffects } from '../store/effects/cart-asset.effects';
-import { CommentEffects } from '../store/effects/comment.effects';
-import { DialogEffects } from '../store/effects/dialog.effects';
-import { ErrorEffects } from '../store/effects/error.effects';
-import { NotifierEffects } from '../store/effects/notifier.effects';
-import { OrderEffects } from '../store/effects/order.effects';
-import { OrderAssetEffects } from '../store/effects/order-asset.effects';
-import { QuoteEditEffects } from '../store/effects/quote-edit.effects';
-import { QuoteShowEffects } from '../store/effects/quote-show.effects';
-import { QuoteEditAssetEffects } from '../store/effects/quote-edit-asset.effects';
-import { QuoteShowAssetEffects } from '../store/effects/quote-show-asset.effects';
-import { RouterEffects } from '../store/effects/router.effects';
-import { SearchAssetEffects } from '../store/effects/search-asset.effects';
-import { SnackbarEffects } from '../store/effects/snackbar.effects';
-import { SpeedPreviewEffects } from '../store/effects/speed-preview.effects';
+import { ActiveCollectionAssetEffects } from '../store/active-collection-asset/active-collection-asset.effects';
+import { ActiveCollectionEffects } from '../store/active-collection/active-collection.effects';
+import { AssetEffects } from '../store/asset/asset.effects';
+import { CartEffects } from '../store/cart/cart.effects';
+import { CartAssetEffects } from '../store/cart-asset/cart-asset.effects';
+import { CommentEffects } from '../store/comment/comment.effects';
+import { DialogEffects } from '../store/dialog/dialog.effects';
+import { ErrorEffects } from '../store/error/error.effects';
+import { HeaderDisplayOptionsEffects } from '../store/header-display-options/header-display-options.effects';
+import { MultiLingualEffects } from '../store/multi-lingual/multi-lingual.effects';
+import { NotifierEffects } from '../store/notifier/notifier.effects';
+import { OrderEffects } from '../store/order/order.effects';
+import { OrderAssetEffects } from '../store/order-asset/order-asset.effects';
+import { QuoteEditEffects } from '../store/quote-edit/quote-edit.effects';
+import { QuoteShowEffects } from '../store/quote-show/quote-show.effects';
+import { QuoteEditAssetEffects } from '../store/quote-edit-asset/quote-edit-asset.effects';
+import { QuoteShowAssetEffects } from '../store/quote-show-asset/quote-show-asset.effects';
+import { RouterEffects } from '../store/router/router.effects';
+import { SearchAssetEffects } from '../store/search-asset/search-asset.effects';
+import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
+import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
+import { UiConfigEffects } from '../store/ui-config/ui-config.effects';
 
 const WAZEE_SERVICES = [
   ApiConfig,
   CurrentUserService,
-  UiConfig,
   AssetService,
   CollectionsService,
   ActiveCollectionService,
   SearchContext,
-  MultilingualService,
-  UiState,
   UserPreferenceService,
   CollectionContextService,
   ApiService,
@@ -176,6 +177,7 @@ const WAZEE_SERVICES = [
   CommentService,
   FutureCartService,
   SpeedPreviewService,
+  UiConfigService,
   PricingService
 ];
 
@@ -199,16 +201,13 @@ const WAZEE_PROVIDERS: any = [
 
 
 const WAZEE_STORES: any = {
-  config: config,
   searchStore: searchStore,
   currentUser: currentUser,
   searchContext: searchContext,
   collections: collections,
-  uiState: uiState,
   filters: filters,
   userPreferences: userPreferences,
   collectionOptions: collectionOptions,
-  i18n: multilingualActionReducer,
   sortDefinitions: sortDefinitions,
   orders: orders,
   features: features,
@@ -220,9 +219,13 @@ const WAZEE_STORES: any = {
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
   activeCollectionAsset: ActiveCollectionAssetState.reducer,
+  asset: AssetState.reducer,
   cart: CartState.reducer,
   cartAsset: CartAssetState.reducer,
   comment: CommentState.reducer,
+  headerDisplayOptions: HeaderDisplayOptions.reducer,
+  loadingIndicator: LoadingIndicatorState.reducer,
+  multiLingual: MultiLingualState.reducer,
   order: OrderState.reducer,
   orderAsset: OrderAssetState.reducer,
   quoteEdit: QuoteEditState.reducer,
@@ -231,17 +234,21 @@ const WAZEE_STORES: any = {
   quoteShowAsset: QuoteShowAssetState.reducer,
   searchAsset: SearchAssetState.reducer,
   snackbar: SnackbarState.reducer,
-  speedPreview: SpeedPreviewState.reducer
+  speedPreview: SpeedPreviewState.reducer,
+  uiConfig: UiConfigState.reducer
 };
 
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
   ActiveCollectionAssetEffects,
+  AssetEffects,
   CartEffects,
   CartAssetEffects,
   CommentEffects,
   DialogEffects,
   ErrorEffects,
+  HeaderDisplayOptionsEffects,
+  MultiLingualEffects,
   NotifierEffects,
   OrderEffects,
   OrderAssetEffects,
@@ -252,7 +259,8 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   RouterEffects,
   SearchAssetEffects,
   SnackbarEffects,
-  SpeedPreviewEffects
+  SpeedPreviewEffects,
+  UiConfigEffects
 ]);
 
 // Shared pipes
@@ -286,7 +294,7 @@ export function createTranslateLoader(http: HttpClient) {
     StoreModule.forRoot(WAZEE_STORES),  // Eventually this will be just the reducers object from app.store.ts
     // TODO: Get StoreDevtoolsModule out of production!!!  (Looks scary, though:
     // https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md)
-    StoreDevtoolsModule.instrument(),
+    // StoreDevtoolsModule.instrument(),
     WAZEE_EFFECTS
   ],
   declarations: [

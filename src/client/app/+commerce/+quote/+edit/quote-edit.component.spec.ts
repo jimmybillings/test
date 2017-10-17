@@ -12,7 +12,6 @@ export function main() {
     let mockStore: MockAppStore;
     let mockCapabilities: any;
     let mockQuoteEditService: any;
-    let mockUiConfig: any;
     let mockDialogService: any;
     let mockAssetService: any;
     let mockWindow: any;
@@ -42,20 +41,6 @@ export function main() {
         bulkImport: jasmine.createSpy('bulkImport').and.returnValue(Observable.of({}))
       };
 
-      mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({
-          config: {
-            form: { items: ['comment', 'stuff'] },
-            createQuote: { items: [{ name: 'purchaseType', value: '' }] },
-            addBulkOrderId: { items: [{ some: 'bulk' }] },
-            addDiscount: { items: [{ some: 'discount' }] },
-            addCostMultiplier: { items: [{ some: 'multiplier' }] },
-            bulkImport: { items: [{ some: 'import' }] },
-            quotePurchaseType: { items: [{ some: 'purchaseType' }] }
-          }
-        }))
-      };
-
       mockDialogService = {
         openFormDialog: jasmine.createSpy('openFormDialog').and.callFake((_: any, __: any, onSubmitCallback: Function) => {
           mockDialogService.onSubmitCallback = onSubmitCallback;
@@ -76,13 +61,30 @@ export function main() {
 
       mockStore = new MockAppStore();
 
+      mockStore.createStateSection('uiConfig', {
+        components: {
+          quoteComment: { config: { form: { items: [{ some: 'config' }] } } },
+          cart: {
+            config: {
+              form: { items: ['comment', 'stuff'] },
+              createQuote: { items: [{ name: 'purchaseType', value: '' }] },
+              addBulkOrderId: { items: [{ some: 'bulk' }] },
+              addDiscount: { items: [{ some: 'discount' }] },
+              addCostMultiplier: { items: [{ some: 'multiplier' }] },
+              bulkImport: { items: [{ some: 'import' }] },
+              quotePurchaseType: { items: [{ some: 'purchaseType' }] }
+            }
+          }
+        }
+      });
+
       deleteQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'delete');
       addCustomPriceDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addCustomPriceToLineItem');
       snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
 
       componentUnderTest =
         new QuoteEditComponent(
-          mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
+          mockCapabilities, mockQuoteEditService, mockDialogService, mockAssetService,
           mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
         );
     });
@@ -96,7 +98,7 @@ export function main() {
         quoteId: 1
       };
       componentUnderTest = new QuoteEditComponent(
-        mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
+        mockCapabilities, mockQuoteEditService, mockDialogService, mockAssetService,
         mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
       );
       return componentUnderTest;
@@ -124,7 +126,7 @@ export function main() {
       });
 
       it('gets the UI config specifically for the comments', () => {
-        expect(mockUiConfig.get).toHaveBeenCalledWith('quoteComment');
+        expect(componentUnderTest.commentFormConfig).toEqual([{ some: 'config' }]);
       });
     });
 

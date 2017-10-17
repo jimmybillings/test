@@ -8,7 +8,6 @@ import { Frame } from '../../../shared/modules/wazee-frame-formatter/index';
 import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 import { AppStore } from '../../../app.store';
 import { Metadatum } from '../../../shared/interfaces/commerce.interface';
-import { UiConfig } from '../../../shared/services/ui.config';
 
 export class WzAsset implements OnInit {
   @Output() onAddToCart = new EventEmitter();
@@ -39,18 +38,16 @@ export class WzAsset implements OnInit {
   private assetIdsInActiveCollection: number[] = [];
   private enhancedAssets: { [lookupId: string]: EnhancedAsset } = {};
   private _activeCollection: Collection;
-  constructor(
-    private store: AppStore,
-    private detector: ChangeDetectorRef,
-    public uiConfig: UiConfig) { }
+
+  constructor(private store: AppStore, private detector: ChangeDetectorRef) { }
 
   public ngOnInit(): void {
-    this.uiConfig.get('search').take(1).subscribe(config => {
-      this.showAssetName =
-        !!config.config.showAssetNameGridView && config.config.showAssetNameGridView.value === 'true'
-          ? true
-          : false;
-    });
+    this.store.selectCloned(state => state.uiConfig.components.search.config)
+      .filter(config => !!config.showAssetNameGridView && !!config.showAssetNameGridView.value)
+      .map(config => config.showAssetNameGridView.value)
+      .take(1).subscribe((value: 'true' | 'false') => {
+        this.showAssetName = Boolean(value);
+      });
   }
 
   public get assets(): EnhancedAsset[] {

@@ -10,7 +10,7 @@ import { QuoteState } from '../../shared/interfaces/commerce.interface';
 import { Collection } from '../../shared/interfaces/collection.interface';
 
 import { CurrentUserService } from './current-user.service';
-import { UiState } from '../services/ui.state';
+import { AppStore } from '../../app.store';
 import { FeatureStore } from '../stores/feature.store';
 
 @Injectable()
@@ -26,9 +26,9 @@ export class Capabilities implements CommerceCapabilities, CollectionCapabilitie
   downloadFullComps: (hasComp: boolean) => boolean;
   createAccessInfo: () => boolean;
   createSubclips: (asset: any) => boolean;
-  viewCollectionTray: () => Observable<boolean>;
+  viewCollectionTray: () => boolean;
   viewSearchBar: () => Observable<boolean>;
-  viewCartIcon: () => Observable<boolean>;
+  viewCartIcon: () => boolean;
   purchaseOnCredit: () => boolean;
   addToCart: () => boolean;
   accessCart: () => boolean;
@@ -46,7 +46,7 @@ export class Capabilities implements CommerceCapabilities, CollectionCapabilitie
   constructor(
     public currentUser: CurrentUserService,
     public route: Router,
-    public uiState: UiState,
+    public store: AppStore,
     public feature: FeatureStore) {
     this.applyMixins(Capabilities, [
       CommerceCapabilities,

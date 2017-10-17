@@ -2,15 +2,16 @@ import { ProfileComponent } from './profile.component';
 import { Observable } from 'rxjs/Observable';
 import { WzAddressFormComponent } from '../../shared/modules/wz-form/components/wz-address-form/wz.address-form.component';
 import { Address } from '../../shared/interfaces/user.interface';
+import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Profile Component', () => {
     let componentUnderTest: ProfileComponent;
+    let mockStore: MockAppStore;
     let mockCurrentUserService: any;
     let mockChangeDetectorRef: any;
     let mockUserService: any;
     let mockDialogService: any;
-    let mockUiConfig: any;
 
     const user: any = {
       emailAddress: 'jamesbonline@yahoo.com',
@@ -20,11 +21,14 @@ export function main() {
 
     beforeEach(() => {
       mockCurrentUserService = { data: Observable.of(user) };
+
       mockChangeDetectorRef = { detectChanges: jasmine.createSpy('detectChanges') };
+
       mockUserService = {
         addBillingAddress: jasmine.createSpy('addBillingAddress').and.returnValue(Observable.of({})),
         changeBasicInfo: jasmine.createSpy('changeBasicInfo').and.returnValue(Observable.of({}))
       };
+
       mockDialogService = {
         openFormDialog: jasmine.createSpy('openFormDialog').and.callFake((_: any, __: any, onSubmitCallback: Function) => {
           mockDialogService.onChangeBasicInfo = onSubmitCallback;
@@ -33,17 +37,20 @@ export function main() {
           mockDialogService.onSubmitCallBack = options.outputOptions[0].callback;
         })
       };
-      mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: [] } } }))
-      };
+
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('uiConfig', {
+        components: { userBasicInfo: { config: { form: { items: [{ some: 'items' }] } } } }
+      });
+
       componentUnderTest = new ProfileComponent(
-        mockCurrentUserService, mockDialogService, mockUserService, mockChangeDetectorRef, mockUiConfig
+        mockCurrentUserService, mockDialogService, mockUserService, mockChangeDetectorRef, mockStore
       );
     });
 
     describe('ngOnInit()', () => {
       it('Grabs the component config and assigns to an instance variable', () => {
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, null);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.user).toEqual(user);
       });
@@ -54,7 +61,7 @@ export function main() {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
         mockCurrentUserService = { data: mockObservable };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, null);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();
@@ -69,7 +76,7 @@ export function main() {
           firstName: 'John', lastName: 'Doe', password: '3978f324e14ac256b2994b754586e05f',
         };
         mockCurrentUserService = { data: Observable.of(mockUser) };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, null);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         let result = componentUnderTest.getBillingAddressInfo('state');
         expect(result).toBe('');
@@ -83,7 +90,7 @@ export function main() {
           billingInfo: { address: { state: 'CO', phone: '720 291-2524' } },
         };
         mockCurrentUserService = { data: Observable.of(mockUser) };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, null);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         let result = componentUnderTest.getBillingAddressInfo('address');
         expect(result).toBe('');
@@ -97,7 +104,7 @@ export function main() {
           billingInfo: { address: { state: 'CO', phone: '720 291-2524' } },
         };
         mockCurrentUserService = { data: Observable.of(mockUser) };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, null);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         let result = componentUnderTest.getBillingAddressInfo('state');
         expect(result).toBe('CO');
@@ -110,7 +117,7 @@ export function main() {
           billingInfo: {},
         };
         mockCurrentUserService = { data: Observable.of(mockUser) };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, null);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         let result = componentUnderTest.getBillingAddressInfo('state');
         expect(result).toBe('');
@@ -154,7 +161,6 @@ export function main() {
       });
 
       it('opens a form dialog to edit the basic info', () => {
-        expect(mockUiConfig.get).toHaveBeenCalledWith('userBasicInfo');
         expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(jasmine.any(Array), {
           title: 'PROFILE.BASIC_INFO.EDIT_BTN_LABEL', submitLabel: 'PROFILE.BASIC_INFO.UPDATE_BTN_LABEL'
         }, jasmine.any(Function));

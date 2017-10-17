@@ -1,7 +1,11 @@
 import { WzAutocompleteSearchComponent } from './wz-autocomplete-search.component';
 import { FormBuilder } from '@angular/forms';
 
+import { MockAppStore } from '../../../../../store/spec-helpers/mock-app.store';
+
 export function main() {
+  let mockStore: MockAppStore = new MockAppStore();
+
   describe('Wz autocomplete component', () => {
     var HTMLElements: any = {};
     document.querySelector = jasmine.createSpy('HTML Element').and.callFake(function (ID: any) {
@@ -18,7 +22,7 @@ export function main() {
       suggestionChangeListener: jasmine.createSpy('suggestionChangeListener')
     };
     beforeEach(() => {
-      componentUnderTest = new WzAutocompleteSearchComponent(fb);
+      componentUnderTest = new WzAutocompleteSearchComponent(fb, mockStore);
       componentUnderTest.wzInputSuggestions = wzInputSuggestions;
       spyOn(componentUnderTest.searchContext, 'emit');
       spyOn(componentUnderTest.toggleFilterTree, 'emit');
@@ -87,6 +91,21 @@ export function main() {
       });
     });
 
+    describe('filtersAreAvailable', () => {
+      it('returns observable of true when the \'filtersAreAvailable\'in the store is true', () => {
+        mockStore.createStateSection('headerDisplayOptions', { filtersAreAvailable: true });
+        let areAvailable: boolean;
+        componentUnderTest.filtersAreAvailable.take(1).subscribe(available => areAvailable = available);
+        expect(areAvailable).toBe(true);
+      });
+
+      it('returns observable of false when the \'filtersAreAvailable\'in the store is false', () => {
+        mockStore.createStateSection('headerDisplayOptions', { filtersAreAvailable: false });
+        let areAvailable: boolean;
+        componentUnderTest.filtersAreAvailable.take(1).subscribe(available => areAvailable = available);
+        expect(areAvailable).toBe(false);
+      });
+    });
   });
 };
 

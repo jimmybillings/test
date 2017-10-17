@@ -59,11 +59,10 @@
         <nav class="asset-options" flex layout-align="end stretch">
           <button
             data-pendo='asset-detail_download-btn'
-            [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+            [disabled]="!(hasDeliveryOptions | async)"
             mat-icon-button
             [mat-menu-trigger-for]="downloadCompMenu"
-            title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 
-              'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED') | translate }}">
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}">
               <mat-icon>file_download</mat-icon>
           </button>
 
@@ -222,15 +221,6 @@
       <div *ngIf="!userCan.createSubclips(asset)" flex-gt-xs="66" flex="100" class="responsive-video">
         <wz-player [window]="window" [asset]="asset"></wz-player>
       </div>
-      <!-- <asset-save-subclip *ngIf="showAssetSaveSubclip" flex=""
-        [userCan]="userCan"
-        [asset]="asset"
-        [activeCollectionName]="activeCollectionName"
-        [subclipMarkers]="subclipMarkers"
-        [config]="(uiConfig.get('assetSaveSubclip') | async).config"
-        (ontoggleSubclipPanel)="toggleAssetSaveSubclip()"
-        (onAddSubclipToCart)="addSubclipToCart()">
-      </asset-save-subclip> -->
 
       <div flex-gt-xs="33" flex="100">
         <div flex="" layout="column" class="primary-info">

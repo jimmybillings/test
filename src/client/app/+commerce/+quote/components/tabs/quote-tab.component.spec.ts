@@ -1,10 +1,12 @@
-import { QuoteTabComponent } from './quote-tab.component';
 import { Observable } from 'rxjs/Observable';
+
+import { QuoteTabComponent } from './quote-tab.component';
 import { MockAppStore } from '../../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Quote Tab Component', () => {
     let componentUnderTest: QuoteTabComponent;
+    let mockStore: MockAppStore;
     let mockQuoteService: any;
     let mockUserCan: any;
     let mockDialogService: any;
@@ -12,14 +14,15 @@ export function main() {
     let mockUiConfig: any;
     let mockData: any;
     let mockQuoteEditService: any;
-    let mockStore: MockAppStore;
 
     function buildComponent(
       quoteHasAssets: boolean,
       canViewLicenses: boolean,
       canAdministerQuotes: boolean,
-      quoteStatus: string = 'ACTIVE'): QuoteTabComponent {
+      quoteStatus: string = 'ACTIVE'
+    ): QuoteTabComponent {
       mockData = { id: 1, quoteStatus: quoteStatus };
+
       mockQuoteService = {
         data: Observable.of({ data: mockData }),
         projects: Observable.of([]),
@@ -30,9 +33,11 @@ export function main() {
         mockRouter: { navigate: jasmine.createSpy('navigate') },
         cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({}))
       };
+
       mockQuoteEditService = {
         cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({}))
       };
+
       mockUserCan = {
         viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton').and.returnValue(canViewLicenses),
         administerQuotes: jasmine.createSpy('administerQuotes').and.returnValue(canAdministerQuotes),
@@ -47,14 +52,15 @@ export function main() {
 
       mockRouter = { navigate: jasmine.createSpy('navigate') };
 
-      mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { extendQuote: { items: [{ some: 'config' }] } } }))
-      };
-
       mockStore = new MockAppStore();
+      mockStore.createStateSection(
+        'uiConfig',
+        { components: { cart: { config: { extendQuote: { items: [{ some: 'config' }] } } } } }
+      );
 
-      return new QuoteTabComponent(mockQuoteService, mockUserCan, mockDialogService, mockRouter,
-        mockUiConfig, mockQuoteEditService, mockStore);
+      return new QuoteTabComponent(
+        mockQuoteService, mockUserCan, mockDialogService, mockRouter, mockQuoteEditService, mockStore
+      );
     }
 
     describe('checkout()', () => {
@@ -291,16 +297,17 @@ export function main() {
           state: mockState,
           projects: Observable.of([])
         };
-        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockUiConfig,
-          mockQuoteEditService, mockStore);
+        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockQuoteEditService, mockStore);
         expect(componentUnderTest.hasDiscount).toBe(true);
       });
     });
 
     describe('quoteIsProvisionalOrder', () => {
       it('returns true if the quote is of type \'ProvisionalOrder\'', () => {
+        mockStore = new MockAppStore();
+        mockStore.createStateSection('uiConfig', { components: { cart: { config: {} } } });
         mockQuoteService = { data: Observable.of({ data: { purchaseType: 'ProvisionalOrder' } }), projects: Observable.of([]) };
-        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockUiConfig, null, null);
+        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, null, mockStore);
         let is: boolean;
         componentUnderTest.quoteIsProvisionalOrder.take(1).subscribe(res => is = res);
 
@@ -308,8 +315,10 @@ export function main() {
       });
 
       it('returns false if the quote is NOT of type \'ProvisionalOrder\'', () => {
+        mockStore = new MockAppStore();
+        mockStore.createStateSection('uiConfig', { components: { cart: { config: {} } } });
         mockQuoteService = { data: Observable.of({ data: { purchaseType: 'Blah' } }), projects: Observable.of([]) };
-        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockUiConfig, null, null);
+        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, null, mockStore);
         let is: boolean;
         componentUnderTest.quoteIsProvisionalOrder.take(1).subscribe(res => is = res);
 

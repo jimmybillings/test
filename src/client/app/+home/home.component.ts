@@ -1,20 +1,18 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { CurrentUserService } from '../shared/services/current-user.service';
-import { UiConfig } from '../shared/services/ui.config';
-import { SearchContext } from '../shared/services/search-context.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 
-import { UiState } from '../shared/services/ui.state';
+import { CurrentUserService } from '../shared/services/current-user.service';
+import { SearchContext } from '../shared/services/search-context.service';
 import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
-import { Router } from '@angular/router';
-
 import { GalleryViewService } from '../shared/services/gallery-view.service';
 import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from '../shared/interfaces/gallery-view.interface';
 import { HomeVideoService } from './services/home.video.service';
 import { Common } from '../shared/utilities/common.functions';
+import { AppStore } from '../app.store';
 
 @Component({
   moduleId: module.id,
@@ -23,29 +21,26 @@ import { Common } from '../shared/utilities/common.functions';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   public config: any;
   public data: Observable<Gallery>;
   public isVideo: boolean = false;
   public playlist: Subject<any> = new Subject();
-  private configSubscription: Subscription;
 
   constructor(
     public currentUser: CurrentUserService,
-    public uiState: UiState,
-    private uiConfig: UiConfig,
     private searchContext: SearchContext,
     private userPreference: UserPreferenceService,
     private galleryViewService: GalleryViewService,
     private homeVideoService: HomeVideoService,
     private router: Router,
-    private filter: FilterService
+    private filter: FilterService,
+    private store: AppStore
   ) { }
 
   ngOnInit() {
-    this.configSubscription = this.uiConfig.get('home').subscribe((config) => {
-      this.config = config.config;
-    });
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.home.config);
+
     if (this.currentUser.loggedIn() && this.config.galleryView) {
       this.data = this.galleryViewService.data;
     }
@@ -53,10 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.isVideo = true;
       this.getVideoPlaylist();
     }
-  }
-
-  ngOnDestroy() {
-    this.configSubscription.unsubscribe();
   }
 
   public newSearchContext(query: any): void {

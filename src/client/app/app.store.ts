@@ -1,79 +1,104 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store, Action } from '@ngrx/store';
+import { Common } from './shared/utilities/common.functions';
 
-import * as ActiveCollectionActions from './store/actions/active-collection.actions';
-import * as ActiveCollectionState from './store/states/active-collection.state';
+import * as ActiveCollectionActions from './store/active-collection/active-collection.actions';
+import * as ActiveCollectionState from './store/active-collection/active-collection.state';
 export type ActiveCollectionState = ActiveCollectionState.State;
 
-import * as ActiveCollectionAssetActions from './store/actions/active-collection-asset.actions';
-import * as ActiveCollectionAssetState from './store/states/active-collection-asset.state';
+import * as ActiveCollectionAssetActions from './store/active-collection-asset/active-collection-asset.actions';
+import * as ActiveCollectionAssetState from './store/active-collection-asset/active-collection-asset.state';
 export type ActiveCollectionAssetState = ActiveCollectionAssetState.State;
 
-import * as CartActions from './store/actions/cart.actions';
-import * as CartState from './store/states/cart.state';
+import * as AssetActions from './store/asset/asset.actions';
+import * as AssetState from './store/asset/asset.state';
+export type AssetState = AssetState.State;
+
+import * as CartActions from './store/cart/cart.actions';
+import * as CartState from './store/cart/cart.state';
 export type CartState = CartState.State;
 
-import * as CartAssetActions from './store/actions/cart-asset.actions';
-import * as CartAssetState from './store/states/cart-asset.state';
+import * as CartAssetActions from './store/cart-asset/cart-asset.actions';
+import * as CartAssetState from './store/cart-asset/cart-asset.state';
 export type CartAssetState = CartAssetState.State;
 
-import * as CommentActions from './store/actions/comment.actions';
-import * as CommentState from './store/states/comment.state';
+import * as CommentActions from './store/comment/comment.actions';
+import * as CommentState from './store/comment/comment.state';
 export type CommentState = CommentState.State;
 
-import * as DialogActions from './store/actions/dialog.actions';
+import * as DialogActions from './store/dialog/dialog.actions';
 
-import * as ErrorActions from './store/actions/error.actions';
+import * as ErrorActions from './store/error/error.actions';
 
-import * as NotifierActions from './store/actions/notifier.actions';
+import * as HeaderDisplayOptionsActions from './store/header-display-options/header-display-options.actions';
+import * as HeaderDisplayOptionsState from './store/header-display-options/header-display-options.state';
+export type HeaderDisplayOptionsState = HeaderDisplayOptionsState.State;
 
-import * as OrderActions from './store/actions/order.actions';
-import * as OrderState from './store/states/order.state';
+import * as NotifierActions from './store/notifier/notifier.actions';
+
+import * as LoadingIndicatorActions from './store/loading-indicator/loading-indicator.actions';
+import * as LoadingIndicatorState from './store/loading-indicator/loading-indicator.state';
+export type LoadingIndicatorState = LoadingIndicatorState.State;
+
+import * as OrderActions from './store/order/order.actions';
+import * as OrderState from './store/order/order.state';
 export type OrderState = OrderState.State;
 
-import * as OrderAssetActions from './store/actions/order-asset.actions';
-import * as OrderAssetState from './store/states/order-asset.state';
+import * as OrderAssetActions from './store/order-asset/order-asset.actions';
+import * as OrderAssetState from './store/order-asset/order-asset.state';
 export type OrderAssetState = OrderAssetState.State;
 
-import * as QuoteEditAssetActions from './store/actions/quote-edit-asset.actions';
-import * as QuoteEditAssetState from './store/states/quote-edit-asset.state';
+import * as QuoteEditAssetActions from './store/quote-edit-asset/quote-edit-asset.actions';
+import * as QuoteEditAssetState from './store/quote-edit-asset/quote-edit-asset.state';
 export type QuoteEditAssetState = QuoteEditAssetState.State;
 
-import * as QuoteEditActions from './store/actions/quote-edit.actions';
-import * as QuoteEditState from './store/states/quote-edit.state';
+import * as QuoteEditActions from './store/quote-edit/quote-edit.actions';
+import * as QuoteEditState from './store/quote-edit/quote-edit.state';
 export type QuoteEditState = QuoteEditState.State;
 
-import * as QuoteShowAssetActions from './store/actions/quote-show-asset.actions';
-import * as QuoteShowAssetState from './store/states/quote-show-asset.state';
+import * as QuoteShowAssetActions from './store/quote-show-asset/quote-show-asset.actions';
+import * as QuoteShowAssetState from './store/quote-show-asset/quote-show-asset.state';
 export type QuoteShowAssetState = QuoteShowAssetState.State;
 
-import * as QuoteShowActions from './store/actions/quote-show.actions';
-import * as QuoteShowState from './store/states/quote-show.state';
+import * as QuoteShowActions from './store/quote-show/quote-show.actions';
+import * as QuoteShowState from './store/quote-show/quote-show.state';
 export type QuoteShowState = QuoteShowState.State;
 
-import * as RouterActions from './store/actions/router.actions';
+import * as RouterActions from './store/router/router.actions';
 
-import * as SearchAssetActions from './store/actions/search-asset.actions';
-import * as SearchAssetState from './store/states/search-asset.state';
+import * as SearchAssetActions from './store/search-asset/search-asset.actions';
+import * as SearchAssetState from './store/search-asset/search-asset.state';
 export type SearchAssetState = SearchAssetState.State;
 
-import * as SnackbarActions from './store/actions/snackbar.actions';
-import * as SnackbarState from './store/states/snackbar.state';
+import * as SnackbarActions from './store/snackbar/snackbar.actions';
+import * as SnackbarState from './store/snackbar/snackbar.state';
 export type SnackbarState = SnackbarState.State;
 
-import * as SpeedPreviewActions from './store/actions/speed-preview.actions';
-import * as SpeedPreviewState from './store/states/speed-preview.state';
+import * as SpeedPreviewActions from './store/speed-preview/speed-preview.actions';
+import * as SpeedPreviewState from './store/speed-preview/speed-preview.state';
 export type SpeedPreviewState = SpeedPreviewState.State;
+
+import * as UiConfigActions from './store/ui-config/ui-config.actions';
+import * as UiConfigState from './store/ui-config/ui-config.state';
+export type UiConfigState = UiConfigState.State;
+
+import * as MultiLingualActions from './store/multi-lingual/multi-lingual.actions';
+import * as MultiLingualState from './store/multi-lingual/multi-lingual.state';
+export type MultiLingualState = MultiLingualState.State;
 
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly activeCollectionAsset: ActiveCollectionAssetActions.ActionFactory;
+  readonly asset: AssetActions.ActionFactory;
   readonly cart: CartActions.ActionFactory;
   readonly cartAsset: CartAssetActions.ActionFactory;
   readonly comment: CommentActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
   readonly error: ErrorActions.ActionFactory;
+  readonly headerDisplayOptions: HeaderDisplayOptionsActions.ActionFactory;
+  readonly loadingIndicator: LoadingIndicatorActions.ActionFactory;
+  readonly multiLingual: MultiLingualActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
   readonly orderAsset: OrderAssetActions.ActionFactory;
   readonly quoteEdit: QuoteEditActions.ActionFactory;
@@ -85,16 +110,21 @@ export interface ActionFactory {
   readonly searchAsset: SearchAssetActions.ActionFactory;
   readonly snackbar: SnackbarActions.ActionFactory;
   readonly speedPreview: SpeedPreviewActions.ActionFactory;
+  readonly uiConfig: UiConfigActions.ActionFactory;
 };
 
 export interface InternalActionFactory {
   readonly activeCollection: ActiveCollectionActions.InternalActionFactory;
   readonly activeCollectionAsset: ActiveCollectionAssetActions.InternalActionFactory;
+  readonly asset: AssetActions.InternalActionFactory;
   readonly cart: CartActions.InternalActionFactory;
   readonly cartAsset: CartAssetActions.InternalActionFactory;
   readonly comment: CommentActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
   readonly error: ErrorActions.InternalActionFactory;
+  readonly headerDisplayOptions: HeaderDisplayOptionsActions.InternalActionFactory;
+  readonly loadingIndicator: LoadingIndicatorActions.InternalActionFactory;
+  readonly multiLingual: MultiLingualActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
   readonly orderAsset: OrderAssetActions.InternalActionFactory;
@@ -106,14 +136,19 @@ export interface InternalActionFactory {
   readonly searchAsset: SearchAssetActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
+  readonly uiConfig: UiConfigActions.InternalActionFactory;
 };
 
 export interface AppState {
   readonly activeCollection: ActiveCollectionState;
   readonly activeCollectionAsset: ActiveCollectionAssetState;
+  readonly asset: AssetState;
   readonly cart: CartState;
   readonly cartAsset: CartAssetState;
   readonly comment: CommentState;
+  readonly headerDisplayOptions: HeaderDisplayOptionsState;
+  readonly loadingIndicator: LoadingIndicatorState;
+  readonly multiLingual: MultiLingualState;
   readonly order: OrderState;
   readonly orderAsset: OrderAssetState;
   readonly quoteEdit: QuoteEditState;
@@ -123,6 +158,7 @@ export interface AppState {
   readonly snackbar: SnackbarState;
   readonly searchAsset: SearchAssetState;
   readonly speedPreview: SpeedPreviewState;
+  readonly uiConfig: UiConfigState;
 }
 
 export interface AppReducers {
@@ -135,14 +171,18 @@ export const reducers: AppReducers = {
   asset: SearchAssetState.reducer,
   cart: CartState.reducer,
   comment: CommentState.reducer,
+  headerDisplayOptions: HeaderDisplayOptionsState.reducer,
+  loadingIndicator: LoadingIndicatorState.reducer,
   order: OrderState.reducer,
+  multiLingual: MultiLingualState.reducer,
   orderState: OrderAssetState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteEditAsset: QuoteEditAssetState.reducer,
   quoteShow: QuoteShowState.reducer,
   quoteShowAsset: QuoteShowAssetState.reducer,
   snackbar: SnackbarState.reducer,
-  speedPreview: SpeedPreviewState.reducer
+  speedPreview: SpeedPreviewState.reducer,
+  uiConfig: UiConfigState.reducer
 };
 
 export type ActionFactoryMapper = (factory: ActionFactory) => Action;
@@ -154,11 +194,15 @@ export class AppStore {
   private readonly actionFactory: ActionFactory = {
     activeCollection: new ActiveCollectionActions.ActionFactory(),
     activeCollectionAsset: new ActiveCollectionAssetActions.ActionFactory(),
+    asset: new AssetActions.ActionFactory(),
     cart: new CartActions.ActionFactory(),
     cartAsset: new CartAssetActions.ActionFactory(),
     comment: new CommentActions.ActionFactory(),
     dialog: new DialogActions.ActionFactory(),
     error: new ErrorActions.ActionFactory(),
+    headerDisplayOptions: new HeaderDisplayOptionsActions.ActionFactory(),
+    loadingIndicator: new LoadingIndicatorActions.ActionFactory(),
+    multiLingual: new MultiLingualActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
     orderAsset: new OrderAssetActions.ActionFactory(),
@@ -169,17 +213,22 @@ export class AppStore {
     router: new RouterActions.ActionFactory(),
     searchAsset: new SearchAssetActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
-    speedPreview: new SpeedPreviewActions.ActionFactory()
+    speedPreview: new SpeedPreviewActions.ActionFactory(),
+    uiConfig: new UiConfigActions.ActionFactory()
   };
 
   private readonly internalActionFactory: InternalActionFactory = {
     activeCollection: new ActiveCollectionActions.InternalActionFactory(),
     activeCollectionAsset: new ActiveCollectionAssetActions.InternalActionFactory(),
+    asset: new AssetActions.InternalActionFactory(),
     cart: new CartActions.InternalActionFactory(),
     cartAsset: new CartAssetActions.InternalActionFactory(),
     comment: new CommentActions.InternalActionFactory(),
     dialog: new DialogActions.InternalActionFactory(),
     error: new ErrorActions.InternalActionFactory(),
+    headerDisplayOptions: new HeaderDisplayOptionsActions.InternalActionFactory(),
+    loadingIndicator: new LoadingIndicatorActions.InternalActionFactory(),
+    multiLingual: new MultiLingualActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
     orderAsset: new OrderAssetActions.InternalActionFactory(),
@@ -190,7 +239,8 @@ export class AppStore {
     router: new RouterActions.InternalActionFactory(),
     searchAsset: new SearchAssetActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
-    speedPreview: new SpeedPreviewActions.InternalActionFactory()
+    speedPreview: new SpeedPreviewActions.InternalActionFactory(),
+    uiConfig: new UiConfigActions.InternalActionFactory()
   };
 
   constructor(private ngrxStore: Store<AppState>) { }
@@ -210,6 +260,16 @@ export class AppStore {
   public snapshot<T>(stateMapper: StateMapper<T>): T {
     let snapshot: T;
     this.select(stateMapper).take(1).subscribe((latest: T) => snapshot = latest);
+    return snapshot;
+  }
+
+  public selectCloned<T>(stateMapper: StateMapper<T>): Observable<T> {
+    return this.ngrxStore.select(stateMapper).map(state => Common.clone(state));
+  }
+
+  public snapshotCloned<T>(stateMapper: StateMapper<T>): T {
+    let snapshot: T;
+    this.select(stateMapper).take(1).subscribe((latest: T) => snapshot = Common.clone(latest));
     return snapshot;
   }
 
