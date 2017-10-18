@@ -15,19 +15,19 @@ import * as OrderAssetActions from '../order-asset/order-asset.actions';
 
 @Injectable()
 export class AssetEffects {
-  @Effect()
-  public getDeliveryOptionsOnLoadSuccess: Observable<Action> = this.actions.ofType(... this.loadSuccessActions)
-    .switchMap((action: any) =>
-      this.service.getDeliveryOptions(action.activeAsset.assetId)
-        .map(res => this.store.create(factory => factory.asset.setDeliveryOptions(!!res.list)))
-        .catch(error => Observable.of(this.store.create(factory => factory.asset.setDeliveryOptionsFailure(error))))
-    );
+  // @Effect()
+  // public getDeliveryOptionsOnLoadSuccess: Observable<Action> = this.actions.ofType(... this.loadSuccessActions)
+  //   .switchMap((action: any) =>
+  //     this.service.getDeliveryOptions(action.activeAsset.assetId)
+  //       .map(res => this.store.create(factory => factory.asset.setDeliveryOptions(!!res.list)))
+  //       .catch(error => Observable.of(this.store.create(factory => factory.asset.setDeliveryOptionsFailure(error))))
+  //   );
 
-  @Effect()
-  public resetDeliveryOptionsOnLoad: Observable<Action> = this.actions.ofType(... this.loadActions)
-    .map((action: any) =>
-      this.store.create(factory => factory.asset.setDeliveryOptions(false))
-    );
+  // @Effect()
+  // public resetDeliveryOptionsOnLoad: Observable<Action> = this.actions.ofType(... this.loadActions)
+  //   .map((action: any) =>
+  //     this.store.create(factory => factory.asset.setDeliveryOptions(false))
+  //   );
 
   private get loadActions(): Array<string> {
     return [
