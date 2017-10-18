@@ -105,9 +105,11 @@ export class QuoteShowComponent implements OnInit {
   public get offlineAgreementIds(): Observable<string> {
     return this.quoteService.data.map((data: QuoteState) => {
       let ids: string[] = [];
-      data.data.projects.forEach(project => project.lineItems.forEach((lineItem: AssetLineItem) => {
-        if (lineItem.externalAgreementIds) lineItem.externalAgreementIds.forEach(id => ids.push(id));
-      }));
+      data.data.projects.forEach(project => {
+        if (project.lineItems) project.lineItems.forEach((lineItem: AssetLineItem) => {
+          if (lineItem.externalAgreementIds) lineItem.externalAgreementIds.forEach(id => ids.push(id));
+        });
+      });
       return ids.filter((id: string, index: number, ids: string[]) => id !== ids[index - 1]).join(', ');
     });
   }
