@@ -23,6 +23,7 @@ export const initialState: State = {
     email: '',
     userRole: '',
     editors: [],
+    viewers: [],
     collectionThumbnail: {} as { name: string, urls: { https: string } },
     assets: {
       items: [],

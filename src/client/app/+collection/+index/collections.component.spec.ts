@@ -204,6 +204,14 @@ export function main() {
           expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
       });
+
+      describe('showShareMembers()', () => {
+
+        it('Should call the dialog service to open the share members dialog', () => {
+          componentUnderTest.showShareMembers(({ id: 123, name: 'Collection name', owner: 123 }));
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
+        });
+      });
     });
   });
 }

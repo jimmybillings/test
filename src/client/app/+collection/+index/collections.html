@@ -89,6 +89,7 @@
 			[activeCollection]="(activeCollection | async).id" 
 			(setActiveCollection)="selectActiveCollection($event)" 
 			(deleteCollection)="setCollectionForDelete($event);"
+			(showShareMembers)="showShareMembers($event);"
 			(generateCollectionLink)="getAssetsForLink($event);"
 			(duplicateCollection)="onDuplicateCollection($event)">
 		</wz-collection-item-list>

@@ -11,8 +11,9 @@
         <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding>
           <a class="asset" [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">
             <div class="asset-thb">
-              <div class="selected" *ngIf="activeCollection === collection.id" title="Selected collection">
-                <mat-icon>star</mat-icon>
+              <div class="selected">
+                <mat-icon *ngIf="activeCollection === collection.id" title="Selected collection">star</mat-icon>
+                <mat-icon *ngIf="collectionIsShared(collection)" title="Collection is shared">share</mat-icon>
               </div>
               <span class="asset-id"><span class="id">{{collection.id}}</span></span>
               <img src="{{thumbnail(collection.collectionThumbnail)}}" />
@@ -30,9 +31,23 @@
           <div class="mat-caption collection-info">
             <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{collection.email}}</span>
             <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{collection.userRole}}</span>
-            <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ collection.createdOn | date:'short' }}</span>
-            <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ collection.lastUpdated | date:'short' }}</span>
+            
+            <span>
+              <strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ collection.createdOn | date:'short' }}
+            </span>
+            <span>
+              <strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ collection.lastUpdated | date:'short' }}
+            </span>
           </div>
+          <!-- <button
+            mat-button
+            color="primary"
+            type="button"
+            *ngIf="collectionIsShared(collection)"
+            (click)="edit(collection)" 
+            class="is-outlined mini shared-members">
+            Members
+          </button> -->
           <div *ngIf="collection.tags" class="mat-caption collection-tags">
             <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
             <ul class="meta-data-tags">
@@ -45,10 +60,29 @@
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
     <div flex-gt-xs="33" layout-sm="100" flex="auto" class="actions">
       <div class="tools" hide-xs flex="100">
-        <button mat-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="edit(collection)"><mat-icon>edit</mat-icon></button>
-        <button mat-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><mat-icon>share</mat-icon></button>
-        <button mat-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [mat-menu-trigger-for]="moreCollectionOptions"
-        (click)="setCurrentCollection(collection)"><mat-icon>more_vert</mat-icon></button>
+        <button mat-icon-button
+          title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" 
+          (click)="edit(collection)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button 
+          title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" 
+          (click)="showShare(collection)" 
+          [disabled]="true">
+          <mat-icon>share</mat-icon></button>
+        <button
+          mat-icon-button
+          title="{{ 'COLLECTION.SHARE_MEMBERS_HOVER_TITLE' | translate }}"
+          *ngIf="collectionIsShared(collection)"
+          (click)="sharedMembers(collection)">
+          <mat-icon>group</mat-icon>
+        </button>
+        <button mat-icon-button 
+          title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" 
+          [mat-menu-trigger-for]="moreCollectionOptions"
+          (click)="setCurrentCollection(collection)">
+          <mat-icon>more_vert</mat-icon>
+        </button>
       </div>
       <div class="premiere-actions">
         <button mat-button class="is-outlined" color="primary" [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">{{'COLLECTION.INDEX.VIEW_BTN_LABEL' | translate }}</button>

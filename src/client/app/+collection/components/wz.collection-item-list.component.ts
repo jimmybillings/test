@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-
+import { Collection } from '../../shared/interfaces/collection.interface';
 @Component({
   moduleId: module.id,
   selector: 'wz-collection-item-list',
@@ -12,16 +12,17 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
  * all API calls. It ouputs a getPage event with the pageNumber for the API to get.
  */
 export class WzCollectionItemListComponent {
-  @Input() collections: any;
-  @Input() activeCollection: any;
+  @Input() collections: Collection;
+  @Input() activeCollection: Collection;
   @Output() editCollection = new EventEmitter();
+  @Output() showShareMembers = new EventEmitter();
   @Output() setActiveCollection = new EventEmitter();
   @Output() deleteCollection = new EventEmitter();
   @Output() generateCollectionLink = new EventEmitter();
   @Output() duplicateCollection = new EventEmitter();
-  public currentCollection: any;
+  public currentCollection: Collection;
 
-  public selectActiveCollection(collectionId: any) {
+  public selectActiveCollection(collectionId: Collection['id']) {
     this.setActiveCollection.emit(collectionId);
   }
 
@@ -29,15 +30,23 @@ export class WzCollectionItemListComponent {
     return (thumbnail && thumbnail.urls && thumbnail.urls.https) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
   }
 
-  public setCurrentCollection(collection: any) {
+  public setCurrentCollection(collection: Collection) {
     this.currentCollection = collection;
   }
 
-  public edit(collection: any) {
+  public collectionIsShared(collection: Collection): boolean {
+    return !!collection.editors || !!collection.viewers ? true : false;
+  }
+
+  public edit(collection: Collection) {
     this.editCollection.emit(collection);
   }
 
-  public delete(collection: any): void {
+  public sharedMembers(collection: Collection) {
+    this.showShareMembers.emit(collection);
+  }
+
+  public delete(collection: Collection): void {
     this.deleteCollection.emit(collection);
   }
 

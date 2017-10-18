@@ -107,7 +107,11 @@ export class CollectionFormComponent implements OnInit {
       {}, collection, {
         id: this.collection.id,
         tags: collection.tags.split(/\s*,\s*/).filter((tag: string) => tag !== ''),
-        owner: this.collection.owner
+        createdOn: this.collection.createdOn,
+        owner: this.collection.owner,
+        userRole: this.collection.userRole,
+        editors: this.collection.editors,
+        viewers: this.collection.viewers
       });
     this.collections.update(collection)
       .subscribe(() => {

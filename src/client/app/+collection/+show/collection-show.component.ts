@@ -16,6 +16,7 @@ import { CollectionLinkComponent } from '../components/collection-link.component
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
+import { CollectionShareMembersComponent } from '../components/collection-share-members.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
@@ -224,6 +225,27 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public get userCanEditCollection(): Observable<boolean> {
     return this.userCan.editCollection(this.activeCollection);
+  }
+
+  public collectionIsShared(collection: Collection): boolean {
+    return !!collection.editors || !!collection.viewers ? true : false;
+  }
+
+  public showShareMembers(collection: Collection) {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: CollectionShareMembersComponent,
+        dialogConfig: { position: { top: '12%' } },
+        inputOptions: {
+          collection: Common.clone(collection),
+        },
+        outputOptions: [{
+          event: 'close',
+          callback: () => true,
+          closeOnEvent: true
+        }]
+      }
+    );
   }
 
   private buildRouteParams(params: Pojo): void {
