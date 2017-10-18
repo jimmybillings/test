@@ -36,6 +36,10 @@ export class CommerceListComponent {
     return this.type === 'ORDER' && !!item.creditMemoForOrderId;
   }
 
+  public shouldShowPaymentBalanceFor(item: Order): boolean {
+    return this.type === 'ORDER' && !!item.paymentBalance && !!item.paymentDueDate;
+  }
+
   public get shouldShowViewOrderButton(): boolean {
     return this.type === 'ORDER';
   }
