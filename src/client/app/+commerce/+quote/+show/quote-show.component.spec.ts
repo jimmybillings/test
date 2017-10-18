@@ -325,6 +325,19 @@ export function main() {
 
           expect(actualIds).toEqual('');
         });
+
+        it('with no lineItems', () => {
+          mockQuoteService = {
+            data: Observable.of({
+              data: { projects: [{ feeLineItems: [{ some: 'feeLineItem' }] }] }
+            })
+          };
+          componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
+          let actualIds: string;
+          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
+
+          expect(actualIds).toEqual('');
+        });
       });
     });
   });
