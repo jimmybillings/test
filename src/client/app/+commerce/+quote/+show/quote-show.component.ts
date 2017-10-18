@@ -66,6 +66,10 @@ export class QuoteShowComponent implements OnInit {
     return !this.userCan.administerQuotes() && this.quoteService.state.data.quoteStatus === 'ACTIVE';
   }
 
+  public get shouldShowRecipientInfo(): boolean {
+    return this.userCan.administerQuotes();
+  }
+
   public get trStringForPurchaseType(): string {
     return `QUOTE.${this.hasPurchaseType ? this.quoteService.state.data.purchaseType : 'Standard'}`;
   }

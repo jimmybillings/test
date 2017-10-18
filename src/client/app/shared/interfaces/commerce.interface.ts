@@ -146,6 +146,7 @@ export interface Order extends CommonCommerce {
   createdByIntegration: boolean;
   salesForceSyncedError: boolean;
   paymentBalance: number;
+  paymentDueDate?: Date;
   creditMemoForOrderId?: number;
   projects: Project[];
 }

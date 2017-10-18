@@ -19,6 +19,13 @@ export function main() {
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('configuration/site');
       });
+
+      it('returns the property "loaded: true" in the response', () => {
+        mockApiService.getResponse = { some: 'data'};
+        let result;
+        serviceUnderTest.load().subscribe(res => result = res );
+        expect(result).toEqual( { some: 'data', loaded: true } );
+      });
     });
   });
 }
