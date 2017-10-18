@@ -1,3 +1,44 @@
+# Store Scaffolding
+
+## Future Enhancements
+- [] move file templates to their own files for reusability
+- [] create individual scripts to generate just action, state, effect, and service files.
+- [] add imports/providers,etc. to `shared.module` and `app.store` files
+- [] I'd also like to improve the interface to the script. Right now it can be run through Gulp or NPM.
+
+## Usage
+**NPM**: `npm run store.scaffold -- [args]`
+* 2 valid arguments
+  * `--section`, whatever you want the files and classes to be named. 
+    * Expects `kebab-case`
+  * `--skip`, if you want to skip a particular part of the store scaffolding
+    * expects csv of valid options
+    * Valid options: `specs,actions,effects,service,state`
+
+**Gulp**: `gulp store.scaffold [args]`
+  * same interface as NPM applies
+
+Note the `--` in the NPM implementation. I'd like to be able to remove that to make it easier for the user.
+
+## Examples
+`npm run store.scaffold -- --section header-display-options --skip service,state`
+OR
+`npm run store.scaffold -- --section=header-display-options --skip=service,state`
+and Gulp
+`gulp store.scaffold --section header-display-options --skip service,state`
+OR
+`gulp store.scaffold --section=header-display-options --skip=service,state`
+*Note, the `=` is optional*
+Generates: 
+
+```
+src/client/app/store/header-display-options/
+├── header-display-options.actions.spec.ts
+├── header-display-options.actions.ts
+├── header-display-options.effects.spec.ts
+└── header-display-options.effects.ts
+```
+
 # Introduction
 
 [![Angular Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://angular.io/styleguide)
