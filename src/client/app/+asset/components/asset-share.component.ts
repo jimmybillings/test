@@ -54,7 +54,8 @@ export class AssetShareComponent implements OnDestroy {
   }
 
   public showShareLink(): void {
-    this.asset.createShareLink(this.prepareShareLink())
+    this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.prepareShareLink()))
+      // this.asset.createShareLink(this.prepareShareLink())
       .subscribe((res) => {
         this.assetShareLink = `${window.location.href};share_key=${res.apiKey}`;
         this.changeDetector.markForCheck();
@@ -67,7 +68,8 @@ export class AssetShareComponent implements OnDestroy {
   }
 
   public createShareLink(shareLink: Pojo): void {
-    this.asset.createShareLink(this.prepareShareLink(shareLink))
+    this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.prepareShareLink(shareLink)))
+      // this.asset.createShareLink(this.prepareShareLink(shareLink))
       .subscribe((res) => {
         this.resetForm();
         this.store.dispatch(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE'));

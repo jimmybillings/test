@@ -87,6 +87,10 @@ import * as MultiLingualActions from './store/multi-lingual/multi-lingual.action
 import * as MultiLingualState from './store/multi-lingual/multi-lingual.state';
 export type MultiLingualState = MultiLingualState.State;
 
+// Temporary imports for LegacyService.
+import { ApiService } from './shared/services/api.service';
+import { LegacyAssetService } from './store/asset/asset.service';
+
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly activeCollectionAsset: ActiveCollectionAssetActions.ActionFactory;
@@ -165,6 +169,10 @@ export interface AppReducers {
   readonly [reducerName: string]: Function;
 };
 
+export interface LegacyService {
+  asset: LegacyAssetService;
+};
+
 // NOTE:  Until all the old legacy reducers are replaced, you must ALSO redefine these directly in shared.module.ts.
 export const reducers: AppReducers = {
   activeCollection: ActiveCollectionState.reducer,
@@ -188,6 +196,7 @@ export const reducers: AppReducers = {
 export type ActionFactoryMapper = (factory: ActionFactory) => Action;
 export type InternalActionFactoryMapper = (factory: InternalActionFactory) => Action;
 export type StateMapper<T> = (state: AppState) => T;
+export type ServiceMapper<T> = (service: LegacyService) => T;
 
 @Injectable()
 export class AppStore {
@@ -243,7 +252,12 @@ export class AppStore {
     uiConfig: new UiConfigActions.InternalActionFactory()
   };
 
-  constructor(private ngrxStore: Store<AppState>) { }
+  private legacyService: LegacyService;
+
+  constructor(
+    private ngrxStore: Store<AppState>,
+    private legacyAssetService: LegacyAssetService
+  ) { }
 
   public dispatch(actionFactoryMapper: ActionFactoryMapper): void {
     this.ngrxStore.dispatch(actionFactoryMapper(this.actionFactory));
@@ -287,5 +301,15 @@ export class AppStore {
 
   public blockUntilMatch<T>(value: T, stateMapper: StateMapper<T>): Observable<null> {
     return this.select(stateMapper).filter((selectedValue: T) => value === selectedValue).take(1).map((value: T) => null);
+  }
+
+  public callLegacyServiceMethod<T>(serviceMapper: ServiceMapper<T>): T {
+    return serviceMapper(this.legacyService);
+  }
+
+  private initializeLegacyServices(): void {
+    this.legacyService = {
+      asset: this.legacyAssetService
+    };
   }
 }

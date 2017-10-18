@@ -103,13 +103,15 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public downloadComp(params: Pojo): void {
-    this.asset.downloadComp(params.assetId, params.compType).subscribe((res) => {
-      if (res.url && res.url !== '') {
-        this.window.nativeWindow.location.href = res.url;
-      } else {
-        this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
-      }
-    });
+    this.store.callLegacyServiceMethod(service => service.asset.downloadComp(params.assetId, params.compType))
+      // this.asset.downloadComp(params.assetId, params.compType)
+      .subscribe((res) => {
+        if (res.url && res.url !== '') {
+          this.window.nativeWindow.location.href = res.url;
+        } else {
+          this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
+        }
+      });
   }
 
   public setCollectionForDelete(): void {
@@ -162,7 +164,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public editAsset(asset: EnhancedAsset) {
-    this.asset.getClipPreviewData(asset.assetId)
+    this.store.callLegacyServiceMethod(service => service.asset.getClipPreviewData(asset.assetId))
+      // this.asset.getClipPreviewData(asset.assetId)
       .subscribe(data => {
         this.document.body.classList.add('subclipping-edit-open');
         asset.clipUrl = data.url;

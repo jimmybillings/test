@@ -110,13 +110,15 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   public downloadComp(params: any): void {
-    this.assetService.downloadComp(params.assetId, params.compType).subscribe((res) => {
-      if (res.url && res.url !== '') {
-        this.window.nativeWindow.location.href = res.url;
-      } else {
-        this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
-      }
-    });
+    this.store.callLegacyServiceMethod(service => service.asset.downloadComp(params.assetId, params.compType))
+      // this.assetService.downloadComp(params.assetId, params.compType)
+      .subscribe((res) => {
+        if (res.url && res.url !== '') {
+          this.window.nativeWindow.location.href = res.url;
+        } else {
+          this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
+        }
+      });
   }
 
   public addAssetToCart(parameters: any): void {

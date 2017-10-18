@@ -251,7 +251,8 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   protected editAsset(lineItem: AssetLineItem) {
-    this.assetService.getClipPreviewData(lineItem.asset.assetId)
+    this.store.callLegacyServiceMethod(service => service.asset.getClipPreviewData(lineItem.asset.assetId))
+      // this.assetService.getClipPreviewData(lineItem.asset.assetId)
       .subscribe(data => {
         this.document.body.classList.add('subclipping-edit-open');
         lineItem.asset.clipUrl = data.url;
