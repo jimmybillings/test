@@ -7,7 +7,7 @@ export interface State {
 };
 
 export const initialState: State = {
-  hasDeliveryOptions: true
+  hasDeliveryOptions: false
 };
 
 export function reducer(state: State = initialState, action: AssetActions.Any): State {

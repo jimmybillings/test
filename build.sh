@@ -141,16 +141,16 @@ npm install
 build_prod
 
 
-##################################################################################################################
-# build the UI library
-#
-###### BEFORE BUILDING A LIBRARY GO INTO THE SHARED MODULE AND COMMENT OUT THESE TWO LINES: 
-###### 1. The import statement for StoreDevTools - import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-###### 2. The StoreDevtoolsModule.instrument() item in the imports array.
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-build_library
-#
-####################################################################################################################
+# ##################################################################################################################
+# # build the UI library
+# #
+# ###### BEFORE BUILDING A LIBRARY GO INTO THE SHARED MODULE AND COMMENT OUT THESE TWO LINES: 
+# ###### 1. The import statement for StoreDevTools - import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+# ###### 2. The StoreDevtoolsModule.instrument() item in the imports array.
+# # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# build_library
+# #
+# ####################################################################################################################
 
 cd "$TMPDIR/wazee-crux-version-control"
 git pull origin develop
