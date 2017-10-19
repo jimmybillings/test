@@ -7,8 +7,8 @@
   </h1>
   <div class="license-agreement-content">
     <mat-tab-group>
-      <mat-tab *ngFor='let lic of _licenses' label="lic.projectType">
-        <ng-template mat-tab-label>{{lic.projectType ? lic.projectType : lic.rights}}</ng-template>
+      <mat-tab *ngFor='let lic of _licenses'>
+        <ng-template mat-tab-label>{{ labelForLicense(lic) }}</ng-template>
         <div flex="100" class="asset-carousel grid">
           <ul class="asset-list" *ngIf="lic.matchingAssets">
             <li *ngFor="let asset of lic.matchingAssets">
