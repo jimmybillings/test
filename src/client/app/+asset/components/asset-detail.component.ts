@@ -336,6 +336,10 @@ export class AssetDetailComponent implements OnInit {
     ));
   }
 
+  public get showDownloadButton(): boolean {
+    return this.asset.type !== 'orderAsset';
+  }
+
   private assetTypeIsOneOf(...assetTypes: AssetType[]) {
     return assetTypes.includes(this._asset.type);
   }

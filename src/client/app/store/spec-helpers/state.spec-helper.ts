@@ -8,6 +8,7 @@ export interface ReducerTestModules {
 }
 
 export interface ReducerTestParameters {
+  overrideActionClass?: Pojo;
   actionClassName?: string | string[];
   actionTypes?: string | string[];
   mutationTestData?: {
@@ -43,7 +44,9 @@ export class StateSpecHelper {
     if (parameters.actionClassName) {
       (Array.isArray(parameters.actionClassName) ? parameters.actionClassName : [parameters.actionClassName])
         .forEach(actionClassName => {
-          const actionType: string = this.reducerTestModules.actions[actionClassName].Type;
+          const actionType: string = parameters.overrideActionClass ?
+            parameters.overrideActionClass[actionClassName].Type :
+            this.reducerTestModules.actions[actionClassName].Type;
           this.runSpecsFor(actionType, parameters);
         });
     }

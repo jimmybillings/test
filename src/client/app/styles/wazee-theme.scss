@@ -46,6 +46,7 @@
 @import '../shared/components/wz-sort/wz.sort-theme';
 @import '../shared/components/wz-not-found/wz-not-found-theme';
 @import '../shared/components/wz-comment/wz.comment-theme';
+@import '../shared/components/wz-delivery-options/wz.delivery-options-theme';
 
 @import '../shared/modules/wz-asset/wz-asset-grid/wz.asset-grid-theme';
 @import '../shared/modules/wz-asset/wz-asset-list/wz-asset-list-theme';
@@ -119,6 +120,7 @@
   @include wz-asset-grid-theme($theme);
   @include wz-asset-list-theme($theme);
   @include wz-speedview-theme($theme);
+  @include wz-delivery-options-theme($theme);
 
   @include wz-form-theme($theme);
   @include wz-autocomplete-search-theme($theme);

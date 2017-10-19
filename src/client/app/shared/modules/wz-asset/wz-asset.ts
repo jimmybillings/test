@@ -72,6 +72,10 @@ export class WzAsset implements OnInit {
     this.hasComp = asset.hasDownloadableComp;
   }
 
+  public loadDeliveryOptionsFor(asset: EnhancedAsset): void {
+    this.store.dispatch(factory => factory.asset.loadDeliveryOptions(asset));
+  }
+
   public downloadComp(compType: string) {
     this.onDownloadComp.emit({
       'assetId': this.assetId, 'compType': compType

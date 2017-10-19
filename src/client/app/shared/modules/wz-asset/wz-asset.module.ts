@@ -10,7 +10,7 @@ import { WzAssetListComponent } from './wz-asset-list/wz.asset-list.component';
 import { WzSpeedviewComponent } from './wz-speedview/wz.speedview.component';
 import { WzSpeedviewDirective } from './wz-speedview/wz.speedview.directive';
 import { WzAsperaDownloadDirective } from '../../components/wz-aspera-download/aspera-download.directive';
-
+import { WzDeliveryOptionsComponent } from '../../components/wz-delivery-options/wz.delivery-options.component';
 
 @NgModule({
   imports: [
@@ -25,12 +25,14 @@ import { WzAsperaDownloadDirective } from '../../components/wz-aspera-download/a
     WzAssetListComponent,
     WzSpeedviewComponent,
     WzSpeedviewDirective,
+    WzDeliveryOptionsComponent,
     WzAsperaDownloadDirective
   ],
   exports: [
     WzSpeedviewComponent,
     WzAssetGridComponent,
     WzAssetListComponent,
+    WzDeliveryOptionsComponent,
     WzAsperaDownloadDirective
   ],
   entryComponents: [WzSpeedviewComponent]
