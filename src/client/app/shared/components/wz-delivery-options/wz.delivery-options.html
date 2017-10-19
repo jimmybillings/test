@@ -5,7 +5,7 @@
 </ng-container>
 <mat-list class="aspera-download-options">
   <div layout="row" layout-align="center center">
-    <ng-container *ngIf="noDeliveryOptionsExist | async">
+    <ng-container *ngIf="!(hasDeliveryOptions | async)">
       <h3 class="mat-body">{{ 'ASSET.DELIVERY_OPTIONS.MISSING' | translate }}</h3>
     </ng-container>
   </div>

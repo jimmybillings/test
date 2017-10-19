@@ -11,14 +11,14 @@ import { DeliveryOption, DeliveryOptions, DeliveryOptionGroup } from '../../../s
 })
 export class WzDeliveryOptionsComponent implements OnInit {
   public deliveryOptions: Observable<DeliveryOptions>;
-  public noDeliveryOptionsExist: Observable<boolean>;
+  public hasDeliveryOptions: Observable<boolean>;
   public showLoadingSpinner: Observable<boolean>;
 
   constructor(private store: AppStore) { }
 
   ngOnInit(): void {
     this.deliveryOptions = this.store.select(state => state.asset.options);
-    this.noDeliveryOptionsExist = this.store.select(state => !state.asset.hasDeliveryOptions && !state.asset.loading);
+    this.hasDeliveryOptions = this.store.select(state => state.asset.hasDeliveryOptions);
     this.showLoadingSpinner = this.store.select(state => state.asset.loading);
   }
 
