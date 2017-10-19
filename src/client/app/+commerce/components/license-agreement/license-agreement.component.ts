@@ -35,6 +35,6 @@ export class LicenseAgreementComponent {
   public labelForLicense(license: LicenseAgreement): string {
     return (!license.projectType || license.rights !== 'Rights Managed')
       ? license.rights
-      : 'Advertising';
+      : license.projectType;
   }
 }

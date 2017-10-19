@@ -1,5 +1,5 @@
 import { LicenseAgreementComponent } from './license-agreement.component';
-import { LicenseAgreement, LicenseAgreements, LicenseAsset } from '../../../shared/interfaces/commerce.interface';
+import { LicenseAgreement } from '../../../shared/interfaces/commerce.interface';
 
 export function main() {
   describe('License Agreement Component', () => {
@@ -20,9 +20,9 @@ export function main() {
         expect(componentUnderTest.labelForLicense(license)).toEqual('Royalty Free');
       });
 
-      it('should be equal to "Advertising" if the projectType exist and the rights value is Rights Managed', () => {
+      it('should be equal to license.projectType if the projectType exist and the rights value is Rights Managed', () => {
         const license: LicenseAgreement = { projectType: 'proj', rights: 'Rights Managed', matchingAssets: [], document: null };
-        expect(componentUnderTest.labelForLicense(license)).toEqual('Advertising');
+        expect(componentUnderTest.labelForLicense(license)).toEqual('proj');
       });
     });
   });
