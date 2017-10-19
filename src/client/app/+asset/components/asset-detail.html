@@ -58,6 +58,7 @@
         [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
         <nav class="asset-options" flex layout-align="end stretch">
           <button
+            *ngIf="showDownloadButton"
             data-pendo='asset-detail_download-btn'
             [disabled]="!(hasDeliveryOptions | async)"
             mat-icon-button

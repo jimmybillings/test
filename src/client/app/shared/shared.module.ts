@@ -39,7 +39,6 @@ import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb
 import { WzSiteChangerComponent } from './components/wz-site-changer/wz-site-changer.component';
 import { WzNotFoundComponent } from './components/wz-not-found/wz-not-found.component';
 import { WzCommentComponent } from './components/wz-comment/wz.comment.component';
-import { WzDeliveryOptionsComponent } from './components/wz-delivery-options/wz.delivery-options.component';
 
 // WAZEE SERVICES
 import { ApiConfig } from './services/api.config';
@@ -319,8 +318,7 @@ export function createTranslateLoader(http: HttpClient) {
     WzSubclipEditorComponent,
     WzSiteChangerComponent,
     WzNotFoundComponent,
-    WzCommentComponent,
-    WzDeliveryOptionsComponent
+    WzCommentComponent
   ],
   exports: [
     StoreModule,
@@ -355,8 +353,7 @@ export function createTranslateLoader(http: HttpClient) {
     WzSubclipEditorComponent,
     WzSiteChangerComponent,
     WzNotFoundComponent,
-    WzCommentComponent,
-    WzDeliveryOptionsComponent
+    WzCommentComponent
   ],
   entryComponents: [
     CollectionLinkComponent,

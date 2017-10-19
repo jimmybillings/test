@@ -1,5 +1,7 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { AppStore } from '../../../app.store';
+import { DeliveryOption, DeliveryOptions, DeliveryOptionGroup } from '../../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -7,6 +9,24 @@ import { AppStore } from '../../../app.store';
   templateUrl: './wz.delivery-options.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WzDeliveryOptionsComponent {
+export class WzDeliveryOptionsComponent implements OnInit {
+  public deliveryOptions: Observable<DeliveryOptions>;
+  public noDeliveryOptionsExist: Observable<boolean>;
+  public showLoadingSpinner: Observable<boolean>;
+
   constructor(private store: AppStore) { }
+
+  ngOnInit(): void {
+    this.deliveryOptions = this.store.select(state => state.asset.options);
+    this.noDeliveryOptionsExist = this.store.select(state => !state.asset.hasDeliveryOptions && !state.asset.loading);
+    this.showLoadingSpinner = this.store.select(state => state.asset.loading);
+  }
+
+  public iconStringFor(option: DeliveryOption): string {
+    return `ASSET.DELIVERY_OPTIONS.ICON.${option.deliveryOptionTransferType}`;
+  }
+
+  public trStringFor(group: DeliveryOptionGroup): string {
+    return `ASSET.DELIVERY_OPTIONS.LABEL.${group[0].deliveryOptionLabel}`;
+  }
 }

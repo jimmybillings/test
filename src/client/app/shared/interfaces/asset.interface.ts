@@ -30,9 +30,15 @@ export interface DeliveryOption {
   deliveryOptionLabel?: string;
   deliveryOptionTransferType?: string;
   deliveryOptionUseType?: string;
+  deliveryOptionGroupId?: string;
+  deliveryOptionGroupOrder?: string;
   renditionUrl?: RenditionUrl;
 }
 
-export interface DeliveryOptions {
+export type DeliveryOptionGroup = Array<DeliveryOption>;
+
+export type DeliveryOptions = Array<DeliveryOptionGroup>;
+
+export interface ApiDeliveryOptions {
   list?: Array<DeliveryOption>;
 }

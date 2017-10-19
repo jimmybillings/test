@@ -1,68 +1,22 @@
-  <mat-list class="aspera-download-options">
-    <mat-list-item>
-      <span mat-menu-item disabled flex>{{"COMPS.DOWNLOAD_WM_COMP" | translate }}</span>
+<ng-container *ngIf="showLoadingSpinner | async">
+  <div layout="row" layout-align="center center">
+    <mat-progress-spinner [diameter]="40" [strokeWidth]="4" color="accent" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</ng-container>
+<mat-list class="aspera-download-options">
+  <div layout="row" layout-align="center center">
+    <ng-container *ngIf="noDeliveryOptionsExist | async">
+      <h3 class="mat-body">{{ 'ASSET.DELIVERY_OPTIONS.MISSING' | translate }}</h3>
+    </ng-container>
+  </div>
+  <ng-container *ngIf="deliveryOptions | async as groups">
+    <mat-list-item *ngFor="let group of groups">
+      <span mat-menu-item disabled flex>{{ trStringFor(group) | translate }}</span>
       <div class="actions" flex>
-        <button 
-          mat-icon-button
-          title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
-          (click)="downloadComp(asset.assetId, 'wm');" 
-          [disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)">
-            <mat-icon>file_download</mat-icon>
-          </button>
-        <button 
-          mat-icon-button
-          title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
-          [disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)"
-          wzAsperaDownload 
-          [asperaPreloaded]="'false'" 
-          [renditionType]="'wm'" 
-          [assetId]="asset.assetId">
-            <mat-icon>whatshot</mat-icon>
-          </button>
-      </div>
-    </mat-list-item>
-    <mat-list-item>
-      <span mat-menu-item disabled flex>{{"COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</span>
-      <div class="actions" flex>
-        <button 
-          mat-icon-button
-          title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
-          (click)="downloadComp(asset.assetId, 'clean');" 
-          [disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)">
-            <mat-icon>file_download</mat-icon>
-        </button>
-        <button 
-          mat-icon-button
-          title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
-          [disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)"
-          wzAsperaDownload 
-          [asperaPreloaded]="'false'" 
-          [renditionType]="'clean'" 
-          [assetId]="asset.assetId">
-          <mat-icon>whatshot</mat-icon>
+        <button mat-icon-button *ngFor="let option of group">
+          <mat-icon>{{ iconStringFor(option) | translate }}</mat-icon>
         </button>
       </div>
     </mat-list-item>
-    <mat-list-item>
-      <span mat-menu-item disabled flex>{{"COMPS.DOWNLOAD_FULL_COMP" | translate }}</span>
-      <div class="actions" flex>
-        <button 
-          mat-icon-button
-          title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
-          [disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)"
-          (click)="downloadComp(asset.assetId, 'full');">
-          <mat-icon>file_download</mat-icon>
-        </button>
-        <button 
-          mat-icon-button
-          title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
-          [disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)"
-          wzAsperaDownload 
-          [asperaPreloaded]="'false'" 
-          [renditionType]="'full'" 
-          [assetId]="asset.assetId">
-            <mat-icon>whatshot</mat-icon>
-        </button>
-      </div>
-    </mat-list-item>
-  </mat-list>
+  </ng-container>
+</mat-list>
