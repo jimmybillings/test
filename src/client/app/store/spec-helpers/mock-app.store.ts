@@ -18,7 +18,7 @@ export class MockAppStore extends AppStore {
   private _state: MockAppState;
 
   constructor() {
-    super(null);
+    super(null, null);
 
     this._actionFactory = {
       activeCollection: {} as any,

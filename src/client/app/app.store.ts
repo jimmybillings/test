@@ -257,7 +257,9 @@ export class AppStore {
   constructor(
     private ngrxStore: Store<AppState>,
     private legacyAssetService: LegacyAssetService
-  ) { }
+  ) {
+    this.initializeLegacyServices();
+  }
 
   public dispatch(actionFactoryMapper: ActionFactoryMapper): void {
     this.ngrxStore.dispatch(actionFactoryMapper(this.actionFactory));

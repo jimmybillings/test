@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ApiConfig } from './api.config';
 import { Api, ApiOptions, ApiParameters, ApiBody, ApiErrorResponse } from '../interfaces/api.interface';
-import { AppStore } from '../../app.store';
+
+// Work with these directly so that we don't need AppStore.  Prevents circular dependencies in LegacyServices.
+import { AppState } from '../../app.store';
+import * as ErrorActions from '../../store/error/error.actions';
+import * as LoadingIndicatorActions from '../../store/loading-indicator/loading-indicator.actions';
 
 @Injectable()
 export class ApiService {
@@ -13,9 +18,8 @@ export class ApiService {
   constructor(
     protected http: Http,
     protected apiConfig: ApiConfig,
-    protected store: AppStore
-  ) {
-  }
+    protected ngrxStore: Store<AppState>
+  ) { }
 
   public get(api: Api, endpoint: string, options: ApiOptions = {}): Observable<any> {
     return this.call(RequestMethod.Get, api, endpoint, options);
@@ -52,7 +56,7 @@ export class ApiService {
         this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
       }, (error: ApiErrorResponse) => {
         this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
-        try { return error.json(); } catch (exception) { this.store.dispatch(factory => factory.error.handle(error)); }
+        try { return error.json(); } catch (exception) { this.ngrxStore.dispatch(new ErrorActions.Handle(error)); }
         return error;
       });
   }
@@ -66,11 +70,11 @@ export class ApiService {
   }
 
   protected showLoadingIf(loadingOption: boolean) {
-    if (loadingOption) this.store.dispatch(factory => factory.loadingIndicator.show());
+    if (loadingOption) this.ngrxStore.dispatch(new LoadingIndicatorActions.Show());
   }
 
   protected hideLoadingIf(loadingOption: boolean) {
-    if (loadingOption) this.store.dispatch(factory => factory.loadingIndicator.hide());
+    if (loadingOption) this.ngrxStore.dispatch(new LoadingIndicatorActions.Hide());
   }
 
   protected urlFor(api: Api, endpoint: string) {
