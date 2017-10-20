@@ -86,18 +86,28 @@
                 {{ order.total | currency:'USD':true:'1.2-2' }}
             </span>
           </div>
-          <span class="payment-balance" *ngIf="shouldShowPaymentBalanceFor(order)">
-            <span class="payment-balance-amount">
-              Balance: <span>{{order.paymentBalance | currency:'USD':true:'1.2-2'}}</span>
-            </span>
-            <span class="payment-balance-due-date">
-              Due Date: <span>{{order.paymentDueDate | date: 'MM/dd/yyyy'}}</span>
-            </span>
-          </span>        
+        </div>
+      </div>
+      
+      
+    </div>
 
+    <div layout="row" flex="100" layout-align="center center" class="balance-amount" *ngIf="shouldShowPaymentBalanceFor(order)">
+      <div layout="column" layout-gt-xs="row" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" 
+        layout-align-gt-xs="space-between end">
+        <div flex="auto" class="mat-caption balance">
+          <div>
+            <strong>{{ 'ORDER.BALANCE_LABEL' | translate }}</strong>
+            <span class="remaining-balance">{{order.paymentBalance | currency:'USD':true:'1.2-2'}}</span>
+          </div>
+          <div>
+            <strong>{{ 'ORDER.BALANCE_DUE_DATE_LABEL' | translate }}</strong>
+            <span>{{order.paymentDueDate | date: 'MM/dd/yyyy'}}</span>
+          </div>
         </div>
       </div>
     </div>
+
   </section>
 
   <section class="project">

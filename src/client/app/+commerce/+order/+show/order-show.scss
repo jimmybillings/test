@@ -33,6 +33,11 @@ order-show-component .project .assets .price {
   position: absolute;
   bottom: 4px;
   right: 8px;
+  &::first-letter {
+    font-size: .8em;
+    vertical-align: top;
+    letter-spacing: 0;
+  }
 }
 order-show-component .project li.fee-item > div > div > div  {
   padding-right: 0;
@@ -46,33 +51,7 @@ order-show-component .project li.fee-item > div > div > div  {
     padding-left: 16px;
   }
 }
-order-show-component {
-  .payment-balance {
-    display: block;
-    margin-top: -5px;
-    text-align: right;
-    .payment-balance-amount {
-      font-size: 12px;
-      display: block;
-      height: 20px;
-      span {
-        font-weight: bold;
-        min-width: 130px;
-        display: inline-block;
-      }
-    }
-    .payment-balance-due-date {
-      font-size: 12px;
-      display: block;
-      height: 20px;
-      span {
-        font-weight: bold;
-        min-width: 130px;
-        display: inline-block;
-      }
-    }
-  }
-}
+
 order-show-component .project li.cart-asset .transcode-icon {
   margin-right: 6px;
   font-size: 22px;
@@ -93,11 +72,38 @@ order-show-component .project .project-info div {
   padding: 8px;
 }
 .order-summary {
-  padding-left: 4px;
-  padding-right: 4px;
   .details {
     opacity: .7;
-    margin: 18px 0 7px 0;
+    margin: 18px 0 16px 4px;
+  }
+  .cart-total {
+    opacity: .9;
+    margin: 0 4px 4px 0;
+  }
+  .balance-amount > [flex] {
+    padding: 3px 5px 1px 0;
+    margin-bottom: 5px;
+    .balance > div {
+      display: block;
+      text-align: right;
+      opacity: .9;
+      strong, span  {
+        display: inline-block;
+        line-height: 1.4;
+      }
+      strong  {
+        font-weight: 500;
+      }
+      span {
+        min-width: 90px;
+        &.remaining-balance::first-letter {
+          font-size: .88em;
+          vertical-align: top;
+          letter-spacing: 0;
+          line-height: 3;
+        }
+      }
+    }
   }
   .order-info {
     line-height: 1.4;
@@ -116,6 +122,7 @@ order-show-component .project .project-info div {
   }
   .cart-total .subtotal {
     margin-top: 11px;
+    margin-bottom: 2px;
   }
 }
 order-show-component .project line-item-rights-component {

@@ -75,14 +75,26 @@
               {{ item.total | currency:'USD':true:'1.2-2' }}
             </span>
           </div>
-          <span class="payment-balance" *ngIf="shouldShowPaymentBalanceFor(item)">
+          <div flex="auto" class="mat-caption balance" *ngIf="shouldShowPaymentBalanceFor(item)">
+            <div>
+              <strong>{{ 'ORDER.BALANCE_LABEL' | translate }}</strong>
+              <span class="remaining-balance">{{item.paymentBalance | currency:'USD':true:'1.2-2'}}</span>
+            </div>
+            <div>
+              <strong>{{ 'ORDER.BALANCE_DUE_DATE_LABEL' | translate }}</strong>
+              <span>{{item.paymentDueDate | date: 'MM/dd/yyyy'}}</span>
+            </div>
+          </div>
+
+
+          <!-- <span class="payment-balance" *ngIf="shouldShowPaymentBalanceFor(item)">
             <span class="payment-balance-amount">
               Balance: <span>{{item.paymentBalance | currency:'USD':true:'1.2-2'}}</span>
             </span>
             <span class="payment-balance-due-date">
               Due Date: <span>{{item.paymentDueDate | date: 'MM/dd/yyyy'}}</span>
             </span>
-          </span>
+          </span> -->
         </div>
         <div flex layout="row" layout-align="end end" layout-sm="column">
           <button
