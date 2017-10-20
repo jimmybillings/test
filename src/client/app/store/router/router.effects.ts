@@ -59,7 +59,7 @@ export class RouterEffects {
   @Effect({ dispatch: false })
   public goToQuoteById: Observable<Action> = this.actions.ofType(RouterActions.GoToQuotesById.Type)
     .do((action: RouterActions.GoToQuotesById) => {
-      return this.router.navigate([this.QuotesPath, action.quoteId])
+      return this.router.navigate([this.QuotesPath, action.quoteId]);
     });
 
   @Effect({ dispatch: false })
