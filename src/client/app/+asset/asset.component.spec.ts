@@ -12,7 +12,6 @@ export function main() {
     let mockCapabilities: any;
     let mockSearchContext: any;
     let mockUserPreference: any;
-    let mockAssetService: any;
     let mockCartService: any;
     let mockWindow: any;
     let mockRouter: any;
@@ -32,11 +31,6 @@ export function main() {
         openCollectionTray: jasmine.createSpy('openCollectionTray'),
         state: { pricingPreferences: 'thePricingPreferences' },
         updatePricingPreferences: jasmine.createSpy('updatePricingPreferences')
-      };
-      mockAssetService = {
-        downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
-        state: { asset: { assetId: 123456 } },
-        priceForDetails: Observable.of(100)
       };
       mockCartService = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
@@ -59,7 +53,7 @@ export function main() {
       mockStore = new MockAppStore();
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities,
-        mockAssetService, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
+        mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
         mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService, null
       );
     });
@@ -131,15 +125,17 @@ export function main() {
     });
 
     describe('downloadComp()', () => {
+      let methodSpy: jasmine.Spy;
       let errorSpy: jasmine.Spy;
 
       beforeEach(() => {
+        methodSpy = mockStore.createLegacyServiceMethod('asset', 'downloadComp', Observable.of({}));
         errorSpy = mockStore.createActionFactoryMethod('error', 'handleCustomError');
       });
 
       it('Should call the service with the correct params to download a comp', () => {
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
-        expect(mockAssetService.downloadComp).toHaveBeenCalledWith('123123', 'New Comp');
+        mockStore.expectCallFor(methodSpy, '123123', 'New Comp');
       });
 
       it('Should show a notification if the server reponds that no comp is available', () => {
@@ -148,16 +144,11 @@ export function main() {
       });
 
       it('Should set window.href.url to the location of the comp url if the server responds with a downloadable comp url', () => {
-        mockAssetService = {
-          downloadComp: jasmine.createSpy('downloadComp').and.returnValue(
-            Observable.of({ url: 'http://downloadcomp.url' }))
-        };
-        componentUnderTest = new AssetComponent(
-          mockCurrentUserService, mockCapabilities,
-          mockAssetService, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-          mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService, null
-        );
+        methodSpy =
+          mockStore.createLegacyServiceMethod('asset', 'downloadComp', Observable.of({ url: 'http://downloadcomp.url' }));
+
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
+
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
       });
     });
@@ -290,7 +281,7 @@ export function main() {
 
             componentUnderTest = new AssetComponent(
               mockCurrentUserService, mockCapabilities,
-              mockAssetService, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
+              mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
               mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService, null
             );
 
@@ -415,7 +406,7 @@ export function main() {
         mockStore.createActionFactoryMethod('quoteEdit', 'editLineItemFromDetails');
 
         componentUnderTest = new AssetComponent(
-          null, mockCapabilities, null, null, null, null,
+          null, mockCapabilities, null, null, null,
           mockStore, null, null, null, null, null, null, null
         );
         componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');

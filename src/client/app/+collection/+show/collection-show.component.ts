@@ -8,7 +8,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AssetService } from '../../store/asset/asset.service';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
@@ -52,7 +51,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public collections: CollectionsService,
     public cart: CartService,
     public userPreference: UserPreferenceService,
-    private asset: AssetService,
     private route: ActivatedRoute,
     private window: WindowRef,
     private dialogService: WzDialogService,
@@ -104,7 +102,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public downloadComp(params: Pojo): void {
     this.store.callLegacyServiceMethod(service => service.asset.downloadComp(params.assetId, params.compType))
-      // this.asset.downloadComp(params.assetId, params.compType)
       .subscribe((res) => {
         if (res.url && res.url !== '') {
           this.window.nativeWindow.location.href = res.url;
@@ -165,7 +162,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public editAsset(asset: EnhancedAsset) {
     this.store.callLegacyServiceMethod(service => service.asset.getClipPreviewData(asset.assetId))
-      // this.asset.getClipPreviewData(asset.assetId)
       .subscribe(data => {
         this.document.body.classList.add('subclipping-edit-open');
         asset.clipUrl = data.url;

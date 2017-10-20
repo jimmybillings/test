@@ -1,23 +1,27 @@
 import { Headers, Response, BaseRequestOptions, RequestMethod, Http, ResponseOptions, ConnectionBackend } from '@angular/http';
 import { inject, TestBed } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
+import { Store } from '@ngrx/store';
+
 import { ApiService } from './api.service';
 import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
 import { AppStore } from '../../app.store';
-import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
+import * as ErrorActions from '../../store/error/error.actions';
+import * as LoadingIndicatorActions from '../../store/loading-indicator/loading-indicator.actions';
 
 export function main() {
   describe('Api Service', () => {
     let mockApiConfig: any;
-    let mockStore: MockAppStore;
+    let mockNgrxStore: any;
     let connection: any;
     let loadingShowSpy: jasmine.Spy;
     let loadingHideSpy: jasmine.Spy;
 
     const mockBackEnd: MockBackend = new MockBackend();
-    const successResponse: Response = new Response(new ResponseOptions({ body: '{"status":200}' }));
+    const successResponse: Response = new Response(new ResponseOptions({ body: '{"status": 200}' }));
     const errorResponse: Object = { status: 401 };
+    const errorAction: ErrorActions.Handle = new ErrorActions.Handle({ status: 401 });
 
     beforeEach(() => {
       mockApiConfig = {
@@ -28,9 +32,9 @@ export function main() {
 
       mockBackEnd.connections.subscribe((c: any) => connection = c);
 
-      mockStore = new MockAppStore();
-      loadingShowSpy = mockStore.createActionFactoryMethod('loadingIndicator', 'show');
-      loadingHideSpy = mockStore.createActionFactoryMethod('loadingIndicator', 'hide');
+      mockNgrxStore = {
+        dispatch: jasmine.createSpy('dispatch')
+      };
 
       TestBed.configureTestingModule({
         providers: [
@@ -46,7 +50,7 @@ export function main() {
           BaseRequestOptions,
           { provide: ApiConfig, useValue: mockApiConfig },
           { provide: MockBackend, useValue: mockBackEnd },
-          { provide: AppStore, useValue: mockStore }
+          { provide: Store, useValue: mockNgrxStore }
         ]
       });
     });
@@ -144,110 +148,132 @@ export function main() {
 
         describe('result', () => {
           let mockHandlers: any;
-          let errorSpy: jasmine.Spy;
 
           beforeEach(() => {
             mockHandlers = jasmine.createSpyObj('mockHandlers', ['response', 'error']);
-            errorSpy = mockStore.createActionFactoryMethod('error', 'handle');
           });
 
           it('is as expected when the request succeeds', () => {
+            let apiResponse: ApiResponse;
+
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(
               (response: ApiResponse) => {
-                expect(response).toEqual({ status: 200 });
+                apiResponse = response;
                 mockHandlers.response();
               },
-              mockHandlers.error,
-              () => {
-                expect(mockHandlers.response).toHaveBeenCalled();
-                expect(mockHandlers.error).not.toHaveBeenCalled();
-                expect(errorSpy).not.toHaveBeenCalled();
-              });
+              mockHandlers.error
+            );
+
             connection.mockRespond(successResponse);
+
+            expect(apiResponse).toEqual({ status: 200 });
+            expect(mockHandlers.response).toHaveBeenCalled();
+            expect(mockHandlers.error).not.toHaveBeenCalled();
+            expect(mockNgrxStore.dispatch).not.toHaveBeenCalled();
           });
 
           it('is as expected when the request succeeds with a non-JSON response', () => {
+            let apiResponse: ApiResponse;
+
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(
               (response: ApiResponse) => {
-                expect(response).toEqual('Non-JSON!  Ick!');
+                apiResponse = response;
                 mockHandlers.response();
               },
-              mockHandlers.error,
-              () => {
-                expect(mockHandlers.response).toHaveBeenCalled();
-                expect(mockHandlers.error).not.toHaveBeenCalled();
-                expect(errorSpy).not.toHaveBeenCalled();
-              });
+              mockHandlers.error
+            );
+
             connection.mockRespond('Non-JSON!  Ick!');
+
+            expect(apiResponse).toEqual('Non-JSON!  Ick!');
+            expect(mockHandlers.response).toHaveBeenCalled();
+            expect(mockHandlers.error).not.toHaveBeenCalled();
+            expect(mockNgrxStore.dispatch).not.toHaveBeenCalled();
           });
 
           it('is as expected when the request errors', () => {
+            let apiError: Error;
+
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(
               mockHandlers.response,
               (error: Error) => {
-                expect(error).toEqual({ status: 401 });
+                apiError = error;
                 mockHandlers.error();
-              },
-              () => {
-                expect(mockHandlers.response).not.toHaveBeenCalled();
-                expect(mockHandlers.error).toHaveBeenCalled();
-                mockStore.expectDispatchFor(errorSpy, { status: 401 });
               }
             );
+
             connection.mockError(errorResponse);
+
+            expect(apiError).toEqual({ status: 401 });
+            expect(mockHandlers.response).not.toHaveBeenCalled();
+            expect(mockHandlers.error).toHaveBeenCalled();
+            expect(mockNgrxStore.dispatch.calls.allArgs()).toEqual([[errorAction]]);
           });
         });
 
-        describe('loadingIndicator animation', () => {
-          let noOp: Function = () => { return; };
+        describe('loading indicator animation', () => {
+          const noOp: Function = () => { return; };
+          const showAction: LoadingIndicatorActions.Show = new LoadingIndicatorActions.Show();
+          const hideAction: LoadingIndicatorActions.Hide = new LoadingIndicatorActions.Hide();
 
           for (const result of ['succeeds', 'errors']) {
             describe(`when the request ${result}`, () => {
-              afterEach(() => {
-                if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
-              });
-
               describe('when loadingIndicator option is not specified', () => {
                 it('is not affected', () => {
-                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                    .subscribe(noOp, noOp, () => {
-                      mockStore.expectNoDispatchFor(loadingHideSpy);
-                      mockStore.expectNoDispatchFor(loadingShowSpy);
-                    });
+                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(() => { }, () => { });
+
+                  if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
+
+                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle'))
+                    .toEqual([]);
                 });
               });
 
               describe('when loadingIndicator option is false', () => {
                 it('is not affected', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: false })
-                    .subscribe(noOp, noOp, () => {
-                      mockStore.expectNoDispatchFor(loadingHideSpy);
-                      mockStore.expectNoDispatchFor(loadingShowSpy);
-                    });
+                    .subscribe(() => { }, () => { });
+
+                  if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
+
+                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle'))
+                    .toEqual([]);
                 });
               });
 
               describe('when loadingIndicator option is true', () => {
                 it('is started with the request and stopped when the response is returned', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: true })
-                    .subscribe(noOp, noOp, () => {
-                      mockStore.expectDispatchFor(loadingShowSpy);
-                      mockStore.expectDispatchFor(loadingHideSpy);
-                    });
+                    .subscribe(() => { }, () => { });
+
+                  if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
+
+                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle'))
+                    .toEqual([[showAction], [hideAction]]);
                 });
               });
 
               describe('when loadingIndicator option is onBeforeRequest', () => {
                 it('is only started with the request and not turned off when the response is returned', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: 'onBeforeRequest' })
-                    .subscribe(noOp, noOp, () => mockStore.expectDispatchFor(loadingShowSpy));
+                    .subscribe(() => { }, () => { });
+
+                  if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
+
+                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle'))
+                    .toEqual([[showAction]]);
                 });
               });
 
               describe('when loadingIndicator option is offAfterResponse', () => {
                 it('is not started with the request but is stopped when the response is returned', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: 'offAfterResponse' })
-                    .subscribe(noOp, noOp, () => mockStore.expectDispatchFor(loadingHideSpy));
+                    .subscribe(() => { }, () => { });
+
+                  if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
+
+                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle'))
+                    .toEqual([[hideAction]]);
                 });
               });
             });

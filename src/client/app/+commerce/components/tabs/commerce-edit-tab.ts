@@ -10,7 +10,6 @@ import {
 import { MatDialogRef } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
-import { AssetService } from '../../../store/asset/asset.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
@@ -36,7 +35,6 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     public userCan: CommerceCapabilities,
     protected commerceService: CartService | QuoteEditService,
     protected dialogService: WzDialogService,
-    protected assetService: AssetService,
     protected window: WindowRef,
     protected userPreference: UserPreferenceService,
     protected document: any,
@@ -252,7 +250,6 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
   protected editAsset(lineItem: AssetLineItem) {
     this.store.callLegacyServiceMethod(service => service.asset.getClipPreviewData(lineItem.asset.assetId))
-      // this.assetService.getClipPreviewData(lineItem.asset.assetId)
       .subscribe(data => {
         this.document.body.classList.add('subclipping-edit-open');
         lineItem.asset.clipUrl = data.url;

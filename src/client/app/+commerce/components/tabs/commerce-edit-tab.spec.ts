@@ -61,11 +61,6 @@ export function main() {
 
       mockWindow = { nativeWindow: { location: { href: {} } } };
 
-      mockAssetService = {
-        getClipPreviewData: jasmine.createSpy('getClipPreviewData').and.returnValue(Observable.of({ url: 'fake url' })),
-        enhance: () => { }
-      };
-
       mockUserPreference = {
         data: Observable.of({ pricingPreferences: { some: 'attribute' } })
       };
@@ -89,7 +84,7 @@ export function main() {
       });
 
       componentUnderTest = new CommerceEditTab(
-        null, mockCartService, mockDialogService, mockAssetService, mockWindow, mockUserPreference,
+        null, mockCartService, mockDialogService, mockWindow, mockUserPreference,
         mockDocument, mockPricingStore, mockAppStore, mockPricingService
       );
     });
@@ -126,7 +121,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -140,7 +135,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -159,7 +154,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(true);
@@ -173,7 +168,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(false);
@@ -191,7 +186,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -216,7 +211,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(true);
@@ -241,7 +236,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -318,9 +313,11 @@ export function main() {
 
       it('edits the assets in and out markers with EDIT_LINE_ITEM_MARKERS', () => {
         let mockAsset = { assetId: 1234 };
+        let mockMethod = mockAppStore.createLegacyServiceMethod('asset', 'getClipPreviewData', Observable.of({ url: 'fake url' }));
+
         componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM_MARKERS', payload: { asset: mockAsset } });
 
-        expect(mockAssetService.getClipPreviewData).toHaveBeenCalledWith(1234);
+        mockAppStore.expectCallFor(mockMethod, 1234);
       });
 
       it('edits the project pricing with EDIT_PROJECT_PRICING', () => {

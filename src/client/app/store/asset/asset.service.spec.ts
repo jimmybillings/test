@@ -1,9 +1,9 @@
-import { AssetService } from './asset.service';
+import { AssetService, LegacyAssetService } from './asset.service';
 import { MockApiService, mockApiMatchers } from '../spec-helpers/mock-api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
-  describe('Future Asset Service', () => {
+  describe('Asset Service', () => {
     let serviceUnderTest: AssetService;
     let mockApiService: MockApiService;
 
@@ -82,6 +82,26 @@ export function main() {
       });
     });
 
+    describe('getDeliveryOptions()', () => {
+      it('calls the API correctly', () => {
+        serviceUnderTest.getDeliveryOptions(47);
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('renditionType/deliveryOptions/47');
+      });
+    });
+  });
+
+  describe('Legacy Asset Service', () => {
+    let serviceUnderTest: LegacyAssetService;
+    let mockApiService: MockApiService;
+
+    beforeEach(() => {
+      jasmine.addMatchers(mockApiMatchers);
+      mockApiService = new MockApiService();
+      mockApiService.getResponse = { some: 'asset' };
+      serviceUnderTest = new LegacyAssetService(mockApiService.injector);
+    });
+
     describe('downloadComp()', () => {
       it('calls the API correctly', () => {
         serviceUnderTest.downloadComp(47, 'someCompType');
@@ -106,14 +126,6 @@ export function main() {
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('renditionType/47');
         expect(mockApiService.get).toHaveBeenCalledWithParameters({ useType: 'clipPreview' });
-      });
-    });
-
-    describe('getDeliveryOptions()', () => {
-      it('calls the API correctly', () => {
-        serviceUnderTest.getDeliveryOptions(47);
-        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
-        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('renditionType/deliveryOptions/47');
       });
     });
   });

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
-import { AssetService } from '../store/asset/asset.service';
 import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
 import { WzEvent, SelectedPriceAttributes } from '../shared/interfaces/common.interface';
 import { Capabilities } from '../shared/services/capabilities.service';
@@ -64,7 +63,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   constructor(
     public currentUser: CurrentUserService,
     public userCan: Capabilities,
-    public assetService: AssetService,
     public window: WindowRef,
     private router: Router,
     private route: ActivatedRoute,
@@ -111,7 +109,6 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   public downloadComp(params: any): void {
     this.store.callLegacyServiceMethod(service => service.asset.downloadComp(params.assetId, params.compType))
-      // this.assetService.downloadComp(params.assetId, params.compType)
       .subscribe((res) => {
         if (res.url && res.url !== '') {
           this.window.nativeWindow.location.href = res.url;

@@ -2,7 +2,8 @@ import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import {
-  AppStore, ActionFactory, ActionFactoryMapper, InternalActionFactory, InternalActionFactoryMapper, AppState, StateMapper
+  AppStore, ActionFactory, ActionFactoryMapper, InternalActionFactory, InternalActionFactoryMapper, AppState, StateMapper,
+  LegacyService, ServiceMapper
 } from '../../app.store';
 import { Pojo } from '../../shared/interfaces/common.interface';
 
@@ -16,6 +17,7 @@ export class MockAppStore extends AppStore {
   private _actionFactory: MockActionFactory;
   private _internalActionFactory: MockInternalActionFactory;
   private _state: MockAppState;
+  private _legacyService: LegacyService;
 
   constructor() {
     super(null, null);
@@ -94,6 +96,10 @@ export class MockAppStore extends AppStore {
       uiConfig: {} as any
     };
 
+    this._legacyService = {
+      asset: {} as any
+    };
+
     this._ngrxDispatch = jasmine.createSpy('ngrx dispatch');
 
     spyOn(this, 'dispatch').and.callFake((actionFactoryMapper: ActionFactoryMapper) => {
@@ -135,6 +141,10 @@ export class MockAppStore extends AppStore {
     spyOn(this, 'blockUntilMatch').and.callFake((value: any, stateMapper: StateMapper<any>) =>
       stateMapper(this._state) === value ? Observable.of(null) : Observable.empty()
     );
+
+    spyOn(this, 'callLegacyServiceMethod').and.callFake((serviceMapper: ServiceMapper<any>) =>
+      serviceMapper(this._legacyService)
+    );
   }
 
   public createStateSection(stateSectionName: string, value: any): void {
@@ -174,6 +184,20 @@ export class MockAppStore extends AppStore {
 
   public getActionCreatedBy(actionFactoryMethod: jasmine.Spy): any {
     return { actionFrom: actionFactoryMethod.and.identity().replace('\'', '').split(' ')[0] };
+  }
+
+  public createLegacyServiceMethod(sectionName: string, methodName: string, returnValue: any): jasmine.Spy {
+    if (!this._legacyService.hasOwnProperty(sectionName)) {
+      throw new Error(`Section '${sectionName}' does not exist in the LegacyService`);
+    }
+
+    return (this._legacyService as any)[sectionName][methodName] =
+      jasmine.createSpy(`'${sectionName}.${methodName} legacy service method'`)
+        .and.returnValue(returnValue);
+  }
+
+  public expectCallFor(legacyServiceMethod: jasmine.Spy, ...expectedParameters: any[]): void {
+    expect(legacyServiceMethod).toHaveBeenCalledWith(...expectedParameters);
   }
 
   private mockActionFrom(actionFactorySectionName: string, actionFactoryMethodName: string): any {
