@@ -1,0 +1,82 @@
+private sendQuote(options: QuoteOptions): void {
+  this.quoteEditService.sendQuote({
+    ownerEmail: form.ownerEmail,
+    expirationDate: new Date(form.expirationDate).toISOString(),
+    purchaseType: form.purchaseType.split(' ').join(''),
+    offlineAgreementId: form.offlineAgreementId
+  })
+  .do(() => {
+    this.router.navigate([`/quotes/${this.quoteEditService.quoteId}`]);
+    this.store.dispatch(factory => factory.snackbar.display('QUOTE.CREATED_FOR_TOAST', { emailAddress: options.ownerEmail }));
+  }).subscribe();
+}
+
+
+public sendQuote(quoteOptions: QuoteOptions) {
+  return new SendQuote(quoteOptions);
+}
+
+public sendQuoteSuccess(quoteId: number, toastMessage: string, toastParamaters: Pojo) {
+  return new SendQuoteSuccess(quoteId, toastMessage, toastParamaters);
+}
+
+export class SendQuote implements Action {
+  public static readonly Type = '[Quote Edit] Send Quote';
+  public readonly type = SendQuote.Type;
+  constructor(public readonly quoteOptions: QuoteOptions) { }
+}
+
+export class SendQuoteSuccess implements Action {
+  public static readonly Type = '[Quote Edit] Send Quote Success';
+  public readonly type = SendQuoteSuccess.Type;
+  constructor(
+    public readonly quoteId: number,
+    public readonly toastMessage: string,
+    public readonly toastParamaters: Pojo) { }
+}
+
+
+@Effect({ dispatch: false })
+public goToQuoteById: Observable<Action> = this.actions.ofType(RouterActions.GoToQuotes.Type)
+  .do((action: RouterActions.GoToQuoteById) => this.router.navigate([this.QuotesPath, action.quoteId]));
+
+@Effect()
+public sendQuote: Observable<Action> = this.actions
+  .ofType(QuoteEditActions.SendQuote.Type)
+  .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+  .switchMap(([action, quoteId]: [QuoteEditActions.SendQuote, number]) =>
+
+    this.service.sendQuote(quoteId, action.quoteOptions)
+      .map(() =>
+        this.store.create(factory =>
+          factory.quoteEdit.sendQuoteSuccess(
+            quoteId,
+            'QUOTE.CREATED_FOR_TOAST',
+            { emailAddress: action.quoteOptions.ownerEmail }
+          )
+        )
+      )
+      .catch(error =>
+        Observable.of(this.store.create(factory =>
+          factory.error.handle(error)
+        ))
+      )
+  );
+
+@Effect()
+public sendQuoteSuccessNavigate: Observable<Action> = this.actions
+  .ofType(QuoteEditActions.SendQuoteSuccess.Type)
+  .map((action: QuoteEditActions.SendQuoteSuccess) =>
+    this.store.create(factory =>
+      factory.router.goToQuotesById(action.quoteId)
+    )
+  );
+
+@Effect()
+public sendQuoteSuccessdisplaySnackBar: Observable<Action> = this.actions
+  .ofType(QuoteEditActions.SendQuoteSuccess.Type)
+  .map((action: QuoteEditActions.SendQuoteSuccess) =>
+    this.store.create(factory =>
+      factory.snackbar.display(action.toastMessage, action.toastParamaters)
+    )
+  );

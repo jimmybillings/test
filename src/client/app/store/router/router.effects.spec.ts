@@ -2,6 +2,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { RouterEffects } from './router.effects';
 import * as RouterActions from './router.actions';
+import * as UiConfigActions from '../ui-config/ui-config.actions';
 import { EffectsSpecHelper } from '../spec-helpers/effects.spec-helper';
 import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 
@@ -18,7 +19,8 @@ export function main() {
     beforeEach(() => {
       mockRouter = {
         navigate: jasmine.createSpy('navigate'),
-        navigateByUrl: jasmine.createSpy('navigateByUrl')
+        navigateByUrl: jasmine.createSpy('navigateByUrl'),
+        initialNavigation: jasmine.createSpy('initialNavigation')
       };
 
       mockLocation = {
@@ -268,6 +270,40 @@ export function main() {
           it: 'navigates to /collection/:collectionId;i=<page>;n=<perPage>',
           expectation: () => {
             expect(mockRouter.navigate).toHaveBeenCalledWith(['/collections', 1, { i: 5, n: 55 }]);
+          }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToQuoteById',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToQuoteById.Type,
+        quoteId: 1
+      },
+      customTests: [
+        {
+          it: 'navigates to /quotes/1',
+          expectation: () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes', 1]);
+          }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'initialNavigation',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: UiConfigActions.LoadSuccess.Type,
+        quoteId: 1
+      },
+      customTests: [
+        {
+          it: 'Calls initial navigation on the router',
+          expectation: () => {
+            expect(mockRouter.initialNavigation).toHaveBeenCalled();
           }
         }
       ]

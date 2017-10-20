@@ -259,7 +259,7 @@ export function main() {
       outputActionFactories: {
         success: [{
           sectionName: 'router',
-          methodName: 'goToQuotesById',
+          methodName: 'goToQuoteById',
           expectedArguments: [10]
         }, {
           sectionName: 'snackbar',

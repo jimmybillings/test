@@ -27,8 +27,8 @@ export class ActionFactory {
     return new GoToQuotes();
   }
 
-  public goToQuotesById(quoteId: number): GoToQuotesById {
-    return new GoToQuotesById(quoteId);
+  public goToQuoteById(quoteId: number): GoToQuoteById {
+    return new GoToQuoteById(quoteId);
   }
 
   public goToActiveQuote(): GoToActiveQuote {
@@ -78,9 +78,9 @@ export class GoToQuotes implements Action {
   public readonly type = GoToQuotes.Type;
 }
 
-export class GoToQuotesById implements Action {
+export class GoToQuoteById implements Action {
   public static readonly Type = '[Router] Go To Quote By ID';
-  public readonly type = GoToQuotesById.Type;
+  public readonly type = GoToQuoteById.Type;
   constructor(public readonly quoteId: number) { }
 }
 

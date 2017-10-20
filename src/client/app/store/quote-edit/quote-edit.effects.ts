@@ -104,7 +104,7 @@ export class QuoteEditEffects {
     .mergeMap((action: QuoteEditActions.SendQuoteSuccess) => {
       return [
         this.store.create(factory =>
-          factory.router.goToQuotesById(action.quoteId)
+          factory.router.goToQuoteById(action.quoteId)
         ),
         this.store.create(factory =>
           factory.snackbar.display('QUOTE.CREATED_FOR_TOAST', { emailAddress: action.ownerEmail })
