@@ -26,7 +26,12 @@ export function main() {
 
       it('opens the snackbar with the translated string', () => {
         serviceUnderTest.display('some key', { some: 'parameters' }).subscribe(() => {
-          expect(mockSnackBar.open).toHaveBeenCalledWith('someTranslatedString', '', { duration: jasmine.any(Number) });
+          expect(mockSnackBar.open).toHaveBeenCalledWith('someTranslatedString', '', {
+            duration: jasmine.any(Number),
+            verticalPosition: 'bottom',
+            horizontalPosition: 'left',
+            extraClasses: ['wz-snackbar']
+          });
         });
       });
     });
