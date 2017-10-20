@@ -109,6 +109,11 @@ export function main() {
       it('returns false if the order doesn\'t have both a paymentBalance and a paymentDueDate', () => {
         expect(componentUnderTest.shouldShowPaymentBalanceFor({ paymentBalance: 12345 } as any)).toBe(false);
       });
+
+      it('returns false if the order has a paymentBalance and a paymentDueDate, but paymentBalance less than zero', () => {
+        expect(componentUnderTest.shouldShowPaymentBalanceFor({ paymentBalance: -123, paymentDueDate: 'test date' } as any))
+          .toBe(false);
+      });
     });
 
     describe('shouldShowDiscountFor()', () => {

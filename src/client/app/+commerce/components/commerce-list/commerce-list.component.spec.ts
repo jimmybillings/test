@@ -113,6 +113,11 @@ export function main() {
         componentUnderTest.type = 'ORDER';
         expect(componentUnderTest.shouldShowPaymentBalanceFor({ paymentBalance: 12345 } as any)).toBe(false);
       });
+
+      it('returns false if the order is of type ORDER but paymentBalance is less than zero and it has a paymentDueDate', () => {
+        componentUnderTest.type = 'ORDER';
+        expect(componentUnderTest.shouldShowPaymentBalanceFor({ paymentBalance: -123, paymentDueDate: 'test date' } as any)).toBe(false);
+      });
     });
 
     describe('shouldShowViewOrderButton()', () => {

@@ -80,23 +80,24 @@
       .balance {
         margin: 3px 1px 0 0;
         & > div {
-        display: block;
-        text-align: right;
-        opacity: .9;
-        line-height: 1.4;
-        strong, span  {
-          display: inline-block;
-        }
-        strong  {
-          font-weight: 500;
-        }
-        span {
-          min-width: 68px;
-          &.remaining-balance::first-letter {
-            font-size: .88em;
-            vertical-align: top;
-            letter-spacing: 0;
-            line-height: 1.5;
+          display: block;
+          text-align: right;
+          opacity: .9;
+          line-height: 1.4;
+          strong, span  {
+            display: inline-block;
+          }
+          strong  {
+            font-weight: 500;
+          }
+          span {
+            min-width: 68px;
+            &.remaining-balance::first-letter {
+              font-size: .88em;
+              vertical-align: top;
+              letter-spacing: 0;
+              line-height: 1.5;
+            }
           }
         }
       }
