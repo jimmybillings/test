@@ -31,4 +31,10 @@ export class LicenseAgreementComponent {
   public onClickLink(): void {
     this.close.emit();
   }
+
+  public labelForLicense(license: LicenseAgreement): string {
+    return (!license.projectType || license.rights !== 'Rights Managed')
+      ? license.rights
+      : license.projectType;
+  }
 }
