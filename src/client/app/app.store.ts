@@ -88,7 +88,6 @@ import * as MultiLingualState from './store/multi-lingual/multi-lingual.state';
 export type MultiLingualState = MultiLingualState.State;
 
 // Temporary imports for LegacyService.
-import { ApiService } from './shared/services/api.service';
 import { LegacyAssetService } from './store/asset/asset.service';
 
 export interface ActionFactory {
