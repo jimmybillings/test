@@ -8,19 +8,4 @@
   .mat-menu-content .divider {
     box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
   }
-  /************
-  * Aspera download options
-  * unique menu list. they have an inactive label width two buttons as icon for each menu item
-  ************/
-  .mat-list.aspera-download-options .mat-list-item {
-    [mat-menu-item][disabled] {
-      color: mat-color($foreground, secondary-text);
-    }
-    .actions button[mat-icon-button] {
-      color: mat-color($foreground, base, .7);
-    }
-    .actions button[mat-icon-button][disabled] {
-      color: mat-color($foreground, disabled);
-    }
-  }
 }

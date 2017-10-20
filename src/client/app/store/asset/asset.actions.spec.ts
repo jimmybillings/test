@@ -7,24 +7,36 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
-        class: InternalActionFactory,
-        name: 'setDeliveryOptions',
-        parameters: ['boolean']
+        class: ActionFactory,
+        name: 'loadDeliveryOptions',
+        parameters: [{ some: 'asset' }]
       },
       expectedAction: {
-        type: '[Asset] Set Delivery Options',
-        flag: 'boolean'
+        type: '[Asset] Load Delivery Options',
+        activeAsset: { some: 'asset' }
       }
     });
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
-        name: 'setDeliveryOptionsFailure',
+        name: 'loadDeliveryOptionsSuccess',
+        parameters: [[{ some: 'options' }]]
+      },
+      expectedAction: {
+        type: '[Asset] Load Delivery Options Success',
+        options: [{ some: 'options' }]
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'loadDeliveryOptionsFailure',
         parameters: [{ some: 'error' }]
       },
       expectedAction: {
-        type: '[Asset] Set Delivery Options Failure',
+        type: '[Asset] Load Delivery Options Failure',
         error: { some: 'error' }
       }
     });
