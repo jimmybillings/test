@@ -201,15 +201,6 @@ export class QuoteEditService {
     ).subscribe(this.replaceQuote);
   }
 
-  public sendQuote(options: QuoteOptions): Observable<any> {
-    if (options.purchaseType === 'Standard') delete options.purchaseType;
-    return this.api.put(
-      Api.Orders,
-      `quote/send/${this.quoteId}`,
-      { parameters: options as ApiParameters, loadingIndicator: true }
-    );
-  }
-
   public addFeeTo(project: Project, fee: FeeLineItem): void {
     this.api.put(
       Api.Orders,

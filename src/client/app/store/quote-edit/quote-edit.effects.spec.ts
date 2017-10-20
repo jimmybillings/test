@@ -214,5 +214,59 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'sendQuote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.SendQuote.Type,
+        quoteOptions: {
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017-03-22T06:00:00.000Z',
+          purchaseType: 'ProvisionalOrder'
+        },
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 10 } }
+      },
+      serviceMethod: {
+        name: 'sendQuote',
+        expectedArguments: [10, {
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017-03-22T06:00:00.000Z',
+          purchaseType: 'ProvisionalOrder'
+        }],
+        returnsObservableOf: { some: 'quote' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'sendQuoteSuccess',
+          expectedArguments: [10, 'ross.edfort@wazeedigital.com']
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'sendQuoteSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.SendQuoteSuccess.Type,
+        quoteId: 10,
+        ownerEmail: 'ross.edfort@wazeedigital.com'
+      },
+      outputActionFactories: {
+        success: [{
+          sectionName: 'router',
+          methodName: 'goToQuotesById',
+          expectedArguments: [10]
+        }, {
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['QUOTE.CREATED_FOR_TOAST', { emailAddress: 'ross.edfort@wazeedigital.com' }]
+        }]
+      }
+    });
   });
 }

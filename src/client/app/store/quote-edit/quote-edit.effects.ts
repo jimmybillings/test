@@ -7,6 +7,7 @@ import * as QuoteEditActions from './quote-edit.actions';
 import { FutureQuoteEditService } from './quote-edit.service';
 import { AppStore } from '../../app.store';
 import { Quote, AssetLineItem } from '../../shared/interfaces/commerce.interface';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class QuoteEditEffects {
@@ -75,10 +76,45 @@ export class QuoteEditEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.addCustomPriceToLineItemFailure(error))));
     });
 
+  @Effect()
+  public sendQuote: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.SendQuote.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.SendQuote, number]) =>
+
+      this.service.sendQuote(quoteId, action.quoteOptions)
+        .map(() =>
+          this.store.create(factory =>
+            factory.quoteEdit.sendQuoteSuccess(
+              quoteId,
+              action.quoteOptions.ownerEmail
+            )
+          )
+        )
+        .catch(error =>
+          Observable.of(this.store.create(factory =>
+            factory.error.handle(error)
+          ))
+        )
+    );
+
+  @Effect()
+  public sendQuoteSuccess: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.SendQuoteSuccess.Type)
+    .mergeMap((action: QuoteEditActions.SendQuoteSuccess) => {
+      return [
+        this.store.create(factory =>
+          factory.router.goToQuotesById(action.quoteId)
+        ),
+        this.store.create(factory =>
+          factory.snackbar.display('QUOTE.CREATED_FOR_TOAST', { emailAddress: action.ownerEmail })
+        )];
+    });
+
   constructor(
     private actions: Actions,
     private store: AppStore,
-    private service: FutureQuoteEditService
+    private service: FutureQuoteEditService,
   ) { }
 
   private findLineItemBy(assetLineItemUuid: string, quote: Quote): AssetLineItem {

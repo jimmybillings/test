@@ -57,6 +57,12 @@ export class RouterEffects {
     .do(() => this.router.navigate([this.QuotesPath]));
 
   @Effect({ dispatch: false })
+  public goToQuoteById: Observable<Action> = this.actions.ofType(RouterActions.GoToQuotesById.Type)
+    .do((action: RouterActions.GoToQuotesById) => {
+      return this.router.navigate([this.QuotesPath, action.quoteId])
+    });
+
+  @Effect({ dispatch: false })
   public goToCollection: Observable<Action> = this.actions.ofType(RouterActions.GoToCollection.Type)
     .do((action: RouterActions.GoToCollection) => {
       this.router.navigate([this.CollectionsPath, action.collectionId, { i: action.page, n: action.perPage }]);

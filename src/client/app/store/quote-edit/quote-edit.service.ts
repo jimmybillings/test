@@ -3,14 +3,15 @@ import { Observable } from 'rxjs/Observable';
 
 import { Quote } from '../../shared/interfaces/commerce.interface';
 import { FutureApiService } from '../api/api.service';
-import { Api } from '../../shared/interfaces/api.interface';
+import { Api, ApiParameters } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers, Duration, durationFrom, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
-import { AssetLineItem, Asset } from '../../shared/interfaces/commerce.interface';
+import { AssetLineItem, Asset, QuoteOptions } from '../../shared/interfaces/commerce.interface';
 import { Pojo, SelectedPriceAttributes } from '../../shared/interfaces/common.interface';
 
 @Injectable()
 export class FutureQuoteEditService {
   constructor(private apiService: FutureApiService) { }
+
 
   public load(): Observable<Quote> {
     return this.apiService.get(Api.Orders, 'quote/focused', { loadingIndicator: true });
@@ -48,6 +49,15 @@ export class FutureQuoteEditService {
     };
 
     return this.makeEditLineItemRequest(quoteId, newLineItem);
+  }
+
+  public sendQuote(quoteId: number, options: QuoteOptions): Observable<any> {
+    if (options.purchaseType === 'Standard') delete options.purchaseType;
+    return this.apiService.put(
+      Api.Orders,
+      `quote/send/${quoteId}`,
+      { parameters: options as ApiParameters, loadingIndicator: true }
+    );
   }
 
   private durationFrom(lineItem: AssetLineItem, markers: SubclipMarkers): Duration {
