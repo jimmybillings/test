@@ -17,9 +17,9 @@ export class WzDeliveryOptionsComponent implements OnInit {
   constructor(private store: AppStore) { }
 
   ngOnInit(): void {
-    this.deliveryOptions = this.store.select(state => state.asset.options);
-    this.hasDeliveryOptions = this.store.select(state => state.asset.hasDeliveryOptions);
-    this.showLoadingSpinner = this.store.select(state => state.asset.loading);
+    this.deliveryOptions = this.store.select(state => state.deliveryOptions.options);
+    this.hasDeliveryOptions = this.store.select(state => state.deliveryOptions.hasDeliveryOptions);
+    this.showLoadingSpinner = this.store.select(state => state.deliveryOptions.loading);
   }
 
   public iconStringFor(option: DeliveryOption): string {

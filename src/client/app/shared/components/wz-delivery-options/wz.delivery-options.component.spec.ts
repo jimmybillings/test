@@ -8,7 +8,9 @@ export function main() {
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      mockStore.createStateSection('asset', { options: [{ some: 'options' }], hasDeliveryOptions: true, loading: false });
+      mockStore.createStateSection('deliveryOptions', {
+        options: [{ some: 'options' }], hasDeliveryOptions: true, loading: false
+      });
       componentUnderTest = new WzDeliveryOptionsComponent(mockStore);
     });
 

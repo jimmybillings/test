@@ -73,7 +73,7 @@ export class WzAsset implements OnInit {
   }
 
   public loadDeliveryOptionsFor(asset: EnhancedAsset): void {
-    this.store.dispatch(factory => factory.asset.loadDeliveryOptions(asset));
+    this.store.dispatch(factory => factory.deliveryOptions.load(asset));
   }
 
   public downloadComp(compType: string) {

@@ -4,12 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { FutureApiService } from '../api/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import * as common from '../../shared/interfaces/common.interface';
-import {
-  DeliveryOption,
-  ApiDeliveryOptions,
-  DeliveryOptions,
-  DeliveryOptionGroup
-} from '../../shared/interfaces/asset.interface';
 import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
 
 @Injectable()
@@ -35,32 +29,6 @@ export class AssetService {
   public getClipPreviewData(assetId: number): Observable<any> {
     const viewType: ApiOptions = { parameters: { 'useType': 'clipPreview' } };
     return this.apiService.get(Api.Assets, `renditionType/${assetId}`, viewType);
-  }
-
-  public getDeliveryOptions(assetId: number): Observable<DeliveryOptions> {
-    return this.apiService.get(Api.Assets, `renditionType/deliveryOptions/${assetId}`).map(this.formatDeliveryOptions);
-  }
-
-  private formatDeliveryOptions(options: ApiDeliveryOptions): DeliveryOptions {
-    if (!options.list) return [];
-    let formattedOptions: DeliveryOptions = [];
-    options.list.reduce((usedGroupIds: string[], option: DeliveryOption) => {
-      let group: DeliveryOptionGroup;
-      if (!option.deliveryOptionGroupId) {
-        formattedOptions.push([option]);
-      } else {
-        const groupId: string = option.deliveryOptionGroupId;
-        if (!usedGroupIds.includes(groupId)) {
-          group = options.list
-            .filter(o => o.deliveryOptionGroupId === groupId)
-            .sort((a, b) => parseInt(a.deliveryOptionGroupOrder) - parseInt(b.deliveryOptionGroupOrder));
-          formattedOptions.push(group);
-          usedGroupIds.push(groupId);
-        }
-      }
-      return usedGroupIds;
-    }, []);
-    return formattedOptions;
   }
 
   private merge(asset: Asset, parameters: AssetLoadParameters): Asset {

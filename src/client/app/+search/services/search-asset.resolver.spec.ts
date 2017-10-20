@@ -21,8 +21,8 @@ export function main() {
 
     describe('resolve()', () => {
       it('dispatches the expected action', () => {
-        mockStore.createStateElement('searchAsset', 'loading', true);
-        const spy = mockStore.createActionFactoryMethod('searchAsset', 'load');
+        mockStore.createStateElement('asset', 'loading', true);
+        const spy = mockStore.createActionFactoryMethod('asset', 'loadSearchAsset');
 
         resolverUnderTest.resolve(mockRoute as any);
 
@@ -31,11 +31,11 @@ export function main() {
 
       describe('returns an Observable that', () => {
         beforeEach(() => {
-          mockStore.createActionFactoryMethod('searchAsset', 'load');
+          mockStore.createActionFactoryMethod('asset', 'loadSearchAsset');
         });
 
         it('does not emit when the asset is still loading', () => {
-          mockStore.createStateElement('searchAsset', 'loading', true);
+          mockStore.createStateElement('asset', 'loading', true);
 
           expect(() => {
             resolverUnderTest.resolve(mockRoute as any).subscribe(() => {
@@ -45,7 +45,7 @@ export function main() {
         });
 
         it('emits when the asset is done loading', () => {
-          mockStore.createStateElement('searchAsset', 'loading', false);
+          mockStore.createStateElement('asset', 'loading', false);
 
           expect(() => {
             resolverUnderTest.resolve(mockRoute as any).subscribe(() => {

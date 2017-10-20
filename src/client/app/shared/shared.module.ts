@@ -67,6 +67,7 @@ import { PricingService } from './services/pricing.service';
 import { AssetService } from '../store/asset/asset.service';
 import { ActiveCollectionService } from '../store/active-collection/active-collection.service';
 import { CommentService } from '../store/comment/comment.service';
+import { DeliveryOptionsService } from '../store/delivery-options/delivery-options.service';
 import { FutureApiService } from '../store/api/api.service';
 import { FutureCartService } from '../store/cart/cart.service';
 import { FutureQuoteEditService } from '../store/quote-edit/quote-edit.service';
@@ -83,21 +84,22 @@ import {
 } from '../app.store';
 
 import * as ActiveCollectionState from '../store/active-collection/active-collection.state';
-import * as ActiveCollectionAssetState from '../store/active-collection-asset/active-collection-asset.state';
+// import * as ActiveCollectionAssetState from '../store/active-collection-asset/active-collection-asset.state';
 import * as AssetState from '../store/asset/asset.state';
 import * as CartState from '../store/cart/cart.state';
-import * as CartAssetState from '../store/cart-asset/cart-asset.state';
+// import * as CartAssetState from '../store/cart-asset/cart-asset.state';
 import * as CommentState from '../store/comment/comment.state';
+import * as DeliveryOptionState from '../store/delivery-options/delivery-options.state';
 import * as HeaderDisplayOptions from '../store/header-display-options/header-display-options.state';
 import * as LoadingIndicatorState from '../store/loading-indicator/loading-indicator.state';
 import * as MultiLingualState from '../store/multi-lingual/multi-lingual.state';
 import * as OrderState from '../store/order/order.state';
-import * as OrderAssetState from '../store/order-asset/order-asset.state';
+// import * as OrderAssetState from '../store/order-asset/order-asset.state';
 import * as QuoteEditState from '../store/quote-edit/quote-edit.state';
 import * as QuoteShowState from '../store/quote-show/quote-show.state';
-import * as QuoteEditAssetState from '../store/quote-edit-asset/quote-edit-asset.state';
-import * as QuoteShowAssetState from '../store/quote-show-asset/quote-show-asset.state';
-import * as SearchAssetState from '../store/search-asset/search-asset.state';
+// import * as QuoteEditAssetState from '../store/quote-edit-asset/quote-edit-asset.state';
+// import * as QuoteShowAssetState from '../store/quote-show-asset/quote-show-asset.state';
+// import * as SearchAssetState from '../store/search-asset/search-asset.state';
 import * as SnackbarState from '../store/snackbar/snackbar.state';
 import * as SpeedPreviewState from '../store/speed-preview/speed-preview.state';
 import * as UiConfigState from '../store/ui-config/ui-config.state';
@@ -121,25 +123,26 @@ import { collectionOptions } from './services/collection-context.service';
 import { sortDefinitions } from './services/sort-definitions.service';
 
 // WAZEE EFFECTS
-import { ActiveCollectionAssetEffects } from '../store/active-collection-asset/active-collection-asset.effects';
+// import { ActiveCollectionAssetEffects } from '../store/active-collection-asset/active-collection-asset.effects';
 import { ActiveCollectionEffects } from '../store/active-collection/active-collection.effects';
 import { AssetEffects } from '../store/asset/asset.effects';
 import { CartEffects } from '../store/cart/cart.effects';
-import { CartAssetEffects } from '../store/cart-asset/cart-asset.effects';
+// import { CartAssetEffects } from '../store/cart-asset/cart-asset.effects';
 import { CommentEffects } from '../store/comment/comment.effects';
+import { DeliveryOptionsEffects } from '../store/delivery-options/delivery-options.effects';
 import { DialogEffects } from '../store/dialog/dialog.effects';
 import { ErrorEffects } from '../store/error/error.effects';
 import { HeaderDisplayOptionsEffects } from '../store/header-display-options/header-display-options.effects';
 import { MultiLingualEffects } from '../store/multi-lingual/multi-lingual.effects';
 import { NotifierEffects } from '../store/notifier/notifier.effects';
 import { OrderEffects } from '../store/order/order.effects';
-import { OrderAssetEffects } from '../store/order-asset/order-asset.effects';
+// import { OrderAssetEffects } from '../store/order-asset/order-asset.effects';
 import { QuoteEditEffects } from '../store/quote-edit/quote-edit.effects';
 import { QuoteShowEffects } from '../store/quote-show/quote-show.effects';
-import { QuoteEditAssetEffects } from '../store/quote-edit-asset/quote-edit-asset.effects';
-import { QuoteShowAssetEffects } from '../store/quote-show-asset/quote-show-asset.effects';
+// import { QuoteEditAssetEffects } from '../store/quote-edit-asset/quote-edit-asset.effects';
+// import { QuoteShowAssetEffects } from '../store/quote-show-asset/quote-show-asset.effects';
 import { RouterEffects } from '../store/router/router.effects';
-import { SearchAssetEffects } from '../store/search-asset/search-asset.effects';
+// import { SearchAssetEffects } from '../store/search-asset/search-asset.effects';
 import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
 import { UiConfigEffects } from '../store/ui-config/ui-config.effects';
@@ -175,6 +178,7 @@ const WAZEE_SERVICES = [
   QuoteEditService,
   SnackbarService,
   CommentService,
+  DeliveryOptionsService,
   FutureCartService,
   SpeedPreviewService,
   UiConfigService,
@@ -218,21 +222,22 @@ const WAZEE_STORES: any = {
   paymentReducer: pricingReducer,
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
-  activeCollectionAsset: ActiveCollectionAssetState.reducer,
+  // activeCollectionAsset: ActiveCollectionAssetState.reducer,
   asset: AssetState.reducer,
   cart: CartState.reducer,
-  cartAsset: CartAssetState.reducer,
+  // cartAsset: CartAssetState.reducer,
   comment: CommentState.reducer,
+  deliveryOptions: DeliveryOptionState.reducer,
   headerDisplayOptions: HeaderDisplayOptions.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
   multiLingual: MultiLingualState.reducer,
   order: OrderState.reducer,
-  orderAsset: OrderAssetState.reducer,
+  // orderAsset: OrderAssetState.reducer,
   quoteEdit: QuoteEditState.reducer,
-  quoteEditAsset: QuoteEditAssetState.reducer,
+  // quoteEditAsset: QuoteEditAssetState.reducer,
   quoteShow: QuoteShowState.reducer,
-  quoteShowAsset: QuoteShowAssetState.reducer,
-  searchAsset: SearchAssetState.reducer,
+  // quoteShowAsset: QuoteShowAssetState.reducer,
+  // searchAsset: SearchAssetState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
   uiConfig: UiConfigState.reducer
@@ -240,24 +245,25 @@ const WAZEE_STORES: any = {
 
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
-  ActiveCollectionAssetEffects,
+  // ActiveCollectionAssetEffects,
   AssetEffects,
   CartEffects,
-  CartAssetEffects,
+  // CartAssetEffects,
   CommentEffects,
+  DeliveryOptionsEffects,
   DialogEffects,
   ErrorEffects,
   HeaderDisplayOptionsEffects,
   MultiLingualEffects,
   NotifierEffects,
   OrderEffects,
-  OrderAssetEffects,
+  // OrderAssetEffects,
   QuoteEditEffects,
   QuoteShowEffects,
-  QuoteEditAssetEffects,
-  QuoteShowAssetEffects,
+  // QuoteEditAssetEffects,
+  // QuoteShowAssetEffects,
   RouterEffects,
-  SearchAssetEffects,
+  // SearchAssetEffects,
   SnackbarEffects,
   SpeedPreviewEffects,
   UiConfigEffects

@@ -1,49 +1,45 @@
 import * as AssetActions from './asset.actions';
-import * as SearchAssetActions from '../search-asset/search-asset.actions';
-import * as QuoteEditAssetActions from '../quote-edit-asset/quote-edit-asset.actions';
-import * as QuoteShowAssetActions from '../quote-show-asset/quote-show-asset.actions';
-import * as CartAssetActions from '../cart-asset/cart-asset.actions';
-import * as ActiveCollectionAssetActions from '../active-collection-asset/active-collection-asset.actions';
-
-import { DeliveryOptions } from '../../shared/interfaces/asset.interface';
-
-export type AllowableActions =
-  SearchAssetActions.Load |
-  QuoteEditAssetActions.Load |
-  QuoteShowAssetActions.Load |
-  CartAssetActions.Load |
-  ActiveCollectionAssetActions.Load |
-  AssetActions.Any;
+import * as CommonI from '../../shared/interfaces/common.interface';
+import * as Commerce from '../../shared/interfaces/commerce.interface';
+import { AssetType } from '../../shared/interfaces/enhanced-asset';
+import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
-  loading: boolean;
-  hasDeliveryOptions: boolean;
-  options: DeliveryOptions;
+  readonly activeAssetType: AssetType;
+  readonly activeAsset: CommonI.Asset | Commerce.Asset;
+  readonly loading: boolean;
+  readonly loadingUuid: string;
 };
 
 export const initialState: State = {
+  activeAssetType: null,
+  activeAsset: { assetId: 0, name: '' },
   loading: false,
-  hasDeliveryOptions: false,
-  options: []
+  loadingUuid: null
 };
 
-export function reducer(state: State = initialState, action: AllowableActions): State {
+export function reducer(state: State = initialState, action: AssetActions.Any): State {
   switch (action.type) {
-    case AssetActions.LoadDeliveryOptions.Type: {
-      return { ...state, options: [], loading: true };
+
+    case AssetActions.LoadQuoteShowAsset.Type:
+    case AssetActions.LoadQuoteShowAsset.Type:
+    case AssetActions.LoadOrderAsset.Type:
+    case AssetActions.LoadCartAsset.Type:
+    case AssetActions.LoadQuoteEditAsset.Type:
+    case AssetActions.LoadActiveCollectionAsset.Type: {
+      return { ...Common.clone(state), loading: true, loadingUuid: action.uuid, activeAssetType: action.assetType };
     }
 
-    case AssetActions.LoadDeliveryOptionsSuccess.Type: {
-      const hasDeliveryOptions: boolean = action.options.length > 0;
-      return { loading: false, hasDeliveryOptions, options: action.options };
+    case AssetActions.LoadSearchAsset.Type: {
+      return { ...Common.clone(state), loading: true, activeAssetType: action.assetType };
     }
 
-    case SearchAssetActions.Load.Type:
-    case QuoteEditAssetActions.Load.Type:
-    case QuoteShowAssetActions.Load.Type:
-    case CartAssetActions.Load.Type:
-    case ActiveCollectionAssetActions.Load.Type: {
-      return { ...initialState, options: [] };
+    case AssetActions.LoadSuccess.Type: {
+      return { ...Common.clone(state), activeAsset: action.activeAsset, loading: false, loadingUuid: null };
+    }
+
+    case AssetActions.LoadFailure.Type: {
+      return { ...Common.clone(state), loading: false, loadingUuid: null, activeAssetType: null };
     }
 
     default: {

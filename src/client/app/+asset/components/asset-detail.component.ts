@@ -159,7 +159,7 @@ export class AssetDetailComponent implements OnInit {
     this.subclipMarkers = newMarkers;
     this.showAssetSaveSubclip = this.markersAreDefined;
     if (this.markersAreDefined && this._asset.type === 'searchAsset') {
-      this.store.dispatch((factory) => factory.searchAsset.updateMarkersInUrl(this.subclipMarkers, this._asset.assetId));
+      this.store.dispatch((factory) => factory.asset.updateMarkersInUrl(this.subclipMarkers, this._asset.assetId));
     }
     this.markersChange.emit(newMarkers);
   }
@@ -376,6 +376,6 @@ export class AssetDetailComponent implements OnInit {
   }
 
   private setDeliveryOptionsFlag(): void {
-    this.hasDeliveryOptions = this.store.select(state => state.asset.hasDeliveryOptions);
+    this.hasDeliveryOptions = this.store.select(state => state.deliveryOptions.hasDeliveryOptions);
   }
 }

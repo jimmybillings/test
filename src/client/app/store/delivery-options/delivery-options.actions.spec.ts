@@ -1,32 +1,19 @@
-import { ActionFactory, InternalActionFactory } from './search-asset.actions';
+import { ActionFactory, InternalActionFactory } from './delivery-options.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
 export function main() {
-  describe('Asset Action Factory', () => {
+  describe('Delivery Options Actions', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
         name: 'load',
-        parameters: [{ some: 'load parameters' }]
+        parameters: [{ some: 'asset' }]
       },
       expectedAction: {
-        type: '[Search Asset] Load',
-        loadParameters: { some: 'load parameters' }
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: ActionFactory,
-        name: 'updateMarkersInUrl',
-        parameters: [{ some: 'markers' }, 1]
-      },
-      expectedAction: {
-        type: '[Search Asset] Update Markers In URL',
-        markers: { some: 'markers' },
-        assetId: 1
+        type: '[Delivery Options] Load',
+        activeAsset: { some: 'asset' }
       }
     });
 
@@ -34,11 +21,11 @@ export function main() {
       factoryMethod: {
         class: InternalActionFactory,
         name: 'loadSuccess',
-        parameters: [{ some: 'asset' }]
+        parameters: [[{ some: 'options' }]]
       },
       expectedAction: {
-        type: '[Search Asset] Load Success',
-        activeAsset: { some: 'asset' }
+        type: '[Delivery Options] Load Success',
+        options: [{ some: 'options' }]
       }
     });
 
@@ -49,7 +36,7 @@ export function main() {
         parameters: [{ some: 'error' }]
       },
       expectedAction: {
-        type: '[Search Asset] Load Failure',
+        type: '[Delivery Options] Load Failure',
         error: { some: 'error' }
       }
     });

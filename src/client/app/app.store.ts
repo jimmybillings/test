@@ -7,9 +7,9 @@ import * as ActiveCollectionActions from './store/active-collection/active-colle
 import * as ActiveCollectionState from './store/active-collection/active-collection.state';
 export type ActiveCollectionState = ActiveCollectionState.State;
 
-import * as ActiveCollectionAssetActions from './store/active-collection-asset/active-collection-asset.actions';
-import * as ActiveCollectionAssetState from './store/active-collection-asset/active-collection-asset.state';
-export type ActiveCollectionAssetState = ActiveCollectionAssetState.State;
+// import * as ActiveCollectionAssetActions from './store/active-collection-asset/active-collection-asset.actions';
+// import * as ActiveCollectionAssetState from './store/active-collection-asset/active-collection-asset.state';
+// export type ActiveCollectionAssetState = ActiveCollectionAssetState.State;
 
 import * as AssetActions from './store/asset/asset.actions';
 import * as AssetState from './store/asset/asset.state';
@@ -19,13 +19,17 @@ import * as CartActions from './store/cart/cart.actions';
 import * as CartState from './store/cart/cart.state';
 export type CartState = CartState.State;
 
-import * as CartAssetActions from './store/cart-asset/cart-asset.actions';
-import * as CartAssetState from './store/cart-asset/cart-asset.state';
-export type CartAssetState = CartAssetState.State;
+// import * as CartAssetActions from './store/cart-asset/cart-asset.actions';
+// import * as CartAssetState from './store/cart-asset/cart-asset.state';
+// export type CartAssetState = CartAssetState.State;
 
 import * as CommentActions from './store/comment/comment.actions';
 import * as CommentState from './store/comment/comment.state';
 export type CommentState = CommentState.State;
+
+import * as DeliveryOptionsActions from './store/delivery-options/delivery-options.actions';
+import * as DeliveryOptionsState from './store/delivery-options/delivery-options.state';
+export type DeliveryOptionsState = DeliveryOptionsState.State;
 
 import * as DialogActions from './store/dialog/dialog.actions';
 
@@ -45,21 +49,21 @@ import * as OrderActions from './store/order/order.actions';
 import * as OrderState from './store/order/order.state';
 export type OrderState = OrderState.State;
 
-import * as OrderAssetActions from './store/order-asset/order-asset.actions';
-import * as OrderAssetState from './store/order-asset/order-asset.state';
-export type OrderAssetState = OrderAssetState.State;
+// import * as OrderAssetActions from './store/order-asset/order-asset.actions';
+// import * as OrderAssetState from './store/order-asset/order-asset.state';
+// export type OrderAssetState = OrderAssetState.State;
 
-import * as QuoteEditAssetActions from './store/quote-edit-asset/quote-edit-asset.actions';
-import * as QuoteEditAssetState from './store/quote-edit-asset/quote-edit-asset.state';
-export type QuoteEditAssetState = QuoteEditAssetState.State;
+// import * as QuoteEditAssetActions from './store/quote-edit-asset/quote-edit-asset.actions';
+// import * as QuoteEditAssetState from './store/quote-edit-asset/quote-edit-asset.state';
+// export type QuoteEditAssetState = QuoteEditAssetState.State;
 
 import * as QuoteEditActions from './store/quote-edit/quote-edit.actions';
 import * as QuoteEditState from './store/quote-edit/quote-edit.state';
 export type QuoteEditState = QuoteEditState.State;
 
-import * as QuoteShowAssetActions from './store/quote-show-asset/quote-show-asset.actions';
-import * as QuoteShowAssetState from './store/quote-show-asset/quote-show-asset.state';
-export type QuoteShowAssetState = QuoteShowAssetState.State;
+// import * as QuoteShowAssetActions from './store/quote-show-asset/quote-show-asset.actions';
+// import * as QuoteShowAssetState from './store/quote-show-asset/quote-show-asset.state';
+// export type QuoteShowAssetState = QuoteShowAssetState.State;
 
 import * as QuoteShowActions from './store/quote-show/quote-show.actions';
 import * as QuoteShowState from './store/quote-show/quote-show.state';
@@ -67,9 +71,9 @@ export type QuoteShowState = QuoteShowState.State;
 
 import * as RouterActions from './store/router/router.actions';
 
-import * as SearchAssetActions from './store/search-asset/search-asset.actions';
-import * as SearchAssetState from './store/search-asset/search-asset.state';
-export type SearchAssetState = SearchAssetState.State;
+// import * as SearchAssetActions from './store/search-asset/search-asset.actions';
+// import * as SearchAssetState from './store/search-asset/search-asset.state';
+// export type SearchAssetState = SearchAssetState.State;
 
 import * as SnackbarActions from './store/snackbar/snackbar.actions';
 import * as SnackbarState from './store/snackbar/snackbar.state';
@@ -89,25 +93,26 @@ export type MultiLingualState = MultiLingualState.State;
 
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
-  readonly activeCollectionAsset: ActiveCollectionAssetActions.ActionFactory;
+  // readonly activeCollectionAsset: ActiveCollectionAssetActions.ActionFactory;
   readonly asset: AssetActions.ActionFactory;
   readonly cart: CartActions.ActionFactory;
-  readonly cartAsset: CartAssetActions.ActionFactory;
+  // readonly cartAsset: CartAssetActions.ActionFactory;
   readonly comment: CommentActions.ActionFactory;
+  readonly deliveryOptions: DeliveryOptionsActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
   readonly error: ErrorActions.ActionFactory;
   readonly headerDisplayOptions: HeaderDisplayOptionsActions.ActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.ActionFactory;
   readonly multiLingual: MultiLingualActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
-  readonly orderAsset: OrderAssetActions.ActionFactory;
+  // readonly orderAsset: OrderAssetActions.ActionFactory;
   readonly quoteEdit: QuoteEditActions.ActionFactory;
-  readonly quoteEditAsset: QuoteEditAssetActions.ActionFactory;
+  // readonly quoteEditAsset: QuoteEditAssetActions.ActionFactory;
   readonly quoteShow: QuoteShowActions.ActionFactory;
-  readonly quoteShowAsset: QuoteShowAssetActions.ActionFactory;
+  // readonly quoteShowAsset: QuoteShowAssetActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
   readonly notifier: NotifierActions.ActionFactory;
-  readonly searchAsset: SearchAssetActions.ActionFactory;
+  // readonly searchAsset: SearchAssetActions.ActionFactory;
   readonly snackbar: SnackbarActions.ActionFactory;
   readonly speedPreview: SpeedPreviewActions.ActionFactory;
   readonly uiConfig: UiConfigActions.ActionFactory;
@@ -115,11 +120,12 @@ export interface ActionFactory {
 
 export interface InternalActionFactory {
   readonly activeCollection: ActiveCollectionActions.InternalActionFactory;
-  readonly activeCollectionAsset: ActiveCollectionAssetActions.InternalActionFactory;
+  // readonly activeCollectionAsset: ActiveCollectionAssetActions.InternalActionFactory;
   readonly asset: AssetActions.InternalActionFactory;
   readonly cart: CartActions.InternalActionFactory;
-  readonly cartAsset: CartAssetActions.InternalActionFactory;
+  // readonly cartAsset: CartAssetActions.InternalActionFactory;
   readonly comment: CommentActions.InternalActionFactory;
+  readonly deliveryOptions: DeliveryOptionsActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
   readonly error: ErrorActions.InternalActionFactory;
   readonly headerDisplayOptions: HeaderDisplayOptionsActions.InternalActionFactory;
@@ -127,13 +133,13 @@ export interface InternalActionFactory {
   readonly multiLingual: MultiLingualActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
-  readonly orderAsset: OrderAssetActions.InternalActionFactory;
+  // readonly orderAsset: OrderAssetActions.InternalActionFactory;
   readonly quoteEdit: QuoteEditActions.InternalActionFactory;
-  readonly quoteEditAsset: QuoteEditAssetActions.InternalActionFactory;
+  // readonly quoteEditAsset: QuoteEditAssetActions.InternalActionFactory;
   readonly quoteShow: QuoteShowActions.InternalActionFactory;
-  readonly quoteShowAsset: QuoteShowAssetActions.InternalActionFactory;
+  // readonly quoteShowAsset: QuoteShowAssetActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
-  readonly searchAsset: SearchAssetActions.InternalActionFactory;
+  // readonly searchAsset: SearchAssetActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
   readonly uiConfig: UiConfigActions.InternalActionFactory;
@@ -141,22 +147,23 @@ export interface InternalActionFactory {
 
 export interface AppState {
   readonly activeCollection: ActiveCollectionState;
-  readonly activeCollectionAsset: ActiveCollectionAssetState;
+  // readonly activeCollectionAsset: ActiveCollectionAssetState;
   readonly asset: AssetState;
   readonly cart: CartState;
-  readonly cartAsset: CartAssetState;
+  // readonly cartAsset: CartAssetState;
   readonly comment: CommentState;
+  readonly deliveryOptions: DeliveryOptionsState;
   readonly headerDisplayOptions: HeaderDisplayOptionsState;
   readonly loadingIndicator: LoadingIndicatorState;
   readonly multiLingual: MultiLingualState;
   readonly order: OrderState;
-  readonly orderAsset: OrderAssetState;
+  // readonly orderAsset: OrderAssetState;
   readonly quoteEdit: QuoteEditState;
-  readonly quoteEditAsset: QuoteEditAssetState;
+  // readonly quoteEditAsset: QuoteEditAssetState;
   readonly quoteShow: QuoteShowState;
-  readonly quoteShowAsset: QuoteShowAssetState;
+  // readonly quoteShowAsset: QuoteShowAssetState;
   readonly snackbar: SnackbarState;
-  readonly searchAsset: SearchAssetState;
+  // readonly searchAsset: SearchAssetState;
   readonly speedPreview: SpeedPreviewState;
   readonly uiConfig: UiConfigState;
 }
@@ -168,18 +175,19 @@ export interface AppReducers {
 // NOTE:  Until all the old legacy reducers are replaced, you must ALSO redefine these directly in shared.module.ts.
 export const reducers: AppReducers = {
   activeCollection: ActiveCollectionState.reducer,
-  asset: SearchAssetState.reducer,
+  asset: AssetState.reducer,
   cart: CartState.reducer,
   comment: CommentState.reducer,
+  deliveryOptions: DeliveryOptionsState.reducer,
   headerDisplayOptions: HeaderDisplayOptionsState.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
   order: OrderState.reducer,
   multiLingual: MultiLingualState.reducer,
-  orderState: OrderAssetState.reducer,
+  // orderState: OrderAssetState.reducer,
   quoteEdit: QuoteEditState.reducer,
-  quoteEditAsset: QuoteEditAssetState.reducer,
+  // quoteEditAsset: QuoteEditAssetState.reducer,
   quoteShow: QuoteShowState.reducer,
-  quoteShowAsset: QuoteShowAssetState.reducer,
+  // quoteShowAsset: QuoteShowAssetState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
   uiConfig: UiConfigState.reducer
@@ -193,11 +201,12 @@ export type StateMapper<T> = (state: AppState) => T;
 export class AppStore {
   private readonly actionFactory: ActionFactory = {
     activeCollection: new ActiveCollectionActions.ActionFactory(),
-    activeCollectionAsset: new ActiveCollectionAssetActions.ActionFactory(),
+    // activeCollectionAsset: new ActiveCollectionAssetActions.ActionFactory(),
     asset: new AssetActions.ActionFactory(),
     cart: new CartActions.ActionFactory(),
-    cartAsset: new CartAssetActions.ActionFactory(),
+    // cartAsset: new CartAssetActions.ActionFactory(),
     comment: new CommentActions.ActionFactory(),
+    deliveryOptions: new DeliveryOptionsActions.ActionFactory(),
     dialog: new DialogActions.ActionFactory(),
     error: new ErrorActions.ActionFactory(),
     headerDisplayOptions: new HeaderDisplayOptionsActions.ActionFactory(),
@@ -205,13 +214,13 @@ export class AppStore {
     multiLingual: new MultiLingualActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
-    orderAsset: new OrderAssetActions.ActionFactory(),
+    // orderAsset: new OrderAssetActions.ActionFactory(),
     quoteEdit: new QuoteEditActions.ActionFactory(),
-    quoteEditAsset: new QuoteEditAssetActions.ActionFactory(),
+    // quoteEditAsset: new QuoteEditAssetActions.ActionFactory(),
     quoteShow: new QuoteShowActions.ActionFactory(),
-    quoteShowAsset: new QuoteShowAssetActions.ActionFactory(),
+    // quoteShowAsset: new QuoteShowAssetActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
-    searchAsset: new SearchAssetActions.ActionFactory(),
+    // searchAsset: new SearchAssetActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
     speedPreview: new SpeedPreviewActions.ActionFactory(),
     uiConfig: new UiConfigActions.ActionFactory()
@@ -219,11 +228,12 @@ export class AppStore {
 
   private readonly internalActionFactory: InternalActionFactory = {
     activeCollection: new ActiveCollectionActions.InternalActionFactory(),
-    activeCollectionAsset: new ActiveCollectionAssetActions.InternalActionFactory(),
+    // activeCollectionAsset: new ActiveCollectionAssetActions.InternalActionFactory(),
     asset: new AssetActions.InternalActionFactory(),
     cart: new CartActions.InternalActionFactory(),
-    cartAsset: new CartAssetActions.InternalActionFactory(),
+    // cartAsset: new CartAssetActions.InternalActionFactory(),
     comment: new CommentActions.InternalActionFactory(),
+    deliveryOptions: new DeliveryOptionsActions.InternalActionFactory(),
     dialog: new DialogActions.InternalActionFactory(),
     error: new ErrorActions.InternalActionFactory(),
     headerDisplayOptions: new HeaderDisplayOptionsActions.InternalActionFactory(),
@@ -231,13 +241,13 @@ export class AppStore {
     multiLingual: new MultiLingualActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
-    orderAsset: new OrderAssetActions.InternalActionFactory(),
+    // orderAsset: new OrderAssetActions.InternalActionFactory(),
     quoteEdit: new QuoteEditActions.InternalActionFactory(),
-    quoteEditAsset: new QuoteEditAssetActions.InternalActionFactory(),
+    // quoteEditAsset: new QuoteEditAssetActions.InternalActionFactory(),
     quoteShow: new QuoteShowActions.InternalActionFactory(),
-    quoteShowAsset: new QuoteShowAssetActions.InternalActionFactory(),
+    // quoteShowAsset: new QuoteShowAssetActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),
-    searchAsset: new SearchAssetActions.InternalActionFactory(),
+    // searchAsset: new SearchAssetActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
     speedPreview: new SpeedPreviewActions.InternalActionFactory(),
     uiConfig: new UiConfigActions.InternalActionFactory()
