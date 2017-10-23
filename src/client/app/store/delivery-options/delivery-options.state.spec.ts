@@ -18,7 +18,7 @@ export function main() {
       },
       customTests: [
         {
-          it: 'returns the state but with loading: true',
+          it: 'returns the default state but with loading: true',
           previousState: DeliveryOptionsState.initialState,
           expectedNextState: { ...DeliveryOptionsState.initialState, loading: true }
         }

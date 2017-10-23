@@ -1,5 +1,7 @@
 import * as DeliveryOptionsActions from './delivery-options.actions';
+import * as AssetActions from '../asset/asset.actions';
 import { DeliveryOptions } from '../../shared/interfaces/asset.interface';
+import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
   loading: boolean;
@@ -13,14 +15,21 @@ export const initialState: State = {
   options: []
 };
 
+export type AllowedActions = AssetActions.LoadActiveCollectionAsset | AssetActions.LoadCartAsset |
+  AssetActions.LoadQuoteEditAsset | AssetActions.LoadQuoteShowAsset | AssetActions.LoadSearchAsset |
+  DeliveryOptionsActions.Any;
 
-export function reducer(state: State = initialState, action: DeliveryOptionsActions.Any): State {
+export function reducer(state: State = initialState, action: AllowedActions): State {
   if (state === null) state = initialState;
 
   switch (action.type) {
-
+    case AssetActions.LoadActiveCollectionAsset.Type:
+    case AssetActions.LoadCartAsset.Type:
+    case AssetActions.LoadQuoteEditAsset.Type:
+    case AssetActions.LoadQuoteShowAsset.Type:
+    case AssetActions.LoadSearchAsset.Type:
     case DeliveryOptionsActions.Load.Type: {
-      return { ...state, options: [], loading: true };
+      return { ...Common.clone(initialState), loading: true };
     }
 
     case DeliveryOptionsActions.LoadSuccess.Type: {
@@ -28,10 +37,8 @@ export function reducer(state: State = initialState, action: DeliveryOptionsActi
       return { loading: false, hasDeliveryOptions, options: action.options };
     }
 
-
     default: {
       return state;
     }
-
   }
 }

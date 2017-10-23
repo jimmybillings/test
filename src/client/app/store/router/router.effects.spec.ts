@@ -18,11 +18,13 @@ export function main() {
     beforeEach(() => {
       mockRouter = {
         navigate: jasmine.createSpy('navigate'),
-        navigateByUrl: jasmine.createSpy('navigateByUrl')
+        navigateByUrl: jasmine.createSpy('navigateByUrl'),
+        routerState: { snapshot: { url: '' } }
       };
 
       mockLocation = {
-        path: () => mockCurrentPath
+        path: () => mockCurrentPath,
+        go: jasmine.createSpy('go')
       };
 
       localStorageSetSpy = spyOn(localStorage, 'setItem').and.stub();
@@ -300,6 +302,25 @@ export function main() {
           it: 'navigates to /cart',
           expectation: () => {
             expect(mockRouter.navigate).toHaveBeenCalledWith(['/cart']);
+          }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addMarkersToUrl',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.AddMarkersToUrl.Type,
+        assetId: 100,
+        timeStart: 1000,
+        timeEnd: 2000
+      },
+      customTests: [
+        {
+          it: 'calls location.go() with the asset id and updated markers',
+          expectation: () => {
+            expect(mockLocation.go).toHaveBeenCalledWith('/search/asset/100;timeStart=1000;timeEnd=2000');
           }
         }
       ]

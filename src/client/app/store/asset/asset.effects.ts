@@ -6,7 +6,7 @@ import { Action } from '@ngrx/store';
 import { AppStore, AppState, InternalActionFactoryMapper } from '../../app.store';
 import { AssetType } from '../../shared/interfaces/enhanced-asset';
 import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
-import * as CommonI from '../../shared/interfaces/common.interface';
+import * as CommonInterface from '../../shared/interfaces/common.interface';
 import * as Commerce from '../../shared/interfaces/commerce.interface';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { AssetService } from './asset.service';
@@ -19,17 +19,29 @@ import * as QuoteEditActions from '../quote-edit/quote-edit.actions';
 import * as QuoteShowActions from '../quote-show/quote-show.actions';
 import * as ActiveCollectionActions from '../active-collection/active-collection.actions';
 
-
 @Injectable()
 export class AssetEffects {
-  /** Cart Asset Effects */
+  /** Global Asset Effects */
+
   @Effect()
-  public loadAfterCartAvailable: Observable<Action> = this.actions.ofType(AssetActions.LoadAssetAfterCartAvailable.Type)
-    .switchMap((action: AssetActions.LoadAssetAfterCartAvailable) =>
+  public loadAfterParentIsAvailable: Observable<Action> = this.actions.ofType(AssetActions.LoadAssetAfterParentIsAvailable.Type)
+    .switchMap((action: AssetActions.LoadAssetAfterParentIsAvailable) =>
       this.service.load(action.loadParameters)
-        .map((asset: Commerce.Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)))
+        .mergeMap((asset: CommonInterface.Asset) => {
+          const actions: Array<Action> = [
+            this.store.create(factory => factory.asset.loadSuccess(asset))
+          ];
+
+          if (action.assetType !== 'orderAsset') {
+            actions.push(this.store.create(factory => factory.deliveryOptions.load(asset)));
+          }
+
+          return actions;
+        })
         .catch(error => Observable.of(this.store.create(factory => factory.asset.loadFailure(error))))
     );
+
+  /** Cart Asset Effects */
 
   @Effect() loadAssetOnCartLoadSuccess: Observable<Action> = this.actions.ofType(CartActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
@@ -48,14 +60,6 @@ export class AssetEffects {
     );
 
   /** Active Collection Asset Effects */
-  @Effect()
-  public loadAssetAfterCollectionAvailable: Observable<Action> =
-  this.actions.ofType(AssetActions.LoadAssetAfterCollectionAvailable.Type)
-    .switchMap((action: AssetActions.LoadAssetAfterCollectionAvailable) =>
-      this.service.load(action.loadParameters)
-        .map((asset: CommonI.Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)))
-        .catch(error => Observable.of(this.store.create(factory => factory.asset.loadFailure(error))))
-    );
 
   @Effect()
   public loadAssetOnCollectionLoadSuccess: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadSuccess.Type)
@@ -75,13 +79,6 @@ export class AssetEffects {
     );
 
   /** Order Asset Effects */
-  @Effect()
-  public loadAfterOrderAvailable: Observable<Action> = this.actions.ofType(AssetActions.LoadAssetAfterOrderAvailable.Type)
-    .switchMap((action: AssetActions.LoadAssetAfterOrderAvailable) =>
-      this.service.load(action.loadParameters)
-        .map((asset: CommonI.Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)))
-        .catch(error => Observable.of(this.store.create(factory => factory.asset.loadFailure(error))))
-    );
 
   @Effect() loadAssetOnOrderLoadSuccess: Observable<Action> = this.actions.ofType(OrderActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
@@ -100,13 +97,6 @@ export class AssetEffects {
     );
 
   /** Quote Edit Asset Effect */
-  @Effect()
-  public loadAfterQuoteAvailable: Observable<Action> = this.actions.ofType(AssetActions.LoadAssetAfterQuoteAvailable.Type)
-    .switchMap((action: AssetActions.LoadAssetAfterQuoteAvailable) =>
-      this.service.load(action.loadParameters)
-        .map((asset: CommonI.Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)))
-        .catch(error => Observable.of(this.store.create(factory => factory.asset.loadFailure(error))))
-    );
 
   @Effect() loadAssetOnQuoteLoadSuccess: Observable<Action> = this.actions.ofType(QuoteEditActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
@@ -125,6 +115,7 @@ export class AssetEffects {
     );
 
   /** Quote Show Asset Effects */
+
   @Effect() loadAssetOnQuoteShowLoadSuccess: Observable<Action> = this.actions.ofType(QuoteShowActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
     .filter(([action, state]: [QuoteShowActions.LoadSuccess, AppState]) => {
@@ -142,11 +133,12 @@ export class AssetEffects {
     );
 
   /** Search Asset Effects */
+
   @Effect()
-  public load: Observable<Action> = this.actions.ofType(AssetActions.LoadSearchAsset.Type)
+  public loadSearchAsset: Observable<Action> = this.actions.ofType(AssetActions.LoadSearchAsset.Type)
     .switchMap((action: AssetActions.LoadSearchAsset) =>
       this.service.load(action.loadParameters)
-        .map((asset: CommonI.Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)))
+        .map((asset: CommonInterface.Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)))
         .catch(error => Observable.of(this.store.create(factory => factory.asset.loadFailure(error))))
     );
 
@@ -167,23 +159,14 @@ export class AssetEffects {
     return this.store.create(this.nextQuoteShowActionMapperFor(quote, requestedQuoteId, assetUuid));
   }
 
-  private nextQuoteShowActionMapperFor(
-    quote: Commerce.Quote,
-    requestedQuoteId: number,
-    assetUuid: string
-  ): InternalActionFactoryMapper {
-    if (quote.id !== requestedQuoteId) return factory => factory.quoteShow.load(requestedQuoteId);
+  private nextQuoteShowActionMapperFor(quote: Commerce.Quote, requestedId: number, uuid: string): InternalActionFactoryMapper {
+    if (quote.id !== requestedId) return factory => factory.quoteShow.load(requestedId);
 
-    const lineItem: Commerce.AssetLineItem = quote.projects
-      .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
-      .find(lineItem => lineItem.id === assetUuid);
+    const lineItem: Commerce.AssetLineItem = this.lineItemIn(quote, uuid);
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-
-      return factory => factory.asset.loadAfterQuoteAvailable({
-        id: String(asset.assetId), uuid: assetUuid, timeStart: String(asset.timeStart), timeEnd: String(asset.timeEnd)
-      });
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'quoteShowAsset');
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -192,41 +175,31 @@ export class AssetEffects {
     return this.store.create(this.nextQuoteEditActionMapperFor(quote, assetUuid));
   }
 
-  private nextQuoteEditActionMapperFor(quote: Commerce.Quote, assetUuid: string): InternalActionFactoryMapper {
+  private nextQuoteEditActionMapperFor(quote: Commerce.Quote, uuid: string): InternalActionFactoryMapper {
     if (quote.id === 0) return factory => factory.quoteEdit.load();
 
-    const lineItem: Commerce.AssetLineItem = quote.projects
-      .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
-      .find(lineItem => lineItem.id === assetUuid);
+    const lineItem: Commerce.AssetLineItem = this.lineItemIn(quote, uuid);
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-
-      return factory => factory.asset.loadAssetAfterQuoteAvailable({
-        id: String(asset.assetId), uuid: assetUuid, timeStart: String(asset.timeStart), timeEnd: String(asset.timeEnd)
-      });
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'quoteEditAsset');
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
   }
 
-  private createNextOrderActionFor(order: Commerce.Order, requestedOrderId: number, assetUuid: string): Action {
-    return this.store.create(this.orderActionMapperFor(order, requestedOrderId, assetUuid));
+  private createNextOrderActionFor(order: Commerce.Order, requestedId: number, assetUuid: string): Action {
+    return this.store.create(this.orderActionMapperFor(order, requestedId, assetUuid));
   }
 
-  private orderActionMapperFor(order: Commerce.Order, requestedOrderId: number, assetUuid: string): InternalActionFactoryMapper {
-    if (order.id !== requestedOrderId) return factory => factory.order.load(requestedOrderId);
+  private orderActionMapperFor(order: Commerce.Order, requestedId: number, uuid: string): InternalActionFactoryMapper {
+    if (order.id !== requestedId) return factory => factory.order.load(requestedId);
 
-    const lineItem: Commerce.AssetLineItem = order.projects
-      .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
-      .find(lineItem => lineItem.id === assetUuid);
+    const lineItem: Commerce.AssetLineItem = this.lineItemIn(order, uuid);
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-
-      return factory => factory.asset.loadAssetAfterOrderAvailable({
-        id: String(asset.assetId), uuid: assetUuid, timeStart: String(asset.timeStart), timeEnd: String(asset.timeEnd)
-      });
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'orderAsset');
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -236,19 +209,14 @@ export class AssetEffects {
     return this.store.create(this.nextCartActionMapperFor(cart, assetUuid));
   }
 
-  private nextCartActionMapperFor(cart: Commerce.Cart, assetUuid: string): InternalActionFactoryMapper {
+  private nextCartActionMapperFor(cart: Commerce.Cart, uuid: string): InternalActionFactoryMapper {
     if (cart.id === null) return factory => factory.cart.load();
 
-    const lineItem: Commerce.AssetLineItem = cart.projects
-      .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
-      .find(lineItem => lineItem.id === assetUuid);
+    const lineItem: Commerce.AssetLineItem = this.lineItemIn(cart, uuid);
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-
-      return factory => factory.asset.loadAssetAfterCartAvailable({
-        id: String(asset.assetId), uuid: assetUuid, timeStart: String(asset.timeStart), timeEnd: String(asset.timeEnd)
-      });
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'cartAsset');
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -258,15 +226,36 @@ export class AssetEffects {
     return this.store.create(this.nextCollectionActionMapperFor(collection, assetUuid));
   }
 
-  private nextCollectionActionMapperFor(collection: Collection, assetUuid: string): InternalActionFactoryMapper {
+  private nextCollectionActionMapperFor(collection: Collection, uuid: string): InternalActionFactoryMapper {
     if (collection.id === null) return factory => factory.activeCollection.load();
 
-    const asset: CommonI.Asset = collection.assets.items.find(asset => asset.uuid === assetUuid);
+    const asset: CommonInterface.Asset = collection.assets.items.find(asset => asset.uuid === uuid);
 
-    if (asset) return factory => factory.asset.loadAssetAfterCollectionAvailable({
-      id: String(asset.assetId), uuid: assetUuid, timeStart: String(asset.timeStart), timeEnd: String(asset.timeEnd)
-    });
+    if (asset) {
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'collectionAsset');
+    }
 
     return factory => factory.asset.loadFailure({ status: 404 });
+  }
+
+  private lineItemIn(orderable: Commerce.Quote | Commerce.Cart | Commerce.Order, uuid: string): Commerce.AssetLineItem {
+    return orderable.projects
+      .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
+      .find(lineItem => lineItem.id === uuid);
+  }
+
+  private loadAssetActionGenerator(
+    id: number,
+    uuid: string,
+    timeStart: number,
+    timeEnd: number,
+    assetType: AssetType
+  ): InternalActionFactoryMapper {
+    return factory => factory.asset.loadAssetAfterParentIsAvailable({
+      id: String(id),
+      uuid: uuid,
+      timeStart: String(timeStart),
+      timeEnd: String(timeEnd)
+    }, assetType);
   }
 }

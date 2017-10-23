@@ -80,9 +80,9 @@ export class RouterEffects {
   public addMarkersToUrl: Observable<Action> = this.actions.ofType(RouterActions.AddMarkersToUrl.Type)
     .do((action: RouterActions.AddMarkersToUrl) => {
       let params: Pojo = Common.urlStringToParamsObject(this.router.routerState.snapshot.url);
-      params.timeStart = action.timeEnd;
+      params.timeStart = action.timeStart;
       params.timeEnd = action.timeEnd;
-      this.location.go(`/search/asset/${action.assetId}${Common.urlParamsObjectToUrlStringParams(params)}`);
+      this.location.go(`${this.SearchAssetDetailsPath}/${action.assetId}${Common.urlParamsObjectToUrlStringParams(params)}`);
     });
 
   private readonly LoginPath: string = '/user/login';

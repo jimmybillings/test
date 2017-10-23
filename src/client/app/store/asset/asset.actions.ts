@@ -6,44 +6,24 @@ import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { AssetType } from '../../shared/interfaces/enhanced-asset';
 
 export class ActionFactory {
-  public loadOrderAsset(orderId: number, assetUuid: string): LoadOrderAsset {
-    return new LoadOrderAsset(orderId, assetUuid, 'orderAsset');
+  public loadOrderAsset(orderId: number, uuid: string): LoadOrderAsset {
+    return new LoadOrderAsset(orderId, uuid, 'orderAsset');
   }
 
-  public loadAssetAfterOrderAvailable(loadParameters: Common.ChildAssetLoadParameters): LoadAssetAfterOrderAvailable {
-    return new LoadAssetAfterOrderAvailable(loadParameters);
+  public loadQuoteShowAsset(quoteId: number, uuid: string): LoadQuoteShowAsset {
+    return new LoadQuoteShowAsset(quoteId, uuid, 'quoteShowAsset');
   }
 
-  public loadQuoteShowAsset(quoteId: number, assetUuid: string): LoadQuoteShowAsset {
-    return new LoadQuoteShowAsset(quoteId, assetUuid, 'quoteShowAsset');
+  public loadQuoteEditAsset(uuid: string): LoadQuoteEditAsset {
+    return new LoadQuoteEditAsset(uuid, 'quoteEditAsset');
   }
 
-  public loadAfterQuoteAvailable(loadParameters: Common.ChildAssetLoadParameters): LoadAssetAfterQuoteAvailable {
-    return new LoadAssetAfterQuoteAvailable(loadParameters);
+  public loadCartAsset(uuid: string): LoadCartAsset {
+    return new LoadCartAsset(uuid, 'cartAsset');
   }
 
-  public loadQuoteEditAsset(assetUuid: string): LoadQuoteEditAsset {
-    return new LoadQuoteEditAsset(assetUuid, 'quoteEditAsset');
-  }
-
-  public loadAssetAfterQuoteAvailable(loadParameters: Common.ChildAssetLoadParameters): LoadAssetAfterQuoteAvailable {
-    return new LoadAssetAfterQuoteAvailable(loadParameters);
-  }
-
-  public loadCartAsset(assetUuid: string): LoadCartAsset {
-    return new LoadCartAsset(assetUuid, 'cartAsset');
-  }
-
-  public loadAssetAfterCartAvailable(loadParameters: Common.ChildAssetLoadParameters): LoadAssetAfterCartAvailable {
-    return new LoadAssetAfterCartAvailable(loadParameters);
-  }
-
-  public loadActiveCollectionAsset(assetUuid: string): LoadActiveCollectionAsset {
-    return new LoadActiveCollectionAsset(assetUuid, 'collectionAsset');
-  }
-
-  public loadAssetAfterCollectionAvailable(params: Common.ChildAssetLoadParameters): LoadAssetAfterCollectionAvailable {
-    return new LoadAssetAfterCollectionAvailable(params);
+  public loadActiveCollectionAsset(uuid: string): LoadActiveCollectionAsset {
+    return new LoadActiveCollectionAsset(uuid, 'collectionAsset');
   }
 
   public loadSearchAsset(params: Common.SearchAssetLoadParameters): LoadSearchAsset {
@@ -53,10 +33,17 @@ export class ActionFactory {
   public updateMarkersInUrl(markers: SubclipMarkers, assetId: number) {
     return new UpdateMarkersInUrl(markers, assetId);
   }
+
+  public loadAssetAfterParentIsAvailable(
+    params: Common.ChildAssetLoadParameters,
+    assetType: AssetType
+  ): LoadAssetAfterParentIsAvailable {
+    return new LoadAssetAfterParentIsAvailable(params, assetType);
+  }
 }
 
 export class InternalActionFactory extends ActionFactory {
-  public loadSuccess(activeAsset: Common.Asset | Commerce.Asset): LoadSuccess {
+  public loadSuccess(activeAsset: Common.Asset): LoadSuccess {
     return new LoadSuccess(activeAsset);
   }
 
@@ -69,12 +56,6 @@ export class LoadOrderAsset implements Action {
   public static readonly Type = '[Asset] Load Order Asset';
   public readonly type = LoadOrderAsset.Type;
   constructor(public readonly orderId: number, public readonly uuid: string, public readonly assetType: AssetType) { }
-}
-
-export class LoadAssetAfterOrderAvailable implements Action {
-  public static readonly Type = '[Asset] Load Asset After Order Available';
-  public readonly type = LoadAssetAfterOrderAvailable.Type;
-  constructor(public readonly loadParameters: Common.ChildAssetLoadParameters) { }
 }
 
 export class LoadQuoteShowAsset implements Action {
@@ -95,22 +76,10 @@ export class LoadCartAsset implements Action {
   constructor(public readonly uuid: string, public readonly assetType: AssetType) { }
 }
 
-export class LoadAssetAfterCartAvailable implements Action {
-  public static readonly Type = '[Asset] Load Asset After Cart Available';
-  public readonly type = LoadAssetAfterCartAvailable.Type;
-  constructor(public readonly loadParameters: Common.ChildAssetLoadParameters) { }
-}
-
 export class LoadActiveCollectionAsset implements Action {
   public static readonly Type = '[Asset] Load Active Collection Asset';
   public readonly type = LoadActiveCollectionAsset.Type;
   constructor(public readonly uuid: string, public readonly assetType: AssetType) { }
-}
-
-export class LoadAssetAfterCollectionAvailable implements Action {
-  public static readonly Type = '[Asset] Load Asset After Collection Available';
-  public readonly type = LoadAssetAfterCollectionAvailable.Type;
-  constructor(public readonly loadParameters: Common.ChildAssetLoadParameters) { }
 }
 
 export class LoadQuoteEditAsset implements Action {
@@ -119,21 +88,22 @@ export class LoadQuoteEditAsset implements Action {
   constructor(public readonly uuid: string, public readonly assetType: AssetType) { }
 }
 
-export class LoadAssetAfterQuoteAvailable implements Action {
-  public static readonly Type = '[Asset] Load Asset After Quote Available';
-  public readonly type = LoadAssetAfterQuoteAvailable.Type;
-  constructor(public readonly loadParameters: Common.ChildAssetLoadParameters) { }
-}
-
 export class UpdateMarkersInUrl implements Action {
   public static readonly Type = '[Asset] Update Markers In URL';
   public readonly type = UpdateMarkersInUrl.Type;
   constructor(public readonly markers: SubclipMarkers, public readonly assetId: number) { }
 }
+
+export class LoadAssetAfterParentIsAvailable implements Action {
+  public static readonly Type = '[Asset] Load Asset After Parent Is Available';
+  public readonly type = LoadAssetAfterParentIsAvailable.Type;
+  constructor(public readonly loadParameters: Common.ChildAssetLoadParameters, public readonly assetType: AssetType) { }
+}
+
 export class LoadSuccess implements Action {
   public static readonly Type = '[Asset] Load Success';
   public readonly type = LoadSuccess.Type;
-  constructor(public readonly activeAsset: Common.Asset | Commerce.Asset) { }
+  constructor(public readonly activeAsset: Common.Asset) { }
 }
 
 export class LoadFailure implements Action {
@@ -143,4 +113,5 @@ export class LoadFailure implements Action {
 }
 
 export type Any = LoadCartAsset | LoadOrderAsset | LoadQuoteEditAsset | LoadSearchAsset | LoadQuoteShowAsset |
-  LoadActiveCollectionAsset | LoadSuccess | LoadFailure;
+  LoadActiveCollectionAsset | LoadSuccess | LoadFailure | LoadAssetAfterParentIsAvailable | UpdateMarkersInUrl;
+

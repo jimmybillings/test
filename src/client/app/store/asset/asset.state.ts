@@ -20,7 +20,6 @@ export const initialState: State = {
 
 export function reducer(state: State = initialState, action: AssetActions.Any): State {
   switch (action.type) {
-
     case AssetActions.LoadQuoteShowAsset.Type:
     case AssetActions.LoadQuoteShowAsset.Type:
     case AssetActions.LoadOrderAsset.Type:
@@ -39,7 +38,7 @@ export function reducer(state: State = initialState, action: AssetActions.Any): 
     }
 
     case AssetActions.LoadFailure.Type: {
-      return { ...Common.clone(state), loading: false, loadingUuid: null, activeAssetType: null };
+      return { ...Common.clone(state), loading: false };
     }
 
     default: {

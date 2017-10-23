@@ -26,6 +26,14 @@ export function main() {
         serviceUnderTest.getDeliveryOptions(111).take(1).subscribe(options => formattedDeliveryOptions = options);
         expect(formattedDeliveryOptions).toEqual(mockFormattedDeliveryOptions());
       });
+
+      it('returns an observable of an empty array if no options are returned by the API', () => {
+        mockApiService.getResponse = {};
+
+        let formattedDeliveryOptions: any;
+        serviceUnderTest.getDeliveryOptions(111).take(1).subscribe(options => formattedDeliveryOptions = options);
+        expect(formattedDeliveryOptions).toEqual([]);
+      });
     });
   });
 
