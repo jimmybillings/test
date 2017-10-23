@@ -77,23 +77,27 @@
           letter-spacing: 0;
         }
       }
-      .payment-balance {
-        display: block;
-        margin-top: -10px;
-        .payment-balance-amount {
-          font-size: 12px;
+      .balance {
+        margin: 3px 1px 0 0;
+        & > div {
           display: block;
-          height: 20px;
-          span {
-            font-weight: bold;
+          text-align: right;
+          opacity: .9;
+          line-height: 1.4;
+          strong, span  {
+            display: inline-block;
           }
-        }
-        .payment-balance-due-date {
-          font-size: 12px;
-          display: block;
-          height: 30px;
+          strong  {
+            font-weight: 500;
+          }
           span {
-            font-weight: bold;
+            min-width: 68px;
+            &.remaining-balance::first-letter {
+              font-size: .88em;
+              vertical-align: top;
+              letter-spacing: 0;
+              line-height: 1.5;
+            }
           }
         }
       }

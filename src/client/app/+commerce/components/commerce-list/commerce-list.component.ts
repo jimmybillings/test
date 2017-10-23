@@ -37,7 +37,7 @@ export class CommerceListComponent {
   }
 
   public shouldShowPaymentBalanceFor(item: Order): boolean {
-    return this.type === 'ORDER' && !!item.paymentBalance && !!item.paymentDueDate;
+    return this.type === 'ORDER' && !!item.paymentBalance && !!item.paymentDueDate && item.paymentBalance > 0;
   }
 
   public get shouldShowViewOrderButton(): boolean {
