@@ -28,7 +28,7 @@ export function main() {
         serviceUnderTest.display('some key', { some: 'parameters' }).subscribe(() => {
           expect(mockSnackBar.open).toHaveBeenCalledWith('someTranslatedString', '', {
             duration: jasmine.any(Number),
-            verticalPosition: 'bottom',
+            verticalPosition: 'top',
             horizontalPosition: 'left',
             extraClasses: ['wz-snackbar']
           });
