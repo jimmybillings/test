@@ -14,14 +14,11 @@ import { Component, Input, Output, ChangeDetectionStrategy, EventEmitter } from 
       {{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
     </mat-dialog-actions>
 	</div>`,
-  styles: [
-    '.wz-dialog{padding:0 5px 10px}'
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CollectionDeleteComponent {
-  @Output() deleteEvent: any = new EventEmitter();;
+  @Output() deleteEvent: any = new EventEmitter();
   @Input() collection: any;
 
   public deleteCollection() {

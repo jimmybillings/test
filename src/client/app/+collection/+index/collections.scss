@@ -286,7 +286,7 @@ wz-item-search-form {
 // Copy legacy link.This may change into copy share link
 .mat-dialog-container collection-delete-component .wz-dialog,
 .mat-dialog-container .wz-dialog.wz-legacy-link {
-  padding: 2px 2px 6px;
+  padding: 0 0 10px;
   width: 420px;
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     width: 100%;
