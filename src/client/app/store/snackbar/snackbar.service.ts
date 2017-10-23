@@ -12,8 +12,8 @@ export class SnackbarService {
       .take(1)
       .do((translatedString: string) => this.snackBar.open(translatedString, '', {
         duration: 2000,
-        verticalPosition: 'bottom',
-        horizontalPosition: 'left',
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
         extraClasses: ['wz-snackbar']
       }));
   }
