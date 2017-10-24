@@ -11,7 +11,6 @@ import { CommentParentObject } from '../../shared/interfaces/comment.interface';
   selector: 'collection-asset',
   template: `
     <asset-component
-      [stateMapper]="stateMapper"
       [assetType]="'collectionAsset'"
       [commentFormConfig]="commentFormConfig">
     </asset-component>`,
@@ -25,6 +24,4 @@ export class CollectionAssetComponent implements OnInit {
   public ngOnInit(): void {
     this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.collectionComment.config.form.items);
   }
-
-  public stateMapper: StateMapper<Asset> = (state) => state.activeCollectionAsset.activeAsset;
 }

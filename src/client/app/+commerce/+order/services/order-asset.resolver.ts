@@ -9,8 +9,8 @@ export class OrderAssetResolver implements Resolve<boolean> {
   constructor(private store: AppStore) { }
 
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-    this.store.dispatch(factory => factory.orderAsset.load(Number(route.params.id), route.params.uuid));
+    this.store.dispatch(factory => factory.asset.loadOrderAsset(Number(route.params.id), route.params.uuid));
 
-    return this.store.blockUntil(state => !state.orderAsset.loading);
+    return this.store.blockUntil(state => !state.asset.loading);
   }
 }
