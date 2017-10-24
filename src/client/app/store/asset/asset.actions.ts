@@ -1,40 +1,117 @@
 import { Action } from '@ngrx/store';
+import * as Common from '../../shared/interfaces/common.interface';
+import * as Commerce from '../../shared/interfaces/commerce.interface';
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
-import { DeliveryOptions } from '../../shared/interfaces/asset.interface';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { AssetType } from '../../shared/interfaces/enhanced-asset';
 
 export class ActionFactory {
-  public loadDeliveryOptions(asset: Asset): LoadDeliveryOptions {
-    return new LoadDeliveryOptions(asset);
+  public loadOrderAsset(orderId: number, uuid: string): LoadOrderAsset {
+    return new LoadOrderAsset(orderId, uuid, 'orderAsset');
+  }
+
+  public loadQuoteShowAsset(quoteId: number, uuid: string): LoadQuoteShowAsset {
+    return new LoadQuoteShowAsset(quoteId, uuid, 'quoteShowAsset');
+  }
+
+  public loadQuoteEditAsset(uuid: string): LoadQuoteEditAsset {
+    return new LoadQuoteEditAsset(uuid, 'quoteEditAsset');
+  }
+
+  public loadCartAsset(uuid: string): LoadCartAsset {
+    return new LoadCartAsset(uuid, 'cartAsset');
+  }
+
+  public loadActiveCollectionAsset(uuid: string): LoadActiveCollectionAsset {
+    return new LoadActiveCollectionAsset(uuid, 'collectionAsset');
+  }
+
+  public loadSearchAsset(params: Common.SearchAssetLoadParameters): LoadSearchAsset {
+    return new LoadSearchAsset(params, 'searchAsset');
+  }
+
+  public updateMarkersInUrl(markers: SubclipMarkers, assetId: number) {
+    return new UpdateMarkersInUrl(markers, assetId);
+  }
+
+  public loadAssetAfterParentIsAvailable(
+    params: Common.ChildAssetLoadParameters,
+    assetType: AssetType
+  ): LoadAssetAfterParentIsAvailable {
+    return new LoadAssetAfterParentIsAvailable(params, assetType);
   }
 }
 
 export class InternalActionFactory extends ActionFactory {
-  public loadDeliveryOptionsSuccess(options: DeliveryOptions): LoadDeliveryOptionsSuccess {
-    return new LoadDeliveryOptionsSuccess(options);
+  public loadSuccess(activeAsset: Common.Asset): LoadSuccess {
+    return new LoadSuccess(activeAsset);
   }
 
-  public loadDeliveryOptionsFailure(error: ApiErrorResponse): LoadDeliveryOptionsFailure {
-    return new LoadDeliveryOptionsFailure(error);
+  public loadFailure(error: ApiErrorResponse): LoadFailure {
+    return new LoadFailure(error);
   }
 }
 
-export class LoadDeliveryOptions implements Action {
-  public static readonly Type = '[Asset] Load Delivery Options';
-  public readonly type = LoadDeliveryOptions.Type;
-  constructor(public readonly activeAsset: Asset) { }
+export class LoadOrderAsset implements Action {
+  public static readonly Type = '[Asset] Load Order Asset';
+  public readonly type = LoadOrderAsset.Type;
+  constructor(public readonly orderId: number, public readonly uuid: string, public readonly assetType: AssetType) { }
 }
 
-export class LoadDeliveryOptionsSuccess implements Action {
-  public static readonly Type = '[Asset] Load Delivery Options Success';
-  public readonly type = LoadDeliveryOptionsSuccess.Type;
-  constructor(public readonly options: DeliveryOptions) { }
+export class LoadQuoteShowAsset implements Action {
+  public static readonly Type = '[Asset] Load Quote Show Asset';
+  public readonly type = LoadQuoteShowAsset.Type;
+  constructor(public readonly quoteId: number, public readonly uuid: string, public readonly assetType: AssetType) { }
 }
 
-export class LoadDeliveryOptionsFailure implements Action {
-  public static readonly Type = '[Asset] Load Delivery Options Failure';
-  public readonly type = LoadDeliveryOptionsFailure.Type;
+export class LoadSearchAsset implements Action {
+  public static readonly Type = '[Asset] Load Search Asset';
+  public readonly type = LoadSearchAsset.Type;
+  constructor(public readonly loadParameters: Common.SearchAssetLoadParameters, public readonly assetType: AssetType) { }
+}
+
+export class LoadCartAsset implements Action {
+  public static readonly Type = '[Asset] Load Cart Asset';
+  public readonly type = LoadCartAsset.Type;
+  constructor(public readonly uuid: string, public readonly assetType: AssetType) { }
+}
+
+export class LoadActiveCollectionAsset implements Action {
+  public static readonly Type = '[Asset] Load Active Collection Asset';
+  public readonly type = LoadActiveCollectionAsset.Type;
+  constructor(public readonly uuid: string, public readonly assetType: AssetType) { }
+}
+
+export class LoadQuoteEditAsset implements Action {
+  public static readonly Type = '[Asset] Load Quote Edit Asset';
+  public readonly type = LoadQuoteEditAsset.Type;
+  constructor(public readonly uuid: string, public readonly assetType: AssetType) { }
+}
+
+export class UpdateMarkersInUrl implements Action {
+  public static readonly Type = '[Asset] Update Markers In URL';
+  public readonly type = UpdateMarkersInUrl.Type;
+  constructor(public readonly markers: SubclipMarkers, public readonly assetId: number) { }
+}
+
+export class LoadAssetAfterParentIsAvailable implements Action {
+  public static readonly Type = '[Asset] Load Asset After Parent Is Available';
+  public readonly type = LoadAssetAfterParentIsAvailable.Type;
+  constructor(public readonly loadParameters: Common.ChildAssetLoadParameters, public readonly assetType: AssetType) { }
+}
+
+export class LoadSuccess implements Action {
+  public static readonly Type = '[Asset] Load Success';
+  public readonly type = LoadSuccess.Type;
+  constructor(public readonly activeAsset: Common.Asset) { }
+}
+
+export class LoadFailure implements Action {
+  public static readonly Type = '[Asset] Load Failure';
+  public readonly type = LoadFailure.Type;
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export type Any = LoadDeliveryOptions | LoadDeliveryOptionsSuccess | LoadDeliveryOptionsFailure;
+export type Any = LoadCartAsset | LoadOrderAsset | LoadQuoteEditAsset | LoadSearchAsset | LoadQuoteShowAsset |
+  LoadActiveCollectionAsset | LoadSuccess | LoadFailure | LoadAssetAfterParentIsAvailable | UpdateMarkersInUrl;
+

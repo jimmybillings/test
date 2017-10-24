@@ -231,7 +231,6 @@
   </asset-share>
 </wz-dropdown>
 
-
 <mat-menu x-position="before" #downloadCompMenu="matMenu">
-  <wz-delivery-options></wz-delivery-options>
+  <wz-delivery-options [assetId]="asset.assetId" [markers]="subclipMarkers"></wz-delivery-options>
 </mat-menu>

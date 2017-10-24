@@ -1,9 +1,4 @@
 import * as AssetActions from './asset.actions';
-import * as SearchAssetActions from '../search-asset/search-asset.actions';
-import * as QuoteEditAssetActions from '../quote-edit-asset/quote-edit-asset.actions';
-import * as QuoteShowAssetActions from '../quote-show-asset/quote-show-asset.actions';
-import * as CartAssetActions from '../cart-asset/cart-asset.actions';
-import * as ActiveCollectionAssetActions from '../active-collection-asset/active-collection-asset.actions';
 
 import * as AssetState from './asset.state';
 import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
@@ -18,112 +13,100 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'LoadDeliveryOptions',
+      actionClassName: [
+        'LoadQuoteShowAsset', 'LoadQuoteShowAsset', 'LoadOrderAsset',
+        'LoadCartAsset', 'LoadQuoteEditAsset', 'LoadActiveCollectionAsset'
+      ],
       mutationTestData: {
-        previousState: AssetState.initialState
+        actionParameters: { uuid: 'abc-123', assetType: 'orderAsset' }
       },
       customTests: [
         {
-          it: 'returns the state but with loading: true',
+          it: 'sets loading to true, sets the loadingUuid, and sets the activeAssetType',
           previousState: AssetState.initialState,
-          expectedNextState: { ...AssetState.initialState, loading: true }
+          actionParameters: { uuid: 'abc-123', assetType: 'orderAsset' },
+          expectedNextState: {
+            activeAssetType: 'orderAsset',
+            loading: true,
+            loadingUuid: 'abc-123',
+            activeAsset: { assetId: 0, name: '' }
+          }
         }
       ]
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'LoadDeliveryOptionsSuccess',
+      actionClassName: 'LoadSearchAsset',
       mutationTestData: {
-        previousState: { hasDeliveryOptions: false, options: [], loading: true },
-        actionParameters: { options: [{ some: 'options' }] }
+        actionParameters: { assetType: 'searchAsset' }
       },
       customTests: [
         {
-          it: 'returns the right state when there are delivery options',
-          previousState: { hasDeliveryOptions: false, options: [], loading: true },
-          actionParameters: { options: [{ some: 'options' }] },
-          expectedNextState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false }
+          it: 'sets loading to true, and sets the activeAssetType',
+          previousState: AssetState.initialState,
+          actionParameters: { assetType: 'searchAsset' },
+          expectedNextState: {
+            activeAssetType: 'searchAsset',
+            loading: true,
+            loadingUuid: null,
+            activeAsset: { assetId: 0, name: '' }
+          }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'LoadSuccess',
+      mutationTestData: {
+        actionParameters: { activeAsset: { some: 'asset' } }
+      },
+      customTests: [
+        {
+          it: 'sets loading to false, activeAsset to the asset, and sets the loadingUuid to null',
+          previousState: {
+            loading: true,
+            activeAssetType: 'searchAsset',
+            loadingUuid: 'abc-123',
+            activeAsset: { assetId: 0, name: '' }
+          },
+          actionParameters: { activeAsset: { some: 'asset' } },
+          expectedNextState: {
+            activeAssetType: 'searchAsset',
+            loading: false,
+            loadingUuid: null,
+            activeAsset: { some: 'asset' }
+          }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'LoadFailure',
+      mutationTestData: {
+        previousState: {
+          loading: true,
+          activeAssetType: 'searchAsset',
+          loadingUuid: 'abc-123',
+          activeAsset: { assetId: 0, name: '' }
         },
-        {
-          it: 'returns the right state when there are NO delivery options',
-          previousState: { hasDeliveryOptions: false, options: [], loading: true },
-          actionParameters: { options: [] },
-          expectedNextState: { hasDeliveryOptions: false, options: [], loading: false }
-        }
-      ]
-    });
-
-    stateSpecHelper.generateTestsFor({
-      actionClassName: 'Load',
-      overrideActionClass: SearchAssetActions,
-      mutationTestData: {
-        previousState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false }
+        actionParameters: { error: { some: 'error' } }
       },
       customTests: [
         {
-          it: 'returns the initial state',
-          previousState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false },
-          expectedNextState: AssetState.initialState
-        }
-      ]
-    });
-
-    stateSpecHelper.generateTestsFor({
-      actionClassName: 'Load',
-      overrideActionClass: ActiveCollectionAssetActions,
-      mutationTestData: {
-        previousState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false }
-      },
-      customTests: [
-        {
-          it: 'returns the initial state',
-          previousState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false },
-          expectedNextState: AssetState.initialState
-        }
-      ]
-    });
-
-    stateSpecHelper.generateTestsFor({
-      actionClassName: 'Load',
-      overrideActionClass: QuoteShowAssetActions,
-      mutationTestData: {
-        previousState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false }
-      },
-      customTests: [
-        {
-          it: 'returns the initial state',
-          previousState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false },
-          expectedNextState: AssetState.initialState
-        }
-      ]
-    });
-
-    stateSpecHelper.generateTestsFor({
-      actionClassName: 'Load',
-      overrideActionClass: QuoteEditAssetActions,
-      mutationTestData: {
-        previousState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false }
-      },
-      customTests: [
-        {
-          it: 'returns the initial state',
-          previousState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false },
-          expectedNextState: AssetState.initialState
-        }
-      ]
-    });
-
-    stateSpecHelper.generateTestsFor({
-      actionClassName: 'Load',
-      overrideActionClass: CartAssetActions,
-      mutationTestData: {
-        previousState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false }
-      },
-      customTests: [
-        {
-          it: 'returns the initial state',
-          previousState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false },
-          expectedNextState: AssetState.initialState
+          it: 'resets to the initial state',
+          previousState: {
+            loading: true,
+            activeAssetType: 'searchAsset',
+            loadingUuid: 'abc-123',
+            activeAsset: { assetId: 0, name: '' }
+          },
+          actionParameters: { error: { some: 'error' } },
+          expectedNextState: {
+            loading: false,
+            activeAssetType: 'searchAsset',
+            loadingUuid: 'abc-123',
+            activeAsset: { assetId: 0, name: '' }
+          }
         }
       ]
     });

@@ -39,6 +39,9 @@ export class ActionFactory {
     return new GoToCart();
   }
 
+  public addMarkersToUrl(assetId: number, timeStart: number, timeEnd: number): AddMarkersToUrl {
+    return new AddMarkersToUrl(assetId, timeStart, timeEnd);
+  }
 }
 
 export class InternalActionFactory extends ActionFactory { }
@@ -88,4 +91,10 @@ export class GoToActiveQuote implements Action {
 export class GoToCart implements Action {
   public static readonly Type = '[Router] Go To Cart';
   public readonly type = GoToCart.Type;
+}
+
+export class AddMarkersToUrl implements Action {
+  public static readonly Type = '[Router] Add Markers To Url';
+  public readonly type = AddMarkersToUrl.Type;
+  constructor(public readonly assetId: number, public readonly timeStart: number, public readonly timeEnd: number) { }
 }

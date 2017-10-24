@@ -78,7 +78,7 @@
           data-pendo="asset-result_download-btn"
           mat-icon-button
           title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
-          (click)="setAssetActiveId(asset)"
+          (click)="loadDeliveryOptionsFor(asset)"
           [mat-menu-trigger-for]="downloadCompMenu">
             <mat-icon>file_download</mat-icon>
         </button>
@@ -155,5 +155,5 @@
 </ul>
 
 <mat-menu x-position="before" #downloadCompMenu="matMenu">
-  <wz-delivery-options></wz-delivery-options>
+  <wz-delivery-options [assetId]="assetId"></wz-delivery-options>
 </mat-menu>
