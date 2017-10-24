@@ -62,7 +62,8 @@ export class AssetDetailComponent implements OnInit {
   private activeCollectionContainsAssetUuid: boolean = false;
   private pageSize: number;
 
-  constructor(private store: AppStore) { }
+  constructor(
+    private store: AppStore) { }
 
   ngOnInit() {
     const config: UiConfigComponents = this.store.snapshotCloned(state => state.uiConfig.components);
