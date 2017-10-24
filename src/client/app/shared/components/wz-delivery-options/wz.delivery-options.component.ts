@@ -14,14 +14,16 @@ export class WzDeliveryOptionsComponent implements OnInit {
   @Input() public assetId: number;
   @Input() public markers: SubclipMarkers = null;
   public deliveryOptions: Observable<DeliveryOptions>;
-  public hasDeliveryOptions: Observable<boolean>;
+  public showMissingOptionsMessage: Observable<boolean>;
   public showLoadingSpinner: Observable<boolean>;
 
   constructor(private store: AppStore) { }
 
   ngOnInit(): void {
     this.deliveryOptions = this.store.select(state => state.deliveryOptions.options);
-    this.hasDeliveryOptions = this.store.select(state => state.deliveryOptions.hasDeliveryOptions);
+    this.showMissingOptionsMessage = this.store.select(state => {
+      return !state.deliveryOptions.loading && !state.deliveryOptions.hasDeliveryOptions;
+    });
     this.showLoadingSpinner = this.store.select(state => state.deliveryOptions.loading);
   }
 

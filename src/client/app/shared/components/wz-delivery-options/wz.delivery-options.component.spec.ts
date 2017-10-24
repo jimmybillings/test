@@ -33,14 +33,14 @@ export function main() {
         expect(options).toEqual([{ some: 'options' }]);
       });
 
-      it('sets up the hasDeliveryOptions Observable', () => {
-        let hasOptions: any;
-        componentUnderTest.hasDeliveryOptions.take(1).subscribe(hasDeliveryOptions => hasOptions = hasDeliveryOptions);
-        expect(hasOptions).toBe(true);
+      it('sets up the showMissingOptionsMessage Observable', () => {
+        let showMessage: boolean;
+        componentUnderTest.showMissingOptionsMessage.take(1).subscribe(show => showMessage = show);
+        expect(showMessage).toBe(false);
       });
 
       it('sets up the showLoadingSpinner Observable', () => {
-        let showLoading: any;
+        let showLoading: boolean;
         componentUnderTest.showLoadingSpinner.take(1).subscribe(showLoadingSpinner => showLoading = showLoadingSpinner);
         expect(showLoading).toBe(false);
       });
