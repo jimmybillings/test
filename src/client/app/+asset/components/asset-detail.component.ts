@@ -215,6 +215,10 @@ export class AssetDetailComponent implements OnInit {
     return !!this.commentFormConfig;
   }
 
+  public get canGetHelp(): boolean {
+    return this.assetTypeIsOneOf('searchAsset') && true;
+  }
+
   public get canShare(): boolean {
     return this.assetTypeIsOneOf('searchAsset') && this.userCan.createAccessInfo();
   }

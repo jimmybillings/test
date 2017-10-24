@@ -71,6 +71,10 @@
             <mat-icon>share</mat-icon>
           </button>
 
+          <button mat-icon-button *ngIf="canGetHelp" title="{{ 'ASSET.DETAIL.REQUEST_HELP_BTN_TITLE' | translate }}">
+            <mat-icon>help_outline</mat-icon>
+          </button>
+
           <button mat-icon-button
             (click)="toggleCommentsVisibility()"
             *ngIf="canComment"
