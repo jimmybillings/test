@@ -362,6 +362,17 @@ export function main() {
       });
     });
 
+    describe('collectionViewerIsOwner()', () => {
+      it('should return true when person viewing the collection is the owner', () => {
+
+        expect(componentUnderTest.collectionViewerIsOwner(mockCollection())).toBe(true);
+      });
+      it('should return false when person viewing the collection is the NOT owner', () => {
+
+        expect(componentUnderTest.collectionViewerIsOwner(mockCollectionNotOwned())).toBe(false);
+      });
+    });
+
   });
 }
 
@@ -369,9 +380,10 @@ function mockCollection(): Collection {
   return {
     id: 3,
     siteName: 'core',
-    name: 'Jane Doe',
+    name: 'Reptiles',
     createdOn: new Date('2017-10-12T14:20:25.083Z'),
     owner: 333,
+    tags: 'frog, lizard, snake',
     userRole: 'owner',
     editors: [6, 7, 800],
     viewers: [5]
@@ -381,9 +393,22 @@ function mockCollectionNotShared(): Collection {
   return {
     id: 4,
     siteName: 'core',
-    name: 'Bob Dole',
+    name: 'Business',
     createdOn: new Date('2017-07-12T14:20:25.083Z'),
-    owner: 7676,
+    owner: 333,
+    tags: 'suit, tie, pants',
     userRole: 'owner'
+  };
+}
+function mockCollectionNotOwned(): Collection {
+  return {
+    id: 5,
+    siteName: 'core',
+    name: 'Mockeriffic collection',
+    createdOn: new Date('2017-06-14T16:20:25.083Z'),
+    owner: 7676,
+    tags: 'blue, green',
+    userRole: 'editor',
+    editors: [6, 7, 800],
   };
 }

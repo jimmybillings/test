@@ -119,7 +119,20 @@ collections-component .query-details {
     }
     .collection-info {
       line-height: 1.5em;
+      a {
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      span:nth-child(2n) {
+        text-transform: capitalize;
+        strong {
+          text-transform: initial;
+        }
+      }
     }
+
     .asset-count {
       display: inline-block;
       border-radius: 2px - 1;

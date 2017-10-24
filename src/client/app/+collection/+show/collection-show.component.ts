@@ -247,6 +247,9 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       }
     );
   }
+  public collectionViewerIsOwner(collection: Collection): boolean {
+    return collection.userRole === 'owner' ? true : false;
+  }
 
   private buildRouteParams(params: Pojo): void {
     this.routeParams = Object.assign({}, this.routeParams, params);
