@@ -138,7 +138,10 @@ export class AssetEffects {
   public loadSearchAsset: Observable<Action> = this.actions.ofType(AssetActions.LoadSearchAsset.Type)
     .switchMap((action: AssetActions.LoadSearchAsset) =>
       this.service.load(action.loadParameters)
-        .map((asset: CommonInterface.Asset) => this.store.create(factory => factory.asset.loadSuccess(asset)))
+        .mergeMap((asset: CommonInterface.Asset) => [
+          this.store.create(factory => factory.asset.loadSuccess(asset)),
+          this.store.create(factory => factory.deliveryOptions.load(asset))
+        ])
         .catch(error => Observable.of(this.store.create(factory => factory.asset.loadFailure(error))))
     );
 

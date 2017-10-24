@@ -1,15 +1,19 @@
 import { DeliveryOptionsService } from './delivery-options.service';
 import { MockApiService, mockApiMatchers } from '../spec-helpers/mock-api.service';
 import { Api } from '../../shared/interfaces/api.interface';
+import { Frame } from '../../shared/modules/wazee-frame-formatter/frame';
 
 export function main() {
   describe('Delivery Options Service', () => {
-    let serviceUnderTest: DeliveryOptionsService, mockApiService: MockApiService;
+    let serviceUnderTest: DeliveryOptionsService;
+    let mockApiService: MockApiService;
+    let mockAsperaService: any;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApiService = new MockApiService();
-      serviceUnderTest = new DeliveryOptionsService(mockApiService.injector);
+      mockAsperaService = { initConnect: jasmine.createSpy('initConnect') };
+      serviceUnderTest = new DeliveryOptionsService(mockApiService.injector, mockAsperaService);
     });
 
     describe('getDeliveryOptions()', () => {
@@ -33,6 +37,47 @@ export function main() {
         let formattedDeliveryOptions: any;
         serviceUnderTest.getDeliveryOptions(111).take(1).subscribe(options => formattedDeliveryOptions = options);
         expect(formattedDeliveryOptions).toEqual([]);
+      });
+    });
+
+    describe('deliverAsset()', () => {
+      describe('should call the API service correctly', () => {
+        it('when markers do not exist', () => {
+          serviceUnderTest.deliverAsset(123, 456);
+
+          expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.post).toHaveBeenCalledWithEndpoint('order/deliverAsset/123');
+          expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
+          expect(mockApiService.post).toHaveBeenCalledWithParameters({
+            region: 'AAA',
+            optionId: '456'
+          });
+        });
+
+        it('when markers do exist', () => {
+          serviceUnderTest.deliverAsset(123, 456, {
+            in: new Frame(30).setFromSeconds(1),
+            out: new Frame(30).setFromSeconds(10)
+          });
+
+          expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.post).toHaveBeenCalledWithEndpoint('order/deliverAsset/123');
+          expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
+          expect(mockApiService.post).toHaveBeenCalledWithParameters({
+            region: 'AAA',
+            optionId: '456',
+            startTime: '1000',
+            endTime: '10000'
+          });
+        });
+      });
+    });
+
+    describe('initializeAsperaConnection', () => {
+      it('calls \'initConnect()\' on the aspera service', () => {
+        serviceUnderTest.initializeAsperaConnection('wow');
+
+        expect(mockAsperaService.initConnect).toHaveBeenCalledWith('wow');
       });
     });
   });

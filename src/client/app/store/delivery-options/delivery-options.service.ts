@@ -2,21 +2,50 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
 import { FutureApiService } from '../api/api.service';
-import { Api } from '../../shared/interfaces/api.interface';
+import { Api, ApiParameters } from '../../shared/interfaces/api.interface';
+import { SubclipMarkers, durationFrom, Duration } from '../../shared/interfaces/subclip-markers';
+import * as Common from '../../shared/interfaces/common.interface';
+import * as Commerce from '../../shared/interfaces/commerce.interface';
+import { AsperaService } from '../../shared/services/aspera.service';
 import {
   DeliveryOption,
   ApiDeliveryOptions,
   DeliveryOptions,
-  DeliveryOptionGroup
+  DeliveryOptionGroup,
 } from '../../shared/interfaces/asset.interface';
 
 
 @Injectable()
 export class DeliveryOptionsService {
-  constructor(private apiService: FutureApiService) { }
+  constructor(private apiService: FutureApiService, private asperaService: AsperaService) { }
 
   public getDeliveryOptions(assetId: number): Observable<DeliveryOptions> {
     return this.apiService.get(Api.Assets, `renditionType/deliveryOptions/${assetId}`).map(this.formatDeliveryOptions);
+  }
+
+  public deliverAsset(assetId: number, optionId: number, markers?: SubclipMarkers): Observable<any> {
+    let parameters: ApiParameters = {
+      region: 'AAA',
+      optionId: String(optionId)
+    };
+
+    if (markers) {
+      const duration: Duration = durationFrom(markers);
+      parameters = { ...parameters, startTime: String(duration.timeStart), endTime: String(duration.timeEnd) };
+    }
+
+    return this.apiService.post(
+      Api.Orders,
+      `order/deliverAsset/${assetId}`,
+      {
+        loadingIndicator: true,
+        parameters: parameters
+      }
+    );
+  }
+
+  public initializeAsperaConnection(asperaSpec: string): void {
+    this.asperaService.initConnect(asperaSpec);
   }
 
   private formatDeliveryOptions(options: ApiDeliveryOptions): DeliveryOptions {

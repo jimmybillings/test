@@ -688,11 +688,18 @@ export function main() {
         returnsObservableOf: { some: 'asset' }
       },
       outputActionFactories: {
-        success: {
-          sectionName: 'asset',
-          methodName: 'loadSuccess',
-          expectedArguments: [{ some: 'asset' }]
-        },
+        success: [
+          {
+            sectionName: 'asset',
+            methodName: 'loadSuccess',
+            expectedArguments: [{ some: 'asset' }]
+          },
+          {
+            sectionName: 'deliveryOptions',
+            methodName: 'load',
+            expectedArguments: [{ some: 'asset' }]
+          },
+        ],
         failure: {
           sectionName: 'asset',
           methodName: 'loadFailure'

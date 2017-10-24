@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { FutureApiService } from '../api/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
-import * as common from '../../shared/interfaces/common.interface';
+import * as Common from '../../shared/interfaces/common.interface';
 import { Asset, AssetLoadParameters } from '../../shared/interfaces/common.interface';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class AssetService {
     return this.apiService.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
   }
 
-  public createShareLink(shareLink: common.Pojo): Observable<any> {
+  public createShareLink(shareLink: Common.Pojo): Observable<any> {
     return this.apiService.post(Api.Identities, 'accessInfo', { body: shareLink });
   }
 

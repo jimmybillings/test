@@ -73,6 +73,7 @@ export class WzAsset implements OnInit {
   }
 
   public loadDeliveryOptionsFor(asset: EnhancedAsset): void {
+    this.assetId = asset.assetId;
     this.store.dispatch(factory => factory.deliveryOptions.load(asset));
   }
 
