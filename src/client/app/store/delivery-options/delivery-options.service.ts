@@ -4,8 +4,7 @@ import { Injectable } from '@angular/core';
 import { FutureApiService } from '../api/api.service';
 import { Api, ApiParameters } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers, durationFrom, Duration } from '../../shared/interfaces/subclip-markers';
-import * as Common from '../../shared/interfaces/common.interface';
-import * as Commerce from '../../shared/interfaces/commerce.interface';
+import { Order } from '../../shared/interfaces/commerce.interface';
 import { AsperaService } from '../../shared/services/aspera.service';
 import {
   DeliveryOption,
@@ -23,7 +22,7 @@ export class DeliveryOptionsService {
     return this.apiService.get(Api.Assets, `renditionType/deliveryOptions/${assetId}`).map(this.formatDeliveryOptions);
   }
 
-  public deliverAsset(assetId: number, optionId: number, markers?: SubclipMarkers): Observable<any> {
+  public deliverAsset(assetId: number, optionId: number, markers?: SubclipMarkers): Observable<Order> {
     let parameters: ApiParameters = {
       region: 'AAA',
       optionId: String(optionId)
