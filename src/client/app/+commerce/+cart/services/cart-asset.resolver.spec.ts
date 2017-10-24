@@ -8,7 +8,7 @@ export function main() {
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      loadSpy = mockStore.createActionFactoryMethod('cartAsset', 'load');
+      loadSpy = mockStore.createActionFactoryMethod('asset', 'loadCartAsset');
       resolved = jasmine.createSpy('resolved');
       resolverUnderTest = new CartAssetResolver(mockStore);
     });
@@ -21,7 +21,7 @@ export function main() {
       });
 
       it('Should not resolve if the Cart Asset store has no data from the server', () => {
-        mockStore.createStateSection('cartAsset', { loading: true });
+        mockStore.createStateSection('asset', { loading: true });
 
         resolverUnderTest.resolve(mockRoute).subscribe(resolved);
 
@@ -29,7 +29,7 @@ export function main() {
       });
 
       it('Should resolve if the Cart Asset store already has data from the server', () => {
-        mockStore.createStateSection('cartAsset', { loading: false });
+        mockStore.createStateSection('asset', { loading: false });
 
         resolverUnderTest.resolve(mockRoute).subscribe(resolved);
 

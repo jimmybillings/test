@@ -7,6 +7,8 @@ import { Location } from '@angular/common';
 
 import * as RouterActions from './router.actions';
 import * as UiConfigActions from '../ui-config/ui-config.actions';
+import { Common } from '../../shared/utilities/common.functions';
+import { Pojo } from '../../shared/interfaces/common.interface';
 import { bothMarkersAreSet, durationFrom } from '../../shared/interfaces/subclip-markers';
 
 @Injectable()
@@ -79,6 +81,15 @@ export class RouterEffects {
   @Effect({ dispatch: false })
   public initialNavigation: Observable<Action> = this.actions.ofType(UiConfigActions.LoadSuccess.Type)
     .do((action: UiConfigActions.LoadSuccess) => this.router.initialNavigation());
+
+  @Effect({ dispatch: false })
+  public addMarkersToUrl: Observable<Action> = this.actions.ofType(RouterActions.AddMarkersToUrl.Type)
+    .do((action: RouterActions.AddMarkersToUrl) => {
+      let params: Pojo = Common.urlStringToParamsObject(this.router.routerState.snapshot.url);
+      params.timeStart = action.timeStart;
+      params.timeEnd = action.timeEnd;
+      this.location.go(`${this.SearchAssetDetailsPath}/${action.assetId}${Common.urlParamsObjectToUrlStringParams(params)}`);
+    });
 
   private readonly LoginPath: string = '/user/login';
   private readonly PageNotFoundPath: string = '/404';

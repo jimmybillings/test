@@ -8,7 +8,6 @@ import { Asset } from '../../../shared/interfaces/common.interface';
   selector: 'quote-show-asset',
   template: `
   <asset-component 
-    [stateMapper]="stateMapper" 
     [assetType]="'quoteShowAsset'"
     [commentFormConfig]="commentFormConfig">
   </asset-component>
@@ -17,7 +16,6 @@ import { Asset } from '../../../shared/interfaces/common.interface';
 })
 export class QuoteShowAssetComponent implements OnInit {
   public commentFormConfig: FormFields;
-  public stateMapper: StateMapper<Asset> = (state) => state.quoteShowAsset.activeAsset;
 
   constructor(private store: AppStore) { }
 

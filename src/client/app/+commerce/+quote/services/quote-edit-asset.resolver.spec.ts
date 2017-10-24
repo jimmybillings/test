@@ -8,7 +8,7 @@ export function main() {
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      loadSpy = mockStore.createActionFactoryMethod('quoteEditAsset', 'load');
+      loadSpy = mockStore.createActionFactoryMethod('asset', 'loadQuoteEditAsset');
       resolved = jasmine.createSpy('resolved');
       resolverUnderTest = new QuoteEditAssetResolver(mockStore);
     });
@@ -21,7 +21,7 @@ export function main() {
       });
 
       it('Should not resolve if the Quote Asset store has no data from the server', () => {
-        mockStore.createStateSection('quoteEditAsset', { loading: true });
+        mockStore.createStateSection('asset', { loading: true });
 
         resolverUnderTest.resolve(mockRoute).subscribe(resolved);
 
@@ -29,7 +29,7 @@ export function main() {
       });
 
       it('Should resolve if the Quote Asset store already has data from the server', () => {
-        mockStore.createStateSection('quoteEditAsset', { loading: false });
+        mockStore.createStateSection('asset', { loading: false });
 
         resolverUnderTest.resolve(mockRoute).subscribe(resolved);
 

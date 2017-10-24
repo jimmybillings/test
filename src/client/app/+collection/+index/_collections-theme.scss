@@ -40,6 +40,9 @@
           color: mat-color($foreground, secondary-text);
         }
       }
+      .collection-info a {
+        color: mat-color($primary, darker);
+      }
     }
     .asset .asset-thb {
       background: #000;
