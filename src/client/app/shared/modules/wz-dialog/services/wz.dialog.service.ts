@@ -26,27 +26,39 @@ import {
   defaultNotificationDialogOptions,
   DefaultComponentOptions
 } from '../interfaces/wz.dialog.interface';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class WzDialogService {
-  constructor(private dialog: MatDialog) { }
+  private dialogIsClosed: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  constructor(private dialog: MatDialog) {
+    dialog.afterOpen.subscribe(() => this.dialogIsClosed.next(false));
+    dialog.afterAllClosed.subscribe(() => this.dialogIsClosed.next(true));
+  }
 
   public openNotificationDialog(options: NotificationDialogOptions): Observable<any> {
     const mergedDialogConfig: MatDialogConfig = this.mergeDialogConfigs(defaultNotificationDialogOptions, options);
     const mergedOptions: NotificationDialogOptions = Object.assign({}, defaultNotificationDialogOptions, options);
 
-    const dialogRef: MatDialogRef<WzNotificationDialogComponent> = this.dialog.open(
-      WzNotificationDialogComponent,
-      mergedDialogConfig
-    );
+    return this.dialogIsClosed
+      .filter((isClosed) => isClosed === true)
+      .take(1)
+      .map(() => {
 
-    dialogRef.componentInstance.strings = {
-      title: mergedOptions.title,
-      message: mergedOptions.message,
-      prompt: mergedOptions.prompt
-    };
+        const dialogRef: MatDialogRef<WzNotificationDialogComponent> = this.dialog.open(
+          WzNotificationDialogComponent,
+          mergedDialogConfig
+        );
 
-    return dialogRef.afterClosed();
+        dialogRef.componentInstance.strings = {
+          title: mergedOptions.title,
+          message: mergedOptions.message,
+          prompt: mergedOptions.prompt
+        };
+
+        return dialogRef;
+      })
+      .switchMap(dialogRef => dialogRef.afterClosed());
   }
 
   public openConfirmationDialog(

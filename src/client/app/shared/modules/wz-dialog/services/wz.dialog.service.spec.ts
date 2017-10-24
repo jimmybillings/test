@@ -3,6 +3,7 @@ import { Subject } from 'rxjs/Subject';
 import { MatDialogConfig } from '@angular/material';
 import { Component, Output } from '@angular/core';
 import { WzDialogService } from '../services/wz.dialog.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import {
   ConfirmationDialogStrings,
@@ -34,15 +35,32 @@ export function main() {
       };
 
       mockDialog = {
-        open: jasmine.createSpy('open').and.returnValue(mockDialogRef)
+        open: jasmine.createSpy('open').and.returnValue(mockDialogRef),
+        afterOpen: new BehaviorSubject(false),
+        afterAllClosed: new BehaviorSubject(true)
       };
 
       serviceUnderTest = new WzDialogService(mockDialog);
     });
 
     describe('openNotificationDialog()', () => {
+      it('should not open a dialog if a dialog is still open', () => {
+        serviceUnderTest.openNotificationDialog({}).subscribe();
+        mockDialog.afterOpen.next();
+        serviceUnderTest.openNotificationDialog({}).subscribe();
+        expect(mockDialog.open.calls.count()).toEqual(1);
+      });
+
+      it('should only open a second dialog once the first dialog has closed', () => {
+        serviceUnderTest.openNotificationDialog({}).subscribe();
+        mockDialog.afterOpen.next();
+        mockDialog.afterAllClosed.next();
+        serviceUnderTest.openNotificationDialog({}).subscribe();
+        expect(mockDialog.open.calls.count()).toEqual(2);
+      });
+
       it('should open a dialog', () => {
-        serviceUnderTest.openNotificationDialog({});
+        serviceUnderTest.openNotificationDialog({}).subscribe();
         expect(mockDialog.open).toHaveBeenCalledWith(
           WzNotificationDialogComponent,
           defaultNotificationDialogOptions.dialogConfig
@@ -50,9 +68,13 @@ export function main() {
       });
 
       it('should return the value of the afterClosed() method', () => {
-        expect(serviceUnderTest.openNotificationDialog(
+        var testResponse: string;
+        mockDialogRef.afterClosed = () => Observable.of('thingReturnedByAfterClosed');
+        serviceUnderTest = new WzDialogService(mockDialog);
+        serviceUnderTest.openNotificationDialog(
           { title: '', message: '' }
-        )).toEqual('thingReturnedByAfterClosed');
+        ).do(response => testResponse = response).subscribe();
+        expect(testResponse).toEqual('thingReturnedByAfterClosed');
       });
     });
 
@@ -380,6 +402,10 @@ export function main() {
       });
     });
   });
+
+  function newFunction(): any {
+    return true;
+  }
 }
 
 
