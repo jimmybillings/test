@@ -67,6 +67,8 @@ import * as MultiLingualActions from './store/multi-lingual/multi-lingual.action
 import * as MultiLingualState from './store/multi-lingual/multi-lingual.state';
 export type MultiLingualState = MultiLingualState.State;
 
+import * as HelpRequestActions from './store/help-request/help-request.actions';
+
 export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly asset: AssetActions.ActionFactory;
@@ -78,6 +80,7 @@ export interface ActionFactory {
   readonly headerDisplayOptions: HeaderDisplayOptionsActions.ActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.ActionFactory;
   readonly multiLingual: MultiLingualActions.ActionFactory;
+  readonly helpRequest: HelpRequestActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
   readonly quoteEdit: QuoteEditActions.ActionFactory;
   readonly quoteShow: QuoteShowActions.ActionFactory;
@@ -99,6 +102,7 @@ export interface InternalActionFactory {
   readonly headerDisplayOptions: HeaderDisplayOptionsActions.InternalActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.InternalActionFactory;
   readonly multiLingual: MultiLingualActions.InternalActionFactory;
+  readonly helpRequest: HelpRequestActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
   readonly quoteEdit: QuoteEditActions.InternalActionFactory;
@@ -165,6 +169,7 @@ export class AppStore {
     headerDisplayOptions: new HeaderDisplayOptionsActions.ActionFactory(),
     loadingIndicator: new LoadingIndicatorActions.ActionFactory(),
     multiLingual: new MultiLingualActions.ActionFactory(),
+    helpRequest: new HelpRequestActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
     quoteEdit: new QuoteEditActions.ActionFactory(),
@@ -186,6 +191,7 @@ export class AppStore {
     headerDisplayOptions: new HeaderDisplayOptionsActions.InternalActionFactory(),
     loadingIndicator: new LoadingIndicatorActions.InternalActionFactory(),
     multiLingual: new MultiLingualActions.InternalActionFactory(),
+    helpRequest: new HelpRequestActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
     quoteEdit: new QuoteEditActions.InternalActionFactory(),

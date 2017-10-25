@@ -1,4 +1,10 @@
-<form layout="column" [formGroup]="form" novalidate class="mat-inline-form" autocomplete="{{autocomplete}}" (ngSubmit)="onSubmit()">
+<form 
+  layout="column" 
+  [formGroup]="form" 
+  novalidate 
+  class="mat-inline-form" 
+  autocomplete="{{autocomplete}}" 
+  (ngSubmit)="onSubmit()">
 
 	<div *ngFor="let field of items; let i=index">
 
@@ -11,6 +17,7 @@
         class="mat-block"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
+        name="{{field.name}}"
         type="{{field.type}}"
         formControlName="{{field.name}}"
         [required]="isRequiredField(field)"

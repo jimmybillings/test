@@ -36,7 +36,6 @@ export const initialState: State = {
 
 export function reducer(state: State = initialState, action: CommentActions.Any): State {
   if (state === null) state = initialState;
-
   switch (action.type) {
     case CommentActions.ChangeFormModeToEdit.Type: {
       return {

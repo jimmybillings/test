@@ -168,5 +168,6 @@ export interface UiConfigComponents {
   'cartComment': UiConfigSegment;
   'collectionComment': UiConfigSegment;
   'quoteComment': UiConfigSegment;
+  'helpRequest': UiConfigSegment;
   [index: string]: UiConfigSegment;
 };

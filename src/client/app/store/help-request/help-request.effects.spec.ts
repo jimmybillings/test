@@ -8,7 +8,10 @@ export function main() {
 
     function instantiator(): HelpRequestEffects {
       return new HelpRequestEffects(
-        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
+        effectsSpecHelper.mockNgrxEffectsActions,
+        effectsSpecHelper.mockStore,
+        effectsSpecHelper.mockService,
+        effectsSpecHelper.mockService
       );
     }
   });

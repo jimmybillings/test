@@ -76,6 +76,7 @@ import { OrderService } from '../store/order/order.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
 import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
 import { UiConfigService } from '../store/ui-config/ui-config.service';
+import { HelpRequestService } from '../store/help-request/help-request.service';
 
 // WAZEE STORES
 import {
@@ -134,6 +135,7 @@ import { RouterEffects } from '../store/router/router.effects';
 import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
 import { UiConfigEffects } from '../store/ui-config/ui-config.effects';
+import { HelpRequestEffects } from '../store/help-request/help-request.effects';
 
 const WAZEE_SERVICES = [
   ApiConfig,
@@ -170,6 +172,7 @@ const WAZEE_SERVICES = [
   FutureCartService,
   SpeedPreviewService,
   UiConfigService,
+  HelpRequestService,
   PricingService,
   AsperaService
 ];
@@ -243,7 +246,8 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   RouterEffects,
   SnackbarEffects,
   SpeedPreviewEffects,
-  UiConfigEffects
+  UiConfigEffects,
+  HelpRequestEffects
 ]);
 
 // Shared pipes

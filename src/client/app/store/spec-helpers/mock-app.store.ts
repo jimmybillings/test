@@ -44,7 +44,8 @@ export class MockAppStore extends AppStore {
       // searchAsset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
-      uiConfig: {} as any
+      uiConfig: {} as any,
+      helpRequest: {} as any
     };
 
     this._internalActionFactory = {
@@ -71,7 +72,8 @@ export class MockAppStore extends AppStore {
       // searchAsset: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
-      uiConfig: {} as any
+      uiConfig: {} as any,
+      helpRequest: {} as any
     };
 
     this._state = {

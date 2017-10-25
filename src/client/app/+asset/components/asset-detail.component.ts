@@ -216,10 +216,6 @@ export class AssetDetailComponent implements OnInit {
     return !!this.commentFormConfig;
   }
 
-  public get canGetHelp(): boolean {
-    return this.assetTypeIsOneOf('searchAsset') && true;
-  }
-
   public get canShare(): boolean {
     return this.assetTypeIsOneOf('searchAsset') && this.userCan.createAccessInfo();
   }
@@ -309,6 +305,14 @@ export class AssetDetailComponent implements OnInit {
 
   public goToSearchAssetDetails(): void {
     this.store.dispatch(factory => factory.router.goToSearchAssetDetails(this._asset.assetId, this.subclipMarkers));
+  }
+
+  public get canGetHelp(): boolean {
+    return this.assetTypeIsOneOf('searchAsset');
+  }
+
+  public showHelpRequest() {
+    this.store.dispatch(factory => factory.helpRequest.showHelpRequest(this._asset.getMetadataValueFor('name')));
   }
 
   public toggleCommentsVisibility(): void {
