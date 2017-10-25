@@ -107,7 +107,10 @@ export class QuoteEditEffects {
           factory.router.goToQuoteById(action.quoteId)
         ),
         this.store.create(factory =>
-          factory.snackbar.display('QUOTE.CREATED_FOR_TOAST', { emailAddress: action.ownerEmail })
+          factory.snackbar.display(
+            'QUOTE.CREATED_FOR_TOAST',
+            { emailAddress: action.ownerEmail }
+          )
         )];
     });
 
