@@ -20,6 +20,7 @@ export interface SpeedviewData {
 
 export interface RenditionUrl {
   assetId: number;
+  asperaSpec?: string;
   mobile?: boolean;
   url?: string;
   useType?: string;

@@ -59,7 +59,7 @@ export function main() {
       effectsInstantiator: instantiator,
       inputAction: {
         type: DeliveryOptionsActions.DownloadViaAspera.Type,
-        option: { renditionUrl: { url: 'some-url' } }
+        option: { renditionUrl: { asperaSpec: 'some-url' } }
       },
       serviceMethod: {
         name: 'initializeAsperaConnection',

@@ -47,7 +47,9 @@ export class DeliveryOptionsEffects {
 
   @Effect({ dispatch: false })
   public downloadViaAspera: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.DownloadViaAspera.Type)
-    .do((action: DeliveryOptionsActions.Download) => this.service.initializeAsperaConnection(action.option.renditionUrl.url));
+    .do((action: DeliveryOptionsActions.Download) =>
+      this.service.initializeAsperaConnection(action.option.renditionUrl.asperaSpec)
+    );
 
   constructor(
     private actions: Actions,
