@@ -38,7 +38,13 @@
                 </span>
               </h3>
               <div class="mat-caption collection-info">
-                <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ activeCollection.email }}</span>
+                <span *ngIf="!collectionViewerIsOwner(activeCollection)">
+                  <strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>
+                  <a href="mailto:{{ activeCollection.email }}">{{ activeCollection.email }}</a>
+                </span>
+                <span *ngIf="collectionViewerIsOwner(activeCollection)">
+                  <strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ activeCollection.email }}
+                </span>
                 <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ activeCollection.userRole }}</span>
                 <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ activeCollection.createdOn | date:'short' }}</span>
                 <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ activeCollection.lastUpdated | date:'short' }}</span>
@@ -74,7 +80,7 @@
           <button
             mat-icon-button
             title="{{ 'COLLECTION.SHARE_MEMBERS_HOVER_TITLE' | translate }}"
-            *ngIf="collectionIsShared(activeCollection)"
+            *ngIf="collectionViewerIsOwner(activeCollection) && collectionIsShared(activeCollection)"
             (click)="showShareMembers(activeCollection)">
               <mat-icon>group</mat-icon>
           </button>

@@ -29,25 +29,19 @@
             </h3>
           </a>
           <div class="mat-caption collection-info">
-            <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{collection.email}}</span>
-            <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{collection.userRole}}</span>
-            
-            <span>
-              <strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ collection.createdOn | date:'short' }}
+            <span *ngIf="!collectionViewerIsOwner(collection)">
+              <strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>
+              <a href="mailto:{{ collection.email }}">{{ collection.email }}</a>
             </span>
-            <span>
-              <strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ collection.lastUpdated | date:'short' }}
+            <span *ngIf="collectionViewerIsOwner(collection)">
+              <strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ collection.email }}
             </span>
+            <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ collection.userRole }}</span>
+            <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ collection.createdOn | date:'short' }}</span>
+            <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ collection.lastUpdated | date:'short' }}</span>
           </div>
-          <!-- <button
-            mat-button
-            color="primary"
-            type="button"
-            *ngIf="collectionIsShared(collection)"
-            (click)="edit(collection)" 
-            class="is-outlined mini shared-members">
-            Members
-          </button> -->
+
+
           <div *ngIf="collection.tags" class="mat-caption collection-tags">
             <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
             <ul class="meta-data-tags">
@@ -73,7 +67,7 @@
         <button
           mat-icon-button
           title="{{ 'COLLECTION.SHARE_MEMBERS_HOVER_TITLE' | translate }}"
-          *ngIf="collectionIsShared(collection)"
+          *ngIf="collectionViewerIsOwner(collection) && collectionIsShared(collection)"
           (click)="sharedMembers(collection)">
           <mat-icon>group</mat-icon>
         </button>

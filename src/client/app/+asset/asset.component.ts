@@ -15,7 +15,7 @@ import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { PricingStore } from '../shared/stores/pricing.store';
 import { Subscription } from 'rxjs/Subscription';
 import { EnhancedAsset, enhanceAsset, AssetType } from '../shared/interfaces/enhanced-asset';
-import { Asset, Pojo } from '../shared/interfaces/common.interface';
+import * as CommonInterface from '../shared/interfaces/common.interface';
 import * as SubclipMarkersInterface from '../shared/interfaces/subclip-markers';
 import { AppStore, StateMapper } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
@@ -34,28 +34,14 @@ import { SearchContext, SearchState } from '../shared/services/search-context.se
 export class AssetComponent implements OnInit, OnDestroy {
   @Input() assetType: AssetType;
   @Input() commentFormConfig: FormFields;
-  @Input()
-  set stateMapper(stateMapper: StateMapper<Asset>) {
-    this.assetSubscription = this.store.select(stateMapper)
-      .map(asset => {
-        const clonedAsset: Asset = Common.clone(asset);
-        return enhanceAsset(clonedAsset, this.assetType, this.parentIdIn(this.route.snapshot.params));
-      }).subscribe(asset => {
-        this.asset = asset;
-        this.pricingStore.setPriceForDetails(this.asset.price);
-        this.selectedAttributes = null;
-        this.appliedAttributes = null;
-        this.loadCorrespondingCartAsset();
-      });
-  }
   public pricingAttributes: Array<PriceAttribute>;
   public rightsReproduction: string = '';
   public asset: EnhancedAsset;
   public commentParentObject: CommentParentObject;
   private assetSubscription: Subscription;
   private routeSubscription: Subscription;
-  private selectedAttributes: Pojo;
-  private appliedAttributes: Pojo;
+  private selectedAttributes: CommonInterface.Pojo;
+  private appliedAttributes: CommonInterface.Pojo;
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
   private cartAsset: EnhancedAsset;
   private cartAssetPriceAttributes: SelectedPriceAttributes[];
@@ -77,6 +63,18 @@ export class AssetComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit(): void {
+    this.assetSubscription = this.store.select(state => state.asset.activeAsset)
+      .map(asset => {
+        const clonedAsset = Common.clone(asset);
+        return enhanceAsset(clonedAsset, this.assetType, this.parentIdIn(this.route.snapshot.params));
+      }).subscribe(asset => {
+        this.asset = asset;
+        this.pricingStore.setPriceForDetails(this.asset.price);
+        this.selectedAttributes = null;
+        this.appliedAttributes = null;
+        this.loadCorrespondingCartAsset();
+      });
+
     this.routeSubscription = this.route.params.subscribe((params: any) => {
       this.commentParentObject = this.commentParentObjectFromRoute(params);
     });
@@ -224,7 +222,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     }
   }
 
-  private calculatePrice(attributes: Pojo): Observable<number> {
+  private calculatePrice(attributes: CommonInterface.Pojo): Observable<number> {
     this.selectedAttributes = attributes;
     return this.pricingService.getPriceFor(this.asset, attributes, this.subclipMarkers);
   }
@@ -273,7 +271,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     };
   }
 
-  private parentIdIn(routeParams: Pojo): number {
+  private parentIdIn(routeParams: CommonInterface.Pojo): number {
     return (this.assetType === 'quoteEditAsset') ?
       this.store.snapshot(state => state.quoteEdit.data.id) :
       Number(routeParams.id) || 0;

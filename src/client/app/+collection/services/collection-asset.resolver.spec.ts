@@ -20,9 +20,9 @@ export function main() {
 
       beforeEach(() => {
         mockRoute = { params: { uuid: 'abc-123' } };
-        loadSpy = mockStore.createActionFactoryMethod('activeCollectionAsset', 'load');
+        loadSpy = mockStore.createActionFactoryMethod('asset', 'loadActiveCollectionAsset');
         resolved = jasmine.createSpy('resolved');
-        mockStore.createStateSection('activeCollectionAsset', { activeCollectionAsset: { id: 123 }, loading: true });
+        mockStore.createStateSection('asset', { activeAsset: { id: 123 }, loading: true });
       });
 
       it('dispatches an action', () => {
@@ -36,7 +36,7 @@ export function main() {
       });
 
       it('returns when the loading flag is false', () => {
-        mockStore.createStateSection('activeCollectionAsset', { activeCollectionAsset: { id: 123 }, loading: false });
+        mockStore.createStateSection('asset', { activeAsset: { id: 123 }, loading: false });
         resolverUnderTest.resolve(mockRoute).subscribe(resolved);
         expect(resolved).toHaveBeenCalledWith(true);
       });

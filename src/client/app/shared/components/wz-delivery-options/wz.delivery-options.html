@@ -5,7 +5,7 @@
 </ng-container>
 <mat-list class="aspera-download-options">
   <div layout="row" layout-align="center center">
-    <ng-container *ngIf="!(hasDeliveryOptions | async)">
+    <ng-container *ngIf="showMissingOptionsMessage | async">
       <h3 class="mat-body">{{ 'ASSET.DELIVERY_OPTIONS.MISSING' | translate }}</h3>
     </ng-container>
   </div>
@@ -13,7 +13,10 @@
     <mat-list-item *ngFor="let group of groups">
       <span mat-menu-item disabled flex>{{ trStringFor(group) | translate }}</span>
       <div class="actions" flex>
-        <button mat-icon-button *ngFor="let option of group">
+        <button
+          *ngFor="let option of group"
+          (click)="onDownloadBtnClick(option)"
+          mat-icon-button>
           <mat-icon>{{ iconStringFor(option) | translate }}</mat-icon>
         </button>
       </div>

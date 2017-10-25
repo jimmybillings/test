@@ -46,6 +46,10 @@ export class WzCollectionItemListComponent {
     this.showShareMembers.emit(collection);
   }
 
+  public collectionViewerIsOwner(collection: Collection): boolean {
+    return collection.userRole === 'owner' ? true : false;
+  }
+
   public delete(collection: Collection): void {
     this.deleteCollection.emit(collection);
   }

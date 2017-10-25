@@ -10,7 +10,6 @@ import { AppStore } from '../../../app.store';
   selector: 'cart-asset',
   template: `
     <asset-component
-      [stateMapper]="stateMapper"
       [assetType]="'cartAsset'"
       [commentFormConfig]="commentFormConfig">
     </asset-component>
@@ -25,6 +24,4 @@ export class CartAssetComponent implements OnInit {
   public ngOnInit(): void {
     this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.cartComment.config.form.items);
   }
-
-  public stateMapper: StateMapper<Asset> = (state) => state.cartAsset.activeAsset;
 }

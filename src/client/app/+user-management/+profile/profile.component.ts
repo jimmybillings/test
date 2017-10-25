@@ -8,6 +8,7 @@ import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dial
 import { WzAddressFormComponent } from '../../shared/modules/wz-form/components/wz-address-form/wz.address-form.component';
 import { AppStore } from '../../app.store';
 import { FormFields } from '../../shared/interfaces/forms.interface';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   moduleId: module.id,
@@ -18,7 +19,7 @@ import { FormFields } from '../../shared/interfaces/forms.interface';
 
 export class ProfileComponent implements OnDestroy, OnInit {
   public user: User;
-  public accountName: string;
+  public accountName: Subject<string> = new Subject();
   private userSubscription: Subscription;
   private basicInfoConfig: FormFields[];
 
@@ -33,6 +34,7 @@ export class ProfileComponent implements OnDestroy, OnInit {
   ngOnInit() {
     this.userSubscription = this.currentUser.data.subscribe((user: User) => {
       this.user = user;
+      this.userAccountName(user.accountId);
       this.changeDetectorRef.detectChanges();
     });
     this.basicInfoConfig = this.store.snapshotCloned(state => state.uiConfig.components.userBasicInfo.config.form.items);
@@ -75,10 +77,9 @@ export class ProfileComponent implements OnDestroy, OnInit {
     });
   }
 
-  public userAccountName(id: number): string {
+  public userAccountName(id: number): void {
     this.userService.getAccount(this.user.accountId).take(1).subscribe((account: any) =>
-      this.accountName = account.name);
-    return this.accountName;
+      this.accountName.next(account.name));
   }
 
   public getBillingAddressInfo(segment: string): string {

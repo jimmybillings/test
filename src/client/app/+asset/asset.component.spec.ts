@@ -32,14 +32,20 @@ export function main() {
         state: { pricingPreferences: 'thePricingPreferences' },
         updatePricingPreferences: jasmine.createSpy('updatePricingPreferences')
       };
-      mockCartService = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
+      mockCartService = {
+        addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart'),
+        state: { data: { projects: [{ lineItems: [{ id: 'abc-123' }] }] } }
+      };
       mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockRoute = { params: Observable.of({ id: '100', uuid: 'abc-123' }), snapshot: { params: { id: '100' } } };
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
-      mockQuoteEditService = { addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote') };
+      mockQuoteEditService = {
+        addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote'),
+        state: { data: { projects: [{ lineItems: [{ id: 'abc-123' }] }] } }
+      };
       mockPricingStore = {
         priceForDialog: Observable.of(1000),
         priceForDetails: Observable.of(100),
@@ -58,20 +64,15 @@ export function main() {
       );
     });
 
-    describe('stateMapper setter', () => {
-      beforeEach(() => {
-        mockStore.createStateSection('activeCollectionAsset', { activeAsset: mockAsset });
-        componentUnderTest.assetType = 'collectionAsset';
-      });
-
+    describe('ngOnInit()', () => {
       it('sets up an asset instance variable', () => {
-        componentUnderTest.stateMapper = (factory) => factory.activeCollectionAsset.activeAsset;
+        mockStore.createStateSection('asset', { activeAsset: mockAsset });
+        componentUnderTest.assetType = 'collectionAsset';
+        componentUnderTest.ngOnInit();
         const expectedAsset: EnhancedMock.EnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset', 100);
         expect(componentUnderTest.asset).toEqual(expectedAsset);
       });
-    });
 
-    describe('ngOnInit()', () => {
       describe('sets up the commentParentObject', () => {
         it('for a collection asset', () => {
           componentUnderTest.assetType = 'collectionAsset';
@@ -221,7 +222,7 @@ export function main() {
         it(`returns true (somewhat pointlessly) for an asset with type '${assetType}'`, () => {
           mockStore.createStateSection(assetType, { activeAsset: mockAsset });
           componentUnderTest.assetType = assetType;
-          componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+          componentUnderTest.ngOnInit();
 
           expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
         });
@@ -290,16 +291,16 @@ export function main() {
 
           it('returns true when the asset has no corresponding cart line item', () => {
             localMockAsset = { uuid: '????' };
-            mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
-            componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+            mockStore.createStateSection('asset', { activeAsset: localMockAsset });
+            componentUnderTest.ngOnInit();
 
             expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
           });
 
           it('returns true when the asset\'s corresponding cart line item has no asset', () => {
             localMockAsset = { uuid: 'EFGH' };
-            mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
-            componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+            mockStore.createStateSection('asset', { activeAsset: localMockAsset });
+            componentUnderTest.ngOnInit();
 
             expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
           });
@@ -307,8 +308,8 @@ export function main() {
           describe('when price attributes have not been changed by the user', () => {
             beforeEach(() => {
               localMockAsset = { uuid: 'ABCD' };
-              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
-              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
+              componentUnderTest.ngOnInit();
             });
 
             it('returns true when subclip markers match', () => {
@@ -322,8 +323,8 @@ export function main() {
 
             it('returns true when neither the cart asset nor the active asset has markers', () => {
               localMockAsset = { uuid: 'IJKL' };
-              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
-              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
+              componentUnderTest.ngOnInit();
 
               expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
             });
@@ -343,8 +344,8 @@ export function main() {
 
             it('returns false when the active asset has subclip markers and the cart asset doesn\'t', () => {
               localMockAsset = { uuid: 'IJKL' };
-              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
-              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
+              componentUnderTest.ngOnInit();
 
               componentUnderTest.onMarkersChange({
                 in: new Frame(30).setFromFrameNumber(30), // 1000ms
@@ -358,8 +359,8 @@ export function main() {
           describe('when price attributes have been changed by the user', () => {
             it('returns true when the attributes match', () => {
               localMockAsset = { uuid: 'IJKL' };
-              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
-              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
+              componentUnderTest.ngOnInit();
               componentUnderTest.rightsReproduction = 'some rights reproduction';
               componentUnderTest.getPricingAttributes('some rights reproduction');
 
@@ -368,8 +369,8 @@ export function main() {
 
             it('returns false when the attributes don\'t match', () => {
               localMockAsset = { uuid: 'MNOP' };
-              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
-              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
+              componentUnderTest.ngOnInit();
               componentUnderTest.rightsReproduction = 'some rights reproduction';
               componentUnderTest.getPricingAttributes('some rights reproduction');
 
@@ -379,8 +380,8 @@ export function main() {
 
             it('returns false when the number of attributes doesn\'t match', () => {
               localMockAsset = { uuid: 'QRST' };
-              mockStore.createStateSection(assetType, { activeAsset: localMockAsset });
-              componentUnderTest.stateMapper = factory => (factory as any)[assetType].activeAsset;
+              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
+              componentUnderTest.ngOnInit();
               componentUnderTest.rightsReproduction = 'some rights reproduction';
               componentUnderTest.getPricingAttributes('some rights reproduction');
 

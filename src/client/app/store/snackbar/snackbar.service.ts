@@ -10,6 +10,11 @@ export class SnackbarService {
   public display(messageKey: string, messageParameters: object): Observable<String> {
     return this.translateService.get(messageKey, messageParameters)
       .take(1)
-      .do((translatedString: string) => this.snackBar.open(translatedString, '', { duration: 2000 }));
+      .do((translatedString: string) => this.snackBar.open(translatedString, '', {
+        duration: 2000,
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        extraClasses: ['wz-snackbar']
+      }));
   }
 }

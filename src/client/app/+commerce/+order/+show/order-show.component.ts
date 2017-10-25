@@ -62,7 +62,7 @@ export class OrderShowComponent {
   }
 
   public shouldShowPaymentBalanceFor(item: Order): boolean {
-    return !!item.paymentDueDate && !!item.paymentBalance;
+    return !!item.paymentDueDate && !!item.paymentBalance && item.paymentBalance > 0;
   }
 
   public shouldShowDiscountFor(order: Order): boolean {

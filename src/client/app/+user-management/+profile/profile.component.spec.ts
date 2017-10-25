@@ -14,6 +14,7 @@ export function main() {
     let mockDialogService: any;
 
     const user: any = {
+      accountId: 123,
       emailAddress: 'jamesbonline@yahoo.com',
       firstName: 'james', lastName: 'billings', password: '3978f324e14ac256b2994b754586e05f',
       billingInfo: { address: { state: 'CO', phone: '720 291-2524' } },
@@ -25,6 +26,7 @@ export function main() {
       mockChangeDetectorRef = { detectChanges: jasmine.createSpy('detectChanges') };
 
       mockUserService = {
+        getAccount: jasmine.createSpy('getAccount').and.returnValue(Observable.of({ name: 'accountName', some: 'data' })),
         addBillingAddress: jasmine.createSpy('addBillingAddress').and.returnValue(Observable.of({})),
         changeBasicInfo: jasmine.createSpy('changeBasicInfo').and.returnValue(Observable.of({}))
       };
@@ -50,7 +52,7 @@ export function main() {
 
     describe('ngOnInit()', () => {
       it('Grabs the component config and assigns to an instance variable', () => {
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, mockUserService, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.user).toEqual(user);
       });
@@ -61,7 +63,7 @@ export function main() {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
         mockCurrentUserService = { data: mockObservable };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, mockUserService, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();
@@ -76,7 +78,7 @@ export function main() {
           firstName: 'John', lastName: 'Doe', password: '3978f324e14ac256b2994b754586e05f',
         };
         mockCurrentUserService = { data: Observable.of(mockUser) };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, mockUserService, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         let result = componentUnderTest.getBillingAddressInfo('state');
         expect(result).toBe('');
@@ -90,7 +92,7 @@ export function main() {
           billingInfo: { address: { state: 'CO', phone: '720 291-2524' } },
         };
         mockCurrentUserService = { data: Observable.of(mockUser) };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, mockUserService, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         let result = componentUnderTest.getBillingAddressInfo('address');
         expect(result).toBe('');
@@ -104,7 +106,7 @@ export function main() {
           billingInfo: { address: { state: 'CO', phone: '720 291-2524' } },
         };
         mockCurrentUserService = { data: Observable.of(mockUser) };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, mockUserService, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         let result = componentUnderTest.getBillingAddressInfo('state');
         expect(result).toBe('CO');
@@ -117,7 +119,7 @@ export function main() {
           billingInfo: {},
         };
         mockCurrentUserService = { data: Observable.of(mockUser) };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null, mockChangeDetectorRef, mockStore);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, mockUserService, mockChangeDetectorRef, mockStore);
         componentUnderTest.ngOnInit();
         let result = componentUnderTest.getBillingAddressInfo('state');
         expect(result).toBe('');
