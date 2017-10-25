@@ -17,23 +17,12 @@ export class FutureApiService extends ApiService {
   protected call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<any> {
     options = this.combineDefaultOptionsWith(options);
 
-    this.showLoadingIf(options.loadingIndicator === 'onBeforeRequest' || options.loadingIndicator === true);
+    this.showLoadingIndicatorDependingOn(options);
 
-    const request: Request = new Request(
-      new RequestOptions(
-        { method: method, url: this.urlFor(api, endpoint), body: this.bodyJsonFrom(options.body) }
-      ).merge(this.requestOptionsArgsFrom(options))
-    );
-
-    return this.http.request(request)
+    return this.http.request(this.requestFor(method, api, endpoint, options))
       .map(response => { try { return response.json(); } catch (exception) { return response; } })
-      .do(() => {
-        this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
-      }, (error: ApiErrorResponse) => {
-        this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
-        // Just let the error pass through.  We'll do this JSON-ing or dispatching elsewhere.
-        // try { return error.json(); } catch (exception) { this.error.dispatch(error); }
-        // return error;
-      });
+      .do(() => this.hideLoadingIndicatorDependingOn(options),
+      (error: ApiErrorResponse) => this.hideLoadingIndicatorDependingOn(options)
+      );
   }
 }

@@ -1,4 +1,5 @@
 import { Headers, Response, BaseRequestOptions, RequestMethod, Http, ResponseOptions, ConnectionBackend } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import { inject, TestBed } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 import { Store } from '@ngrx/store';
@@ -12,52 +13,37 @@ import * as LoadingIndicatorActions from '../../store/loading-indicator/loading-
 
 export function main() {
   describe('Api Service', () => {
+    let serviceUnderTest: ApiService;
+    let mockHttp: any;
     let mockApiConfig: any;
     let mockNgrxStore: any;
-    let connection: any;
     let loadingShowSpy: jasmine.Spy;
     let loadingHideSpy: jasmine.Spy;
 
-    const mockBackEnd: MockBackend = new MockBackend();
-    const successResponse: Response = new Response(new ResponseOptions({ body: '{"status": 200}' }));
-    const errorResponse: Object = { status: 401 };
-    const errorAction: ErrorActions.Handle = new ErrorActions.Handle({ status: 401 });
+    const successResponse: Response = new Response({ status: 200, body: '{ "some": "data" }' } as ResponseOptions)
+    const error: any = { status: 401 };
+    const errorAction: ErrorActions.Handle = new ErrorActions.Handle(error);
 
     beforeEach(() => {
+      mockHttp = {
+        request: jasmine.createSpy('request').and.returnValue(Observable.of(successResponse))
+      };
+
       mockApiConfig = {
         headers: (token: string = '') => new Headers({ 'Authorization': token === '' ? 'STANDARD TOKEN' : token }),
         baseUrl: 'BASE/',
         portal: 'PORTAL'
       };
 
-      mockBackEnd.connections.subscribe((c: any) => connection = c);
-
       mockNgrxStore = {
         dispatch: jasmine.createSpy('dispatch')
       };
 
-      TestBed.configureTestingModule({
-        providers: [
-          ApiService,
-          {
-            provide: Http,
-            useFactory: function (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) {
-              return new Http(backend, defaultOptions);
-            },
-            deps: [MockBackend, BaseRequestOptions]
-          },
-          MockBackend,
-          BaseRequestOptions,
-          { provide: ApiConfig, useValue: mockApiConfig },
-          { provide: MockBackend, useValue: mockBackEnd },
-          { provide: Store, useValue: mockNgrxStore }
-        ]
-      });
+      serviceUnderTest = new ApiService(mockHttp, mockApiConfig, mockNgrxStore);
     });
 
-    for (const methodName of ['get', 'post', 'put', 'delete']) {
+    ['get', 'post', 'put', 'delete'].forEach(methodName => {
       describe(`${methodName}()`, () => {
-        let serviceUnderTest: ApiService;
         let methodUnderTest: Function;
         let expectedHttpMethod: RequestMethod;
 
@@ -71,78 +57,84 @@ export function main() {
           }
         };
 
-        beforeEach(inject([ApiService], (apiService: ApiService) => {
-          serviceUnderTest = apiService;
-          [methodUnderTest, expectedHttpMethod] = getMethodInfoFrom(methodName);
-        }));
+        const mostRecentRequest: Function = () => mockHttp.request.calls.mostRecent().args[0];
 
-        it('calls the correct HTTP method', () => {
-          methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-            .subscribe(() => expect(connection.request.method).toEqual(expectedHttpMethod));
+        beforeEach(() => {
+          [methodUnderTest, expectedHttpMethod] = getMethodInfoFrom(methodName);
+        });
+
+        it('uses the correct HTTP method', () => {
+          methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point');
+
+          expect(mostRecentRequest().method).toEqual(expectedHttpMethod);
         });
 
         describe('URL', () => {
-          afterEach(() => connection.mockRespond(successResponse));
-
           it('is correct for all backend APIs', () => {
-            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?siteName=PORTAL'));
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point');
+            expect(mostRecentRequest().url).toEqual('BASE/identities-api/v1/end/point?siteName=PORTAL');
 
-            methodUnderTest.call(serviceUnderTest, Api.Assets, 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/assets-api/v1/end/point?siteName=PORTAL'));
+            methodUnderTest.call(serviceUnderTest, Api.Assets, 'end/point');
+            expect(mostRecentRequest().url).toEqual('BASE/assets-api/v1/end/point?siteName=PORTAL');
 
-            methodUnderTest.call(serviceUnderTest, Api.Orders, 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/orders-api/v1/end/point?siteName=PORTAL'));
+            methodUnderTest.call(serviceUnderTest, Api.Orders, 'end/point');
+            expect(mostRecentRequest().url).toEqual('BASE/orders-api/v1/end/point?siteName=PORTAL');
           });
 
           it('is unusable when an undefined backend API is specified', () => {
-            methodUnderTest.call(serviceUnderTest, (10836 as Api), 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/?-api/v?/end/point&siteName=PORTAL'));
+            methodUnderTest.call(serviceUnderTest, 10836 as Api, 'end/point');
+
+            expect(mostRecentRequest().url).toEqual('BASE/?-api/v?/end/point&siteName=PORTAL');
           });
 
           it('is correct with no options', () => {
-            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?siteName=PORTAL'));
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point');
+
+            expect(mostRecentRequest().url).toEqual('BASE/identities-api/v1/end/point?siteName=PORTAL');
           });
 
           it('is correct with parameters', () => {
-            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd' } })
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL'));
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd' } });
+
+            expect(mostRecentRequest().url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL');
           });
 
-          it('is disregarding the siteName key on the parameters if passed in from outside the ApiService', () => {
+          it('disregards a passed-in siteName parameter', () => {
+            spyOn(console, 'error');  // Keep console error out of test output.
+
             methodUnderTest.call(
-              serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd', siteName: 'TEST' } })
-              .subscribe(() => {
-                expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL');
-              });
+              serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd', siteName: 'TEST' } }
+            );
+
+            expect(mostRecentRequest().url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL');
           });
         });
 
         describe('headers', () => {
-          afterEach(() => connection.mockRespond(successResponse));
-
           it('is correct with no options', () => {
-            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-              .subscribe(() => expect(connection.request.headers.get('Authorization')).toEqual('STANDARD TOKEN'));
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point');
+
+            expect(mostRecentRequest().headers.get('Authorization')).toEqual('STANDARD TOKEN');
           });
 
           it('is correct with override token', () => {
-            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { overridingToken: 'OVERRIDING TOKEN' })
-              .subscribe(() => expect(connection.request.headers.get('Authorization')).toEqual('OVERRIDING TOKEN'));
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { overridingToken: 'OVERRIDING TOKEN' });
+
+            expect(mostRecentRequest().headers.get('Authorization')).toEqual('OVERRIDING TOKEN');
           });
         });
 
         describe('body', () => {
-          afterEach(() => connection.mockRespond(successResponse));
           it('is just the site name when no body option is specified', () => {
-            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-              .subscribe(() => expect(connection.request._body).toEqual('{"siteName":"PORTAL"}'));
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point');
+
+            expect(mostRecentRequest()._body).toEqual('{"siteName":"PORTAL"}');
           });
 
           it('is the specified body plus the site name', () => {
-            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: { a: 'b' } })
-              .subscribe(() => expect(connection.request._body).toEqual('{"a":"b","siteName":"PORTAL"}'));
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: { a: 'b' } });
+
+            expect(mostRecentRequest()._body).toEqual('{"a":"b","siteName":"PORTAL"}');
           });
         });
 
@@ -164,9 +156,7 @@ export function main() {
               mockHandlers.error
             );
 
-            connection.mockRespond(successResponse);
-
-            expect(apiResponse).toEqual({ status: 200 });
+            expect(apiResponse).toEqual({ some: 'data' });
             expect(mockHandlers.response).toHaveBeenCalled();
             expect(mockHandlers.error).not.toHaveBeenCalled();
             expect(mockNgrxStore.dispatch).not.toHaveBeenCalled();
@@ -175,6 +165,8 @@ export function main() {
           it('is as expected when the request succeeds with a non-JSON response', () => {
             let apiResponse: ApiResponse;
 
+            mockHttp.request = jasmine.createSpy('request').and.returnValue(Observable.of('Non-JSON!  Ick!'));
+
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(
               (response: ApiResponse) => {
                 apiResponse = response;
@@ -182,8 +174,6 @@ export function main() {
               },
               mockHandlers.error
             );
-
-            connection.mockRespond('Non-JSON!  Ick!');
 
             expect(apiResponse).toEqual('Non-JSON!  Ick!');
             expect(mockHandlers.response).toHaveBeenCalled();
@@ -194,6 +184,8 @@ export function main() {
           it('is as expected when the request errors', () => {
             let apiError: Error;
 
+            mockHttp.request = jasmine.createSpy('request').and.returnValue(Observable.throw(error));
+
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(
               mockHandlers.response,
               (error: Error) => {
@@ -201,8 +193,6 @@ export function main() {
                 mockHandlers.error();
               }
             );
-
-            connection.mockError(errorResponse);
 
             expect(apiError).toEqual({ status: 401 });
             expect(mockHandlers.response).not.toHaveBeenCalled();
@@ -212,20 +202,26 @@ export function main() {
         });
 
         describe('loading indicator animation', () => {
-          const noOp: Function = () => { return; };
           const showAction: LoadingIndicatorActions.Show = new LoadingIndicatorActions.Show();
           const hideAction: LoadingIndicatorActions.Hide = new LoadingIndicatorActions.Hide();
 
-          for (const result of ['succeeds', 'errors']) {
+          const nonErrorActionDispatches = () =>
+            mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle');
+
+          ['succeeds', 'errors'].forEach(result => {
             describe(`when the request ${result}`, () => {
+              beforeEach(() => {
+                mockHttp.request = jasmine.createSpy('request').and.returnValue(
+                  result === 'succeeds' ? Observable.of(successResponse) : Observable.throw(error)
+                );
+              });
+
               describe('when loadingIndicator option is not specified', () => {
                 it('is not affected', () => {
-                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(() => { }, () => { });
+                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+                    .subscribe(() => { }, () => { });
 
-                  if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
-
-                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle'))
-                    .toEqual([]);
+                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle')).toEqual([]);
                 });
               });
 
@@ -234,10 +230,7 @@ export function main() {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: false })
                     .subscribe(() => { }, () => { });
 
-                  if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
-
-                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle'))
-                    .toEqual([]);
+                  expect(nonErrorActionDispatches()).toEqual([]);
                 });
               });
 
@@ -246,10 +239,7 @@ export function main() {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: true })
                     .subscribe(() => { }, () => { });
 
-                  if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
-
-                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle'))
-                    .toEqual([[showAction], [hideAction]]);
+                  expect(nonErrorActionDispatches()).toEqual([[showAction], [hideAction]]);
                 });
               });
 
@@ -258,10 +248,7 @@ export function main() {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: 'onBeforeRequest' })
                     .subscribe(() => { }, () => { });
 
-                  if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
-
-                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle'))
-                    .toEqual([[showAction]]);
+                  expect(nonErrorActionDispatches()).toEqual([[showAction]]);
                 });
               });
 
@@ -270,16 +257,13 @@ export function main() {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loadingIndicator: 'offAfterResponse' })
                     .subscribe(() => { }, () => { });
 
-                  if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
-
-                  expect(mockNgrxStore.dispatch.calls.allArgs().filter((arg: any) => arg[0].type !== '[Error] Handle'))
-                    .toEqual([[hideAction]]);
+                  expect(nonErrorActionDispatches()).toEqual([[hideAction]]);
                 });
               });
             });
-          }
+          });
         });
       });
-    }
+    });
   });
 }
