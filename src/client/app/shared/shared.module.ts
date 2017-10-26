@@ -73,6 +73,7 @@ import { FutureCartService } from '../store/cart/cart.service';
 import { FutureQuoteEditService } from '../store/quote-edit/quote-edit.service';
 import { FutureQuoteShowService } from '../store/quote-show/quote-show.service';
 import { OrderService } from '../store/order/order.service';
+import { InvoiceService } from '../store/invoice/invoice.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
 import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
 import { UiConfigService } from '../store/ui-config/ui-config.service';
@@ -157,6 +158,7 @@ const WAZEE_SERVICES = [
   SearchService,
   UserService,
   OrderService,
+  InvoiceService,
   OrdersService,
   TranslateService,
   GalleryViewService,
