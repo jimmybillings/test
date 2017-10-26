@@ -34,7 +34,7 @@ export const initialState: State = {
     projects: []
   },
   loading: false,
-  checkingOut: false,
+  checkingOut: false
 };
 
 export function reducer(state: State = initialState, action: OrderActions.Any): State {
@@ -46,7 +46,7 @@ export function reducer(state: State = initialState, action: OrderActions.Any): 
     }
 
     case OrderActions.LoadSuccess.Type: {
-      return { ...Common.clone(state), activeOrder: action.activeOrder, loading: false, checkingOut: state.checkingOut };
+      return { activeOrder: action.activeOrder, loading: false, checkingOut: state.checkingOut };
     }
 
     case OrderActions.LoadFailure.Type: {

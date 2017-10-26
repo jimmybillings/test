@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Order, Invoice } from '../../shared/interfaces/commerce.interface';
+import { Order } from '../../shared/interfaces/commerce.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 export class ActionFactory {
