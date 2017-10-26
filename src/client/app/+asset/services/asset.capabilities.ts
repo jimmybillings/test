@@ -22,10 +22,6 @@ export class AssetCapabilities {
     return this.userHas('DownloadFullComps') && hasComp;
   }
 
-  public viewDownloadCompOptions(hasComp: boolean): boolean {
-    return this.downloadWatermarkComps(hasComp) || this.downloadCleanComps(hasComp) || this.downloadFullComps(hasComp);
-  }
-
   public createAccessInfo(): boolean {
     return this.userHas('CreateAccessInfo');
   }

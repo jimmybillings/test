@@ -42,7 +42,6 @@ export class AssetDetailComponent implements OnInit {
   @Input() public assetMatchesCartAsset: boolean;
   @Input() public commentParentObject: CommentParentObject;
   @Input() public commentFormConfig: FormFields;
-  @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
@@ -189,10 +188,6 @@ export class AssetDetailComponent implements OnInit {
 
   public updateAssetInActiveCollection(): void {
     this.store.dispatch(factory => factory.activeCollection.updateAssetMarkers(this._asset, this.subclipMarkers));
-  }
-
-  public downloadComp(assetId: any, compType: any): void {
-    this.onDownloadComp.emit({ 'compType': compType, 'assetId': assetId });
   }
 
   public addAssetToCart(): void {

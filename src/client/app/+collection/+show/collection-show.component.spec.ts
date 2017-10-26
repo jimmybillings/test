@@ -206,35 +206,6 @@ export function main() {
 
     });
 
-    describe('downloadComp()', () => {
-      let mockMethod: jasmine.Spy;
-
-      beforeEach(() => {
-        mockMethod = mockStore.createLegacyServiceMethod('asset', 'downloadComp', Observable.of({ url: 'test url' }));
-      });
-
-      it('Should call the api to download a comp with correct assetId and comp type', () => {
-        componentUnderTest.downloadComp({ assetId: 1, compType: 'comp' });
-
-        mockStore.expectCallFor(mockMethod, 1, 'comp');
-      });
-
-      it('Should update the location url if one exists in the response', () => {
-        componentUnderTest.downloadComp({ assetId: 1, compType: 'comp' });
-
-        expect(mockWindow.nativeWindow.location.href).toEqual('test url');
-      });
-
-      it('Should throw a custom error if there is no url in the response', () => {
-        mockMethod = mockStore.createLegacyServiceMethod('asset', 'downloadComp', Observable.of({}));
-
-        componentUnderTest.downloadComp({ assetId: 1, compType: 'comp' });
-
-        expect(handleCustomErrorSpy).toHaveBeenCalledWith('COMPS.NO_COMP');
-      });
-
-    });
-
     describe('setCollectionForDelete()', () => {
       it('Should open the dialog to confirm delete of collection', () => {
         componentUnderTest.setCollectionForDelete();

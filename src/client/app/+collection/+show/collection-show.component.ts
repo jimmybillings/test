@@ -100,17 +100,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.router.navigate(['/collections/' + this.activeCollection.id, this.routeParams]);
   }
 
-  public downloadComp(params: Pojo): void {
-    this.store.callLegacyServiceMethod(service => service.asset.downloadComp(params.assetId, params.compType))
-      .subscribe((res) => {
-        if (res.url && res.url !== '') {
-          this.window.nativeWindow.location.href = res.url;
-        } else {
-          this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
-        }
-      });
-  }
-
   public setCollectionForDelete(): void {
     this.dialogService.openComponentInDialog(
       {

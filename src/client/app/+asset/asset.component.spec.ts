@@ -125,35 +125,6 @@ export function main() {
       });
     });
 
-    describe('downloadComp()', () => {
-      let methodSpy: jasmine.Spy;
-      let errorSpy: jasmine.Spy;
-
-      beforeEach(() => {
-        methodSpy = mockStore.createLegacyServiceMethod('asset', 'downloadComp', Observable.of({}));
-        errorSpy = mockStore.createActionFactoryMethod('error', 'handleCustomError');
-      });
-
-      it('Should call the service with the correct params to download a comp', () => {
-        componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
-        mockStore.expectCallFor(methodSpy, '123123', 'New Comp');
-      });
-
-      it('Should show a notification if the server reponds that no comp is available', () => {
-        componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
-        mockStore.expectDispatchFor(errorSpy, 'COMPS.NO_COMP');
-      });
-
-      it('Should set window.href.url to the location of the comp url if the server responds with a downloadable comp url', () => {
-        methodSpy =
-          mockStore.createLegacyServiceMethod('asset', 'downloadComp', Observable.of({ url: 'http://downloadcomp.url' }));
-
-        componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
-
-        expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
-      });
-    });
-
     describe('addAssetToCart()', () => {
       describe('Should call the cart summary service with the correct params', () => {
         it('with a price', () => {

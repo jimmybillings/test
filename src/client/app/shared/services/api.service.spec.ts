@@ -20,7 +20,7 @@ export function main() {
     let loadingShowSpy: jasmine.Spy;
     let loadingHideSpy: jasmine.Spy;
 
-    const successResponse: Response = new Response({ status: 200, body: '{ "some": "data" }' } as ResponseOptions)
+    const successResponse: Response = new Response({ status: 200, body: '{ "some": "data" }' } as ResponseOptions);
     const error: any = { status: 401 };
     const errorAction: ErrorActions.Handle = new ErrorActions.Handle(error);
 

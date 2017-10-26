@@ -20,7 +20,6 @@ export class Capabilities implements CommerceCapabilities, CollectionCapabilitie
   editCollections: () => boolean;
   editCollection: (collection: Collection) => Observable<boolean>;
   viewAssetDetails: () => boolean;
-  viewDownloadCompOptions: (hasComp: boolean) => boolean;
   downloadWatermarkComps: (hasComp: boolean) => boolean;
   downloadCleanComps: (hasComp: boolean) => boolean;
   downloadFullComps: (hasComp: boolean) => boolean;

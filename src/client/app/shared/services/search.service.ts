@@ -57,10 +57,6 @@ export class SearchService {
     this.store.storeAssets({ type: 'SEARCH.CLEAR_ASSETS' });
   }
 
-  public downloadComp(id: any, compType: any): Observable<any> {
-    return this.api.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
-  }
-
   private normalizeParams(params: any): any {
     let cloneParams = Common.clone(params);
     if (!cloneParams.q) cloneParams.q = 'itemType:clip';

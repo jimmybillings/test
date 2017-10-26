@@ -37,11 +37,6 @@ export class AssetService {
 @Injectable()
 export class LegacyAssetService {
   constructor(private apiService: ApiService) { }
-
-  public downloadComp(id: any, compType: any): Observable<any> {
-    return this.apiService.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
-  }
-
   public createShareLink(shareLink: Common.Pojo): Observable<any> {
     return this.apiService.post(Api.Identities, 'accessInfo', { body: shareLink });
   }

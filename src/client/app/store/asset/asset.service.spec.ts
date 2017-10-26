@@ -94,15 +94,6 @@ export function main() {
       serviceUnderTest = new LegacyAssetService(mockApiService.injector);
     });
 
-    describe('downloadComp()', () => {
-      it('calls the API correctly', () => {
-        serviceUnderTest.downloadComp(47, 'someCompType');
-        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
-        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('renditionType/downloadUrl/47');
-        expect(mockApiService.get).toHaveBeenCalledWithParameters({ type: 'someCompType' });
-      });
-    });
-
     describe('createShareLink()', () => {
       it('calls the API correctly', () => {
         serviceUnderTest.createShareLink({ some: 'pojo' });
