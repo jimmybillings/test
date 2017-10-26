@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Quote, AssetLineItem } from '../../shared/interfaces/commerce.interface';
+import { Quote, AssetLineItem, QuoteOptions } from '../../shared/interfaces/commerce.interface';
 import { Asset } from '../../shared/interfaces/common.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
@@ -25,6 +25,10 @@ export class ActionFactory {
 
   public addCustomPriceToLineItem(lineItem: AssetLineItem, price: number): AddCustomPriceToLineItem {
     return new AddCustomPriceToLineItem(lineItem, price);
+  }
+
+  public sendQuote(quoteOptions: QuoteOptions) {
+    return new SendQuote(quoteOptions);
   }
 
   // Move this to internal action factory when quote is fully "effected"
@@ -68,6 +72,10 @@ export class InternalActionFactory extends ActionFactory {
 
   public addCustomPriceToLineItemFailure(error: ApiErrorResponse): AddCustomPriceToLineItemFailure {
     return new AddCustomPriceToLineItemFailure(error);
+  }
+
+  public sendQuoteSuccess(quoteId: number, ownerEmail: string) {
+    return new SendQuoteSuccess(quoteId, ownerEmail);
   }
 }
 
@@ -159,9 +167,24 @@ export class AddCustomPriceToLineItemFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
+export class SendQuote implements Action {
+  public static readonly Type = '[Quote Edit] Send Quote';
+  public readonly type = SendQuote.Type;
+  constructor(public readonly quoteOptions: QuoteOptions) { }
+}
+
+export class SendQuoteSuccess implements Action {
+  public static readonly Type = '[Quote Edit] Send Quote Success';
+  public readonly type = SendQuoteSuccess.Type;
+  constructor(
+    public readonly quoteId: number,
+    public readonly ownerEmail: string) { }
+}
+
 export type Any =
   Load | LoadSuccess | LoadFailure |
   Delete | DeleteSuccess | DeleteFailure |
   EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
   RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure |
-  AddCustomPriceToLineItem | AddCustomPriceToLineItemSuccess | AddCustomPriceToLineItemFailure;
+  AddCustomPriceToLineItem | AddCustomPriceToLineItemSuccess | AddCustomPriceToLineItemFailure |
+  SendQuote;

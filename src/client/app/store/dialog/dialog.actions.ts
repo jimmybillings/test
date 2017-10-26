@@ -12,7 +12,7 @@ export class ActionFactory {
   }
 }
 
-export class InternalActionFactory {
+export class InternalActionFactory extends ActionFactory {
   public showConfirmationSuccess(): ShowConfirmationSuccess {
     return new ShowConfirmationSuccess();
   }

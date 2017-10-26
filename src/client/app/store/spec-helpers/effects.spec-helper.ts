@@ -168,7 +168,6 @@ export class EffectsSpecHelper {
 
               it('emits the expected action', () => {
                 this.simulateInputAction(parameters.inputAction);
-
                 expect(this.effectSubscriptionCallback)
                   .toHaveBeenCalledWith(this.mockStore.getActionCreatedBy(this.failureActionFactoryMethod));
               });

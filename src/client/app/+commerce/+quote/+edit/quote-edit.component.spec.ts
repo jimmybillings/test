@@ -9,6 +9,7 @@ export function main() {
     let deleteQuoteDispatchSpy: jasmine.Spy;
     let addCustomPriceDispatchSpy: jasmine.Spy;
     let snackbarSpy: jasmine.Spy;
+    let quoteSendSpy: jasmine.Spy;
     let mockStore: MockAppStore;
     let mockCapabilities: any;
     let mockQuoteEditService: any;
@@ -80,6 +81,7 @@ export function main() {
       deleteQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'delete');
       addCustomPriceDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addCustomPriceToLineItem');
       snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
+      quoteSendSpy = mockStore.createActionFactoryMethod('quoteEdit', 'sendQuote');
 
       componentUnderTest =
         new QuoteEditComponent(
@@ -274,38 +276,12 @@ export function main() {
           offlineAgreementId: 'abc123'
         });
 
-        expect(mockQuoteEditService.sendQuote).toHaveBeenCalledWith({
+        expect(quoteSendSpy).toHaveBeenCalledWith({
           ownerEmail: 'ross.edfort@wazeedigital.com',
           expirationDate: '2017-05-03T06:00:00.000Z',
           purchaseType: 'ProvisionalOrder',
           offlineAgreementId: 'abc123'
         });
-      });
-
-      it('Navigates to the quote detail page on succesfull submit', () => {
-        componentUnderTest.onOpenQuoteDialog();
-
-        mockDialogService.onSubmitCallback({
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017/05/03',
-          purchaseType: 'Provisional Order',
-          offlineAgreementId: 'abc123'
-        });
-
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes/1']);
-      });
-
-      it('Shows a success snack bar notification on succesfull submit', () => {
-        componentUnderTest.onOpenQuoteDialog();
-
-        mockDialogService.onSubmitCallback({
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017/05/03',
-          purchaseType: 'Provisional Order',
-          offlineAgreementId: 'abc123'
-        });
-
-        expect(snackbarSpy).toHaveBeenCalledWith('QUOTE.CREATED_FOR_TOAST', { emailAddress: 'ross.edfort@wazeedigital.com' });
       });
     });
 
