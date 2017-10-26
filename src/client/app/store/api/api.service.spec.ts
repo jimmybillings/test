@@ -12,7 +12,7 @@ import * as ErrorActions from '../../store/error/error.actions';
 import * as LoadingIndicatorActions from '../../store/loading-indicator/loading-indicator.actions';
 
 export function main() {
-  describe('Api Service', () => {
+  describe('Future Api Service', () => {
     let serviceUnderTest: FutureApiService;
     let mockHttp: any;
     let mockApiConfig: any;
