@@ -10,7 +10,7 @@ export = (done: any) => {
   }
   readFile(bannerPath, (e, content) => {
     if (!e) {
-      console.log(util.colors.green(content.toString()));
+      console.log(content.toString());
     }
     done();
   });
