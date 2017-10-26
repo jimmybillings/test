@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { QuoteType } from '../../../shared/interfaces/commerce.interface';
+import { OrderableType } from '../../../shared/interfaces/commerce.interface';
 
 @Component({
   moduleId: module.id,
@@ -66,7 +66,7 @@ export class LineItemActionsComponent {
   @Input() userCanCreateSubclips: boolean;
   @Input() userCanAdministerQuotes: boolean;
   @Input() assetIsSubclipped: boolean;
-  @Input() quoteType: QuoteType;
+  @Input() quoteType: OrderableType;
   @Input() hasMultiplier: boolean;
   @Output() showPricingDialog: EventEmitter<any> = new EventEmitter();
   @Output() remove: EventEmitter<any> = new EventEmitter();
@@ -78,7 +78,7 @@ export class LineItemActionsComponent {
   @Output() addCustomPrice: EventEmitter<null> = new EventEmitter();
 
   public get displayPriceButton(): boolean {
-    return this.rightsReproduction === 'Rights Managed' && this.quoteType !== 'ProvisionalOrder';
+    return this.rightsReproduction === 'Rights Managed' && this.quoteType !== 'Trial';
   }
 
   public get needsAttributes(): boolean {

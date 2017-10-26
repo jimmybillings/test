@@ -7,7 +7,7 @@ import { AssetService } from '../../../store/asset/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
-import { QuoteOptions, Project, QuoteType, Quote, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
+import { QuoteOptions, Project, OrderableType, Quote, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
@@ -115,7 +115,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   }
 
   public get showDiscount(): boolean {
-    return (this.hasProperty('discount') && this.quoteType !== 'ProvisionalOrder') ? true : false;
+    return !!this.hasProperty('discount') && this.quoteType !== 'Trial';
   }
 
   public get shouldShowCloneButton(): Observable<boolean> {
@@ -134,7 +134,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     return this.config.quotePurchaseType.items;
   }
 
-  public onSelectQuoteType(event: { type: QuoteType }): void {
+  public onSelectQuoteType(event: { type: OrderableType }): void {
     this.quoteType = event.type;
     this.config.createQuote.items.map((item: FormFields) => {
       if (item.name === 'purchaseType') {
@@ -230,6 +230,10 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
       });
   }
 
+  public get quoteIsTrial(): Observable<boolean> {
+    return this.quoteEditService.data.map(quote => quote.data.purchaseType === 'Trial');
+  }
+
   private updateQuoteField = (options: any): void => {
     this.quoteEditService.updateQuoteField(options);
   }
@@ -292,16 +296,9 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     this.store.dispatch(factory => factory.quoteEdit.delete());
   }
 
-  private viewValueFor(quoteType: QuoteType): string {
-    switch (quoteType) {
-      case 'ProvisionalOrder':
-        return 'Provisional Order';
-      case 'OfflineAgreement':
-        return 'Offline Agreement';
-      case 'RevenueOnly':
-        return 'Revenue Only';
-      default:
-        return 'Standard';
-    }
+  private viewValueFor(quoteType: OrderableType): string {
+    return this.purchaseTypeConfig.filter((option: { viewValue: string, value: OrderableType }) => {
+      return option.value === quoteType;
+    }).map((option: MdSelectOption) => option.viewValue)[0];
   }
 }

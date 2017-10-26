@@ -63,6 +63,10 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
     return this.userCan.viewLicenseAgreementsButton(this.cartService.hasAssetLineItems);
   }
 
+  public quoteIsTrial(): boolean {
+    return this.quoteType !== 'Trial';
+  }
+
   public showLicenseAgreements(): void {
     this.cartService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
       this.dialogService.openComponentInDialog(

@@ -52,7 +52,7 @@ export class CartConfirmTabComponent extends CommerceConfirmTab {
     return Observable.of(true);
   }
 
-  public get quoteIsProvisionalOrder(): Observable<boolean> {
+  public get quoteIsTrial(): Observable<boolean> {
     return Observable.of(false);
   }
 

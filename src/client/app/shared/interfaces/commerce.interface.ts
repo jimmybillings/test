@@ -2,13 +2,45 @@ import { ViewAddress, Pagination, Common, SelectedPriceAttributes, Store } from 
 import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
 
-export type QuoteType = 'Standard' | 'ProvisionalOrder' | 'OfflineAgreement' | 'RevenueOnly';
+export type OrderableType =
+  'SystemLicense' |
+  'SystemLicenseNoDelivery' |
+  'OfflineLicense' |
+  'OfflineLicenseNoDelivery' |
+  'PrepaySystemLicense' |
+  'PrepayOfflineLicense' |
+  'Trial' |
+  'DeliveryOnly' |
+  'BadDebt' |
+  'ChannelNoDelivery';
+
+export type PaymentOption =
+  'SystemLicense' |
+  'SystemLicenseNoDelivery' |
+  'OfflineLicense' |
+  'OfflineLicenseNoDelivery' |
+  'PrepaySystemLicense' |
+  'PrepayOfflineLicense' |
+  'Trial' |
+  'DeliveryOnly' |
+  'BadDebt' |
+  'ChannelNoDelivery' |
+  'PurchaseOnCredit' |
+  'CreditCard' |
+  'Hold';
+
+export type PaymentType =
+  'PurchaseOnCredit' |
+  'CreditCard';
+
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
+
 export type TranscodeStatus = 'Submitted' | 'Completed' | 'Failed' | 'UrlError' | 'Deleted';
-export type OrderType = 'PurchaseOnCredit' | 'CreditCard' | 'BadDebt' | 'ChannelOrder' | 'FulfillmentOrder' | 'OfflineAgreement'
-  | 'ProvisionalOrder' | 'PurchaseOrder' | 'RevenueOnly' | 'SubscriptionOrder' | 'Hold';
-export type OrderStatus = 'Order';
+
+export type OrderStatus = 'ORDER' | 'REFUND';
+
 export type EditableQuoteFields = 'bulkOrderId' | 'discount';
+
 // Base interfaces
 
 export interface CommonCommerce extends Common {
@@ -107,7 +139,7 @@ export interface CheckoutState {
   addresses: ViewAddress[];
   selectedAddress: ViewAddress;
   authorization: any;
-  selectedPaymentType: OrderType;
+  selectedPaymentType: PaymentOption;
 }
 
 export interface FeeConfigState {
@@ -135,7 +167,8 @@ export interface Order extends CommonCommerce {
   createdUserId: number;
   ownerUserId: number;
   orderStatus: OrderStatus;
-  orderType: OrderType;
+  orderType: OrderableType;
+  paymentType: PaymentType;
   quoteId: number;
   taxAmount: number;
   licenseAgreementId: string;
@@ -159,7 +192,7 @@ export interface Quote extends CommonCommerce {
   total: number;
   subTotal?: number;
   quoteStatus: QuoteStatus;
-  purchaseType?: QuoteType;
+  purchaseType?: OrderableType;
   projects?: Project[];
   itemCount?: number;
   expirationDate?: string;
@@ -259,7 +292,7 @@ export interface PurchaseOptions {
 }
 
 export interface PaymentOptions {
-  paymentOptions: Array<OrderType>;
+  paymentOptions: Array<PaymentOption>;
   explanation: string;
   noCheckout: boolean;
 }

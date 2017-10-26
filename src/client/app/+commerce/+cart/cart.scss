@@ -88,17 +88,17 @@ cart-component section.header, quote-edit-component section.header {
     }
   }
   .subtotal,
-  .provisional,
+  .trial,
   .discount, {
     text-align: right;
     letter-spacing: -.02em;
     line-height: 1.25;
     font-size: 16px;
     margin: 3px 0;
-    .provisional-msg {
+    .trial-msg {
       margin: 10px;
     }
-    .provisional-msg,
+    .trial-msg,
     .total-label {
       line-height: 1.25;
       font-weight: 300;

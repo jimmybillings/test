@@ -66,11 +66,11 @@ export function main() {
       });
     });
 
-    describe('quoteIsProvisionalOrder() getter', () => {
+    describe('quoteIsTrial() getter', () => {
       it('always returns Observable of false - because we\'re in the cart', () => {
-        let quoteIsProvisionalOrder: boolean;
-        componentUnderTest.quoteIsProvisionalOrder.take(1).subscribe(result => quoteIsProvisionalOrder = result);
-        expect(quoteIsProvisionalOrder).toBe(false);
+        let quoteIsTrial: boolean;
+        componentUnderTest.quoteIsTrial.take(1).subscribe(result => quoteIsTrial = result);
+        expect(quoteIsTrial).toBe(false);
       });
     });
 

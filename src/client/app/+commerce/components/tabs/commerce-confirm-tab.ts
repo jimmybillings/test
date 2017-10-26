@@ -6,7 +6,9 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
-import { CartState, QuoteState, CheckoutState, OrderType } from '../../../shared/interfaces/commerce.interface';
+import {
+  CartState, QuoteState, CheckoutState, PaymentOption, OrderableType
+} from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Common } from '../../../shared/utilities/common.functions';
@@ -38,19 +40,19 @@ export class CommerceConfirmTab extends Tab {
     return this.commerceService.data.map((state: QuoteState | CartState) => state.data);
   }
 
-  public get paymentType(): Observable<OrderType> {
+  public get paymentType(): Observable<PaymentOption> {
     return this.commerceService.paymentType;
   }
 
   public get showPurchaseBtn(): Observable<boolean> {
-    return this.paymentType.map((type: OrderType) => {
+    return this.paymentType.map((type: PaymentOption) => {
       return type === 'CreditCard';
     });
   }
 
   public get showPurchaseOnCreditBtn(): Observable<boolean> {
-    return this.paymentType.map((type: OrderType) => {
-      return type === 'PurchaseOnCredit' || type === 'ProvisionalOrder';
+    return this.paymentType.map((type: PaymentOption) => {
+      return type === 'PurchaseOnCredit';
     });
   }
 
@@ -77,5 +79,9 @@ export class CommerceConfirmTab extends Tab {
 
   public shouldShowLicenseDetailsBtn(): boolean {
     return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
+  }
+
+  public get isOfflineQuote(): Observable<boolean> {
+    return this.paymentType.map(type => type && type.includes('Offline'));
   }
 }

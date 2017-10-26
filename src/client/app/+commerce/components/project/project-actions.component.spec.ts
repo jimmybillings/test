@@ -34,8 +34,8 @@ export function main() {
 
     describe('showRightsPricingBtn()', () => {
       describe('returns false', () => {
-        it('when the quote type is ProvisionalOrder', () => {
-          componentUnderTest.quoteType = 'ProvisionalOrder';
+        it('when the quote type is Trial', () => {
+          componentUnderTest.quoteType = 'Trial';
           componentUnderTest.projectHasRmAssets = true;
           expect(componentUnderTest.showRightsPricingBtn).toBe(false);
         });
@@ -48,14 +48,8 @@ export function main() {
       });
 
       describe('returns true', () => {
-        it('when the quote type is OfflineAgreement and project has rights managed assets', () => {
-          componentUnderTest.quoteType = 'OfflineAgreement';
-          componentUnderTest.projectHasRmAssets = true;
-          expect(componentUnderTest.showRightsPricingBtn).toBe(true);
-        });
-
-        it('when the quote type is Standard and project has rights managed assets', () => {
-          componentUnderTest.quoteType = 'Standard';
+        it('when the quote type is OfflineLicense and project has rights managed assets', () => {
+          componentUnderTest.quoteType = 'OfflineLicense';
           componentUnderTest.projectHasRmAssets = true;
           expect(componentUnderTest.showRightsPricingBtn).toBe(true);
         });
