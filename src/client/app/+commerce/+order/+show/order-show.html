@@ -10,7 +10,10 @@
 			flex-order-xs="2">
 			<h2 flex="grow" class="mat-display-1">{{ 'ORDER.SHOW.PAGE_TITLE' | translate }}</h2>
 			<div class="tools" flex="auto" flex-order-xs="-1">
-				<button mat-button color="primary" class="is-outlined mini">
+        <button *ngIf="orderObservable | async as order" 
+          [routerLink]="['/orders', order.id, 'invoice']" 
+          mat-button color="primary" 
+          class="is-outlined mini">
 					{{ 'ORDER.SHOW.PRINT_INVOICE_BTN_TITLE' | translate }}
 				</button>
 				<a [routerLink]="['/orders']" mat-icon-button color="primary" title="{{ 'ORDER.SHOW.BACK_TO_INDEX_TITLE' | translate }}">

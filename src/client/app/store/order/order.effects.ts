@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import * as OrderActions from './order.actions';
 import { AppStore } from '../../app.store';
 import { OrderService } from './order.service';
-import { Order } from '../../shared/interfaces/commerce.interface';
+import { Order, Invoice } from '../../shared/interfaces/commerce.interface';
 
 @Injectable()
 export class OrderEffects {
@@ -26,6 +26,14 @@ export class OrderEffects {
       this.store.create(factory => factory.order.setCheckoutState(false)),
       this.store.create(factory => factory.cart.load())
     ]));
+
+  @Effect()
+  public loadInvoice: Observable<Action> = this.actions.ofType(OrderActions.LoadInvoice.Type)
+    .switchMap((action: OrderActions.LoadInvoice) =>
+      this.service.getInvoiceData(action.orderId)
+        .map((invoice: Invoice) => this.store.create(factory => factory.order.loadInvoiceSuccess(invoice)))
+        .catch(error => Observable.of(this.store.create(factory => factory.order.loadInvoiceFailure(error))))
+    );
 
   constructor(private actions: Actions, private store: AppStore, private service: OrderService) { }
 }

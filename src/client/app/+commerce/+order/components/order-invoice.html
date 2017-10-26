@@ -1,0 +1,18 @@
+
+
+<ng-container *ngIf="invoice | async as invoice">
+  <br/>
+  <h2>Invoice</h2>
+  <hr/>
+  <section>
+    <pre>{{invoice.payee | json}}</pre>
+  </section>
+  <hr/>
+  <section>
+    <pre>{{invoice.order | json}}</pre>
+  </section>
+  <hr/>
+  <section>
+    <pre>{{invoice.documents | json}}</pre>
+  </section>
+</ng-container>
