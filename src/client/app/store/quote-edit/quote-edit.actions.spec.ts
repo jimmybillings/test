@@ -185,5 +185,38 @@ export function main() {
         error: { some: 'error' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'sendQuote',
+        parameters: [{
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017-03-22T06:00:00.000Z',
+          purchaseType: 'Standard'
+        }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Send Quote',
+        quoteOptions: {
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017-03-22T06:00:00.000Z',
+          purchaseType: 'Standard'
+        }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'sendQuoteSuccess',
+        parameters: [10, 'ross.edfort@wazeedigital.com']
+      },
+      expectedAction: {
+        type: '[Quote Edit] Send Quote Success',
+        quoteId: 10,
+        ownerEmail: 'ross.edfort@wazeedigital.com'
+      }
+    });
   });
 }

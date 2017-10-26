@@ -27,6 +27,10 @@ export class ActionFactory {
     return new GoToQuotes();
   }
 
+  public goToQuoteById(quoteId: number): GoToQuoteById {
+    return new GoToQuoteById(quoteId);
+  }
+
   public goToActiveQuote(): GoToActiveQuote {
     return new GoToActiveQuote();
   }
@@ -75,6 +79,12 @@ export class GoToSearchAssetDetails implements Action {
 export class GoToQuotes implements Action {
   public static readonly Type = '[Router] Go To Quotes';
   public readonly type = GoToQuotes.Type;
+}
+
+export class GoToQuoteById implements Action {
+  public static readonly Type = '[Router] Go To Quote By ID';
+  public readonly type = GoToQuoteById.Type;
+  constructor(public readonly quoteId: number) { }
 }
 
 export class GoToCollection implements Action {

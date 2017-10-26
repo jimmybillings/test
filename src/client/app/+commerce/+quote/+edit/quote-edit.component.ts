@@ -172,7 +172,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     this.dialogService.openFormDialog(
       this.config.createQuote.items,
       { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
-      this.onSubmitQuoteDialog
+      this.sendQuote
     );
   }
 
@@ -234,21 +234,15 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     this.quoteEditService.updateQuoteField(options);
   }
 
-  private onSubmitQuoteDialog = (form: QuoteOptions): void => {
-    this.sendQuote({
-      ownerEmail: form.ownerEmail,
-      expirationDate: new Date(form.expirationDate).toISOString(),
-      purchaseType: form.purchaseType.split(' ').join(''),
-      offlineAgreementId: form.offlineAgreementId
-    });
-  }
-
-  private sendQuote(options: QuoteOptions): void {
-    this.quoteEditService.sendQuote(options)
-      .do(() => {
-        this.router.navigate([`/quotes/${this.quoteEditService.quoteId}`]);
-        this.store.dispatch(factory => factory.snackbar.display('QUOTE.CREATED_FOR_TOAST', { emailAddress: options.ownerEmail }));
-      }).subscribe();
+  private sendQuote = (options: QuoteOptions): void => {
+    this.store.dispatch(factory =>
+      factory.quoteEdit.sendQuote({
+        ownerEmail: options.ownerEmail,
+        expirationDate: new Date(options.expirationDate).toISOString(),
+        purchaseType: options.purchaseType.split(' ').join(''),
+        offlineAgreementId: options.offlineAgreementId
+      })
+    );
   }
 
   private hasProperty = (property: string): string | undefined => {
