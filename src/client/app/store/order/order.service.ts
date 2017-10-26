@@ -14,7 +14,7 @@ export class OrderService {
   }
 
   public getInvoiceData(orderId: number): Observable<Invoice> {
-    return this.apiService.get(Api.Orders, `order/invoiceData/${orderId}`);
+    return this.apiService.get(Api.Orders, `order/invoiceData/${orderId}`, { loadingIndicator: true });
   }
 
   private normalize(order: Order): Order {

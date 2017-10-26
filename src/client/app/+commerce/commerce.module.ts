@@ -13,7 +13,7 @@ import { QuoteEditAssetResolver } from '../+commerce/+quote/services/quote-edit-
 import { QuoteShowAssetResolver } from '../+commerce/+quote/services/quote-show-asset.resolver';
 import { QuotesResolver } from '../+commerce/+quote/services/quotes.resolver';
 import { QuoteEditResolver } from '../+commerce/+quote/services/quote-edit.resolver';
-import { OrderInvoiceResolver } from './+order/services/order-invoice.resolver';
+import { InvoiceResolver } from './+order/services/invoice.resolver';
 import { CartGuard } from './+cart/services/cart.guard';
 import { QuoteEditGuard } from './+quote/services/quote-edit.guard';
 import { AssetModule } from '../+asset/asset.module';
@@ -32,7 +32,8 @@ import { CartConfirmTabComponent } from './+cart/components/tabs/cart-confirm-ta
 import { OrdersComponent } from './+order/+index/orders.component';
 import { OrderShowComponent } from './+order/+show/order-show.component';
 import { OrderAssetComponent } from './+order/components/order-asset.component';
-import { OrderInvoiceComponent } from './+order/components/order-invoice.component';
+
+import { InvoiceComponent } from './+order/components/invoice.component';
 
 // Quote Stuff
 import { QuoteShowComponent } from './+quote/+show/quote-show.component';
@@ -102,7 +103,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     OrderShowComponent,
     OrdersComponent,
     OrderAssetComponent,
-    OrderInvoiceComponent,
+    InvoiceComponent,
     CommerceListComponent,
     CommerceHeaderComponent,
     LicenseAgreementComponent,
@@ -133,7 +134,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     CartGuard,
     QuoteEditGuard,
     QuoteShowAssetResolver,
-    OrderInvoiceResolver
+    InvoiceResolver
   ],
   entryComponents: [LicenseAgreementComponent]
 })

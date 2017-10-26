@@ -5,14 +5,14 @@ import { Observable } from 'rxjs/Observable';
 import { AppStore } from '../../../app.store';
 
 @Injectable()
-export class OrderInvoiceResolver implements Resolve<boolean> {
+export class InvoiceResolver implements Resolve<boolean> {
   constructor(private store: AppStore) { }
 
   public resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-    const requestedOrderId: number = Number(route.params['id']);
+    const orderId: number = Number(route.params['id']);
 
-    this.store.dispatch(factory => factory.order.loadInvoice(requestedOrderId));
+    this.store.dispatch(factory => factory.invoice.load(orderId));
 
-    return this.store.blockUntil(state => !state.order.loading);
+    return this.store.blockUntil(state => !state.invoice.loading);
   }
 }

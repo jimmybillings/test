@@ -89,6 +89,7 @@ import * as CartState from '../store/cart/cart.state';
 import * as CommentState from '../store/comment/comment.state';
 import * as DeliveryOptionState from '../store/delivery-options/delivery-options.state';
 import * as HeaderDisplayOptions from '../store/header-display-options/header-display-options.state';
+import * as InvoiceState from '../store/invoice/invoice.state';
 import * as LoadingIndicatorState from '../store/loading-indicator/loading-indicator.state';
 import * as MultiLingualState from '../store/multi-lingual/multi-lingual.state';
 import * as OrderState from '../store/order/order.state';
@@ -125,6 +126,7 @@ import { DeliveryOptionsEffects } from '../store/delivery-options/delivery-optio
 import { DialogEffects } from '../store/dialog/dialog.effects';
 import { ErrorEffects } from '../store/error/error.effects';
 import { HeaderDisplayOptionsEffects } from '../store/header-display-options/header-display-options.effects';
+import { InvoiceEffects } from '../store/invoice/invoice.effects';
 import { MultiLingualEffects } from '../store/multi-lingual/multi-lingual.effects';
 import { NotifierEffects } from '../store/notifier/notifier.effects';
 import { OrderEffects } from '../store/order/order.effects';
@@ -216,6 +218,7 @@ const WAZEE_STORES: any = {
   comment: CommentState.reducer,
   deliveryOptions: DeliveryOptionState.reducer,
   headerDisplayOptions: HeaderDisplayOptions.reducer,
+  invoice: InvoiceState.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
   multiLingual: MultiLingualState.reducer,
   order: OrderState.reducer,
@@ -235,6 +238,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   DialogEffects,
   ErrorEffects,
   HeaderDisplayOptionsEffects,
+  InvoiceEffects,
   MultiLingualEffects,
   NotifierEffects,
   OrderEffects,

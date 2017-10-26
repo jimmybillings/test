@@ -12,8 +12,9 @@ import { OrderAssetComponent } from './+order/components/order-asset.component';
 import { OrderResolver } from './+order/services/order.resolver';
 import { OrderAssetResolver } from './+order/services/order-asset.resolver';
 import { OrdersResolver } from './+order/services/orders.resolver';
-import { OrderInvoiceComponent } from './+order/components/order-invoice.component';
-import { OrderInvoiceResolver } from './+order/services/order-invoice.resolver';
+
+import { InvoiceComponent } from './+order/components/invoice.component';
+import { InvoiceResolver } from './+order/services/invoice.resolver';
 
 import { QuoteShowComponent } from './+quote/+show/quote-show.component';
 import { QuoteEditAssetComponent } from './+quote/components/quote-edit-asset.component';
@@ -33,7 +34,7 @@ export const COMMERCE_ROUTES: Routes = [
   { path: 'cart/asset/:uuid', component: CartAssetComponent, resolve: { asset: CartAssetResolver } },
   { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },
   { path: 'orders/:id', component: OrderShowComponent, resolve: { order: OrderResolver } },
-  { path: 'orders/:id/invoice', component: OrderInvoiceComponent, resolve: { order: OrderInvoiceResolver } },
+  { path: 'orders/:id/invoice', component: InvoiceComponent, resolve: { invoice: InvoiceResolver } },
   { path: 'orders/:id/asset/:uuid', component: OrderAssetComponent, resolve: { orderAsset: OrderAssetResolver } },
   { path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver } },
   { path: 'quotes/:id', component: QuoteShowComponent, resolve: { quote: QuoteShowResolver } },

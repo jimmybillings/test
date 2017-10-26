@@ -1,13 +1,12 @@
 import * as OrderActions from './order.actions';
 import { Asset } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
-import { Order, Invoice } from '../../shared/interfaces/commerce.interface';
+import { Order } from '../../shared/interfaces/commerce.interface';
 
 export interface State {
   readonly activeOrder: Order;
   readonly loading: boolean;
   readonly checkingOut: boolean;
-  readonly invoice: Invoice;
 };
 
 export const initialState: State = {
@@ -36,7 +35,6 @@ export const initialState: State = {
   },
   loading: false,
   checkingOut: false,
-  invoice: null
 };
 
 export function reducer(state: State = initialState, action: OrderActions.Any): State {
@@ -57,10 +55,6 @@ export function reducer(state: State = initialState, action: OrderActions.Any): 
 
     case OrderActions.SetCheckoutState.Type: {
       return { ...Common.clone(state), checkingOut: action.checkingOut };
-    }
-
-    case OrderActions.LoadInvoiceSuccess.Type: {
-      return { ...Common.clone(state), invoice: action.invoice };
     }
 
     default: {

@@ -6,15 +6,15 @@ import { AppStore } from '../../../app.store';
 
 @Component({
   moduleId: module.id,
-  selector: 'order-invoice-component',
-  templateUrl: 'order-invoice.html',
+  selector: 'invoice-component',
+  templateUrl: 'invoice.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class OrderInvoiceComponent {
+export class InvoiceComponent {
   public invoice: Observable<Invoice>;
 
   constructor(private store: AppStore) {
-    this.invoice = this.store.select(state => state.order.invoice);
+    this.invoice = this.store.select(state => state.invoice.invoice);
   }
 }
