@@ -21,8 +21,10 @@ export class HelpRequestEffects {
     .do((formConfig: any) => {
       this.dialogService.openFormDialog(formConfig,
         {
+          dialogConfig: { position: { top: '9%' }, disableClose: false, panelClass: 'help-request-form' },
           title: 'ASSET.HELP.DIALOG_HEADER_TITLE',
           submitLabel: 'ASSET.HELP.FORM.SUBMIT_BTN_LABEL',
+          cancelLabel: 'ASSET.HELP.FORM.CANCEL_BTN_LABEL',
           autocomplete: 'off'
         },
         (formItems) => this.store.dispatch(factory => factory.helpRequest.SubmitHelpRequest(formItems))
@@ -33,7 +35,7 @@ export class HelpRequestEffects {
   public submitHelpRequest: Observable<Action> = this.actions.ofType(HelpRequestActions.SubmitHelpRequest.Type)
     .switchMap((action: HelpRequestActions.SubmitHelpRequest) =>
       this.service.submitHelpRequest(action.formItems)
-        .map(() => this.store.create(factory => factory.snackbar.display('This will be success message')))
+        .map(() => this.store.create(factory => factory.snackbar.display('ASSET.HELP.SUCCESS_SNACKBAR_MSG')))
     );
 
   constructor(

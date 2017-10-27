@@ -331,3 +331,11 @@ div.primary-info-t {
     }
   }
 }
+
+.help-request-form .mat-dialog-container .wz-dialog {
+  width: 422px;
+  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
+    width: 100%;
+    min-width: 68vw;
+  }
+}

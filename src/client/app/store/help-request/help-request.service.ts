@@ -15,10 +15,10 @@ export class HelpRequestService {
       'Content-Type': 'text/html',
       'Accept': 'text/html'
     };
-    return this.http.post(`https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8`, form, {
-      headers: new Headers(headers)
-    });
-    // return Observable.of({})
+    // return this.http.post(`https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8`, form, {
+    //   headers: new Headers(headers)
+    // });
+    return Observable.of({});
   }
 
 }
