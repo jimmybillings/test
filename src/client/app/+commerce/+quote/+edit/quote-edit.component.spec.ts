@@ -82,8 +82,7 @@ export function main() {
 
       componentUnderTest =
         new QuoteEditComponent(
-          mockCapabilities, mockQuoteEditService, mockDialogService,
-          mockWindow, mockUserPreference, mockStore, mockChangeDetectorRef
+          mockCapabilities, mockQuoteEditService, mockDialogService, mockStore, mockChangeDetectorRef
         );
     });
 
@@ -96,8 +95,7 @@ export function main() {
         quoteId: 1
       };
       componentUnderTest = new QuoteEditComponent(
-        mockCapabilities, mockQuoteEditService, mockDialogService,
-        mockWindow, mockUserPreference, mockStore, mockChangeDetectorRef
+        mockCapabilities, mockQuoteEditService, mockDialogService, mockStore, mockChangeDetectorRef
       );
       return componentUnderTest;
     };
