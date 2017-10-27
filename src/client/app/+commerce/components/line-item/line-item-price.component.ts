@@ -27,12 +27,19 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
             {{ 'QUOTE.MULTIPLIER_VALUE' | translate:{multiplier: formattedMultiplier} }}
           </div>
         </div>
+        <div *ngIf="showPreDiscountPrice" 
+          class="pre-discount"
+          layout="row"
+          layout-align="end center">
+          <div class="label" flex="100">{{ 'QUOTE.PRE_DISCOUNT_PRICE_LABEL' | translate }}</div>
+          <div class="pre-discount-price" flex="no-grow">{{ grossAssetPrice | currency:'USD':true:'1.2-2' }}</div>
+        </div>
         <div
           *ngIf="showAdminPrice"
           (click)="onClickPrice()"
           class="admin-price"
           [ngClass]="{'select-usage': needsAttributes }">
-          {{ price | currency:'USD':true:'1.2-2' }}
+            {{ price | currency:'USD':true:'1.2-2' }}
         </div>
         <div
           *ngIf="!showAdminPrice"
@@ -46,6 +53,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 export class LineItemPriceComponent {
   @Input() price: number;
   @Input() itemPrice: number;
+  @Input() grossAssetPrice: number;
   @Input() multiplier: number;
   @Input() userCanAdministerQuotes: boolean;
   @Input() rightsManaged: string;
@@ -71,6 +79,9 @@ export class LineItemPriceComponent {
 
   public get showAdminPrice(): boolean {
     return this.userCanAdministerQuotes && !this.needsAttributes;
+  }
+  public get showPreDiscountPrice(): boolean {
+    return this.userCanAdministerQuotes && (this.grossAssetPrice !== this.price);
   }
 
   public onClickPrice(): void {

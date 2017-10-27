@@ -109,7 +109,8 @@ li.cart-asset {
         }
       }
       .admin-price, .non-admin-price {
-        padding: 4px;
+        padding: 6px 0 4px 6px;
+        margin-top: 6px;
         &::first-letter {
           font-size: .78em;
           line-height: 1.355em;
@@ -119,7 +120,7 @@ li.cart-asset {
           content: " *";
         }
       }
-      .multiplier, .multiplier-base {
+      .multiplier, .multiplier-base, .pre-discount {
         // min-width: 150px;
         padding-bottom: 3px;
         font-size: 13px;
@@ -132,9 +133,9 @@ li.cart-asset {
           margin-right: 14px;
         }
       }
-      .multiplier-base {
+      .multiplier-base, .pre-discount {
         opacity: .8;
-        .multiplier-base-price {
+        .multiplier-base-price, .pre-discount-price {
           padding-top: 0;
           &::first-letter {
             font-size: .78em;
@@ -143,7 +144,7 @@ li.cart-asset {
           }
         }
       }
-      .multiplier .multiplier-value, .multiplier-base .multiplier-base-price {
+      .multiplier .multiplier-value, .multiplier-base .multiplier-base-price, .pre-discount, .pre-discount-price {
         padding-left: 7px;
       }
     }
