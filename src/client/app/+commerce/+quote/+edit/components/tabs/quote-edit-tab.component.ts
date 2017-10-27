@@ -6,13 +6,11 @@ import { WzDialogService } from '../../../../../shared/modules/wz-dialog/service
 import { Capabilities } from '../../../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../../../shared/services/window-ref.service';
-import { QuoteOptions, Project, Quote, AssetLineItem, OrderableType } from '../../../../../shared/interfaces/commerce.interface';
+import { Project, AssetLineItem, OrderableType } from '../../../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../../../shared/services/quote-edit.service';
-import { User } from '../../../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../../../shared/interfaces/common.interface';
 import { FormFields, MdSelectOption } from '../../../../../shared/interfaces/forms.interface';
 import { PricingStore } from '../../../../../shared/stores/pricing.store';
-import { CommentParentObject } from '../../../../../shared/interfaces/comment.interface';
 import { AppStore } from '../../../../../app.store';
 import { PricingService } from '../../../../../shared/services/pricing.service';
 import { Observable } from 'rxjs/Observable';
