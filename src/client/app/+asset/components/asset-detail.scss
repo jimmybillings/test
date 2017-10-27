@@ -111,15 +111,81 @@ section.preview-bk {
       }
     }
   }
+  div.primary-actions {
+    padding: 0 6px;
+    .list-price, .calculated-price, .starting {
+      span {
+        display: inline-block;
+        font-weight: 400;
+        line-height: 1;
+        &.starting {
+          font-size: 1.1em;
+          margin-right: 5px;
+        }
+        &.price::first-letter {
+          font-size: 12px;
+          font-weight: 300;
+          vertical-align: top;
+        }
+      }
+    }
+    &.searchAsset .list-price, 
+    &.searchAsset .calculated-price {
+      bottom: 130px;
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        bottom: 38px;
+      }
+    }
+    &.cartAsset .list-price, 
+    &.cartAsset .calculated-price,
+    &.quoteEditAsset .list-price, 
+    &.quoteEditAsset .calculated-price {
+      bottom: 222px;
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        bottom: 131px;
+      }
+    }
+    .contact-us-pricing {
+      width: calc(100% - 32px);
+      bottom: 135px;
+      display: block;
+      font-size: 1.12em;
+      font-weight: 200;
+      line-height: 1.1;
+      margin-left: 16px;
+      margin-right: 16px;
+      position: absolute;
+      right: 0;
+      text-align: center;
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        right: 0;
+      } 
+    }
+    button {
+      font-size: 12px;
+      .mat-icon {
+        font-size: 18px;
+        line-height: 1.32em;        
+      }
+    }
+  }
   div.primary-info {
     box-shadow: none;
     padding: 16px;
     position: relative;
-    height: 100%;
+    height: 92%;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       padding: 0;
       background-color: transparent;
       min-height: 335px;
+    }
+    .key {
+      font-weight: 600;
+      margin: 0px;
+    }
+    .value {
+      font-weight: 200;
+      margin: 6px;
     }
     div.primary-content {
       @media screen and (max-width: $layout-breakpoint-sm) and (min-width: $layout-breakpoint-xs)   {
@@ -156,62 +222,6 @@ section.preview-bk {
           padding-left: 12px;
           padding-right: 12px;
         }
-      }
-      .list-price, .calculated-price {
-        position: absolute;
-        bottom: 174px;
-        right: 37px;
-        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-          bottom: 84px;
-          right: 16px;
-        }
-        span {
-          display: inline-block;
-          font-size: 1.7em;
-          font-weight: 400;
-          line-height: 1;
-          &.starting {
-            font-size: 1.1em;
-            margin-right: 5px;
-          }
-          &.price::first-letter {
-            font-size: .7em;
-            font-weight: 200;
-            vertical-align: top;
-          }
-        }
-      }
-      &.searchAsset .list-price, 
-      &.searchAsset .calculated-price {
-        bottom: 130px;
-        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-          bottom: 38px;
-        }
-      }
-      &.cartAsset .list-price, 
-      &.cartAsset .calculated-price,
-      &.quoteEditAsset .list-price, 
-      &.quoteEditAsset .calculated-price {
-        bottom: 222px;
-        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-          bottom: 131px;
-        }
-      }
-      .contact-us-pricing {
-        width: calc(100% - 32px);
-        bottom: 135px;
-        display: block;
-        font-size: 1.12em;
-        font-weight: 200;
-        line-height: 1.1;
-        margin-left: 16px;
-        margin-right: 16px;
-        position: absolute;
-        right: 0;
-        text-align: center;
-        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-          right: 0;
-        } 
       }
       mat-card-actions {
         width: calc(100% - 42px);

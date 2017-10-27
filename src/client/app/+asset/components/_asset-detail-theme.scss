@@ -48,9 +48,13 @@
         }
       }
     }
+    div.primary-actions {
+      background-color: mat-color($primary, darker);
+      @include text-contrast(mat-color($primary, darker));
+    }
     div.primary-info {
       @include text-contrast(mat-color($foreground, base));
-      background-color: rgba(mat-color($foreground, base), .05);
+      background-color: rgba(mat-color($foreground, base), .1);
       div.primary-content {
         .contact-us-pricing {
           color: rgba(mat-color($accent, 500), .75);

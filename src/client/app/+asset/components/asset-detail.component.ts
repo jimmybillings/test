@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { Cart, Project } from '../../shared/interfaces/commerce.interface';
+import { Cart, Project, Metadatum } from '../../shared/interfaces/commerce.interface';
 import { Asset, Pojo, UiConfigComponents } from '../../shared/interfaces/common.interface';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MatMenuTrigger } from '@angular/material';
@@ -247,7 +247,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canPerformCartActions(): boolean {
-    return this.userCan.haveCart() && (this.isRoyaltyFree || (this.isRightsManaged && !!this._asset.price));
+    return this.userCan.haveCart() && (this.isRoyaltyFree || (this.isRightsManaged && this.hasPrice));
   }
 
   public get canSelectTranscodeTarget(): boolean {
@@ -255,7 +255,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canCalculatePrice(): boolean {
-    return this.isRightsManaged && this.userCan.calculatePrice();
+    return this.isRightsManaged && this.userCan.calculatePrice() && this.hasPrice;
   }
 
   public get canUpdateCartAsset(): boolean {
@@ -275,6 +275,14 @@ export class AssetDetailComponent implements OnInit {
 
   public get canAddToCart(): boolean {
     return this.userCan.addToCart();
+  }
+
+  public get primaryAssetFields(): Metadatum | { value: string }[] {
+    return this.asset.primary.slice(4, -1).filter(field => field.value !== null);
+  }
+
+  public translationReady(field: any) {
+    return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
   public get addToCartOrQuoteButtonLabelKey(): string {

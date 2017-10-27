@@ -67,7 +67,19 @@
               <mat-icon>file_download</mat-icon>
           </button>
 
-          <button mat-icon-button *ngIf="canShare" title="{{ shareButtonLabelKey | translate }}" (click)="sharing.show($event)">
+          <button
+            title="{{ 'ASSET.DETAIL.BUTTON.GO_TO_SEARCH_ASSET_DETAILS' | translate }}"
+            *ngIf="canGoToSearchAssetDetails"
+            mat-icon-button
+            (click)="goToSearchAssetDetails()">
+            <mat-icon>find_in_page</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            *ngIf="canShare"
+            title="{{ shareButtonLabelKey | translate }}"
+            (click)="sharing.show($event)">
             <mat-icon>share</mat-icon>
           </button>
 
@@ -153,63 +165,71 @@
       </div>
 
       <div flex-gt-xs="33" flex="100">
+        <div class="primary-actions" layout="row" layout-align="space-between center">
+          <div *ngIf="canCalculatePrice">
+            <button
+              title="{{ 'PRICING.CALCULATE_HEADING' | translate }}"
+              (click)="getPricingAttributes()"
+              class="rights-pkg"
+              mat-button>
+              <mat-icon>assignment</mat-icon>{{ 'PRICING.CALCULATE_HEADING' | translate }}
+            </button>
+          </div>
+          <div *ngIf="canShowPricingAndCartActions" layout="row">
+            <div *ngIf="hasPrice" class="list-price">
+              <span *ngIf="priceIsStartingPrice" class="starting">{{ 'ASSET.DETAIL.BASE_PRICE' | translate }}</span>
+              <span class="price">{{ price | currency:'USD':true:'1.2-2' }}</span>
+            </div>
+
+            <div *ngIf="hasNoPrice" class="contact-us-pricing">
+              {{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}
+            </div>
+          </div>
+          <div>
+            <button
+              title="{{ addToCartOrQuoteButtonLabelKey | translate }}"
+              data-pendo='asset-detail_add-to-cart-btn'
+              *ngIf="canAddToCart"
+              mat-icon-button
+              (click)="addAssetToCart()">
+                <mat-icon>add_shopping_cart</mat-icon>
+            </button>
+            <button
+              title="{{ removeFromCartOrQuoteButtonLabelKey | translate }}"
+              *ngIf="canUpdateCartAsset"
+              mat-icon-button
+              (click)="removeAssetFromCartOrQuote()">
+              <mat-icon>remove_shopping_cart</mat-icon>
+            </button>
+          </div>
+        </div>
+        
         <div flex="" layout="column" class="primary-info">
-          <div class="primary-content {{asset.type}}">
-            <h4 class="title-txt" *ngIf="asset.primary[5].value !== null">{{asset.primary[5].value}}</h4>
-            <p class="description-txt">{{asset.primary[6].value}}</p>
+          <div layout="column" layout-align="start start" *ngFor="let field of primaryAssetFields">
+            <div flex="100">
+              <h5 class="mat-subheading-1 key">{{ translationReady(field.name) | uppercase | translate }}:</h5>
+              <p class="mat-subheading-1 value">{{ field.value }}</p>
+            </div>
+          </div>
 
-            <div *ngIf="canShowPricingAndCartActions" layout="row">
-              <div *ngIf="hasPrice" class="list-price">
-                <span *ngIf="priceIsStartingPrice" class="starting">{{ 'ASSET.DETAIL.BASE_PRICE' | translate }}</span>
-                <span class="price">{{ price | currency:'USD':true:'1.2-2' }}</span>
-              </div>
+          <div class="primary-content {{ asset.type }}">           
+            <mat-card-actions *ngIf="canPerformCartActions" layout="column" layout-align="center center" layout-wrap="">
+                <mat-form-field *ngIf="canSelectTranscodeTarget">
+                  <mat-select (change)="onSelectTarget($event)" [(ngModel)]="selectedTarget">
+                    <mat-option *ngFor="let target of asset.transcodeTargets" [value]="target">
+                      {{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
 
-              <div *ngIf="hasNoPrice" class="contact-us-pricing">
-                {{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}
-              </div>
-
-              <mat-card-actions *ngIf="canPerformCartActions" layout="column" layout-align="center center" layout-wrap="">
-                  <mat-form-field *ngIf="canSelectTranscodeTarget">
-                    <mat-select (change)="onSelectTarget($event)" [(ngModel)]="selectedTarget">
-                      <mat-option *ngFor="let target of asset.transcodeTargets" [value]="target">
-                        {{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                <button *ngIf="canCalculatePrice" mat-button (click)="getPricingAttributes()" class="is-outlined">
-                  {{ 'PRICING.CALCULATE_HEADING' | translate }}
-                </button>
-
-                <button *ngIf="canUpdateCartAsset"
-                  [disabled]="assetMatchesCartAsset"
-                  mat-raised-button
-                  (click)="updateCartAsset()"
-                  color="primary">
-                  {{ updateCartAssetButtonLabelKey | translate }}
-                </button>
-
-                <button
-                  data-pendo='asset-detail_add-to-cart-btn'
-                  *ngIf="canAddToCart"
-                  mat-raised-button
-                  (click)="addAssetToCart()"
-                  color="primary">
-                  {{ addToCartOrQuoteButtonLabelKey | translate }}
-                </button>
-
-                <button
-                  *ngIf="canUpdateCartAsset"
-                  mat-raised-button
-                  (click)="removeAssetFromCartOrQuote()"
-                  color="accent">
-                  {{ removeFromCartOrQuoteButtonLabelKey | translate }}
-                </button>
-
-                <button *ngIf="canGoToSearchAssetDetails" class="is-outlined" mat-button (click)="goToSearchAssetDetails()">
-                  {{ 'ASSET.DETAIL.BUTTON.GO_TO_SEARCH_ASSET_DETAILS' | translate }}
-                </button>
-              </mat-card-actions>                  
-            </div>              
+              <button *ngIf="canUpdateCartAsset"
+                [disabled]="assetMatchesCartAsset"
+                mat-raised-button
+                (click)="updateCartAsset()"
+                color="primary">
+                {{ updateCartAssetButtonLabelKey | translate }}
+              </button>
+            </mat-card-actions>
           </div>
         </div>
       </div>
