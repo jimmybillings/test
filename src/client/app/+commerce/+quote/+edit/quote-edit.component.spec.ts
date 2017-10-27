@@ -14,7 +14,6 @@ export function main() {
     let mockCapabilities: any;
     let mockQuoteEditService: any;
     let mockDialogService: any;
-    let mockAssetService: any;
     let mockWindow: any;
     let mockUserPreference: any;
     let mockRouter: any;
@@ -86,7 +85,7 @@ export function main() {
 
       componentUnderTest =
         new QuoteEditComponent(
-          mockCapabilities, mockQuoteEditService, mockDialogService, mockAssetService,
+          mockCapabilities, mockQuoteEditService, mockDialogService,
           mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
         );
     });
@@ -100,7 +99,7 @@ export function main() {
         quoteId: 1
       };
       componentUnderTest = new QuoteEditComponent(
-        mockCapabilities, mockQuoteEditService, mockDialogService, mockAssetService,
+        mockCapabilities, mockQuoteEditService, mockDialogService,
         mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
       );
       return componentUnderTest;

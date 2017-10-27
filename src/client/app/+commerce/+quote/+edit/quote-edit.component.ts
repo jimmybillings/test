@@ -3,7 +3,6 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 import { Router } from '@angular/router';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { AssetService } from '../../../store/asset/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
@@ -37,7 +36,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public userCan: Capabilities,
     public quoteEditService: QuoteEditService,
     public dialogService: WzDialogService,
-    public assetService: AssetService,
     public window: WindowRef,
     public userPreference: UserPreferenceService,
     @Inject(DOCUMENT) public document: any,
@@ -47,7 +45,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public pricingService: PricingService
   ) {
     super(
-      userCan, quoteEditService, dialogService, assetService, window,
+      userCan, quoteEditService, dialogService, window,
       userPreference, document, pricingStore, store, pricingService
     );
     this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.quoteComment.config.form.items);

@@ -61,8 +61,7 @@
 						[userCan]="userCan" 
 						[assetType]="'search'"
 						[activeCollection]="activeCollection | async"
-						(onAddToCart)="addAssetToCart($event)" 
-						(onDownloadComp)="downloadComp($event)">
+						(onAddToCart)="addAssetToCart($event)">
 					</wz-asset-grid>
 				
 					<wz-asset-list *ngIf="(userPreferences.data | async).assetView =='list'" class="list" 
@@ -70,8 +69,7 @@
 						[userCan]="userCan"
 						[assetType]="'search'"
 						[activeCollection]="activeCollection | async"
-						(onAddToCart)="addAssetToCart($event)" 
-						(onDownloadComp)="downloadComp($event)">
+						(onAddToCart)="addAssetToCart($event)">
 					</wz-asset-list>
 				</content>
 

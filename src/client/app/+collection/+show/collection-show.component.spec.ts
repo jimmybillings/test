@@ -16,12 +16,10 @@ export function main() {
     let mockCollectionsService: any;
     let mockDialogService: any;
     let mockRouter: any;
-    let mockAsset: any;
     let handleCustomErrorSpy: jasmine.Spy;
     let snackBarDisplaySpy: jasmine.Spy;
     let canAdministerQuotes: boolean = true;
     let mockQuoteEditService: any;
-    let mockDownloadcompResponse: any = {};
     let mockCartService: any;
     let mockDocumentService: any;
     let mockUserPreferenceService: any;
@@ -34,11 +32,6 @@ export function main() {
       mockCapabilitiesService = {
         editCollection: jasmine.createSpy('editCollection').and.returnValue(Observable.of(true)),
         administerQuotes: () => canAdministerQuotes
-      };
-
-      mockAsset = {
-        downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of(mockDownloadcompResponse)),
-        getClipPreviewData: jasmine.createSpy('getClipPreviewData').and.returnValue(Observable.of({ url: 'test url' }))
       };
 
       mockChangeDetectorRef = { markForCheck: jasmine.createSpy('markForCheck') };
@@ -112,7 +105,7 @@ export function main() {
 
       componentUnderTest = new CollectionShowComponent(
         mockCapabilitiesService, mockRouter, mockCollectionsService, mockCartService,
-        mockUserPreferenceService, mockAsset, mockRoute, mockWindow, mockDialogService,
+        mockUserPreferenceService, mockRoute, mockWindow, mockDialogService,
         mockQuoteEditService, mockDocumentService, mockStore, mockChangeDetectorRef
       );
     });
@@ -213,36 +206,6 @@ export function main() {
 
     });
 
-    describe('downloadComp()', () => {
-      beforeEach(() => { mockDownloadcompResponse = { url: 'test url' }; });
-      it('Should call the api to download a comp with correct assetId and comp type', () => {
-
-        componentUnderTest.downloadComp({ assetId: 1, compType: 'comp' });
-        expect(mockAsset.downloadComp).toHaveBeenCalledWith(1, 'comp');
-      });
-
-      it('Should update the location url if one exists in the response', () => {
-
-        componentUnderTest.downloadComp({ assetId: 1, compType: 'comp' });
-        expect(mockWindow.nativeWindow.location.href).toEqual('test url');
-      });
-
-      it('Should throw a custom error if there is no url in the response', () => {
-        mockDownloadcompResponse = {};
-        mockAsset = {
-          downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of(mockDownloadcompResponse))
-        };
-        componentUnderTest = new CollectionShowComponent(
-          mockCapabilitiesService, mockRouter, mockCollectionsService, null, null,
-          mockAsset, mockRoute, mockWindow, mockDialogService, null, null, mockStore, mockChangeDetectorRef
-        );
-
-        componentUnderTest.downloadComp({ assetId: 1, compType: 'comp' });
-        expect(handleCustomErrorSpy).toHaveBeenCalledWith('COMPS.NO_COMP');
-      });
-
-    });
-
     describe('setCollectionForDelete()', () => {
       it('Should open the dialog to confirm delete of collection', () => {
         componentUnderTest.setCollectionForDelete();
@@ -303,13 +266,17 @@ export function main() {
     });
 
     describe('editAsset', () => {
+      let mockMethod: jasmine.Spy;
+
       beforeEach(() => {
+        mockMethod = mockStore.createLegacyServiceMethod('asset', 'getClipPreviewData', Observable.of({ url: 'test url' }));
         componentUnderTest.ngOnInit();
       });
 
       it('calls the api to get clip preview data with the correct asset id', () => {
         componentUnderTest.editAsset({ assetId: 123, name: 'test asset' } as any);
-        expect(mockAsset.getClipPreviewData).toHaveBeenCalledWith(123);
+
+        mockStore.expectCallFor(mockMethod, 123);
       });
 
       it('updates the document body with a new class', () => {
