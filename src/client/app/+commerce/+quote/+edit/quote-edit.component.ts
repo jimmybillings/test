@@ -1,4 +1,4 @@
-import { Component, Inject, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
@@ -21,7 +21,7 @@ import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class QuoteEditComponent {
+export class QuoteEditComponent implements OnInit {
   public tabLabelKeys: string[];
   public tabEnabled: boolean[];
   public selectedTabIndex: number;
@@ -117,10 +117,6 @@ export class QuoteEditComponent {
     return this.store.select(state => state.comment.quote.pagination.totalCount);
   }
 
-  public get purchaseTypeConfig(): MdSelectOption[] {
-    return this.config.quotePurchaseType.items;
-  }
-
   public addBulkOrderId(): void {
     this.dialogService.openFormDialog(
       this.mergeFormValues(this.config.addBulkOrderId.items, 'bulkOrderId'),
@@ -179,10 +175,6 @@ export class QuoteEditComponent {
     if (this.selectedTabIndex === 0) return;
     this.selectedTabIndex -= 1;
     this.detector.markForCheck();
-  }
-
-  public get quoteIsTrial(): Observable<boolean> {
-    return this.quoteEditService.data.map(quote => quote.data.purchaseType === 'Trial');
   }
 
   private updateQuoteField = (options: any): void => {

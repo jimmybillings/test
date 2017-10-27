@@ -17,15 +17,12 @@ export class QuoteEditSendTabComponent {
   public config: Pojo;
 
   constructor(
-    private dialogService: WzDialogService,
-    private quoteEditService: QuoteEditService,
-    private router: Router,
     private store: AppStore
   ) {
     this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
   }
 
-  public onSubmitQuoteDialog(options: QuoteOptions): void {
+  public onSubmitSendQuote(options: QuoteOptions): void {
     this.store.dispatch(factory =>
       factory.quoteEdit.sendQuote({
         ownerEmail: options.ownerEmail,

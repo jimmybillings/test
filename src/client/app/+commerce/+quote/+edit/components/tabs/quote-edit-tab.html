@@ -32,7 +32,7 @@
       </span>
       <span class="total-amount" flex="nogrow">{{ quoteEditService.hasProperty('discount') | async }}</span>
     </div>
-    <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="total mat-headline">
+    <div *ngIf="!(quoteIsTrial | async)" flex="100" layout="row" layout-align="end center" class="total mat-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_TOTAL' | translate }} 
       </span>

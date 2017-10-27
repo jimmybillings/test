@@ -94,6 +94,10 @@ export class QuoteEditTabComponent extends CommerceEditTab implements OnDestroy 
     };
   }
 
+  public get quoteIsTrial(): Observable<boolean> {
+    return this.quoteEditService.data.map(quote => quote.data.purchaseType === 'Trial');
+  }
+
   public get showDiscount(): boolean {
     return !!this.hasProperty('discount') && this.quoteType !== 'Trial';
   }
@@ -147,10 +151,6 @@ export class QuoteEditTabComponent extends CommerceEditTab implements OnDestroy 
       (form: { price: number }) => {
         this.store.dispatch(factory => factory.quoteEdit.addCustomPriceToLineItem(lineItem, form.price));
       });
-  }
-
-  private updateQuoteField = (options: any): void => {
-    this.quoteEditService.updateQuoteField(options);
   }
 
   private hasProperty = (property: string): string | undefined => {
