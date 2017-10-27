@@ -25,15 +25,7 @@ export class QuoteEditSendTabComponent {
     this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
   }
 
-  public onOpenQuoteDialog(): void {
-    this.dialogService.openFormDialog(
-      this.config.createQuote.items,
-      { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
-      this.sendQuote
-    );
-  }
-
-  private sendQuote(options: QuoteOptions): void {
+  public onSubmitQuoteDialog(options: QuoteOptions): void {
     this.store.dispatch(factory =>
       factory.quoteEdit.sendQuote({
         ownerEmail: options.ownerEmail,
@@ -43,4 +35,5 @@ export class QuoteEditSendTabComponent {
       })
     );
   }
+
 }
