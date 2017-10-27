@@ -75,7 +75,6 @@ section.preview-bk {
     position: relative;
     height: 100%;
     width: 100%;
-    
     &::before {
       content: " ";
       position: absolute;
@@ -112,7 +111,7 @@ section.preview-bk {
     }
   }
   div.primary-actions {
-    padding: 0 6px;
+    padding: 4px 8px;
     .list-price, .calculated-price, .starting {
       span {
         display: inline-block;
@@ -171,21 +170,25 @@ section.preview-bk {
   }
   div.primary-info {
     box-shadow: none;
-    padding: 16px;
     position: relative;
-    height: 92%;
+    height: 90%;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       padding: 0;
       background-color: transparent;
       min-height: 335px;
     }
-    .key {
-      font-weight: 600;
-      margin: 0px;
-    }
-    .value {
-      font-weight: 200;
-      margin: 6px;
+    .metadata {
+      padding: 12px;
+      max-height: 75%;
+      overflow-y: scroll;
+      .key {
+        font-weight: 600;
+        margin: 0px;
+      }
+      .value {
+        font-weight: 200;
+        margin: 6px;
+      }
     }
     div.primary-content {
       @media screen and (max-width: $layout-breakpoint-sm) and (min-width: $layout-breakpoint-xs)   {
@@ -224,7 +227,7 @@ section.preview-bk {
         }
       }
       mat-card-actions {
-        width: calc(100% - 42px);
+        width: 98%;
         margin: 0;
         padding: 0 8px 6px 16px;
         position: absolute;

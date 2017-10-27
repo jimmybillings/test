@@ -165,7 +165,12 @@
       </div>
 
       <div flex-gt-xs="33" flex="100">
-        <div class="primary-actions" layout="row" layout-align="space-between center">
+        <div
+          class="primary-actions"
+          layout="column"
+          layout-gt-sm="row"
+          layout-align="center center"
+          layout-align-gt-sm="space-between center">
           <div *ngIf="canCalculatePrice">
             <button
               title="{{ 'PRICING.CALCULATE_HEADING' | translate }}"
@@ -205,11 +210,13 @@
         </div>
         
         <div flex="" layout="column" class="primary-info">
-          <div layout="column" layout-align="start start" *ngFor="let field of primaryAssetFields">
-            <div flex="100">
-              <h5 class="mat-subheading-1 key">{{ translationReady(field.name) | uppercase | translate }}:</h5>
-              <p class="mat-subheading-1 value">{{ field.value }}</p>
-            </div>
+          <div class="metadata" layout="column" layout-align="start start">
+            <ng-container *ngFor="let field of primaryAssetFields">
+              <div flex="100">
+                <h5 class="mat-subheading-1 key">{{ translationReady(field.name) | uppercase | translate }}:</h5>
+                <p class="mat-subheading-1 value">{{ field.value }}</p>
+              </div>
+            </ng-container>
           </div>
 
           <div class="primary-content {{ asset.type }}">           
