@@ -61,6 +61,7 @@ export class AssetDetailComponent implements OnInit {
   private activeCollectionContainsAssetId: boolean = false;
   private activeCollectionContainsAssetUuid: boolean = false;
   private pageSize: number;
+  private helpRequestConfigExists: boolean;
 
   constructor(
     private store: AppStore) { }
@@ -69,6 +70,7 @@ export class AssetDetailComponent implements OnInit {
     const config: UiConfigComponents = this.store.snapshotCloned(state => state.uiConfig.components);
     this.pageSize = parseInt(config.global.config.pageSize.value);
     this.shareComponentConfig = config.assetSharing.config;
+    this.helpRequestConfigExists = !!config.helpRequest;
     this.setDeliveryOptionsFlag();
   }
 
@@ -307,11 +309,11 @@ export class AssetDetailComponent implements OnInit {
     this.store.dispatch(factory => factory.router.goToSearchAssetDetails(this._asset.assetId, this.subclipMarkers));
   }
 
-  public get canGetHelp(): boolean {
-    return this.assetTypeIsOneOf('searchAsset');
+  public get canRequestHelp(): boolean {
+    return this.assetTypeIsOneOf('searchAsset') && this.helpRequestConfigExists;
   }
 
-  public showHelpRequest() {
+  public showHelpRequest(): void {
     this.store.dispatch(factory => factory.helpRequest.showHelpRequest(this._asset.getMetadataValueFor('name')));
   }
 

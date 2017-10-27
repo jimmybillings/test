@@ -49,7 +49,8 @@ export function main() {
       mockStore.createStateSection('uiConfig', {
         components: {
           global: { config: { pageSize: { value: '50' } } },
-          assetSharing: { config: {} }
+          assetSharing: { config: {} },
+          helpRequest: { config: { form: {} } },
         }
       });
 
@@ -1007,6 +1008,50 @@ export function main() {
         componentUnderTest.updateCartAsset();
 
         expect(componentUnderTest.updateAssetLineItem.emit).toHaveBeenCalled();
+      });
+    });
+
+    describe('canRequestHelp getter', () => {
+      const tests: { assetType: AssetType, helpConfigExists: boolean, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', helpConfigExists: true, expectedResult: false },
+        { assetType: 'collectionAsset', helpConfigExists: true, expectedResult: false },
+        { assetType: 'orderAsset', helpConfigExists: true, expectedResult: false },
+        { assetType: 'quoteEditAsset', helpConfigExists: true, expectedResult: false },
+        { assetType: 'quoteShowAsset', helpConfigExists: true, expectedResult: false },
+        { assetType: 'searchAsset', helpConfigExists: true, expectedResult: true },
+        { assetType: 'searchAsset', helpConfigExists: false, expectedResult: false }
+      ];
+      let conf = {
+        components: { global: { config: { pageSize: { value: '2' } } }, assetSharing: { config: {} } }
+      } as any;
+      let helpRequestConf = {
+        components: { global: { config: { pageSize: { value: '2' } } }, helpRequest: { config: {} }, assetSharing: { config: {} } }
+      } as any;
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} when asset type is '${test.assetType}' and the helpRequest config object 
+        ${test.helpConfigExists ? 'exists' : 'does not exist'} in the ui config`, () => {
+            if (!test.helpConfigExists) {
+              mockStore.createStateSection('uiConfig', conf);
+              componentUnderTest.ngOnInit();
+            }
+            if (test.helpConfigExists) {
+              mockStore.createStateSection('uiConfig', helpRequestConf);
+              componentUnderTest.ngOnInit();
+            }
+            componentUnderTest.asset = enhanceAsset(mockAsset, test.assetType);
+            expect(componentUnderTest.canRequestHelp).toBe(test.expectedResult);
+          });
+      });
+    });
+
+    describe('showHelpRequest', () => {
+      it('dispatches the expected action with the asset name', () => {
+        const spy = mockStore.createActionFactoryMethod('helpRequest', 'showHelpRequest');
+        componentUnderTest.asset = enhanceAsset(mockAsset, 'searchAsset');
+
+        componentUnderTest.showHelpRequest();
+
+        mockStore.expectDispatchFor(spy, componentUnderTest.asset.assetName);
       });
     });
   });

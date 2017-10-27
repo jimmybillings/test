@@ -71,7 +71,9 @@
             <mat-icon>share</mat-icon>
           </button>
 
-          <button mat-icon-button *ngIf="canGetHelp" title="{{ 'ASSET.DETAIL.REQUEST_HELP_BTN_TITLE' | translate }}" (click)="showHelpRequest()">
+          <button mat-icon-button *ngIf="canRequestHelp" 
+            title="{{ 'ASSET.DETAIL.REQUEST_HELP_BTN_TITLE' | translate }}" 
+            (click)="showHelpRequest()">
             <mat-icon>help_outline</mat-icon>
           </button>
 
