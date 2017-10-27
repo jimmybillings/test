@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
 import {
-  Project, AssetLineItem, Cart, QuoteType, QuoteOptions, Asset, PriceAttribute
+  Project, AssetLineItem, Cart, OrderableType, QuoteOptions, Asset, PriceAttribute
 } from '../../../shared/interfaces/commerce.interface';
 import { MatDialogRef } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -28,7 +28,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public config: any;
   public priceAttributes: Array<PriceAttribute> = null;
   public pricingPreferences: Pojo;
-  public quoteType: QuoteType = null;
+  public quoteType: OrderableType = null;
   protected preferencesSubscription: Subscription;
   protected usagePrice: Observable<number>;
 
@@ -105,7 +105,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   public get userCanProceed(): boolean {
-    return (this.quoteType === 'ProvisionalOrder') || (this.rmAssetsHaveAttributes && !this.cartContainsNoAssets);
+    return (this.quoteType === 'Trial') || (this.rmAssetsHaveAttributes && !this.cartContainsNoAssets);
   }
 
   public get rmAssetsHaveAttributes(): boolean {

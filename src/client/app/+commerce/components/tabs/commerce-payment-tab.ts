@@ -5,7 +5,9 @@ import { QuoteService } from '../../../shared/services/quote.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import { QuoteState, CartState, CheckoutState, OrderType, PaymentOptions } from '../../../shared/interfaces/commerce.interface';
+import {
+  QuoteState, CartState, CheckoutState, PaymentOption, PaymentOptions
+} from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { AppStore } from '../../../app.store';
 
@@ -13,7 +15,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   public serverErrors: any = null;
   public successfullyVerified: Subject<any> = new Subject();
-  public selectedPaymentOption: OrderType = null;
+  public selectedPaymentOption: PaymentOption = null;
   public fields: Observable<FormFields>;
 
   constructor(
@@ -51,12 +53,8 @@ export class CommercePaymentTab extends Tab implements OnInit {
   }
 
   public selectPurchaseOnCredit() {
-    // if (event.checked) {
-    this.commerceService.updateOrderInProgress('selectedPaymentType', 'PurchaseOnCredit');
+    this.commerceService.updateSelectedPaymentType('PurchaseOnCredit');
     this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
-    // } else {
-    // this.disableTab(3);
-    // }
   }
 
   public preAuthorize(form: any) {
@@ -66,7 +64,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
         this._zone.run(() => {
           if (status === 200) {
             this.commerceService.updateOrderInProgress('authorization', response);
-            this.commerceService.updateOrderInProgress('selectedPaymentType', 'CreditCard');
+            this.commerceService.updateSelectedPaymentType('CreditCard');
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
             this.successfullyVerified.next(true);
             this.ref.markForCheck();

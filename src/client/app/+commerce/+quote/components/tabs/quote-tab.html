@@ -46,7 +46,7 @@
 	*ngIf="shouldShowCheckoutOptions"
   class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
-    <ng-container *ngIf="!(quoteIsProvisionalOrder | async)">
+    <ng-container *ngIf="!(quoteIsTrial | async)">
       <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal mat-headline">
         <span class="total-label" flex="100">
           {{ 'CART.CART_SUBTOTAL' | translate }} 
@@ -70,10 +70,10 @@
         </span>
       </div>
     </ng-container>
-    <ng-container *ngIf="quoteIsProvisionalOrder | async">
-      <div flex="100" layout="row" layout-align="end center" class="provisional mat-headline">
-        <span class="provisional-msg" flex="100">
-          {{ 'QUOTE.PROVISIONAL_USE_ONLY_MSG' | translate }}
+    <ng-container *ngIf="quoteIsTrial | async">
+      <div flex="100" layout="row" layout-align="end center" class="trial mat-headline">
+        <span class="trial-msg" flex="100">
+          {{ 'QUOTE.TRIAL_USE_ONLY_MSG' | translate }}
         </span>
       </div>
     </ng-container>

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { QuoteService } from '../../../shared/services/quote.service';
-import { Quote, QuoteState, AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.interface';
+import { Quote, QuoteState, AssetLineItem, OrderableType } from '../../../shared/interfaces/commerce.interface';
 import { Observable } from 'rxjs/Observable';
 import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
@@ -71,7 +71,7 @@ export class QuoteShowComponent implements OnInit {
   }
 
   public get trStringForPurchaseType(): string {
-    return `QUOTE.${this.hasPurchaseType ? this.quoteService.state.data.purchaseType : 'Standard'}`;
+    return `QUOTE.${this.quoteService.state.data.purchaseType}`;
   }
 
   public onNotification(message: CommerceMessage): void {

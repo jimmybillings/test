@@ -10,9 +10,9 @@ export function main() {
 
     describe('get displayPriceButton()', () => {
       describe('returns true', () => {
-        it('when the asset is RM and quoteType is not ProvisionalOrder', () => {
+        it('when the asset is RM and quoteType is not Trial', () => {
           componentUnderTest.rightsReproduction = 'Rights Managed';
-          componentUnderTest.quoteType = 'OfflineAgreement';
+          componentUnderTest.quoteType = 'NotTrial' as any;
 
           expect(componentUnderTest.displayPriceButton).toBe(true);
         });
@@ -21,21 +21,21 @@ export function main() {
       describe('returns false', () => {
         it('when the asset is not RM', () => {
           componentUnderTest.rightsReproduction = 'Royalty Free';
-          componentUnderTest.quoteType = 'OfflineAgreement';
+          componentUnderTest.quoteType = 'Not Trial' as any;
 
           expect(componentUnderTest.displayPriceButton).toBe(false);
         });
 
-        it('when the asset is RM but the quote type is ProvisionalOrder', () => {
+        it('when the asset is RM but the quote type is Trial', () => {
           componentUnderTest.rightsReproduction = 'Rights Managed';
-          componentUnderTest.quoteType = 'ProvisionalOrder';
+          componentUnderTest.quoteType = 'Trial';
 
           expect(componentUnderTest.displayPriceButton).toBe(false);
         });
 
-        it('when the asset is not RM AND the quote type is ProvisionalOrder', () => {
+        it('when the asset is not RM AND the quote type is Trial', () => {
           componentUnderTest.rightsReproduction = 'Royalty Free';
-          componentUnderTest.quoteType = 'ProvisionalOrder';
+          componentUnderTest.quoteType = 'Trial';
 
           expect(componentUnderTest.displayPriceButton).toBe(false);
         });

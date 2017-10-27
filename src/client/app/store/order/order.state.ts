@@ -13,6 +13,7 @@ export const initialState: State = {
   activeOrder: {
     id: 0,
     paymentTerms: '',
+    paymentType: null,
     poNumber: '',
     discount: 0,
     bulkOrderId: '',

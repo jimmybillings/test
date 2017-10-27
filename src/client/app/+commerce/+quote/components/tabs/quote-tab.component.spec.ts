@@ -302,25 +302,25 @@ export function main() {
       });
     });
 
-    describe('quoteIsProvisionalOrder', () => {
-      it('returns true if the quote is of type \'ProvisionalOrder\'', () => {
+    describe('quoteIsTrial', () => {
+      it('returns true if the quote is of type \'Trial\'', () => {
         mockStore = new MockAppStore();
         mockStore.createStateSection('uiConfig', { components: { cart: { config: {} } } });
-        mockQuoteService = { data: Observable.of({ data: { purchaseType: 'ProvisionalOrder' } }), projects: Observable.of([]) };
+        mockQuoteService = { data: Observable.of({ data: { purchaseType: 'Trial' } }), projects: Observable.of([]) };
         componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, null, mockStore);
         let is: boolean;
-        componentUnderTest.quoteIsProvisionalOrder.take(1).subscribe(res => is = res);
+        componentUnderTest.quoteIsTrial.take(1).subscribe(res => is = res);
 
         expect(is).toBe(true);
       });
 
-      it('returns false if the quote is NOT of type \'ProvisionalOrder\'', () => {
+      it('returns false if the quote is NOT of type \'Trial\'', () => {
         mockStore = new MockAppStore();
         mockStore.createStateSection('uiConfig', { components: { cart: { config: {} } } });
         mockQuoteService = { data: Observable.of({ data: { purchaseType: 'Blah' } }), projects: Observable.of([]) };
         componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, null, mockStore);
         let is: boolean;
-        componentUnderTest.quoteIsProvisionalOrder.take(1).subscribe(res => is = res);
+        componentUnderTest.quoteIsTrial.take(1).subscribe(res => is = res);
 
         expect(is).toBe(false);
       });
