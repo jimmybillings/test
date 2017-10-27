@@ -1,8 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { WzDialogService } from '../../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { QuoteOptions } from '../../../../../shared/interfaces/commerce.interface';
-import { QuoteEditService } from '../../../../../shared/services/quote-edit.service';
-import { Router } from '@angular/router';
 import { AppStore } from '../../../../../app.store';
 import { Pojo } from '../../../../../shared/interfaces/common.interface';
 
