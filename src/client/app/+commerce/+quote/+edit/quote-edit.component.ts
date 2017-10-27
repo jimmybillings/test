@@ -1,18 +1,12 @@
-import { Component, Inject, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
-import { UserPreferenceService } from '../../../shared/services/user-preference.service';
-import { WindowRef } from '../../../shared/services/window-ref.service';
-import { QuoteOptions, Project, OrderableType, Quote, AssetLineItem, CommerceMessage } from '../../../shared/interfaces/commerce.interface';
+import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
-import { User } from '../../../shared/interfaces/user.interface';
-import { WzEvent } from '../../../shared/interfaces/common.interface';
-import { FormFields, MdSelectOption } from '../../../shared/interfaces/forms.interface';
+import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
 import { AppStore } from '../../../app.store';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 
 @Component({
   moduleId: module.id,
@@ -34,9 +28,7 @@ export class QuoteEditComponent implements OnInit {
     public userCan: Capabilities,
     public quoteEditService: QuoteEditService,
     public dialogService: WzDialogService,
-    public window: WindowRef,
-    public userPreference: UserPreferenceService,
-    protected store: AppStore,
+    private store: AppStore,
     private detector: ChangeDetectorRef
   ) {
     this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.quoteComment.config.form.items);
