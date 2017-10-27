@@ -55,14 +55,6 @@ export class ProjectsComponent {
     }
   }
 
-  public addBulkOrderId() {
-    this.projectsNotify.emit({ type: 'ADD_BULK_ORDER_ID' });
-  }
-
-  public editDiscount() {
-    this.projectsNotify.emit({ type: 'EDIT_DISCOUNT' });
-  }
-
   public onClickAddFeeButtonFor(project: Project): void {
     this.quoteEditService.feeConfig.subscribe(feeConfig => {
       this.dialogService.openFormDialog(

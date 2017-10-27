@@ -41,6 +41,10 @@ import { QuoteEditAssetComponent } from './+quote/components/quote-edit-asset.co
 import { QuoteShowAssetComponent } from './+quote/components/quote-show-asset.component';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 
+// Quote Edit Tabs
+import { QuoteEditTabComponent } from './+quote/+edit/components/tabs/quote-edit-tab.component';
+import { QuoteEditSendTabComponent } from './+quote/+edit/components/tabs/quote-edit-send-tab.component';
+
 // tabs
 import { QuoteTabComponent } from './+quote/components/tabs/quote-tab.component';
 import { QuoteBillingTabComponent } from './+quote/components/tabs/quote-billing-tab.component';
@@ -113,7 +117,9 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuoteTabComponent,
     QuoteBillingTabComponent,
     QuotePaymentTabComponent,
-    QuoteConfirmTabComponent
+    QuoteConfirmTabComponent,
+    QuoteEditTabComponent,
+    QuoteEditSendTabComponent
   ],
   exports: [CartComponent, OrderShowComponent, OrdersComponent],
   providers: [

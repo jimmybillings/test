@@ -68,69 +68,23 @@
   </section>
 </section>
 
+
 <section class="tabs-section quote-section">
   <div layout="row" flex="100" layout-align="center start">
     <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-      <div flex>
-        <quote-purchase-type-component
-          flex-gt-xs="auto" 
-          flex="100" 
-          layout-gt-xs="row" 
-          layout="column" 
-          layout-align="start"
-          [quoteTypes]="purchaseTypeConfig"
-          (selectQuoteType)="onSelectQuoteType($event)">
-        </quote-purchase-type-component>
-
-        <projects-component
-          [quoteType]="quoteType"
-          [projects]="projects"
-          [config]="config" 
-          [userCan]="userCan"
-          (projectsNotify)="onNotification($event)">
-        </projects-component>
-
-        <section class="cart-total" layout="row" layout-align="center center">
-          <div flex="100">
-            <div *ngIf="showDiscount" flex="100" layout="row" layout-align="end center" class="subtotal mat-headline">
-              <span class="total-label" flex="100">
-                {{ 'CART.CART_SUBTOTAL' | translate }} 
-              </span>
-              <span class="total-amount" flex="nogrow">
-                {{ quoteEditService.subTotal | async | currency:'USD':true:'1.2-2' }}
-              </span>
-            </div>
-            <div *ngIf="showDiscount" flex="100" layout="row" layout-align="end center" class="discount mat-headline">
-              <span class="total-label" flex="100">
-                {{ 'CART.CART_DISCOUNT' | translate }} 
-              </span>
-              <span class="total-amount" flex="nogrow">{{ quoteEditService.hasProperty('discount') | async }}</span>
-            </div>
-            <div *ngIf="!(quoteIsTrial | async)" flex="100" layout="row" layout-align="end center" class="total mat-headline">
-              <span class="total-label" flex="100">
-                {{ 'CART.CART_TOTAL' | translate }} 
-              </span>
-              <span class="total-amount" flex="nogrow">
-                {{ quoteEditService.total | async | currency:'USD':true:'1.2-2' }}
-              </span>
-            </div>
-            <div flex="100" layout="row" layout-align="center center">
-              <administer-quote-component
-                flex="100"
-                [userCanProceed]="userCanProceed"
-                [shouldShowCloneButton]="shouldShowCloneButton | async"
-                (openQuoteDialog)="onOpenQuoteDialog()"
-                (openDeleteDialog)="onOpenDeleteQuoteDialog()"
-                (saveAndNew)="onCreateQuote()"
-                (cloneQuote)="onCloneQuote()">
-              </administer-quote-component>
-            </div>
-            <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="showUsageWarning">
-              {{ 'CART.SELECT_USAGE_WARN' | translate }}
-            </div>
-          </div>
-        </section>
-      </div>
+      <mat-tab-group [(selectedIndex)]="selectedTabIndex">
+        <mat-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
+          <ng-template mat-tab-label>{{ tabLabelKey | uppercase }}</ng-template>
+          <quote-edit-tab-component
+            *ngIf="tabLabelKey === 'active quote'"
+            (notify)="onNotification($event)">
+          </quote-edit-tab-component>
+          <quote-edit-send-tab-component
+            *ngIf="tabLabelKey === 'send'"
+            (notify)="onNotification($event)">
+          </quote-edit-send-tab-component>
+        </mat-tab>
+      </mat-tab-group>
     </div>
   </div>
 </section>

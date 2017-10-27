@@ -1,12 +1,9 @@
-import { Component, Inject, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
-import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
-import { Router } from '@angular/router';
+import { Component, Inject, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
-import { QuoteOptions, Project, OrderableType, Quote, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
+import { QuoteOptions, Project, OrderableType, Quote, AssetLineItem, CommerceMessage } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
@@ -15,6 +12,7 @@ import { CommentParentObject } from '../../../shared/interfaces/comment.interfac
 import { AppStore } from '../../../app.store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 
 @Component({
   moduleId: module.id,
@@ -23,12 +21,14 @@ import { Subscription } from 'rxjs/Subscription';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
+export class QuoteEditComponent {
+  public tabLabelKeys: string[];
+  public tabEnabled: boolean[];
+  public selectedTabIndex: number;
+  public config: any;
   public commentFormConfig: Array<FormFields>;
   public commentParentObject: CommentParentObject;
   public showComments: boolean = null;
-  public projects: Project[];
-  private projectSubscription: Subscription;
 
   constructor(
     public userCan: Capabilities,
@@ -36,59 +36,57 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public dialogService: WzDialogService,
     public window: WindowRef,
     public userPreference: UserPreferenceService,
-    @Inject(DOCUMENT) public document: any,
-    public router: Router,
     protected store: AppStore,
+    private detector: ChangeDetectorRef
   ) {
-    super(
-      userCan, quoteEditService, dialogService, window, userPreference, document, store
-    );
     this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.quoteComment.config.form.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
-    this.projectSubscription = this.quoteEditService.projects.subscribe(projects => this.projects = projects);
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
   }
 
-  ngOnDestroy() {
-    this.projectSubscription.unsubscribe();
+  ngOnInit() {
+    // We could initialize a subset of these instead, based on some condition.
+    // For example, don't include 'billing' and 'payment' if the cart total is 0.
+    // this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
+    // I think the confirm tab should be place order
+    this.tabLabelKeys = ['active quote', 'send'];
+
+    // Enable the first tab and disable the rest.
+    this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
+
+    this.selectedTabIndex = 0;
   }
 
-  public onNotification(message: WzEvent): void {
+  public onNotification(message: CommerceMessage): void {
     switch (message.type) {
-      case 'ADD_BULK_ORDER_ID':
-        this.addBulkOrderId();
+      case 'OPEN_DELETE_DIALOG':
+        this.onOpenDeleteQuoteDialog();
         break;
 
-      case 'EDIT_DISCOUNT':
-        this.editDiscount();
+      case 'SAVE_AND_NEW':
+        this.onCreateQuote();
         break;
 
-      case 'ADD_QUOTE_FEE':
-        this.quoteEditService.addFeeTo(message.payload.project, message.payload.fee);
+      case 'CLONE_QUOTE':
+        this.onCloneQuote();
         break;
 
-      case 'REMOVE_QUOTE_FEE':
-        this.quoteEditService.removeFee(message.payload);
+      case 'GO_TO_NEXT_TAB': {
+        this.goToNextTab();
         break;
-
-      case 'SHOW_COST_MULTIPLIER_DIALOG':
-        this.openCostMultiplierDialog(message.payload);
+      }
+      case 'GO_TO_PREVIOUS_TAB': {
+        this.goToPreviousTab();
         break;
-
-      case 'REMOVE_COST_MULTIPLIER':
-        this.removeCostMultiplierFrom(message.payload);
+      }
+      case 'GO_TO_TAB': {
+        this.goToTab(message.payload);
         break;
-
-      case 'OPEN_BULK_IMPORT_DIALOG':
-        this.onOpenBulkImportDialog(message.payload);
-        break;
-
-      case 'ADD_CUSTOM_PRICE':
-        this.onAddCustomPriceTo(message.payload);
-        break;
-
-      default:
-        super.onNotification(message);
-    };
+      }
+      case 'DISABLE_TAB': {
+        this.disableTab(message.payload);
+      }
+    }
   }
 
   public get bulkOrderIdActionLabel(): string {
@@ -107,10 +105,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     return this.hasProperty('discount') ? 'QUOTE.EDIT_DISCOUNT_FORM_SUBMIT' : 'QUOTE.ADD_DISCOUNT_FORM_SUBMIT';
   }
 
-  public get showDiscount(): boolean {
-    return !!this.hasProperty('discount') && this.quoteType !== 'Trial';
-  }
-
   public get shouldShowCloneButton(): Observable<boolean> {
     return this.userCan.cloneQuote(this.quoteEditService.data);
   }
@@ -125,16 +119,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
 
   public get purchaseTypeConfig(): MdSelectOption[] {
     return this.config.quotePurchaseType.items;
-  }
-
-  public onSelectQuoteType(event: { type: OrderableType }): void {
-    this.quoteType = event.type;
-    this.config.createQuote.items.map((item: FormFields) => {
-      if (item.name === 'purchaseType') {
-        item.value = this.viewValueFor(event.type);
-      }
-      return item;
-    });
   }
 
   public addBulkOrderId(): void {
@@ -161,14 +145,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     );
   }
 
-  public onOpenQuoteDialog(): void {
-    this.dialogService.openFormDialog(
-      this.config.createQuote.items,
-      { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
-      this.sendQuote
-    );
-  }
-
   public onOpenDeleteQuoteDialog(): void {
     this.dialogService.openConfirmationDialog({
       title: 'QUOTE.DELETE.TITLE',
@@ -190,37 +166,19 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
       .subscribe();
   }
 
-  public onOpenBulkImportDialog(projectId: string): void {
-    this.dialogService.openFormDialog(
-      this.config.bulkImport.items,
-      { title: 'QUOTE.BULK_IMPORT.TITLE', submitLabel: 'QUOTE.BULK_IMPORT.SUBMIT_BTN', autocomplete: 'off' },
-      (form: { lineItemAttributes: string }) => {
-        this.quoteEditService.bulkImport(form, projectId)
-          .do(() =>
-            this.store.dispatch(factory => factory.snackbar.display(
-              'QUOTE.BULK_IMPORT.CONFIRMATION',
-              { numOfAssets: form.lineItemAttributes.split('\n').length })
-            )
-          )
-          .subscribe();
-      }
-    );
+  private goToNextTab(): void {
+    let nextSelectedTabIndex: number = this.selectedTabIndex + 1;
+    if (nextSelectedTabIndex >= this.tabLabelKeys.length) return;
+
+    this.tabEnabled[nextSelectedTabIndex] = true;
+    this.selectedTabIndex = nextSelectedTabIndex;
+    this.detector.markForCheck();
   }
 
-  public onAddCustomPriceTo(lineItem: AssetLineItem): void {
-    this.dialogService.openFormDialog(
-      [{
-        name: 'price',
-        label: 'Price',
-        value: String(lineItem.grossAssetPrice),
-        type: 'number',
-        min: '0',
-        validation: 'GREATER_THAN'
-      }],
-      { title: 'QUOTE.ADD_CUSTOM_PRICE_TITLE', submitLabel: 'QUOTE.ADD_CUSTOM_PRICE_SUBMIT', autocomplete: 'off' },
-      (form: { price: number }) => {
-        this.store.dispatch(factory => factory.quoteEdit.addCustomPriceToLineItem(lineItem, form.price));
-      });
+  private goToPreviousTab(): void {
+    if (this.selectedTabIndex === 0) return;
+    this.selectedTabIndex -= 1;
+    this.detector.markForCheck();
   }
 
   public get quoteIsTrial(): Observable<boolean> {
@@ -231,15 +189,14 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     this.quoteEditService.updateQuoteField(options);
   }
 
-  private sendQuote = (options: QuoteOptions): void => {
-    this.store.dispatch(factory =>
-      factory.quoteEdit.sendQuote({
-        ownerEmail: options.ownerEmail,
-        expirationDate: new Date(options.expirationDate).toISOString(),
-        purchaseType: options.purchaseType.split(' ').join(''),
-        offlineAgreementId: options.offlineAgreementId
-      })
-    );
+  private disableTab(tabIndex: number) {
+    this.tabEnabled[tabIndex] = false;
+    this.detector.markForCheck();
+  }
+
+  private goToTab(tabIndex: number) {
+    this.selectedTabIndex = tabIndex;
+    this.detector.markForCheck();
   }
 
   private hasProperty = (property: string): string | undefined => {
@@ -259,39 +216,8 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     });
   }
 
-  private openCostMultiplierDialog(lineItem: AssetLineItem): void {
-    this.dialogService.openFormDialog(
-      this.costMultiplierFormItems(lineItem),
-      { title: this.costMultiplierFormTitle(lineItem), submitLabel: this.costMultiplierFormSubmitLabel(lineItem) },
-      (result: { multiplier: string }): void => this.quoteEditService.editLineItem(lineItem, result)
-    );
-  }
-
-  private costMultiplierFormItems(lineItem: AssetLineItem): Array<FormFields> {
-    return lineItem.multiplier > 1 ?
-      [Object.assign({}, this.config.addCostMultiplier.items[0], { value: lineItem.multiplier })] :
-      this.config.addCostMultiplier.items;
-  }
-
-  private costMultiplierFormTitle(lineItem: AssetLineItem): string {
-    return lineItem.multiplier > 1 ? 'QUOTE.EDIT_MULTIPLIER_TITLE' : 'QUOTE.ADD_MULTIPLIER_TITLE';
-  }
-
-  private costMultiplierFormSubmitLabel(lineItem: AssetLineItem): string {
-    return lineItem.multiplier > 1 ? 'QUOTE.EDIT_MULTIPLIER_FORM_SUBMIT' : 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT';
-  }
-
-  private removeCostMultiplierFrom(lineItem: AssetLineItem): void {
-    this.quoteEditService.editLineItem(lineItem, { multiplier: 1 });
-  }
-
   private deleteQuote = (): void => {
     this.store.dispatch(factory => factory.quoteEdit.delete());
   }
 
-  private viewValueFor(quoteType: OrderableType): string {
-    return this.purchaseTypeConfig.filter((option: { viewValue: string, value: OrderableType }) => {
-      return option.value === quoteType;
-    }).map((option: MdSelectOption) => option.viewValue)[0];
-  }
 }
