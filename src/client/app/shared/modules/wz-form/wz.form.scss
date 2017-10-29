@@ -60,8 +60,10 @@ wz-cc-form button.mini.is-outlined {
 }
 
 mat-checkbox.ng-dirty.ng-invalid {  
-  mat-hint.mat-hint.error {
-    bottom: 100px;
+ .mat-error {
+   position: absolute;
+   font-size: 75%;
+   line-height: 1.125;
   }  
 }
 
@@ -76,3 +78,7 @@ form .two-col div[flex="50"]:last-child {
 .mat-radio-group .mat-radio-button {
   padding: 3px 0;
 }
+.mat-form-field {
+  width: 100%;
+}
+

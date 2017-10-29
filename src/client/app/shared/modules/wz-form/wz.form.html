@@ -24,27 +24,27 @@
 				{{ field.hintTextEnd | translate }}
 			</mat-hint>
 
-			<mat-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
-				align="start" class="error">
+			<mat-error *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
+				align="start">
 				<span *ngIf="form.controls[field.name].hasError('required')">
-              {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
-            </span>
+          {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+        </span>
 				<span *ngIf="form.controls[field.name].hasError('minlength')">
-              {{ 'ERRORS.MIN_LENGTH_REQUIRED' | translate:{charLength:form.controls[field.name]._errors.minlength.requiredLength} }}
-            </span>
+          {{ 'ERRORS.MIN_LENGTH_REQUIRED' | translate:{charLength:form.controls[field.name]._errors.minlength.requiredLength} }}
+        </span>
 				<span *ngIf="form.controls[field.name].hasError('pattern') && !form.controls[field.name].hasError('minlength')">
-              {{ 'ERRORS.VALID_EMAIL_REQUIRED' | translate }}
-            </span>
+          {{ 'ERRORS.VALID_EMAIL_REQUIRED' | translate }}
+        </span>
 				<span *ngIf="form.controls[field.name].hasError('startsWithNumber')">
-              {{ 'ERRORS.NAME_ALREADY_TAKEN' | translate:{fieldName:field.label | translate} }}
-            </span>
+          {{ 'ERRORS.NAME_ALREADY_TAKEN' | translate:{fieldName:field.label | translate} }}
+        </span>
 				<span *ngIf="form.controls[field.name].hasError('collectionNameTaken')">
-              Name is already taken
-            </span>
+          Name is already taken
+        </span>
 				<span *ngIf="form.controls[field.name].hasError('serverError')">
-              {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
-            </span>
-			</mat-hint>
+          {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
+        </span>
+			</mat-error>
 		</mat-input-container>
 		<!--
         END: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
@@ -66,18 +66,17 @@
         placeholder="{{field.label | translate}}"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         [required]="isRequiredField(field)">
-      <mat-hint
+      <mat-error
         *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
         [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
-				align="start"
-        class="error">
+				align="start">
         <span *ngIf="form.controls[field.name].hasError('required')">
           {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
         </span>
         <span *ngIf="form.controls[field.name].hasError('tooLow')">
           {{ 'ERRORS.NUMBER_TOO_LOW' | translate:{min:field.min} }}
         </span>
-      </mat-hint>
+      </mat-error>
     </mat-input-container>
     <!--
       END: FORM INPUT FOR NUMBER
@@ -149,6 +148,11 @@
       <mat-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
         {{ field.hintTextEnd | translate }}
       </mat-hint>
+      <mat-error *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt">
+        <span *ngIf="form.controls[field.name].hasError('required')">
+          {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+        </span>
+      </mat-error>
     </mat-input-container>
 		<!--
         END: FORM INPUT FOR textarea
@@ -176,10 +180,8 @@
         </mat-hint>
 
         
-        <mat-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
-          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
-          align="start" 
-          class="error">
+        <mat-error *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
+          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt">
             <span *ngIf="form.controls[field.name].hasError('required')">
               {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
             </span>
@@ -192,7 +194,7 @@
             <span *ngIf="form.controls[field.name].hasError('serverError')">
               {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
             </span>  
-        </mat-hint>
+        </mat-error>
       </mat-input-container>
 
       <mat-input-container *ngIf="field.name == 'newPassword'">
@@ -215,10 +217,8 @@
           {{ field.hintTextEnd | translate }}
         </mat-hint>
 
-        <mat-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
-          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
-          align="start" 
-          class="error">
+        <mat-error *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
+          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt">
             <span *ngIf="form.controls[field.name].hasError('required')">
               {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
             </span>
@@ -228,7 +228,7 @@
             <span *ngIf="form.controls[field.name].hasError('serverError')">
               {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
             </span>   
-        </mat-hint>
+        </mat-error>
       </mat-input-container>
       <!--
         END: FORM CONFIRM PASSWORD DOUBLE FIELD
@@ -278,12 +278,11 @@
 			<mat-checkbox layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked" color="primary" [required]="isRequiredField(field)">
 				{{ field.label | translate }}&nbsp;
 
-				<mat-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
-					align="start" class="error">
+				<mat-error *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt">
 					<span *ngIf="form.controls[field.name].hasError('mustBeCheckedError')">
 						{{ 'ERRORS.AGREE_TO_TOS' | translate }}
 					</span>
-				</mat-hint>
+				</mat-error>
 			</mat-checkbox>
 			<a *ngIf="field.name == 'tos'" class="view-tos" (click)="onAction.emit(field)">{{ field.link | translate }}</a>
 		</span>
@@ -326,16 +325,14 @@
 				formControlName="{{field.name}}"
 				type="text"
 				[required]="isRequiredField(field)">
-				<mat-hint *ngIf="hasErrorType(form.controls[field.name])" 
-					align="start" 
-					class="error">
-						<span *ngIf="form.controls[field.name].hasError('required')">
-							{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
-						</span>
-						<span *ngIf="form.controls[field.name].hasError('serverError')">
-							{{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
-						</span>
-				</mat-hint>
+				<mat-error *ngIf="hasErrorType(form.controls[field.name])">
+          <span *ngIf="form.controls[field.name].hasError('required')">
+            {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+          </span>
+          <span *ngIf="form.controls[field.name].hasError('serverError')">
+            {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
+          </span>
+				</mat-error>
 			</mat-input-container>
 		</wz-input-suggestions>
 	</div>

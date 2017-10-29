@@ -1,50 +1,16 @@
 @mixin wz-form-theme($theme) {
   $warn: map-get($theme, warn);
 
-  mat-select.show-errors.ng-invalid:not(.mat-select-disabled),
-  mat-select.ng-touched.ng-dirty.ng-invalid:not(.mat-select-disabled),
-  mat-input.show-errors.ng-invalid,
-  .mat-form-field.mat-input-invalid.ng-dirty.ng-invalid,
-  .mat-form-field.ng-touched.ng-dirty.ng-invalid { 
-    .mat-select-placeholder,
-    .mat-input-placeholder {
-      color: mat-color($warn, 600);
-      &.mat-float.mat-focused .mat-placeholder-required {
-        color: mat-color($warn, 600);
-      }
-    }
-    .mat-select-arrow,
-    .mat-select-trigger {
-      color: mat-color($warn, 600);
-    }
-    .mat-select-trigger {
-      border-bottom: 1px solid mat-color($warn, 600);
-    }
-    .mat-input-wrapper {
-      .mat-input-underline {
-        border-top-color: mat-color($warn, 600);
-        .mat-input-ripple {
-          background-color: mat-color($warn, 600);
-        }
-      }
-    } 
-    mat-hint.error {
-      color: mat-color($warn, 600);
-    }
-  }
-
   mat-checkbox.ng-dirty.ng-invalid {
-    .mat-checkbox-inner-container {
-      .mat-checkbox-frame {
-      color: mat-color($warn, 600); 
-      }
+    .mat-checkbox-inner-container .mat-checkbox-frame {
+      border-color: mat-color($warn); 
     }
-    mat-hint.mat-hint.error {
-      color: mat-color($warn, 600);
-    }  
+    .mat-checkbox-label {
+      color: mat-color($warn);
+    }
   }
   .mat-form-field {
     width: 100%;
-  }
+  }  
 }
 
