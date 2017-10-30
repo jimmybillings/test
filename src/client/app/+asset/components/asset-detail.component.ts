@@ -247,7 +247,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canPerformCartActions(): boolean {
-    return this.userCan.haveCart() && (this.isRoyaltyFree || (this.isRightsManaged && this.hasPrice));
+    return this.userCan.haveCart() && (this.isRoyaltyFree || (this.isRightsManaged && !!this._asset.price));
   }
 
   public get canSelectTranscodeTarget(): boolean {
@@ -255,7 +255,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canCalculatePrice(): boolean {
-    return this.isRightsManaged && this.userCan.calculatePrice() && this.hasPrice;
+    return this.isRightsManaged && this.userCan.calculatePrice();
   }
 
   public get canUpdateCartAsset(): boolean {
