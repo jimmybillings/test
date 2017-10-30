@@ -122,7 +122,7 @@ export function main() {
       });
     });
 
-    describe('edit()', () => {
+    describe('onEdit()', () => {
       it('emits the proper request event', () => {
         let project: any = { a: 'b', c: 'd', e: 'f' };
 
@@ -147,6 +147,14 @@ export function main() {
           });
 
         classUnderTest.onEdit(project);
+      });
+
+      it('does not attempt to emit data if the project is readOnly', () => {
+        classUnderTest.readOnly = true;
+        let project: any = { a: 'b', c: 'd', e: 'f' };
+        classUnderTest.onEdit(project);
+        spyOn(classUnderTest, 'projectsNotify');
+        expect(classUnderTest.projectsNotify).not.toHaveBeenCalled();
       });
     });
 
