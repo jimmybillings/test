@@ -139,5 +139,17 @@ export function main() {
         type: '[Router] Go To Cart'
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'goToQuoteById',
+        parameters: [1]
+      },
+      expectedAction: {
+        type: '[Router] Go To Quote By ID',
+        quoteId: 1
+      }
+    });
   });
 }

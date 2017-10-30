@@ -10,12 +10,13 @@ import {
   Order,
   QuoteOptions,
   CheckoutState,
-  OrderType,
-  QuoteType,
+  OrderableType,
+  PaymentType,
   AddressPurchaseOptions,
   CreditCardPurchaseOptions,
   PurchaseOptions,
   PaymentOptions,
+  PaymentOption,
   Project,
   LicenseAgreements,
   AssetLineItem
@@ -77,7 +78,7 @@ export class QuoteService {
     return this.data.map((state: QuoteShowState) => state.data.total);
   }
 
-  public get paymentType(): Observable<OrderType> {
+  public get paymentType(): Observable<PaymentOption> {
     return this.checkoutData.map((state: CheckoutState) => state.selectedPaymentType);
   }
 
@@ -102,18 +103,18 @@ export class QuoteService {
     this.checkoutStore.updateOrderInProgress(type, data);
   }
 
+  public updateSelectedPaymentType(type: PaymentOption): void {
+    this.checkoutStore.updateOrderInProgress('selectedPaymentType', type);
+  }
+
   public purchase(): Observable<number> {
     switch (this.checkoutState.selectedPaymentType) {
       case 'CreditCard':
         return this.purchaseWithCreditCard();
       case 'PurchaseOnCredit':
         return this.purchaseOnCredit();
-      case 'ProvisionalOrder':
-        return this.purchaseQuoteType('ProvisionalOrder');
-      case 'OfflineAgreement':
-        return this.purchaseQuoteType('OfflineAgreement');
       default:
-        return Observable.of(NaN);
+        return this.purchaseQuoteType();
     }
   }
 
@@ -121,18 +122,16 @@ export class QuoteService {
     this.api.get(Api.Orders, `quote/paymentOptions/${this.state.data.id}`)
       .subscribe((options: PaymentOptions) => {
         this.updateOrderInProgress('paymentOptions', options);
-        if (options.paymentOptions.length === 1) {
-          this.updateOrderInProgress('selectedPaymentType', options.paymentOptions[0]);
-        }
+        this.updateSelectedPaymentType(this.defaultPaymentTypeFor(options));
       });
   }
 
-  public paymentOptionsEqual(options: Array<OrderType>): Observable<boolean> {
+  public paymentOptionsEqual(options: Array<PaymentOption>): Observable<boolean> {
     return this.paymentOptions.map((pmtOpts: PaymentOptions) => {
       if (!pmtOpts) return false;
       pmtOpts.paymentOptions.sort();
       return options.length === pmtOpts.paymentOptions.length &&
-        options.sort().every((option: OrderType, index: number) => option === pmtOpts.paymentOptions[index]);
+        options.sort().every((option: PaymentOption, index: number) => option === pmtOpts.paymentOptions[index]);
     });
   }
 
@@ -162,6 +161,13 @@ export class QuoteService {
   }
 
   // Private Methods
+  private defaultPaymentTypeFor(options: PaymentOptions): PaymentOption {
+    if (options.paymentOptions.length === 1) {
+      return options.paymentOptions[0];
+    }
+    return 'CreditCard';
+  }
+
   private update(id: number, quote: Quote): Observable<Quote> {
     return this.api.put(Api.Orders, `quote/${id}`, { body: quote, loadingIndicator: 'onBeforeRequest' });
   }
@@ -193,8 +199,11 @@ export class QuoteService {
     ).map((order: Order) => order.id);
   }
 
-  private purchaseQuoteType(type: QuoteType): Observable<number> {
-    const options: AddressPurchaseOptions = Object.assign({}, { orderType: type }, this.addressPurchaseOptions);
+  private purchaseQuoteType(): Observable<number> {
+    const options: AddressPurchaseOptions = Object.assign(
+      {}, { orderType: this.state.data.purchaseType },
+      this.addressPurchaseOptions
+    );
     return this.api.post(
       Api.Orders,
       `quote/${this.state.data.id}/checkout/convertToOrder`,

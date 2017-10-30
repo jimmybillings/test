@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { CommercePaymentTab } from '../../../components/tabs/commerce-payment-tab';
 import { QuoteService } from '../../../../shared/services/quote.service';
-import { QuoteState, QuoteType } from '../../../../shared/interfaces/commerce.interface';
+import { QuoteState, PaymentOptions } from '../../../../shared/interfaces/commerce.interface';
 import { AppStore } from '../../../../app.store';
 
 @Component({
@@ -23,16 +23,18 @@ export class QuotePaymentTabComponent extends CommercePaymentTab {
     super(_zone, quoteService, store, ref);
   }
 
-  public get showProvisionalOrderMessage(): Observable<boolean> {
-    return this.quoteService.paymentOptionsEqual(['ProvisionalOrder']);
+  public get showTrialMessage(): Observable<boolean> {
+    return this.quoteService.paymentOptionsEqual(['Trial']);
   }
 
   public get showOfflineAgreementMessage(): Observable<boolean> {
-    return this.quoteService.paymentOptionsEqual(['OfflineAgreement']);
+    return this.quoteService.paymentOptions.map((options: PaymentOptions) => {
+      return options && options.paymentOptions.every(o => o.includes('Offline'));
+    });
   }
 
   public selectInvoiceLater() {
-    this.quoteService.updateOrderInProgress('selectedPaymentType', 'OfflineAgreement');
+    this.quoteService.updateSelectedPaymentType(this.quoteService.state.data.purchaseType);
     this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
   }
 }

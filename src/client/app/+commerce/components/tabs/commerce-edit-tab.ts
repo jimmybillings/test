@@ -5,12 +5,11 @@ import { Observable } from 'rxjs/Observable';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
 import {
-  Project, AssetLineItem, Cart, QuoteType, QuoteOptions, Asset, PriceAttribute
+  Project, AssetLineItem, Cart, OrderableType, QuoteOptions, Asset, PriceAttribute
 } from '../../../shared/interfaces/commerce.interface';
 import { MatDialogRef } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
-import { AssetService } from '../../../store/asset/asset.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
@@ -28,7 +27,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public config: any;
   public priceAttributes: Array<PriceAttribute> = null;
   public pricingPreferences: Pojo;
-  public quoteType: QuoteType = null;
+  public quoteType: OrderableType = null;
   protected preferencesSubscription: Subscription;
   protected usagePrice: Observable<number>;
 
@@ -36,7 +35,6 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     public userCan: CommerceCapabilities,
     protected commerceService: CartService | QuoteEditService,
     protected dialogService: WzDialogService,
-    protected assetService: AssetService,
     protected window: WindowRef,
     protected userPreference: UserPreferenceService,
     protected document: any,
@@ -105,7 +103,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   public get userCanProceed(): boolean {
-    return (this.quoteType === 'ProvisionalOrder') || (this.rmAssetsHaveAttributes && !this.cartContainsNoAssets);
+    return (this.quoteType === 'Trial') || (this.rmAssetsHaveAttributes && !this.cartContainsNoAssets);
   }
 
   public get rmAssetsHaveAttributes(): boolean {
@@ -251,7 +249,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   protected editAsset(lineItem: AssetLineItem) {
-    this.assetService.getClipPreviewData(lineItem.asset.assetId)
+    this.store.callLegacyServiceMethod(service => service.asset.getClipPreviewData(lineItem.asset.assetId))
       .subscribe(data => {
         this.document.body.classList.add('subclipping-edit-open');
         lineItem.asset.clipUrl = data.url;

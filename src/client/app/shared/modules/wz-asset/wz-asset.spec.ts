@@ -82,16 +82,6 @@ export function main() {
       });
     });
 
-    describe('downloadComp()', () => {
-      it('Should emit an event to download a comp', () => {
-        spyOn(componentUnderTest.onDownloadComp, 'emit');
-        componentUnderTest.setAssetActiveId(mockEnhancedAsset);
-        componentUnderTest.downloadComp('clean');
-        expect(componentUnderTest.onDownloadComp.emit).toHaveBeenCalledWith(
-          { 'assetId': mockAsset.assetId, 'compType': 'clean' });
-      });
-    });
-
     describe('removeFromCollection()', () => {
       it('Should emit an event to edit an asset', () => {
         spyOn(componentUnderTest.onEditAsset, 'emit');

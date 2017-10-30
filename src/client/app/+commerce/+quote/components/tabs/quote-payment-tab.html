@@ -52,8 +52,8 @@
       <section flex-lg="35" flex="30" hide-sm hide-xs></section>
     </div>
 
-    <!--Provisional Order-->
-    <section *ngIf="showProvisionalOrderMessage | async"
+    <!--Trial-->
+    <section *ngIf="showTrialMessage | async"
       layout="column"
       layout-align="center center"
       mat-scroll-y=""
@@ -61,7 +61,7 @@
 
       <header flex="100" layout="column" layout-align="center center">
         <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
-        <p class="instructions">{{ 'CHECKOUT.PAYMENT.PROVISIONAL_MSG' | translate }}</p>
+        <p class="instructions">{{ 'CHECKOUT.PAYMENT.TRIAL_MSG' | translate }}</p>
       </header>
 
       <div class="proceed" flex="100" layout="row" layout-align="end end">

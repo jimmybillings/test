@@ -127,15 +127,6 @@ export function main() {
       });
     });
 
-    describe('downloadComp()', () => {
-      it('Should emit an event to download a comp with the right parameters', () => {
-        spyOn(componentUnderTest.onDownloadComp, 'emit');
-        componentUnderTest.downloadComp(1234, 'master');
-        expect(componentUnderTest.onDownloadComp.emit)
-          .toHaveBeenCalledWith({ 'compType': 'master', 'assetId': 1234 });
-      });
-    });
-
     describe('addAssetToCart()', () => {
       it('Should emit an event to add an asset to the cart/quote without subclipping', () => {
         componentUnderTest.asset = { assetId: 1234, transcodeTargets: transcodeTargets } as any;

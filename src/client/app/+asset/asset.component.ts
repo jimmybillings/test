@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
-import { AssetService } from '../store/asset/asset.service';
-import { AddAssetParameters, PriceAttribute, Cart, Asset } from '../shared/interfaces/commerce.interface';
+import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
 import { WzEvent, SelectedPriceAttributes } from '../shared/interfaces/common.interface';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
@@ -50,7 +49,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   constructor(
     public currentUser: CurrentUserService,
     public userCan: Capabilities,
-    public assetService: AssetService,
     public window: WindowRef,
     private router: Router,
     private route: ActivatedRoute,
@@ -105,16 +103,6 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   public get searchContextState(): SearchState {
     return this.searchContext.state;
-  }
-
-  public downloadComp(params: any): void {
-    this.assetService.downloadComp(params.assetId, params.compType).subscribe((res) => {
-      if (res.url && res.url !== '') {
-        this.window.nativeWindow.location.href = res.url;
-      } else {
-        this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
-      }
-    });
   }
 
   public addAssetToCart(parameters: any): void {

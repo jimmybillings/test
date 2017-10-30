@@ -1,7 +1,9 @@
 import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuoteService } from '../../../../shared/services/quote.service';
-import { Quote, QuoteState, Project, AssetLineItem, FeeLineItem } from '../../../../shared/interfaces/commerce.interface';
+import {
+  Quote, QuoteState, Project, AssetLineItem, FeeLineItem, OrderableType
+} from '../../../../shared/interfaces/commerce.interface';
 import { Tab } from '../../../components/tabs/tab';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { Observable } from 'rxjs/Observable';
@@ -138,8 +140,8 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
     );
   }
 
-  public get quoteIsProvisionalOrder(): Observable<boolean> {
-    return this.quote.map(quote => quote.purchaseType === 'ProvisionalOrder');
+  public get quoteIsTrial(): Observable<boolean> {
+    return this.quote.map(quote => quote.purchaseType === 'Trial');
   }
 
   private get isActiveQuote(): boolean {

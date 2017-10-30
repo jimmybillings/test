@@ -90,16 +90,6 @@ export class SearchComponent implements OnDestroy {
     }
   }
 
-  public downloadComp(params: any): void {
-    this.search.downloadComp(params.assetId, params.compType).subscribe((res) => {
-      if (res.url && res.url !== '') {
-        this.window.nativeWindow.location.href = res.url;
-      } else {
-        this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
-      }
-    });
-  }
-
   public changePage(page: any): void {
     this.searchContext.update = { i: page };
     this.searchContext.go();

@@ -10,8 +10,8 @@ export function main() {
 
     beforeEach(() => {
       mockQuoteService = {
-        state: { data: { id: 1, purchaseType: 'ProvisionalOrder' } },
-        data: Observable.of({ data: { id: 1, purchaseType: 'ProvisionalOrder' } }),
+        state: { data: { id: 1, purchaseType: 'Trial' } },
+        data: Observable.of({ data: { id: 1, purchaseType: 'Trial' } }),
         retrieveLicenseAgreements: jasmine.createSpy('retriveLicenseAgreements')
           .and.returnValue(Observable.of({ some: 'licenses' })),
         hasAssetLineItems: true
@@ -59,59 +59,32 @@ export function main() {
       });
     });
 
-    describe('showPricing() getter', () => {
-      describe('returns false', () => {
-        it('when the quote is of type \'ProvisionalOrder\'', () => {
-          let showPricing: boolean;
-          componentUnderTest.showPricing.take(1).subscribe(result => showPricing = result);
-          expect(showPricing).toBe(false);
-        });
-      });
-
+    describe('quoteIsTrial() getter', () => {
       describe('returns Observable of true', () => {
-        it('when the quote is not of type \'ProvisionalOrder\'', () => {
-          mockQuoteService = {
-            data: Observable.of({ data: { purchaseType: 'NotProvisionalOrder' } }),
-          };
-          componentUnderTest = new QuoteConfirmTabComponent(null, mockQuoteService, null, null);
-
-          let showPricing: boolean;
-          componentUnderTest.showPricing.take(1).subscribe(result => showPricing = result);
-          expect(showPricing).toBe(true);
-        });
-      });
-    });
-
-    describe('quoteIsProvisionalOrder() getter', () => {
-      describe('returns Observable of true', () => {
-        it('when the quote is provisional order', () => {
-          let quoteIsProvisionalOrder: boolean;
-          componentUnderTest.quoteIsProvisionalOrder.take(1).subscribe(result => quoteIsProvisionalOrder = result);
-          expect(quoteIsProvisionalOrder).toBe(true);
+        it('when the quote is trial', () => {
+          let quoteIsTrial: boolean;
+          componentUnderTest.quoteIsTrial.take(1).subscribe(result => quoteIsTrial = result);
+          expect(quoteIsTrial).toBe(true);
         });
       });
     });
 
     describe('canPurchase getter', () => {
       describe('returns true', () => {
-        it('when the quote is of type \'ProvisionalOrder\'', () => {
+        it('when the quote is of type \'Trial\'', () => {
           expect(componentUnderTest.canPurchase).toBe(true);
         });
 
-        it('when the quote is not of type \'ProvisionalOrder\', but the other conditions are met', () => {
+        it('when the quote is not of type \'Trial\', but the other conditions are met', () => {
           componentUnderTest.licensesAreAgreedTo = true;
-          mockQuoteService = { hasAssetLineItems: true, state: { data: { purchaseType: 'Not Provisional Order' } } };
+          mockQuoteService = { hasAssetLineItems: true, state: { data: { purchaseType: 'Not Trial' } } };
           expect(componentUnderTest.canPurchase).toBe(true);
         });
       });
 
       describe('returns false', () => {
         it('everything is false', () => {
-          // quote.purchaseType !== 'ProvisionalOrder'
-          // quoteService.hasAssetLineItems === false
-          // userCan.viewLicenseAgreementsButton === false
-          // licensesAreAgreedTo === false
-          mockQuoteService = { hasAssetLineItems: false, state: { data: { purchaseType: 'Not Provisional Order' } } };
+          mockQuoteService = { hasAssetLineItems: false, state: { data: { purchaseType: 'Not Trial' } } };
           mockCapabilities = {
             viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton').and.returnValue(false)
           };

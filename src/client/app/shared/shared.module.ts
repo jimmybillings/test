@@ -64,7 +64,7 @@ import { QuoteEditService } from './services/quote-edit.service';
 import { PricingService } from './services/pricing.service';
 import { AsperaService } from './services/aspera.service';
 // New-ish services
-import { AssetService } from '../store/asset/asset.service';
+import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
 import { ActiveCollectionService } from '../store/active-collection/active-collection.service';
 import { CommentService } from '../store/comment/comment.service';
 import { DeliveryOptionsService } from '../store/delivery-options/delivery-options.service';
@@ -171,7 +171,9 @@ const WAZEE_SERVICES = [
   SpeedPreviewService,
   UiConfigService,
   PricingService,
-  AsperaService
+  AsperaService,
+  // Temporary legacy services accessed through AppStore
+  LegacyAssetService
 ];
 
 const WAZEE_STORE_INTERFACES = [

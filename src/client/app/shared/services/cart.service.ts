@@ -16,8 +16,10 @@ import {
   AddAssetParameters,
   QuoteOptions,
   CheckoutState,
-  OrderType,
+  OrderableType,
+  PaymentType,
   PaymentOptions,
+  PaymentOption,
   AddressPurchaseOptions,
   CreditCardPurchaseOptions,
   PurchaseOptions,
@@ -79,7 +81,7 @@ export class CartService {
     return this.cart.map(cart => (cart.itemCount || 0) > 0);
   }
 
-  public get paymentType(): Observable<OrderType> {
+  public get paymentType(): Observable<PaymentOption> {
     return this.checkoutData.map((state: CheckoutState) => state.selectedPaymentType);
   }
 
@@ -97,6 +99,10 @@ export class CartService {
         return current.lineItems ? previous += current.lineItems.length : 0;
       }, 0) > 0;
     });
+  }
+
+  public updateSelectedPaymentType(type: PaymentOption): void {
+    this.checkoutStore.updateOrderInProgress('selectedPaymentType', type);
   }
 
   public purchase(): Observable<number> {
@@ -194,7 +200,7 @@ export class CartService {
   public getPaymentOptions() {
     this.api.get(Api.Orders, 'cart/paymentOptions').subscribe((options: PaymentOptions) => {
       this.updateOrderInProgress('paymentOptions', options);
-      if (options.paymentOptions.length === 1) this.updateOrderInProgress('selectedPaymentType', options.paymentOptions[0]);
+      if (options.paymentOptions.length === 1) this.updateSelectedPaymentType(options.paymentOptions[0]);
     });
   }
 
@@ -202,12 +208,12 @@ export class CartService {
     this.checkoutStore.updateOrderInProgress(type, data);
   }
 
-  public paymentOptionsEqual(options: Array<OrderType>): Observable<boolean> {
+  public paymentOptionsEqual(options: Array<PaymentOption>): Observable<boolean> {
     return this.paymentOptions.map((pmtOpts: PaymentOptions) => {
       if (!pmtOpts) return false;
       pmtOpts.paymentOptions.sort();
       return options.length === pmtOpts.paymentOptions.length &&
-        options.sort().every((option: OrderType, index: number) => option === pmtOpts.paymentOptions[index]);
+        options.sort().every((option: PaymentOption, index: number) => option === pmtOpts.paymentOptions[index]);
     });
   }
 

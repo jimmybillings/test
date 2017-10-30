@@ -39,7 +39,7 @@ export class TemplateLocalsBuilder {
       { ENV_CONFIG: this.stringifyEnvConfig ? JSON.stringify(envConfig) : envConfig }
     );
     if (this.stringifySystemConfigDev) {
-      Object.assign(locals, {SYSTEM_CONFIG_DEV: JSON.stringify(Config.SYSTEM_CONFIG_DEV)});
+      Object.assign(locals, { SYSTEM_CONFIG_DEV: JSON.stringify(Config.SYSTEM_CONFIG_DEV) });
     }
     return locals;
   }
@@ -51,7 +51,7 @@ export class TemplateLocalsBuilder {
       config = JSON.parse(JSON.stringify(require(configPath)));
     } catch (e) {
       config = null;
-      util.log(util.colors.red(e.message));
+      util.log(e.message);
     }
 
     return config;
