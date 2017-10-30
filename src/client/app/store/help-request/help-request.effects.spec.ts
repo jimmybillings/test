@@ -14,5 +14,14 @@ export function main() {
         effectsSpecHelper.mockService
       );
     }
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'showHelpRequest',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: HelpRequestActions.ShowHelpRequest.Type
+      }
+    });
+
   });
 }
