@@ -47,17 +47,17 @@ const makeActionFiles = (): void => {
   if (skips.indexOf('actions') === -1) {
     writeFile(fullPath, actionFileFor(section), { flag: 'wx' }, (err) => {
       if (err) {
-        gutil.log(`Skipping ${fullPath}, it already exists`);
+        gutil.log(gutil.colors.red(`Skipping ${fullPath}, it already exists`));
       } else {
-        gutil.log(`Created ${fullPath}`);
+        gutil.log(gutil.colors.green(`Created ${fullPath}`));
       }
     });
     if (skips.indexOf('specs') === -1) {
       writeFile(fullSpecPath, actionSpecFileFor(section), { flag: 'wx' }, (err) => {
         if (err) {
-          gutil.log(`Skipping ${fullSpecPath}, it already exists`);
+          gutil.log(gutil.colors.red(`Skipping ${fullSpecPath}, it already exists`));
         } else {
-          gutil.log(`Created ${fullSpecPath}`);
+          gutil.log(gutil.colors.green(`Created ${fullSpecPath}`));
         }
       });
     }
@@ -71,17 +71,17 @@ const makeEffectsFiles = (): void => {
   if (skips.indexOf('effects') === -1) {
     writeFile(fullPath, effectFileFor(section), { flag: 'wx' }, (err) => {
       if (err) {
-        gutil.log(`Skipping ${fullPath}, it already exists`);
+        gutil.log(gutil.colors.red(`Skipping ${fullPath}, it already exists`));
       } else {
-        gutil.log(`Created ${fullPath}`);
+        gutil.log(gutil.colors.green(`Created ${fullPath}`));
       }
     });
     if (skips.indexOf('specs') === -1) {
       writeFile(fullSpecPath, effectSpecFileFor(section), { flag: 'wx' }, (err) => {
         if (err) {
-          gutil.log(`Skipping ${fullSpecPath}, it already exists`);
+          gutil.log(gutil.colors.red(`Skipping ${fullSpecPath}, it already exists`));
         } else {
-          gutil.log(`Created ${fullSpecPath}`);
+          gutil.log(gutil.colors.green(`Created ${fullSpecPath}`));
         }
       });
     }
@@ -95,17 +95,17 @@ const makeStateFiles = (): void => {
   if (skips.indexOf('state') === -1) {
     writeFile(fullPath, stateFileFor(section), { flag: 'wx' }, (err) => {
       if (err) {
-        gutil.log(`Skipping ${fullPath}, it already exists`);
+        gutil.log(gutil.colors.red(`Skipping ${fullPath}, it already exists`));
       } else {
-        gutil.log(`Created ${fullPath}`);
+        gutil.log(gutil.colors.green(`Created ${fullPath}`));
       }
     });
     if (skips.indexOf('specs') === -1) {
       writeFile(fullSpecPath, stateSpecFileFor(section), { flag: 'wx' }, (err) => {
         if (err) {
-          gutil.log(`Skipping ${fullSpecPath}, it already exists`);
+          gutil.log(gutil.colors.red(`Skipping ${fullSpecPath}, it already exists`));
         } else {
-          gutil.log(`Created ${fullSpecPath}`);
+          gutil.log(gutil.colors.green(`Created ${fullSpecPath}`));
         }
       });
     }
@@ -119,17 +119,18 @@ const makeServiceFiles = (): void => {
   if (skips.indexOf('service') === -1) {
     writeFile(fullPath, serviceFileFor(section), { flag: 'wx' }, (err) => {
       if (err) {
-        gutil.log(`Skipping ${fullPath}, it already exists`);
+        gutil.log(gutil.colors.red(`Skipping ${fullPath}, it already exists`));
       } else {
-        gutil.log(`Created ${fullPath}`);
+        gutil.log(gutil.colors.green(`Created ${fullPath}`));
       }
     });
     if (skips.indexOf('specs') === -1) {
       writeFile(fullSpecPath, serviceSpecFileFor(section), { flag: 'wx' }, (err) => {
         if (err) {
-          gutil.log(`Skipping ${fullSpecPath}, it already exists`);
+          gutil.log(gutil.colors.red(`Skipping ${fullSpecPath}, it already exists`));
         } else {
-          gutil.log(`Created ${fullSpecPath}`);
+          gutil.log(gutil.colors.green(`Created ${fullSpecPath}`));
+          gutil.log(gutil.colors.yellow('Don\'t forget to add to app.store, mock-app.store and shared.module!!'));
         }
       });
     }
@@ -212,12 +213,16 @@ const effectFileFor = (section: string): string => {
   const className: string = classNameFor(section);
   const serviceName: string = serviceNameFor(className);
   const effectsName: string = effectsNameFor(className);
+  const actionsName: string = actionsNameFor(className);
 
   return `import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Action } from '@ngrx/store';
 import { Effect, Actions } from '@ngrx/effects';
 
 import { AppStore } from '../../app.store';
 import { ${serviceName} } from './${section}.service';
+import * as ${actionsName} from './${section}.actions';
 
 @Injectable()
 export class ${effectsName} {

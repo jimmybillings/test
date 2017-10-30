@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, AbstractControl, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { PriceAttribute, PriceOption } from '../../interfaces/commerce.interface';
 import { Pojo, WzEvent } from '../../interfaces/common.interface';
+import { AppStore } from '../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -14,11 +15,13 @@ import { Pojo, WzEvent } from '../../interfaces/common.interface';
 
 export class WzPricingComponent implements OnDestroy {
   public form: FormGroup;
+  public attributes: Array<PriceAttribute>;
+  public price: Observable<number>;
   @Output() pricingEvent: EventEmitter<WzEvent> = new EventEmitter<WzEvent>();
-  @Input() attributes: Array<PriceAttribute>;
-  @Input() usagePrice: Observable<number>;
   @Input()
   set pricingPreferences(preferences: Pojo) {
+    this.price = this.store.select(state => state.pricing.priceForDialog);
+    this.storeSubscription = this.store.select(state => state.pricing.attributes).subscribe(attrs => this.attributes = attrs);
     this._pricingPreferences = preferences;
     if (!this.form) {
       this.buildForm();
@@ -28,18 +31,20 @@ export class WzPricingComponent implements OnDestroy {
     }
   }
   private formSubscription: Subscription;
+  private storeSubscription: Subscription;
   private _pricingPreferences: Pojo;
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private store: AppStore) { }
 
   ngOnDestroy() {
     this.formSubscription.unsubscribe();
+    this.storeSubscription.unsubscribe();
   }
 
   public onSubmit(): void {
     if (!this.form.valid) return;
-    // When the form is opened at the project level in a cart/quote, there is no usagePrice
-    if (this.usagePrice) {
-      this.usagePrice.take(1).subscribe((price: number) => {
+    // When the form is opened at the project level in a cart/quote, there is no price
+    if (this.price) {
+      this.price.take(1).subscribe((price: number) => {
         this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { price: price, attributes: this.form.value } });
       });
     } else {

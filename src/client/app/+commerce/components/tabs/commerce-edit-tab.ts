@@ -14,10 +14,10 @@ import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
-import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
+// import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 import { SelectedPriceAttributes, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
-import { PricingStore } from '../../../shared/stores/pricing.store';
-import { PricingService } from '../../../shared/services/pricing.service';
+// import { PricingStore } from '../../../shared/stores/pricing.store';
+// import { PricingService } from '../../../shared/services/pricing.service';
 import { AppStore } from '../../../app.store';
 import { EnhancedAsset, enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 import * as SubclipMarkersInterface from '../../../shared/interfaces/subclip-markers';
@@ -38,9 +38,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     protected window: WindowRef,
     protected userPreference: UserPreferenceService,
     protected document: any,
-    protected pricingStore: PricingStore,
+    // protected pricingStore: PricingStore,
     protected store: AppStore,
-    protected pricingService: PricingService) {
+    // protected pricingService: PricingService
+  ) {
     super();
   }
 
@@ -134,10 +135,11 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     if (this.priceAttributes) {
       this.openProjectPricingDialog(this.priceAttributes, preferences, project);
     } else {
-      this.pricingService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
-        this.priceAttributes = priceAttributes;
-        this.openProjectPricingDialog(priceAttributes, preferences, project);
-      });
+      // this.pricingService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
+      //   this.priceAttributes = priceAttributes;
+      //   this.openProjectPricingDialog(priceAttributes, preferences, project);
+      // });
+      this.store.dispatch(factory => factory.pricing.getAttributes('Rights Managed'));
     }
   }
 
@@ -146,10 +148,11 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     if (this.priceAttributes) {
       this.openPricingDialog(this.priceAttributes, preferences, lineItem);
     } else {
-      this.pricingService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
-        this.priceAttributes = priceAttributes;
-        this.openPricingDialog(priceAttributes, preferences, lineItem);
-      });
+      this.store.dispatch(factory => factory.pricing.getAttributes('Rights Managed'));
+      // this.pricingService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
+      //   this.priceAttributes = priceAttributes;
+      //   this.openPricingDialog(priceAttributes, preferences, lineItem);
+      // });
     }
   }
 
