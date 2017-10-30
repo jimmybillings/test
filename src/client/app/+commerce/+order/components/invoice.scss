@@ -1,0 +1,35 @@
+invoice-component {
+  section.header {
+    padding-left: 4px;
+    padding-right: 4px;
+    header {
+      padding-top: 6px;
+      padding-bottom: 5px;
+      position: relative;
+      .mat-display-1 {
+        margin: 0;
+        width: calc(100% - 120px);
+        font-size: 26px;
+      }
+      .tools {
+        text-align: right;
+      }
+    }
+  }
+  section.project {
+    padding-bottom: 60px;
+  }
+}
+
+.invoice {
+  margin: 24px;
+}
+
+.header-row {
+  padding: 20px;
+  // border: 1px solid black;
+}
+
+.header-logo {
+  border: 1px solid blue;
+}

@@ -1,18 +1,66 @@
 
+<ng-container *ngIf="invoice | async as invoice" >
+  <section class="header" layout="row" layout-align="center center">
+    <header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
+      <div 
+        flex="100" 
+        layout="row" 
+        layout-align="space-between end">
+        <h2 flex="grow" class="mat-display-1">Invoice</h2>
+        <div class="tools" flex="auto">
+          <button disabled="true" mat-icon-button color="primary" title="Print Invoice">          
+            <mat-icon>print</mat-icon>
+          </button>
+          <a [routerLink]="['/orders', invoice.order.id]" mat-icon-button color="primary" 
+            title="Back to Order">
+            <mat-icon>keyboard_return</mat-icon>
+          </a>
+        </div>
+      </div>
+    </header>
+  </section>
 
-<ng-container *ngIf="invoice | async as invoice">
-  <br/>
-  <h2>Invoice</h2>
-  <hr/>
-  <section>
-    <pre>{{invoice.payee | json}}</pre>
-  </section>
-  <hr/>
-  <section>
-    <pre>{{invoice.order | json}}</pre>
-  </section>
-  <hr/>
-  <section>
-    <pre>{{invoice.documents | json}}</pre>
-  </section>
+  <mat-card class="invoice" layout='column' style='width: 800px' layout-align="center start">
+    <div layout='row' class='header-row' style='height: 200px; background-color:skyblue'>
+      <img class='header-logo' flex='25' src="https://www.wazeedigital.com/packages/wazee_og/themes/wazee_og/images/wazee-footer-logo.png">
+      <div flex='35' style='border: 1px solid pink'>Payee Information</div>
+      <div flex='40' style='border: 1px solid pink'>Invoice Information</div>
+    </div>
+    <div layout='row' class='account-row' style='height: 200px; background-color:skyblue'>
+      <div flex='60' style='border: 1px solid pink'>Bill To</div>
+      <div flex='40' style='border: 1px solid pink'>Purchased By</div>
+    </div>
+    <div layout='row' class='project-row' style='height: 200px; background-color:skyblue'>Project</div>
+    <div layout='row' class='summary-row' style='height: 200px; background-color:skyblue'>
+      <div flex='60' style='border: 1px solid pink'>Notes</div>
+      <div flex='40' style='border: 1px solid pink'>Summary</div>
+    </div>
+    <div layout='row' class='payment-row' style='height: 200px; background-color:skyblue'>
+      <div flex='33' style='border: 1px solid pink'>Address 1</div>
+      <div flex='33' style='border: 1px solid pink'>Address 2</div>
+      <div flex='33' style='border: 1px solid pink'>Address 3</div>
+    </div>
+    
+    <!-- <section>
+      <table style="padding: 24px; width: 100%">
+        <tr>
+          <td>
+            <img mat-card-image 
+            src="https://www.wazeedigital.com/packages/wazee_og/themes/wazee_og/images/wazee-footer-logo.png">      
+          </td>
+
+        </tr>
+      </table>
+      <pre style="overflow:auto">{{invoice.payee | json}}</pre>
+    </section>
+    <hr/>
+    <section>
+      <pre style="overflow:auto">{{invoice.order | json}}</pre>
+    </section>
+    <hr/>
+    <section>
+      <pre style="overflow:auto">{{invoice.documents | json}}</pre>
+    </section> -->
+  </mat-card>
+
 </ng-container>
