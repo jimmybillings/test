@@ -121,5 +121,34 @@ export function main() {
         expect(componentUnderTest.addCustomPrice.emit).toHaveBeenCalled();
       });
     });
+
+    describe('showPreDiscountPrice getter', () => {
+      describe('returns true', () => {
+        it('when the user can administer quotes and the grossAssetPrice is different from the price', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.grossAssetPrice = 200.89;
+          componentUnderTest.price = 200.99;
+
+          expect(componentUnderTest.showPreDiscountPrice).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the user cannot administer quotes', () => {
+          componentUnderTest.userCanAdministerQuotes = false;
+
+          expect(componentUnderTest.showPreDiscountPrice).toBe(false);
+        });
+
+        it('when the user can administer quotes and the grossAssetPrice is the same as the price', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.grossAssetPrice = 200.89;
+          componentUnderTest.price = 200.89;
+
+          expect(componentUnderTest.showPreDiscountPrice).toBe(false);
+        });
+      });
+    });
+
   });
 }
