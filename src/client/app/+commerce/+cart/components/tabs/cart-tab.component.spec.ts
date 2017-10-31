@@ -21,7 +21,7 @@ export function main() {
       };
 
       componentUnderTest = new CartTabComponent(
-        mockUserCan, mockCartService, mockDialogService, null, null, null, null, null, null, null, null
+        mockUserCan, mockCartService, mockDialogService, null, null, null, null, null, null, null
       );
     });
 

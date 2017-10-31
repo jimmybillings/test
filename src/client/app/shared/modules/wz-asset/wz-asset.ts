@@ -11,7 +11,6 @@ import { Metadatum } from '../../../shared/interfaces/commerce.interface';
 
 export class WzAsset implements OnInit {
   @Output() onAddToCart = new EventEmitter();
-  @Output() onDownloadComp = new EventEmitter();
   @Output() onShowSpeedview = new EventEmitter();
   @Output() onHideSpeedview = new EventEmitter();
   @Output() onEditAsset = new EventEmitter();
@@ -75,12 +74,6 @@ export class WzAsset implements OnInit {
   public loadDeliveryOptionsFor(asset: EnhancedAsset): void {
     this.assetId = asset.assetId;
     this.store.dispatch(factory => factory.deliveryOptions.load(asset));
-  }
-
-  public downloadComp(compType: string) {
-    this.onDownloadComp.emit({
-      'assetId': this.assetId, 'compType': compType
-    });
   }
 
   public editAsset(asset: EnhancedAsset) {

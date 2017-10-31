@@ -19,14 +19,14 @@ const processors = [
   })
 ];
 
-const reportPostCssError = (e: any) => util.log(util.colors.red(e.message));
+const reportPostCssError = (e: any) => util.log(e.message);
 
 const isProd = Config.BUILD_TYPE === 'prod';
 
 if (isProd) {
   processors.push(
     cssnano({
-      discardComments: {removeAll: true},
+      discardComments: { removeAll: true },
       discardUnused: false, // unsafe, see http://goo.gl/RtrzwF
       zindex: false, // unsafe, see http://goo.gl/vZ4gbQ
       reduceIdents: false // unsafe, see http://goo.gl/tNOPv0
@@ -34,9 +34,9 @@ if (isProd) {
   );
 }
 
-const appSCSSFiles      = join(Config.APP_SRC, '**', '*.scss');
-const entrySCSSFiles    = join(Config.CSS_SRC, '**', '*.scss');
-const abtractSCSSFiles  = join(Config.SCSS_SRC, '**', '*.scss');
+const appSCSSFiles = join(Config.APP_SRC, '**', '*.scss');
+const entrySCSSFiles = join(Config.CSS_SRC, '**', '*.scss');
+const abtractSCSSFiles = join(Config.SCSS_SRC, '**', '*.scss');
 
 /**
  * Copies all HTML files in `src/client` over to the `dist/tmp` directory.
@@ -79,10 +79,10 @@ function processComponentScss() {
 /**
  + * Get SCSS Files to process
  + */
-function getSCSSFiles(cacheName:string, filesToCompile:string[], filesToExclude:string[] = []) {
-  let allFiles:string[] = filesToCompile.concat(filesToExclude);
-  let filteredFiles:string[] = filesToCompile.concat(
-    filesToExclude.map((path:string) => { return '!' + path; })
+function getSCSSFiles(cacheName: string, filesToCompile: string[], filesToExclude: string[] = []) {
+  let allFiles: string[] = filesToCompile.concat(filesToExclude);
+  let filteredFiles: string[] = filesToCompile.concat(
+    filesToExclude.map((path: string) => { return '!' + path; })
   );
   return gulp.src(allFiles)
     .pipe(plugins.cached(cacheName))

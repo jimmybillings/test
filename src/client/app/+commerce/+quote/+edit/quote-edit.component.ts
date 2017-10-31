@@ -3,11 +3,10 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 import { Router } from '@angular/router';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { AssetService } from '../../../store/asset/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
-import { QuoteOptions, Project, QuoteType, Quote, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
+import { QuoteOptions, Project, OrderableType, Quote, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
@@ -37,7 +36,6 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public userCan: Capabilities,
     public quoteEditService: QuoteEditService,
     public dialogService: WzDialogService,
-    public assetService: AssetService,
     public window: WindowRef,
     public userPreference: UserPreferenceService,
     @Inject(DOCUMENT) public document: any,
@@ -47,7 +45,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public pricingService: PricingService
   ) {
     super(
-      userCan, quoteEditService, dialogService, assetService, window,
+      userCan, quoteEditService, dialogService, window,
       userPreference, document, pricingStore, store, pricingService
     );
     this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.quoteComment.config.form.items);
@@ -115,7 +113,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
   }
 
   public get showDiscount(): boolean {
-    return (this.hasProperty('discount') && this.quoteType !== 'ProvisionalOrder') ? true : false;
+    return !!this.hasProperty('discount') && this.quoteType !== 'Trial';
   }
 
   public get shouldShowCloneButton(): Observable<boolean> {
@@ -134,7 +132,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     return this.config.quotePurchaseType.items;
   }
 
-  public onSelectQuoteType(event: { type: QuoteType }): void {
+  public onSelectQuoteType(event: { type: OrderableType }): void {
     this.quoteType = event.type;
     this.config.createQuote.items.map((item: FormFields) => {
       if (item.name === 'purchaseType') {
@@ -172,7 +170,7 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     this.dialogService.openFormDialog(
       this.config.createQuote.items,
       { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
-      this.onSubmitQuoteDialog
+      this.sendQuote
     );
   }
 
@@ -230,25 +228,23 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
       });
   }
 
+  public get quoteIsTrial(): Observable<boolean> {
+    return this.quoteEditService.data.map(quote => quote.data.purchaseType === 'Trial');
+  }
+
   private updateQuoteField = (options: any): void => {
     this.quoteEditService.updateQuoteField(options);
   }
 
-  private onSubmitQuoteDialog = (form: QuoteOptions): void => {
-    this.sendQuote({
-      ownerEmail: form.ownerEmail,
-      expirationDate: new Date(form.expirationDate).toISOString(),
-      purchaseType: form.purchaseType.split(' ').join(''),
-      offlineAgreementId: form.offlineAgreementId
-    });
-  }
-
-  private sendQuote(options: QuoteOptions): void {
-    this.quoteEditService.sendQuote(options)
-      .do(() => {
-        this.router.navigate([`/quotes/${this.quoteEditService.quoteId}`]);
-        this.store.dispatch(factory => factory.snackbar.display('QUOTE.CREATED_FOR_TOAST', { emailAddress: options.ownerEmail }));
-      }).subscribe();
+  private sendQuote = (options: QuoteOptions): void => {
+    this.store.dispatch(factory =>
+      factory.quoteEdit.sendQuote({
+        ownerEmail: options.ownerEmail,
+        expirationDate: new Date(options.expirationDate).toISOString(),
+        purchaseType: options.purchaseType.split(' ').join(''),
+        offlineAgreementId: options.offlineAgreementId
+      })
+    );
   }
 
   private hasProperty = (property: string): string | undefined => {
@@ -298,16 +294,9 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     this.store.dispatch(factory => factory.quoteEdit.delete());
   }
 
-  private viewValueFor(quoteType: QuoteType): string {
-    switch (quoteType) {
-      case 'ProvisionalOrder':
-        return 'Provisional Order';
-      case 'OfflineAgreement':
-        return 'Offline Agreement';
-      case 'RevenueOnly':
-        return 'Revenue Only';
-      default:
-        return 'Standard';
-    }
+  private viewValueFor(quoteType: OrderableType): string {
+    return this.purchaseTypeConfig.filter((option: { viewValue: string, value: OrderableType }) => {
+      return option.value === quoteType;
+    }).map((option: MdSelectOption) => option.viewValue)[0];
   }
 }

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project, QuoteType, FeeLineItem, FeeConfig, FeeConfigItem, AssetLineItem }
+import { Project, OrderableType, FeeLineItem, FeeConfig, FeeConfigItem, AssetLineItem }
   from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -19,7 +19,7 @@ export class ProjectsComponent {
   @Input() config: any;
   @Input() projects: Array<Project>;
   @Input() userCan: Capabilities;
-  @Input() quoteType: QuoteType;
+  @Input() quoteType: OrderableType;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
 
@@ -46,11 +46,13 @@ export class ProjectsComponent {
   }
 
   public onEdit(project: Project): void {
-    this.selectProject(project);
-    this.projectsNotify.emit({
-      type: 'UPDATE_PROJECT',
-      payload: Object.assign({ project: project, items: this.config.form.items })
-    });
+    if (!this.readOnly) {
+      this.selectProject(project);
+      this.projectsNotify.emit({
+        type: 'UPDATE_PROJECT',
+        payload: Object.assign({ project: project, items: this.config.form.items })
+      });
+    }
   }
 
   public addBulkOrderId() {
@@ -107,6 +109,10 @@ export class ProjectsComponent {
 
   public onClickBulkImportButton(project: Project): void {
     this.projectsNotify.emit({ type: 'OPEN_BULK_IMPORT_DIALOG', payload: project.id });
+  }
+
+  public get showPricing(): boolean {
+    return this.quoteType !== 'Trial';
   }
 
   private initializeQuoteFeeFieldsFrom(feeConfig: FeeConfig): FormFields[] {

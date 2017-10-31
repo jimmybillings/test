@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+import { ApiService } from '../../shared/services/api.service';
 import { FutureApiService } from '../api/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import * as Common from '../../shared/interfaces/common.interface';
@@ -18,19 +19,6 @@ export class AssetService {
       .map(asset => this.merge(asset, parameters));
   }
 
-  public downloadComp(id: any, compType: any): Observable<any> {
-    return this.apiService.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
-  }
-
-  public createShareLink(shareLink: Common.Pojo): Observable<any> {
-    return this.apiService.post(Api.Identities, 'accessInfo', { body: shareLink });
-  }
-
-  public getClipPreviewData(assetId: number): Observable<any> {
-    const viewType: ApiOptions = { parameters: { 'useType': 'clipPreview' } };
-    return this.apiService.get(Api.Assets, `renditionType/${assetId}`, viewType);
-  }
-
   private merge(asset: Asset, parameters: AssetLoadParameters): Asset {
     return {
       ...asset,
@@ -43,5 +31,18 @@ export class AssetService {
   private convert(time: string): number {
     const number: number = parseInt(time);
     return number >= 0 ? number : null;
+  }
+}
+
+@Injectable()
+export class LegacyAssetService {
+  constructor(private apiService: ApiService) { }
+  public createShareLink(shareLink: Common.Pojo): Observable<any> {
+    return this.apiService.post(Api.Identities, 'accessInfo', { body: shareLink });
+  }
+
+  public getClipPreviewData(assetId: number): Observable<any> {
+    const viewType: ApiOptions = { parameters: { 'useType': 'clipPreview' } };
+    return this.apiService.get(Api.Assets, `renditionType/${assetId}`, viewType);
   }
 }

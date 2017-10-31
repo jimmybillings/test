@@ -24,8 +24,6 @@ export function main() {
       mockSearchService = {
         clearAssets: jasmine.createSpy('clearAssets'),
         data: Observable.of([{ asset: 'mockAsset1' }, { asset: 'mockAsset2' }]),
-        downloadComp: jasmine.createSpy('downloadComp').and.returnValue(
-          Observable.of({ url: 'mockUrl' })),
         enhancedAssets: Observable.of([])
       };
 
@@ -222,39 +220,6 @@ export function main() {
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(componentUnderTest.filter.clear).toHaveBeenCalled();
         expect(mockSearchContext.go).toHaveBeenCalled();
-      });
-    });
-
-    describe('downloadComp()', () => {
-      let errorSpy: jasmine.Spy;
-
-      beforeEach(() => {
-        errorSpy = mockStore.createActionFactoryMethod('error', 'handleCustomError');
-      });
-
-      it('Should call the asset service to download a comp with an assetId and comp type', () => {
-        componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
-        expect(mockSearchService.downloadComp).toHaveBeenCalledWith(3, 'small');
-      });
-
-      it('Should set the browser url to be the url in the response from the downloadComp method', () => {
-        componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
-        expect(mockWindow.nativeWindow.location.href).toEqual('mockUrl');
-      });
-
-      it('Should create a notification if the response doesnt include a url', () => {
-        mockSearchService = {
-          clearAssets: jasmine.createSpy('clearAssets'),
-          data: Observable.of([{ asset: 'mockAsset1' }, { asset: 'mockAsset2' }]),
-          downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
-          enhancedAssets: Observable.of([])
-        };
-        componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
-          mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector, null, mockStore
-        );
-        componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
-        mockStore.expectDispatchFor(errorSpy, 'COMPS.NO_COMP');
       });
     });
 

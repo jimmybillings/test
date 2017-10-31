@@ -17,7 +17,7 @@
         <span class="phone">{{ (orderInProgress | async).selectedAddress.address.phone }}</span>
       </address>
     </section>
-    <section *ngIf="(paymentType | async) !== 'ProvisionalOrder'" class="payment" flex="auto">
+    <section *ngIf="!(quoteIsTrial | async)" class="payment" flex="auto">
       <div layout="row" layout-align="space-between">
         <h5 class="mat-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
         <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(2)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
@@ -40,7 +40,7 @@
             <strong>Purchase on credit</strong>
           </span>
         </div>
-        <div class="offline-agreement" *ngIf="(paymentType | async) === 'OfflineAgreement'">
+        <div class="offline-agreement" *ngIf="isOfflineQuote | async">
           <span class="indicate-offline">
             <strong>Offline Agreement</strong>
           </span>
@@ -63,7 +63,7 @@
 </projects-component>
 
 <section class="commerce-total" layout="column" layout-align="end end">
-  <ng-container *ngIf="showPricing | async">
+  <ng-container *ngIf="!(quoteIsTrial | async)">
     <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal mat-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_SUBTOTAL' | translate }} 
@@ -92,10 +92,10 @@
       </mat-checkbox>
     </div>
   </ng-container>
-  <ng-container *ngIf="quoteIsProvisionalOrder | async">
-    <div flex="100" layout="row" layout-align="end center" class="provisional mat-headline">
-      <span class="provisional-msg" flex="100">
-        {{ 'QUOTE.PROVISIONAL_USE_ONLY_MSG' | translate }}
+  <ng-container *ngIf="quoteIsTrial | async">
+    <div flex="100" layout="row" layout-align="end center" class="trial mat-headline">
+      <span class="trial-msg" flex="100">
+        {{ 'QUOTE.TRIAL_USE_ONLY_MSG' | translate }}
       </span>
     </div>
   </ng-container>

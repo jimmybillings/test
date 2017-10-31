@@ -28,7 +28,7 @@
           (addFee)="onClickAddFeeButtonFor(project)">
 				</project-actions-component>
 				<project-price-info-component
-					*ngIf="quoteType !== 'ProvisionalOrder'"
+					*ngIf="showPricing"
 					[subtotal]="project.subTotal">
 				</project-price-info-component>
 				<project-asset-info-component

@@ -152,13 +152,13 @@ export function main() {
     });
 
     describe('shouldDisplayPricing()', () => {
-      it('returns true when quote is NOT a ProvisionalOrder', () => {
-        classUnderTest.quoteType = 'OfflineAgreement';
+      it('returns true when quote is NOT a Trial', () => {
+        classUnderTest.quoteType = 'NoTrial' as any;
         expect(classUnderTest.shouldDisplayPricing)
           .toBe(true);
       });
-      it('returns false when the quote is a ProvisionalOrder', () => {
-        classUnderTest.quoteType = 'ProvisionalOrder';
+      it('returns false when the quote is a Trial', () => {
+        classUnderTest.quoteType = 'Trial';
         expect(classUnderTest.shouldDisplayPricing)
           .toBe(false);
       });
@@ -177,9 +177,9 @@ export function main() {
     });
 
     describe('shouldDisplayRights()', () => {
-      it('returns true when the line item is rights managed and quote is NOT a ProvisionalOrder', () => {
+      it('returns true when the line item is rights managed and quote is NOT a Trial', () => {
         let lineItem: any = { rightsManaged: 'Rights Managed' };
-        classUnderTest.quoteType = 'OfflineAgreement';
+        classUnderTest.quoteType = 'Not Trial' as any;
         expect(classUnderTest.shouldDisplayRights(lineItem))
           .toBe(true);
       });
@@ -188,9 +188,9 @@ export function main() {
         expect(classUnderTest.shouldDisplayRights(lineItem))
           .toBe(false);
       });
-      it('returns false when the quote is a ProvisionalOrder', () => {
+      it('returns false when the quote is a Trial', () => {
         let lineItem: any = { rightsManaged: 'Rights Managed' };
-        classUnderTest.quoteType = 'ProvisionalOrder';
+        classUnderTest.quoteType = 'Trial';
         expect(classUnderTest.shouldDisplayRights(lineItem))
           .toBe(false);
       });

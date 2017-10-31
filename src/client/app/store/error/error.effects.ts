@@ -39,6 +39,7 @@ export class ErrorEffects {
     401: this.unauthorized,
     403: this.forbidden,
     404: this.notFound,
+    412: this.preConditionFailed,
     419: this.sessionExpired,
     451: this.registrationDisallowed
   };
@@ -108,6 +109,12 @@ export class ErrorEffects {
     return [
       this.createGoToLoginAction(),
       this.createNotifierActionWith('NOTIFICATION.ERROR', 'NOTIFICATION.EXPIRED_SESSION')
+    ];
+  }
+
+  private preConditionFailed(): Action[] {
+    return [
+      this.createNotifierActionWith('NOTIFICATION.ERROR', 'NOTIFICATION.PRECONDITION_FAIL')
     ];
   }
 

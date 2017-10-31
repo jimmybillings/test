@@ -207,16 +207,10 @@ export function main() {
     });
 
     describe('trStringForPurchaseType()', () => {
-      it('is the standard translation if the purchase type is not an attribute of the quote', () => {
-        mockQuoteService = { data: Observable.of({}), state: { data: {} } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-        expect(componentUnderTest.trStringForPurchaseType).toBe('QUOTE.Standard');
-      });
-
       it('is whatever the purchase type is for set purchase types', () => {
-        mockQuoteService = { data: Observable.of({}), state: { data: { purchaseType: 'ProvisionalOrder' } } };
+        mockQuoteService = { data: Observable.of({}), state: { data: { purchaseType: 'Trial' } } };
         componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-        expect(componentUnderTest.trStringForPurchaseType).toBe('QUOTE.ProvisionalOrder');
+        expect(componentUnderTest.trStringForPurchaseType).toBe('QUOTE.Trial');
       });
     });
 

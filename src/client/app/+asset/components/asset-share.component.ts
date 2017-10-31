@@ -2,7 +2,6 @@ import {
   Component, Input, Output, ViewChild, OnDestroy,
   EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
-import { AssetService } from '../../store/asset/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component';
 import { User } from '../../shared/interfaces/user.interface';
@@ -39,11 +38,7 @@ export class AssetShareComponent implements OnDestroy {
 
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
 
-  constructor(
-    private store: AppStore,
-    private asset: AssetService,
-    private changeDetector: ChangeDetectorRef) {
-  }
+  constructor(private store: AppStore, private changeDetector: ChangeDetectorRef) { }
 
   ngOnDestroy() {
     this.closeAssetShare();
@@ -54,7 +49,7 @@ export class AssetShareComponent implements OnDestroy {
   }
 
   public showShareLink(): void {
-    this.asset.createShareLink(this.prepareShareLink())
+    this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.prepareShareLink()))
       .subscribe((res) => {
         this.assetShareLink = `${window.location.href};share_key=${res.apiKey}`;
         this.changeDetector.markForCheck();
@@ -67,7 +62,7 @@ export class AssetShareComponent implements OnDestroy {
   }
 
   public createShareLink(shareLink: Pojo): void {
-    this.asset.createShareLink(this.prepareShareLink(shareLink))
+    this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.prepareShareLink(shareLink)))
       .subscribe((res) => {
         this.resetForm();
         this.store.dispatch(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE'));

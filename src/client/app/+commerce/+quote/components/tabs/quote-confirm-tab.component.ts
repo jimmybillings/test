@@ -5,7 +5,7 @@ import { QuoteService } from '../../../../shared/services/quote.service';
 import { Router } from '@angular/router';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
+import { LicenseAgreements, OrderableType } from '../../../../shared/interfaces/commerce.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 import { Common } from '../../../../shared/utilities/common.functions';
 
@@ -49,16 +49,12 @@ export class QuoteConfirmTabComponent extends CommerceConfirmTab {
     });
   }
 
-  public get showPricing(): Observable<boolean> {
-    return this.quoteService.data.map(quote => quote.data.purchaseType !== 'ProvisionalOrder');
-  }
-
-  public get quoteIsProvisionalOrder(): Observable<boolean> {
-    return this.quoteService.data.map(quote => quote.data.purchaseType === 'ProvisionalOrder');
+  public get quoteIsTrial(): Observable<boolean> {
+    return this.quoteService.data.map(quote => quote.data.purchaseType === 'Trial');
   }
 
   public get canPurchase(): boolean {
-    return (this.quoteService.state.data.purchaseType === 'ProvisionalOrder') ||
+    return (this.quoteService.state.data.purchaseType === 'Trial') ||
       (this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn());
   }
 }

@@ -9,11 +9,11 @@ export function main() {
     let deleteQuoteDispatchSpy: jasmine.Spy;
     let addCustomPriceDispatchSpy: jasmine.Spy;
     let snackbarSpy: jasmine.Spy;
+    let quoteSendSpy: jasmine.Spy;
     let mockStore: MockAppStore;
     let mockCapabilities: any;
     let mockQuoteEditService: any;
     let mockDialogService: any;
-    let mockAssetService: any;
     let mockWindow: any;
     let mockUserPreference: any;
     let mockRouter: any;
@@ -72,7 +72,7 @@ export function main() {
               addDiscount: { items: [{ some: 'discount' }] },
               addCostMultiplier: { items: [{ some: 'multiplier' }] },
               bulkImport: { items: [{ some: 'import' }] },
-              quotePurchaseType: { items: [{ some: 'purchaseType' }] }
+              quotePurchaseType: { items: [{ value: 'SystemLicense', viewValue: 'System License' }] }
             }
           }
         }
@@ -81,10 +81,11 @@ export function main() {
       deleteQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'delete');
       addCustomPriceDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addCustomPriceToLineItem');
       snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
+      quoteSendSpy = mockStore.createActionFactoryMethod('quoteEdit', 'sendQuote');
 
       componentUnderTest =
         new QuoteEditComponent(
-          mockCapabilities, mockQuoteEditService, mockDialogService, mockAssetService,
+          mockCapabilities, mockQuoteEditService, mockDialogService,
           mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
         );
     });
@@ -98,7 +99,7 @@ export function main() {
         quoteId: 1
       };
       componentUnderTest = new QuoteEditComponent(
-        mockCapabilities, mockQuoteEditService, mockDialogService, mockAssetService,
+        mockCapabilities, mockQuoteEditService, mockDialogService,
         mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
       );
       return componentUnderTest;
@@ -117,7 +118,7 @@ export function main() {
           addDiscount: { items: [{ some: 'discount' }] },
           addCostMultiplier: { items: [{ some: 'multiplier' }] },
           bulkImport: { items: [{ some: 'import' }] },
-          quotePurchaseType: { items: [{ some: 'purchaseType' }] }
+          quotePurchaseType: { items: [{ value: 'SystemLicense', viewValue: 'System License' }] }
         });
       });
 
@@ -271,42 +272,16 @@ export function main() {
         mockDialogService.onSubmitCallback({
           ownerEmail: 'ross.edfort@wazeedigital.com',
           expirationDate: '2017/05/03',
-          purchaseType: 'Provisional Order',
+          purchaseType: 'Trial',
           offlineAgreementId: 'abc123'
         });
 
-        expect(mockQuoteEditService.sendQuote).toHaveBeenCalledWith({
+        expect(quoteSendSpy).toHaveBeenCalledWith({
           ownerEmail: 'ross.edfort@wazeedigital.com',
           expirationDate: '2017-05-03T06:00:00.000Z',
-          purchaseType: 'ProvisionalOrder',
+          purchaseType: 'Trial',
           offlineAgreementId: 'abc123'
         });
-      });
-
-      it('Navigates to the quote detail page on succesfull submit', () => {
-        componentUnderTest.onOpenQuoteDialog();
-
-        mockDialogService.onSubmitCallback({
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017/05/03',
-          purchaseType: 'Provisional Order',
-          offlineAgreementId: 'abc123'
-        });
-
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/quotes/1']);
-      });
-
-      it('Shows a success snack bar notification on succesfull submit', () => {
-        componentUnderTest.onOpenQuoteDialog();
-
-        mockDialogService.onSubmitCallback({
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017/05/03',
-          purchaseType: 'Provisional Order',
-          offlineAgreementId: 'abc123'
-        });
-
-        expect(snackbarSpy).toHaveBeenCalledWith('QUOTE.CREATED_FOR_TOAST', { emailAddress: 'ross.edfort@wazeedigital.com' });
       });
     });
 
@@ -365,15 +340,15 @@ export function main() {
           expect(componentUnderTest.showDiscount).toBe(false);
         });
 
-        it('when the quoteType is "ProvisionalOrder" and the quote DOES NOT have the property', () => {
+        it('when the quoteType is "Trial" and the quote DOES NOT have the property', () => {
           componentUnderTest = setupFor(undefined);
-          componentUnderTest.quoteType = 'ProvisionalOrder';
+          componentUnderTest.quoteType = 'Trial';
           expect(componentUnderTest.showDiscount).toBe(false);
         });
 
-        it('when the quoteType is "ProvisionalOrder" and the quote DOES have the property', () => {
+        it('when the quoteType is "Trial" and the quote DOES have the property', () => {
           componentUnderTest = setupFor('someKnownProperty');
-          componentUnderTest.quoteType = 'ProvisionalOrder';
+          componentUnderTest.quoteType = 'Trial';
           expect(componentUnderTest.showDiscount).toBe(false);
         });
       });
@@ -385,9 +360,9 @@ export function main() {
           expect(componentUnderTest.showDiscount).toBe(true);
         });
 
-        it('when the quote does have the property AND the quoteType is NOT provisionalOrder', () => {
+        it('when the quote does have the property AND the quoteType is NOT Trial', () => {
           componentUnderTest = setupFor('someKnownProperty');
-          componentUnderTest.quoteType = 'OfflineAgreement';
+          componentUnderTest.quoteType = 'NotTrial' as any;
           expect(componentUnderTest.showDiscount).toBe(true);
         });
       });
@@ -411,40 +386,23 @@ export function main() {
     describe('purchaseTypeConfig getter', () => {
       it('returns the config', () => {
         componentUnderTest.ngOnInit();
-        expect(componentUnderTest.purchaseTypeConfig).toEqual([{ some: 'purchaseType' }]);
+        expect(componentUnderTest.purchaseTypeConfig).toEqual([{ value: 'SystemLicense', viewValue: 'System License' }]);
       });
     });
 
     describe('onSelectQuoteType()', () => {
       it('should set the quoteType instance variable', () => {
         componentUnderTest.ngOnInit();
-        componentUnderTest.onSelectQuoteType({ type: 'OfflineAgreement' });
+        componentUnderTest.onSelectQuoteType({ type: 'Trial' });
 
-        expect(componentUnderTest.quoteType).toBe('OfflineAgreement');
+        expect(componentUnderTest.quoteType).toBe('Trial');
       });
 
-      describe('should prepopulate the create quote form config', () => {
-        beforeEach(() => {
-          componentUnderTest.ngOnInit();
-        });
+      it('should update the createQuote form config', () => {
+        componentUnderTest.ngOnInit();
+        componentUnderTest.onSelectQuoteType({ type: 'SystemLicense' });
 
-        it('for offline agreement', () => {
-          componentUnderTest.onSelectQuoteType({ type: 'OfflineAgreement' });
-
-          expect(componentUnderTest.config.createQuote.items).toEqual([{ name: 'purchaseType', value: 'Offline Agreement' }]);
-        });
-
-        it('for provisional order', () => {
-          componentUnderTest.onSelectQuoteType({ type: 'ProvisionalOrder' });
-
-          expect(componentUnderTest.config.createQuote.items).toEqual([{ name: 'purchaseType', value: 'Provisional Order' }]);
-        });
-
-        it('for revenur only', () => {
-          componentUnderTest.onSelectQuoteType({ type: 'RevenueOnly' });
-
-          expect(componentUnderTest.config.createQuote.items).toEqual([{ name: 'purchaseType', value: 'Revenue Only' }]);
-        });
+        expect(componentUnderTest.config.createQuote.items).toEqual([{ name: 'purchaseType', value: 'System License' }]);
       });
     });
 

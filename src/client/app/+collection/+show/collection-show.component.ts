@@ -8,7 +8,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AssetService } from '../../store/asset/asset.service';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
@@ -52,7 +51,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public collections: CollectionsService,
     public cart: CartService,
     public userPreference: UserPreferenceService,
-    private asset: AssetService,
     private route: ActivatedRoute,
     private window: WindowRef,
     private dialogService: WzDialogService,
@@ -100,16 +98,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public changePage(i: number): void {
     this.buildRouteParams({ i });
     this.router.navigate(['/collections/' + this.activeCollection.id, this.routeParams]);
-  }
-
-  public downloadComp(params: Pojo): void {
-    this.asset.downloadComp(params.assetId, params.compType).subscribe((res) => {
-      if (res.url && res.url !== '') {
-        this.window.nativeWindow.location.href = res.url;
-      } else {
-        this.store.dispatch(factory => factory.error.handleCustomError('COMPS.NO_COMP'));
-      }
-    });
   }
 
   public setCollectionForDelete(): void {
@@ -162,7 +150,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public editAsset(asset: EnhancedAsset) {
-    this.asset.getClipPreviewData(asset.assetId)
+    this.store.callLegacyServiceMethod(service => service.asset.getClipPreviewData(asset.assetId))
       .subscribe(data => {
         this.document.body.classList.add('subclipping-edit-open');
         asset.clipUrl = data.url;

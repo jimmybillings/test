@@ -387,37 +387,6 @@ export function main() {
       });
     });
 
-    describe('sendQuote', () => {
-      it('should call the api service correctly', () => {
-        serviceUnderTest.sendQuote({
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017-03-22T06:00:00.000Z',
-          purchaseType: 'ProvisionalOrder'
-        }).take(1).subscribe();
-        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/send/3');
-        expect(mockApi.put).toHaveBeenCalledWithParameters({
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017-03-22T06:00:00.000Z',
-          purchaseType: 'ProvisionalOrder'
-        });
-      });
-
-      it('should omit the purchaseType parameter if the purchase type is Standard', () => {
-        serviceUnderTest.sendQuote({
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017-03-22T06:00:00.000Z',
-          purchaseType: 'Standard'
-        }).take(1).subscribe();
-        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/send/3');
-        expect(mockApi.put).toHaveBeenCalledWithParameters({
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017-03-22T06:00:00.000Z'
-        });
-      });
-    });
-
     describe('addFeeTo()', () => {
       it('calls the API service as expected', () => {
         serviceUnderTest.addFeeTo({ some: 'project', name: 'projectName' } as any, { some: 'fee' } as any);

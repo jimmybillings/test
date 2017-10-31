@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
+import { Store } from '@ngrx/store';
+import { Http, Request, RequestMethod, RequestOptions, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+
 import { ApiConfig } from './api.config';
 import { Api, ApiOptions, ApiParameters, ApiBody, ApiErrorResponse } from '../interfaces/api.interface';
-import { AppStore } from '../../app.store';
+
+// Work with these directly so that we don't need AppStore.  Prevents circular dependencies in LegacyServices.
+import { AppState } from '../../app.store';
+import * as ErrorActions from '../../store/error/error.actions';
+import * as LoadingIndicatorActions from '../../store/loading-indicator/loading-indicator.actions';
 
 @Injectable()
 export class ApiService {
-  // NOTE that all "private" properties and methods are temporarily "protected" to allow FutureApiService to
-  // override/access them as needed.
-
-  constructor(
-    protected http: Http,
-    protected apiConfig: ApiConfig,
-    protected store: AppStore
-  ) {
-  }
+  // NOTE that all "private" properties are temporarily "protected" to allow FutureApiService to override/access them as needed.
+  constructor(protected http: Http, protected apiConfig: ApiConfig, protected ngrxStore: Store<AppState>) { }
 
   public get(api: Api, endpoint: string, options: ApiOptions = {}): Observable<any> {
     return this.call(RequestMethod.Get, api, endpoint, options);
@@ -33,44 +32,51 @@ export class ApiService {
     return this.call(RequestMethod.Delete, api, endpoint, options);
   }
 
-  // //// END OF PUBLIC INTERFACE
+  //// END OF PUBLIC INTERFACE
   // NOTE that all "private" methods are temporarily "protected" to allow FutureApiService to override/access as necessary.
   protected call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<any> {
     options = this.combineDefaultOptionsWith(options);
 
-    this.showLoadingIf(options.loadingIndicator === 'onBeforeRequest' || options.loadingIndicator === true);
+    this.showLoadingIndicatorDependingOn(options);
 
-    const request: Request = new Request(
-      new RequestOptions(
-        { method: method, url: this.urlFor(api, endpoint), body: this.bodyJsonFrom(options.body) }
-      ).merge(this.requestOptionsArgsFrom(options))
-    );
-
-    return this.http.request(request)
+    return this.http.request(this.requestFor(method, api, endpoint, options))
       .map(response => { try { return response.json(); } catch (exception) { return response; } })
       .do(() => {
-        this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
+        this.hideLoadingIndicatorDependingOn(options);
       }, (error: ApiErrorResponse) => {
-        this.hideLoadingIf(options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true);
-        try { return error.json(); } catch (exception) { this.store.dispatch(factory => factory.error.handle(error)); }
+        this.hideLoadingIndicatorDependingOn(options);
+
+        try { return error.json(); } catch (exception) { this.ngrxStore.dispatch(new ErrorActions.Handle(error)); }
         return error;
       });
   }
 
   protected combineDefaultOptionsWith(options: ApiOptions): ApiOptions {
-    return Object.assign(
-      {},
-      { parameters: {}, body: {}, loadingIndicator: false, overridingToken: '' },
-      options
+    return { parameters: {}, body: {}, loadingIndicator: false, overridingToken: '', ...options };
+  }
+
+  protected showLoadingIndicatorDependingOn(options: ApiOptions): void {
+    if (options.loadingIndicator === 'onBeforeRequest' || options.loadingIndicator === true) {
+      this.ngrxStore.dispatch(new LoadingIndicatorActions.Show());
+    }
+  }
+
+  protected hideLoadingIndicatorDependingOn(options: ApiOptions): void {
+    if (options.loadingIndicator === 'offAfterResponse' || options.loadingIndicator === true) {
+      this.ngrxStore.dispatch(new LoadingIndicatorActions.Hide());
+    }
+  }
+
+  protected requestFor(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Request {
+    return new Request(
+      new RequestOptions({
+        method: method,
+        url: this.urlFor(api, endpoint),
+        body: this.bodyJsonFrom(options.body),
+        headers: this.apiConfig.headers(options.overridingToken, options.headerType),
+        search: this.searchParametersFrom(options.parameters)
+      })
     );
-  }
-
-  protected showLoadingIf(loadingOption: boolean) {
-    if (loadingOption) this.store.dispatch(factory => factory.loadingIndicator.show());
-  }
-
-  protected hideLoadingIf(loadingOption: boolean) {
-    if (loadingOption) this.store.dispatch(factory => factory.loadingIndicator.hide());
   }
 
   protected urlFor(api: Api, endpoint: string) {
@@ -91,22 +97,10 @@ export class ApiService {
   }
 
   protected bodyJsonFrom(bodyObject: ApiBody): string {
-    bodyObject = Object.assign({}, bodyObject, { siteName: this.apiConfig.portal });
-
-    return JSON.stringify(bodyObject);
+    return JSON.stringify({ ...bodyObject, siteName: this.apiConfig.portal });
   }
 
-  protected requestOptionsArgsFrom(options: ApiOptions): RequestOptionsArgs {
-    let [search, searchWasSet] = this.searchParametersFrom(options.parameters);
-    const requestOptionsArgs: RequestOptionsArgs = {};
-
-    requestOptionsArgs.headers = this.apiConfig.headers(options.overridingToken, options.headerType);
-    if (searchWasSet) requestOptionsArgs.search = search;
-
-    return requestOptionsArgs;
-  }
-
-  protected searchParametersFrom(parameters: ApiParameters): Array<any> {
+  protected searchParametersFrom(parameters: ApiParameters): URLSearchParams {
     const search: URLSearchParams = new URLSearchParams();
 
     if (parameters['siteName']) console.error('Cannot set siteName externally.');
@@ -117,6 +111,6 @@ export class ApiService {
 
     search.set('siteName', this.apiConfig.portal);
 
-    return [search, search.toString().length > 0];
+    return search;
   }
 }
