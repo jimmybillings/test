@@ -9,15 +9,14 @@ import {
 } from '../../../shared/interfaces/commerce.interface';
 import { MatDialogRef } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { DefaultComponentOptions } from '../../../shared/modules/wz-dialog/interfaces/wz.dialog.interface';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
-// import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
+import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 import { SelectedPriceAttributes, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
-// import { PricingStore } from '../../../shared/stores/pricing.store';
-// import { PricingService } from '../../../shared/services/pricing.service';
 import { AppStore } from '../../../app.store';
 import { EnhancedAsset, enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 import * as SubclipMarkersInterface from '../../../shared/interfaces/subclip-markers';
@@ -25,7 +24,6 @@ import * as SubclipMarkersInterface from '../../../shared/interfaces/subclip-mar
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public cart: Observable<any>;
   public config: any;
-  public priceAttributes: Array<PriceAttribute> = null;
   public pricingPreferences: Pojo;
   public quoteType: OrderableType = null;
   protected preferencesSubscription: Subscription;
@@ -38,9 +36,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     protected window: WindowRef,
     protected userPreference: UserPreferenceService,
     protected document: any,
-    // protected pricingStore: PricingStore,
-    protected store: AppStore,
-    // protected pricingService: PricingService
+    protected store: AppStore
   ) {
     super();
   }
@@ -132,28 +128,19 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
   protected editProjectPricing(project: Project) {
     let preferences: Pojo = project.attributes ? this.mapAttributesToPreferences(project.attributes) : this.pricingPreferences;
-    if (this.priceAttributes) {
-      this.openProjectPricingDialog(this.priceAttributes, preferences, project);
-    } else {
-      // this.pricingService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
-      //   this.priceAttributes = priceAttributes;
-      //   this.openProjectPricingDialog(priceAttributes, preferences, project);
-      // });
-      this.store.dispatch(factory => factory.pricing.getAttributes('Rights Managed'));
-    }
+    this.store.dispatch(factory => factory.pricing.setPriceForDialog(null));
+    this.store.dispatch(factory => factory.pricing.initializePricing(
+      'Rights Managed',
+      this.projectPricingOptions(preferences, project)
+    ));
   }
 
   protected showPricingDialog(lineItem: AssetLineItem): void {
     let preferences: Pojo = lineItem.attributes ? this.mapAttributesToPreferences(lineItem.attributes) : this.pricingPreferences;
-    if (this.priceAttributes) {
-      this.openPricingDialog(this.priceAttributes, preferences, lineItem);
-    } else {
-      this.store.dispatch(factory => factory.pricing.getAttributes('Rights Managed'));
-      // this.pricingService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
-      //   this.priceAttributes = priceAttributes;
-      //   this.openPricingDialog(priceAttributes, preferences, lineItem);
-      // });
-    }
+    this.store.dispatch(factory => factory.pricing.initializePricing(
+      'Rights Managed',
+      this.lineitemPricingOptions(preferences, lineItem)
+    ));
   }
 
   protected mapAttributesToPreferences(attributes: any): Pojo {
@@ -174,25 +161,21 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     }
   }
 
-  protected openProjectPricingDialog(priceAttributes: Array<PriceAttribute>, preferences: Pojo, project: Project): void {
-    this.dialogService.openComponentInDialog(
-      {
-        componentType: WzPricingComponent,
-        inputOptions: {
-          attributes: priceAttributes,
-          pricingPreferences: preferences,
-          usagePrice: null
-        },
-        outputOptions: [
-          {
-            event: 'pricingEvent',
-            callback: (event: WzEvent, dialogRef: any) => {
-              this.applyProjectPricing(event, dialogRef, project);
-            }
+  protected projectPricingOptions(preferences: Pojo, project: Project): DefaultComponentOptions {
+    return {
+      componentType: WzPricingComponent,
+      inputOptions: {
+        pricingPreferences: preferences
+      },
+      outputOptions: [
+        {
+          event: 'pricingEvent',
+          callback: (event: WzEvent, dialogRef: any) => {
+            this.applyProjectPricing(event, dialogRef, project);
           }
-        ]
-      }
-    );
+        }
+      ]
+    };
   }
 
   protected applyProjectPricing(event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>, project: Project) {
@@ -210,33 +193,31 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     }
   }
 
-  protected openPricingDialog(priceAttributes: Array<PriceAttribute>, preferences: Pojo, lineItem: AssetLineItem): void {
-    this.dialogService.openComponentInDialog(
-      {
-        componentType: WzPricingComponent,
-        inputOptions: {
-          attributes: priceAttributes,
-          pricingPreferences: preferences,
-          usagePrice: this.pricingStore.priceForDialog
-        },
-        outputOptions: [
-          {
-            event: 'pricingEvent',
-            callback: (event: WzEvent, dialogRef: any) => {
-              this.applyPricing(event, dialogRef, lineItem);
-            }
+  protected lineitemPricingOptions(preferences: Pojo, lineItem: AssetLineItem): DefaultComponentOptions {
+    return {
+      componentType: WzPricingComponent,
+      inputOptions: {
+        pricingPreferences: preferences
+      },
+      outputOptions: [
+        {
+          event: 'pricingEvent',
+          callback: (event: WzEvent, dialogRef: any) => {
+            this.applyPricing(event, dialogRef, lineItem);
           }
-        ]
-      }
-    );
+        }
+      ]
+    };
   }
 
   protected applyPricing(event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>, lineItem: AssetLineItem) {
     switch (event.type) {
       case 'CALCULATE_PRICE':
-        this.calculatePrice(event.payload, lineItem).subscribe((price: number) => {
-          this.pricingStore.setPriceForDialog(price);
-        });
+        this.store.dispatch(factory => factory.pricing.calculatePrice(
+          event.payload,
+          lineItem.asset.assetId,
+          this.markersFrom(lineItem.asset as EnhancedAsset)
+        ));
         break;
       case 'APPLY_PRICE':
         this.commerceService.editLineItem(lineItem, { pricingAttributes: event.payload.attributes });
@@ -301,11 +282,15 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     );
   }
 
-  protected calculatePrice(attributes: Pojo, lineItem: AssetLineItem): Observable<number> {
-    const markers: SubclipMarkersInterface.SubclipMarkers = (lineItem.asset as EnhancedAsset).isSubclipped ? {
-      in: (lineItem.asset as EnhancedAsset).inMarkerFrame,
-      out: (lineItem.asset as EnhancedAsset).outMarkerFrame
+  protected calculatePrice(attributes: Pojo, lineItem: AssetLineItem): void {
+    const markers: SubclipMarkersInterface.SubclipMarkers = this.markersFrom(lineItem.asset as EnhancedAsset);
+    this.store.dispatch(factory => factory.pricing.calculatePrice(attributes, lineItem.asset.assetId, markers));
+  }
+
+  protected markersFrom(asset: EnhancedAsset): SubclipMarkersInterface.SubclipMarkers {
+    return asset.isSubclipped ? {
+      in: asset.inMarkerFrame,
+      out: asset.outMarkerFrame
     } : null;
-    return this.pricingService.getPriceFor((lineItem.asset as EnhancedAsset), attributes, markers);
   }
 }

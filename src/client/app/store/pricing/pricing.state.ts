@@ -4,7 +4,6 @@ import { Common } from '../../shared/utilities/common.functions';
 import { Pojo } from '../../shared/interfaces/common.interface';
 
 export interface State {
-  loading: boolean;
   priceForDetails: number;
   priceForDialog: number;
   attributes: PriceAttribute[];
@@ -13,7 +12,6 @@ export interface State {
 }
 
 export const initialState: State = {
-  loading: false,
   priceForDetails: NaN,
   priceForDialog: NaN,
   attributes: null,
@@ -31,15 +29,11 @@ export function reducer(state: State = initialState, action: PricingActions.Any)
     }
 
     case PricingActions.SetAppliedAttributes.Type: {
-      return { ...Common.clone(state), selectedAttributes: action.appliedAttributes };
-    }
-
-    case PricingActions.GetAttributes.Type: {
-      return { ...Common.clone(state), loading: true };
+      return { ...Common.clone(state), appliedAttributes: action.appliedAttributes };
     }
 
     case PricingActions.GetAttributesSuccess.Type: {
-      return { ...Common.clone(state), loading: false, attributes: action.attributes };
+      return { ...Common.clone(state), attributes: action.attributes };
     }
 
     case PricingActions.SetPriceForDetails.Type: {

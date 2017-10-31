@@ -18,7 +18,6 @@ export function main() {
     let mockUserPreference: any;
     let mockRouter: any;
     let mockDocument: any;
-    let mockPricingService: any;
 
     beforeEach(() => {
       mockCapabilities = {
@@ -54,11 +53,6 @@ export function main() {
 
       mockRouter = { navigate: jasmine.createSpy('navigate') };
 
-      mockPricingService = {
-        getPriceFor: jasmine.createSpy('getPriceFor'),
-        getPriceAttributes: jasmine.createSpy('getPricingAttributes')
-      };
-
       mockStore = new MockAppStore();
 
       mockStore.createStateSection('uiConfig', {
@@ -86,7 +80,7 @@ export function main() {
       componentUnderTest =
         new QuoteEditComponent(
           mockCapabilities, mockQuoteEditService, mockDialogService,
-          mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
+          mockWindow, mockUserPreference, mockDocument, mockRouter, mockStore
         );
     });
 
@@ -100,7 +94,7 @@ export function main() {
       };
       componentUnderTest = new QuoteEditComponent(
         mockCapabilities, mockQuoteEditService, mockDialogService,
-        mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
+        mockWindow, mockUserPreference, mockDocument, mockRouter, mockStore
       );
       return componentUnderTest;
     };

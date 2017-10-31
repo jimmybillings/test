@@ -3,6 +3,8 @@ import { Action } from '@ngrx/store';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { Pojo } from '../../shared/interfaces/common.interface';
+import { DefaultComponentOptions } from '../../shared/modules/wz-dialog/interfaces/wz.dialog.interface';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 
 export class ActionFactory {
   public setPriceForDetails(price: number): SetPriceForDetails {
@@ -17,22 +19,37 @@ export class ActionFactory {
     return new SetAppliedAttributes(appliedAttributes);
   }
 
-  public getAttributes(rightsReproduction: string): GetAttributes {
-    return new GetAttributes(rightsReproduction);
+  public initializePricing(rightsReproduction: string, dialogOptions: DefaultComponentOptions): InitializePricing {
+    return new InitializePricing(rightsReproduction, dialogOptions);
   }
 
-  public openPricingDialog(): OpenPricingDialog {
-    return new OpenPricingDialog();
-  }
-
-  public calculatePriceFor(selectedAttributes: Pojo): CalculatePrice {
-    return new CalculatePrice(selectedAttributes);
+  public calculatePrice(
+    selectedAttributes: Pojo,
+    assetId: number,
+    subclipMarkers: SubclipMarkersInterface.SubclipMarkers
+  ): CalculatePrice {
+    return new CalculatePrice(selectedAttributes, assetId, subclipMarkers);
   }
 }
 
 export class InternalActionFactory extends ActionFactory {
-  public getAttributesSuccess(attributes: PriceAttribute[]): GetAttributesSuccess {
-    return new GetAttributesSuccess(attributes);
+  public getAttributesAndOpenDialog(
+    rightsReproduction: string,
+    dialogOptions: DefaultComponentOptions
+  ): GetAttributesAndOpenDialog {
+    return new GetAttributesAndOpenDialog(rightsReproduction, dialogOptions);
+  }
+
+  public openDialog(dialogOptions: DefaultComponentOptions): OpenDialog {
+    return new OpenDialog(dialogOptions);
+  }
+
+  public getAttributesSuccess(
+    attributes: PriceAttribute[],
+    rightsReproduction: string,
+    dialogOptions: DefaultComponentOptions
+  ): GetAttributesSuccess {
+    return new GetAttributesSuccess(attributes, rightsReproduction, dialogOptions);
   }
 
   public getAttributesFailure(error: ApiErrorResponse): GetAttributesFailure {
@@ -48,16 +65,20 @@ export class InternalActionFactory extends ActionFactory {
   }
 }
 
-export class GetAttributes implements Action {
+export class GetAttributesAndOpenDialog implements Action {
   public static readonly Type = '[Pricing] Get Attributes';
-  public readonly type = GetAttributes.Type;
-  constructor(public readonly rightsReproduction: string) { }
+  public readonly type = GetAttributesAndOpenDialog.Type;
+  constructor(public readonly rightsReproduction: string, public readonly dialogOptions: DefaultComponentOptions) { }
 }
 
 export class GetAttributesSuccess implements Action {
   public static readonly Type = '[Pricing] Get Attributes Success';
   public readonly type = GetAttributesSuccess.Type;
-  constructor(public readonly attributes: PriceAttribute[]) { }
+  constructor(
+    public readonly attributes: PriceAttribute[],
+    public readonly rightsReproduction: string,
+    public readonly dialogOptions: DefaultComponentOptions
+  ) { }
 }
 
 export class GetAttributesFailure implements Action {
@@ -87,7 +108,11 @@ export class SetAppliedAttributes implements Action {
 export class CalculatePrice implements Action {
   public static readonly Type = '[Pricing] Calculate';
   public readonly type = CalculatePrice.Type;
-  constructor(public readonly selectedAttributes: Pojo) { }
+  constructor(
+    public readonly selectedAttributes: Pojo,
+    public readonly assetId: number,
+    public readonly subclipMarkers: SubclipMarkersInterface.SubclipMarkers
+  ) { }
 }
 
 export class CalculatePriceSuccess implements Action {
@@ -102,10 +127,17 @@ export class CalculatePriceFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export class OpenPricingDialog implements Action {
-  public static readonly Type = '[Pricing] Open Dialog';
-  public readonly type = OpenPricingDialog.Type;
+export class InitializePricing implements Action {
+  public static readonly Type = '[Pricing] Initialize Pricing';
+  public readonly type = InitializePricing.Type;
+  constructor(public readonly rightsReproduction: string, public readonly dialogOptions: DefaultComponentOptions) { }
 }
 
-export type Any = GetAttributes | GetAttributesSuccess | GetAttributesFailure | SetPriceForDetails | SetPriceForDialog |
-  SetAppliedAttributes | CalculatePrice | CalculatePriceSuccess | CalculatePriceFailure | OpenPricingDialog;
+export class OpenDialog implements Action {
+  public static readonly Type = '[Pricing] Open Dialog';
+  public readonly type = OpenDialog.Type;
+  constructor(public readonly dialogOptions: DefaultComponentOptions) { }
+}
+
+export type Any = GetAttributesAndOpenDialog | GetAttributesSuccess | GetAttributesFailure | SetPriceForDetails | OpenDialog |
+  SetPriceForDialog | SetAppliedAttributes | CalculatePrice | CalculatePriceSuccess | CalculatePriceFailure | InitializePricing;

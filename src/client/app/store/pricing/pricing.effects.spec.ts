@@ -5,10 +5,12 @@ import { EffectsSpecHelper, EffectTestParameters } from '../spec-helpers/effects
 export function main() {
   describe('Pricing Effects', () => {
     const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
+    let mockDialogService: any;
 
     function instantiator(): PricingEffects {
+      mockDialogService = { openComponentInDialog: jasmine.createSpy('openComponentInDialog') };
       return new PricingEffects(
-        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
+        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService, mockDialogService
       );
     }
   });
