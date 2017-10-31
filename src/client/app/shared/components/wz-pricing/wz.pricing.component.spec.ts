@@ -2,15 +2,20 @@ import { WzPricingComponent } from './wz.pricing.component';
 import { Observable } from 'rxjs/Observable';
 import { EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Wz Pricing Component', () => {
-    let componentUnderTest: WzPricingComponent, mockFormBuilder: any, mockForm: any;
+    let componentUnderTest: WzPricingComponent;
+    let mockFormBuilder: any;
+    let mockForm: any;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
       mockFormBuilder = new FormBuilder();
-      componentUnderTest = new WzPricingComponent(mockFormBuilder);
-      componentUnderTest.attributes = mockPriceAttributes() as any;
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('pricing', { attributes: mockPriceAttributes() });
+      componentUnderTest = new WzPricingComponent(mockFormBuilder, mockStore);
       componentUnderTest.pricingEvent = new EventEmitter();
     });
 
@@ -49,7 +54,7 @@ export function main() {
           D: 's'
         };
         spyOn(componentUnderTest.pricingEvent, 'emit');
-        componentUnderTest.usagePrice = Observable.of(10);
+        componentUnderTest.price = Observable.of(10);
         componentUnderTest.onSubmit();
 
         expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
@@ -119,6 +124,7 @@ export function main() {
       });
 
       it('should should emit an error and clear the form if there are no valid options', () => {
+        componentUnderTest.pricingPreferences = {};
         spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.form = mockFormBuilder.group({
           A: ['t'],

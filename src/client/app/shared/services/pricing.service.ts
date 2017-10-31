@@ -12,12 +12,16 @@ import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 export class PricingService {
   constructor(private apiService: ApiService) { }
 
-  public getPriceFor(asset: EnhancedAsset, attributes: any, markers?: SubclipMarkersInterface.SubclipMarkers): Observable<any> {
+  public getPriceFor(
+    asset: EnhancedAsset,
+    attributes: Pojo,
+    markers?: SubclipMarkersInterface.SubclipMarkers
+  ): Observable<number> {
     const parameters: ApiParameters =
       Object.assign(
         { region: 'AAA' },
         { attributes: this.formatAttributes(attributes) },
-        markers ? this.formatDurationParametersFor(markers) : null
+        markers ? this.formattedDurationParametersFor(markers) : null
       );
 
     return this.apiService.get(Api.Orders, `priceBook/price/${asset.assetId}`, { parameters }).map((data: any) => data.price);
@@ -43,7 +47,7 @@ export class PricingService {
     return formatted.join(',');
   }
 
-  private formatDurationParametersFor(markers: SubclipMarkersInterface.SubclipMarkers): object {
+  private formattedDurationParametersFor(markers: SubclipMarkersInterface.SubclipMarkers): object {
     return {
       startSecond: markers.in.asMilliseconds(), endSecond: markers.out.asMilliseconds()
     };

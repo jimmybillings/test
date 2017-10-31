@@ -11,10 +11,8 @@ import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
 import { FormFields, MdSelectOption } from '../../../shared/interfaces/forms.interface';
-import { PricingStore } from '../../../shared/stores/pricing.store';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
 import { AppStore } from '../../../app.store';
-import { PricingService } from '../../../shared/services/pricing.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -39,14 +37,11 @@ export class QuoteEditComponent extends CommerceEditTab implements OnDestroy {
     public window: WindowRef,
     public userPreference: UserPreferenceService,
     @Inject(DOCUMENT) public document: any,
-    public pricingStore: PricingStore,
     public router: Router,
     protected store: AppStore,
-    public pricingService: PricingService
   ) {
     super(
-      userCan, quoteEditService, dialogService, window,
-      userPreference, document, pricingStore, store, pricingService
+      userCan, quoteEditService, dialogService, window, userPreference, document, store
     );
     this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.quoteComment.config.form.items);
     this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };

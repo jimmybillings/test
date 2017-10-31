@@ -23,7 +23,7 @@
       </div>
     </form>
     <div class="price-info" layout="row" layout-align="center center">
-      <p *ngIf="usagePrice | async" class="mat-body-3">{{ usagePrice | async | currency:'USD':true:'1.2-2' }}</p>
+      <p *ngIf="price | async" class="mat-body-3">{{ price | async | currency:'USD':true:'1.2-2' }}</p>
     </div>
   </mat-dialog-content>
 </div>

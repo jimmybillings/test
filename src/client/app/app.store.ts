@@ -41,6 +41,10 @@ import * as OrderActions from './store/order/order.actions';
 import * as OrderState from './store/order/order.state';
 export type OrderState = OrderState.State;
 
+import * as PricingActions from './store/pricing/pricing.actions';
+import * as PricingState from './store/pricing/pricing.state';
+export type PricingState = PricingState.State;
+
 import * as QuoteEditActions from './store/quote-edit/quote-edit.actions';
 import * as QuoteEditState from './store/quote-edit/quote-edit.state';
 export type QuoteEditState = QuoteEditState.State;
@@ -82,6 +86,7 @@ export interface ActionFactory {
   readonly loadingIndicator: LoadingIndicatorActions.ActionFactory;
   readonly multiLingual: MultiLingualActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
+  readonly pricing: PricingActions.ActionFactory;
   readonly quoteEdit: QuoteEditActions.ActionFactory;
   readonly quoteShow: QuoteShowActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
@@ -104,6 +109,7 @@ export interface InternalActionFactory {
   readonly multiLingual: MultiLingualActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
+  readonly pricing: PricingActions.InternalActionFactory;
   readonly quoteEdit: QuoteEditActions.InternalActionFactory;
   readonly quoteShow: QuoteShowActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
@@ -122,6 +128,7 @@ export interface AppState {
   readonly loadingIndicator: LoadingIndicatorState;
   readonly multiLingual: MultiLingualState;
   readonly order: OrderState;
+  readonly pricing: PricingState;
   readonly quoteEdit: QuoteEditState;
   readonly quoteShow: QuoteShowState;
   readonly snackbar: SnackbarState;
@@ -147,6 +154,7 @@ export const reducers: AppReducers = {
   headerDisplayOptions: HeaderDisplayOptionsState.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
   order: OrderState.reducer,
+  pricing: PricingState.reducer,
   multiLingual: MultiLingualState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteShow: QuoteShowState.reducer,
@@ -175,6 +183,7 @@ export class AppStore {
     multiLingual: new MultiLingualActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
+    pricing: new PricingActions.ActionFactory(),
     quoteEdit: new QuoteEditActions.ActionFactory(),
     quoteShow: new QuoteShowActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
@@ -196,6 +205,7 @@ export class AppStore {
     multiLingual: new MultiLingualActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
+    pricing: new PricingActions.InternalActionFactory(),
     quoteEdit: new QuoteEditActions.InternalActionFactory(),
     quoteShow: new QuoteShowActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),

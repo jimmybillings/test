@@ -61,7 +61,6 @@ import { WindowRef } from './services/window-ref.service';
 import { QuoteService } from './services/quote.service';
 import { QuotesService } from './services/quotes.service';
 import { QuoteEditService } from './services/quote-edit.service';
-import { PricingService } from './services/pricing.service';
 import { AsperaService } from './services/aspera.service';
 // New-ish services
 import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
@@ -73,6 +72,7 @@ import { FutureCartService } from '../store/cart/cart.service';
 import { FutureQuoteEditService } from '../store/quote-edit/quote-edit.service';
 import { FutureQuoteShowService } from '../store/quote-show/quote-show.service';
 import { OrderService } from '../store/order/order.service';
+import { PricingService } from '../store/pricing/pricing.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
 import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
 import { UiConfigService } from '../store/ui-config/ui-config.service';
@@ -92,6 +92,7 @@ import * as HeaderDisplayOptions from '../store/header-display-options/header-di
 import * as LoadingIndicatorState from '../store/loading-indicator/loading-indicator.state';
 import * as MultiLingualState from '../store/multi-lingual/multi-lingual.state';
 import * as OrderState from '../store/order/order.state';
+import * as PricingState from '../store/pricing/pricing.state';
 import * as QuoteEditState from '../store/quote-edit/quote-edit.state';
 import * as QuoteShowState from '../store/quote-show/quote-show.state';
 import * as SnackbarState from '../store/snackbar/snackbar.state';
@@ -106,7 +107,6 @@ import { gallery, GalleryViewStore } from './stores/gallery-view.store';
 import { quotes, QuotesStore } from './stores/quotes.store';
 import { checkout, CheckoutStore } from './stores/checkout.store';
 import { feeConfig, FeeConfigStore } from './stores/fee-config.store';
-import { pricingReducer, PricingStore } from './stores/pricing.store';
 
 import { currentUser } from './services/current-user.service';
 import { Capabilities } from './services/capabilities.service';
@@ -128,6 +128,7 @@ import { HeaderDisplayOptionsEffects } from '../store/header-display-options/hea
 import { MultiLingualEffects } from '../store/multi-lingual/multi-lingual.effects';
 import { NotifierEffects } from '../store/notifier/notifier.effects';
 import { OrderEffects } from '../store/order/order.effects';
+import { PricingEffects } from '../store/pricing/pricing.effects';
 import { QuoteEditEffects } from '../store/quote-edit/quote-edit.effects';
 import { QuoteShowEffects } from '../store/quote-show/quote-show.effects';
 import { RouterEffects } from '../store/router/router.effects';
@@ -184,8 +185,7 @@ const WAZEE_STORE_INTERFACES = [
   GalleryViewStore,
   QuotesStore,
   CheckoutStore,
-  FeeConfigStore,
-  PricingStore
+  FeeConfigStore
 ];
 
 const WAZEE_PROVIDERS: any = [
@@ -210,7 +210,6 @@ const WAZEE_STORES: any = {
   quotes: quotes,
   checkout: checkout,
   feeConfig: feeConfig,
-  paymentReducer: pricingReducer,
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,
@@ -221,6 +220,7 @@ const WAZEE_STORES: any = {
   loadingIndicator: LoadingIndicatorState.reducer,
   multiLingual: MultiLingualState.reducer,
   order: OrderState.reducer,
+  pricing: PricingState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteShow: QuoteShowState.reducer,
   snackbar: SnackbarState.reducer,
@@ -240,6 +240,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   MultiLingualEffects,
   NotifierEffects,
   OrderEffects,
+  PricingEffects,
   QuoteEditEffects,
   QuoteShowEffects,
   RouterEffects,
