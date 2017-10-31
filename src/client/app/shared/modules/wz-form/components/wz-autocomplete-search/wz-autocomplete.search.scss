@@ -76,6 +76,7 @@ header.app-header {
       padding: 0 0 0 16px;
     }
     button[type="submit"] {
+      border-radius: unset;
       mat-icon.material-icons {
         font-size: 33px;
         text-shadow: none;
