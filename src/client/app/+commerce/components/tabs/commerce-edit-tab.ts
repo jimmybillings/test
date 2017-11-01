@@ -14,7 +14,6 @@ import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
-import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 import { SelectedPriceAttributes, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
 import { AppStore } from '../../../app.store';
@@ -31,7 +30,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
   constructor(
     public userCan: CommerceCapabilities,
-    protected commerceService: CartService | QuoteEditService,
+    protected commerceService: CartService,
     protected dialogService: WzDialogService,
     protected window: WindowRef,
     protected userPreference: UserPreferenceService,
