@@ -14,19 +14,19 @@ import { Task } from '../../tasks/task';
  * @param {string} path - The path to load the tasks from.
  */
 export function loadTasks(path: string): void {
-  util.log('Loading tasks folder', path);
+  util.log('Loading tasks folder', util.colors.yellow(path));
   readDir(path, taskname => registerTask(taskname, path));
 }
 
 function validateTasks(tasks: any) {
   return Object.keys(tasks)
     .map((taskName: string) => {
-      if (!tasks[taskName] ||
+       if (!tasks[taskName] ||
         !Array.isArray(tasks[taskName]) ||
         tasks[taskName].some((t: any) => typeof t !== 'string')) {
-        return taskName;
-      }
-      return null;
+         return taskName;
+       }
+       return null;
     }).filter((taskName: string) => !!taskName);
 }
 
@@ -93,7 +93,7 @@ export function loadCompositeTasks(seedTasksFile: string, projectTasksFile: stri
       const invalid = validateTasks(tasks);
       if (invalid.length) {
         const errorMessage = getInvalidTaskErrorMessage(invalid, file);
-        util.log(errorMessage);
+        util.log(util.colors.red(errorMessage));
         process.exit(1);
       }
     });
@@ -135,7 +135,7 @@ function normalizeTask(task: any, taskName: string) {
  */
 function registerTask(taskname: string, path: string): void {
   const TASK = join(path, taskname);
-  util.log('Registering task', tildify(TASK));
+  util.log('Registering task', util.colors.yellow(tildify(TASK)));
 
   gulp.task(taskname, (done: any) => {
     const task = normalizeTask(require(TASK), TASK);
