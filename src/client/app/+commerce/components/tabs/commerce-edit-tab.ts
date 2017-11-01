@@ -165,7 +165,8 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     return {
       componentType: WzPricingComponent,
       inputOptions: {
-        pricingPreferences: preferences
+        pricingPreferences: preferences,
+        userCanCustomizeRights: this.userCan.administerQuotes()
       },
       outputOptions: [
         {
@@ -197,7 +198,8 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     return {
       componentType: WzPricingComponent,
       inputOptions: {
-        pricingPreferences: preferences
+        pricingPreferences: preferences,
+        userCanCustomizeRights: this.userCan.administerQuotes()
       },
       outputOptions: [
         {
@@ -220,8 +222,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         ));
         break;
       case 'APPLY_PRICE':
+        if (event.payload.updatePrefs) {
+          this.userPreference.updatePricingPreferences(event.payload.attributes);
+        }
         this.commerceService.editLineItem(lineItem, { pricingAttributes: event.payload.attributes });
-        this.userPreference.updatePricingPreferences(event.payload.attributes);
         dialogRef.close();
         break;
       case 'ERROR':

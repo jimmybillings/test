@@ -171,7 +171,8 @@ export class AssetComponent implements OnInit, OnDestroy {
     return {
       componentType: WzPricingComponent,
       inputOptions: {
-        pricingPreferences: this.userPreference.state.pricingPreferences
+        pricingPreferences: this.userPreference.state.pricingPreferences,
+        userCanCustomizeRights: this.userCan.administerQuotes() && this.assetType === 'quoteEditAsset'
       },
       outputOptions: [
         {
@@ -194,7 +195,9 @@ export class AssetComponent implements OnInit, OnDestroy {
         ));
         break;
       case 'APPLY_PRICE':
-        this.userPreference.updatePricingPreferences(event.payload.attributes);
+        if (event.payload.updatePrefs) {
+          this.userPreference.updatePricingPreferences(event.payload.attributes);
+        }
         dialogRef.close();
         this.store.dispatch(factory => factory.pricing.setPriceForDetails(event.payload.price));
         this.store.dispatch(factory => factory.pricing.setAppliedAttributes(event.payload.attributes));

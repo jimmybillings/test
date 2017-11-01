@@ -18,6 +18,7 @@ export function main() {
     let mockPricingStore: any;
     let mockCurrentUserService: any;
     let mockPricingService: any;
+    let mockCapabilities: any;
     let mockAppStore: MockAppStore;
     let initPricingSpy: jasmine.Spy;
     let setPriceSpy: jasmine.Spy;
@@ -87,8 +88,10 @@ export function main() {
         components: { cart: { config: { form: 'SOME_CONFIG', createQuote: { items: [] } } } }
       });
 
+      mockCapabilities = { administerQuotes: () => false };
+
       componentUnderTest = new CommerceEditTab(
-        null, mockCartService, mockDialogService, mockWindow, mockUserPreference, mockDocument, mockAppStore
+        mockCapabilities, mockCartService, mockDialogService, mockWindow, mockUserPreference, mockDocument, mockAppStore
       );
     });
 
@@ -332,7 +335,8 @@ export function main() {
         mockAppStore.expectDispatchFor(initPricingSpy, 'Rights Managed', {
           componentType: jasmine.any(Function),
           inputOptions: {
-            pricingPreferences: { some: 'attribute' }
+            pricingPreferences: { some: 'attribute' },
+            userCanCustomizeRights: false
           },
           outputOptions: [
             {
@@ -351,7 +355,8 @@ export function main() {
         mockAppStore.expectDispatchFor(initPricingSpy, 'Rights Managed', {
           componentType: jasmine.any(Function),
           inputOptions: {
-            pricingPreferences: { some: 'attribute' }
+            pricingPreferences: { some: 'attribute' },
+            userCanCustomizeRights: false
           },
           outputOptions: [
             {

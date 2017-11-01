@@ -168,7 +168,8 @@ export function main() {
           'Rights Managed', {
             componentType: jasmine.any(Function),
             inputOptions: {
-              pricingPreferences: 'thePricingPreferences'
+              pricingPreferences: 'thePricingPreferences',
+              userCanCustomizeRights: false
             },
             outputOptions: [
               {

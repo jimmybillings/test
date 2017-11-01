@@ -33,11 +33,11 @@ export class ActionFactory {
 }
 
 export class InternalActionFactory extends ActionFactory {
-  public getAttributesAndOpenDialog(
+  public getAttributes(
     rightsReproduction: string,
     dialogOptions: DefaultComponentOptions
-  ): GetAttributesAndOpenDialog {
-    return new GetAttributesAndOpenDialog(rightsReproduction, dialogOptions);
+  ): GetAttributes {
+    return new GetAttributes(rightsReproduction, dialogOptions);
   }
 
   public openDialog(dialogOptions: DefaultComponentOptions): OpenDialog {
@@ -65,9 +65,9 @@ export class InternalActionFactory extends ActionFactory {
   }
 }
 
-export class GetAttributesAndOpenDialog implements Action {
+export class GetAttributes implements Action {
   public static readonly Type = '[Pricing] Get Attributes';
-  public readonly type = GetAttributesAndOpenDialog.Type;
+  public readonly type = GetAttributes.Type;
   constructor(public readonly rightsReproduction: string, public readonly dialogOptions: DefaultComponentOptions) { }
 }
 
@@ -106,7 +106,7 @@ export class SetAppliedAttributes implements Action {
 }
 
 export class CalculatePrice implements Action {
-  public static readonly Type = '[Pricing] Calculate';
+  public static readonly Type = '[Pricing] Calculate Price';
   public readonly type = CalculatePrice.Type;
   constructor(
     public readonly selectedAttributes: Pojo,
@@ -116,13 +116,13 @@ export class CalculatePrice implements Action {
 }
 
 export class CalculatePriceSuccess implements Action {
-  public static readonly Type = '[Pricing] Calculate Success';
+  public static readonly Type = '[Pricing] Calculate Price Success';
   public readonly type = CalculatePriceSuccess.Type;
   constructor(public readonly price: number) { }
 }
 
 export class CalculatePriceFailure implements Action {
-  public static readonly Type = '[Pricing] Calculate Failure';
+  public static readonly Type = '[Pricing] Calculate Price Failure';
   public readonly type = CalculatePriceFailure.Type;
   constructor(public readonly error: ApiErrorResponse) { }
 }
@@ -139,5 +139,5 @@ export class OpenDialog implements Action {
   constructor(public readonly dialogOptions: DefaultComponentOptions) { }
 }
 
-export type Any = GetAttributesAndOpenDialog | GetAttributesSuccess | GetAttributesFailure | SetPriceForDetails | OpenDialog |
+export type Any = GetAttributes | GetAttributesSuccess | GetAttributesFailure | SetPriceForDetails | OpenDialog |
   SetPriceForDialog | SetAppliedAttributes | CalculatePrice | CalculatePriceSuccess | CalculatePriceFailure | InitializePricing;

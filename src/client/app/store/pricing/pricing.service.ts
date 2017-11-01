@@ -13,7 +13,7 @@ import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-marker
 export class PricingService {
   constructor(private apiService: FutureApiService) { }
 
-  public getPriceFor(attributes: Pojo, assetId: number, markers?: SubclipMarkersInterface.SubclipMarkers): Observable<any> {
+  public getPrice(attributes: Pojo, assetId: number, markers?: SubclipMarkersInterface.SubclipMarkers): Observable<any> {
     const parameters: ApiParameters =
       Object.assign(
         { region: 'AAA' },

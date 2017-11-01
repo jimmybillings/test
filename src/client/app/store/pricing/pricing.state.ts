@@ -12,8 +12,8 @@ export interface State {
 }
 
 export const initialState: State = {
-  priceForDetails: NaN,
-  priceForDialog: NaN,
+  priceForDetails: null,
+  priceForDialog: null,
   attributes: null,
   appliedAttributes: null,
   selectedAttributes: null

@@ -59,7 +59,26 @@ export function main() {
 
         expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
           type: 'APPLY_PRICE',
-          payload: { price: 10, attributes: { A: 's', B: 'm', C: 'x', D: 's' } }
+          payload: { price: 10, attributes: { A: 's', B: 'm', C: 'x', D: 's' }, updatePrefs: true }
+        });
+      });
+    });
+
+    describe('onSubmitCustom()', () => {
+      it('should emit the pricing event with the form', () => {
+        componentUnderTest.pricingPreferences = {
+          A: 's',
+          B: 'm',
+          C: 'x',
+          D: 's'
+        };
+        componentUnderTest.userCanCustomizeRights = true;
+        spyOn(componentUnderTest.pricingEvent, 'emit');
+        componentUnderTest.onSubmitCustom();
+
+        expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
+          type: 'APPLY_PRICE',
+          payload: { attributes: { B: 'm', C: 'x', D: 's', A: 's' }, updatePrefs: false }
         });
       });
     });
@@ -135,7 +154,6 @@ export function main() {
 
         componentUnderTest.validOptionsFor(componentUnderTest.attributes[3]);
 
-        expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({ type: 'ERROR', payload: 'PRICING.ERROR' });
         expect(componentUnderTest.form.value).toEqual({
           A: '',
           B: '',
