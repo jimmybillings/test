@@ -1,7 +1,14 @@
 import { Action } from '@ngrx/store';
 
-import { Quote, AssetLineItem, QuoteOptions } from '../../shared/interfaces/commerce.interface';
-import { Asset } from '../../shared/interfaces/common.interface';
+import {
+  AddAssetParameters,
+  AssetLineItem,
+  FeeLineItem,
+  Project,
+  Quote,
+  QuoteOptions,
+} from '../../shared/interfaces/commerce.interface';
+import { Asset, SelectedPriceAttributes } from '../../shared/interfaces/common.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { Pojo } from '../../shared/interfaces/common.interface';
@@ -34,6 +41,66 @@ export class ActionFactory {
   // Move this to internal action factory when quote is fully "effected"
   public loadSuccess(quote: Quote): LoadSuccess {
     return new LoadSuccess(quote);
+  }
+
+  public cloneQuote(quote: Quote): CloneQuote {
+    return new CloneQuote(quote);
+  }
+
+  public createQuote(): CreateQuote {
+    return new CreateQuote();
+  }
+
+  public updateQuoteField(options: Pojo): UpdateQuoteFields {
+    return new UpdateQuoteFields(options);
+  }
+
+  public addFeeTo(project: Project, fee: FeeLineItem): AddFeeTo {
+    return new AddFeeTo(project, fee);
+  }
+
+  public removeFee(fee: FeeLineItem): RemoveFee {
+    return new RemoveFee(fee);
+  }
+
+  public bulkImport(rawAssets: { lineItemAttributes: string }, projectId: string): BulkImport {
+    return new BulkImport(rawAssets, projectId);
+  }
+
+  public editLineItem(lineItem: AssetLineItem, fieldToEdit: any): EditLineItem {
+    return new EditLineItem(lineItem, fieldToEdit)
+  }
+
+  public addAssetToProjectInQuote(paramaters: AddAssetParameters): AddAssetToProjectInQuote {
+    return new AddAssetToProjectInQuote(paramaters);
+  }
+
+  public addProject(): AddProject {
+    return new AddProject();
+  }
+
+  public removeProject(projectId: number): RemoveProject {
+    return new RemoveProject(projectId);
+  }
+
+  public updateProject(project: Project): UpdateProject {
+    return new UpdateProject(project);
+  }
+
+  public moveLineItem(project: Project, lineItem: AssetLineItem): MoveLineItem {
+    return new MoveLineItem(project, lineItem);
+  }
+
+  public cloneLineItem(lineItem: AssetLineItem): CloneLineItem {
+    return new CloneLineItem(lineItem);
+  }
+
+  public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkers) {
+    return new EditLineItemMarkers(lineItem, newMarkers);
+  }
+
+  public updateProjectPriceAttributes(priceAttributes: SelectedPriceAttributes, project: Project): UpdateProjectPriceAttributes {
+    return new UpdateProjectPriceAttributes(priceAttributes, project);
   }
 }
 
@@ -76,6 +143,22 @@ export class InternalActionFactory extends ActionFactory {
 
   public sendQuoteSuccess(quoteId: number, ownerEmail: string) {
     return new SendQuoteSuccess(quoteId, ownerEmail);
+  }
+
+  public cloneQuoteSuccess(quote: Quote) {
+    return new CloneQuoteSuccess(quote);
+  }
+
+  public bulkImportSuccess(quote: Quote, rawAssets: { lineItemAttributes: string }): BulkImportSuccess {
+    return new BulkImportSuccess(quote, rawAssets);
+  }
+
+  public addAssetToProjectInQuoteSuccess(quote: Quote, assetId: number): AddAssetToProjectInQuoteSuccess {
+    return new AddAssetToProjectInQuoteSuccess(quote, assetId);
+  }
+
+  public quoteRefreshAndNotfiy(quote: Quote, translationString: string): QuoteRefreshAndNotify {
+    return new QuoteRefreshAndNotify(quote, translationString);
   }
 }
 
@@ -181,10 +264,119 @@ export class SendQuoteSuccess implements Action {
     public readonly ownerEmail: string) { }
 }
 
+export class CloneQuote implements Action {
+  public static readonly Type = '[Quote Edit] Clone Quote';
+  public readonly type = CloneQuote.Type;
+  constructor(public readonly quote: Quote) { }
+}
+
+export class CloneQuoteSuccess implements Action {
+  public static readonly Type = '[Quote Edit] Clone Quote Success';
+  public readonly type = CloneQuoteSuccess.Type;
+  constructor(public readonly quote: Quote) { }
+}
+
+export class CreateQuote implements Action {
+  public static readonly Type = '[Quote Edit] Create Quote';
+  public readonly type = CreateQuote.Type;
+}
+export class UpdateQuoteFields implements Action {
+  public static readonly Type = '[Quote Edit] Update Quote Fields';
+  public readonly type = UpdateQuoteFields.Type;
+  constructor(public readonly options: Pojo) { }
+}
+export class AddFeeTo implements Action {
+  public static readonly Type = '[Quote Edit] Add Fee To';
+  public readonly type = AddFeeTo.Type;
+  constructor(public readonly project: Project, public readonly fee: FeeLineItem) { }
+}
+
+export class RemoveFee implements Action {
+  public static readonly Type = '[Quote Edit] Remove Fee';
+  public readonly type = RemoveFee.Type;
+  constructor(public readonly fee: FeeLineItem) { }
+}
+
+export class BulkImport implements Action {
+  public static readonly Type = '[Quote Edit] Bulk Import';
+  public readonly type = BulkImport.Type;
+  constructor(public readonly rawAssets: { lineItemAttributes: string }, public readonly projectId: string) { }
+}
+
+export class BulkImportSuccess implements Action {
+  public static readonly Type = '[Quote Edit] Bulk Import Success';
+  public readonly type = BulkImportSuccess.Type;
+  constructor(public readonly quote: Quote, public readonly rawAssets: { lineItemAttributes: string }) { }
+}
+
+export class EditLineItem implements Action {
+  public static readonly Type = '[Quote Edit] Edit Line Item';
+  public readonly type = EditLineItem.Type;
+  constructor(public readonly lineItem: AssetLineItem, public readonly fieldToEdit: any) { }
+}
+
+export class AddAssetToProjectInQuote implements Action {
+  public static readonly Type = '[Quote Edit] Add Asset To Project In Quote';
+  public readonly type = AddAssetToProjectInQuote.Type;
+  constructor(public readonly parameters: AddAssetParameters) { }
+}
+
+export class AddAssetToProjectInQuoteSuccess implements Action {
+  public static readonly Type = '[Quote Edit] Add Asset To Project In Quote Success';
+  public readonly type = AddAssetToProjectInQuoteSuccess.Type;
+  constructor(public readonly quote: Quote, public readonly assetId: number) { }
+}
+
+export class AddProject implements Action {
+  public static readonly Type = '[Quote Edit] Add Project';
+  public readonly type = AddProject.Type;
+}
+
+export class RemoveProject implements Action {
+  public static readonly Type = '[Quote Edit] Remove Project';
+  public readonly type = RemoveProject.Type;
+  constructor(public readonly projectId: number) { }
+}
+export class UpdateProject implements Action {
+  public static readonly Type = '[Quote Edit] Update Project';
+  public readonly type = UpdateProject.Type;
+  constructor(public readonly project: Project) { }
+}
+
+export class MoveLineItem implements Action {
+  public static readonly Type = '[Quote Edit] Move Line Item';
+  public readonly type = MoveLineItem.Type;
+  constructor(public readonly project: Project, public readonly lineItem: AssetLineItem) { }
+}
+
+export class CloneLineItem implements Action {
+  public static readonly Type = '[Quote Edit] Clone Line Item';
+  public readonly type = CloneLineItem.Type;
+  constructor(public readonly lineItem: AssetLineItem) { }
+}
+
+export class QuoteRefreshAndNotify implements Action {
+  public static readonly Type = '[Quote Edit] Clone Refresh And Notify';
+  public readonly type = QuoteRefreshAndNotify.Type;
+  constructor(public readonly quote: Quote, public readonly translationString: string) { }
+}
+
+export class EditLineItemMarkers implements Action {
+  public static readonly Type = '[Quote Edit] Edit Line Item Markers';
+  public readonly type = EditLineItemMarkers.Type;
+  constructor(public readonly lineItem: AssetLineItem, public readonly newMarkers: SubclipMarkers) { }
+}
+
+export class UpdateProjectPriceAttributes implements Action {
+  public static readonly Type = '[Quote Edit] Update Project Price Attributes';
+  public readonly type = UpdateProjectPriceAttributes.Type;
+  constructor(public readonly priceAttributes: SelectedPriceAttributes, public readonly project: Project) { }
+}
+
 export type Any =
   Load | LoadSuccess | LoadFailure |
   Delete | DeleteSuccess | DeleteFailure |
   EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
   RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure |
   AddCustomPriceToLineItem | AddCustomPriceToLineItemSuccess | AddCustomPriceToLineItemFailure |
-  SendQuote;
+  SendQuote | CloneQuote | CloneQuoteSuccess | CreateQuote | UpdateQuoteFields | AddFeeTo | RemoveFee | BulkImport | BulkImportSuccess | EditLineItem | AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject | UpdateProject | MoveLineItem | CloneLineItem | QuoteRefreshAndNotify | EditLineItemMarkers | UpdateProjectPriceAttributes;
