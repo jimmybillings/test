@@ -6,8 +6,8 @@ export interface Collection extends Common {
   owner: number;
   email?: string;
   userRole?: string;
-  editors?: number[];
-  viewers?: number[];
+  editors?: CollectionShareMember[];
+  viewers?: CollectionShareMember[];
   assets?: CollectionItems;
   tags?: any;
   assetCount?: number;
@@ -91,4 +91,11 @@ export interface CollectionItemMarkersUpdater {
   assetId: number;
   timeStart: string;
   timeEnd: string;
+}
+
+export interface CollectionShareMember {
+  id: number;
+  firstName: number;
+  lastName: string;
+  emailAddress: string;
 }
