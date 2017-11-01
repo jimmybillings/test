@@ -45,6 +45,36 @@ export function main() {
       });
     });
 
+    describe('userCanCustomizeRights setter', () => {
+      it('assigns the value of the input to the _userCanCustomizeRights variable', () => {
+        componentUnderTest.userCanCustomizeRights = false;
+        expect(componentUnderTest._userCanCustomizeRights).toBe(false);
+      });
+
+      describe('when the input is \'true\'', () => {
+        it('builds the custom pricing attribute form', () => {
+          componentUnderTest.pricingPreferences = {
+            A: 's',
+            B: 'm',
+            C: 'x',
+            D: 's'
+          };
+          componentUnderTest.userCanCustomizeRights = true;
+          expect(componentUnderTest.customForm.value).toEqual({
+            A: 's',
+            attributes: 'B,m\nC,x\nD,s'
+          });
+        });
+      });
+
+      describe('when the input is \'false\'', () => {
+        it('does not build the custom pricing attribute form', () => {
+          componentUnderTest.userCanCustomizeRights = false;
+          expect(componentUnderTest.customForm).toBeUndefined();
+        });
+      });
+    });
+
     describe('onSubmit()', () => {
       it('should emit the calculatePricing event with the form', () => {
         componentUnderTest.pricingPreferences = {

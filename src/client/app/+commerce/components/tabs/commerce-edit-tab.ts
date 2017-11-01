@@ -182,8 +182,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   protected applyProjectPricing(event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>, project: Project) {
     switch (event.type) {
       case 'APPLY_PRICE':
+        if (event.payload.updatePrefs) {
+          this.userPreference.updatePricingPreferences(event.payload.attributes);
+        }
         this.commerceService.updateProjectPriceAttributes(event.payload.attributes, project);
-        this.userPreference.updatePricingPreferences(event.payload.attributes);
         dialogRef.close();
         break;
       case 'ERROR':

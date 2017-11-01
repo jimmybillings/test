@@ -3,7 +3,7 @@
   <h1 mat-dialog-title>{{ 'PRICING.CALCULATE_HEADING' | translate }}</h1>
   <ng-container *ngIf="_userCanCustomizeRights">
     <mat-tab-group>
-      <mat-tab label="Price Book">
+      <mat-tab label="{{ 'PRICING.PRICEBOOK_TAB_LABEL' | translate }}">
         <mat-dialog-content> 
           <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <mat-form-field *ngFor="let attribute of attributes">
@@ -30,7 +30,7 @@
           </div>
         </mat-dialog-content>
       </mat-tab>
-      <mat-tab label="Custom">
+      <mat-tab label="{{ 'PRICING.CUSTOM_ATTRIBUTES_TAB_LABEL' | translate }}">
         <form [formGroup]="customForm" (ngSubmit)="onSubmitCustom()">
           <mat-form-field>
             <mat-select
@@ -48,7 +48,7 @@
             <textarea
               matInput
               matTextareaAutosize
-              placeholder="Custom Attributes"
+              placeholder="{{ 'PRICING.CUSTOM_ATTRIBUTES_INPUT_PLACEHOLDER' | translate }}"
               formControlName="attributes"
               [required]="true">
             </textarea>

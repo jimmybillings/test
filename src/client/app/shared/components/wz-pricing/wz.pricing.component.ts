@@ -123,15 +123,24 @@ export class WzPricingComponent implements OnDestroy {
 
   private buildCustomForm(): void {
     this.customForm = this.fb.group({
-      [this.attributes[0].name]: [this._pricingPreferences[this.attributes[0].name] || '', Validators.required],
-      attributes: [this.csvFor(this.attributes).trim(), Validators.required]
+      [this.attributes[0].name]: [
+        this._pricingPreferences[this.attributes[0].name] || '',
+        Validators.required
+      ],
+      attributes: [
+        this.csvFor(this.attributes),
+        Validators.compose([
+          Validators.pattern(/[a-zA-Z0-9],[a-zA-Z0-9]/),
+          Validators.required
+        ])
+      ]
     });
   }
 
   private csvFor(attributes: PriceAttribute[]): string {
     return attributes.slice(1).reduce((csv: string, attribute: PriceAttribute) => {
       return csv.concat(`${attribute.name},${this._pricingPreferences[attribute.name] || ''}\n`);
-    }, '');
+    }, '').trim();
   }
 
   private get parsedCustomFormValue(): Pojo {
