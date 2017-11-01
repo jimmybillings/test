@@ -17,4 +17,5 @@ export class InvoiceComponent {
   constructor(private store: AppStore) {
     this.invoice = this.store.select(state => state.invoice.invoice);
   }
+
 }
