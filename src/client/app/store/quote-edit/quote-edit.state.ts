@@ -52,7 +52,7 @@ export function reducer(state: State = initialState, action: QuoteEditActions.An
     case QuoteEditActions.CloneQuoteSuccess.Type:
     case QuoteEditActions.BulkImportSuccess.Type:
     case QuoteEditActions.AddAssetToProjectInQuoteSuccess.Type:
-    case QuoteEditActions.QuoteRefreshAndNotify.Type: {
+    case QuoteEditActions.RefreshAndNotify.Type: {
       return {
         loading: false,
         data: {

@@ -157,8 +157,8 @@ export class InternalActionFactory extends ActionFactory {
     return new AddAssetToProjectInQuoteSuccess(quote, assetId);
   }
 
-  public quoteRefreshAndNotfiy(quote: Quote, translationString: string): QuoteRefreshAndNotify {
-    return new QuoteRefreshAndNotify(quote, translationString);
+  public quoteRefreshAndNotfiy(quote: Quote, translationString: string): RefreshAndNotify {
+    return new RefreshAndNotify(quote, translationString);
   }
 }
 
@@ -355,9 +355,9 @@ export class CloneLineItem implements Action {
   constructor(public readonly lineItem: AssetLineItem) { }
 }
 
-export class QuoteRefreshAndNotify implements Action {
-  public static readonly Type = '[Quote Edit] Clone Refresh And Notify';
-  public readonly type = QuoteRefreshAndNotify.Type;
+export class RefreshAndNotify implements Action {
+  public static readonly Type = '[Quote Edit] Refresh And Notify';
+  public readonly type = RefreshAndNotify.Type;
   constructor(public readonly quote: Quote, public readonly translationString: string) { }
 }
 
@@ -382,4 +382,4 @@ export type Any =
   SendQuote | CloneQuote | CloneQuoteSuccess | CreateQuote | UpdateQuoteFields | AddFeeTo |
   RemoveFee | BulkImport | BulkImportSuccess | EditLineItem | AddAssetToProjectInQuote |
   AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject | UpdateProject | MoveLineItem |
-  CloneLineItem | QuoteRefreshAndNotify | EditLineItemMarkers | UpdateProjectPriceAttributes;
+  CloneLineItem | RefreshAndNotify | EditLineItemMarkers | UpdateProjectPriceAttributes;

@@ -313,8 +313,8 @@ export class QuoteEditEffects {
 
   @Effect()
   public quoteRefreshAndNotify: Observable<Action> = this.actions
-    .ofType(QuoteEditActions.QuoteRefreshAndNotify.Type)
-    .map((action: QuoteEditActions.QuoteRefreshAndNotify) =>
+    .ofType(QuoteEditActions.RefreshAndNotify.Type)
+    .map((action: QuoteEditActions.RefreshAndNotify) =>
       this.store.create(factory =>
         factory.snackbar.display(action.translationString)
       )
