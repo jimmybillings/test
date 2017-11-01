@@ -12,7 +12,6 @@ export function main() {
     let quoteSendSpy: jasmine.Spy;
     let mockStore: MockAppStore;
     let mockCapabilities: any;
-    let mockQuoteEditService: any;
     let mockDialogService: any;
     let mockWindow: any;
     let mockUserPreference: any;
@@ -23,22 +22,6 @@ export function main() {
     beforeEach(() => {
       mockCapabilities = {
         cloneQuote: jasmine.createSpy('cloneQuote')
-      };
-
-      mockQuoteEditService = {
-        state: { data: 'store' },
-        data: { store: 'test data' },
-        projects: Observable.of([]),
-        quoteId: 1,
-        addFeeTo: jasmine.createSpy('addFeeTo'),
-        removeFee: jasmine.createSpy('removeFee'),
-        hasProperty: jasmine.createSpy('hasProperty').and.returnValue(Observable.of('someProp')),
-        updateQuoteField: jasmine.createSpy('updateQuoteField'),
-        sendQuote: jasmine.createSpy('sendQuote').and.returnValue(Observable.of({})),
-        editLineItem: jasmine.createSpy('editLineItem'),
-        createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({})),
-        cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({})),
-        bulkImport: jasmine.createSpy('bulkImport').and.returnValue(Observable.of({}))
       };
 
       mockChangeDetectorRef = { markForCheck: () => { } };
@@ -75,6 +58,8 @@ export function main() {
         }
       });
 
+      mockStore.createStateSection('quoteEdit', { data: { id: 1 } });
+
       deleteQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'delete');
       addCustomPriceDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addCustomPriceToLineItem');
       snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
@@ -82,20 +67,14 @@ export function main() {
 
       componentUnderTest =
         new QuoteEditComponent(
-          mockCapabilities, mockQuoteEditService, mockDialogService, mockStore, mockChangeDetectorRef
+          mockCapabilities, mockDialogService, mockStore, mockChangeDetectorRef
         );
     });
 
     // This gets used down below for some tedious setup in the editBulkId and editDiscount blocks
     let setupFor = (propertyInQuestion: any) => {
-      mockQuoteEditService = {
-        projects: Observable.of([]),
-        hasProperty: jasmine.createSpy('hasProperty').and.returnValue(Observable.of(propertyInQuestion)),
-        updateQuoteField: jasmine.createSpy('updateQuoteField'),
-        quoteId: 1
-      };
       componentUnderTest = new QuoteEditComponent(
-        mockCapabilities, mockQuoteEditService, mockDialogService, mockStore, mockChangeDetectorRef
+        mockCapabilities, mockDialogService, mockStore, mockChangeDetectorRef
       );
       return componentUnderTest;
     };
@@ -132,7 +111,7 @@ export function main() {
       });
 
       it('defines the expected tabs', () => {
-        expect(componentUnderTest.tabLabelKeys).toEqual(['active quote', 'send']);
+        expect(componentUnderTest.tabLabelKeys).toEqual(['quote', 'send']);
       });
 
       it('disables all but the first tab', () => {
@@ -173,26 +152,26 @@ export function main() {
       });
 
       describe('SAVE_AND_NEW', () => {
-        beforeEach(() => componentUnderTest.onNotification({ type: 'SAVE_AND_NEW' }));
-        it('Calls the quote service createQuote method', () => {
-
-          expect(mockQuoteEditService.createQuote).toHaveBeenCalled();
+        let createQuoteSpy: jasmine.Spy;
+        beforeEach(() => {
+          createQuoteSpy = mockStore.createActionFactoryMethod('quoteEdit', 'createQuote');
+          componentUnderTest.onNotification({ type: 'SAVE_AND_NEW' })
         });
 
-        it('Shows a snack bar after creating a quote', () => {
-
-          expect(snackbarSpy).toHaveBeenCalledWith('QUOTE.QUOTE_CREATED_PREVIOUS_SAVED');
+        it('Calls the quote service createQuote method', () => {
+          expect(createQuoteSpy).toHaveBeenCalled();
         });
       });
 
       describe('CLONE_QUOTE', () => {
-        beforeEach(() => componentUnderTest.onNotification({ type: 'CLONE_QUOTE' }));
-        it('Calls the quote service createQuote method', () => {
-          expect(mockQuoteEditService.cloneQuote).toHaveBeenCalledWith('store');
+        let cloneQuoteSpy: jasmine.Spy;
+        beforeEach(() => {
+          cloneQuoteSpy = mockStore.createActionFactoryMethod('quoteEdit', 'cloneQuote');
+          mockStore.createStateSection('quoteEdit', { data: { id: 1 } })
+          componentUnderTest.onNotification({ type: 'CLONE_QUOTE' })
         });
-
-        it('Shows a snack bar after creating a quote', () => {
-          expect(snackbarSpy).toHaveBeenCalledWith('QUOTE.CLONE_SUCCESS');
+        it('Dispatch the cloneQuote action with current quote', () => {
+          expect(cloneQuoteSpy).toHaveBeenCalledWith({ id: 1 });
         });
       });
 
@@ -272,32 +251,33 @@ export function main() {
 
     describe('get bulkOrderIdActionLabel', () => {
       it('returns the right string for a known property (EDIT)', () => {
-        componentUnderTest = setupFor('someKnownProperty');
+        mockStore.createStateSection('quoteEdit', { data: { bulkOrderId: 1 } });
         expect(componentUnderTest.bulkOrderIdActionLabel).toBe('QUOTE.EDIT_BULK_ORDER_ID_TITLE');
       });
 
       it('returns the right string for an unknown property (ADD)', () => {
-        componentUnderTest = setupFor(undefined);
+        mockStore.createStateSection('quoteEdit', { data: {} });
         expect(componentUnderTest.bulkOrderIdActionLabel).toBe('QUOTE.ADD_BULK_ORDER_ID_TITLE');
       });
     });
 
     describe('get discountActionLabel', () => {
       it('returns the right string for a known property (EDIT)', () => {
-        componentUnderTest = setupFor('someKnownProperty');
+        mockStore.createStateSection('quoteEdit', { data: { discount: 1 } });
         expect(componentUnderTest.discountActionLabel).toBe('QUOTE.EDIT_DISCOUNT_TITLE');
       });
 
       it('returns the right string for an unknown property (ADD)', () => {
-        componentUnderTest = setupFor(undefined);
+        mockStore.createStateSection('quoteEdit', { data: {} });
         expect(componentUnderTest.discountActionLabel).toBe('QUOTE.ADD_DISCOUNT_TITLE');
       });
     });
 
     describe('shouldShowCloneButton()', () => {
       it('Should call the cloneQuote capability with the quote edit store', () => {
+        mockStore.createStateSection('quoteEdit', { data: { id: 1 } })
         const shouldShowCloneButton = componentUnderTest.shouldShowCloneButton;
-        expect(mockCapabilities.cloneQuote).toHaveBeenCalledWith(mockQuoteEditService.data);
+        expect(mockCapabilities.cloneQuote).toHaveBeenCalledWith(Observable.of({ data: { id: 1 } }));
       });
     });
 
@@ -312,12 +292,12 @@ export function main() {
     describe('addBulkOrderId()', () => {
       describe('calls openFormDialog() on the dialog service with the correct arguments', () => {
         it('for a known property', () => {
-          componentUnderTest = setupFor('someKnownProperty');
+          mockStore.createStateSection('quoteEdit', { data: { bulkOrderId: 1 } });
           componentUnderTest.ngOnInit();
           componentUnderTest.addBulkOrderId();
 
           expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
-            [{ some: 'bulk', value: 'someKnownProperty' }],
+            [{ some: 'bulk', value: 1 }],
             {
               title: 'QUOTE.EDIT_BULK_ORDER_ID_TITLE',
               submitLabel: 'QUOTE.EDIT_BULK_ORDER_FORM_SUBMIT',
@@ -328,7 +308,7 @@ export function main() {
         });
 
         it('for an unknown property', () => {
-          componentUnderTest = setupFor(undefined);
+          mockStore.createStateSection('quoteEdit', { data: {} });
           componentUnderTest.ngOnInit();
           componentUnderTest.addBulkOrderId();
 
@@ -345,13 +325,15 @@ export function main() {
       });
 
       describe('the callback', () => {
+        let updateQuoteFieldSpy: jasmine.Spy;
         it('gets called', () => {
-          componentUnderTest = setupFor('someKnownProperty');
+          mockStore.createStateSection('quoteEdit', { data: { bulkOrderId: 1 } });
+          let updateQuoteFieldSpy = mockStore.createActionFactoryMethod('quoteEdit', 'updateQuoteField');
           componentUnderTest.ngOnInit();
           componentUnderTest.addBulkOrderId();
           mockDialogService.onSubmitCallback({ some: 'options' });
 
-          expect(mockQuoteEditService.updateQuoteField).toHaveBeenCalledWith({ some: 'options' });
+          expect(updateQuoteFieldSpy).toHaveBeenCalledWith({ some: 'options' });
         });
       });
     });
@@ -359,12 +341,12 @@ export function main() {
     describe('editDiscount()', () => {
       describe('calls openFormDialog() on the dialog service with the correct arguments', () => {
         it('for a known property', () => {
-          componentUnderTest = setupFor('someKnownProperty');
+          mockStore.createStateSection('quoteEdit', { data: { discount: 1 } });
           componentUnderTest.ngOnInit();
           componentUnderTest.editDiscount();
 
           expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
-            [{ some: 'discount', value: 'someKnownProperty' }],
+            [{ some: 'discount', value: 1 }],
             {
               title: 'QUOTE.EDIT_DISCOUNT_TITLE',
               submitLabel: 'QUOTE.EDIT_DISCOUNT_FORM_SUBMIT',
@@ -375,7 +357,7 @@ export function main() {
         });
 
         it('for an unknown property', () => {
-          componentUnderTest = setupFor(undefined);
+          mockStore.createStateSection('quoteEdit', { data: {} });
           componentUnderTest.ngOnInit();
           componentUnderTest.editDiscount();
 

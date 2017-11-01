@@ -1,8 +1,8 @@
+import { Pojo } from '../../../shared/interfaces/common.interface';
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
-import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
-import { QuoteEditService } from '../../../shared/services/quote-edit.service';
+import { CommerceMessage, Quote } from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
 import { AppStore } from '../../../app.store';
@@ -26,13 +26,12 @@ export class QuoteEditComponent implements OnInit {
 
   constructor(
     public userCan: Capabilities,
-    public quoteEditService: QuoteEditService,
     public dialogService: WzDialogService,
     private store: AppStore,
     private detector: ChangeDetectorRef
   ) {
     this.commentFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.quoteComment.config.form.items);
-    this.commentParentObject = { objectType: 'quote', objectId: this.quoteEditService.quoteId };
+    this.commentParentObject = { objectType: 'quote', objectId: this.store.snapshot(state => state.quoteEdit.data.id) };
     this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
   }
 
@@ -41,7 +40,7 @@ export class QuoteEditComponent implements OnInit {
     // For example, don't include 'billing' and 'payment' if the cart total is 0.
     // this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
     // I think the confirm tab should be place order
-    this.tabLabelKeys = ['active quote', 'send'];
+    this.tabLabelKeys = ['quote', 'send'];
 
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
@@ -81,24 +80,33 @@ export class QuoteEditComponent implements OnInit {
     }
   }
 
+  public get hasBulkOrderId(): Observable<boolean | string> {
+    return this.store.select(state => state.quoteEdit.data)
+      .map(quote => (quote.bulkOrderId) ? quote.bulkOrderId : false);
+  }
+
   public get bulkOrderIdActionLabel(): string {
-    return this.hasProperty('bulkOrderId') ? 'QUOTE.EDIT_BULK_ORDER_ID_TITLE' : 'QUOTE.ADD_BULK_ORDER_ID_TITLE';
+    return this.store.snapshot(factory => factory.quoteEdit.data.bulkOrderId) ?
+      'QUOTE.EDIT_BULK_ORDER_ID_TITLE' : 'QUOTE.ADD_BULK_ORDER_ID_TITLE';
   }
 
   public get discountActionLabel(): string {
-    return this.hasProperty('discount') ? 'QUOTE.EDIT_DISCOUNT_TITLE' : 'QUOTE.ADD_DISCOUNT_TITLE';
+    return this.store.snapshot(factory => factory.quoteEdit.data.discount) ?
+      'QUOTE.EDIT_DISCOUNT_TITLE' : 'QUOTE.ADD_DISCOUNT_TITLE';
   }
 
   public get bulkOrderIdSubmitLabel(): string {
-    return this.hasProperty('bulkOrderId') ? 'QUOTE.EDIT_BULK_ORDER_FORM_SUBMIT' : 'QUOTE.ADD_BULK_ORDER_FORM_SUBMIT';
+    return this.store.snapshot(factory => factory.quoteEdit.data.bulkOrderId) ?
+      'QUOTE.EDIT_BULK_ORDER_FORM_SUBMIT' : 'QUOTE.ADD_BULK_ORDER_FORM_SUBMIT';
   }
 
   public get discountSubmitLabel(): string {
-    return this.hasProperty('discount') ? 'QUOTE.EDIT_DISCOUNT_FORM_SUBMIT' : 'QUOTE.ADD_DISCOUNT_FORM_SUBMIT';
+    return this.store.snapshot(factory => factory.quoteEdit.data.discount) ?
+      'QUOTE.EDIT_DISCOUNT_FORM_SUBMIT' : 'QUOTE.ADD_DISCOUNT_FORM_SUBMIT';
   }
 
   public get shouldShowCloneButton(): Observable<boolean> {
-    return this.userCan.cloneQuote(this.quoteEditService.data);
+    return this.userCan.cloneQuote(this.store.select(state => state.quoteEdit));
   }
 
   public toggleCommentsVisibility(): void {
@@ -143,15 +151,17 @@ export class QuoteEditComponent implements OnInit {
   }
 
   public onCloneQuote() {
-    this.quoteEditService.cloneQuote(this.quoteEditService.state.data)
-      .do(() => this.store.dispatch(factory => factory.snackbar.display('QUOTE.CLONE_SUCCESS')))
-      .subscribe();
+    this.store.dispatch(factory =>
+      factory.quoteEdit.cloneQuote(this.store.snapshotCloned(state => state.quoteEdit.data))
+    );
   }
 
   public onCreateQuote() {
-    this.quoteEditService.createQuote()
-      .do(() => this.store.dispatch(factory => factory.snackbar.display('QUOTE.QUOTE_CREATED_PREVIOUS_SAVED')))
-      .subscribe();
+    this.store.dispatch(factory => factory.quoteEdit.createQuote());
+  }
+
+  private updateQuoteField = (options: Pojo): void => {
+    this.store.dispatch(factory => factory.quoteEdit.updateQuoteField(options));
   }
 
   private goToNextTab(): void {
@@ -169,10 +179,6 @@ export class QuoteEditComponent implements OnInit {
     this.detector.markForCheck();
   }
 
-  private updateQuoteField = (options: any): void => {
-    this.quoteEditService.updateQuoteField(options);
-  }
-
   private disableTab(tabIndex: number) {
     this.tabEnabled[tabIndex] = false;
     this.detector.markForCheck();
@@ -183,19 +189,10 @@ export class QuoteEditComponent implements OnInit {
     this.detector.markForCheck();
   }
 
-  private hasProperty = (property: string): string | undefined => {
-    let has;
-    this.quoteEditService.hasProperty(property)
-      .take(1).subscribe((value: string | undefined) => {
-        has = value;
-      });
-    return has;
-  }
-
   private mergeFormValues(fields: any, property: string): Array<FormFields> {
     return fields.map((item: any) => {
-      let value = this.hasProperty(property);
-      item.value = value ? value : '';
+      let value: any = this.store.snapshot(factory => factory.quoteEdit.data)
+      item.value = value[property] ? value[property] : '';
       return item;
     });
   }
