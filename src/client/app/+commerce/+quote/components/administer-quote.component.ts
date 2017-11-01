@@ -1,3 +1,4 @@
+import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Pojo } from '../../../shared/interfaces/common.interface';
 
@@ -30,7 +31,7 @@ import { Pojo } from '../../../shared/interfaces/common.interface';
           mat-raised-button
           color="primary"
           (click)="goToNextTab()">
-          {{ 'QUOTE.CREATE_QUOTE_BTN' | translate }}
+          {{ 'QUOTE.EDIT.NEXT' | translate }}
         </button>
       </section>
     </div>`,
