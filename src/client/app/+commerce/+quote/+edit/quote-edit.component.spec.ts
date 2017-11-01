@@ -155,7 +155,7 @@ export function main() {
         let createQuoteSpy: jasmine.Spy;
         beforeEach(() => {
           createQuoteSpy = mockStore.createActionFactoryMethod('quoteEdit', 'createQuote');
-          componentUnderTest.onNotification({ type: 'SAVE_AND_NEW' })
+          componentUnderTest.onNotification({ type: 'SAVE_AND_NEW' });
         });
 
         it('Calls the quote service createQuote method', () => {
@@ -167,8 +167,8 @@ export function main() {
         let cloneQuoteSpy: jasmine.Spy;
         beforeEach(() => {
           cloneQuoteSpy = mockStore.createActionFactoryMethod('quoteEdit', 'cloneQuote');
-          mockStore.createStateSection('quoteEdit', { data: { id: 1 } })
-          componentUnderTest.onNotification({ type: 'CLONE_QUOTE' })
+          mockStore.createStateSection('quoteEdit', { data: { id: 1 } });
+          componentUnderTest.onNotification({ type: 'CLONE_QUOTE' });
         });
         it('Dispatch the cloneQuote action with current quote', () => {
           expect(cloneQuoteSpy).toHaveBeenCalledWith({ id: 1 });
@@ -275,7 +275,7 @@ export function main() {
 
     describe('shouldShowCloneButton()', () => {
       it('Should call the cloneQuote capability with the quote edit store', () => {
-        mockStore.createStateSection('quoteEdit', { data: { id: 1 } })
+        mockStore.createStateSection('quoteEdit', { data: { id: 1 } });
         const shouldShowCloneButton = componentUnderTest.shouldShowCloneButton;
         expect(mockCapabilities.cloneQuote).toHaveBeenCalledWith(Observable.of({ data: { id: 1 } }));
       });

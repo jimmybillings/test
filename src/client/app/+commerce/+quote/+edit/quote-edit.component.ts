@@ -191,7 +191,7 @@ export class QuoteEditComponent implements OnInit {
 
   private mergeFormValues(fields: any, property: string): Array<FormFields> {
     return fields.map((item: any) => {
-      let value: any = this.store.snapshot(factory => factory.quoteEdit.data)
+      let value: any = this.store.snapshot(factory => factory.quoteEdit.data);
       item.value = value[property] ? value[property] : '';
       return item;
     });

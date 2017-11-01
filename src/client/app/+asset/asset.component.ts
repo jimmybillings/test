@@ -212,7 +212,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.cartAsset = null;
     this.cartAssetPriceAttributes = null;
 
-    let projects: Project[]
+    let projects: Project[];
 
     switch (this.assetType) {
       case 'cartAsset':

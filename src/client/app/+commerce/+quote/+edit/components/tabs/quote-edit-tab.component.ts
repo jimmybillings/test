@@ -33,7 +33,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   public pricingPreferences: Pojo;
   public priceAttributes: Array<PriceAttribute> = null;
   private projectSubscription: Subscription;
-  protected preferencesSubscription: Subscription;
+  private preferencesSubscription: Subscription;
 
   constructor(
     public userCan: Capabilities,
@@ -103,11 +103,11 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         break;
 
       case 'ADD_PROJECT':
-        this.store.dispatch(factory => factory.quoteEdit.addProject())
+        this.store.dispatch(factory => factory.quoteEdit.addProject());
         break;
 
       case 'REMOVE_PROJECT':
-        this.store.dispatch(factory => factory.quoteEdit.removeProject(message.payload.id))
+        this.store.dispatch(factory => factory.quoteEdit.removeProject(message.payload.id));
         break;
 
       case 'UPDATE_PROJECT':
@@ -117,7 +117,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
       case 'MOVE_LINE_ITEM':
         this.store.dispatch(factory =>
           factory.quoteEdit.moveLineItem(message.payload.otherProject, message.payload.lineItem)
-        )
+        );
         break;
 
       case 'CLONE_LINE_ITEM':
@@ -146,7 +146,6 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         break;
 
       case 'EDIT_PROJECT_PRICING':
-        console.log('sdlkfjsdlkf')
         this.editProjectPricing(message.payload);
         break;
 
@@ -258,7 +257,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         autocomplete: 'off'
       },
       (data: any) => {
-        this.store.dispatch(factory => factory.quoteEdit.updateProject(Object.assign(project.project, data)))
+        this.store.dispatch(factory => factory.quoteEdit.updateProject(Object.assign(project.project, data)));
       }
     );
   }
@@ -288,7 +287,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
                 callback: (newMarkers: SubclipMarkersInterface.SubclipMarkers) => {
                   this.store.dispatch(factory =>
                     factory.quoteEdit.editLineItemMarkers(lineItem, newMarkers)
-                  )
+                  );
                 },
                 closeOnEvent: true
               }
@@ -391,7 +390,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         });
         break;
       case 'APPLY_PRICE':
-        this.store.dispatch(factory => factory.quoteEdit.editLineItem(lineItem, { pricingAttributes: event.payload.attributes }))
+        this.store.dispatch(factory => factory.quoteEdit.editLineItem(lineItem, { pricingAttributes: event.payload.attributes }));
         this.userPreference.updatePricingPreferences(event.payload.attributes);
         dialogRef.close();
         break;
@@ -434,7 +433,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
       this.costMultiplierFormItems(lineItem),
       { title: this.costMultiplierFormTitle(lineItem), submitLabel: this.costMultiplierFormSubmitLabel(lineItem) },
       (result: { multiplier: string }): void => {
-        this.store.dispatch(factory => factory.quoteEdit.editLineItem(lineItem, result))
+        this.store.dispatch(factory => factory.quoteEdit.editLineItem(lineItem, result));
       });
   }
 

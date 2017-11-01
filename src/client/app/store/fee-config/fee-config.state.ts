@@ -28,7 +28,7 @@ export function reducer(state: State = initialState, action: FeeConfigActions.An
       return {
         initialized: true,
         feeConfig: action.feeConfig ? action.feeConfig : { items: [] }
-      }
+      };
     }
 
     default: {

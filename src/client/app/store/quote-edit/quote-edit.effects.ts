@@ -132,7 +132,7 @@ export class QuoteEditEffects {
       return [
         this.store.create(factory => factory.router.goToActiveQuote()),
         this.store.create(factory => factory.snackbar.display('QUOTE.UPDATED'))
-      ]
+      ];
     });
 
   @Effect()
@@ -157,7 +157,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public AddFeeTo: Observable<Action> = this.actions
@@ -168,7 +168,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public RemoveFee: Observable<Action> = this.actions
@@ -179,7 +179,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public bulkImport: Observable<Action> = this.actions
@@ -190,7 +190,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.bulkImportSuccess(quote, action.rawAssets))
         )
-    )
+    );
 
   @Effect()
   public bulkImportSuccess: Observable<Action> = this.actions
@@ -211,7 +211,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public addAssetToProjectInQuote: Observable<Action> = this.actions
@@ -222,8 +222,8 @@ export class QuoteEditEffects {
       return this.service.addAssetToProjectInQuote(quote.id, existingProjects, action.parameters)
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.addAssetToProjectInQuoteSuccess(quote, action.parameters.lineItem.asset.assetId))
-        )
-    })
+        );
+    });
 
   @Effect()
   public addAssetToProjectInQuoteSuccess: Observable<Action> = this.actions
@@ -243,7 +243,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public removeProject: Observable<Action> = this.actions
@@ -254,7 +254,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public updateProject: Observable<Action> = this.actions
@@ -265,7 +265,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public moveLineItem: Observable<Action> = this.actions
@@ -276,7 +276,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public cloneLineItem: Observable<Action> = this.actions
@@ -287,7 +287,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public editLineItemMarkers: Observable<Action> = this.actions
@@ -298,7 +298,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public updateProjectPriceAttributes: Observable<Action> = this.actions
@@ -309,7 +309,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
-    )
+    );
 
   @Effect()
   public quoteRefreshAndNotify: Observable<Action> = this.actions

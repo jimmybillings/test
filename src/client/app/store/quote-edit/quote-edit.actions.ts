@@ -68,7 +68,7 @@ export class ActionFactory {
   }
 
   public editLineItem(lineItem: AssetLineItem, fieldToEdit: any): EditLineItem {
-    return new EditLineItem(lineItem, fieldToEdit)
+    return new EditLineItem(lineItem, fieldToEdit);
   }
 
   public addAssetToProjectInQuote(paramaters: AddAssetParameters): AddAssetToProjectInQuote {
@@ -379,4 +379,7 @@ export type Any =
   EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
   RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure |
   AddCustomPriceToLineItem | AddCustomPriceToLineItemSuccess | AddCustomPriceToLineItemFailure |
-  SendQuote | CloneQuote | CloneQuoteSuccess | CreateQuote | UpdateQuoteFields | AddFeeTo | RemoveFee | BulkImport | BulkImportSuccess | EditLineItem | AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject | UpdateProject | MoveLineItem | CloneLineItem | QuoteRefreshAndNotify | EditLineItemMarkers | UpdateProjectPriceAttributes;
+  SendQuote | CloneQuote | CloneQuoteSuccess | CreateQuote | UpdateQuoteFields | AddFeeTo |
+  RemoveFee | BulkImport | BulkImportSuccess | EditLineItem | AddAssetToProjectInQuote |
+  AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject | UpdateProject | MoveLineItem |
+  CloneLineItem | QuoteRefreshAndNotify | EditLineItemMarkers | UpdateProjectPriceAttributes;

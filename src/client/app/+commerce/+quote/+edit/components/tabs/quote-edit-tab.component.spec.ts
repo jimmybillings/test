@@ -107,7 +107,7 @@ export function main() {
 
       describe('ADD_QUOTE_FEE', () => {
         let quoteFeeSpy: jasmine.Spy;
-        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addFeeTo') });
+        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addFeeTo'); });
         it('calls the addFeeTo() service method', () => {
           componentUnderTest.onNotification(
             { type: 'ADD_QUOTE_FEE', payload: { project: { some: 'project' }, fee: { some: 'fee' } } }
@@ -123,7 +123,7 @@ export function main() {
 
       describe('REMOVE_QUOTE_FEE', () => {
         let quoteFeeSpy: jasmine.Spy;
-        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'removeFee') });
+        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'removeFee'); });
         it('calls the removeFee() service method', () => {
           componentUnderTest.onNotification(
             { type: 'REMOVE_QUOTE_FEE', payload: { some: 'fee' } }
@@ -135,7 +135,7 @@ export function main() {
 
       describe('SHOW_COST_MULTIPLIER_DIALOG', () => {
         let quoteFeeSpy: jasmine.Spy;
-        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'editLineItem') });
+        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'editLineItem'); });
         it('should open a form dialog', () => {
           componentUnderTest.onNotification({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: { id: 1 } });
 
@@ -165,7 +165,7 @@ export function main() {
 
       describe('REMOVE_COST_MULTIPLIER', () => {
         let quoteFeeSpy: jasmine.Spy;
-        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'editLineItem') });
+        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'editLineItem'); });
         it('should call the editLineItem method on the api service', () => {
           componentUnderTest.onNotification({ type: 'REMOVE_COST_MULTIPLIER', payload: { id: 1, multiplier: 2 } });
 
@@ -242,18 +242,18 @@ export function main() {
     describe('showDiscount()', () => {
       describe('returns false', () => {
         it('when the quote does not have the property', () => {
-          mockStore.createStateSection('quoteEdit', { data: {} })
+          mockStore.createStateSection('quoteEdit', { data: {} });
           expect(componentUnderTest.showDiscount).toBe(false);
         });
 
         it('when the quoteType is "Trial" and the quote DOES NOT have the property', () => {
-          mockStore.createStateSection('quoteEdit', { data: {} })
+          mockStore.createStateSection('quoteEdit', { data: {} });
           componentUnderTest.quoteType = 'Trial';
           expect(componentUnderTest.showDiscount).toBe(false);
         });
 
         it('when the quoteType is "Trial" and the quote DOES have the property', () => {
-          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } })
+          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } });
           componentUnderTest.quoteType = 'Trial';
           expect(componentUnderTest.showDiscount).toBe(false);
         });
@@ -261,13 +261,13 @@ export function main() {
 
       describe('returns true', () => {
         it('when the quote does have the property AND the quoteType is null (indicates "Standard" quote)', () => {
-          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } })
+          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } });
           componentUnderTest.quoteType = null;
           expect(componentUnderTest.showDiscount).toBe(true);
         });
 
         it('when the quote does have the property AND the quoteType is NOT Trial', () => {
-          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } })
+          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } });
           componentUnderTest.quoteType = 'NotTrial' as any;
           expect(componentUnderTest.showDiscount).toBe(true);
         });
@@ -276,7 +276,7 @@ export function main() {
 
     describe('shouldShowCloneButton()', () => {
       it('Should call the cloneQuote capability with the quote edit store', () => {
-        mockStore.createStateSection('quoteEdit', { data: { id: 1 } })
+        mockStore.createStateSection('quoteEdit', { data: { id: 1 } });
         const shouldShowCloneButton = componentUnderTest.shouldShowCloneButton;
         expect(mockCapabilities.cloneQuote).toHaveBeenCalledWith(Observable.of({ data: { id: 1 } }));
       });
@@ -310,7 +310,7 @@ export function main() {
       beforeEach(() => {
         componentUnderTest.ngOnInit();
         componentUnderTest.onNotification({ type: 'OPEN_BULK_IMPORT_DIALOG', payload: 'abcd-1234' });
-        bulkImportSpy = mockStore.createActionFactoryMethod('quoteEdit', 'bulkImport')
+        bulkImportSpy = mockStore.createActionFactoryMethod('quoteEdit', 'bulkImport');
       });
 
       it('opens a form dialog', () => {
