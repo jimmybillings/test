@@ -16,8 +16,8 @@
       <div flex="100" layout="row" layout-align="space-between end" layout-align-xs="start">
         <div flex="no-grow">
           <h2 class="mat-display-1">{{ 'QUOTE.CREATE_HEADER' | translate }}</h2>
-          <span class="bulk-order" flex="nogrow" *ngIf="quoteEditService.hasProperty('bulkOrderId') | async">
-            <span>{{ 'QUOTE.BULK_ORDER_NAME' | translate }}</span> {{quoteEditService.hasProperty('bulkOrderId') | async}}
+          <span class="bulk-order" flex="nogrow" *ngIf="hasBulkOrderId | async">
+            <span>{{ 'QUOTE.BULK_ORDER_NAME' | translate }}</span> {{hasBulkOrderId | async}}
           </span>
         </div>
         <div 
@@ -76,7 +76,7 @@
         <mat-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
           <ng-template mat-tab-label>{{ tabLabelKey | uppercase }}</ng-template>
           <quote-edit-tab-component
-            *ngIf="tabLabelKey === 'active quote'"
+            *ngIf="tabLabelKey === 'quote'"
             (notify)="onNotification($event)">
           </quote-edit-tab-component>
           <quote-edit-send-tab-component
