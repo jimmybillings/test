@@ -46,11 +46,13 @@ export class ProjectsComponent {
   }
 
   public onEdit(project: Project): void {
-    this.selectProject(project);
-    this.projectsNotify.emit({
-      type: 'UPDATE_PROJECT',
-      payload: Object.assign({ project: project, items: this.config.form.items })
-    });
+    if (!this.readOnly) {
+      this.selectProject(project);
+      this.projectsNotify.emit({
+        type: 'UPDATE_PROJECT',
+        payload: Object.assign({ project: project, items: this.config.form.items })
+      });
+    }
   }
 
   public addBulkOrderId() {
