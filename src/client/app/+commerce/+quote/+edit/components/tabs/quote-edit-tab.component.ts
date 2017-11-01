@@ -1,4 +1,5 @@
-import { EnhancedAsset } from '../../../../../shared/interfaces/enhanced-asset';
+import { Common } from '../../../../../shared/utilities/common.functions';
+import { enhanceAsset, EnhancedAsset } from '../../../../../shared/interfaces/enhanced-asset';
 import { WzPricingComponent } from '../../../../../shared/components/wz-pricing/wz.pricing.component';
 import { WzSubclipEditorComponent } from '../../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { Tab } from '../../../../components/tabs/tab';
@@ -46,15 +47,30 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     public pricingService: PricingService
   ) {
     super();
+    this.projectSubscription = this.store.select(state => state.quoteEdit.data.projects)
+      .subscribe(projects => this.projects = this.enhanceAssetsInProjects(projects));
   }
 
   public ngOnInit(): void {
-    this.projectSubscription = this.store.select(state => state.quoteEdit.data.projects)
-      .subscribe(projects => this.projects = projects);
+
     this.preferencesSubscription = this.userPreference.data.subscribe((data: any) => {
       this.pricingPreferences = data.pricingPreferences;
     });
     this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
+  }
+
+  public enhanceAssetsInProjects(projects: Project[]): Project[] {
+    const clonedProjects: Project[] = Common.clone(projects);
+
+    return clonedProjects.map((project: Project) => {
+      if (project.lineItems) {
+        project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
+          lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'quoteEditAsset');
+          return lineItem;
+        });
+      }
+      return project;
+    });
   }
 
   ngOnDestroy() {
