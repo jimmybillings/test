@@ -23,21 +23,21 @@
         {{ 'CART.CART_SUBTOTAL' | translate }} 
       </span>
       <span class="total-amount" flex="nogrow">
-        {{ quoteEditService.subTotal | async | currency:'USD':true:'1.2-2' }}
+        {{ subTotal | async | currency:'USD':true:'1.2-2' }}
       </span>
     </div>
     <div *ngIf="showDiscount" flex="100" layout="row" layout-align="end center" class="discount mat-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_DISCOUNT' | translate }} 
       </span>
-      <span class="total-amount" flex="nogrow">{{ quoteEditService.hasProperty('discount') | async }}</span>
+      <span class="total-amount" flex="nogrow">{{ discount | async }}</span>
     </div>
     <div *ngIf="!(quoteIsTrial | async)" flex="100" layout="row" layout-align="end center" class="total mat-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_TOTAL' | translate }} 
       </span>
       <span class="total-amount" flex="nogrow">
-        {{ quoteEditService.total | async | currency:'USD':true:'1.2-2' }}
+        {{ total | async | currency:'USD':true:'1.2-2' }}
       </span>
     </div>
     <div flex="100" layout="row" layout-align="center center">
