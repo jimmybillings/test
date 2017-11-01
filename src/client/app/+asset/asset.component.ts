@@ -225,6 +225,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     }
 
     const lineItem = projects
+      .filter(project => project.lineItems)
       .reduce((lineItems, project) => lineItems.concat(project.lineItems), [])
       .find(lineItem => lineItem.id === this.asset.uuid);
 
