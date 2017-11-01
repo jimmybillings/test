@@ -245,10 +245,7 @@ export class AssetEffects {
     return orderable.projects
       .filter(project => project.lineItems)
       .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
-      .find(lineItem => {
-        console.log(lineItem);
-        return lineItem.id === uuid
-      });
+      .find(lineItem => lineItem.id === uuid);
   }
 
   private loadAssetActionGenerator(
