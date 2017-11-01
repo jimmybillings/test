@@ -1,20 +1,23 @@
-import { Component, Inject, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { EnhancedAsset } from '../../../../../shared/interfaces/enhanced-asset';
+import { WzPricingComponent } from '../../../../../shared/components/wz-pricing/wz.pricing.component';
+import { WzSubclipEditorComponent } from '../../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
+import { Tab } from '../../../../components/tabs/tab';
+import { Component, Inject, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { CommerceEditTab } from '../../../../components/tabs/commerce-edit-tab';
-import { Router } from '@angular/router';
 import { WzDialogService } from '../../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Capabilities } from '../../../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../../../shared/services/window-ref.service';
-import { Project, AssetLineItem, OrderableType } from '../../../../../shared/interfaces/commerce.interface';
-import { QuoteEditService } from '../../../../../shared/services/quote-edit.service';
-import { WzEvent } from '../../../../../shared/interfaces/common.interface';
+import { AssetLineItem, OrderableType, PriceAttribute, Project } from '../../../../../shared/interfaces/commerce.interface';
+import { Pojo, SelectedPriceAttributes, WzEvent } from '../../../../../shared/interfaces/common.interface';
 import { FormFields, MdSelectOption } from '../../../../../shared/interfaces/forms.interface';
 import { PricingStore } from '../../../../../shared/stores/pricing.store';
 import { AppStore } from '../../../../../app.store';
 import { PricingService } from '../../../../../shared/services/pricing.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import * as SubclipMarkersInterface from '../../../../../shared/interfaces/subclip-markers';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   moduleId: module.id,
@@ -23,42 +26,56 @@ import { Subscription } from 'rxjs/Subscription';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class QuoteEditTabComponent extends CommerceEditTab implements OnDestroy {
+export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   public projects: Project[];
+  public config: Pojo;
+  public quoteType: OrderableType = null;
+  public pricingPreferences: Pojo;
+  public priceAttributes: Array<PriceAttribute> = null;
   private projectSubscription: Subscription;
+  protected preferencesSubscription: Subscription;
 
   constructor(
     public userCan: Capabilities,
-    public quoteEditService: QuoteEditService,
     public dialogService: WzDialogService,
     public window: WindowRef,
     public userPreference: UserPreferenceService,
     @Inject(DOCUMENT) public document: any,
     public pricingStore: PricingStore,
-    public router: Router,
     protected store: AppStore,
     public pricingService: PricingService
   ) {
-    super(
-      userCan, quoteEditService, dialogService, window,
-      userPreference, document, pricingStore, store, pricingService
-    );
-    this.projectSubscription = this.quoteEditService.projects.subscribe(projects => this.projects = projects);
+    super();
+  }
+
+  public ngOnInit(): void {
+    this.projectSubscription = this.store.select(state => state.quoteEdit.data.projects)
+      .subscribe(projects => this.projects = projects);
+    this.preferencesSubscription = this.userPreference.data.subscribe((data: any) => {
+      this.pricingPreferences = data.pricingPreferences;
+    });
+    this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
   }
 
   ngOnDestroy() {
     this.projectSubscription.unsubscribe();
+    this.preferencesSubscription.unsubscribe();
   }
 
   public onNotification(message: WzEvent): void {
     switch (message.type) {
 
       case 'ADD_QUOTE_FEE':
-        this.quoteEditService.addFeeTo(message.payload.project, message.payload.fee);
+        this.store.dispatch(factory => factory.quoteEdit.addFeeTo(
+          message.payload.project,
+          message.payload.fee
+        ));
         break;
 
       case 'REMOVE_QUOTE_FEE':
-        this.quoteEditService.removeFee(message.payload);
+        this.store.dispatch(factory =>
+          factory.quoteEdit.removeFee(message.payload)
+        );
         break;
 
       case 'SHOW_COST_MULTIPLIER_DIALOG':
@@ -66,7 +83,9 @@ export class QuoteEditTabComponent extends CommerceEditTab implements OnDestroy 
         break;
 
       case 'REMOVE_COST_MULTIPLIER':
-        this.removeCostMultiplierFrom(message.payload);
+        this.store.dispatch(factory =>
+          factory.quoteEdit.editLineItem(message.payload, { multiplier: 1 })
+        );
         break;
 
       case 'OPEN_BULK_IMPORT_DIALOG':
@@ -77,31 +96,115 @@ export class QuoteEditTabComponent extends CommerceEditTab implements OnDestroy 
         this.onAddCustomPriceTo(message.payload);
         break;
 
-      case 'GO_TO_NEXT_TAB':
-        this.goToNextTab();
-        break;
-
       case 'OPEN_DELETE_DIALOG':
       case 'SAVE_AND_NEW':
       case 'CLONE_QUOTE':
         this.notify.emit(message);
         break;
 
-      default:
-        super.onNotification(message);
+      case 'ADD_PROJECT':
+        this.store.dispatch(factory => factory.quoteEdit.addProject())
+        break;
+
+      case 'REMOVE_PROJECT':
+        this.store.dispatch(factory => factory.quoteEdit.removeProject(message.payload.id))
+        break;
+
+      case 'UPDATE_PROJECT':
+        this.updateProject(message.payload);
+        break;
+
+      case 'MOVE_LINE_ITEM':
+        this.store.dispatch(factory =>
+          factory.quoteEdit.moveLineItem(message.payload.otherProject, message.payload.lineItem)
+        )
+        break;
+
+      case 'CLONE_LINE_ITEM':
+        console.log('clone');
+        this.store.dispatch(factory => factory.quoteEdit.cloneLineItem(message.payload));
+        break;
+
+      case 'REMOVE_LINE_ITEM':
+        this.store.dispatch(factory => message.payload.asset.type === 'quoteEditAsset'
+          ? factory.quoteEdit.removeAsset(message.payload.asset)
+          : factory.cart.removeAsset(message.payload.asset));
+        break;
+
+      case 'EDIT_LINE_ITEM':
+        this.store.dispatch(factory =>
+          factory.quoteEdit.editLineItem(message.payload.lineItem, message.payload.fieldToEdit)
+        );
+        break;
+
+      case 'EDIT_LINE_ITEM_MARKERS':
+        this.editLineItemMarkers(message.payload);
+        break;
+
+      case 'SHOW_PRICING_DIALOG':
+        this.showPricingDialog(message.payload);
+        break;
+
+      case 'EDIT_PROJECT_PRICING':
+        console.log('sdlkfjsdlkf')
+        this.editProjectPricing(message.payload);
+        break;
+
+      case 'GO_TO_NEXT_TAB':
+        this.goToNextTab();
+        break;
     };
   }
 
+  public get showUsageWarning(): boolean {
+    return !this.cartContainsNoAssets && !this.userCanProceed;
+  }
+
+  public get userCanProceed(): boolean {
+    return (this.quoteType === 'Trial') || (this.rmAssetsHaveAttributes && !this.cartContainsNoAssets);
+  }
+
+  public get rmAssetsHaveAttributes(): boolean {
+    if (this.store.snapshot(state => state.quoteEdit.data.itemCount) === 0) return true;
+
+    let validAssets: boolean[] = [];
+
+    this.store.snapshot(state => state.quoteEdit.data.projects).forEach((project: Project) => {
+      if (project.lineItems) {
+        project.lineItems.forEach((lineItem: AssetLineItem) => {
+          validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
+        });
+      }
+    });
+    return validAssets.indexOf(false) === -1;
+  }
+
+  public get total(): Observable<number> {
+    return this.store.select(state => state.quoteEdit.data.total);
+  }
+
+  public get subTotal(): Observable<number> {
+    return this.store.select(state => state.quoteEdit.data.subTotal);
+  }
+
+  public get discount(): Observable<string> {
+    return this.store.select(state => state.quoteEdit.data.discount);
+  }
+
+  public get cartContainsNoAssets(): boolean {
+    return (this.store.snapshot(state => state.quoteEdit.data.itemCount) === 0) ? true : false;
+  }
+
   public get quoteIsTrial(): Observable<boolean> {
-    return this.quoteEditService.data.map(quote => quote.data.purchaseType === 'Trial');
+    return this.store.select(state => state.quoteEdit.data).map(quote => quote.purchaseType === 'Trial');
   }
 
   public get showDiscount(): boolean {
-    return !!this.hasProperty('discount') && this.quoteType !== 'Trial';
+    return !!this.store.snapshot(factory => factory.quoteEdit.data.discount) && this.quoteType !== 'Trial';
   }
 
   public get shouldShowCloneButton(): Observable<boolean> {
-    return this.userCan.cloneQuote(this.quoteEditService.data);
+    return this.userCan.cloneQuote(this.store.select(state => state.quoteEdit));
   }
 
   public get purchaseTypeConfig(): MdSelectOption[] {
@@ -118,24 +221,18 @@ export class QuoteEditTabComponent extends CommerceEditTab implements OnDestroy 
     });
   }
 
-  public onOpenBulkImportDialog(projectId: string): void {
+  private onOpenBulkImportDialog(projectId: string): void {
     this.dialogService.openFormDialog(
       this.config.bulkImport.items,
       { title: 'QUOTE.BULK_IMPORT.TITLE', submitLabel: 'QUOTE.BULK_IMPORT.SUBMIT_BTN', autocomplete: 'off' },
-      (form: { lineItemAttributes: string }) => {
-        this.quoteEditService.bulkImport(form, projectId)
-          .do(() =>
-            this.store.dispatch(factory => factory.snackbar.display(
-              'QUOTE.BULK_IMPORT.CONFIRMATION',
-              { numOfAssets: form.lineItemAttributes.split('\n').length })
-            )
-          )
-          .subscribe();
+      (rawAssets: { lineItemAttributes: string }) => {
+        this.store.dispatch(factory => factory.quoteEdit.bulkImport(rawAssets, projectId));
       }
     );
   }
 
-  public onAddCustomPriceTo(lineItem: AssetLineItem): void {
+
+  private onAddCustomPriceTo(lineItem: AssetLineItem): void {
     this.dialogService.openFormDialog(
       [{
         name: 'price',
@@ -151,21 +248,194 @@ export class QuoteEditTabComponent extends CommerceEditTab implements OnDestroy 
       });
   }
 
-  private hasProperty = (property: string): string | undefined => {
-    let has;
-    this.quoteEditService.hasProperty(property)
-      .take(1).subscribe((value: string | undefined) => {
-        has = value;
+  private updateProject(project: Project) {
+    this.dialogService.openFormDialog(
+      project.items,
+      {
+        dialogConfig: { position: { top: '10%' }, disableClose: false },
+        title: 'CART.PROJECTS.FORM.TITLE',
+        submitLabel: 'CART.PROJECTS.FORM.SUBMIT_LABEL',
+        autocomplete: 'off'
+      },
+      (data: any) => {
+        this.store.dispatch(factory => factory.quoteEdit.updateProject(Object.assign(project.project, data)))
+      }
+    );
+  }
+
+  private editLineItemMarkers(lineItem: AssetLineItem) {
+    this.store.callLegacyServiceMethod(service => service.asset.getClipPreviewData(lineItem.asset.assetId))
+      .subscribe(data => {
+        this.document.body.classList.add('subclipping-edit-open');
+        lineItem.asset.clipUrl = data.url;
+        this.dialogService.openComponentInDialog(
+          {
+            componentType: WzSubclipEditorComponent,
+            dialogConfig: { width: '530px', position: { top: '14%' } },
+            inputOptions: {
+              window: this.window.nativeWindow,
+              enhancedAsset: lineItem.asset,
+              usagePrice: null
+            },
+            outputOptions: [
+              {
+                event: 'cancel',
+                callback: (event: any) => { return true; },
+                closeOnEvent: true
+              },
+              {
+                event: 'save',
+                callback: (newMarkers: SubclipMarkersInterface.SubclipMarkers) => {
+                  this.store.dispatch(factory =>
+                    factory.quoteEdit.editLineItemMarkers(lineItem, newMarkers)
+                  )
+                },
+                closeOnEvent: true
+              }
+            ]
+          }
+        ).subscribe(() => {
+          this.document.body.classList.remove('subclipping-edit-open');
+        });
       });
-    return has;
+  }
+
+  private editProjectPricing(project: Project) {
+    let preferences: Pojo = project.attributes ? this.mapAttributesToPreferences(project.attributes) : this.pricingPreferences;
+    if (this.priceAttributes) {
+      this.openProjectPricingDialog(this.priceAttributes, preferences, project);
+    } else {
+      this.pricingService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
+        this.priceAttributes = priceAttributes;
+        this.openProjectPricingDialog(priceAttributes, preferences, project);
+      });
+    }
+  }
+
+  private openProjectPricingDialog(priceAttributes: Array<PriceAttribute>, preferences: Pojo, project: Project): void {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: WzPricingComponent,
+        inputOptions: {
+          attributes: priceAttributes,
+          pricingPreferences: preferences,
+          usagePrice: null
+        },
+        outputOptions: [
+          {
+            event: 'pricingEvent',
+            callback: (event: WzEvent, dialogRef: any) => {
+              this.applyProjectPricing(event, dialogRef, project);
+            }
+          }
+        ]
+      }
+    );
+  }
+
+  private applyProjectPricing(event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>, project: Project) {
+    switch (event.type) {
+      case 'APPLY_PRICE':
+        this.store.dispatch(factory =>
+          factory.quoteEdit.updateProjectPriceAttributes(event.payload.attributes, project)
+        );
+        this.userPreference.updatePricingPreferences(event.payload.attributes);
+        dialogRef.close();
+        break;
+      case 'ERROR':
+        this.store.dispatch(factory => factory.error.handleCustomError(event.payload));
+        break;
+      default:
+        break;
+    }
+  }
+
+  private showPricingDialog(lineItem: AssetLineItem): void {
+    let preferences: Pojo = lineItem.attributes ? this.mapAttributesToPreferences(lineItem.attributes) : this.pricingPreferences;
+    if (this.priceAttributes) {
+      this.openPricingDialog(this.priceAttributes, preferences, lineItem);
+    } else {
+      this.pricingService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
+        this.priceAttributes = priceAttributes;
+        this.openPricingDialog(priceAttributes, preferences, lineItem);
+      });
+    }
+  }
+
+  private openPricingDialog(priceAttributes: Array<PriceAttribute>, preferences: Pojo, lineItem: AssetLineItem): void {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: WzPricingComponent,
+        inputOptions: {
+          attributes: priceAttributes,
+          pricingPreferences: preferences,
+          usagePrice: this.pricingStore.priceForDialog
+        },
+        outputOptions: [
+          {
+            event: 'pricingEvent',
+            callback: (event: WzEvent, dialogRef: any) => {
+              this.applyPricing(event, dialogRef, lineItem);
+            }
+          }
+        ]
+      }
+    );
+  }
+
+  private applyPricing(event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>, lineItem: AssetLineItem) {
+    switch (event.type) {
+      case 'CALCULATE_PRICE':
+        this.calculatePrice(event.payload, lineItem).subscribe((price: number) => {
+          this.pricingStore.setPriceForDialog(price);
+        });
+        break;
+      case 'APPLY_PRICE':
+        this.store.dispatch(factory => factory.quoteEdit.editLineItem(lineItem, { pricingAttributes: event.payload.attributes }))
+        this.userPreference.updatePricingPreferences(event.payload.attributes);
+        dialogRef.close();
+        break;
+      case 'ERROR':
+        this.store.dispatch(factory => factory.error.handleCustomError(event.payload));
+        break;
+      default:
+        break;
+    }
+  }
+
+  private calculatePrice(attributes: Pojo, lineItem: AssetLineItem): Observable<number> {
+    const markers: SubclipMarkersInterface.SubclipMarkers = (lineItem.asset as EnhancedAsset).isSubclipped ? {
+      in: (lineItem.asset as EnhancedAsset).inMarkerFrame,
+      out: (lineItem.asset as EnhancedAsset).outMarkerFrame
+    } : null;
+    return this.pricingService.getPriceFor((lineItem.asset as EnhancedAsset), attributes, markers);
+  }
+
+  private mapAttributesToPreferences(attributes: any): Pojo {
+    if (Array.isArray(attributes)) {
+      // if the attributes came from a lineItem, they are an Array of SelectedPriceAttributes
+      // we need to map them to a Pojo to pass on to the pricing component
+      let mapped: any = {};
+      attributes.forEach((attr: SelectedPriceAttributes) => {
+        mapped[attr.priceAttributeName] = attr.selectedAttributeValue;
+      });
+      delete mapped['siteName'];
+      return mapped;
+    } else {
+      // if the attributes came from a project, they are a Pojo.
+      // we do not need to map them before passing them to the pricing component
+      delete attributes['siteName'];
+      return attributes;
+    }
   }
 
   private openCostMultiplierDialog(lineItem: AssetLineItem): void {
     this.dialogService.openFormDialog(
       this.costMultiplierFormItems(lineItem),
       { title: this.costMultiplierFormTitle(lineItem), submitLabel: this.costMultiplierFormSubmitLabel(lineItem) },
-      (result: { multiplier: string }): void => this.quoteEditService.editLineItem(lineItem, result)
-    );
+      (result: { multiplier: string }): void => {
+        this.store.dispatch(factory => factory.quoteEdit.editLineItem(lineItem, result))
+      });
   }
 
   private costMultiplierFormItems(lineItem: AssetLineItem): Array<FormFields> {
@@ -180,10 +450,6 @@ export class QuoteEditTabComponent extends CommerceEditTab implements OnDestroy 
 
   private costMultiplierFormSubmitLabel(lineItem: AssetLineItem): string {
     return lineItem.multiplier > 1 ? 'QUOTE.EDIT_MULTIPLIER_FORM_SUBMIT' : 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT';
-  }
-
-  private removeCostMultiplierFrom(lineItem: AssetLineItem): void {
-    this.quoteEditService.editLineItem(lineItem, { multiplier: 1 });
   }
 
   private viewValueFor(quoteType: OrderableType): string {

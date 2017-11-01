@@ -12,7 +12,6 @@ export function main() {
     let quoteSendSpy: jasmine.Spy;
     let mockStore: MockAppStore;
     let mockCapabilities: any;
-    let mockQuoteEditService: any;
     let mockDialogService: any;
     let mockWindow: any;
     let mockUserPreference: any;
@@ -23,22 +22,6 @@ export function main() {
     beforeEach(() => {
       mockCapabilities = {
         cloneQuote: jasmine.createSpy('cloneQuote')
-      };
-
-      mockQuoteEditService = {
-        state: { data: 'store' },
-        data: Observable.of({ data: { purchaseType: 'Trial' } }),
-        projects: Observable.of([]),
-        quoteId: 1,
-        addFeeTo: jasmine.createSpy('addFeeTo'),
-        removeFee: jasmine.createSpy('removeFee'),
-        hasProperty: jasmine.createSpy('hasProperty').and.returnValue(Observable.of('someProp')),
-        updateQuoteField: jasmine.createSpy('updateQuoteField'),
-        sendQuote: jasmine.createSpy('sendQuote').and.returnValue(Observable.of({})),
-        editLineItem: jasmine.createSpy('editLineItem'),
-        createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({})),
-        cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({})),
-        bulkImport: jasmine.createSpy('bulkImport').and.returnValue(Observable.of({}))
       };
 
       mockDialogService = {
@@ -85,22 +68,16 @@ export function main() {
 
       componentUnderTest =
         new QuoteEditTabComponent(
-          mockCapabilities, mockQuoteEditService, mockDialogService,
-          mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
+          mockCapabilities, mockDialogService,
+          mockWindow, mockUserPreference, mockDocument, null, mockStore, mockPricingService
         );
     });
 
     // This gets used down below for some tedious setup in the editBulkId and editDiscount blocks
     let setupFor = (propertyInQuestion: any) => {
-      mockQuoteEditService = {
-        projects: Observable.of([]),
-        hasProperty: jasmine.createSpy('hasProperty').and.returnValue(Observable.of(propertyInQuestion)),
-        updateQuoteField: jasmine.createSpy('updateQuoteField'),
-        quoteId: 1
-      };
       componentUnderTest = new QuoteEditTabComponent(
-        mockCapabilities, mockQuoteEditService, mockDialogService,
-        mockWindow, mockUserPreference, mockDocument, null, mockRouter, mockStore, mockPricingService
+        mockCapabilities, mockDialogService,
+        mockWindow, mockUserPreference, mockDocument, null, mockStore, mockPricingService
       );
       return componentUnderTest;
     };
@@ -128,14 +105,15 @@ export function main() {
         componentUnderTest.ngOnInit();
       });
 
-
       describe('ADD_QUOTE_FEE', () => {
+        let quoteFeeSpy: jasmine.Spy;
+        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addFeeTo') });
         it('calls the addFeeTo() service method', () => {
           componentUnderTest.onNotification(
             { type: 'ADD_QUOTE_FEE', payload: { project: { some: 'project' }, fee: { some: 'fee' } } }
           );
 
-          expect(mockQuoteEditService.addFeeTo).toHaveBeenCalledWith({ some: 'project' }, { some: 'fee' });
+          expect(quoteFeeSpy).toHaveBeenCalledWith({ some: 'project' }, { some: 'fee' });
         });
 
         it('throws an error if the message doesn\'t have a payload', () => {
@@ -144,16 +122,20 @@ export function main() {
       });
 
       describe('REMOVE_QUOTE_FEE', () => {
+        let quoteFeeSpy: jasmine.Spy;
+        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'removeFee') });
         it('calls the removeFee() service method', () => {
           componentUnderTest.onNotification(
             { type: 'REMOVE_QUOTE_FEE', payload: { some: 'fee' } }
           );
 
-          expect(mockQuoteEditService.removeFee).toHaveBeenCalledWith({ some: 'fee' });
+          expect(quoteFeeSpy).toHaveBeenCalledWith({ some: 'fee' });
         });
       });
 
       describe('SHOW_COST_MULTIPLIER_DIALOG', () => {
+        let quoteFeeSpy: jasmine.Spy;
+        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'editLineItem') });
         it('should open a form dialog', () => {
           componentUnderTest.onNotification({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: { id: 1 } });
 
@@ -167,7 +149,7 @@ export function main() {
         it('calls the callback on form submit', () => {
           componentUnderTest.onNotification({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: { id: 1 } });
           mockDialogService.onSubmitCallback({ multiplier: '1.2' });
-          expect(mockQuoteEditService.editLineItem).toHaveBeenCalledWith({ id: 1 }, { multiplier: '1.2' });
+          expect(quoteFeeSpy).toHaveBeenCalledWith({ id: 1 }, { multiplier: '1.2' });
         });
 
         it('uses the correct strings for edit and merges form values', () => {
@@ -182,10 +164,12 @@ export function main() {
       });
 
       describe('REMOVE_COST_MULTIPLIER', () => {
+        let quoteFeeSpy: jasmine.Spy;
+        beforeEach(() => { quoteFeeSpy = mockStore.createActionFactoryMethod('quoteEdit', 'editLineItem') });
         it('should call the editLineItem method on the api service', () => {
           componentUnderTest.onNotification({ type: 'REMOVE_COST_MULTIPLIER', payload: { id: 1, multiplier: 2 } });
 
-          expect(mockQuoteEditService.editLineItem).toHaveBeenCalledWith({ id: 1, multiplier: 2 }, { multiplier: 1 });
+          expect(quoteFeeSpy).toHaveBeenCalledWith({ id: 1, multiplier: 2 }, { multiplier: 1 });
         });
       });
 
@@ -244,18 +228,11 @@ export function main() {
           expect(componentUnderTest.notify.emit).toHaveBeenCalledWith({ type: 'CLONE_QUOTE' });
         });
       });
-
-      describe('DEFAULT', () => {
-        it('Should call the parent class default onNotifcation because no case matches', () => {
-          spyOn(CommerceEditTab.prototype, 'onNotification');
-          componentUnderTest.onNotification({ type: 'TEST', payload: { test: 'test' } });
-          expect(CommerceEditTab.prototype.onNotification).toHaveBeenCalled();
-        });
-      });
     });
 
     describe('get quoteIsTrial()', () => {
       it('Should return true if purchaseType is Trial', () => {
+        mockStore.createStateSection('quoteEdit', { data: { purchaseType: 'Trial' } });
         let purchaseType;
         componentUnderTest.quoteIsTrial.subscribe((response) => purchaseType = response);
         expect(purchaseType).toBe(true);
@@ -265,18 +242,18 @@ export function main() {
     describe('showDiscount()', () => {
       describe('returns false', () => {
         it('when the quote does not have the property', () => {
-          componentUnderTest = setupFor(undefined);
+          mockStore.createStateSection('quoteEdit', { data: {} })
           expect(componentUnderTest.showDiscount).toBe(false);
         });
 
         it('when the quoteType is "Trial" and the quote DOES NOT have the property', () => {
-          componentUnderTest = setupFor(undefined);
+          mockStore.createStateSection('quoteEdit', { data: {} })
           componentUnderTest.quoteType = 'Trial';
           expect(componentUnderTest.showDiscount).toBe(false);
         });
 
         it('when the quoteType is "Trial" and the quote DOES have the property', () => {
-          componentUnderTest = setupFor('someKnownProperty');
+          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } })
           componentUnderTest.quoteType = 'Trial';
           expect(componentUnderTest.showDiscount).toBe(false);
         });
@@ -284,13 +261,13 @@ export function main() {
 
       describe('returns true', () => {
         it('when the quote does have the property AND the quoteType is null (indicates "Standard" quote)', () => {
-          componentUnderTest = setupFor('someKnownProperty');
+          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } })
           componentUnderTest.quoteType = null;
           expect(componentUnderTest.showDiscount).toBe(true);
         });
 
         it('when the quote does have the property AND the quoteType is NOT Trial', () => {
-          componentUnderTest = setupFor('someKnownProperty');
+          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } })
           componentUnderTest.quoteType = 'NotTrial' as any;
           expect(componentUnderTest.showDiscount).toBe(true);
         });
@@ -299,8 +276,9 @@ export function main() {
 
     describe('shouldShowCloneButton()', () => {
       it('Should call the cloneQuote capability with the quote edit store', () => {
+        mockStore.createStateSection('quoteEdit', { data: { id: 1 } })
         const shouldShowCloneButton = componentUnderTest.shouldShowCloneButton;
-        expect(mockCapabilities.cloneQuote).toHaveBeenCalledWith(mockQuoteEditService.data);
+        expect(mockCapabilities.cloneQuote).toHaveBeenCalledWith(Observable.of({ data: { id: 1 } }));
       });
     });
 
@@ -328,9 +306,11 @@ export function main() {
     });
 
     describe('onOpenBulkImportDialog()', () => {
+      let bulkImportSpy: jasmine.Spy;
       beforeEach(() => {
         componentUnderTest.ngOnInit();
         componentUnderTest.onNotification({ type: 'OPEN_BULK_IMPORT_DIALOG', payload: 'abcd-1234' });
+        bulkImportSpy = mockStore.createActionFactoryMethod('quoteEdit', 'bulkImport')
       });
 
       it('opens a form dialog', () => {
@@ -344,13 +324,7 @@ export function main() {
       it('calls the bulkImport() on the quote edit service in the callback', () => {
         mockDialogService.onSubmitCallback({ lineItemAttributes: 'one\ntwo' });
 
-        expect(mockQuoteEditService.bulkImport).toHaveBeenCalledWith({ lineItemAttributes: 'one\ntwo' }, 'abcd-1234');
-      });
-
-      it('displays a snackbar in the callback', () => {
-        mockDialogService.onSubmitCallback({ lineItemAttributes: 'one\ntwo' });
-
-        expect(snackbarSpy).toHaveBeenCalledWith('QUOTE.BULK_IMPORT.CONFIRMATION', { numOfAssets: 2 });
+        expect(bulkImportSpy).toHaveBeenCalledWith({ lineItemAttributes: 'one\ntwo' }, 'abcd-1234');
       });
     });
   });
