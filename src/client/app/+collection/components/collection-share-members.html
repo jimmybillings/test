@@ -23,7 +23,7 @@
       <div class="row" *ngFor="let editor of collection.editors">
         <div class="cell">
           <h5 class="mat-subheading-1">
-            <a color="primary" href="mailto:{{ editor }}">{{ editor }}</a>
+            <a color="primary" href="mailto:{{ editor.emailAddress }}">{{ editor.emailAddress }}</a>
           </h5>
         </div>
         <div class="cell">
@@ -35,7 +35,7 @@
       <div class="row" *ngFor="let viewer of collection.viewers">
         <div class="cell">
           <h5 class="mat-subheading-1">
-            <a color="primary" href="mailto:{{ viewer }}">{{ viewer }}</a>
+            <a color="primary" href="mailto:{{ viewer.emailAddress }}">{{ viewer.emailAddress }}</a>
           </h5>
         </div>
         <div class="cell">
