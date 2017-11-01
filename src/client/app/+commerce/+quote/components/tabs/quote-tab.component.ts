@@ -12,7 +12,6 @@ import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/w
 import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 import { FormFields } from '../../../../shared/interfaces/forms.interface';
-import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
 import { Pojo } from '../../../../shared/interfaces/common.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Common } from '../../../../shared/utilities/common.functions';
@@ -36,7 +35,6 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
     public userCan: CommerceCapabilities,
     private dialogService: WzDialogService,
     private router: Router,
-    private quoteEditService: QuoteEditService,
     private store: AppStore
   ) {
     super();
@@ -59,12 +57,9 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
   }
 
   public onCloneQuote() {
-    this.quoteEditService.cloneQuote(this.quoteService.state.data)
-      .do(() => {
-        this.router.navigate(['/active-quote']);
-        this.store.dispatch(factory => factory.snackbar.display('QUOTE.CLONE_SUCCESS'));
-      })
-      .subscribe();
+    this.store.dispatch(factory =>
+      factory.quoteEdit.cloneQuote(this.store.snapshotCloned(state => state.quoteShow.data))
+    );
   }
 
   public get shouldShowCloneButton(): Observable<boolean> {
