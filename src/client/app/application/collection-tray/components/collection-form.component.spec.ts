@@ -369,8 +369,11 @@ function mockCollection(): Collection {
     owner: 123,
     tags: 'cat, dog, cow',
     userRole: 'owner',
-    editors: [1, 2, 300],
-    viewers: [4]
+    editors: [
+      { id: 1, firstName: 'Tom', lastName: 'Thumb', emailAddress: 'tt@test.co' },
+      { id: 2, firstName: 'Jane', lastName: 'Doe', emailAddress: 'jd@test.co' },
+      { id: 300, firstName: 'Ty', lastName: 'Test', emailAddress: 'ty@test.co' }],
+    viewers: [{ id: 4, firstName: 'Mary', lastName: 'Maze', emailAddress: 'mm@test.co' }]
   };
 }
 

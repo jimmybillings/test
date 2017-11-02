@@ -95,7 +95,7 @@ export interface CollectionItemMarkersUpdater {
 
 export interface CollectionShareMember {
   id: number;
-  firstName: number;
+  firstName: string;
   lastName: string;
   emailAddress: string;
 }
