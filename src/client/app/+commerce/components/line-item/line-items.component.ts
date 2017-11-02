@@ -72,7 +72,6 @@ export class LineItemsComponent {
   }
 
   public get shouldDisplayPricing(): boolean {
-    console.log(this.quoteType);
     return this.quoteType !== 'Trial';
   }
 
