@@ -5,7 +5,7 @@ import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 export function main() {
   const stateSpecHelper: StateSpecHelper = new StateSpecHelper();
 
-  describe('Snackbar Reducer', () => {
+  describe('Invoice Reducer', () => {
     stateSpecHelper.setReducerTestModules({
       actions: InvoiceActions,
       state: InvoiceState,
@@ -27,10 +27,10 @@ export function main() {
       actionClassName: 'LoadSuccess',
       customTests: [
         {
-          it: 'returns the state with the new quote and loading: false',
-          actionParameters: { quote: { some: 'quote' } },
+          it: 'returns the state with the invoice and loading: false',
+          actionParameters: { invoice: { some: 'invoice' } },
           previousState: { ...InvoiceState.initialState, loading: true },
-          expectedNextState: { data: { some: 'quote' }, loading: false }
+          expectedNextState: { invoice: { some: 'invoice' }, loading: false }
         }
       ]
     });
