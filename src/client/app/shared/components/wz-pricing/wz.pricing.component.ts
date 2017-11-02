@@ -130,7 +130,7 @@ export class WzPricingComponent implements OnDestroy {
       attributes: [
         this.csvFor(this.attributes),
         Validators.compose([
-          Validators.pattern(/[a-zA-Z0-9],[a-zA-Z0-9]/),
+          Validators.pattern(/^(([\w ]+,[\w ]+\n)*[\w ]+,[\w ]+\n{0,1}){0,1}$/),
           Validators.required
         ])
       ]
