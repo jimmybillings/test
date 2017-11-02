@@ -352,8 +352,11 @@ function mockCollection(): Collection {
     owner: 333,
     tags: 'frog, lizard, snake',
     userRole: 'owner',
-    editors: [6, 7, 800],
-    viewers: [5]
+    editors: [
+      { id: 6, firstName: 'Tom', lastName: 'Thumb', emailAddress: 'tt@test.co' },
+      { id: 7, firstName: 'Jane', lastName: 'Doe', emailAddress: 'jd@test.co' },
+      { id: 800, firstName: 'Ty', lastName: 'Test', emailAddress: 'ty@test.co' }],
+    viewers: [{ id: 5, firstName: 'Mary', lastName: 'Maze', emailAddress: 'mm@test.co' }]
   };
 }
 function mockCollectionNotShared(): Collection {
@@ -376,6 +379,9 @@ function mockCollectionNotOwned(): Collection {
     owner: 7676,
     tags: 'blue, green',
     userRole: 'editor',
-    editors: [6, 7, 800],
+    editors: [
+      { id: 6, firstName: 'Tom', lastName: 'Thumb', emailAddress: 'tt@test.co' },
+      { id: 7, firstName: 'Jane', lastName: 'Doe', emailAddress: 'jd@test.co' },
+      { id: 800, firstName: 'Ty', lastName: 'Test', emailAddress: 'ty@test.co' }]
   };
 }

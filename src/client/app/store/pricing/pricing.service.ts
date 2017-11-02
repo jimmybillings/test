@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { ApiService } from './api.service';
-import { EnhancedAsset } from '../interfaces/enhanced-asset';
-import { PriceAttribute } from '../interfaces/commerce.interface';
-import { Api, ApiParameters } from '../interfaces/api.interface';
-import { Pojo } from '../interfaces/common.interface';
-import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
+import { FutureApiService } from '../api/api.service';
+import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
+import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
+import { Api, ApiParameters } from '../../shared/interfaces/api.interface';
+import { Pojo } from '../../shared/interfaces/common.interface';
+import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
+
 
 @Injectable()
 export class PricingService {
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: FutureApiService) { }
 
-  public getPriceFor(asset: EnhancedAsset, attributes: any, markers?: SubclipMarkersInterface.SubclipMarkers): Observable<any> {
+  public getPrice(attributes: Pojo, assetId: number, markers?: SubclipMarkersInterface.SubclipMarkers): Observable<any> {
     const parameters: ApiParameters =
       Object.assign(
         { region: 'AAA' },
@@ -20,11 +21,11 @@ export class PricingService {
         markers ? this.formatDurationParametersFor(markers) : null
       );
 
-    return this.apiService.get(Api.Orders, `priceBook/price/${asset.assetId}`, { parameters }).map((data: any) => data.price);
+    return this.apiService.get(Api.Orders, `priceBook/price/${assetId}`, { parameters }).map((data: any) => data.price);
   }
 
-  public getPriceAttributes(priceModel?: string): Observable<Array<PriceAttribute>> {
-    priceModel = priceModel ? priceModel.split(' ').join('') : 'RightsManaged';
+  public getPriceAttributes(priceModel: string): Observable<Array<PriceAttribute>> {
+    priceModel = priceModel.split(' ').join('');
     return this.apiService.get(
       Api.Orders,
       'priceBook/priceAttributes',

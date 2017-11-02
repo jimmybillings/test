@@ -22,6 +22,7 @@ export function main() {
     let mockPricingService: any;
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
     let mockStore: MockAppStore;
+    let initPricingSpy: jasmine.Spy;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
@@ -57,10 +58,14 @@ export function main() {
         getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({}))
       };
       mockStore = new MockAppStore();
+      initPricingSpy = mockStore.createActionFactoryMethod('pricing', 'initializePricing');
+      mockStore.createActionFactoryMethod('pricing', 'calculatePrice');
+      mockStore.createActionFactoryMethod('pricing', 'setPriceForDetails');
+      mockStore.createActionFactoryMethod('pricing', 'setAppliedAttributes');
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities,
         mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-        mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService, null
+        mockDialogService, mockQuoteEditService, null
       );
     });
 
@@ -126,49 +131,54 @@ export function main() {
     });
 
     describe('addAssetToCart()', () => {
-      describe('Should call the cart summary service with the correct params', () => {
-        it('with a price', () => {
-          componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
-          expect(mockCartService.addAssetToProjectInCart).toHaveBeenCalledWith({
-            lineItem: {
-              selectedTranscodeTarget: 'Target',
-              price: 100,
-              asset: { assetId: 123123 }
-            },
-            markers: undefined,
-            attributes: undefined
-          });
+      it('calls the cart service with the correct params', () => {
+        mockStore.createStateSection(
+          'pricing', {
+            selectedAttributes: { some: 'attributes' },
+            priceForDetails: 100
+          }
+        );
+
+        componentUnderTest.ngOnInit();
+
+        componentUnderTest.addAssetToCart({
+          assetId: 123123,
+          selectedTranscodeTarget: 'Target',
+          markers: { some: 'markers' }
         });
 
-        it('with asset markers', () => {
-          componentUnderTest.addAssetToCart({
-            assetId: 123123, selectedTranscodeTarget: 'Target', markers: { some: 'markers' }
-          });
-          expect(mockCartService.addAssetToProjectInCart).toHaveBeenCalledWith({
-            lineItem: {
-              selectedTranscodeTarget: 'Target',
-              price: 100,
-              asset: { assetId: 123123 }
-            },
-            markers: { some: 'markers' },
-            attributes: undefined
-          });
+        expect(mockCartService.addAssetToProjectInCart).toHaveBeenCalledWith({
+          lineItem: {
+            selectedTranscodeTarget: 'Target',
+            price: 100,
+            asset: { assetId: 123123 }
+          },
+          markers: { some: 'markers' },
+          attributes: { some: 'attributes' }
         });
       });
     });
 
     describe('getPricingAttributes', () => {
-      it('should call the getPriceAttributes on the assetService if there is not rights reproduction cached', () => {
+      it('should dispatch the proper action to the store', () => {
         componentUnderTest.getPricingAttributes('Rights Managed');
 
-        expect(mockPricingService.getPriceAttributes).toHaveBeenCalledWith('Rights Managed');
-      });
-
-      it('should get the price if the rights reproduction doesnt match the cache', () => {
-        componentUnderTest.rightsReproduction = 'Rights Managed';
-        componentUnderTest.getPricingAttributes('Rights Managed');
-
-        expect(mockPricingService.getPriceAttributes).not.toHaveBeenCalled();
+        mockStore.expectDispatchFor(
+          initPricingSpy,
+          'Rights Managed', {
+            componentType: jasmine.any(Function),
+            inputOptions: {
+              pricingPreferences: 'thePricingPreferences',
+              userCanCustomizeRights: false
+            },
+            outputOptions: [
+              {
+                event: 'pricingEvent',
+                callback: jasmine.any(Function)
+              }
+            ]
+          }
+        );
       });
     });
 
@@ -242,19 +252,10 @@ export function main() {
               }
             };
 
-            const mockAppliedAttributes = { a: '1', b: '2', c: '3' };
-            mockDialogService.openComponentInDialog =
-              jasmine.createSpy('openComponentInDialog').and.callFake((parameters: any) => {
-                parameters.outputOptions[0].callback(
-                  { type: 'APPLY_PRICE', payload: { attributes: mockAppliedAttributes } },
-                  { close: jasmine.createSpy('close') }
-                );
-              });
-
             componentUnderTest = new AssetComponent(
               mockCurrentUserService, mockCapabilities,
               mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-              mockDialogService, mockQuoteEditService, mockPricingStore, mockPricingService, null
+              mockDialogService, mockQuoteEditService, null
             );
 
             componentUnderTest.assetType = assetType;
@@ -332,8 +333,6 @@ export function main() {
               localMockAsset = { uuid: 'IJKL' };
               mockStore.createStateSection('asset', { activeAsset: localMockAsset });
               componentUnderTest.ngOnInit();
-              componentUnderTest.rightsReproduction = 'some rights reproduction';
-              componentUnderTest.getPricingAttributes('some rights reproduction');
 
               expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
             });
@@ -341,10 +340,8 @@ export function main() {
             it('returns false when the attributes don\'t match', () => {
               localMockAsset = { uuid: 'MNOP' };
               mockStore.createStateSection('asset', { activeAsset: localMockAsset });
+              mockStore.createStateSection('pricing', { appliedAttributes: { a: '1', b: '2', c: '4' } });
               componentUnderTest.ngOnInit();
-              componentUnderTest.rightsReproduction = 'some rights reproduction';
-              componentUnderTest.getPricingAttributes('some rights reproduction');
-
 
               expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
             });
@@ -352,10 +349,8 @@ export function main() {
             it('returns false when the number of attributes doesn\'t match', () => {
               localMockAsset = { uuid: 'QRST' };
               mockStore.createStateSection('asset', { activeAsset: localMockAsset });
+              mockStore.createStateSection('pricing', { appliedAttributes: { a: '1' } });
               componentUnderTest.ngOnInit();
-              componentUnderTest.rightsReproduction = 'some rights reproduction';
-              componentUnderTest.getPricingAttributes('some rights reproduction');
-
 
               expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
             });
@@ -379,7 +374,7 @@ export function main() {
 
         componentUnderTest = new AssetComponent(
           null, mockCapabilities, null, null, null,
-          mockStore, null, null, null, null, null, null, null
+          mockStore, null, null, null, null, null
         );
         componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');
         componentUnderTest.onUpdateAssetLineItem();

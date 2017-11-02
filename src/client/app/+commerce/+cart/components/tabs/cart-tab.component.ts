@@ -7,11 +7,9 @@ import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/w
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
-import { PricingStore } from '../../../../shared/stores/pricing.store';
 import { FeatureStore } from '../../../../shared/stores/feature.store';
 import { Feature } from '../../../../shared/interfaces/feature.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
-import { PricingService } from '../../../../shared/services/pricing.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Common } from '../../../../shared/utilities/common.functions';
 import { AppStore } from '../../../../app.store';
@@ -34,13 +32,11 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
     public window: WindowRef,
     public userPreference: UserPreferenceService,
     @Inject(DOCUMENT) public document: any,
-    public pricingStore: PricingStore,
     public featureStore: FeatureStore,
-    public pricingService: PricingService,
     protected store: AppStore
   ) {
     super(
-      userCan, cartService, dialogService, window, userPreference, document, pricingStore, store, pricingService
+      userCan, cartService, dialogService, window, userPreference, document, store
     );
 
     this.projectSubscription = this.cartService.projects.subscribe(projects => this.projects = projects);

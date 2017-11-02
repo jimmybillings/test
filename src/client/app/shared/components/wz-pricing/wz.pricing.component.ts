@@ -1,9 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, AbstractControl, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { PriceAttribute, PriceOption } from '../../interfaces/commerce.interface';
 import { Pojo, WzEvent } from '../../interfaces/common.interface';
+import { FormFields } from '../../interfaces/forms.interface';
+import { AppStore } from '../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -14,9 +16,18 @@ import { Pojo, WzEvent } from '../../interfaces/common.interface';
 
 export class WzPricingComponent implements OnDestroy {
   public form: FormGroup;
+  public customForm: FormGroup;
+  public attributes: Array<PriceAttribute>;
+  public price: Observable<number>;
+  public _userCanCustomizeRights: boolean;
   @Output() pricingEvent: EventEmitter<WzEvent> = new EventEmitter<WzEvent>();
-  @Input() attributes: Array<PriceAttribute>;
-  @Input() usagePrice: Observable<number>;
+  @Input()
+  set userCanCustomizeRights(canCustomize: boolean) {
+    this._userCanCustomizeRights = canCustomize;
+    if (canCustomize) {
+      this.buildCustomForm();
+    }
+  }
   @Input()
   set pricingPreferences(preferences: Pojo) {
     this._pricingPreferences = preferences;
@@ -28,23 +39,36 @@ export class WzPricingComponent implements OnDestroy {
     }
   }
   private formSubscription: Subscription;
+  private storeSubscription: Subscription;
   private _pricingPreferences: Pojo;
-  constructor(private fb: FormBuilder) { }
+
+  constructor(private fb: FormBuilder, private store: AppStore) {
+    this.price = this.store.select(state => state.pricing.priceForDialog);
+    this.storeSubscription = this.store.select(state => state.pricing.attributes).subscribe(attrs => this.attributes = attrs);
+  }
 
   ngOnDestroy() {
     this.formSubscription.unsubscribe();
+    this.storeSubscription.unsubscribe();
   }
 
   public onSubmit(): void {
     if (!this.form.valid) return;
-    // When the form is opened at the project level in a cart/quote, there is no usagePrice
-    if (this.usagePrice) {
-      this.usagePrice.take(1).subscribe((price: number) => {
-        this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { price: price, attributes: this.form.value } });
+    // When the form is opened at the project level in a cart/quote, there is no price
+    if (this.price) {
+      this.price.take(1).subscribe((price: number) => {
+        this.pricingEvent.emit({
+          type: 'APPLY_PRICE',
+          payload: { price: price, attributes: this.form.value, updatePrefs: true }
+        });
       });
     } else {
-      this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { attributes: this.form.value } });
+      this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { attributes: this.form.value, updatePrefs: true } });
     }
+  }
+
+  public onSubmitCustom(): void {
+    this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { attributes: this.parsedCustomFormValue, updatePrefs: false } });
   }
 
   public parentIsEmpty(currentAttribute: PriceAttribute): boolean {
@@ -74,7 +98,6 @@ export class WzPricingComponent implements OnDestroy {
       // There should always be options, however if there aren't we need to alert the user the calculation went wrong
       if (!rawOptions) {
         this.clearForm(Object.keys(this.form.controls));
-        this.pricingEvent.emit({ type: 'ERROR', payload: 'PRICING.ERROR' });
         return;
       }
       // The raw options is just an array of strings that represent attribute values
@@ -96,6 +119,38 @@ export class WzPricingComponent implements OnDestroy {
       if (controlNamesToClear.length > 0) this.clearForm(controlNamesToClear);
       if (controlNamesToDisable.length > 0) this.disableForm(controlNamesToDisable);
     }
+  }
+
+  private buildCustomForm(): void {
+    this.customForm = this.fb.group({
+      [this.attributes[0].name]: [
+        this._pricingPreferences[this.attributes[0].name] || '',
+        Validators.required
+      ],
+      attributes: [
+        this.csvFor(this.attributes),
+        Validators.compose([
+          Validators.pattern(/^(([\w ]+,[\w ]+\n)*[\w ]+,[\w ]+\n{0,1}){0,1}$/),
+          Validators.required
+        ])
+      ]
+    });
+  }
+
+  private csvFor(attributes: PriceAttribute[]): string {
+    return attributes.slice(1).reduce((csv: string, attribute: PriceAttribute) => {
+      return csv.concat(`${attribute.name},${this._pricingPreferences[attribute.name] || ''}\n`);
+    }, '').trim();
+  }
+
+  private get parsedCustomFormValue(): Pojo {
+    let newForm: Pojo = {};
+    this.customForm.value.attributes.split('\n').forEach((pair: string) => {
+      let [key, value] = pair.split(',').map(s => s.trim());
+      newForm[key] = value;
+    });
+    delete this.customForm.value.attributes;
+    return { ...newForm, ...this.customForm.value };
   }
 
   private findParentOf(currentAttribute: PriceAttribute): PriceAttribute {

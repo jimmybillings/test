@@ -50,32 +50,27 @@
     }
     div.primary-info {
       @include text-contrast(mat-color($foreground, base));
-      background-color: rgba(mat-color($foreground, base), .05);
-      div.primary-content {
-        .contact-us-pricing {
-          color: rgba(mat-color($accent, 500), .75);
-        }
-        mat-card-actions {
-          mat-select {
-            .mat-select-placeholder.mat-floating-placeholder,
-            .mat-select-value,
-            .mat-select-arrow {
-              color: mat-color($background, background, .7);
-            }
-          }
-          .mat-form-field-underline {
-            background-color: mat-color($background, background, .2);
-          }
-          button {
-            &.mat-primary.mat-hue-7 {
-              background-color: scale-color(mat-color($primary, default), $lightness: -10%, $alpha: -35%);
-              &:hover {
-                background-color: scale-color(mat-color($primary, default), $lightness: 0%, $alpha: -25%);
-              }
-            }
-          }
+      background-color: rgba(mat-color($foreground, base), .1);
+      .contact-us-pricing {
+        color: rgba(mat-color($accent, 500), .75);
+      }
+      mat-select {
+        .mat-select-placeholder.mat-floating-placeholder,
+        .mat-select-value,
+        .mat-select-arrow {
+          color: mat-color($background, background, .7);
         }
       }
+      .mat-form-field-placeholder {
+        color: mat-color($background, background, .54);
+      }
+      .mat-form-field-underline {
+        background-color: mat-color($background, background, .2);
+      }
+    }
+    .rights-transcodes [mat-button].is-outlined.rights-pkg {
+      color: mat-color($mat-grey, 50, .6);
+      box-shadow: inset 0 0 1px 0 mat-color($mat-grey, 50, .8);
     }
   }
 

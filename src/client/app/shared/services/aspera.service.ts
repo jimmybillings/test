@@ -12,7 +12,6 @@ export class AsperaService {
   constructor(private api: ApiService, private store: AppStore) { }
 
   public initConnect(asperaSpec: string) {
-    console.log(asperaSpec);
     const id = Math.floor((Math.random() * 10000) + 1);
     const CONNECT_INSTALLER = '//d3gcli72yxqn2z.cloudfront.net/connect/v4';
     const asperaWeb = new AW4.Connect({
