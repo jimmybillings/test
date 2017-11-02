@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
-import { AppStore, PricingState } from '../../app.store';
+import { AppStore, PricingState, InternalActionFactoryMapper } from '../../app.store';
+import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { PricingService } from './pricing.service';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import * as PricingActions from './pricing.actions';
@@ -13,16 +14,9 @@ export class PricingEffects {
   @Effect()
   public initializePricing: Observable<Action> = this.actions.ofType(PricingActions.InitializePricing.Type)
     .withLatestFrom(this.store.select(state => state.pricing))
-    .map(([action, state]: [PricingActions.InitializePricing, PricingState]) => {
-      if (state.attributes === null) {
-        return this.store.create(factory => factory.pricing.getAttributes(
-          action.rightsReproduction,
-          action.dialogOptions
-        ));
-      }
-
-      return this.store.create(factory => factory.pricing.openDialog(action.dialogOptions));
-    });
+    .map(([action, state]: [PricingActions.InitializePricing, PricingState]) =>
+      this.store.create(this.nextActionFor(action, state.attributes))
+    );
 
   @Effect()
   public getAttributes: Observable<Action> = this.actions.ofType(PricingActions.GetAttributes.Type)
@@ -65,4 +59,15 @@ export class PricingEffects {
     private service: PricingService,
     private dialogService: WzDialogService
   ) { }
+
+  private nextActionFor(action: PricingActions.InitializePricing, attributes: PriceAttribute[]): InternalActionFactoryMapper {
+    if (attributes === null) {
+      return factory => factory.pricing.getAttributes(
+        action.rightsReproduction,
+        action.dialogOptions
+      );
+    }
+
+    return factory => factory.pricing.openDialog(action.dialogOptions);
+  }
 }

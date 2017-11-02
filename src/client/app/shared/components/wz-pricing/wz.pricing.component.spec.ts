@@ -1,7 +1,7 @@
 import { WzPricingComponent } from './wz.pricing.component';
 import { Observable } from 'rxjs/Observable';
 import { EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, AbstractControl, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
@@ -52,17 +52,45 @@ export function main() {
       });
 
       describe('when the input is \'true\'', () => {
-        it('builds the custom pricing attribute form', () => {
-          componentUnderTest.pricingPreferences = {
-            A: 's',
-            B: 'm',
-            C: 'x',
-            D: 's'
-          };
-          componentUnderTest.userCanCustomizeRights = true;
-          expect(componentUnderTest.customForm.value).toEqual({
-            A: 's',
-            attributes: 'B,m\nC,x\nD,s'
+        describe('builds the custom pricing attribute form', () => {
+          beforeEach(() => {
+            componentUnderTest.pricingPreferences = {
+              A: 's',
+              B: 'm',
+              C: 'x',
+              D: 's'
+            };
+            componentUnderTest.userCanCustomizeRights = true;
+          });
+
+          it('with the proper values', () => {
+            expect(componentUnderTest.customForm.value).toEqual({
+              A: 's',
+              attributes: 'B,m\nC,x\nD,s'
+            });
+          });
+
+          describe('with the right validator pattern', () => {
+            const fails = ['name', 'name,\nname,value', 'name,value\n\n'];
+            const passes = ['', 'name,value', 'name,value\n', 'name2,some_value\nsome_name,Another Value'];
+
+            fails.forEach((test: string) => {
+              it(`${JSON.stringify(test)} fails`, () => {
+                const control: AbstractControl = componentUnderTest.customForm.controls['attributes'];
+                control.setValue(test);
+                expect(control.hasError('pattern')).toBe(true);
+                control.reset();
+              });
+            });
+
+            passes.forEach((test: string) => {
+              it(`${JSON.stringify(test)} passes`, () => {
+                const control: AbstractControl = componentUnderTest.customForm.controls['attributes'];
+                control.setValue(test);
+                expect(control.hasError('pattern')).toBe(false);
+                control.reset();
+              });
+            });
           });
         });
       });

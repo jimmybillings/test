@@ -146,7 +146,7 @@ export class WzPricingComponent implements OnDestroy {
   private get parsedCustomFormValue(): Pojo {
     let newForm: Pojo = {};
     this.customForm.value.attributes.split('\n').forEach((pair: string) => {
-      let [key, value] = pair.split(',');
+      let [key, value] = pair.split(',').map(s => s.trim());
       newForm[key] = value;
     });
     delete this.customForm.value.attributes;
