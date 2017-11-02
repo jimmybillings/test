@@ -1,16 +1,21 @@
 import { WzPricingComponent } from './wz.pricing.component';
 import { Observable } from 'rxjs/Observable';
 import { EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, AbstractControl, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Wz Pricing Component', () => {
-    let componentUnderTest: WzPricingComponent, mockFormBuilder: any, mockForm: any;
+    let componentUnderTest: WzPricingComponent;
+    let mockFormBuilder: any;
+    let mockForm: any;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
       mockFormBuilder = new FormBuilder();
-      componentUnderTest = new WzPricingComponent(mockFormBuilder);
-      componentUnderTest.attributes = mockPriceAttributes() as any;
+      mockStore = new MockAppStore();
+      mockStore.createStateSection('pricing', { attributes: mockPriceAttributes() });
+      componentUnderTest = new WzPricingComponent(mockFormBuilder, mockStore);
       componentUnderTest.pricingEvent = new EventEmitter();
     });
 
@@ -40,6 +45,64 @@ export function main() {
       });
     });
 
+    describe('userCanCustomizeRights setter', () => {
+      it('assigns the value of the input to the _userCanCustomizeRights variable', () => {
+        componentUnderTest.userCanCustomizeRights = false;
+        expect(componentUnderTest._userCanCustomizeRights).toBe(false);
+      });
+
+      describe('when the input is \'true\'', () => {
+        describe('builds the custom pricing attribute form', () => {
+          beforeEach(() => {
+            componentUnderTest.pricingPreferences = {
+              A: 's',
+              B: 'm',
+              C: 'x',
+              D: 's'
+            };
+            componentUnderTest.userCanCustomizeRights = true;
+          });
+
+          it('with the proper values', () => {
+            expect(componentUnderTest.customForm.value).toEqual({
+              A: 's',
+              attributes: 'B,m\nC,x\nD,s'
+            });
+          });
+
+          describe('with the right validator pattern', () => {
+            const fails = ['name', 'name,\nname,value', 'name,value\n\n'];
+            const passes = ['', 'name,value', 'name,value\n', 'name2,some_value\nsome_name,Another Value'];
+
+            fails.forEach((test: string) => {
+              it(`${JSON.stringify(test)} fails`, () => {
+                const control: AbstractControl = componentUnderTest.customForm.controls['attributes'];
+                control.setValue(test);
+                expect(control.hasError('pattern')).toBe(true);
+                control.reset();
+              });
+            });
+
+            passes.forEach((test: string) => {
+              it(`${JSON.stringify(test)} passes`, () => {
+                const control: AbstractControl = componentUnderTest.customForm.controls['attributes'];
+                control.setValue(test);
+                expect(control.hasError('pattern')).toBe(false);
+                control.reset();
+              });
+            });
+          });
+        });
+      });
+
+      describe('when the input is \'false\'', () => {
+        it('does not build the custom pricing attribute form', () => {
+          componentUnderTest.userCanCustomizeRights = false;
+          expect(componentUnderTest.customForm).toBeUndefined();
+        });
+      });
+    });
+
     describe('onSubmit()', () => {
       it('should emit the calculatePricing event with the form', () => {
         componentUnderTest.pricingPreferences = {
@@ -49,12 +112,31 @@ export function main() {
           D: 's'
         };
         spyOn(componentUnderTest.pricingEvent, 'emit');
-        componentUnderTest.usagePrice = Observable.of(10);
+        componentUnderTest.price = Observable.of(10);
         componentUnderTest.onSubmit();
 
         expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
           type: 'APPLY_PRICE',
-          payload: { price: 10, attributes: { A: 's', B: 'm', C: 'x', D: 's' } }
+          payload: { price: 10, attributes: { A: 's', B: 'm', C: 'x', D: 's' }, updatePrefs: true }
+        });
+      });
+    });
+
+    describe('onSubmitCustom()', () => {
+      it('should emit the pricing event with the form', () => {
+        componentUnderTest.pricingPreferences = {
+          A: 's',
+          B: 'm',
+          C: 'x',
+          D: 's'
+        };
+        componentUnderTest.userCanCustomizeRights = true;
+        spyOn(componentUnderTest.pricingEvent, 'emit');
+        componentUnderTest.onSubmitCustom();
+
+        expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
+          type: 'APPLY_PRICE',
+          payload: { attributes: { B: 'm', C: 'x', D: 's', A: 's' }, updatePrefs: false }
         });
       });
     });
@@ -119,6 +201,7 @@ export function main() {
       });
 
       it('should should emit an error and clear the form if there are no valid options', () => {
+        componentUnderTest.pricingPreferences = {};
         spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.form = mockFormBuilder.group({
           A: ['t'],
@@ -129,7 +212,6 @@ export function main() {
 
         componentUnderTest.validOptionsFor(componentUnderTest.attributes[3]);
 
-        expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({ type: 'ERROR', payload: 'PRICING.ERROR' });
         expect(componentUnderTest.form.value).toEqual({
           A: '',
           B: '',

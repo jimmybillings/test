@@ -9,19 +9,18 @@ import { UserPreferenceService } from '../shared/services/user-preference.servic
 import { Observable } from 'rxjs/Observable';
 import { MatDialogRef } from '@angular/material';
 import { WzDialogService } from '../shared/modules/wz-dialog/services/wz.dialog.service';
+import { DefaultComponentOptions } from '../shared/modules/wz-dialog/interfaces/wz.dialog.interface';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
-import { PricingStore } from '../shared/stores/pricing.store';
 import { Subscription } from 'rxjs/Subscription';
 import { EnhancedAsset, enhanceAsset, AssetType } from '../shared/interfaces/enhanced-asset';
 import * as CommonInterface from '../shared/interfaces/common.interface';
 import * as SubclipMarkersInterface from '../shared/interfaces/subclip-markers';
-import { AppStore, StateMapper } from '../app.store';
+import { AppStore, StateMapper, PricingState } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { CommentParentObject, ObjectType } from '../shared/interfaces/comment.interface';
 import { FormFields } from '../shared/interfaces/forms.interface';
-import { PricingService } from '../shared/services/pricing.service';
 import { Common } from '../shared/utilities/common.functions';
 import { SearchContext, SearchState } from '../shared/services/search-context.service';
 
@@ -34,12 +33,11 @@ import { SearchContext, SearchState } from '../shared/services/search-context.se
 export class AssetComponent implements OnInit, OnDestroy {
   @Input() assetType: AssetType;
   @Input() commentFormConfig: FormFields;
-  public pricingAttributes: Array<PriceAttribute>;
-  public rightsReproduction: string = '';
   public asset: EnhancedAsset;
   public commentParentObject: CommentParentObject;
   private assetSubscription: Subscription;
   private routeSubscription: Subscription;
+  private pricingSubscription: Subscription;
   private selectedAttributes: CommonInterface.Pojo;
   private appliedAttributes: CommonInterface.Pojo;
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
@@ -57,21 +55,22 @@ export class AssetComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
-    private pricingStore: PricingStore,
-    private pricingService: PricingService,
     private searchContext: SearchContext
   ) { }
 
   public ngOnInit(): void {
+    this.store.select(state => state.pricing).subscribe((state: PricingState) => {
+      this.appliedAttributes = state.appliedAttributes;
+      this.selectedAttributes = state.selectedAttributes;
+    });
+
     this.assetSubscription = this.store.select(state => state.asset.activeAsset)
       .map(asset => {
         const clonedAsset = Common.clone(asset);
         return enhanceAsset(clonedAsset, this.assetType, this.parentIdIn(this.route.snapshot.params));
       }).subscribe(asset => {
         this.asset = asset;
-        this.pricingStore.setPriceForDetails(this.asset.price);
-        this.selectedAttributes = null;
-        this.appliedAttributes = null;
+        this.store.dispatch(factory => factory.pricing.setPriceForDetails(this.asset.price));
         this.loadCorrespondingCartAsset();
       });
 
@@ -83,6 +82,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     if (this.assetSubscription) this.assetSubscription.unsubscribe();
     if (this.routeSubscription) this.routeSubscription.unsubscribe();
+    if (this.pricingSubscription) this.pricingSubscription.unsubscribe();
   }
 
   public previousPage(): void {
@@ -98,7 +98,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   public get priceForDetails(): Observable<number> {
-    return this.pricingStore.priceForDetails;
+    return this.store.select(state => state.pricing.priceForDetails);
   }
 
   public get searchContextState(): SearchState {
@@ -106,15 +106,15 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(parameters: any): void {
-    this.pricingStore.priceForDetails.take(1).subscribe((price: number) => {
+    this.store.select(state => state.pricing).take(1).subscribe((state: PricingState) => {
       let options: AddAssetParameters = {
         lineItem: {
           selectedTranscodeTarget: parameters.selectedTranscodeTarget,
-          price: price ? price : undefined,
+          price: state.priceForDetails ? state.priceForDetails : null,
           asset: { assetId: parameters.assetId }
         },
         markers: parameters.markers,
-        attributes: this.pricingStore.state.priceForDetails ? this.selectedAttributes : null
+        attributes: this.selectedAttributes ? this.selectedAttributes : null
       };
       this.userCan.administerQuotes() ?
         this.quoteEditService.addAssetToProjectInQuote(options) :
@@ -123,15 +123,10 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   public getPricingAttributes(rightsReproduction: string): void {
-    if (this.rightsReproduction === rightsReproduction) {
-      this.openPricingDialog();
-    } else {
-      this.pricingService.getPriceAttributes(rightsReproduction).subscribe((attributes: Array<PriceAttribute>) => {
-        this.pricingAttributes = attributes;
-        this.openPricingDialog();
-      });
-    }
-    this.rightsReproduction = rightsReproduction;
+    this.store.dispatch(factory => factory.pricing.initializePricing(
+      rightsReproduction,
+      this.pricingDialogOptions
+    ));
   }
 
   public onMarkersChange(markers: SubclipMarkersInterface.SubclipMarkers): void {
@@ -144,10 +139,11 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.subclipMarkers = SubclipMarkersInterface.bothMarkersAreSet(markers) ? markers : null;
 
     if (updatePrice) {
-      this.calculatePrice(this.selectedAttributes).subscribe((price: number) => {
-        this.pricingStore.setPriceForDetails(price);
-        this.pricingStore.setPriceForDialog(price);
-      });
+      this.store.dispatch(factory => factory.pricing.calculatePrice(
+        this.selectedAttributes,
+        this.asset.assetId,
+        this.subclipMarkers
+      ));
     }
   }
 
@@ -171,49 +167,45 @@ export class AssetComponent implements OnInit, OnDestroy {
       ));
   }
 
-  private openPricingDialog(): void {
-    this.dialogService.openComponentInDialog(
-      {
-        componentType: WzPricingComponent,
-        inputOptions: {
-          attributes: this.pricingAttributes,
-          pricingPreferences: this.userPreference.state.pricingPreferences,
-          usagePrice: this.pricingStore.priceForDialog
-        },
-        outputOptions: [
-          {
-            event: 'pricingEvent',
-            callback: this.applyPricing
+  private get pricingDialogOptions(): DefaultComponentOptions {
+    return {
+      componentType: WzPricingComponent,
+      inputOptions: {
+        pricingPreferences: this.userPreference.state.pricingPreferences,
+        userCanCustomizeRights: this.userCan.administerQuotes() && this.assetType === 'quoteEditAsset'
+      },
+      outputOptions: [
+        {
+          event: 'pricingEvent',
+          callback: (event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>) => {
+            this.dispatchActionForPricingEvent(event, dialogRef);
           }
-        ]
-      }
-    );
+        }
+      ]
+    };
   }
 
-  private applyPricing = (event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>) => {
+  private dispatchActionForPricingEvent(event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>): void {
     switch (event.type) {
       case 'CALCULATE_PRICE':
-        this.calculatePrice(event.payload).subscribe((price: number) => {
-          this.pricingStore.setPriceForDialog(price);
-        });
+        this.store.dispatch(factory => factory.pricing.calculatePrice(
+          event.payload,
+          this.asset.assetId,
+          this.subclipMarkers
+        ));
         break;
       case 'APPLY_PRICE':
-        this.pricingStore.setPriceForDetails(event.payload.price);
-        this.userPreference.updatePricingPreferences(event.payload.attributes);
-        this.appliedAttributes = event.payload.attributes;
+        if (event.payload.updatePrefs) {
+          this.userPreference.updatePricingPreferences(event.payload.attributes);
+        }
         dialogRef.close();
+        this.store.dispatch(factory => factory.pricing.setPriceForDetails(event.payload.price));
+        this.store.dispatch(factory => factory.pricing.setAppliedAttributes(event.payload.attributes));
         break;
       case 'ERROR':
         this.store.dispatch(factory => factory.error.handleCustomError(event.payload));
         break;
-      default:
-        break;
     }
-  }
-
-  private calculatePrice(attributes: CommonInterface.Pojo): Observable<number> {
-    this.selectedAttributes = attributes;
-    return this.pricingService.getPriceFor(this.asset, attributes, this.subclipMarkers);
   }
 
   private loadCorrespondingCartAsset(): void {

@@ -18,7 +18,10 @@ export function main() {
     let mockPricingStore: any;
     let mockCurrentUserService: any;
     let mockPricingService: any;
+    let mockCapabilities: any;
     let mockAppStore: MockAppStore;
+    let initPricingSpy: jasmine.Spy;
+    let setPriceSpy: jasmine.Spy;
 
     beforeEach(() => {
       mockState = {
@@ -79,13 +82,16 @@ export function main() {
       };
 
       mockAppStore = new MockAppStore();
+      initPricingSpy = mockAppStore.createActionFactoryMethod('pricing', 'initializePricing');
+      setPriceSpy = mockAppStore.createActionFactoryMethod('pricing', 'setPriceForDialog');
       mockAppStore.createStateSection('uiConfig', {
         components: { cart: { config: { form: 'SOME_CONFIG', createQuote: { items: [] } } } }
       });
 
+      mockCapabilities = { administerQuotes: () => false };
+
       componentUnderTest = new CommerceEditTab(
-        null, mockCartService, mockDialogService, mockWindow, mockUserPreference,
-        mockDocument, mockPricingStore, mockAppStore, mockPricingService
+        mockCapabilities, mockCartService, mockDialogService, mockWindow, mockUserPreference, mockDocument, mockAppStore
       );
     });
 
@@ -121,7 +127,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -135,7 +141,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -154,7 +160,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(true);
@@ -168,7 +174,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(false);
@@ -186,7 +192,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -211,7 +217,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(true);
@@ -236,7 +242,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -322,30 +328,42 @@ export function main() {
 
       it('edits the project pricing with EDIT_PROJECT_PRICING', () => {
         let mockAsset = { assetId: 1234 };
+        componentUnderTest.ngOnInit();
         componentUnderTest.onNotification({ type: 'EDIT_PROJECT_PRICING', payload: { asset: mockAsset } });
 
-        expect(mockPricingService.getPriceAttributes).toHaveBeenCalledWith();
+        mockAppStore.expectDispatchFor(setPriceSpy, null);
+        mockAppStore.expectDispatchFor(initPricingSpy, 'Rights Managed', {
+          componentType: jasmine.any(Function),
+          inputOptions: {
+            pricingPreferences: { some: 'attribute' },
+            userCanCustomizeRights: false
+          },
+          outputOptions: [
+            {
+              event: 'pricingEvent',
+              callback: jasmine.any(Function)
+            }
+          ]
+        });
       });
 
-      describe('calls openPricingDialog with SHOW_PRICING_DIALOG', () => {
-        it('should not get the attributes if they already exist', () => {
-          let mockLineItem = { asset: { assetId: 123456 } };
-          componentUnderTest.priceAttributes = { some: 'attr' } as any;
-          componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
+      it('calls openPricingDialog with SHOW_PRICING_DIALOG', () => {
+        let mockLineItem = { asset: { assetId: 123456 } };
+        componentUnderTest.ngOnInit();
+        componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
 
-          expect(mockPricingService.getPriceAttributes).not.toHaveBeenCalled();
-          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
-        });
-
-        it('should get the price attributes if they don\'t already exist', () => {
-          let mockLineItem = {
-            asset: { assetId: 123456 },
-            attributes: [{ priceAttributeName: 'Use', selectedAttributeValue: 'Feature Film' }]
-          };
-          componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
-
-          expect(mockPricingService.getPriceAttributes).toHaveBeenCalled();
-          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
+        mockAppStore.expectDispatchFor(initPricingSpy, 'Rights Managed', {
+          componentType: jasmine.any(Function),
+          inputOptions: {
+            pricingPreferences: { some: 'attribute' },
+            userCanCustomizeRights: false
+          },
+          outputOptions: [
+            {
+              event: 'pricingEvent',
+              callback: jasmine.any(Function)
+            }
+          ]
         });
       });
     });
