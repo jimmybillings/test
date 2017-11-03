@@ -137,14 +137,11 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         break;
 
       case 'CLONE_LINE_ITEM':
-        console.log('clone');
         this.store.dispatch(factory => factory.quoteEdit.cloneLineItem(message.payload));
         break;
 
       case 'REMOVE_LINE_ITEM':
-        this.store.dispatch(factory => message.payload.asset.type === 'quoteEditAsset'
-          ? factory.quoteEdit.removeAsset(message.payload.asset)
-          : factory.cart.removeAsset(message.payload.asset));
+        this.store.dispatch(factory => factory.quoteEdit.removeAsset(message.payload.asset));
         break;
 
       case 'EDIT_LINE_ITEM':
@@ -172,26 +169,15 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public get showUsageWarning(): boolean {
-    return !this.cartContainsNoAssets && !this.userCanProceed;
+    return this.cartContainsAssets && !this.userCanProceed;
   }
 
   public get userCanProceed(): boolean {
-    return (this.quoteType === 'Trial') || (this.rmAssetsHaveAttributes && !this.cartContainsNoAssets);
+    return (this.quoteType === 'Trial') || (this.cartContainsAssets && this.rmAssetsHaveRightsPackage);
   }
 
-  public get rmAssetsHaveAttributes(): boolean {
-    if (this.store.snapshot(state => state.quoteEdit.data.itemCount) === 0) return true;
-
-    let validAssets: boolean[] = [];
-
-    this.store.snapshot(state => state.quoteEdit.data.projects).forEach((project: Project) => {
-      if (project.lineItems) {
-        project.lineItems.forEach((lineItem: AssetLineItem) => {
-          validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
-        });
-      }
-    });
-    return validAssets.indexOf(false) === -1;
+  public get cartContainsAssets(): boolean {
+    return (this.store.snapshot(state => state.quoteEdit.data.itemCount) > 0);
   }
 
   public get total(): Observable<number> {
@@ -204,10 +190,6 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
 
   public get discount(): Observable<string> {
     return this.store.select(state => state.quoteEdit.data.discount);
-  }
-
-  public get cartContainsNoAssets(): boolean {
-    return (this.store.snapshot(state => state.quoteEdit.data.itemCount) === 0) ? true : false;
   }
 
   public get quoteIsTrial(): Observable<boolean> {
@@ -236,6 +218,17 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     });
   }
 
+  private get rmAssetsHaveRightsPackage(): boolean {
+    return this.store.snapshot(state => state.quoteEdit.data.projects || [])
+      .filter(project => project.lineItems)
+      .map(project => project.lineItems)
+      .reduce((next, all) => next.concat(all))
+      .filter((lineItem: Pojo) => (
+        lineItem.rightsManaged === 'Rights Managed' &&
+        !lineItem.hasOwnProperty('attributes')
+      )).length === 0;
+  }
+
   private onOpenBulkImportDialog(projectId: string): void {
     this.dialogService.openFormDialog(
       this.config.bulkImport.items,
@@ -245,7 +238,6 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
       }
     );
   }
-
 
   private onAddCustomPriceTo(lineItem: AssetLineItem): void {
     this.dialogService.openFormDialog(
