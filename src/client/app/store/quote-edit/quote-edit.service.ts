@@ -144,7 +144,7 @@ export class FutureQuoteEditService {
     );
   }
 
-  public updateProjectPriceAttributes(quoteId: number, priceAttributes: SelectedPriceAttribute, project: Project): Observable<Quote> {
+  public updateProjectPriceAttributes(quoteId: number, priceAttributes: SelectedPriceAttribute[], project: Project): Observable<Quote> {
     return this.apiService.put(
       Api.Orders,
       `quote/${quoteId}/project/priceAttributes/${project.id}`,
