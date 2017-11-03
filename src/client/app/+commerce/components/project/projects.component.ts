@@ -1,10 +1,10 @@
+import { AppStore } from '../../../app.store';
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Project, OrderableType, FeeLineItem, FeeConfig, FeeConfigItem, AssetLineItem }
   from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
-import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
 import { Common } from '../../../shared/utilities/common.functions';
 
@@ -23,7 +23,7 @@ export class ProjectsComponent {
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
 
-  constructor(private dialogService: WzDialogService, private quoteEditService: QuoteEditService) { }
+  constructor(private dialogService: WzDialogService, private store: AppStore) { }
 
   public projectsOtherThan(currentProject: Project) {
     return this.projects.filter(project => project.id !== currentProject.id);
@@ -55,18 +55,11 @@ export class ProjectsComponent {
     }
   }
 
-  public addBulkOrderId() {
-    this.projectsNotify.emit({ type: 'ADD_BULK_ORDER_ID' });
-  }
-
-  public editDiscount() {
-    this.projectsNotify.emit({ type: 'EDIT_DISCOUNT' });
-  }
-
   public onClickAddFeeButtonFor(project: Project): void {
-    this.quoteEditService.feeConfig.subscribe(feeConfig => {
+    this.store.dispatch(factory => factory.feeConfig.loadFeeConfig());
+    this.store.blockUntil(state => state.feeConfig.initialized).subscribe(() => {
       this.dialogService.openFormDialog(
-        this.initializeQuoteFeeFieldsFrom(feeConfig),
+        this.initializeQuoteFeeFieldsFrom(this.store.snapshotCloned(state => state.feeConfig.feeConfig)),
         { title: 'QUOTE.ADD_FEE.HEADER', submitLabel: 'QUOTE.ADD_FEE.SUBMIT' },
         (result: FeeLineItem) => this.addFeeTo(project, result)
       );

@@ -20,7 +20,6 @@ import { WindowRef } from '../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
-import { QuoteEditService } from '../../shared/services/quote-edit.service';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzEvent, Coords, Pojo, Asset, UiConfigComponents } from '../../shared/interfaces/common.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
@@ -54,7 +53,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private window: WindowRef,
     private dialogService: WzDialogService,
-    private quoteEditService: QuoteEditService,
     @Inject(DOCUMENT) private document: Pojo,
     private store: AppStore,
     private changeDetectorRef: ChangeDetectorRef) {
@@ -128,7 +126,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     let params: AddAssetParameters = { lineItem: { asset: asset } };
 
     if (this.userCan.administerQuotes()) {
-      this.quoteEditService.addAssetToProjectInQuote(params);
+      this.store.dispatch(factory => factory.quoteEdit.addAssetToProjectInQuote(params));
     } else {
       this.cart.addAssetToProjectInCart(params);
     }

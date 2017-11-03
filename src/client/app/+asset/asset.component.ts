@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
-import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
+import { AddAssetParameters, Cart, PriceAttribute, Project } from '../shared/interfaces/commerce.interface';
 import { WzEvent, SelectedPriceAttribute } from '../shared/interfaces/common.interface';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
@@ -12,7 +12,6 @@ import { WzDialogService } from '../shared/modules/wz-dialog/services/wz.dialog.
 import { DefaultComponentOptions } from '../shared/modules/wz-dialog/interfaces/wz.dialog.interface';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
 import { WindowRef } from '../shared/services/window-ref.service';
-import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { Subscription } from 'rxjs/Subscription';
 import { EnhancedAsset, enhanceAsset, AssetType } from '../shared/interfaces/enhanced-asset';
 import * as CommonInterface from '../shared/interfaces/common.interface';
@@ -54,7 +53,6 @@ export class AssetComponent implements OnInit, OnDestroy {
     private userPreference: UserPreferenceService,
     private cartService: CartService,
     private dialogService: WzDialogService,
-    private quoteEditService: QuoteEditService,
     private searchContext: SearchContext
   ) { }
 
@@ -116,8 +114,9 @@ export class AssetComponent implements OnInit, OnDestroy {
         markers: parameters.markers,
         attributes: this.selectedAttributes ? this.selectedAttributes : null
       };
+
       this.userCan.administerQuotes() ?
-        this.quoteEditService.addAssetToProjectInQuote(options) :
+        this.store.dispatch(factory => factory.quoteEdit.addAssetToProjectInQuote(options)) :
         this.cartService.addAssetToProjectInCart(options);
     });
   }
@@ -212,15 +211,20 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.cartAsset = null;
     this.cartAssetPriceAttributes = null;
 
-    let service: CartService | QuoteEditService;
+    let projects: Project[];
 
     switch (this.assetType) {
-      case 'cartAsset': service = this.cartService; break;
-      case 'quoteEditAsset': service = this.quoteEditService; break;
+      case 'cartAsset':
+        projects = this.store.snapshotCloned(state => state.cart.data.projects);
+        break;
+      case 'quoteEditAsset':
+        projects = this.store.snapshotCloned(state => state.quoteEdit.data.projects);
+        break;
       default: return;
     }
 
-    const lineItem = service.state.data.projects
+    const lineItem = projects
+      .filter(project => project.lineItems)
       .reduce((lineItems, project) => lineItems.concat(project.lineItems), [])
       .find(lineItem => lineItem.id === this.asset.uuid);
 

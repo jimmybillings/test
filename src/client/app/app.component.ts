@@ -13,6 +13,7 @@ import { UserPreferenceService } from './shared/services/user-preference.service
 import { Capabilities } from './shared/services/capabilities.service';
 import { WindowRef } from './shared/services/window-ref.service';
 import { AppStore } from './app.store';
+
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
 
@@ -41,7 +42,9 @@ export class AppComponent implements OnInit {
   ) {
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
-        this.store.dispatch(factory => factory.headerDisplayOptions.setHeaderPosition(this.window.nativeWindow.pageYOffset));
+        this.store.dispatch(factory =>
+          factory.headerDisplayOptions.setHeaderPosition(this.window.nativeWindow.pageYOffset)
+        );
       });
     });
   }
@@ -54,11 +57,10 @@ export class AppComponent implements OnInit {
   }
 
   public get cartCount(): Observable<any> {
-    if (this.userCan.administerQuotes()) {
-      return this.store.select(state => state.quoteEdit.data.itemCount);
-    } else {
-      return this.store.select(state => state.cart.data.itemCount);
-    }
+    return this.store.select(state =>
+      this.userCan.administerQuotes() ?
+        state.quoteEdit.data.itemCount : state.cart.data.itemCount
+    );
   }
 
   public logout(): void {
@@ -116,11 +118,8 @@ export class AppComponent implements OnInit {
   private processLoggedInUser() {
     this.userPreference.getPrefs();
 
-    if (this.userCan.administerQuotes()) {
-      this.store.dispatch(factory => factory.quoteEdit.load());
-    } else {
-      this.store.dispatch(factory => factory.cart.load());
-    }
+    this.store.dispatch(factory => this.userCan.administerQuotes() ?
+      factory.quoteEdit.load() : factory.cart.load());
 
     this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
