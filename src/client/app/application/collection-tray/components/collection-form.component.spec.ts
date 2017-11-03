@@ -219,10 +219,10 @@ export function main() {
             componentUnderTest.collectionActionType = 'edit';
             componentUnderTest.collection = mockCollection();
             spyOn(componentUnderTest.collectionSaved, 'emit');
-            componentUnderTest.collectionAction(mockCollection());
+            componentUnderTest.collectionAction({ tags: 'cat, dog, cow' } as any);
             requestCollection = mockCollection();
             requestCollection.tags = ['cat', 'dog', 'cow'];
-            expect(mockCollections.update).toHaveBeenCalledWith(requestCollection);
+            expect(mockCollections.update).toHaveBeenCalledWith(2, { tags: ['cat', 'dog', 'cow'] });
           });
 
           it('Should reload all collections', () => {

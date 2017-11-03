@@ -49,8 +49,24 @@ export class CollectionsService {
       .map(response => this.prepareForDuplication(response));
   }
 
-  public update(collection: Collection): Observable<any> {
-    return this.api.put(Api.Assets, `collectionSummary/${collection.id}`, { body: collection, loadingIndicator: true });
+  public update(id: number, collectionUpdates: Collection): Observable<any> {
+    // ANNOYANCES:
+    // - If the API supported a PATCH request for this endpoint, we could just call it with the id and collectionUpdates.
+    //   But it doesn't so we must GET, modify the response, and PUT it back.
+    // - The GET returns an "assets" property, which is undocumented in Swagger.
+    // - The PUT accepts the "assets" property, but somehow ignores it (also undocumented in Swagger).  Therefore, we don't
+    //   need to remove it from the body sent with the PUT request here.
+
+    const endpoint: string = `collection/${id}`;
+
+    return this.api.get(Api.Identities, endpoint, { loadingIndicator: 'onBeforeRequest' })
+      .switchMap(response =>
+        this.api.put(
+          Api.Identities,
+          endpoint,
+          { body: { ...response, ...collectionUpdates }, loadingIndicator: 'offAfterResponse' }
+        )
+      );
   }
 
   public delete(collectionId: number, loadingIndicator: LoadingIndicatorOption = 'onBeforeRequest'): Observable<any> {
