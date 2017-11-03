@@ -372,7 +372,7 @@ export function main() {
 
           expect(mockPricingService.getPriceAttributes).toHaveBeenCalledWith();
         });
-      })
+      });
     });
 
     describe('get showUsageWarning()', () => {
