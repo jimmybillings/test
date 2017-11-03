@@ -19,7 +19,7 @@ import { SelectedPriceAttribute } from '../../../shared/interfaces/common.interf
         </span>
       </ng-container>
       <span *ngFor="let right of rights" class="cart-asset-metadata mat-caption">
-        <strong>{{right.priceAttributeDisplayName}}: </strong> {{right.selectedAttributeName}}
+        <strong>{{attributeName(right)}}: </strong> {{attributeValue(right)}}
       </span>
     </section>
   </ng-container>
@@ -37,4 +37,12 @@ export class LineItemRightsComponent {
   @Input() readOnly: boolean = false;
   @Input() isOrder: boolean = false;
   @Output() showPricingDialog: EventEmitter<null> = new EventEmitter();
+
+  public attributeName(attribute: SelectedPriceAttribute): string {
+    return attribute.priceAttributeDisplayName || attribute.priceAttributeName;
+  }
+
+  public attributeValue(attribute: SelectedPriceAttribute): string {
+    return attribute.selectedAttributeName || attribute.selectedAttributeValue;
+  }
 }

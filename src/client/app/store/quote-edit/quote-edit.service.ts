@@ -148,7 +148,7 @@ export class FutureQuoteEditService {
     return this.apiService.put(
       Api.Orders,
       `quote/${quoteId}/project/priceAttributes/${project.id}`,
-      { body: priceAttributes, loadingIndicator: true }
+      { body: this.format(priceAttributes), loadingIndicator: true }
     );
   }
 
@@ -243,5 +243,13 @@ export class FutureQuoteEditService {
       `quote/${quoteId}/update/lineItem/${lineItem.id}`,
       { body: lineItem, parameters: { region: 'AAA' }, loadingIndicator: true }
     );
+  }
+
+  // Should be able to deprecate this when the BE accepts all SelectedPriceAttribute props on project rights package updates
+  private format(attributes: SelectedPriceAttribute[]): Pojo {
+    return attributes.reduce((formatted: Pojo, attribute: SelectedPriceAttribute) => {
+      formatted[attribute.priceAttributeName] = attribute.selectedAttributeValue;
+      return formatted;
+    }, {});
   }
 }

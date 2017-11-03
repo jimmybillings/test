@@ -154,7 +154,7 @@ export class CartService {
     this.api.put(
       Api.Orders,
       `cart/project/priceAttributes/${project.id}`,
-      { body: { attributes: priceAttributes }, loadingIndicator: true }
+      { body: this.format(priceAttributes), loadingIndicator: true }
     ).subscribe(this.replaceCartWith);
   }
 
@@ -304,5 +304,13 @@ export class CartService {
       stripeToken: this.checkoutState.authorization.id,
       stripeTokenType: this.checkoutState.authorization.type
     };
+  }
+
+  // Should be able to deprecate this when the BE accepts all SelectedPriceAttribute props on project rights package updates
+  private format(attributes: SelectedPriceAttribute[]): Pojo {
+    return attributes.reduce((formatted: Pojo, attribute: SelectedPriceAttribute) => {
+      formatted[attribute.priceAttributeName] = attribute.selectedAttributeValue;
+      return formatted;
+    }, {});
   }
 }
