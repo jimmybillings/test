@@ -114,7 +114,6 @@ export class AssetComponent implements OnInit, OnDestroy {
         markers: parameters.markers,
         attributes: this.selectedAttributes ? this.selectedAttributes : null
       };
-      console.log('here');
 
       this.userCan.administerQuotes() ?
         this.store.dispatch(factory => factory.quoteEdit.addAssetToProjectInQuote(options)) :
