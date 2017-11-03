@@ -17,9 +17,11 @@ export function main() {
     let mockQuoteService: any;
     let mockCurrentUserService: any;
     let mockCapabilities: any;
+    let mockChangeDetectorRef: any;
     let mockAppStore: MockAppStore;
     let initPricingSpy: jasmine.Spy;
     let setPriceSpy: jasmine.Spy;
+
 
     beforeEach(() => {
       mockState = {
@@ -70,6 +72,8 @@ export function main() {
         createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({}))
       };
 
+      mockChangeDetectorRef = { markForCheck: () => true };
+
       mockAppStore = new MockAppStore();
       initPricingSpy = mockAppStore.createActionFactoryMethod('pricing', 'initializePricing');
       setPriceSpy = mockAppStore.createActionFactoryMethod('pricing', 'setPriceForDialog');
@@ -80,7 +84,8 @@ export function main() {
       mockCapabilities = { administerQuotes: () => false };
 
       componentUnderTest = new CommerceEditTab(
-        mockCapabilities, mockCartService, mockDialogService, mockWindow, mockUserPreference, mockDocument, mockAppStore
+        mockCapabilities, mockCartService, mockDialogService, mockWindow, mockUserPreference, mockDocument,
+        mockAppStore, mockChangeDetectorRef
       );
     });
 
@@ -116,7 +121,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -130,7 +135,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -149,7 +154,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(true);
@@ -163,7 +168,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(false);
@@ -181,7 +186,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -206,7 +211,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(true);
@@ -231,7 +236,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);

@@ -102,21 +102,16 @@ export class CollectionFormComponent implements OnInit {
     }, this.error.bind(this));
   }
 
-  private editCollection(collection: Collection) {
-    collection = Object.assign(
-      {}, collection, {
-        id: this.collection.id,
-        tags: collection.tags.split(/\s*,\s*/).filter((tag: string) => tag !== ''),
-        createdOn: this.collection.createdOn,
-        owner: this.collection.owner,
-        userRole: this.collection.userRole,
-        editors: this.collection.editors,
-        viewers: this.collection.viewers
-      });
-    this.collections.update(collection)
+  private editCollection(collectionUpdates: Collection) {
+    const backEndReadyCollectionUpdates: Collection = {
+      ...collectionUpdates,
+      tags: collectionUpdates.tags.split(/\s*,\s*/).filter((tag: string) => tag !== '')
+    };
+
+    this.collections.update(this.collection.id, backEndReadyCollectionUpdates)
       .subscribe(() => {
         this.loadCollections();
-        if (this.store.match(collection.id, state => state.activeCollection.collection.id)) {
+        if (this.store.match(this.collection.id, state => state.activeCollection.collection.id)) {
           this.getActiveCollection();
         }
       }, this.error.bind(this));
@@ -171,5 +166,4 @@ export class CollectionFormComponent implements OnInit {
       return item;
     });
   }
-
 }

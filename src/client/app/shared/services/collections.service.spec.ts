@@ -112,12 +112,18 @@ export function main() {
 
     describe('update()', () => {
       it('should call the apiService correctly', () => {
-        serviceUnderTest.update(mockCollection);
+        mockApi.getResponse = { some: 'cart', name: 'old name' };
 
-        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Assets);
-        expect(mockApi.put).toHaveBeenCalledWithEndpoint('collectionSummary/158');
-        expect(mockApi.put).toHaveBeenCalledWithBody(mockCollection);
-        expect(mockApi.put).toHaveBeenCalledWithLoading(true);
+        serviceUnderTest.update(158, { name: 'new name' } as any).subscribe();
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('collection/158');
+        expect(mockApi.get).toHaveBeenCalledWithLoading('onBeforeRequest');
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('collection/158');
+        expect(mockApi.put).toHaveBeenCalledWithBody({ some: 'cart', name: 'new name' });
+        expect(mockApi.put).toHaveBeenCalledWithLoading('offAfterResponse');
       });
     });
 
