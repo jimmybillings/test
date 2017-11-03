@@ -197,9 +197,8 @@ export class WzFormBase implements OnInit, OnChanges {
   }
 
   public shouldShowRequiredError(field: FormFields) {
-    return this.form.controls[field.name].hasError('required') ||
-      (this.form.controls[field.name].errors.pattern &&
-        this.form.controls[field.name].errors.pattern.requiredPattern === String(/\S/));
+    const control: AbstractControl = this.form.controls[field.name];
+    return control.hasError('required') || (control.errors.pattern && control.errors.pattern.requiredPattern === String(/\S/));
   }
 
   public shouldShowEmailError(field: FormFields) {
