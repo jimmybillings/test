@@ -17,7 +17,6 @@ export function main() {
     let mockRouter: any;
     let mockRoute: any;
     let mockDialogService: any;
-    let mockQuoteEditService: any;
     let mockPricingStore: any;
     let mockPricingService: any;
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
@@ -43,10 +42,6 @@ export function main() {
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
-      mockQuoteEditService = {
-        addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote'),
-        state: { data: { projects: [{ lineItems: [{ id: 'abc-123' }] }] } }
-      };
       mockPricingStore = {
         priceForDialog: Observable.of(1000),
         priceForDetails: Observable.of(100),
@@ -62,11 +57,52 @@ export function main() {
       mockStore.createActionFactoryMethod('pricing', 'calculatePrice');
       mockStore.createActionFactoryMethod('pricing', 'setPriceForDetails');
       mockStore.createActionFactoryMethod('pricing', 'setAppliedAttributes');
+      // componentUnderTest = new AssetComponent(
+      // mockCurrentUserService, mockCapabilities,
+      // mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
+      // mockDialogService, mockQuoteEditService, null
+
+      ['quoteEdit', 'cart'].forEach((storeType) => mockStore.createStateSection(storeType, {
+        data: {
+          id: 1,
+          projects: [
+            {
+              lineItems: [
+                { id: 'ABCD', asset: { timeStart: 1000, timeEnd: 2000 } },
+                { id: 'EFGH' }
+              ]
+            },
+            {
+              lineItems: [
+                {
+                  id: 'IJKL', asset: {}, attributes: [
+                    { priceAttributeName: 'a', selectedAttributeValue: '1' },
+                    { priceAttributeName: 'b', selectedAttributeValue: '2' },
+                    { priceAttributeName: 'c', selectedAttributeValue: '3' }
+                  ]
+                },
+                {
+                  id: 'MNOP', asset: {}, attributes: [
+                    { priceAttributeName: 'a', selectedAttributeValue: '1' },
+                    { priceAttributeName: 'b', selectedAttributeValue: '2' },
+                    { priceAttributeName: 'c', selectedAttributeValue: 'NOT 3' }
+                  ]
+                },
+                {
+                  id: 'QRST', asset: {}, attributes: [
+                    { priceAttributeName: 'a', selectedAttributeValue: '1' },
+                    { priceAttributeName: 'b', selectedAttributeValue: '2' }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }));
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities,
         mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-        mockDialogService, mockQuoteEditService, null
-      );
+        mockDialogService, null);
     });
 
     describe('ngOnInit()', () => {
@@ -92,12 +128,11 @@ export function main() {
         });
 
         it('for a quoteEditAsset', () => {
-          mockStore.createStateSection('quoteEdit', { data: { id: 100 } });
           componentUnderTest.assetType = 'quoteEditAsset';
           componentUnderTest.ngOnInit();
 
           expect(componentUnderTest.commentParentObject).toEqual({
-            objectId: 100,
+            objectId: 1,
             objectType: 'quote',
             nestedObjectId: 'abc-123',
             nestedObjectType: 'lineItem'
@@ -212,51 +247,21 @@ export function main() {
       ['cartAsset', 'quoteEditAsset'].forEach((assetType: EnhancedMock.AssetType) => {
         describe(`when asset has type '${assetType}'`, () => {
           let localMockAsset: any;
-
+          let storeType: string;
           beforeEach(() => {
-            if (assetType === 'quoteEditAsset') mockStore.createStateSection('quoteEdit', { data: { id: 1 } });
-            (assetType === 'cartAsset' ? mockCartService : mockQuoteEditService).state = {
-              data: {
-                projects: [
-                  {
-                    lineItems: [
-                      { id: 'ABCD', asset: { timeStart: 1000, timeEnd: 2000 } },
-                      { id: 'EFGH' }
-                    ]
-                  },
-                  {
-                    lineItems: [
-                      {
-                        id: 'IJKL', asset: {}, attributes: [
-                          { priceAttributeName: 'a', selectedAttributeValue: '1' },
-                          { priceAttributeName: 'b', selectedAttributeValue: '2' },
-                          { priceAttributeName: 'c', selectedAttributeValue: '3' }
-                        ]
-                      },
-                      {
-                        id: 'MNOP', asset: {}, attributes: [
-                          { priceAttributeName: 'a', selectedAttributeValue: '1' },
-                          { priceAttributeName: 'b', selectedAttributeValue: '2' },
-                          { priceAttributeName: 'c', selectedAttributeValue: 'NOT 3' }
-                        ]
-                      },
-                      {
-                        id: 'QRST', asset: {}, attributes: [
-                          { priceAttributeName: 'a', selectedAttributeValue: '1' },
-                          { priceAttributeName: 'b', selectedAttributeValue: '2' }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            };
+            const mockAppliedAttributes = { a: '1', b: '2', c: '3' };
+            mockDialogService.openComponentInDialog =
+              jasmine.createSpy('openComponentInDialog').and.callFake((parameters: any) => {
+                parameters.outputOptions[0].callback(
+                  { type: 'APPLY_PRICE', payload: { attributes: mockAppliedAttributes } },
+                  { close: jasmine.createSpy('close') }
+                );
+              });
 
             componentUnderTest = new AssetComponent(
               mockCurrentUserService, mockCapabilities,
               mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-              mockDialogService, mockQuoteEditService, null
-            );
+              mockDialogService, null);
 
             componentUnderTest.assetType = assetType;
           });
@@ -374,7 +379,7 @@ export function main() {
 
         componentUnderTest = new AssetComponent(
           null, mockCapabilities, null, null, null,
-          mockStore, null, null, null, null, null
+          mockStore, null, null, null, null
         );
         componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');
         componentUnderTest.onUpdateAssetLineItem();

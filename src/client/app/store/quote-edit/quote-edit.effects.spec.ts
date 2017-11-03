@@ -93,7 +93,7 @@ export function main() {
         value: { data: { id: 77, projects: [{ lineItems: [{ id: 'abc-123', asset: { some: 'asset' } }] }] } }
       },
       serviceMethod: {
-        name: 'editLineItem',
+        name: 'editLineItemFromDetails',
         returnsObservableOf: { some: 'quote' },
         expectedArguments: [77, { id: 'abc-123', asset: { some: 'asset' } }, { in: 1, out: 2 }, { some: 'attribute' }]
       },

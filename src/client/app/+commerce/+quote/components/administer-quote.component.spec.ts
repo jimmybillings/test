@@ -6,62 +6,34 @@ export function main() {
 
     beforeEach(() => {
       componentUnderTest = new AdministerQuoteComponent();
-      componentUnderTest.userCanProceed = false;
-    });
-
-    describe('canOpenQuoteDialog', () => {
-      it('Should emit the onSaveAndNew event', () => {
-        expect(componentUnderTest.canOpenQuoteDialog).toEqual(false);
-      });
+      spyOn(componentUnderTest.notify, 'emit');
     });
 
     describe('onSaveAndNew()', () => {
       it('Should emit the onSaveAndNew event', () => {
-        spyOn(componentUnderTest.saveAndNew, 'emit');
         componentUnderTest.onSaveAndNew();
-
-        expect(componentUnderTest.saveAndNew.emit).toHaveBeenCalled();
-
+        expect(componentUnderTest.notify.emit).toHaveBeenCalledWith({ type: 'SAVE_AND_NEW' });
       });
     });
 
     describe('onOpenDeleteDialog()', () => {
       it('Should emit the openDeleteDialog event', () => {
-        spyOn(componentUnderTest.openDeleteDialog, 'emit');
         componentUnderTest.onOpenDeleteDialog();
-
-        expect(componentUnderTest.openDeleteDialog.emit).toHaveBeenCalled();
-
-      });
-    });
-
-    describe('onOpenQuoteDialog()', () => {
-      it('Should emit the openQuoteDialog event', () => {
-        spyOn(componentUnderTest.openQuoteDialog, 'emit');
-        componentUnderTest.onOpenQuoteDialog();
-
-        expect(componentUnderTest.openQuoteDialog.emit).toHaveBeenCalled();
-
-      });
-    });
-
-    describe('onSaveAsDraft()', () => {
-      it('Should emit the saveAsDraft event', () => {
-        spyOn(componentUnderTest.saveAsDraft, 'emit');
-        componentUnderTest.onSaveAsDraft();
-
-        expect(componentUnderTest.saveAsDraft.emit).toHaveBeenCalled();
-
+        expect(componentUnderTest.notify.emit).toHaveBeenCalledWith({ type: 'OPEN_DELETE_DIALOG' });
       });
     });
 
     describe('onCloneQuote()', () => {
       it('Should emit the saveAsDraft event', () => {
-        spyOn(componentUnderTest.cloneQuote, 'emit');
         componentUnderTest.onClickCloneQuoteButton();
+        expect(componentUnderTest.notify.emit).toHaveBeenCalledWith({ type: 'CLONE_QUOTE' });
+      });
+    });
 
-        expect(componentUnderTest.cloneQuote.emit).toHaveBeenCalled();
-
+    describe('goToNextTab()', () => {
+      it('Should emit the saveAsDraft event', () => {
+        componentUnderTest.goToNextTab();
+        expect(componentUnderTest.notify.emit).toHaveBeenCalledWith({ type: 'GO_TO_NEXT_TAB' });
       });
     });
   });

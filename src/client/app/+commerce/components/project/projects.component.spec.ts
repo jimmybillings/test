@@ -1,3 +1,4 @@
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 import { Observable } from 'rxjs/Observable';
 
 import { ProjectsComponent } from './projects.component';
@@ -20,7 +21,7 @@ export function main() {
 
     let classUnderTest: ProjectsComponent;
     let mockDialogService: any;
-    let mockQuoteEditService: any;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
       mockDialogService = {
@@ -28,12 +29,8 @@ export function main() {
           mockDialogService.onSubmitCallback = onSubmitCallback;
         })
       };
-
-      mockQuoteEditService = {
-        feeConfig: Observable.of({ some: 'fee config' })
-      };
-
-      classUnderTest = new ProjectsComponent(mockDialogService, mockQuoteEditService);
+      mockStore = new MockAppStore();
+      classUnderTest = new ProjectsComponent(mockDialogService, mockStore);
       classUnderTest.projectsNotify.emit = jasmine.createSpy('projectsNotify');
     });
 
@@ -172,16 +169,19 @@ export function main() {
     describe('onClickAddFeeButtonFor()', () => {
       beforeEach(() => {
         classUnderTest.config = { addQuoteFee: { items: [{ name: 'feeType' }, { name: 'amount' }] } };
-
-        mockQuoteEditService.feeConfig = Observable.of({
-          items: [
-            { name: 'fee1', amount: 100 },
-            { name: 'fee2', amount: 200 },
-            { name: 'fee3', amount: .5 },
-            { name: 'fee4', amount: 123.45 },
-            { name: 'fee5', amount: 0 },
-            { name: 'fee6' }
-          ]
+        mockStore.createActionFactoryMethod('feeConfig', 'loadFeeConfig');
+        mockStore.createStateSection('feeConfig', {
+          initialized: true,
+          feeConfig: {
+            items: [
+              { name: 'fee1', amount: 100 },
+              { name: 'fee2', amount: 200 },
+              { name: 'fee3', amount: .5 },
+              { name: 'fee4', amount: 123.45 },
+              { name: 'fee5', amount: 0 },
+              { name: 'fee6' }
+            ]
+          }
         });
       });
 

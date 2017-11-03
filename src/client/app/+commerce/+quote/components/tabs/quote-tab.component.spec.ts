@@ -13,7 +13,6 @@ export function main() {
     let mockRouter: any;
     let mockUiConfig: any;
     let mockData: any;
-    let mockQuoteEditService: any;
 
     function buildComponent(
       quoteHasAssets: boolean,
@@ -31,10 +30,6 @@ export function main() {
         hasAssetLineItems: quoteHasAssets,
         retrieveLicenseAgreements: jasmine.createSpy('retrieveLicenseAgreements').and.returnValue(Observable.of({})),
         mockRouter: { navigate: jasmine.createSpy('navigate') },
-        cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({}))
-      };
-
-      mockQuoteEditService = {
         cloneQuote: jasmine.createSpy('cloneQuote').and.returnValue(Observable.of({}))
       };
 
@@ -59,7 +54,7 @@ export function main() {
       );
 
       return new QuoteTabComponent(
-        mockQuoteService, mockUserCan, mockDialogService, mockRouter, mockQuoteEditService, mockStore
+        mockQuoteService, mockUserCan, mockDialogService, mockRouter, mockStore
       );
     }
 
@@ -90,29 +85,25 @@ export function main() {
     });
 
     describe('onCloneQuote()', () => {
-      let snackbarSpy: jasmine.Spy;
+      let cloneQuoteSpy: jasmine.Spy;
 
       beforeEach(() => {
         componentUnderTest = buildComponent(false, false, false);
-        snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
+        cloneQuoteSpy = mockStore.createActionFactoryMethod('quoteEdit', 'cloneQuote');
+        mockStore.createStateSection('quoteShow', { data: { id: 1, quote: 'test quote' } });
       });
 
-      it('Calls the quote service createQuote method', () => {
+
+      it('Should dispatch an action to clone a quote', () => {
         componentUnderTest.onCloneQuote();
 
-        expect(mockQuoteEditService.cloneQuote).toHaveBeenCalledWith(mockData);
+        expect(cloneQuoteSpy).toHaveBeenCalled();
       });
 
-      it('Should navigate to active quote page after cloning a quote', () => {
+      it('Should dispatch an action to clone a quote with the given quote as an argument', () => {
         componentUnderTest.onCloneQuote();
 
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/active-quote']);
-      });
-
-      it('Should open the snackbar with the expected message', () => {
-        componentUnderTest.onCloneQuote();
-
-        expect(snackbarSpy).toHaveBeenCalledWith('QUOTE.CLONE_SUCCESS');
+        expect(cloneQuoteSpy).toHaveBeenCalledWith({ id: 1, quote: 'test quote' });
       });
     });
 
@@ -297,7 +288,7 @@ export function main() {
           state: mockState,
           projects: Observable.of([])
         };
-        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockQuoteEditService, mockStore);
+        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockStore);
         expect(componentUnderTest.hasDiscount).toBe(true);
       });
     });
@@ -307,7 +298,7 @@ export function main() {
         mockStore = new MockAppStore();
         mockStore.createStateSection('uiConfig', { components: { cart: { config: {} } } });
         mockQuoteService = { data: Observable.of({ data: { purchaseType: 'Trial' } }), projects: Observable.of([]) };
-        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, null, mockStore);
+        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockStore);
         let is: boolean;
         componentUnderTest.quoteIsTrial.take(1).subscribe(res => is = res);
 
@@ -318,7 +309,7 @@ export function main() {
         mockStore = new MockAppStore();
         mockStore.createStateSection('uiConfig', { components: { cart: { config: {} } } });
         mockQuoteService = { data: Observable.of({ data: { purchaseType: 'Blah' } }), projects: Observable.of([]) };
-        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, null, mockStore);
+        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockStore);
         let is: boolean;
         componentUnderTest.quoteIsTrial.take(1).subscribe(res => is = res);
 

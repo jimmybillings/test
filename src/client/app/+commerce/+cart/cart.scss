@@ -159,9 +159,7 @@ button.large-text {
 }
 
 quote-edit-component .quote-section {
-  & > div > div {
-    background: transparent;
-  }
+
   quote-purchase-type-component {
     @media screen and (max-width: $layout-breakpoint-xs)  {
       margin-bottom: 0;

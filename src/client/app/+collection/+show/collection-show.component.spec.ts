@@ -19,7 +19,6 @@ export function main() {
     let handleCustomErrorSpy: jasmine.Spy;
     let snackBarDisplaySpy: jasmine.Spy;
     let canAdministerQuotes: boolean = true;
-    let mockQuoteEditService: any;
     let mockCartService: any;
     let mockDocumentService: any;
     let mockUserPreferenceService: any;
@@ -54,10 +53,6 @@ export function main() {
 
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({}))
-      };
-
-      mockQuoteEditService = {
-        addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote')
       };
 
       mockCartService = {
@@ -106,7 +101,7 @@ export function main() {
       componentUnderTest = new CollectionShowComponent(
         mockCapabilitiesService, mockRouter, mockCollectionsService, mockCartService,
         mockUserPreferenceService, mockRoute, mockWindow, mockDialogService,
-        mockQuoteEditService, mockDocumentService, mockStore, mockChangeDetectorRef
+        mockDocumentService, mockStore, mockChangeDetectorRef
       );
     });
 
@@ -232,13 +227,16 @@ export function main() {
     });
 
     describe('addAssetToCartOrQuote()', () => {
+      let addAssetToQuoteSpy: jasmine.Spy;
       it('Should add an asset to Quote if user has administerQuotes permission', () => {
+        addAssetToQuoteSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addAssetToProjectInQuote');
         componentUnderTest.addAssetToCartOrQuote({ assetId: 123, name: 'test asset' });
-        expect(mockQuoteEditService.addAssetToProjectInQuote).toHaveBeenCalledWith(
+        expect(addAssetToQuoteSpy).toHaveBeenCalledWith(
           { lineItem: { asset: { assetId: 123, name: 'test asset' } } });
       });
 
       it('Should display a snack bar with the correct string and asset name for add to quote', () => {
+        addAssetToQuoteSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addAssetToProjectInQuote');
         componentUnderTest.addAssetToCartOrQuote({ assetId: 123, name: 'test asset' });
         expect(snackBarDisplaySpy).toHaveBeenCalledWith('ASSET.ADD_TO_QUOTE_TOAST', { assetId: 'test asset' });
       });

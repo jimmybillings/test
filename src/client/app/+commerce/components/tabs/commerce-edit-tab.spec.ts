@@ -111,7 +111,7 @@ export function main() {
       it('should return true if all assets are valid', () => {
         mockState = {
           data: {
-            itemCount: 0,
+            itemCount: 1,
             projects: [{
               lineItems: [
                 { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
