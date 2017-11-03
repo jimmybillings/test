@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { AssetLineItem } from '../../../shared/interfaces/commerce.interface';
-import { SelectedPriceAttributes } from '../../../shared/interfaces/common.interface';
+import { SelectedPriceAttribute } from '../../../shared/interfaces/common.interface';
 @Component({
   moduleId: module.id,
   selector: 'line-item-rights-component',
@@ -19,7 +19,7 @@ import { SelectedPriceAttributes } from '../../../shared/interfaces/common.inter
         </span>
       </ng-container>
       <span *ngFor="let right of rights" class="cart-asset-metadata mat-caption">
-        <strong>{{right.priceAttributeName}}: </strong> {{right.selectedAttributeValue}}
+        <strong>{{right.priceAttributeDisplayName}}: </strong> {{right.selectedAttributeName}}
       </span>
     </section>
   </ng-container>
@@ -31,7 +31,7 @@ import { SelectedPriceAttributes } from '../../../shared/interfaces/common.inter
   `
 })
 export class LineItemRightsComponent {
-  @Input() rights: Array<SelectedPriceAttributes>;
+  @Input() rights: Array<SelectedPriceAttribute>;
   @Input() rightsManaged: string;
   @Input() hasAttributes: boolean;
   @Input() readOnly: boolean = false;

@@ -1,4 +1,4 @@
-import { ViewAddress, Pagination, Common, SelectedPriceAttributes, Store } from './common.interface';
+import { ViewAddress, Pagination, Common, SelectedPriceAttribute, Store } from './common.interface';
 import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
 
@@ -55,7 +55,7 @@ export interface Project {
   creditMemoForProjectId?: number;
   lineItems?: Array<AssetLineItem>;
   feeLineItems?: Array<FeeLineItem>;
-  attributes?: Array<SelectedPriceAttributes>;
+  attributes?: Array<SelectedPriceAttribute>;
   [index: string]: any;
 }
 
@@ -74,7 +74,7 @@ export interface AssetLineItem {
   selectedTranscodeTarget?: string;
   transcodeTargets?: Array<string>;
   expirationDate?: number;
-  attributes?: Array<SelectedPriceAttributes>;
+  attributes?: Array<SelectedPriceAttribute>;
   salesForceId?: string;
   price?: number;
   grossAssetPrice?: number;

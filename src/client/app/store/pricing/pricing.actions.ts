@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
-import { Pojo } from '../../shared/interfaces/common.interface';
+import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
 import { DefaultComponentOptions } from '../../shared/modules/wz-dialog/interfaces/wz.dialog.interface';
 import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 
@@ -15,7 +15,7 @@ export class ActionFactory {
     return new SetPriceForDialog(price);
   }
 
-  public setAppliedAttributes(appliedAttributes: Pojo): SetAppliedAttributes {
+  public setAppliedAttributes(appliedAttributes: SelectedPriceAttribute[]): SetAppliedAttributes {
     return new SetAppliedAttributes(appliedAttributes);
   }
 
@@ -102,7 +102,7 @@ export class SetPriceForDialog implements Action {
 export class SetAppliedAttributes implements Action {
   public static readonly Type = '[Pricing] Set Applied Attributes';
   public readonly type = SetAppliedAttributes.Type;
-  constructor(public readonly appliedAttributes: Pojo) { }
+  constructor(public readonly appliedAttributes: SelectedPriceAttribute[]) { }
 }
 
 export class CalculatePrice implements Action {

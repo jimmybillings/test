@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@a
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
-import { WzEvent, SelectedPriceAttributes } from '../shared/interfaces/common.interface';
+import { WzEvent, SelectedPriceAttribute } from '../shared/interfaces/common.interface';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
@@ -39,10 +39,10 @@ export class AssetComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
   private pricingSubscription: Subscription;
   private selectedAttributes: CommonInterface.Pojo;
-  private appliedAttributes: CommonInterface.Pojo;
+  private appliedAttributes: SelectedPriceAttribute[];
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
   private cartAsset: EnhancedAsset;
-  private cartAssetPriceAttributes: SelectedPriceAttributes[];
+  private cartAssetPriceAttributes: SelectedPriceAttribute[];
 
   constructor(
     public currentUser: CurrentUserService,
@@ -238,8 +238,8 @@ export class AssetComponent implements OnInit, OnDestroy {
     if (!this.appliedAttributes) return true;  // We know the user hasn't changed attributes if this.appliedAttributes isn't set.
     if (this.cartAssetPriceAttributes.length !== Object.keys(this.appliedAttributes).length) return false;
 
-    return this.cartAssetPriceAttributes.every((cartAttribute: SelectedPriceAttributes) => {
-      return cartAttribute.selectedAttributeValue === this.appliedAttributes[cartAttribute.priceAttributeName];
+    return this.cartAssetPriceAttributes.every((cartAttribute: SelectedPriceAttribute, index: number) => {
+      return cartAttribute === this.appliedAttributes[index];
     });
   }
 

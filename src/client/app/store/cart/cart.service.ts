@@ -6,7 +6,7 @@ import { Api } from '../../shared/interfaces/api.interface';
 import { Cart } from '../../shared/interfaces/commerce.interface';
 import { SubclipMarkers, Duration, durationFrom, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AssetLineItem, Asset } from '../../shared/interfaces/commerce.interface';
-import { Pojo, SelectedPriceAttributes } from '../../shared/interfaces/common.interface';
+import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
 
 @Injectable()
 export class FutureCartService {
@@ -18,7 +18,7 @@ export class FutureCartService {
 
   public editLineItem(lineItem: AssetLineItem, markers: SubclipMarkers, attributes: Pojo): Observable<Cart> {
     const duration: Duration = this.durationFrom(lineItem, markers);
-    const newAttributes: SelectedPriceAttributes[] = attributes ? this.format(attributes) : lineItem.attributes || [];
+    const newAttributes: SelectedPriceAttribute[] = attributes ? this.format(attributes) : lineItem.attributes || [];
     const newAsset: Asset = { ...lineItem.asset, ...duration };
 
     const newLineItem = {
@@ -48,7 +48,7 @@ export class FutureCartService {
     );
   }
 
-  private format(newAttributes: Pojo): SelectedPriceAttributes[] {
+  private format(newAttributes: Pojo): SelectedPriceAttribute[] {
     let formatted: Array<any> = [];
     for (let attr in newAttributes) {
       formatted.push({ priceAttributeName: attr, selectedAttributeValue: newAttributes[attr] });

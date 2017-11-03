@@ -188,7 +188,13 @@ export function main() {
 
       it('should call the API service correctly', () => {
         serviceUnderTest.addAssetToProjectInQuote({
-          lineItem: { id: '123', asset: { assetId: 456 } }, attributes: { Distribution: 'Online Streaming' }
+          lineItem: {
+            id: '123',
+            asset: { assetId: 456 }
+          },
+          attributes: [
+            { priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }
+          ]
         });
 
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
@@ -207,7 +213,7 @@ export function main() {
       it('sends timeStart and timeEnd if defined', () => {
         serviceUnderTest.addAssetToProjectInQuote({
           lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
-          attributes: { Distribution: 'Online Streaming' }
+          attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
 
         expect(mockApi.put).toHaveBeenCalledWithBody({
@@ -220,7 +226,7 @@ export function main() {
         serviceUnderTest.addAssetToProjectInQuote({
           lineItem: { id: '123', asset: { assetId: 456 } },
           markers: { in: new Frame(30).setFromSeconds(10), out: new Frame(30).setFromSeconds(20) },
-          attributes: { Distribution: 'Online Streaming' }
+          attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
 
         expect(mockApi.put).toHaveBeenCalledWithBody({
@@ -233,7 +239,7 @@ export function main() {
         serviceUnderTest.addAssetToProjectInQuote({
           lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
           markers: { in: new Frame(30).setFromSeconds(10), out: new Frame(30).setFromSeconds(20) },
-          attributes: { Distribution: 'Online Streaming' }
+          attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
 
         expect(mockApi.put).toHaveBeenCalledWithBody({
@@ -275,21 +281,21 @@ export function main() {
     describe('updateProjectPriceAttributes()', () => {
       it('should call the API service correctly', () => {
         serviceUnderTest.updateProjectPriceAttributes(
-          { priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' },
+          [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }] as any,
           { id: '123', name: 'Project A', clientName: 'Ross Edfort', subtotal: 100 }
         );
 
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3/project/priceAttributes/123');
         expect(mockApi.put).toHaveBeenCalledWithBody(
-          { priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }
+          { attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }] }
         );
         expect(mockApi.put).toHaveBeenCalledWithLoading(true);
       });
 
       it('replace the quote store with the response', () => {
         serviceUnderTest.updateProjectPriceAttributes(
-          { priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' },
+          [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }] as any,
           { id: '123', name: 'Project A', clientName: 'Ross Edfort', subtotal: 100 }
         );
 
@@ -333,7 +339,12 @@ export function main() {
 
     describe('editLineItem()', () => {
       it('should call the API service correctly', () => {
-        serviceUnderTest.editLineItem({ id: '123' }, { pricingAttributes: { Distribution: 'Online Streaming' } });
+        serviceUnderTest.editLineItem(
+          { id: '123' },
+          {
+            pricingAttributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
+          }
+        );
 
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3/update/lineItem/123');

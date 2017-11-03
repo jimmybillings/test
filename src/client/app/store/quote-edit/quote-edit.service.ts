@@ -6,7 +6,7 @@ import { FutureApiService } from '../api/api.service';
 import { Api, ApiParameters } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers, Duration, durationFrom, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AssetLineItem, Asset, QuoteOptions } from '../../shared/interfaces/commerce.interface';
-import { Pojo, SelectedPriceAttributes } from '../../shared/interfaces/common.interface';
+import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
 
 @Injectable()
 export class FutureQuoteEditService {
@@ -22,9 +22,14 @@ export class FutureQuoteEditService {
       .switchMap(() => this.load());
   }
 
-  public editLineItem(quoteId: number, lineItem: AssetLineItem, markers: SubclipMarkers, attributes: Pojo): Observable<Quote> {
+  public editLineItem(
+    quoteId: number,
+    lineItem: AssetLineItem,
+    markers: SubclipMarkers,
+    attributes: SelectedPriceAttribute[]
+  ): Observable<Quote> {
     const duration: Duration = this.durationFrom(lineItem, markers);
-    const newAttributes: SelectedPriceAttributes[] = attributes ? this.format(attributes) : lineItem.attributes || [];
+    const newAttributes: SelectedPriceAttribute[] = attributes ? attributes : lineItem.attributes || [];
     const newAsset: Asset = { ...lineItem.asset, ...duration };
 
     const newLineItem = {
@@ -71,13 +76,5 @@ export class FutureQuoteEditService {
       `quote/${quoteId}/update/lineItem/${lineItem.id}`,
       { body: lineItem, parameters: { region: 'AAA' }, loadingIndicator: true }
     );
-  }
-
-  private format(newAttributes: Pojo): SelectedPriceAttributes[] {
-    let formatted: Array<any> = [];
-    for (let attr in newAttributes) {
-      formatted.push({ priceAttributeName: attr, selectedAttributeValue: newAttributes[attr] });
-    }
-    return formatted;
   }
 }

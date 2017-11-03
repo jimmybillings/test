@@ -18,7 +18,7 @@ import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 import { Frame } from '../modules/wazee-frame-formatter/index';
 import { AppStore, QuoteEditState } from '../../app.store';
 import { FeeConfigStore } from '../stores/fee-config.store';
-import { SelectedPriceAttributes } from '../interfaces/common.interface';
+import { SelectedPriceAttribute, Pojo } from '../interfaces/common.interface';
 import { Common } from '../utilities/common.functions';
 import { enhanceAsset } from '../interfaces/enhanced-asset';
 
@@ -142,11 +142,11 @@ export class QuoteEditService {
       .subscribe(this.replaceQuote);
   }
 
-  public updateProjectPriceAttributes(priceAttributes: SelectedPriceAttributes, project: Project) {
+  public updateProjectPriceAttributes(priceAttributes: Array<SelectedPriceAttribute>, project: Project): void {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}/project/priceAttributes/${project.id}`,
-      { body: priceAttributes, loadingIndicator: true }
+      { body: { attributes: priceAttributes }, loadingIndicator: true }
     ).subscribe(this.replaceQuote);
   }
 
@@ -166,7 +166,7 @@ export class QuoteEditService {
 
   public editLineItem(lineItem: AssetLineItem, fieldToEdit: any): void {
     if (!!fieldToEdit.pricingAttributes) {
-      fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };
+      fieldToEdit = { attributes: fieldToEdit.pricingAttributes };
     }
 
     Object.assign(lineItem, fieldToEdit);
@@ -243,7 +243,7 @@ export class QuoteEditService {
     let formatted = {};
     Object.assign(formatted, { lineItem: this.formatLineItem(parameters.lineItem, parameters.markers) });
     if (parameters.attributes) {
-      Object.assign(formatted, { attributes: this.formatAttributes(parameters.attributes) });
+      Object.assign(formatted, { attributes: parameters.attributes });
     }
     return formatted;
   }
@@ -266,14 +266,6 @@ export class QuoteEditService {
     }
 
     return { assetId: asset.assetId, timeStart: timeStart >= 0 ? timeStart : -1, timeEnd: timeEnd >= 0 ? timeEnd : -2 };
-  }
-
-  private formatAttributes(attributes: any): Array<any> {
-    let formatted: Array<any> = [];
-    for (let attr in attributes) {
-      formatted.push({ priceAttributeName: attr, selectedAttributeValue: attributes[attr] });
-    }
-    return formatted;
   }
 
   private get existingProjectNames(): Array<string> {
