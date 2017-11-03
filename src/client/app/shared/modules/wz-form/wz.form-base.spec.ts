@@ -9,7 +9,20 @@ export function main() {
 
     beforeEach(() => {
       mockForm = {
-        controls: {}
+        controls: {
+          blankField: {
+            hasError: (error: string) => error === 'required',
+            errors: {}
+          },
+          nonMatchingPatternField: {
+            hasError: (error: string) => error === 'pattern',
+            errors: {}
+          },
+          whitespaceField: {
+            hasError: (error: string) => false,
+            errors: { pattern: { requiredPattern: String(/\S/) } }
+          },
+        }
       };
 
       mockFormModel = {
@@ -60,6 +73,45 @@ export function main() {
         classUnderTest.onSelectChange({ value: 'one' }, selectField);
 
         expect(otherField.value).toEqual('slaveZero');
+      });
+    });
+
+    describe('error validators', () => {
+      describe('shouldShowRequiredError(field)', () => {
+        beforeEach(() => {
+          classUnderTest.ngOnInit();
+        });
+
+        it('shows error if the required validator exists', () => {
+          const field = { name: 'blankField', type: '', value: '', label: '' };
+          expect(classUnderTest.shouldShowRequiredError(field)).toBe(true);
+        });
+
+        it('shows error if the pattern validator matches only whitespace characters', () => {
+          const field = { name: 'whitespaceField', type: '', value: '', label: '' };
+          expect(classUnderTest.shouldShowRequiredError(field)).toBe(true);
+        });
+      });
+
+      describe('shouldShowEmailError(field)', () => {
+        beforeEach(() => {
+          classUnderTest.ngOnInit();
+        });
+
+        it('shows error if the pattern validator exists AND the validation of the field is "EMAIL"', () => {
+          const field = { name: 'nonMatchingPatternField', type: '', value: '', label: '', validation: 'EMAIL' };
+          expect(classUnderTest.shouldShowEmailError(field)).toBe(true);
+        });
+
+        it('does not show error if only the pattern validator exists', () => {
+          const field = { name: 'nonMatchingPatternField', type: '', value: '', label: '' };
+          expect(classUnderTest.shouldShowEmailError(field)).toBe(false);
+        });
+
+        it('does not show error if only the field validation is "EMAIL"', () => {
+          const field = { name: 'blankField', type: '', value: '', label: '', validation: 'EMAIL' };
+          expect(classUnderTest.shouldShowEmailError(field)).toBe(false);
+        });
       });
     });
 
