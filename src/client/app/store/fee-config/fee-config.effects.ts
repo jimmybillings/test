@@ -20,6 +20,7 @@ export class FeeConfigEffects {
 
     .switchMap(() => this.service.loadFeeConfig()
       .map((feeConfig) => this.store.create(factory => factory.feeConfig.loadFeeConfigSuccess(feeConfig)))
+      .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
 
