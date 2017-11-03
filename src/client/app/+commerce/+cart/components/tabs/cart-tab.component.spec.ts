@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Cart Tab Component', () => {
-    let componentUnderTest: CartTabComponent, mockUserCan: any, mockCartService: any, mockDialogService: any;
+    let componentUnderTest: CartTabComponent, mockUserCan: any, mockCartService: any, mockDialogService: any, mockChangeDetectorRef: any;
 
     beforeEach(() => {
       mockUserCan = {
@@ -19,9 +19,9 @@ export function main() {
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog')
       };
-
+      mockChangeDetectorRef = { markForCheck: () => true };
       componentUnderTest = new CartTabComponent(
-        mockUserCan, mockCartService, mockDialogService, null, null, null, null, null
+        mockUserCan, mockCartService, mockDialogService, null, null, null, null, null, mockChangeDetectorRef
       );
     });
 

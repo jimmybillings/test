@@ -1,4 +1,4 @@
-import { OnInit, OnDestroy, Output, EventEmitter, Inject } from '@angular/core';
+import { OnInit, OnDestroy, Output, EventEmitter, Inject, ChangeDetectorRef } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -35,7 +35,8 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     protected window: WindowRef,
     protected userPreference: UserPreferenceService,
     protected document: any,
-    protected store: AppStore
+    protected store: AppStore,
+    protected detector: ChangeDetectorRef
   ) {
     super();
   }
