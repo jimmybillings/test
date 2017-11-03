@@ -18,12 +18,13 @@ export function main() {
     let mockUserPreference: any;
     let mockRouter: any;
     let mockDocument: any;
-    let mockPricingService: any;
-    let mockPricingStore: any;
+    let initPricingSpy: jasmine.Spy;
+    let setPriceSpy: jasmine.Spy;
 
     beforeEach(() => {
       mockCapabilities = {
-        cloneQuote: jasmine.createSpy('cloneQuote')
+        cloneQuote: jasmine.createSpy('cloneQuote'),
+        administerQuotes: () => false
       };
 
       mockDialogService = {
@@ -45,20 +46,13 @@ export function main() {
         }
       };
 
-      mockUserPreference = { data: Observable.of({ pricingPreferences: { some: 'preference' } }) };
+      mockUserPreference = { data: Observable.of({ pricingPreferences: { some: 'attribute' } }) };
 
       mockRouter = { navigate: jasmine.createSpy('navigate') };
 
-      mockPricingStore = {
-        priceForDialog: Observable.of(1000)
-      };
-
-      mockPricingService = {
-        getPriceFor: jasmine.createSpy('getPriceFor').and.returnValue(Observable.of({ price: 100 })),
-        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({ some: 'attribute' })),
-      };
-
       mockStore = new MockAppStore();
+      initPricingSpy = mockStore.createActionFactoryMethod('pricing', 'initializePricing');
+      setPriceSpy = mockStore.createActionFactoryMethod('pricing', 'setPriceForDialog');
 
       mockStore.createStateSection('uiConfig', {
         components: {
@@ -85,7 +79,7 @@ export function main() {
       componentUnderTest =
         new QuoteEditTabComponent(
           mockCapabilities, mockDialogService,
-          mockWindow, mockUserPreference, mockDocument, mockPricingStore, mockStore, mockPricingService
+          mockWindow, mockUserPreference, mockDocument, mockStore
         );
     });
 
@@ -93,7 +87,7 @@ export function main() {
     let setupFor = (propertyInQuestion: any) => {
       componentUnderTest = new QuoteEditTabComponent(
         mockCapabilities, mockDialogService,
-        mockWindow, mockUserPreference, mockDocument, mockPricingStore, mockStore, mockPricingService
+        mockWindow, mockUserPreference, mockDocument, mockStore
       );
       return componentUnderTest;
     };
@@ -344,33 +338,49 @@ export function main() {
       });
 
       describe('SHOW_PRICING_DIALOG', () => {
-        it('should not get the attributes if they already exist', () => {
+
+
+        it('calls openPricingDialog with SHOW_PRICING_DIALOG', () => {
           let mockLineItem = { asset: { assetId: 123456 } };
-          componentUnderTest.priceAttributes = { some: 'attr' } as any;
+          componentUnderTest.ngOnInit();
           componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
 
-          expect(mockPricingService.getPriceAttributes).not.toHaveBeenCalled();
-          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
-        });
-
-        it('should get the price attributes if they don\'t already exist', () => {
-          let mockLineItem = {
-            asset: { assetId: 123456 },
-            attributes: [{ priceAttributeName: 'Use', selectedAttributeValue: 'Feature Film' }]
-          };
-          componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
-
-          expect(mockPricingService.getPriceAttributes).toHaveBeenCalled();
-          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
+          mockStore.expectDispatchFor(initPricingSpy, 'Rights Managed', {
+            componentType: jasmine.any(Function),
+            inputOptions: {
+              pricingPreferences: { some: 'attribute' },
+              userCanCustomizeRights: false
+            },
+            outputOptions: [
+              {
+                event: 'pricingEvent',
+                callback: jasmine.any(Function)
+              }
+            ]
+          });
         });
       });
 
       describe('EDIT_PROJECT_PRICING', () => {
-        it('edits the project pricing', () => {
+        it('edits the project pricing with EDIT_PROJECT_PRICING', () => {
           let mockAsset = { assetId: 1234 };
+          componentUnderTest.ngOnInit();
           componentUnderTest.onNotification({ type: 'EDIT_PROJECT_PRICING', payload: { asset: mockAsset } });
 
-          expect(mockPricingService.getPriceAttributes).toHaveBeenCalledWith();
+          mockStore.expectDispatchFor(setPriceSpy, null);
+          mockStore.expectDispatchFor(initPricingSpy, 'Rights Managed', {
+            componentType: jasmine.any(Function),
+            inputOptions: {
+              pricingPreferences: { some: 'attribute' },
+              userCanCustomizeRights: false
+            },
+            outputOptions: [
+              {
+                event: 'pricingEvent',
+                callback: jasmine.any(Function)
+              }
+            ]
+          });
         });
       });
     });
