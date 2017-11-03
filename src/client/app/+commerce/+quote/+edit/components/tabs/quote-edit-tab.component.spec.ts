@@ -1,3 +1,4 @@
+import { Pojo } from '../../../../../shared/interfaces/common.interface';
 import { Observable } from 'rxjs/Observable';
 import { CommerceEditTab } from '../../../../components/tabs/commerce-edit-tab';
 import { MockAppStore } from '../../../../../store/spec-helpers/mock-app.store';
@@ -18,6 +19,7 @@ export function main() {
     let mockRouter: any;
     let mockDocument: any;
     let mockPricingService: any;
+    let mockPricingStore: any;
 
     beforeEach(() => {
       mockCapabilities = {
@@ -30,16 +32,30 @@ export function main() {
         }),
         openConfirmationDialog: jasmine.createSpy('openConfirmationDialog').and.callFake((_: any, onAcceptCallback: Function) => {
           mockDialogService.onAcceptCallback = onAcceptCallback;
-        })
+        }),
+        openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' })),
+      };
+      mockWindow = { nativeWindow: { location: { href: {} } } };
+      mockDocument = {
+        body: {
+          classList: {
+            add: jasmine.createSpy('add'),
+            remove: jasmine.createSpy('remove')
+          }
+        }
       };
 
       mockUserPreference = { data: Observable.of({ pricingPreferences: { some: 'preference' } }) };
 
       mockRouter = { navigate: jasmine.createSpy('navigate') };
 
+      mockPricingStore = {
+        priceForDialog: Observable.of(1000)
+      };
+
       mockPricingService = {
-        getPriceFor: jasmine.createSpy('getPriceFor'),
-        getPriceAttributes: jasmine.createSpy('getPricingAttributes')
+        getPriceFor: jasmine.createSpy('getPriceFor').and.returnValue(Observable.of({ price: 100 })),
+        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({ some: 'attribute' })),
       };
 
       mockStore = new MockAppStore();
@@ -69,7 +85,7 @@ export function main() {
       componentUnderTest =
         new QuoteEditTabComponent(
           mockCapabilities, mockDialogService,
-          mockWindow, mockUserPreference, mockDocument, null, mockStore, mockPricingService
+          mockWindow, mockUserPreference, mockDocument, mockPricingStore, mockStore, mockPricingService
         );
     });
 
@@ -77,7 +93,7 @@ export function main() {
     let setupFor = (propertyInQuestion: any) => {
       componentUnderTest = new QuoteEditTabComponent(
         mockCapabilities, mockDialogService,
-        mockWindow, mockUserPreference, mockDocument, null, mockStore, mockPricingService
+        mockWindow, mockUserPreference, mockDocument, mockPricingStore, mockStore, mockPricingService
       );
       return componentUnderTest;
     };
@@ -228,6 +244,283 @@ export function main() {
           expect(componentUnderTest.notify.emit).toHaveBeenCalledWith({ type: 'CLONE_QUOTE' });
         });
       });
+
+      describe('ADD_PROJECT', () => {
+        let addProjectSpy: jasmine.Spy;
+        beforeEach(() => { addProjectSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addProject'); });
+        it('Should forward the message upwards with notify()', () => {
+
+          componentUnderTest.onNotification({ type: 'ADD_PROJECT' });
+          expect(addProjectSpy).toHaveBeenCalled();
+        });
+      });
+
+      describe('REMOVE_PROJECT', () => {
+        let removeProjectSpy: jasmine.Spy;
+        beforeEach(() => { removeProjectSpy = mockStore.createActionFactoryMethod('quoteEdit', 'removeProject'); });
+        it('Should forward the message upwards with notify()', () => {
+
+          componentUnderTest.onNotification({ type: 'REMOVE_PROJECT', payload: { id: 1 } });
+          expect(removeProjectSpy).toHaveBeenCalledWith(1);
+        });
+      });
+
+      describe('UPDATE_PROJECT', () => {
+        let updateProjectSpy: jasmine.Spy;
+        let mockProject: Pojo;
+        beforeEach(() => {
+          updateProjectSpy = mockStore.createActionFactoryMethod('quoteEdit', 'updateProject');
+          mockProject = { project: { id: 1 }, items: ['test item'] };
+          componentUnderTest.onNotification({ type: 'UPDATE_PROJECT', payload: mockProject });
+        });
+
+        it('should open up a form dialog with the right config', () => {
+          expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(['test item'],
+            {
+              dialogConfig: { position: { top: '10%' }, disableClose: false },
+              title: 'CART.PROJECTS.FORM.TITLE',
+              submitLabel: 'CART.PROJECTS.FORM.SUBMIT_LABEL',
+              autocomplete: 'off'
+            },
+            jasmine.any(Function)
+          );
+        });
+
+        it('should dispatch the proper action on form submit', () => {
+          mockDialogService.onSubmitCallback(['test item 2']);
+          mockStore.expectDispatchFor(updateProjectSpy, Object.assign({ id: 1 }, ['test item 2']));
+        });
+      });
+
+      describe('MOVE_LINE_ITEM', () => {
+        let moveLineItemSpy: jasmine.Spy;
+        beforeEach(() => { moveLineItemSpy = mockStore.createActionFactoryMethod('quoteEdit', 'moveLineItem'); });
+        it('Should forward the message upwards with notify()', () => {
+          let mockProject = { otherProject: 'other project', lineItem: 'lineItemtoMove' };
+          componentUnderTest.onNotification({ type: 'MOVE_LINE_ITEM', payload: mockProject });
+          expect(moveLineItemSpy).toHaveBeenCalledWith('other project', 'lineItemtoMove');
+        });
+      });
+
+      describe('CLONE_LINE_ITEM', () => {
+        let cloneLineItemSpy: jasmine.Spy;
+        beforeEach(() => { cloneLineItemSpy = mockStore.createActionFactoryMethod('quoteEdit', 'cloneLineItem'); });
+        it('Should forward the message upwards with notify()', () => {
+          let mockLineItem = {};
+          componentUnderTest.onNotification({ type: 'CLONE_LINE_ITEM', payload: mockLineItem });
+          expect(cloneLineItemSpy).toHaveBeenCalledWith(mockLineItem);
+        });
+      });
+
+      describe('REMOVE_LINE_ITEM', () => {
+        let removeLineItemSpy: jasmine.Spy;
+        beforeEach(() => { removeLineItemSpy = mockStore.createActionFactoryMethod('quoteEdit', 'removeAsset'); });
+        it('Should forward the message upwards with notify()', () => {
+          let mockLineItem = { asset: { id: 1 } };
+          componentUnderTest.onNotification({ type: 'REMOVE_LINE_ITEM', payload: mockLineItem });
+          expect(removeLineItemSpy).toHaveBeenCalledWith(mockLineItem.asset);
+        });
+      });
+
+      describe('EDIT_LINE_ITEM', () => {
+        let editLineItemSpy: jasmine.Spy;
+        beforeEach(() => { editLineItemSpy = mockStore.createActionFactoryMethod('quoteEdit', 'editLineItem'); });
+        it('Should forward the message upwards with notify()', () => {
+          let mockLineItem = { fieldToEdit: { field: 2 }, lineItem: { testItem: 1 } };
+          componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM', payload: mockLineItem });
+          expect(editLineItemSpy).toHaveBeenCalledWith(mockLineItem.lineItem, mockLineItem.fieldToEdit);
+        });
+      });
+
+      describe('EDIT_LINE_ITEM_MARKERS', () => {
+        it('edits the assets in and out markers with EDIT_LINE_ITEM_MARKERS', () => {
+          let mockAsset = { assetId: 1234 };
+          let mockMethod = mockStore.createLegacyServiceMethod('asset', 'getClipPreviewData', Observable.of({ url: 'fake url' }));
+
+          componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM_MARKERS', payload: { asset: mockAsset } });
+
+          mockStore.expectCallFor(mockMethod, 1234);
+        });
+      });
+
+      describe('SHOW_PRICING_DIALOG', () => {
+        it('should not get the attributes if they already exist', () => {
+          let mockLineItem = { asset: { assetId: 123456 } };
+          componentUnderTest.priceAttributes = { some: 'attr' } as any;
+          componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
+
+          expect(mockPricingService.getPriceAttributes).not.toHaveBeenCalled();
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
+        });
+
+        it('should get the price attributes if they don\'t already exist', () => {
+          let mockLineItem = {
+            asset: { assetId: 123456 },
+            attributes: [{ priceAttributeName: 'Use', selectedAttributeValue: 'Feature Film' }]
+          };
+          componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
+
+          expect(mockPricingService.getPriceAttributes).toHaveBeenCalled();
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
+        });
+      });
+
+      describe('EDIT_PROJECT_PRICING', () => {
+        it('edits the project pricing', () => {
+          let mockAsset = { assetId: 1234 };
+          componentUnderTest.onNotification({ type: 'EDIT_PROJECT_PRICING', payload: { asset: mockAsset } });
+
+          expect(mockPricingService.getPriceAttributes).toHaveBeenCalledWith();
+        });
+      })
+    });
+
+    describe('get showUsageWarning()', () => {
+
+      it('Should show the usage warning if the cart has assets but userCanProceed is false', () => {
+        mockStore.createStateSection('quoteEdit', {
+          data: {
+            itemCount: 2,
+            projects: [{
+              lineItems: [
+                { id: '2', price: 100, rightsManaged: 'Rights Managed' },
+              ]
+            }]
+          }
+        });
+        componentUnderTest.quoteType = 'BadDebt';
+        expect(componentUnderTest.showUsageWarning).toBe(true);
+      });
+
+      it('Should not show the usage warning if the user has no assets in the cart', () => {
+        mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
+        expect(componentUnderTest.showUsageWarning).toBe(false);
+      });
+
+      it('Should not show the usage warning if the user has assess and userCanProceed is true', () => {
+        mockStore.createStateSection('quoteEdit', {
+          data: {
+            itemCount: 2,
+            projects: [{
+              lineItems: [
+                { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+              ]
+            }]
+          }
+        });
+        componentUnderTest.quoteType = 'Trial';
+        expect(componentUnderTest.showUsageWarning).toBe(false);
+      });
+    });
+
+    describe('get userCanProceed()', () => {
+      it('Should return true if component quoteType is Trial', () => {
+        componentUnderTest.quoteType = 'Trial';
+        expect(componentUnderTest.userCanProceed).toBe(true);
+      });
+      it(`Should return true if component quoteType is not Trial but 
+      the cart has assets and all right managed assets have rights packages`, () => {
+          componentUnderTest.quoteType = 'BadDebt';
+          mockStore.createStateSection('quoteEdit', {
+            data: {
+              itemCount: 1,
+              projects: [{
+                lineItems: [
+                  { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+                  { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+                  { id: '3', price: 59, rightsManaged: 'Royalty Free' }
+                ]
+              }, {}]
+            }
+          });
+          expect(componentUnderTest.userCanProceed).toBe(true);
+        });
+
+      it(`Should return true if component quoteType is not Trial but 
+        the cart has assets and none are rights managed`, () => {
+          componentUnderTest.quoteType = 'BadDebt';
+          mockStore.createStateSection('quoteEdit', {
+            data: {
+              itemCount: 1,
+              projects: [{
+                lineItems: [
+                  { id: '1', price: 100, rightsManaged: 'Royalty Free' },
+                  { id: '2', price: 100, rightsManaged: 'Royalty Free' },
+                  { id: '3', price: 59, rightsManaged: 'Royalty Free' }
+                ]
+              }, {}]
+            }
+          });
+          expect(componentUnderTest.userCanProceed).toBe(true);
+        });
+
+      it(`Should return false if component quoteType is not Trial and 
+        the cart has assets but not all right managed assets have rights packages`, () => {
+          componentUnderTest.quoteType = 'BadDebt';
+          mockStore.createStateSection('quoteEdit', {
+            data: {
+              itemCount: 1,
+              projects: [{
+                lineItems: [
+                  { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+                  { id: '2', price: 100, rightsManaged: 'Rights Managed' },
+                  { id: '3', price: 59, rightsManaged: 'Royalty Free' }
+                ]
+              }, {}]
+            }
+          });
+          expect(componentUnderTest.userCanProceed).toBe(false);
+        });
+
+      it('Should return false if component quoteType is not Trial and the cart has no assets', () => {
+        componentUnderTest.quoteType = 'BadDebt';
+        mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
+        expect(componentUnderTest.userCanProceed).toBe(false);
+      });
+
+      it('Should return false if component quoteType is not Trial and the cart has rights managed assets with no attributes', () => {
+        componentUnderTest.quoteType = 'BadDebt';
+        mockStore.createStateSection('quoteEdit', {
+          data: {
+            itemCount: 3,
+            projects: [{
+              lineItems: [
+                { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+                { id: '2', price: 100, rightsManaged: 'Rights Managed' },
+                { id: '3', price: 59, rightsManaged: 'Royalty Free' }
+              ]
+            }]
+          }
+        });
+        expect(componentUnderTest.userCanProceed).toBe(false);
+      });
+    });
+
+    describe('get total()', () => {
+      it('Should return the current total dollar amount for the quote', () => {
+        mockStore.createStateSection('quoteEdit', { data: { total: 1000 } });
+        let currentTotal: number;
+        componentUnderTest.total.subscribe(total => currentTotal = total);
+        expect(currentTotal).toBe(1000);
+      });
+    });
+
+    describe('get subTotal()', () => {
+      it('Should return the current subTotal dollar amount for the quote', () => {
+        mockStore.createStateSection('quoteEdit', { data: { subTotal: 1000 } });
+        let currentSubTotal: number;
+        componentUnderTest.subTotal.subscribe(total => currentSubTotal = total);
+        expect(currentSubTotal).toBe(1000);
+      });
+    });
+
+    describe('get discount()', () => {
+      it('Should return the current discount dollar amount for the quote', () => {
+        mockStore.createStateSection('quoteEdit', { data: { discount: '1000' } });
+        let currentDiscount: string;
+        componentUnderTest.discount.subscribe(total => currentDiscount = total);
+        expect(currentDiscount).toBe('1000');
+      });
     });
 
     describe('get quoteIsTrial()', () => {
@@ -236,6 +529,18 @@ export function main() {
         let purchaseType;
         componentUnderTest.quoteIsTrial.subscribe((response) => purchaseType = response);
         expect(purchaseType).toBe(true);
+      });
+    });
+
+    describe('get cartContainsNoAssets()', () => {
+      it('Should return true if cart has no assets', () => {
+        mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
+        expect(componentUnderTest.cartContainsAssets).toBe(false);
+      });
+
+      it('Should return false if cart has assets', () => {
+        mockStore.createStateSection('quoteEdit', { data: { itemCount: 1 } });
+        expect(componentUnderTest.cartContainsAssets).toBe(true);
       });
     });
 
