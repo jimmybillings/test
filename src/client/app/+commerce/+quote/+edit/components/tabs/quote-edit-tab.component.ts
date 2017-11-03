@@ -384,7 +384,9 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         this.store.dispatch(factory =>
           factory.quoteEdit.updateProjectPriceAttributes(event.payload.attributes, project)
         );
-        this.userPreference.updatePricingPreferences(event.payload.attributes);
+        if (event.payload.updatePrefs) {
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
+        }
         dialogRef.close();
         break;
       case 'ERROR':
@@ -407,7 +409,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         break;
       case 'APPLY_PRICE':
         if (event.payload.updatePrefs) {
-          this.userPreference.updatePricingPreferences(event.payload.attributes);
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
         }
         this.store.dispatch(factory => factory.quoteEdit.editLineItem(lineItem, { pricingAttributes: event.payload.attributes }));
         dialogRef.close();

@@ -133,7 +133,13 @@ export function main() {
                 priceAttributeDisplayName: 'D', priceAttributeName: 'd', selectedAttributeName: 'S', selectedAttributeValue: 's'
               }
             ],
-            updatePrefs: true
+            updatePrefs: true,
+            preferences: {
+              a: 's',
+              b: 'm',
+              c: 'x',
+              d: 's'
+            }
           }
         });
       });

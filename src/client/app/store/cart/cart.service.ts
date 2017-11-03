@@ -16,9 +16,13 @@ export class FutureCartService {
     return this.apiService.get(Api.Orders, 'cart', { loadingIndicator: true });
   }
 
-  public editLineItem(lineItem: AssetLineItem, markers: SubclipMarkers, attributes: Pojo): Observable<Cart> {
+  public editLineItem(
+    lineItem: AssetLineItem,
+    markers: SubclipMarkers,
+    attributes: SelectedPriceAttribute[]
+  ): Observable<Cart> {
     const duration: Duration = this.durationFrom(lineItem, markers);
-    const newAttributes: SelectedPriceAttribute[] = attributes ? this.format(attributes) : lineItem.attributes || [];
+    const newAttributes: SelectedPriceAttribute[] = attributes ? attributes : lineItem.attributes || [];
     const newAsset: Asset = { ...lineItem.asset, ...duration };
 
     const newLineItem = {
@@ -46,13 +50,5 @@ export class FutureCartService {
       `cart/update/lineItem/${lineItem.id}`,
       { body: lineItem, parameters: { region: 'AAA' }, loadingIndicator: true }
     );
-  }
-
-  private format(newAttributes: Pojo): SelectedPriceAttribute[] {
-    let formatted: Array<any> = [];
-    for (let attr in newAttributes) {
-      formatted.push({ priceAttributeName: attr, selectedAttributeValue: newAttributes[attr] });
-    }
-    return formatted;
   }
 }

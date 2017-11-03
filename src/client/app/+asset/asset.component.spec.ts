@@ -17,8 +17,6 @@ export function main() {
     let mockRouter: any;
     let mockRoute: any;
     let mockDialogService: any;
-    let mockPricingStore: any;
-    let mockPricingService: any;
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
     let mockStore: MockAppStore;
     let initPricingSpy: jasmine.Spy;
@@ -42,25 +40,11 @@ export function main() {
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
-      mockPricingStore = {
-        priceForDialog: Observable.of(1000),
-        priceForDetails: Observable.of(100),
-        setPriceForDetails: jasmine.createSpy('setPriceForDetails'),
-        state: { priceForDetails: 100, priceForDialog: 1000 }
-      };
-      mockPricingService = {
-        getPriceFor: jasmine.createSpy('getPriceFor').and.returnValue(Observable.of({ price: 10, some: 'data' })),
-        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({}))
-      };
       mockStore = new MockAppStore();
       initPricingSpy = mockStore.createActionFactoryMethod('pricing', 'initializePricing');
       mockStore.createActionFactoryMethod('pricing', 'calculatePrice');
       mockStore.createActionFactoryMethod('pricing', 'setPriceForDetails');
       mockStore.createActionFactoryMethod('pricing', 'setAppliedAttributes');
-      // componentUnderTest = new AssetComponent(
-      // mockCurrentUserService, mockCapabilities,
-      // mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-      // mockDialogService, mockQuoteEditService, null
 
       ['quoteEdit', 'cart'].forEach((storeType) => mockStore.createStateSection(storeType, {
         data: {
@@ -221,15 +205,6 @@ export function main() {
       it('should call the back method on the window api', () => {
         componentUnderTest.previousPage();
         expect(mockWindow.nativeWindow.history.back).toHaveBeenCalled();
-      });
-    });
-
-    describe('onMarkersChange', () => {
-      describe('when there are no selected attributes', () => {
-        it('does not call getPriceFor() on the asset service', () => {
-          componentUnderTest.onMarkersChange({ in: {}, out: {} } as any);
-          expect(mockPricingService.getPriceFor).not.toHaveBeenCalled();
-        });
       });
     });
 

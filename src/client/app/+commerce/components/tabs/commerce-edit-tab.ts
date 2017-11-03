@@ -182,7 +182,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     switch (event.type) {
       case 'APPLY_PRICE':
         if (event.payload.updatePrefs) {
-          this.userPreference.updatePricingPreferences(event.payload.attributes);
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
         }
         this.commerceService.updateProjectPriceAttributes(event.payload.attributes, project);
         dialogRef.close();
@@ -224,7 +224,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         break;
       case 'APPLY_PRICE':
         if (event.payload.updatePrefs) {
-          this.userPreference.updatePricingPreferences(event.payload.attributes);
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
         }
         this.commerceService.editLineItem(lineItem, { pricingAttributes: event.payload.attributes });
         dialogRef.close();

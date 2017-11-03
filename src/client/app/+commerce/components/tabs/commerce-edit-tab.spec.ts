@@ -15,9 +15,7 @@ export function main() {
     let mockWindow: any;
     let mockState: any;
     let mockQuoteService: any;
-    let mockPricingStore: any;
     let mockCurrentUserService: any;
-    let mockPricingService: any;
     let mockCapabilities: any;
     let mockAppStore: MockAppStore;
     let initPricingSpy: jasmine.Spy;
@@ -70,15 +68,6 @@ export function main() {
 
       mockQuoteService = {
         createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({}))
-      };
-
-      mockPricingStore = {
-        priceForDialog: Observable.of(1000)
-      };
-
-      mockPricingService = {
-        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({ some: 'attribute' })),
-        getPriceFor: jasmine.createSpy('getPriceFor').and.returnValue(Observable.of({ price: 100 }))
       };
 
       mockAppStore = new MockAppStore();

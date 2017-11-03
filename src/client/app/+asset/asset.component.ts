@@ -195,11 +195,22 @@ export class AssetComponent implements OnInit, OnDestroy {
         break;
       case 'APPLY_PRICE':
         if (event.payload.updatePrefs) {
-          this.userPreference.updatePricingPreferences(event.payload.attributes);
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
         }
         dialogRef.close();
         this.store.dispatch(factory => factory.pricing.setPriceForDetails(event.payload.price));
         this.store.dispatch(factory => factory.pricing.setAppliedAttributes(event.payload.attributes));
+        this.userCan.administerQuotes() ?
+          this.store.dispatch(factory => factory.quoteEdit.editLineItemFromDetails(
+            this.asset.uuid,
+            this.subclipMarkers,
+            event.payload.attributes
+          )) :
+          this.store.dispatch(factory => factory.cart.editLineItemFromDetails(
+            this.asset.uuid,
+            this.subclipMarkers,
+            event.payload.attributes
+          ));
         break;
       case 'ERROR':
         this.store.dispatch(factory => factory.error.handleCustomError(event.payload));

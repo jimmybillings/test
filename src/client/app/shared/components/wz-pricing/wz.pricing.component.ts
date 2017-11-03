@@ -59,16 +59,34 @@ export class WzPricingComponent implements OnDestroy {
       this.price.take(1).subscribe((price: number) => {
         this.pricingEvent.emit({
           type: 'APPLY_PRICE',
-          payload: { price: price, attributes: this.formValue, updatePrefs: true }
+          payload: {
+            price: price,
+            attributes: this.formValue,
+            updatePrefs: true,
+            preferences: this.form.value
+          }
         });
       });
     } else {
-      this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { attributes: this.formValue, updatePrefs: true } });
+      this.pricingEvent.emit({
+        type: 'APPLY_PRICE',
+        payload: {
+          attributes: this.formValue,
+          updatePrefs: true,
+          preferences: this.form.value
+        }
+      });
     }
   }
 
   public onSubmitCustom(): void {
-    this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { attributes: this.customFormValue, updatePrefs: false } });
+    this.pricingEvent.emit({
+      type: 'APPLY_PRICE',
+      payload: {
+        attributes: this.customFormValue,
+        updatePrefs: false
+      }
+    });
   }
 
   public parentIsEmpty(currentAttribute: PriceAttribute): boolean {
@@ -122,9 +140,10 @@ export class WzPricingComponent implements OnDestroy {
   }
 
   private buildCustomForm(): void {
+    const primaryAttributeName: string = this.attributes.find(attribute => attribute.primary).name;
     this.customForm = this.fb.group({
-      [this.attributes[0].name]: [
-        this._pricingPreferences[this.attributes[0].name] || '',
+      [primaryAttributeName]: [
+        this._pricingPreferences[primaryAttributeName] || null,
         Validators.required
       ],
       attributes: [
@@ -138,7 +157,7 @@ export class WzPricingComponent implements OnDestroy {
   }
 
   private csvFor(attributes: PriceAttribute[]): string {
-    return attributes.slice(1).reduce((csv: string, attribute: PriceAttribute) => {
+    return attributes.filter(attribute => !attribute.primary).reduce((csv: string, attribute: PriceAttribute) => {
       return csv.concat(`${attribute.name},${this._pricingPreferences[attribute.name] || ''}\n`);
     }, '').trim();
   }
