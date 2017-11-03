@@ -207,21 +207,13 @@ export class FutureQuoteEditService {
     let formatted = {};
     Object.assign(formatted, { lineItem: this.formatLineItem(parameters.lineItem, parameters.markers) });
     if (parameters.attributes) {
-      Object.assign(formatted, { attributes: this.formatAttributes(parameters.attributes) });
+      Object.assign(formatted, { attributes: parameters.attributes });
     }
     return formatted;
   }
 
   private formatLineItem(lineItem: any, markers: SubclipMarkersInterface.SubclipMarkers): any {
     return Object.assign({}, lineItem, { asset: this.formatAsset(lineItem.asset, markers) });
-  }
-
-  private formatAttributes(attributes: any): Array<any> {
-    let formatted: Array<any> = [];
-    for (let attr in attributes) {
-      formatted.push({ priceAttributeName: attr, selectedAttributeValue: attributes[attr] });
-    }
-    return formatted;
   }
 
   private formatAsset(asset: any, markers: SubclipMarkersInterface.SubclipMarkers): any {
@@ -239,8 +231,6 @@ export class FutureQuoteEditService {
 
     return { assetId: asset.assetId, timeStart: timeStart >= 0 ? timeStart : -1, timeEnd: timeEnd >= 0 ? timeEnd : -2 };
   }
-
-
 
   private durationFrom(lineItem: AssetLineItem, markers: SubclipMarkers): Duration {
     return bothMarkersAreSet(markers) ?

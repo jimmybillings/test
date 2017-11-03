@@ -153,7 +153,7 @@ export function main() {
       it('calls the cart service with the correct params', () => {
         mockStore.createStateSection(
           'pricing', {
-            selectedAttributes: { some: 'attributes' },
+            appliedAttributes: { some: 'attributes' },
             priceForDetails: 100
           }
         );
@@ -255,85 +255,6 @@ export function main() {
             componentUnderTest.ngOnInit();
 
             expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
-          });
-
-          describe('when price attributes have not been changed by the user', () => {
-            beforeEach(() => {
-              localMockAsset = { uuid: 'ABCD' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              componentUnderTest.ngOnInit();
-            });
-
-            it('returns true when subclip markers match', () => {
-              componentUnderTest.onMarkersChange({
-                in: new Frame(30).setFromFrameNumber(30), // 1000ms
-                out: new Frame(30).setFromFrameNumber(60) // 2000ms
-              });
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
-            });
-
-            it('returns true when neither the cart asset nor the active asset has markers', () => {
-              localMockAsset = { uuid: 'IJKL' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              componentUnderTest.ngOnInit();
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
-            });
-
-            it('returns false when subclip markers don\'t match', () => {
-              componentUnderTest.onMarkersChange({
-                in: new Frame(30).setFromFrameNumber(30), // 1000ms
-                out: new Frame(30).setFromFrameNumber(6000) // 200000ms
-              });
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
-            });
-
-            it('returns false when the cart asset has subclip markers and the active asset doesn\'t', () => {
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
-            });
-
-            it('returns false when the active asset has subclip markers and the cart asset doesn\'t', () => {
-              localMockAsset = { uuid: 'IJKL' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              componentUnderTest.ngOnInit();
-
-              componentUnderTest.onMarkersChange({
-                in: new Frame(30).setFromFrameNumber(30), // 1000ms
-                out: new Frame(30).setFromFrameNumber(60) // 2000ms
-              });
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
-            });
-          });
-
-          describe('when price attributes have been changed by the user', () => {
-            it('returns true when the attributes match', () => {
-              localMockAsset = { uuid: 'IJKL' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              componentUnderTest.ngOnInit();
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
-            });
-
-            it('returns false when the attributes don\'t match', () => {
-              localMockAsset = { uuid: 'MNOP' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              mockStore.createStateSection('pricing', { appliedAttributes: { a: '1', b: '2', c: '4' } });
-              componentUnderTest.ngOnInit();
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
-            });
-
-            it('returns false when the number of attributes doesn\'t match', () => {
-              localMockAsset = { uuid: 'QRST' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              mockStore.createStateSection('pricing', { appliedAttributes: { a: '1' } });
-              componentUnderTest.ngOnInit();
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
-            });
           });
         });
       });

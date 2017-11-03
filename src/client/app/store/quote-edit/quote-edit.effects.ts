@@ -149,7 +149,7 @@ export class QuoteEditEffects {
     );
 
   @Effect()
-  public UpdateQuoteFields: Observable<Action> = this.actions
+  public updateQuoteFields: Observable<Action> = this.actions
     .ofType(QuoteEditActions.UpdateQuoteFields.Type)
     .withLatestFrom(this.store.select(state => state.quoteEdit.data))
     .switchMap(([action, quote]: [QuoteEditActions.UpdateQuoteFields, Quote]) =>
@@ -160,7 +160,7 @@ export class QuoteEditEffects {
     );
 
   @Effect()
-  public AddFeeTo: Observable<Action> = this.actions
+  public addFeeTo: Observable<Action> = this.actions
     .ofType(QuoteEditActions.AddFeeTo.Type)
     .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
     .switchMap(([action, quoteId]: [QuoteEditActions.AddFeeTo, number]) =>
@@ -171,7 +171,7 @@ export class QuoteEditEffects {
     );
 
   @Effect()
-  public RemoveFee: Observable<Action> = this.actions
+  public removeFee: Observable<Action> = this.actions
     .ofType(QuoteEditActions.RemoveFee.Type)
     .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
     .switchMap(([action, quoteId]: [QuoteEditActions.AddFeeTo, number]) =>
