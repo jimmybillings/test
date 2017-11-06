@@ -355,5 +355,16 @@ export function main() {
       }
     });
 
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addProject',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Project'
+      }
+    });
+
   });
 }

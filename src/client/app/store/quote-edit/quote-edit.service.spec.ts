@@ -322,6 +322,16 @@ export function main() {
           expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
       });
+
+      describe('addProject()', () => {
+        it('calls the API service correctly', () => {
+          serviceUnderTest.addProject(1);
+
+          expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.post).toHaveBeenCalledWithEndpoint('quote/1/project');
+          expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
+        });
+      });
     });
   });
 }

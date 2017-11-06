@@ -516,5 +516,29 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addProject',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddProject.Type
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'addProject',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'quoteRefreshAndNotfiy',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }
