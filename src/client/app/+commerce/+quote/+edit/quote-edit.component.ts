@@ -2,7 +2,7 @@ import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 import { Common } from '../../../shared/utilities/common.functions';
 import { Subscription } from 'rxjs/Rx';
 import { Pojo } from '../../../shared/interfaces/common.interface';
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { AssetLineItem, CommerceMessage, Project, Quote } from '../../../shared/interfaces/commerce.interface';
@@ -18,7 +18,7 @@ import { Observable } from 'rxjs/Observable';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class QuoteEditComponent implements OnInit {
+export class QuoteEditComponent implements OnInit, OnDestroy {
   public projects: Project[];
   public tabLabelKeys: string[];
   public tabEnabled: boolean[];

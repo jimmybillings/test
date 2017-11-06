@@ -5,7 +5,7 @@ import { Quote, QuoteOptions } from '../../shared/interfaces/commerce.interface'
 export interface State {
   data: Quote;
   loading: boolean;
-  recipient?: QuoteOptions
+  recipient?: QuoteOptions;
 }
 
 export const initialState: State = {

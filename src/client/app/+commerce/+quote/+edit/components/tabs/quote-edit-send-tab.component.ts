@@ -28,7 +28,7 @@ export class QuoteEditSendTabComponent extends Tab {
         purchaseType: options.purchaseType.split(' ').join(''),
         offlineAgreementId: options.offlineAgreementId
       }
-    ))
+    ));
     this.goToNextTab();
   }
 
