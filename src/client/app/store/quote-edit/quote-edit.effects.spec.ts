@@ -322,7 +322,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -347,7 +347,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -373,7 +373,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -398,7 +398,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -467,7 +467,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -534,7 +534,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -559,7 +559,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -584,7 +584,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -610,7 +610,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -635,7 +635,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }

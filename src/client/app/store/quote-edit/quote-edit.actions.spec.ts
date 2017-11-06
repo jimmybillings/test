@@ -418,7 +418,7 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: InternalActionFactory,
-        name: 'quoteRefreshAndNotify',
+        name: 'refreshAndNotify',
         parameters: [{ some: 'quote' }, 'SOME.TRANSLATION']
       },
       expectedAction: {
