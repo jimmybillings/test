@@ -1,3 +1,4 @@
+import { Common } from '../../shared/utilities/common.functions';
 import { FutureQuoteEditService } from './quote-edit.service';
 import { MockApiService, mockApiMatchers } from '../spec-helpers/mock-api.service';
 import { Api } from '../../shared/interfaces/api.interface';
@@ -174,6 +175,34 @@ export function main() {
           });
         });
       });
+
+      describe('cloneQuote()', () => {
+        const mockState: any = { data: { id: 3, ownerUserId: 10, total: 90, subTotal: 100, projects: [{ name: 'Project A' }] } };
+        it(`Should call the deletePropertiesFromObject() method with a seperate cloned version
+        of the current quote`, () => {
+            spyOn(Common, 'deletePropertiesFromObject');
+            serviceUnderTest.cloneQuote(mockState);
+            expect(Common.deletePropertiesFromObject).toHaveBeenCalledWith(
+              mockState,
+              ['id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus']
+            );
+          });
+        it('calls the API service correctly', () => {
+          serviceUnderTest.cloneQuote(mockState).subscribe(() => {
+            expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Orders);
+            expect(mockApiService.post).toHaveBeenCalledWithEndpoint('quote');
+            expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
+            expect(mockApiService.post).toHaveBeenCalledWithBody({
+              data: {
+                total: 90,
+                subTotal: 100,
+                projects: [{ name: 'Project A' }]
+              }
+            });
+          });
+        });
+      });
+
     });
   });
 }

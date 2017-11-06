@@ -218,5 +218,29 @@ export function main() {
         ownerEmail: 'ross.edfort@wazeedigital.com'
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'cloneQuote',
+        parameters: [{ some: 'quote' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Clone Quote',
+        quote: { some: 'quote' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'cloneQuoteSuccess',
+        parameters: [{ some: 'quote' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Clone Quote Success',
+        quote: { some: 'quote' }
+      }
+    });
   });
 }

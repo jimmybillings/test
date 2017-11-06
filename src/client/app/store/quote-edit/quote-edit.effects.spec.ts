@@ -268,5 +268,45 @@ export function main() {
         }]
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'cloneQuote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.CloneQuote.Type,
+        quote: { some: 'quote' }
+      },
+      serviceMethod: {
+        name: 'cloneQuote',
+        expectedArguments: [{ some: 'quote' }],
+        returnsObservableOf: { some: 'quote' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'cloneQuoteSuccess',
+          expectedArguments: [{ some: 'quote' }]
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'cloneQuoteSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.CloneQuoteSuccess.Type
+      },
+      outputActionFactories: {
+        success: [{
+          sectionName: 'router',
+          methodName: 'goToActiveQuote',
+          expectedArguments: null,
+        }, {
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['QUOTE.UPDATED']
+        }]
+      }
+    });
   });
 }

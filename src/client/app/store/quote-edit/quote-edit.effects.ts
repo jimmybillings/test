@@ -123,6 +123,7 @@ export class QuoteEditEffects {
         .map((quote) =>
           this.store.create(factory => factory.quoteEdit.cloneQuoteSuccess(quote))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -146,6 +147,7 @@ export class QuoteEditEffects {
             factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED')
           )
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -168,6 +170,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -179,6 +182,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -190,6 +194,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.bulkImportSuccess(quote, action.rawAssets))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -211,6 +216,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -222,7 +228,8 @@ export class QuoteEditEffects {
       return this.service.addAssetToProjectInQuote(quote.id, existingProjects, action.parameters)
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.addAssetToProjectInQuoteSuccess(quote, action.parameters.lineItem.asset.assetId))
-        );
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))));
     });
 
   @Effect()
@@ -243,6 +250,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -254,6 +262,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -265,6 +274,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -276,6 +286,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -287,6 +298,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -298,6 +310,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
@@ -309,6 +322,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()
