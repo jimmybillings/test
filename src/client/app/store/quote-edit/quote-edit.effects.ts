@@ -144,7 +144,7 @@ export class QuoteEditEffects {
       this.service.createQuote()
         .map((quote) =>
           this.store.create(factory =>
-            factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED')
+            factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED')
           )
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
@@ -157,7 +157,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quote]: [QuoteEditActions.UpdateQuoteFields, Quote]) =>
       this.service.updateQuoteField(action.options, quote)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -169,7 +169,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteId]: [QuoteEditActions.AddFeeTo, number]) =>
       this.service.addFeeTo(quoteId, action.project, action.fee)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -181,7 +181,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteId]: [QuoteEditActions.AddFeeTo, number]) =>
       this.service.removeFee(quoteId, action.fee)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -215,7 +215,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteId]: [QuoteEditActions.EditLineItem, number]) =>
       this.service.editLineItem(quoteId, action.lineItem, action.fieldToEdit)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -249,7 +249,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteId]: [QuoteEditActions.AddProject, number]) =>
       this.service.addProject(quoteId)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -261,7 +261,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteId]: [QuoteEditActions.RemoveProject, number]) =>
       this.service.removeProject(quoteId, action.projectId)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -273,7 +273,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteId]: [QuoteEditActions.UpdateProject, number]) =>
       this.service.updateProject(quoteId, action.project)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -285,7 +285,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteId]: [QuoteEditActions.MoveLineItem, number]) =>
       this.service.moveLineItem(quoteId, action.project, action.lineItem)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -297,7 +297,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteId]: [QuoteEditActions.CloneLineItem, number]) =>
       this.service.cloneLineItem(quoteId, action.lineItem)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -309,7 +309,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteId]: [QuoteEditActions.EditLineItemMarkers, number]) =>
       this.service.editLineItemMarkers(quoteId, action.lineItem, action.newMarkers)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -321,7 +321,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteId]: [QuoteEditActions.UpdateProjectPriceAttributes, number]) =>
       this.service.updateProjectPriceAttributes(quoteId, action.priceAttributes, action.project)
         .map((quote) => this.store.create(factory =>
-          factory.quoteEdit.refreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
         )
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
