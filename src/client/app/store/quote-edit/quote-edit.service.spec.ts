@@ -343,6 +343,17 @@ export function main() {
         });
 
       });
+
+      describe('updateProject()', () => {
+        it('call the API service correctly', () => {
+          serviceUnderTest.updateProject(1, { name: 'New Project Name' } as any);
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/project');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({ name: 'New Project Name' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
     });
   });
 }

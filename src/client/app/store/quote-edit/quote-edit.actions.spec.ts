@@ -378,5 +378,17 @@ export function main() {
       }
     });
 
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'updateProject',
+        parameters: [{ project: 'some project' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Update Project',
+        project: { project: 'some project' }
+      }
+    });
+
   });
 }
