@@ -414,5 +414,18 @@ export function main() {
         lineItem: { lineItem: 'some item' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'quoteRefreshAndNotify',
+        parameters: [{ some: 'quote' }, 'SOME.TRANSLATION']
+      },
+      expectedAction: {
+        type: '[Quote Edit] Refresh And Notify',
+        quote: { some: 'quote' },
+        translationString: 'SOME.TRANSLATION'
+      }
+    });
   });
 }

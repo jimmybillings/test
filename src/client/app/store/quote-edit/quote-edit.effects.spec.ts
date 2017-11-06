@@ -641,5 +641,23 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'refreshAndNotify',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.RefreshAndNotify.Type,
+        quote: { some: 'quote' },
+        translationString: 'SOME.TRANSLATION'
+
+      },
+      outputActionFactories: {
+        success: [{
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['SOME.TRANSLATION']
+        }]
+      }
+    });
+
   });
 }

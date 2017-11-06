@@ -160,7 +160,7 @@ export class InternalActionFactory extends ActionFactory {
     return new AddAssetToProjectInQuoteSuccess(quote, assetId);
   }
 
-  public quoteRefreshAndNotfiy(quote: Quote, translationString: string): RefreshAndNotify {
+  public refreshAndNotfiy(quote: Quote, translationString: string): RefreshAndNotify {
     return new RefreshAndNotify(quote, translationString);
   }
 }
