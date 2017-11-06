@@ -16,17 +16,193 @@ invoice-component {
       }
     }
   }
-  section.project {
-    padding-bottom: 60px;
+  .logo-wrapper {
+    height: 202px;
+    width: 100%;
+    min-width: 270px;
+    padding: 2px 0 0 6px;
+    @media screen and (max-width: $layout-breakpoint-lg)  {
+      min-width: 260px;
+    }
+    @media screen and (max-width: $layout-breakpoint-md)  {
+      min-width: 210px;
+    }
+    @media screen and (max-width: $layout-breakpoint-sm)  {
+      min-width: 125px;
+      height: 145px;
+    }
+    .logo {
+      display: flex;
+      margin: 0;
+      background-position: top left;
+      background-repeat:no-repeat;
+      background-size: 56%;
+      @media screen and (max-width: $layout-breakpoint-md)  {
+        background-size: 71%;
+      }
+      @media screen and (max-width: $layout-breakpoint-sm)  {
+        background-size: 93%;
+      }
+      @media screen and (max-width: $layout-breakpoint-xs)  {
+        background-size: 30%;
+      }
+      height: 100%;
+      width: 100%;
+      opacity: 1;
+    }
   }
-}
+  .invoice {
+    margin-top: 32px;
+    padding: 34px;
+    @media screen and (max-width: $layout-breakpoint-xs)  {
+      padding: 14px;
+    }
+    header .invoice-label {
+      margin: -8px 0 6px 0;
+    }
+    & > header + section {
+      margin: 0 0 50px 0;
+    }
+  }
+  address {
+    font-size: 14px;
+    line-height: 1.55;
+    span {
+      display: flex;
+    }
+    .phone, .email {
+      font-style: normal;
+      font-size: 14px;
+      font-weight: 200;
+      line-height: 1.7;
+      .mat-icon {
+        font-size: 18px;
+        line-height: 22px;
+        width: 22px;
+        opacity: .8;
+      }
+      & > a.mailto {
+        display: flex;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    .identification-number {
+      font-style: normal;
+      font-size: 14px;
+      font-weight: 200;
+      margin: 10px 0 10px 0;
+      line-height: 1;
+      & >span.key {
+        display: inline-flex;
+        font-weight: bold;
+        padding-right: 5px;
+      }
+    }
+  }
+  
+  .invoice-divider {
+    height: 0;
+    margin: 0 0 20px 0;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+  }
+  
+  .mat-title {
+    margin: 0;
+  }
+  .details {
+    &:first-child {
+      padding-right: 8px;
+      @media screen and (max-width: $layout-breakpoint-xs)  {
+        padding-right: 0;
+      }
+    }
+    &:last-child {
+      padding-left: 8px;
+      @media screen and (max-width: $layout-breakpoint-xs)  {
+        padding-left: 0;
+      }
+    }
 
-
-.invoice, 
-.invoice-summary,
-.invoice-purchaser,
-.invoice-project,
-.invoice-footer,
-.invoice-totals {
-  margin: 20px;
+  }
+  .individual-name {
+    font-size: 14px;
+  }
+  .company-name {
+    margin: 0;
+    font-weight: 600;
+  }
+  .contact-container {
+    padding: 8px 13px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 2px;
+    min-height: 108px;
+    margin-bottom: 14px;
+  }
+  .payee.details .contact-container, .remit-payment .contact-container {
+    border-width: 0;
+    @media screen and (max-width: $layout-breakpoint-xs)  {
+      border-width: 1px;
+    }
+  }
+  div.project {
+    margin-bottom: 20px;
+    header.project-info {
+      .mat-subheading-1 {
+        margin: 0;
+        .project-name {
+          opacity: .85;
+          font-weight: 300;
+        }
+      }
+      div.project-subtotal {
+        padding: 0;
+        span {
+          padding: 0;
+        }
+      }
+    }
+    .assets {
+      padding: 0;
+      .asset-list li.project-asset-heading {
+        .mat-subheading-2 {
+          margin: 0;
+        }
+        & > div {
+          padding: 0 0 0 10px;
+        }
+        & > div:last-child {
+          padding: 0 10px 0 0;
+        }
+      }
+      .asset-list li.cart-asset {
+        margin: 0;
+        padding: 0;
+        border-style: solid;
+        border-radius: 0;
+        border-width: 0 1px 1px 1px;
+        &:nth-child(2) {
+          @media screen and (max-width: $layout-breakpoint-xs)  {
+            border-top-width: 1px;
+          }
+        }
+      }
+    }
+  }
+  .invoice-totals {
+    margin-bottom: 45px;
+  }
+  .remit-payment .details {
+    margin-right: 16px;
+    &:last-child {
+      margin-right: 0;
+    }
+    @media screen and (max-width: $layout-breakpoint-xs)  {
+      margin-right: 0;
+    }
+  }
 }

@@ -8,185 +8,268 @@
         layout-align="space-between end">
         <h2 flex="grow" class="mat-display-1">Invoice</h2>
         <div class="tools" flex="auto">
+          <a [routerLink]="['/orders', invoice.order.id]" class="is-outlined mini" mat-button color="primary">
+            Back to order
+          </a>
           <button disabled="true" mat-icon-button color="primary" title="Print Invoice">          
             <mat-icon>print</mat-icon>
           </button>
-          <a [routerLink]="['/orders', invoice.order.id]" mat-icon-button color="primary" 
-            title="Back to Order">
-            <mat-icon>keyboard_return</mat-icon>
-          </a>
         </div>
       </div>
     </header>
   </section>
 
-  <mat-card class='invoice'>
-
-
-  <section class="invoice-summary" flex="100" layout-align="center center" layout="row">
-    <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="center center" layout-align-gt-xs="space-between">
-      <div flex="100" flex-gt-xs="30" layout="row" layout-align="start">
-        <div flex="none"><img src={{invoice.payee.logoUrl}}></div>
-      </div>
-      <div class="payee mat-body-1" layout="column" layout-align="space-between" flex="100" flex-gt-xs="40">
-        <div *ngIf="invoice.payee.businessAddress" layout="column" layout-align="start">
-          <div>{{ invoice.payee.businessAddress.address }}</div>
-          <div *ngIf="invoice.payee.businessAddress.address2">{{ invoice.payee.businessAddress.address2 }}</div>
-          <div *ngIf="invoice.payee.businessAddress.address3">{{ invoice.payee.businessAddress.address3 }}</div>
-          <div>{{ invoice.payee.businessAddress.city }},
-            {{ invoice.payee.businessAddress.state }} {{ invoice.payee.businessAddress.zipcode }},
-            {{ invoice.payee.businessAddress.country }}</div>
-          <div>{{ invoice.payee.businessAddress.phone }}</div>
-        </div>
-        <div>
-          <div>{{ invoice.payee.taxId }}</div>
-          <div>{{ invoice.payee.email }}</div>
-        </div>
-      </div>
-      <div class="invoice-info mat-body-1" flex="100" flex-gt-xs="30" layout="column" layout-align="start">
-        <div>
-          <strong>Invoice Number: </strong>{{ invoice.order.id }}
-        </div>
-        <div>
-          <strong>Invoice Date: </strong>{{ invoice.order.createdOn }}
-        </div>
-        <div>
-          <strong>Order Type: </strong>{{ invoice.order.orderType }}
-        </div>
-        <div *ngIf="invoice.order.poNumber">
-          <strong>PO Number: </strong>{{ invoice.order.poNumber }}
-        </div>
-        <div *ngIf="invoice.order.paymentTerms">
-          <strong>Terms: </strong>{{ invoice.order.paymentTerms }}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="invoice-purchaser" flex="100" layout-align="center center" layout="row">
-    <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="center center" layout-align-gt-xs="space-between">
-      <div flex="100" flex-gt-xs="30" layout="row"></div>
-      <div class="bill-to mat-body-2" layout="column" layout-align="start" flex="100" flex-gt-xs="40">
-        <div class="mat-title">Bill To:</div> <!-- Data for hardcoded labels not yet implemented in the response -->
-        <div class="mat-body-1">Account.billingContact</div>
-        <div class="mat-body-1">Account:billingCompany</div>
-        <div class="mat-body-1">Account:billingStreet</div>
-        <div class="mat-body-1">Account:billingCity, billingState</div>
-        <div class="mat-body-1">Account:billingPostalCode</div>
-      </div>
-      <div class="invoice-info mat-body-1" flex="100" flex-gt-xs="30" layout="column" layout-align="start">
-        <div class="mat-title">Purchased By:</div>
-        <div class="mat-body-1">User:firstName, lastName</div>
-        <div class="mat-body-1">User:email</div>
-        <div class="mat-body-1">
-          <strong>ID: </strong>{{ invoice.order.ownerUserId }}
-        </div>
-      </div>  
-    </div>
-  </section>
-
-  <ng-container *ngFor="let project of invoice.order.projects">
-    <section class="invoice-project" flex="100" layout="column" layout-align="start">
-      <div flex="20" layout="row" layout-align="center">
-        <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="start" layout-align-gt-xs="space-between" style="border: 1px solid black">
-          <div flex="100" flex-gt-xs="50" layout="row" layout-align="start">
-            <div flex class="mat-subhead">{{ project.name }}</div>
-            <div flex class="mat-subhead">{{ project.clientName }}</div>
-          </div>
-          <div flex="100" flex-gt-xs="50" layout="row" layout-align="end">
-            <div class="mat-subhead">{{ project.subTotal | currency:'USD':true:'1.2-2' }}</div>
+  <section flex="100" layout-align="center center" layout="row">
+    <mat-card class="invoice" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="center center">
+      <header class="invoice-header" flex="100" layout="column" layout-align="center end">
+        <h1 class="invoice-label mat-display-3" flex="auto">Invoice</h1>
+      </header>
+      <section class="invoice-from" flex="100" layout="column" layout-gt-xs="row">
+        <div class="invoice-logo" flex="20">
+          <div class="logo-wrapper">
+            <span class="logo" [ngStyle]="{ 'background-image': 'url(' + invoice.payee.logoUrl + ')'}"></span>
           </div>
         </div>
-      </div>
-      <div flex="20" layout="row" layout-align="center">
-        <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="start" layout-align-gt-xs="space-between" style="border: 1px solid black">
-          <div flex="15" flex-offset="5">
-            <strong>PRODUCT</strong>
-          </div>
-          <div flex="20">
-            <strong>RIGHTS</strong>
-          </div>
-          <div flex="50">
-            <strong>ATTRIBUTES</strong>
-          </div>
-          <div flex="10" layout-align='end'>
-            <strong flex>PRICE</strong>
-          </div>
-        </div>
-      </div>
-      
-      <div *ngFor="let lineItem of project.lineItems" layout="row" layout-align="center">
-        <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="start" layout-align-gt-xs="space-between" style="border: 1px solid black">
-          <div flex="15" flex-offset="5">
-            <div class="mat-caption">{{ lineItem.asset.assetName }}</div>
-          </div>
-          <div flex="20">
-            <div class="mat-caption">{{ lineItem.asset.rightsManaged }}</div>
-          </div>
-          <div flex="50">
-            <div *ngFor="let attribute of lineItem.attributes" class="mat-caption">
-              <strong>{{ attribute.priceAttributeName }}: </strong>{{ attribute.selectedAttributeValue }}
+        <div flex="80">
+          <div flex="" layout="column" layout-gt-xs="row">
+            <div class="payee details" flex="50">
+              <div class="contact-container">
+                <h6 class="mat-subheading-1 company-name" *ngIf="invoice.payee.payeeName">
+                  {{ invoice.payee.payeeName }}
+                </h6>
+                <address *ngIf="invoice.payee.businessAddress">
+                  <span class="line-1">{{ invoice.payee.businessAddress.address }}</span>
+                  <span class="line-2" *ngIf="invoice.payee.businessAddress.address2">
+                    {{ invoice.payee.businessAddress.address2 }}
+                  </span>
+                  <span class="line-3" *ngIf="invoice.payee.businessAddress.address3">
+                    {{ invoice.payee.businessAddress.address3 }}
+                  </span>
+                  <span class="line-4">
+                    {{ invoice.payee.businessAddress.city }},
+                    {{ invoice.payee.businessAddress.state }} {{ invoice.payee.businessAddress.zipcode }},
+                    {{ invoice.payee.businessAddress.country }}
+                  </span>
+                  <span class="identification-number tax-ein"><span class="key">EIN</span>{{ invoice.payee.taxId }}</span>
+                  <span class="phone"><mat-icon>phone_iphone</mat-icon>{{ invoice.payee.businessAddress.phone }}</span>
+                  <span class="email">
+                    <a class="mailto" href="mailto:{{invoice.payee.email}}"><mat-icon>email</mat-icon>{{ invoice.payee.email }}</a>
+                  </span>
+                </address>
+              </div>
+            </div>
+            <div class="invoice-detail details" flex="50">
+              <div class="m-data">
+                <div class="row">
+                  <div class="cell">
+                    <h5 class="mat-subheading-1">
+                      Invoice number:
+                    </h5>
+                  </div>
+                  <div class="cell">
+                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.id }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="cell">
+                    <h5 class="mat-subheading-1">
+                      Invoice date:
+                    </h5>
+                  </div>
+                  <div class="cell">
+                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.createdOn }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="cell">
+                    <h5 class="mat-subheading-1">
+                      Order type:
+                    </h5>
+                  </div>
+                  <div class="cell">
+                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.orderType }}</p>
+                  </div>
+                </div>
+                <div class="row" *ngIf="invoice.order.poNumber">
+                  <div class="cell">
+                    <h5 class="mat-subheading-1">
+                      Purchase order:
+                    </h5>
+                  </div>
+                  <div class="cell">
+                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.poNumber }}</p>
+                  </div>
+                </div>
+                <div class="row" *ngIf="invoice.order.paymentTerms">
+                  <div class="cell">
+                    <h5 class="mat-subheading-1">
+                      Payment terms:
+                    </h5>
+                  </div>
+                  <div class="cell">
+                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.paymentTerms }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div flex="10" layout-align='end'>
-            <div class="mat-caption">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</div>
-          </div>
+
+          <div class="billing" flex="" layout="column" layout-gt-xs="row">
+            <div class="details" flex="50">
+              <h4 class="mat-title">Bill to</h4>
+              <div class="contact-container">
+                <span class="individual-name">Joyce McCallister</span>
+                <h6 class="mat-subheading-1 company-name" *ngIf="invoice.order.orderAddress.accountName">
+                  {{ invoice.order.orderAddress.accountName }}
+                </h6>
+                <address *ngIf="invoice.order.orderAddress.billingInfo">
+                  <span class="line-1">
+                    {{ invoice.order.orderAddress.billingInfo.address.address }}
+                  </span>
+                  <span class="line-2">
+                    {{ invoice.order.orderAddress.billingInfo.address.city }},
+                    {{ invoice.order.orderAddress.billingInfo.address.state }} {{ invoice.order.orderAddress.billingInfo.address.zipcode }},
+                    {{ invoice.order.orderAddress.billingInfo.address.country }}
+                  </span>
+                  <span class="phone"><mat-icon>phone_iphone</mat-icon>{{ invoice.order.orderAddress.billingInfo.address.phone }}</span>
+                </address>
+              </div>
+            </div>
+            <div class="details" flex="50">
+              <h4 class="mat-title">Purchased by</h4>
+              <div class="contact-container">
+                <span class="individual-name">Jonathan McDermott</span>
+                <address>
+                  <span class="identification-number user-id"><span class="key">ID</span>{{ invoice.order.ownerUserId }}</span>
+                  <span class="email">
+                    <a class="mailto" href="mailto:{{invoice.payee.email}">
+                      <mat-icon>email</mat-icon>jmcdermott@freelancer.com
+                    </a>
+                  </span>
+                </address>
+              </div>
+            </div>
+          </div>    
         </div>
-      </div>
+      </section>
 
-      <div *ngFor="let feeLineItem of project.feeLineItems" layout="row" layout-align="center">
-        <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="start" layout-align-gt-xs="space-between" style="border: 1px solid black">
-          <div flex="15" flex-offset="5">
-            <div class="mat-caption"><strong>Fee</strong></div>
-          </div>
-          <div flex="20">
-            <div class="mat-caption"><strong>{{ feeLineItem.feeType }}</strong></div>
-          </div>
-          <div flex="50">
-            <div class="mat-caption">{{ feeLineItem.notes }}</div>
-          </div>
-          <div flex="10" layout-align='end'>
-            <div class="mat-caption">{{ feeLineItem.amount | currency:'USD':true:'1.2-2' }}</div>
-          </div>
+      <h4 class="mat-title">Invoice summary</h4>
+      <div class="invoice-divider"></div>
+
+      <ng-container *ngFor="let project of invoice.order.projects">
+        <div class="project">
+          <header class="project-info" layout-gt-xs="row" layout="column">
+            <h5 class="mat-subheading-1" flex="100" flex-gt-sm="auto">
+              <span class="project-label">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
+              <span class="project-name">{{ project.name }}</span>
+            </h5>
+            <h5 class="mat-subheading-1" flex="100" flex-gt-sm="auto">
+              <span class="project-label">{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</span>
+              <span class="project-name">{{ project.clientName }}</span>
+            </h5>
+            <div flex="100" flex-gt-sm="auto" layout="column" layout-align="end end">
+              <div class="project-subtotal mat-caption">
+                <strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
+                <span>{{ project.subTotal | currency:'USD':true:'1.2-2' }}</span>
+              </div>
+            </div>
+          </header>
+          <section class="assets" layout="column">
+            <ul class="asset-list">
+              <li 
+                class="project-asset-heading" 
+                flex="100" 
+                layout="row" 
+                hide-xs>
+                <div class="heading" flex="100" flex-gt-xs="40">
+                  <h6 class="mat-subheading-2">Product</h6>
+                </div>
+                <div class="heading" flex="100" flex-gt-xs="15">
+                  <h6 class="mat-subheading-2">Rights</h6>
+                </div>
+                <div class="heading" flex="100" flex-gt-xs="35">
+                  <h6 class="mat-subheading-2">Use</h6>
+                </div>
+                <div class="heading" flex="100" flex-gt-xs="10" layout="column" layout-align-gt-xs="end end">
+                  <h6 class="mat-subheading-2">Price</h6>
+                </div>
+              <li 
+                *ngFor="let lineItem of project.lineItems"
+                class="cart-asset" 
+                flex="100" 
+                layout="row" 
+                layout-xs="column">
+                <cart-asset-component [asset]="lineItem.asset" flex="100" flex-gt-xs="40"></cart-asset-component>
+                <div flex="100" flex-gt-xs="15" layout="column" layout-padding>
+                  <div class="mat-caption">{{ lineItem.asset.rightsManaged }}</div>
+                </div>
+                <div flex="35" layout="column" layout-padding>
+                  <div *ngFor="let attribute of lineItem.attributes" class="mat-caption">
+                    <strong>{{ attribute.priceAttributeName }}: </strong>{{ attribute.selectedAttributeValue }}
+                  </div>
+                </div>
+                <div flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
+                  <div class="mat-suheading-2">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</div>
+                </div>
+              </li>
+            </ul>
+          </section>
         </div>
-      </div>
-    </section>
-  </ng-container>
-
-  <section class="invoice-totals" flex="100" layout-align="center center" layout="row">
-    <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="center center" layout-align-gt-xs="space-between">
-      <div flex="60" layout="row" layout-align="start">Notes</div>
-      <div flex="40" layout="column" layout-align="start end">
-        <div class='mat-caption'><strong>Total: </strong>{{ invoice.order.subTotal | currency:'USD':true:'1.2-2' }}</div>
-        <div class='mat-caption'><strong>Discount: </strong>{{ invoice.order.discount | currency:'USD':true:'1.2-2' }}</div>
-        <div class='mat-caption'><strong>Amount Due: </strong>{{ invoice.order.total | currency:'USD':true:'1.2-2' }}</div>
-        <div class='mat-caption'><strong>Terms: </strong>{{ invoice.order.paymentTerms }}</div>
-      </div>  
-    </div>
+      </ng-container>
+      
+      <section class="invoice-totals">
+        <div layout="column" layout-gt-xs="row" layout-align-gt-xs="space-between">
+          <div  flex="100" flex-gt-xs="60">Notes:</div>
+          <div  flex="100" flex-gt-xs="40" layout="column" layout-align="start end">
+            <div class="mat-title">
+              <strong>Total: </strong>{{ invoice.order.subTotal | currency:'USD':true:'1.2-2' }}
+            </div>
+            <div class="mat-title"><strong>Discount: </strong>{{ invoice.order.discount | currency:'USD':true:'1.2-2' }}</div>
+            <div class="mat-headline"><strong>Amount Due: </strong>{{ invoice.order.total | currency:'USD':true:'1.2-2' }}</div>
+            <div class="mat-title"><strong>Terms: </strong>{{ invoice.order.paymentTerms }}</div>
+          </div>  
+        </div>
+      </section>
+      
+      
+      <section class="remit-payment">
+        <h4 class="mat-title">Please remit payment to</h4>
+        <div class="invoice-divider"></div>
+        
+        <div layout="column" layout-gt-xs="row">
+          <div *ngFor="let payee of invoice.payee.paymentAddresses" class="details contact-container" flex="30">
+            <span class="individual-name" *ngIf="payee.name">{{payee.name}}</span>
+            <h6 class="mat-subheading-1 company-name" *ngIf="payee.entity">
+              {{ payee.entity }}
+            </h6>
+            <address>
+              <span class="line-1">{{ payee.address.address }}</span>
+              <span class="line-2" *ngIf="payee.address.address2">
+                {{ payee.address.address2 }}
+              </span>
+              <span class="line-3" *ngIf="payee.address.address3">
+                {{ payee.address.address3 }}
+              </span>
+              <span class="line-4">
+                {{ payee.address.city }},
+                {{ payee.address.state }} {{ payee.address.zipcode }},
+                {{ payee.address.country }}
+              </span>
+              <span class="phone"><mat-icon>phone_iphone</mat-icon>{{ payee.address.phone }}</span>
+            </address>
+          </div>
+          <div flex="30"></div>
+        </div>
+      </section>
+    </mat-card>
   </section>
 
-  <section class="invoice-footer" flex="100" layout-align="start" layout="column">
-    <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="center center" layout-align-gt-xs="space-between">
-      <div class="mat-title">Please remit payment to:</div>
-    </div>
-    <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="center center" layout-align-gt-xs="space-between">
-      <div class='mat-caption' *ngFor="let address of invoice.payee.paymentAddresses" flex="33" layout="column" layout-align="center center">
-        <div>{{ address | json }}</div>
-      </div>
-    </div>
-  </section>
-  </mat-card>
 
 
-  <section>
-    <pre style="overflow:auto">{{ invoice.payee | json }}</pre>
-  </section>
-  <hr/>
-  <section>
-    <pre style="overflow:auto">{{ invoice.order | json }}</pre>
-  </section>
-  <hr/>
-  <section>
-    <pre style="overflow:auto">{{ invoice.documents | json }}</pre>
-  </section>
+
+
+<!-- <pre style="overflow:auto">{{ invoice.payee | json }}</pre> -->
+<!-- <pre style="overflow:auto">{{ invoice.order | json }}</pre> -->
+<!-- <pre style="overflow:auto">{{ invoice.documents | json }}</pre> -->
+
 </ng-container>
