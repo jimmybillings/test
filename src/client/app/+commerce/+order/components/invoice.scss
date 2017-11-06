@@ -179,7 +179,8 @@ invoice-component {
           padding: 0 10px 0 0;
         }
       }
-      .asset-list li.cart-asset {
+      .asset-list li.cart-asset,
+      .asset-list li.fee-item {
         margin: 0;
         padding: 0;
         border-style: solid;
@@ -189,6 +190,14 @@ invoice-component {
           @media screen and (max-width: $layout-breakpoint-xs)  {
             border-top-width: 1px;
           }
+        }
+        .fee-description {
+          font-size: 14px;
+        }
+        .fee-notes {
+          font-size: 12px;
+          margin-bottom: 0;
+          min-height: unset;
         }
       }
     }

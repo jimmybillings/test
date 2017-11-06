@@ -33,7 +33,7 @@
             background-color: mat-color($primary);
             color: mat-color($background, card);
           }
-          li.cart-asset {
+          li.cart-asset, li.fee-item {
             border-color: mat-color($foreground, base, .15);
             &:nth-child(odd) {
               background-color:  transparent;

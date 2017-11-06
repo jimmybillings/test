@@ -212,6 +212,38 @@
                   <div class="mat-suheading-2">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</div>
                 </div>
               </li>
+              <li 
+                *ngFor="let feeLineItem of project.feeLineItems" 
+                class="fee-item"
+                flex="100" 
+                layout="row" 
+                layout-xs="column">
+                <div flex="100" flex-gt-xs="40">
+                  <div layout-align="start start" layout-gt-xs="row">
+                    <div flex-gt-sm="30" flex-sm="40" flex="100" layout-padding>
+                      <div class="fee-indicator" layout="column">
+                        <span flex class="fee-title">{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.HEADING' | translate }}</span>
+                        <span flex class="fee-type mat-caption">{{feeLineItem.feeType}}</span>
+                      </div>
+                    </div>
+                    <div flex-gt-sm="70" flex-sm="60" flex="100" layout-padding>
+                      <div class="fee-description">
+                        {{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.TITLE' | translate:{type:feeLineItem.feeType} }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div flex="100" flex-gt-xs="15" layout="column" layout-padding>
+                </div>
+                <div flex="100" flex="35" layout="column" layout-padding>
+                  <div class="mat-caption fee-notes">
+                    {{ feeLineItem.notes }}
+                  </div>
+                </div>
+                <div flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
+                  <div class="mat-suheading-2">{{ feeLineItem.amount | currency:'USD':true:'1.2-2' }}</div>
+                </div>
+              </li>
             </ul>
           </section>
         </div>
@@ -268,8 +300,8 @@
 
 
 
-<!-- <pre style="overflow:auto">{{ invoice.payee | json }}</pre> -->
-<!-- <pre style="overflow:auto">{{ invoice.order | json }}</pre> -->
-<!-- <pre style="overflow:auto">{{ invoice.documents | json }}</pre> -->
+<pre style="overflow:auto">{{ invoice.payee | json }}</pre>
+<pre style="overflow:auto">{{ invoice.order | json }}</pre>
+<pre style="overflow:auto">{{ invoice.documents | json }}</pre>
 
 </ng-container>
