@@ -390,5 +390,18 @@ export function main() {
       }
     });
 
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'moveLineItem',
+        parameters: [{ project: 'some project' }, { lineItem: 'some item' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Move Line Item',
+        project: { project: 'some project' },
+        lineItem: { lineItem: 'some item' }
+      }
+    });
+
   });
 }

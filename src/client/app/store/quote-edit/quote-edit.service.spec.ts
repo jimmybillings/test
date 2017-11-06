@@ -354,6 +354,17 @@ export function main() {
           expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
       });
+
+      describe('moveLineItem()', () => {
+        it('call the API service correctly', () => {
+          serviceUnderTest.moveLineItem(1, { id: '123' } as any, { id: '456' } as any);
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/move/lineItem');
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ lineItemId: '456', projectId: '123' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
     });
   });
 }

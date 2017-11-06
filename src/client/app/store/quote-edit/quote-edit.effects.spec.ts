@@ -590,5 +590,31 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'moveLineItem',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.MoveLineItem.Type,
+        project: { project: 'some project' },
+        lineItem: { lineItem: 1 }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'moveLineItem',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { project: 'some project' }, { lineItem: 1 }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'quoteRefreshAndNotfiy',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }
