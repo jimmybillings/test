@@ -15,6 +15,10 @@ import * as CartActions from './store/cart/cart.actions';
 import * as CartState from './store/cart/cart.state';
 export type CartState = CartState.State;
 
+import * as CheckoutActions from './store/checkout/checkout.actions';
+import * as CheckoutState from './store/checkout/checkout.state';
+export type CheckoutState = CheckoutState.State;
+
 import * as CommentActions from './store/comment/comment.actions';
 import * as CommentState from './store/comment/comment.state';
 export type CommentState = CommentState.State;
@@ -26,6 +30,10 @@ export type DeliveryOptionsState = DeliveryOptionsState.State;
 import * as DialogActions from './store/dialog/dialog.actions';
 
 import * as ErrorActions from './store/error/error.actions';
+
+import * as FeeConfigActions from './store/fee-config/fee-config.actions';
+import * as FeeConfigState from './store/fee-config/fee-config.state';
+export type FeeConfigState = FeeConfigState.State;
 
 import * as HeaderDisplayOptionsActions from './store/header-display-options/header-display-options.actions';
 import * as HeaderDisplayOptionsState from './store/header-display-options/header-display-options.state';
@@ -71,10 +79,6 @@ import * as MultiLingualActions from './store/multi-lingual/multi-lingual.action
 import * as MultiLingualState from './store/multi-lingual/multi-lingual.state';
 export type MultiLingualState = MultiLingualState.State;
 
-import * as FeeConfigActions from './store/fee-config/fee-config.actions';
-import * as FeeConfigState from './store/fee-config/fee-config.state';
-export type FeeConfigState = FeeConfigState.State;
-
 // Temporary imports for LegacyService.
 import { LegacyAssetService } from './store/asset/asset.service';
 
@@ -82,10 +86,12 @@ export interface ActionFactory {
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly asset: AssetActions.ActionFactory;
   readonly cart: CartActions.ActionFactory;
+  readonly checkout: CheckoutActions.ActionFactory;
   readonly comment: CommentActions.ActionFactory;
   readonly deliveryOptions: DeliveryOptionsActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
   readonly error: ErrorActions.ActionFactory;
+  readonly feeConfig: FeeConfigActions.ActionFactory;
   readonly headerDisplayOptions: HeaderDisplayOptionsActions.ActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.ActionFactory;
   readonly multiLingual: MultiLingualActions.ActionFactory;
@@ -98,17 +104,18 @@ export interface ActionFactory {
   readonly snackbar: SnackbarActions.ActionFactory;
   readonly speedPreview: SpeedPreviewActions.ActionFactory;
   readonly uiConfig: UiConfigActions.ActionFactory;
-  readonly feeConfig: FeeConfigActions.ActionFactory;
 };
 
 export interface InternalActionFactory {
   readonly activeCollection: ActiveCollectionActions.InternalActionFactory;
   readonly asset: AssetActions.InternalActionFactory;
   readonly cart: CartActions.InternalActionFactory;
+  readonly checkout: CheckoutActions.InternalActionFactory;
   readonly comment: CommentActions.InternalActionFactory;
   readonly deliveryOptions: DeliveryOptionsActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
   readonly error: ErrorActions.InternalActionFactory;
+  readonly feeConfig: FeeConfigActions.InternalActionFactory;
   readonly headerDisplayOptions: HeaderDisplayOptionsActions.InternalActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.InternalActionFactory;
   readonly multiLingual: MultiLingualActions.InternalActionFactory;
@@ -121,15 +128,16 @@ export interface InternalActionFactory {
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
   readonly uiConfig: UiConfigActions.InternalActionFactory;
-  readonly feeConfig: FeeConfigActions.InternalActionFactory;
 };
 
 export interface AppState {
   readonly activeCollection: ActiveCollectionState;
   readonly asset: AssetState;
   readonly cart: CartState;
+  readonly checkout: CheckoutState;
   readonly comment: CommentState;
   readonly deliveryOptions: DeliveryOptionsState;
+  readonly feeConfig: FeeConfigState;
   readonly headerDisplayOptions: HeaderDisplayOptionsState;
   readonly loadingIndicator: LoadingIndicatorState;
   readonly multiLingual: MultiLingualState;
@@ -140,7 +148,6 @@ export interface AppState {
   readonly snackbar: SnackbarState;
   readonly speedPreview: SpeedPreviewState;
   readonly uiConfig: UiConfigState;
-  readonly feeConfig: FeeConfigState;
 }
 
 export interface AppReducers {
@@ -156,8 +163,10 @@ export const reducers: AppReducers = {
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,
   cart: CartState.reducer,
+  checkout: CheckoutState.reducer,
   comment: CommentState.reducer,
   deliveryOptions: DeliveryOptionsState.reducer,
+  feeConfig: FeeConfigState.reducer,
   headerDisplayOptions: HeaderDisplayOptionsState.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
   order: OrderState.reducer,
@@ -167,8 +176,7 @@ export const reducers: AppReducers = {
   quoteShow: QuoteShowState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
-  uiConfig: UiConfigState.reducer,
-  feeConfig: FeeConfigState.reducer
+  uiConfig: UiConfigState.reducer
 };
 
 export type ActionFactoryMapper = (factory: ActionFactory) => Action;
@@ -182,10 +190,12 @@ export class AppStore {
     activeCollection: new ActiveCollectionActions.ActionFactory(),
     asset: new AssetActions.ActionFactory(),
     cart: new CartActions.ActionFactory(),
+    checkout: new CheckoutActions.ActionFactory(),
     comment: new CommentActions.ActionFactory(),
     deliveryOptions: new DeliveryOptionsActions.ActionFactory(),
     dialog: new DialogActions.ActionFactory(),
     error: new ErrorActions.ActionFactory(),
+    feeConfig: new FeeConfigActions.ActionFactory(),
     headerDisplayOptions: new HeaderDisplayOptionsActions.ActionFactory(),
     loadingIndicator: new LoadingIndicatorActions.ActionFactory(),
     multiLingual: new MultiLingualActions.ActionFactory(),
@@ -197,18 +207,19 @@ export class AppStore {
     router: new RouterActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
     speedPreview: new SpeedPreviewActions.ActionFactory(),
-    uiConfig: new UiConfigActions.ActionFactory(),
-    feeConfig: new FeeConfigActions.ActionFactory()
+    uiConfig: new UiConfigActions.ActionFactory()
   };
 
   private readonly internalActionFactory: InternalActionFactory = {
     activeCollection: new ActiveCollectionActions.InternalActionFactory(),
     asset: new AssetActions.InternalActionFactory(),
     cart: new CartActions.InternalActionFactory(),
+    checkout: new CheckoutActions.InternalActionFactory(),
     comment: new CommentActions.InternalActionFactory(),
     deliveryOptions: new DeliveryOptionsActions.InternalActionFactory(),
     dialog: new DialogActions.InternalActionFactory(),
     error: new ErrorActions.InternalActionFactory(),
+    feeConfig: new FeeConfigActions.InternalActionFactory(),
     headerDisplayOptions: new HeaderDisplayOptionsActions.InternalActionFactory(),
     loadingIndicator: new LoadingIndicatorActions.InternalActionFactory(),
     multiLingual: new MultiLingualActions.InternalActionFactory(),
@@ -220,8 +231,7 @@ export class AppStore {
     router: new RouterActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
     speedPreview: new SpeedPreviewActions.InternalActionFactory(),
-    uiConfig: new UiConfigActions.InternalActionFactory(),
-    feeConfig: new FeeConfigActions.InternalActionFactory()
+    uiConfig: new UiConfigActions.InternalActionFactory()
   };
 
   private legacyService: LegacyService;

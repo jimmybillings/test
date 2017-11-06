@@ -134,14 +134,6 @@ export interface QuoteState {
   data: Quote;
 };
 
-export interface CheckoutState {
-  paymentOptions: PaymentOptions;
-  addresses: ViewAddress[];
-  selectedAddress: ViewAddress;
-  authorization: any;
-  selectedPaymentType: PaymentOption;
-}
-
 export interface FeeConfigState {
   initialized: boolean;
   feeConfig: FeeConfig;
@@ -318,4 +310,19 @@ export interface LicenseAsset {
   assetLineItemId: string;
   name: string;
   thumbnailUrl: string;
+}
+
+export interface CreditCardAuthorization {
+  card: {
+    brand: string;
+    last4: string;
+    exp_month: string;
+    exp_year: string;
+  };
+  error?: {
+    code: number;
+    param: any;
+  };
+  id?: string;
+  type?: string;
 }

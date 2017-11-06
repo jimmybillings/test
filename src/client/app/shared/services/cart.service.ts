@@ -7,7 +7,6 @@ import { CurrentUserService } from '../services/current-user.service';
 import { Address, ViewAddress } from '../interfaces/user.interface';
 import * as SubclipMarkersInterface from '../interfaces/subclip-markers';
 import { AppStore, CartState } from '../../app.store';
-import { CheckoutStore } from '../stores/checkout.store';
 import {
   Order,
   Cart,
@@ -15,7 +14,6 @@ import {
   AssetLineItem,
   AddAssetParameters,
   QuoteOptions,
-  CheckoutState,
   OrderableType,
   PaymentType,
   PaymentOptions,
@@ -29,12 +27,12 @@ import { SelectedPriceAttributes } from '../interfaces/common.interface';
 import { Frame } from '../modules/wazee-frame-formatter/index';
 import { enhanceAsset } from '../interfaces/enhanced-asset';
 import { Common } from '../utilities/common.functions';
+import { CheckoutState } from '../../app.store';
 
 @Injectable()
 export class CartService {
   constructor(
     private store: AppStore,
-    private checkoutStore: CheckoutStore,
     private api: ApiService,
     private currentUser: CurrentUserService
   ) { }
@@ -48,11 +46,11 @@ export class CartService {
   }
 
   public get checkoutState(): CheckoutState {
-    return this.checkoutStore.state;
+    return this.store.snapshot(state => state.checkout);
   }
 
   public get checkoutData(): Observable<CheckoutState> {
-    return this.checkoutStore.data;
+    return this.store.select(state => state.checkout);
   }
 
   public get cart(): Observable<Cart> {
@@ -82,7 +80,7 @@ export class CartService {
   }
 
   public get paymentType(): Observable<PaymentOption> {
-    return this.checkoutData.map((state: CheckoutState) => state.selectedPaymentType);
+    return this.store.select(state => state.checkout.selectedPaymentType);
   }
 
   public get loaded(): boolean {
@@ -90,7 +88,7 @@ export class CartService {
   }
 
   public get paymentOptions(): Observable<PaymentOptions> {
-    return this.checkoutData.map((data: CheckoutState) => data.paymentOptions);
+    return this.store.select(state => state.checkout.paymentOptions);
   }
 
   public get hasAssetLineItems(): Observable<boolean> {
@@ -101,12 +99,8 @@ export class CartService {
     });
   }
 
-  public updateSelectedPaymentType(type: PaymentOption): void {
-    this.checkoutStore.updateOrderInProgress('selectedPaymentType', type);
-  }
-
   public purchase(): Observable<number> {
-    switch (this.checkoutState.selectedPaymentType) {
+    switch (this.store.snapshot(state => state.checkout.selectedPaymentType)) {
       case 'CreditCard':
         return this.purchaseWithCreditCard();
       case 'PurchaseOnCredit':
@@ -199,13 +193,9 @@ export class CartService {
 
   public getPaymentOptions() {
     this.api.get(Api.Orders, 'cart/paymentOptions').subscribe((options: PaymentOptions) => {
-      this.updateOrderInProgress('paymentOptions', options);
-      if (options.paymentOptions.length === 1) this.updateSelectedPaymentType(options.paymentOptions[0]);
+      this.store.dispatch(factory => factory.checkout.setAvailablePaymentOptions(options));
+      this.store.dispatch(factory => factory.checkout.setSelectedPaymentType(this.defaultPaymentTypeFor(options)));
     });
-  }
-
-  public updateOrderInProgress(type: string, data: any): void {
-    this.checkoutStore.updateOrderInProgress(type, data);
   }
 
   public paymentOptionsEqual(options: Array<PaymentOption>): Observable<boolean> {
@@ -222,6 +212,12 @@ export class CartService {
   }
 
   // Private methods
+  private defaultPaymentTypeFor(options: PaymentOptions): PaymentOption {
+    if (options.paymentOptions.length === 1) {
+      return options.paymentOptions[0];
+    }
+    return 'CreditCard';
+  }
 
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;

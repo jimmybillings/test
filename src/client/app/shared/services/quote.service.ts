@@ -9,7 +9,6 @@ import {
   Quote,
   Order,
   QuoteOptions,
-  CheckoutState,
   OrderableType,
   PaymentType,
   AddressPurchaseOptions,
@@ -21,8 +20,7 @@ import {
   LicenseAgreements,
   AssetLineItem
 } from '../interfaces/commerce.interface';
-import { AppStore, QuoteShowState } from '../../app.store';
-import { CheckoutStore } from '../stores/checkout.store';
+import { AppStore, QuoteShowState, CheckoutState } from '../../app.store';
 import { enhanceAsset } from '../interfaces/enhanced-asset';
 
 @Injectable()
@@ -31,7 +29,6 @@ export class QuoteService {
     private api: ApiService,
     private cartService: CartService,
     private store: AppStore,
-    private checkoutStore: CheckoutStore,
     private userService: UserService
   ) { }
 
@@ -67,11 +64,11 @@ export class QuoteService {
   }
 
   public get checkoutData(): Observable<CheckoutState> {
-    return this.checkoutStore.data;
+    return this.store.select(state => state.checkout);
   }
 
   public get checkoutState(): CheckoutState {
-    return this.checkoutStore.state;
+    return this.store.snapshot(state => state.checkout);
   }
 
   public get total(): Observable<number> {
@@ -99,14 +96,6 @@ export class QuoteService {
   }
 
   // Public Interface
-  public updateOrderInProgress(type: string, data: any): void {
-    this.checkoutStore.updateOrderInProgress(type, data);
-  }
-
-  public updateSelectedPaymentType(type: PaymentOption): void {
-    this.checkoutStore.updateOrderInProgress('selectedPaymentType', type);
-  }
-
   public purchase(): Observable<number> {
     switch (this.checkoutState.selectedPaymentType) {
       case 'CreditCard':
@@ -121,8 +110,8 @@ export class QuoteService {
   public getPaymentOptions() {
     this.api.get(Api.Orders, `quote/paymentOptions/${this.state.data.id}`)
       .subscribe((options: PaymentOptions) => {
-        this.updateOrderInProgress('paymentOptions', options);
-        this.updateSelectedPaymentType(this.defaultPaymentTypeFor(options));
+        this.store.dispatch(factory => factory.checkout.setAvailablePaymentOptions(options));
+        this.store.dispatch(factory => factory.checkout.setSelectedPaymentType(this.defaultPaymentTypeFor(options)));
       });
   }
 

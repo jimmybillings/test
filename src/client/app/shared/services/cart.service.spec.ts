@@ -29,17 +29,15 @@ export function main() {
       rightsManaged: 'Rights Managed'
     };
 
-    let serviceUnderTest: CartService, mockApi: MockApiService, mockStore: MockAppStore,
-      mockCheckoutStore: any, mockCurrentUserServiceService: any, loadSpy: jasmine.Spy, loadSuccessSpy: jasmine.Spy;
+    let serviceUnderTest: CartService;
+    let mockApi: MockApiService;
+    let mockStore: MockAppStore;
+    let mockCurrentUserServiceService: any;
+    let loadSpy: jasmine.Spy;
+    let loadSuccessSpy: jasmine.Spy;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
-
-      mockCheckoutStore = {
-        state: {},
-        data: Observable.of({}),
-        updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
-      };
 
       mockApi = new MockApiService();
 
@@ -52,7 +50,7 @@ export function main() {
         fullName: jasmine.createSpy('fullName').and.returnValue(Observable.of('Ross Edfort'))
       };
 
-      serviceUnderTest = new CartService(mockStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
+      serviceUnderTest = new CartService(mockStore, mockApi.injector, mockCurrentUserServiceService);
     });
 
     describe('data getter', () => {
@@ -260,15 +258,11 @@ export function main() {
 
       describe('for a credit card', () => {
         beforeEach(() => {
-          mockCheckoutStoreState = {
-            selectedPaymentType: 'CreditCard', authorization: { id: 123 }, selectedAddress: { addressEntityId: 12 }
-          };
-          mockCheckoutStore = {
-            state: mockCheckoutStoreState,
-            updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
-          };
           setCheckoutStateSpy = mockStore.createActionFactoryMethod('order', 'setCheckoutState');
-          serviceUnderTest = new CartService(mockStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
+          mockStore.createStateSection('checkout', {
+            selectedPaymentType: 'CreditCard', authorization: { id: 123 }, selectedAddress: { addressEntityId: 12 }
+          });
+          serviceUnderTest = new CartService(mockStore, mockApi.injector, mockCurrentUserServiceService);
         });
 
         it('calls the API service correctly', () => {
@@ -293,15 +287,11 @@ export function main() {
 
       describe('for purchase on credit', () => {
         beforeEach(() => {
-          mockCheckoutStoreState = {
-            selectedPaymentType: 'PurchaseOnCredit', authorization: { id: 123 }, selectedAddress: { addressEntityId: 12 }
-          };
-          mockCheckoutStore = {
-            state: mockCheckoutStoreState,
-            updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
-          };
           setCheckoutStateSpy = mockStore.createActionFactoryMethod('order', 'setCheckoutState');
-          serviceUnderTest = new CartService(mockStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
+          mockStore.createStateSection('checkout', {
+            selectedPaymentType: 'PurchaseOnCredit', authorization: { id: 123 }, selectedAddress: { addressEntityId: 12 }
+          });
+          serviceUnderTest = new CartService(mockStore, mockApi.injector, mockCurrentUserServiceService);
         });
 
         it('should call the API service correctly', () => {
@@ -342,14 +332,6 @@ export function main() {
         serviceUnderTest.editLineItem(mockLineItem, { selectedTranscodeTarget: '1080i' });
 
         expect(loadSuccessSpy).toHaveBeenCalledWith(mockApi.putResponse);
-      });
-    });
-
-    describe('updateOrderInProgress', () => {
-      it('should call updateOrderInProgress on the store', () => {
-        serviceUnderTest.updateOrderInProgress('addresses', [{}, {}]);
-
-        expect(mockCheckoutStore.updateOrderInProgress).toHaveBeenCalledWith('addresses', [{}, {}]);
       });
     });
 

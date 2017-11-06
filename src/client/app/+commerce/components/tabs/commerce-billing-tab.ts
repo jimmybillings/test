@@ -1,17 +1,18 @@
 import { Component, Output, Input, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { UserService } from '../../../shared/services/user.service';
 import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { Address, User, ViewAddress, AddressKeys } from '../../../shared/interfaces/user.interface';
 import { RowFormFields } from '../../../shared/interfaces/forms.interface';
-import { CheckoutState } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzAddressFormComponent } from '../../../shared/modules/wz-form/components/wz-address-form/wz.address-form.component';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { Tab } from './tab';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { AppStore, CheckoutState } from '../../../app.store';
 
 export class CommerceBillingTab extends Tab implements OnInit {
   public orderInProgress: Observable<CheckoutState>;
@@ -26,13 +27,14 @@ export class CommerceBillingTab extends Tab implements OnInit {
     protected commerceService: CartService | QuoteService,
     protected user: UserService,
     protected currentUser: CurrentUserService,
-    protected dialog: WzDialogService
+    protected dialog: WzDialogService,
+    protected store: AppStore
   ) {
     super();
   }
 
   ngOnInit() {
-    this.orderInProgress = this.commerceService.checkoutData;
+    this.orderInProgress = this.store.select(state => state.checkout);
     this.fetchAddresses().subscribe();
   }
 
@@ -82,12 +84,12 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   public selectAddress(address: ViewAddress, nextTab: boolean = true): void {
-    this.commerceService.updateOrderInProgress('selectedAddress', address);
+    this.store.dispatch(factory => factory.checkout.setSelectedAddress(address));
     if (nextTab) this.goToNextTab();
   }
 
   public get userCanProceed(): Observable<boolean> {
-    return this.orderInProgress.map((data: any) => {
+    return this.store.select(state => state.checkout).map((data: CheckoutState) => {
       if (!data.selectedAddress.address) {
         return false;
       } else {
@@ -170,7 +172,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
       this.validate(addresses);
       this.showAddAddressForm = this.showAddForm(addresses);
       this.showEditAddressForm = this.showEditForm(addresses);
-      this.commerceService.updateOrderInProgress('addresses', addresses);
+      this.store.dispatch(factory => factory.checkout.setAvailableAddresses(addresses));
     });
   }
 
@@ -189,7 +191,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
 
   private determineNewSelectedAddress = (addresses: Array<ViewAddress>) => {
     let newSelected: ViewAddress;
-    this.orderInProgress.take(1).subscribe((data: any) => {
+    this.store.select(state => state.checkout).take(1).subscribe((data: CheckoutState) => {
       if (data.selectedAddress && typeof data.selectedAddress.addressEntityId !== 'undefined') {
         newSelected = this.previouslySelectedAddress;
       } else {
@@ -201,7 +203,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
 
   private get previouslySelectedAddress(): ViewAddress {
     let previouslySelected: ViewAddress;
-    this.orderInProgress.take(1).subscribe((data: any) => {
+    this.store.select(state => state.checkout).take(1).subscribe((data: CheckoutState) => {
       previouslySelected = data.addresses.filter((a: ViewAddress) => {
         return a.addressEntityId === data.selectedAddress.addressEntityId;
       })[0];

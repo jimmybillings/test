@@ -8,6 +8,7 @@ import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/w
 import { LicenseAgreements, OrderableType } from '../../../../shared/interfaces/commerce.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 import { Common } from '../../../../shared/utilities/common.functions';
+import { AppStore } from '../../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -21,9 +22,10 @@ export class QuoteConfirmTabComponent extends CommerceConfirmTab {
     protected router: Router,
     public quoteService: QuoteService,
     public dialogService: WzDialogService,
-    public userCan: CommerceCapabilities
+    public userCan: CommerceCapabilities,
+    protected store: AppStore
   ) {
-    super(router, quoteService, dialogService, userCan);
+    super(router, quoteService, dialogService, userCan, store);
   }
 
   public showLicenseAgreements(): void {

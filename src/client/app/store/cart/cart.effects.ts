@@ -52,8 +52,6 @@ export class CartEffects {
     this.store.create(factory => factory.router.goToCart())
   );
 
-
-
   constructor(private actions: Actions, private store: AppStore, private service: FutureCartService) { }
 
   private findLineItemBy(assetLineItemUuid: string, cart: Cart): AssetLineItem {

@@ -5,6 +5,7 @@ import { UserService } from '../../../../shared/services/user.service';
 import { CurrentUserService } from '../../../../shared/services/current-user.service';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { AppStore } from '../../../../app.store';
 
 @Component({
   moduleId: module.id,
@@ -15,12 +16,13 @@ import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/w
 
 export class CartBillingTabComponent extends CommerceBillingTab {
   constructor(
-    userCan: CommerceCapabilities,
-    cartService: CartService,
-    user: UserService,
-    currentUser: CurrentUserService,
-    dialog: WzDialogService
+    public userCan: CommerceCapabilities,
+    protected cartService: CartService,
+    protected user: UserService,
+    protected currentUser: CurrentUserService,
+    protected dialog: WzDialogService,
+    protected store: AppStore
   ) {
-    super(userCan, cartService, user, currentUser, dialog);
+    super(userCan, cartService, user, currentUser, dialog, store);
   }
 }

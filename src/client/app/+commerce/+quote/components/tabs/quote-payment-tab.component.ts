@@ -15,10 +15,10 @@ import { AppStore } from '../../../../app.store';
 
 export class QuotePaymentTabComponent extends CommercePaymentTab {
   constructor(
-    _zone: NgZone,
+    protected _zone: NgZone,
     protected quoteService: QuoteService,
-    store: AppStore,
-    ref: ChangeDetectorRef
+    protected store: AppStore,
+    protected ref: ChangeDetectorRef
   ) {
     super(_zone, quoteService, store, ref);
   }
@@ -34,7 +34,7 @@ export class QuotePaymentTabComponent extends CommercePaymentTab {
   }
 
   public selectInvoiceLater() {
-    this.quoteService.updateSelectedPaymentType(this.quoteService.state.data.purchaseType);
+    this.store.dispatch(factory => factory.checkout.setSelectedPaymentType(this.quoteService.state.data.purchaseType));
     this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
   }
 }

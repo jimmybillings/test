@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import {
-  QuoteState, CartState, CheckoutState, PaymentOption, PaymentOptions
+  QuoteState, CartState, PaymentOption, PaymentOptions, CreditCardAuthorization
 } from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { AppStore } from '../../../app.store';
@@ -19,10 +19,11 @@ export class CommercePaymentTab extends Tab implements OnInit {
   public fields: Observable<FormFields>;
 
   constructor(
-    private _zone: NgZone,
-    private commerceService: CartService | QuoteService,
-    private store: AppStore,
-    private ref: ChangeDetectorRef) {
+    protected _zone: NgZone,
+    protected commerceService: CartService | QuoteService,
+    protected store: AppStore,
+    protected ref: ChangeDetectorRef
+  ) {
     super();
     this.successfullyVerified.next(false);
   }
@@ -37,7 +38,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
   }
 
   public get paymentOptions(): Observable<PaymentOptions> {
-    return this.commerceService.paymentOptions;
+    return this.store.select(state => state.checkout.paymentOptions);
   }
 
   public get showHoldMessage(): Observable<boolean> {
@@ -53,18 +54,18 @@ export class CommercePaymentTab extends Tab implements OnInit {
   }
 
   public selectPurchaseOnCredit() {
-    this.commerceService.updateSelectedPaymentType('PurchaseOnCredit');
+    this.store.dispatch(factory => factory.checkout.setSelectedPaymentType('PurchaseOnCredit'));
     this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
   }
 
   public preAuthorize(form: any) {
     (<any>window).Stripe.card.createToken(
       form,
-      (status: number, response: any) => {
+      (status: number, response: CreditCardAuthorization) => {
         this._zone.run(() => {
           if (status === 200) {
-            this.commerceService.updateOrderInProgress('authorization', response);
-            this.commerceService.updateSelectedPaymentType('CreditCard');
+            this.store.dispatch(factory => factory.checkout.setCreditCardAuthorization(response));
+            this.store.dispatch(factory => factory.checkout.setSelectedPaymentType('CreditCard'));
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
             this.successfullyVerified.next(true);
             this.ref.markForCheck();

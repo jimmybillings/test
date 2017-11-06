@@ -86,8 +86,10 @@ import {
 import * as ActiveCollectionState from '../store/active-collection/active-collection.state';
 import * as AssetState from '../store/asset/asset.state';
 import * as CartState from '../store/cart/cart.state';
+import * as CheckoutState from '../store/checkout/checkout.state';
 import * as CommentState from '../store/comment/comment.state';
 import * as DeliveryOptionState from '../store/delivery-options/delivery-options.state';
+import * as FeeConfigState from '../store/fee-config/fee-config.state';
 import * as HeaderDisplayOptions from '../store/header-display-options/header-display-options.state';
 import * as LoadingIndicatorState from '../store/loading-indicator/loading-indicator.state';
 import * as MultiLingualState from '../store/multi-lingual/multi-lingual.state';
@@ -98,7 +100,6 @@ import * as QuoteShowState from '../store/quote-show/quote-show.state';
 import * as SnackbarState from '../store/snackbar/snackbar.state';
 import * as SpeedPreviewState from '../store/speed-preview/speed-preview.state';
 import * as UiConfigState from '../store/ui-config/ui-config.state';
-import * as FeeConfigState from '../store/fee-config/fee-config.state';
 
 import { searchStore, SearchStore } from './stores/search.store';
 import { collections, CollectionsStore } from './stores/collections.store';
@@ -106,7 +107,6 @@ import { orders, OrdersStore } from './stores/orders.store';
 import { features, FeatureStore } from './stores/feature.store';
 import { gallery, GalleryViewStore } from './stores/gallery-view.store';
 import { quotes, QuotesStore } from './stores/quotes.store';
-import { checkout, CheckoutStore } from './stores/checkout.store';
 import { currentUser } from './services/current-user.service';
 import { Capabilities } from './services/capabilities.service';
 import { searchContext } from './services/search-context.service';
@@ -119,10 +119,12 @@ import { sortDefinitions } from './services/sort-definitions.service';
 import { ActiveCollectionEffects } from '../store/active-collection/active-collection.effects';
 import { AssetEffects } from '../store/asset/asset.effects';
 import { CartEffects } from '../store/cart/cart.effects';
+import { CheckoutEffects } from '../store/checkout/checkout.effects';
 import { CommentEffects } from '../store/comment/comment.effects';
 import { DeliveryOptionsEffects } from '../store/delivery-options/delivery-options.effects';
 import { DialogEffects } from '../store/dialog/dialog.effects';
 import { ErrorEffects } from '../store/error/error.effects';
+import { FeeConfigEffects } from '../store/fee-config/fee-config.effects';
 import { HeaderDisplayOptionsEffects } from '../store/header-display-options/header-display-options.effects';
 import { MultiLingualEffects } from '../store/multi-lingual/multi-lingual.effects';
 import { NotifierEffects } from '../store/notifier/notifier.effects';
@@ -134,7 +136,6 @@ import { RouterEffects } from '../store/router/router.effects';
 import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
 import { UiConfigEffects } from '../store/ui-config/ui-config.effects';
-import { FeeConfigEffects } from '../store/fee-config/fee-config.effects';
 
 const WAZEE_SERVICES = [
   ApiConfig,
@@ -183,8 +184,7 @@ const WAZEE_STORE_INTERFACES = [
   SearchStore,
   OrdersStore,
   GalleryViewStore,
-  QuotesStore,
-  CheckoutStore
+  QuotesStore
 ];
 
 const WAZEE_PROVIDERS: any = [
@@ -207,11 +207,11 @@ const WAZEE_STORES: any = {
   features: features,
   gallery: gallery,
   quotes: quotes,
-  checkout: checkout,
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,
   cart: CartState.reducer,
+  checkout: CheckoutState.reducer,
   comment: CommentState.reducer,
   deliveryOptions: DeliveryOptionState.reducer,
   headerDisplayOptions: HeaderDisplayOptions.reducer,
@@ -231,10 +231,12 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
   AssetEffects,
   CartEffects,
+  CheckoutEffects,
   CommentEffects,
   DeliveryOptionsEffects,
   DialogEffects,
   ErrorEffects,
+  FeeConfigEffects,
   HeaderDisplayOptionsEffects,
   MultiLingualEffects,
   NotifierEffects,
@@ -245,8 +247,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   RouterEffects,
   SnackbarEffects,
   SpeedPreviewEffects,
-  UiConfigEffects,
-  FeeConfigEffects
+  UiConfigEffects
 ]);
 
 // Shared pipes

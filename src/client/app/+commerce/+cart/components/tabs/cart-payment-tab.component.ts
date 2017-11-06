@@ -12,10 +12,10 @@ import { AppStore } from '../../../../app.store';
 
 export class CartPaymentTabComponent extends CommercePaymentTab {
   constructor(
-    _zone: NgZone,
-    cartService: CartService,
-    store: AppStore,
-    ref: ChangeDetectorRef
+    protected _zone: NgZone,
+    protected cartService: CartService,
+    protected store: AppStore,
+    protected ref: ChangeDetectorRef
   ) {
     super(_zone, cartService, store, ref);
   }

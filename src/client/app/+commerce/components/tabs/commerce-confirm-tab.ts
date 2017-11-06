@@ -7,15 +7,15 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
 import {
-  CartState, QuoteState, CheckoutState, PaymentOption, OrderableType
+  CartState, QuoteState, PaymentOption, OrderableType
 } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Common } from '../../../shared/utilities/common.functions';
+import { AppStore, CheckoutState } from '../../../app.store';
 
 export class CommerceConfirmTab extends Tab {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
-  public store: any;
   public storeSubscription: Subscription;
   public licensesAreAgreedTo: boolean = false;
 
@@ -23,7 +23,8 @@ export class CommerceConfirmTab extends Tab {
     protected router: Router,
     public commerceService: CartService | QuoteService,
     protected dialogService: WzDialogService,
-    public userCan: CommerceCapabilities
+    public userCan: CommerceCapabilities,
+    protected store: AppStore
   ) {
     super();
   }
@@ -33,7 +34,7 @@ export class CommerceConfirmTab extends Tab {
   }
 
   public get orderInProgress(): Observable<CheckoutState> {
-    return this.commerceService.checkoutData;
+    return this.store.select(state => state.checkout);
   }
 
   public get data(): Observable<any> {
@@ -41,17 +42,17 @@ export class CommerceConfirmTab extends Tab {
   }
 
   public get paymentType(): Observable<PaymentOption> {
-    return this.commerceService.paymentType;
+    return this.store.select(state => state.checkout.selectedPaymentType);
   }
 
   public get showPurchaseBtn(): Observable<boolean> {
-    return this.paymentType.map((type: PaymentOption) => {
+    return this.store.select(state => state.checkout.selectedPaymentType).map((type: PaymentOption) => {
       return type === 'CreditCard';
     });
   }
 
   public get showPurchaseOnCreditBtn(): Observable<boolean> {
-    return this.paymentType.map((type: PaymentOption) => {
+    return this.store.select(state => state.checkout.selectedPaymentType).map((type: PaymentOption) => {
       return type === 'PurchaseOnCredit';
     });
   }
@@ -82,6 +83,6 @@ export class CommerceConfirmTab extends Tab {
   }
 
   public get isOfflineQuote(): Observable<boolean> {
-    return this.paymentType.map(type => type && type.includes('Offline'));
+    return this.store.select(state => state.checkout.selectedPaymentType).map(type => type && type.includes('Offline'));
   }
 }

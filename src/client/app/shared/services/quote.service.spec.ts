@@ -8,34 +8,38 @@ import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Quote Service', () => {
-    let serviceUnderTest: QuoteService, mockApi: MockApiService, mockCartService: any,
-      mockStore: MockAppStore, mockCheckoutStore: any, mockPaymentOptions: any, mockUserService: any,
-      quoteLoadSuccessSpy: jasmine.Spy;
+    let serviceUnderTest: QuoteService;
+    let mockApi: MockApiService;
+    let mockCartService: any;
+    let mockStore: MockAppStore;
+    let mockPaymentOptions: any;
+    let mockUserService: any;
+    let quoteLoadSuccessSpy: jasmine.Spy;
 
     const mockQuoteResponse = {
-      'createdUserId': 1,
-      'ownerUserId': 2,
-      'lastUpdated': '2017-07-23T18:41:21Z',
-      'createdOn': '2017-07-23T18:20:00Z',
-      'id': 282,
-      'siteName': 'commerce',
-      'projects': [
+      createdUserId: 1,
+      ownerUserId: 2,
+      lastUpdated: '2017-07-23T18:41:21Z',
+      createdOn: '2017-07-23T18:20:00Z',
+      id: 282,
+      siteName: 'commerce',
+      projects: [
         {
-          'name': '2017-04-27',
-          'id': '390bec17-929b-452d-a2f4-27b7b04cb6ea',
-          'lineItems': [
+          name: '2017-04-27',
+          id: '390bec17-929b-452d-a2f4-27b7b04cb6ea',
+          lineItems: [
             {
-              'asset': {
-                'assetId': 33737670
+              asset: {
+                assetId: 33737670
               },
-              'id': 'f642f893-f4cf-4a3c-ad5e-dc2d0cd1a321',
-              'subTotal': 159
+              id: 'f642f893-f4cf-4a3c-ad5e-dc2d0cd1a321',
+              subTotal: 159
             }
           ],
-          'assetLineItemSubtotal': 159,
-          'feeLineItemSubtotal': 0,
-          'totalAmount': 79.5,
-          'subTotal': 159
+          assetLineItemSubtotal: 159,
+          feeLineItemSubtotal: 0,
+          totalAmount: 79.5,
+          subTotal: 159
         }
       ]
     };
@@ -46,9 +50,8 @@ export function main() {
         explanation: 'Please select either of the payment options below',
         noCheckout: false
       } : null;
-      mockCheckoutStore = { data: Observable.of({ paymentOptions: mockPaymentOptions }) };
-
-      return new QuoteService(null, null, null, mockCheckoutStore, mockUserService);
+      mockStore.createStateSection('checkout', { paymentOptions: mockPaymentOptions });
+      return new QuoteService(null, null, mockStore, mockUserService);
     }
 
     beforeEach(() => {
@@ -68,9 +71,7 @@ export function main() {
           { emailAddress: 'test@gmail.com', firstName: 'best', lastName: 'tester' }))
       };
 
-      mockCheckoutStore = { updateOrderInProgress: jasmine.createSpy('updateOrderInProgress') };
-
-      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockStore, mockCheckoutStore, mockUserService);
+      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockStore, mockUserService);
     });
 
     describe('data getter', () => {
