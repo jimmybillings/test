@@ -376,6 +376,25 @@ export function main() {
           expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
       });
+
+      describe('editLineItemMarkers()', () => {
+        it('should call the API service correctly', () => {
+          serviceUnderTest.editLineItemMarkers(1, { id: '123', asset: { test: 'asset' } } as any, { in: new Frame(3), out: new Frame(25) });
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint(`quote/1/update/lineItem/123`);
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            id: '123',
+            asset: {
+              test: 'asset',
+              timeStart: null,
+              timeEnd: null
+            }
+          });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
     });
   });
 }

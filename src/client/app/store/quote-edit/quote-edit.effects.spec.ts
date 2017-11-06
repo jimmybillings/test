@@ -659,5 +659,31 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'editLineItemMarkers',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.EditLineItemMarkers.Type,
+        lineItem: { lineItem: 'item' },
+        newMarkers: { newMarkers: { timeStart: 1, timeEnd: 4 } }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'editLineItemMarkers',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { lineItem: 'item' }, { newMarkers: { timeStart: 1, timeEnd: 4 } }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }

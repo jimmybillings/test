@@ -1,3 +1,4 @@
+import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { ActionFactory, InternalActionFactory } from './quote-edit.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
@@ -425,6 +426,19 @@ export function main() {
         type: '[Quote Edit] Refresh And Notify',
         quote: { some: 'quote' },
         translationString: 'SOME.TRANSLATION'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'editLineItemMarkers',
+        parameters: [{ lineItem: 'quote' }, { newMarkers: { timeStart: 1, timeEnd: 4 } }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Edit Line Item Markers',
+        lineItem: { lineItem: 'quote' },
+        newMarkers: { newMarkers: { timeStart: 1, timeEnd: 4 } }
       }
     });
   });
