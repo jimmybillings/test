@@ -1,6 +1,7 @@
 import { ViewAddress, Pagination, Common, SelectedPriceAttribute, Store } from './common.interface';
 import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
+import { Address, Document, Payee } from './user.interface';
 
 export type OrderableType =
   'SystemLicense' |
@@ -297,7 +298,7 @@ export interface PaymentOptions {
   noCheckout: boolean;
 }
 
-export interface Document {
+export interface LicenseAgreementDocument {
   name: string;
   text: string;
 }
@@ -306,7 +307,7 @@ export interface LicenseAgreement {
   projectType?: string;
   rights?: string;
   matchingAssets: Array<LicenseAsset | EnhancedAsset>;
-  document: Document;
+  document: LicenseAgreementDocument;
 }
 
 export interface LicenseAgreements {
@@ -318,4 +319,10 @@ export interface LicenseAsset {
   assetLineItemId: string;
   name: string;
   thumbnailUrl: string;
+}
+
+export interface Invoice {
+  documents: Array<Document>;
+  order: Order;
+  payee: Payee;
 }

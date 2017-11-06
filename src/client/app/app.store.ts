@@ -31,6 +31,10 @@ import * as HeaderDisplayOptionsActions from './store/header-display-options/hea
 import * as HeaderDisplayOptionsState from './store/header-display-options/header-display-options.state';
 export type HeaderDisplayOptionsState = HeaderDisplayOptionsState.State;
 
+import * as InvoiceActions from './store/invoice/invoice.actions';
+import * as InvoiceState from './store/invoice/invoice.state';
+export type InvoiceState = InvoiceState.State;
+
 import * as NotifierActions from './store/notifier/notifier.actions';
 
 import * as LoadingIndicatorActions from './store/loading-indicator/loading-indicator.actions';
@@ -87,6 +91,7 @@ export interface ActionFactory {
   readonly dialog: DialogActions.ActionFactory;
   readonly error: ErrorActions.ActionFactory;
   readonly headerDisplayOptions: HeaderDisplayOptionsActions.ActionFactory;
+  readonly invoice: InvoiceActions.ActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.ActionFactory;
   readonly multiLingual: MultiLingualActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
@@ -110,6 +115,7 @@ export interface InternalActionFactory {
   readonly dialog: DialogActions.InternalActionFactory;
   readonly error: ErrorActions.InternalActionFactory;
   readonly headerDisplayOptions: HeaderDisplayOptionsActions.InternalActionFactory;
+  readonly invoice: InvoiceActions.InternalActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.InternalActionFactory;
   readonly multiLingual: MultiLingualActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
@@ -131,6 +137,7 @@ export interface AppState {
   readonly comment: CommentState;
   readonly deliveryOptions: DeliveryOptionsState;
   readonly headerDisplayOptions: HeaderDisplayOptionsState;
+  readonly invoice: InvoiceState;
   readonly loadingIndicator: LoadingIndicatorState;
   readonly multiLingual: MultiLingualState;
   readonly order: OrderState;
@@ -159,6 +166,7 @@ export const reducers: AppReducers = {
   comment: CommentState.reducer,
   deliveryOptions: DeliveryOptionsState.reducer,
   headerDisplayOptions: HeaderDisplayOptionsState.reducer,
+  invoice: InvoiceState.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
   order: OrderState.reducer,
   pricing: PricingState.reducer,
@@ -187,6 +195,7 @@ export class AppStore {
     dialog: new DialogActions.ActionFactory(),
     error: new ErrorActions.ActionFactory(),
     headerDisplayOptions: new HeaderDisplayOptionsActions.ActionFactory(),
+    invoice: new InvoiceActions.ActionFactory(),
     loadingIndicator: new LoadingIndicatorActions.ActionFactory(),
     multiLingual: new MultiLingualActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
@@ -210,6 +219,7 @@ export class AppStore {
     dialog: new DialogActions.InternalActionFactory(),
     error: new ErrorActions.InternalActionFactory(),
     headerDisplayOptions: new HeaderDisplayOptionsActions.InternalActionFactory(),
+    invoice: new InvoiceActions.InternalActionFactory(),
     loadingIndicator: new LoadingIndicatorActions.InternalActionFactory(),
     multiLingual: new MultiLingualActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
