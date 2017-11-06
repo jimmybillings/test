@@ -4,7 +4,7 @@ import { enhanceAsset, EnhancedAsset } from '../../../../../shared/interfaces/en
 import { WzPricingComponent } from '../../../../../shared/components/wz-pricing/wz.pricing.component';
 import { WzSubclipEditorComponent } from '../../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { Tab } from '../../../../components/tabs/tab';
-import { Component, Inject, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, OnDestroy, OnInit, Input } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { WzDialogService } from '../../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Capabilities } from '../../../../../shared/services/capabilities.service';
@@ -27,12 +27,11 @@ import { MatDialogRef } from '@angular/material';
 })
 
 export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
-  public projects: Project[];
   public config: Pojo;
   public quoteType: OrderableType = null;
   public pricingPreferences: Pojo;
   public priceAttributes: Array<PriceAttribute> = null;
-  private projectSubscription: Subscription;
+  @Input() projects: Project[];
   private preferencesSubscription: Subscription;
 
   constructor(
@@ -44,8 +43,6 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     protected store: AppStore,
   ) {
     super();
-    this.projectSubscription = this.store.select(state => state.quoteEdit.data.projects)
-      .subscribe(projects => this.projects = this.enhanceAssetsInProjects(projects));
   }
 
   public ngOnInit(): void {
@@ -56,22 +53,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     this.config = this.store.snapshotCloned(state => state.uiConfig.components.cart.config);
   }
 
-  public enhanceAssetsInProjects(projects: Project[]): Project[] {
-    const clonedProjects: Project[] = Common.clone(projects);
-
-    return clonedProjects.map((project: Project) => {
-      if (project.lineItems) {
-        project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
-          lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'quoteEditAsset');
-          return lineItem;
-        });
-      }
-      return project;
-    });
-  }
-
   ngOnDestroy() {
-    this.projectSubscription.unsubscribe();
     this.preferencesSubscription.unsubscribe();
   }
 

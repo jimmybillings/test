@@ -1,8 +1,11 @@
+import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
+import { Common } from '../../../shared/utilities/common.functions';
+import { Subscription } from 'rxjs/Rx';
 import { Pojo } from '../../../shared/interfaces/common.interface';
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';
-import { CommerceMessage, Quote } from '../../../shared/interfaces/commerce.interface';
+import { AssetLineItem, CommerceMessage, Project, Quote } from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
 import { AppStore } from '../../../app.store';
@@ -16,6 +19,7 @@ import { Observable } from 'rxjs/Observable';
 })
 
 export class QuoteEditComponent implements OnInit {
+  public projects: Project[];
   public tabLabelKeys: string[];
   public tabEnabled: boolean[];
   public selectedTabIndex: number;
@@ -23,6 +27,7 @@ export class QuoteEditComponent implements OnInit {
   public commentFormConfig: Array<FormFields>;
   public commentParentObject: CommentParentObject;
   public showComments: boolean = null;
+  private projectSubscription: Subscription;
 
   constructor(
     public userCan: Capabilities,
@@ -40,15 +45,23 @@ export class QuoteEditComponent implements OnInit {
     // For example, don't include 'billing' and 'payment' if the cart total is 0.
     // this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
     // I think the confirm tab should be place order
-    this.tabLabelKeys = ['quote', 'send'];
+    this.tabLabelKeys = ['quote', 'recipient details', 'confirm'];
 
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
 
     this.selectedTabIndex = 0;
+
+    this.projectSubscription = this.store.select(state => state.quoteEdit.data.projects)
+      .subscribe(projects => this.projects = (this.projects) ? this.enhanceAssetsInProjects(projects) : []);
+  }
+  ngOnDestroy() {
+    this.projectSubscription.unsubscribe();
+
   }
 
   public onNotification(message: CommerceMessage): void {
+    console.log(message);
     switch (message.type) {
       case 'OPEN_DELETE_DIALOG':
         this.onOpenDeleteQuoteDialog();
@@ -158,6 +171,20 @@ export class QuoteEditComponent implements OnInit {
 
   public onCreateQuote() {
     this.store.dispatch(factory => factory.quoteEdit.createQuote());
+  }
+
+  private enhanceAssetsInProjects(projects: Project[]): Project[] {
+    const clonedProjects: Project[] = Common.clone(projects);
+
+    return clonedProjects.map((project: Project) => {
+      if (project.lineItems) {
+        project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
+          lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'quoteEditAsset');
+          return lineItem;
+        });
+      }
+      return project;
+    });
   }
 
   private updateQuoteField = (options: Pojo): void => {

@@ -58,8 +58,13 @@ export function main() {
         }
       });
 
-      mockStore.createStateSection('quoteEdit', { data: { id: 1 } });
-
+      mockStore.createStateSection('quoteEdit', {
+        data: {
+          id: 1,
+          itemCount: 2,
+          projects: []
+        }
+      });
       deleteQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'delete');
       addCustomPriceDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addCustomPriceToLineItem');
       snackbarSpy = mockStore.createActionFactoryMethod('snackbar', 'display');
@@ -111,11 +116,11 @@ export function main() {
       });
 
       it('defines the expected tabs', () => {
-        expect(componentUnderTest.tabLabelKeys).toEqual(['quote', 'send']);
+        expect(componentUnderTest.tabLabelKeys).toEqual(['quote', 'recipient details', 'confirm']);
       });
 
       it('disables all but the first tab', () => {
-        expect(componentUnderTest.tabEnabled).toEqual([true, false]);
+        expect(componentUnderTest.tabEnabled).toEqual([true, false, false]);
       });
 
       it('selects the first tab', () => {
@@ -179,7 +184,7 @@ export function main() {
         it('enables the next tab, but no others', () => {
           componentUnderTest.onNotification({ type: 'GO_TO_NEXT_TAB' });
 
-          expect(componentUnderTest.tabEnabled).toEqual([true, true]);
+          expect(componentUnderTest.tabEnabled).toEqual([true, true, false]);
         });
 
         it('selects the next tab', (done) => {
@@ -234,7 +239,7 @@ export function main() {
           componentUnderTest.selectedTabIndex = 1;
 
           componentUnderTest.onNotification({ type: 'DISABLE_TAB', payload: 0 });
-          expect(componentUnderTest.tabEnabled).toEqual([false, false]);
+          expect(componentUnderTest.tabEnabled).toEqual([false, false, false]);
         });
       });
     });
