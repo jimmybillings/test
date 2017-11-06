@@ -53,7 +53,7 @@ export class QuoteEditComponent implements OnInit, OnDestroy {
     this.selectedTabIndex = 0;
 
     this.projectSubscription = this.store.select(state => state.quoteEdit.data.projects)
-      .subscribe(projects => this.projects = (this.projects) ? this.enhanceAssetsInProjects(projects) : []);
+      .subscribe(projects => this.projects = this.enhanceAssetsInProjects(projects));
   }
   ngOnDestroy() {
     this.projectSubscription.unsubscribe();
@@ -174,6 +174,7 @@ export class QuoteEditComponent implements OnInit, OnDestroy {
   }
 
   private enhanceAssetsInProjects(projects: Project[]): Project[] {
+    if (!projects) return [];
     const clonedProjects: Project[] = Common.clone(projects);
 
     return clonedProjects.map((project: Project) => {
