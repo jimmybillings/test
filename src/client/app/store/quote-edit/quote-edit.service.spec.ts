@@ -332,6 +332,17 @@ export function main() {
           expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
         });
       });
+
+      describe('removeProject()', () => {
+        it('should call the API service correctly', () => {
+          serviceUnderTest.removeProject(1, 123);
+
+          expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('quote/1/project/123');
+          expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
+        });
+
+      });
     });
   });
 }

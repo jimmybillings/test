@@ -540,5 +540,30 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'removeProject',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.RemoveProject.Type,
+        projectId: 3
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'removeProject',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, 3],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'quoteRefreshAndNotfiy',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }

@@ -366,5 +366,17 @@ export function main() {
       }
     });
 
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'removeProject',
+        parameters: [1]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Remove Project',
+        projectId: 1
+      }
+    });
+
   });
 }
