@@ -1,10 +1,11 @@
 import * as QuoteEditActions from './quote-edit.actions';
 import { Common } from '../../shared/utilities/common.functions';
-import { Quote } from '../../shared/interfaces/commerce.interface';
+import { Quote, QuoteOptions } from '../../shared/interfaces/commerce.interface';
 
 export interface State {
   data: Quote;
   loading: boolean;
+  recipient?: QuoteOptions;
 }
 
 export const initialState: State = {
@@ -15,6 +16,7 @@ export const initialState: State = {
     ownerUserId: 0,
     quoteStatus: 'PENDING'
   },
+  recipient: null,
   loading: false
 };
 
@@ -58,6 +60,14 @@ export function reducer(state: State = initialState, action: QuoteEditActions.An
         data: {
           ...action.quote
         }
+      };
+    }
+
+    case QuoteEditActions.SaveRecipientInformationOnQuote.Type: {
+      return {
+        ...Common.clone(state),
+        loading: false,
+        recipient: action.quoteOptions
       };
     }
 

@@ -199,6 +199,11 @@ export interface Quote extends CommonCommerce {
   internalLicenseIds?: number[];
 }
 
+export interface QuoteConfirm extends Quote {
+  recipient: QuoteOptions;
+}
+
+
 export interface OrdersApiResponse extends Pagination {
   items: Order[];
 }

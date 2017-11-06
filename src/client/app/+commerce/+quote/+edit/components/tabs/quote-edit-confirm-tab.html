@@ -1,0 +1,48 @@
+<header flex="100" layout="column" layout-align="start">
+  <h2 class="commerce-heading">Confirm</h2>
+</header>
+<section class="recipient" flex="auto">
+  <div layout="row" layout-align="space-between">
+    <h5 class="mat-title">Recipient Information</h5>
+  </div>
+  <ul *ngIf="(recipientInformation | async)">
+    <li>Owner Email: <span class="line-1">{{ (recipientInformation | async).ownerEmail }}</span></li>
+    <li>Expiration Date: <span class="line-2">{{ (recipientInformation | async).expirationDate }}</span></li>
+    <li>Purchase Type: <span class="line-3">{{ (recipientInformation | async).purchaseType }}</span></li>
+    <li>Offline Agreement ID: <span class="line-4">{{ (recipientInformation | async).offlineAgreementId}}</span></li>
+  </ul>
+</section>
+<projects-component
+  flex="100"
+  [readOnly]="true"
+  [projects]="projects"
+  [quoteType]="'quoteEdit'"
+  [userCan]="userCan">
+</projects-component>
+
+<section class="cart-total" layout="row" layout-align="center center">
+  <div flex="100">
+    
+    <div flex="100" layout="row" layout-align="end center" class="total mat-headline">
+      <span class="total-label" flex="100">
+        {{ 'CART.CART_TOTAL' | translate }} 
+      </span>
+      <span class="total-amount" flex="nogrow">
+        {{ total | async | currency:'USD':true:'1.2-2' }}
+      </span>
+    </div>
+
+  </div>
+</section>
+
+<div flex="100" layout="row" layout-align="end end">
+  <section class="action-items" flex="100" flex-gt-xs="10">
+    <button
+      color="primary"
+      mat-raised-button
+      (click)="sendQuote()">
+        {{ 'QUOTE.EDIT.SEND' | translate }}
+    </button>
+  </section>
+</div>
+

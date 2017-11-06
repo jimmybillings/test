@@ -209,6 +209,26 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
+        class: ActionFactory,
+        name: 'saveRecipientInformationOnQuote',
+        parameters: [{
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017-03-22T06:00:00.000Z',
+          purchaseType: 'Standard'
+        }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Save Recipient Information On Quote',
+        quoteOptions: {
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017-03-22T06:00:00.000Z',
+          purchaseType: 'Standard'
+        }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
         class: InternalActionFactory,
         name: 'sendQuoteSuccess',
         parameters: [10, 'ross.edfort@wazeedigital.com']

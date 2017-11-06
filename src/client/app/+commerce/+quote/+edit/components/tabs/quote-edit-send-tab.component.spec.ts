@@ -35,7 +35,7 @@ export function main() {
         }
       });
 
-      sendQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'sendQuote');
+      sendQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'saveRecipientInformationOnQuote');
 
       componentUnderTest =
         new QuoteEditSendTabComponent(mockStore);

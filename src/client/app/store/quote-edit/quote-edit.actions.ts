@@ -41,6 +41,10 @@ export class ActionFactory {
     return new SendQuote(quoteOptions);
   }
 
+  public saveRecipientInformationOnQuote(quoteOptions: QuoteOptions): SaveRecipientInformationOnQuote {
+    return new SaveRecipientInformationOnQuote(quoteOptions);
+  }
+
   // Move this to internal action factory when quote is fully "effected"
   public loadSuccess(quote: Quote): LoadSuccess {
     return new LoadSuccess(quote);
@@ -263,6 +267,12 @@ export class SendQuote implements Action {
   constructor(public readonly quoteOptions: QuoteOptions) { }
 }
 
+export class SaveRecipientInformationOnQuote implements Action {
+  public static readonly Type = '[Quote Edit] Save Recipient Information On Quote';
+  public readonly type = SaveRecipientInformationOnQuote.Type;
+  constructor(public readonly quoteOptions: QuoteOptions) { }
+}
+
 export class SendQuoteSuccess implements Action {
   public static readonly Type = '[Quote Edit] Send Quote Success';
   public readonly type = SendQuoteSuccess.Type;
@@ -386,7 +396,7 @@ export type Any =
   EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
   RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure |
   AddCustomPriceToLineItem | AddCustomPriceToLineItemSuccess | AddCustomPriceToLineItemFailure |
-  SendQuote | CloneQuote | CloneQuoteSuccess | CreateQuote | UpdateQuoteFields | AddFeeTo |
+  SendQuote | SaveRecipientInformationOnQuote | CloneQuote | CloneQuoteSuccess | CreateQuote | UpdateQuoteFields | AddFeeTo |
   RemoveFee | BulkImport | BulkImportSuccess | EditLineItem | AddAssetToProjectInQuote |
   AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject | UpdateProject | MoveLineItem |
   CloneLineItem | RefreshAndNotify | EditLineItemMarkers | UpdateProjectPriceAttributes;
