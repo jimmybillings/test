@@ -77,12 +77,18 @@
           <ng-template mat-tab-label>{{ tabLabelKey | uppercase }}</ng-template>
           <quote-edit-tab-component
             *ngIf="tabLabelKey === 'quote'"
-            (notify)="onNotification($event)">
+            (notify)="onNotification($event)"
+            [projects]="projects">
           </quote-edit-tab-component>
           <quote-edit-send-tab-component
-            *ngIf="tabLabelKey === 'send'"
+            *ngIf="tabLabelKey === 'recipient details'"
             (notify)="onNotification($event)">
           </quote-edit-send-tab-component>
+          <quote-edit-confirm-tab-component 
+          *ngIf="tabLabelKey === 'confirm'" 
+          (notify)="onNotification($event)"
+          [projects]="projects">
+        </quote-edit-confirm-tab-component>
         </mat-tab>
       </mat-tab-group>
     </div>
