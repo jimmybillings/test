@@ -60,7 +60,6 @@ import { GalleryViewService } from './services/gallery-view.service';
 import { WindowRef } from './services/window-ref.service';
 import { QuoteService } from './services/quote.service';
 import { QuotesService } from './services/quotes.service';
-import { QuoteEditService } from './services/quote-edit.service';
 import { AsperaService } from './services/aspera.service';
 // New-ish services
 import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
@@ -77,6 +76,7 @@ import { PricingService } from '../store/pricing/pricing.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
 import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
 import { UiConfigService } from '../store/ui-config/ui-config.service';
+import { FeeConfigService } from '../store/fee-config/fee-config.service';
 
 // WAZEE STORES
 import {
@@ -100,6 +100,7 @@ import * as QuoteShowState from '../store/quote-show/quote-show.state';
 import * as SnackbarState from '../store/snackbar/snackbar.state';
 import * as SpeedPreviewState from '../store/speed-preview/speed-preview.state';
 import * as UiConfigState from '../store/ui-config/ui-config.state';
+import * as FeeConfigState from '../store/fee-config/fee-config.state';
 
 import { searchStore, SearchStore } from './stores/search.store';
 import { collections, CollectionsStore } from './stores/collections.store';
@@ -108,8 +109,6 @@ import { features, FeatureStore } from './stores/feature.store';
 import { gallery, GalleryViewStore } from './stores/gallery-view.store';
 import { quotes, QuotesStore } from './stores/quotes.store';
 import { checkout, CheckoutStore } from './stores/checkout.store';
-import { feeConfig, FeeConfigStore } from './stores/fee-config.store';
-
 import { currentUser } from './services/current-user.service';
 import { Capabilities } from './services/capabilities.service';
 import { searchContext } from './services/search-context.service';
@@ -138,6 +137,7 @@ import { RouterEffects } from '../store/router/router.effects';
 import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
 import { UiConfigEffects } from '../store/ui-config/ui-config.effects';
+import { FeeConfigEffects } from '../store/fee-config/fee-config.effects';
 
 const WAZEE_SERVICES = [
   ApiConfig,
@@ -168,7 +168,6 @@ const WAZEE_SERVICES = [
   FutureQuoteShowService,
   QuoteService,
   QuotesService,
-  QuoteEditService,
   SnackbarService,
   CommentService,
   DeliveryOptionsService,
@@ -177,6 +176,7 @@ const WAZEE_SERVICES = [
   UiConfigService,
   PricingService,
   AsperaService,
+  FeeConfigService,
   // Temporary legacy services accessed through AppStore
   LegacyAssetService
 ];
@@ -188,8 +188,7 @@ const WAZEE_STORE_INTERFACES = [
   OrdersStore,
   GalleryViewStore,
   QuotesStore,
-  CheckoutStore,
-  FeeConfigStore
+  CheckoutStore
 ];
 
 const WAZEE_PROVIDERS: any = [
@@ -213,7 +212,6 @@ const WAZEE_STORES: any = {
   gallery: gallery,
   quotes: quotes,
   checkout: checkout,
-  feeConfig: feeConfig,
   // REDUX 200000.0.0
   activeCollection: ActiveCollectionState.reducer,
   asset: AssetState.reducer,
@@ -230,7 +228,8 @@ const WAZEE_STORES: any = {
   quoteShow: QuoteShowState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
-  uiConfig: UiConfigState.reducer
+  uiConfig: UiConfigState.reducer,
+  feeConfig: FeeConfigState.reducer
 };
 
 const WAZEE_EFFECTS = EffectsModule.forRoot([
@@ -252,7 +251,8 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   RouterEffects,
   SnackbarEffects,
   SpeedPreviewEffects,
-  UiConfigEffects
+  UiConfigEffects,
+  FeeConfigEffects
 ]);
 
 // Shared pipes

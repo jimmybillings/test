@@ -243,6 +243,7 @@ export class AssetEffects {
 
   private lineItemIn(orderable: Commerce.Quote | Commerce.Cart | Commerce.Order, uuid: string): Commerce.AssetLineItem {
     return orderable.projects
+      .filter(project => project.lineItems)
       .reduce((allLineItems, project) => allLineItems.concat(project.lineItems), [])
       .find(lineItem => lineItem.id === uuid);
   }

@@ -1,4 +1,4 @@
-import { Component, Inject, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../../components/tabs/commerce-edit-tab';
 import { LicenseAgreements, Project } from '../../../../shared/interfaces/commerce.interface';
@@ -33,13 +33,17 @@ export class CartTabComponent extends CommerceEditTab implements OnDestroy {
     public userPreference: UserPreferenceService,
     @Inject(DOCUMENT) public document: any,
     public featureStore: FeatureStore,
-    protected store: AppStore
+    protected store: AppStore,
+    protected detector: ChangeDetectorRef
   ) {
     super(
-      userCan, cartService, dialogService, window, userPreference, document, store
+      userCan, cartService, dialogService, window, userPreference, document, store, detector
     );
 
-    this.projectSubscription = this.cartService.projects.subscribe(projects => this.projects = projects);
+    this.projectSubscription = this.cartService.projects.subscribe(projects => {
+      this.projects = projects;
+      this.detector.markForCheck();
+    });
   }
 
   public ngOnDestroy() {

@@ -25,14 +25,14 @@
 			</mat-hint>
 
 			<mat-error *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
-				align="start">
-				<span *ngIf="form.controls[field.name].hasError('required')">
+        align="start">
+				<span *ngIf="shouldShowRequiredError(field)">
           {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
         </span>
 				<span *ngIf="form.controls[field.name].hasError('minlength')">
           {{ 'ERRORS.MIN_LENGTH_REQUIRED' | translate:{charLength:form.controls[field.name]._errors.minlength.requiredLength} }}
         </span>
-				<span *ngIf="form.controls[field.name].hasError('pattern') && !form.controls[field.name].hasError('minlength')">
+				<span *ngIf="shouldShowEmailError(field)">
           {{ 'ERRORS.VALID_EMAIL_REQUIRED' | translate }}
         </span>
 				<span *ngIf="form.controls[field.name].hasError('startsWithNumber')">

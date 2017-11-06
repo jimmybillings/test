@@ -218,5 +218,142 @@ export function main() {
         ownerEmail: 'ross.edfort@wazeedigital.com'
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'cloneQuote',
+        parameters: [{ some: 'quote' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Clone Quote',
+        quote: { some: 'quote' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'cloneQuoteSuccess',
+        parameters: [{ some: 'quote' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Clone Quote Success',
+        quote: { some: 'quote' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'createQuote',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Quote Edit] Create Quote',
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'updateQuoteField',
+        parameters: [{ field: 'some field' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Update Quote Fields',
+        options: { field: 'some field' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addFeeTo',
+        parameters: ['some project', '100']
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Fee To',
+        project: 'some project',
+        fee: '100'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'removeFee',
+        parameters: ['100']
+      },
+      expectedAction: {
+        type: '[Quote Edit] Remove Fee',
+        fee: '100'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'bulkImport',
+        parameters: [{ attribute: 'some attribute' }, '1']
+      },
+      expectedAction: {
+        type: '[Quote Edit] Bulk Import',
+        rawAssets: { attribute: 'some attribute' },
+        projectId: '1'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'bulkImportSuccess',
+        parameters: [{ some: 'quote' }, { attribute: 'some attribute' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Bulk Import Success',
+        quote: { some: 'quote' },
+        rawAssets: { attribute: 'some attribute' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'editLineItem',
+        parameters: [{ lineItem: 'some item' }, { fieldToEdit: 'some field' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Edit Line Item',
+        lineItem: { lineItem: 'some item' },
+        fieldToEdit: { fieldToEdit: 'some field' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addAssetToProjectInQuote',
+        parameters: [{ parameters: 'some parameteres' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Asset To Project In Quote',
+        parameters: { parameters: 'some parameteres' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'addAssetToProjectInQuoteSuccess',
+        parameters: [{ some: 'quote' }, { assetId: 2 }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Asset To Project In Quote Success',
+        quote: { some: 'quote' },
+        assetId: { assetId: 2 }
+      }
+    });
+
   });
 }

@@ -3,9 +3,9 @@ import { FormGroup, AbstractControl, FormControl, FormBuilder, Validators } from
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { PriceAttribute, PriceOption } from '../../interfaces/commerce.interface';
-import { Pojo, WzEvent } from '../../interfaces/common.interface';
 import { FormFields } from '../../interfaces/forms.interface';
 import { AppStore } from '../../../app.store';
+import { Pojo, WzEvent, SelectedPriceAttribute } from '../../interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -59,16 +59,34 @@ export class WzPricingComponent implements OnDestroy {
       this.price.take(1).subscribe((price: number) => {
         this.pricingEvent.emit({
           type: 'APPLY_PRICE',
-          payload: { price: price, attributes: this.form.value, updatePrefs: true }
+          payload: {
+            price: price,
+            attributes: this.formValue,
+            updatePrefs: true,
+            preferences: this.form.value
+          }
         });
       });
     } else {
-      this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { attributes: this.form.value, updatePrefs: true } });
+      this.pricingEvent.emit({
+        type: 'APPLY_PRICE',
+        payload: {
+          attributes: this.formValue,
+          updatePrefs: true,
+          preferences: this.form.value
+        }
+      });
     }
   }
 
   public onSubmitCustom(): void {
-    this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { attributes: this.parsedCustomFormValue, updatePrefs: false } });
+    this.pricingEvent.emit({
+      type: 'APPLY_PRICE',
+      payload: {
+        attributes: this.customFormValue,
+        updatePrefs: false
+      }
+    });
   }
 
   public parentIsEmpty(currentAttribute: PriceAttribute): boolean {
@@ -103,7 +121,7 @@ export class WzPricingComponent implements OnDestroy {
       // The raw options is just an array of strings that represent attribute values
       // we need to map them back to the attributeList of the option to get the name, value, multiplier, etc;
       const options: Array<PriceOption> = rawOptions.map((optionValue: string) => {
-        return this.findOption(optionValue, currentAttribute.attributeList);
+        return this.findOption(optionValue, currentAttribute);
       });
       // Finally, return the valid options
       return options;
@@ -122,9 +140,10 @@ export class WzPricingComponent implements OnDestroy {
   }
 
   private buildCustomForm(): void {
+    const primaryAttributeName: string = this.attributes.find(attribute => attribute.primary).name;
     this.customForm = this.fb.group({
-      [this.attributes[0].name]: [
-        this._pricingPreferences[this.attributes[0].name] || '',
+      [primaryAttributeName]: [
+        this._pricingPreferences[primaryAttributeName] || null,
         Validators.required
       ],
       attributes: [
@@ -138,27 +157,62 @@ export class WzPricingComponent implements OnDestroy {
   }
 
   private csvFor(attributes: PriceAttribute[]): string {
-    return attributes.slice(1).reduce((csv: string, attribute: PriceAttribute) => {
+    return attributes.filter(attribute => !attribute.primary).reduce((csv: string, attribute: PriceAttribute) => {
       return csv.concat(`${attribute.name},${this._pricingPreferences[attribute.name] || ''}\n`);
     }, '').trim();
   }
 
-  private get parsedCustomFormValue(): Pojo {
-    let newForm: Pojo = {};
+  private get customFormValue(): SelectedPriceAttribute[] {
+    const selectedOption: PriceOption = this.findOption(this.customForm.value[this.attributes[0].name], this.attributes[0]);
+    let formatted: SelectedPriceAttribute[] = [{
+      priceAttributeDisplayName: this.attributes[0].displayName,
+      priceAttributeName: this.attributes[0].name,
+      selectedAttributeName: selectedOption.name,
+      selectedAttributeValue: selectedOption.value
+    }];
     this.customForm.value.attributes.split('\n').forEach((pair: string) => {
-      let [key, value] = pair.split(',').map(s => s.trim());
-      newForm[key] = value;
+      const [priceAttributeName, selectedAttributeValue] = pair.split(',').map(s => s.trim());
+      formatted.push({
+        priceAttributeDisplayName: priceAttributeName,
+        priceAttributeName,
+        selectedAttributeName: selectedAttributeValue,
+        selectedAttributeValue
+      });
     });
-    delete this.customForm.value.attributes;
-    return { ...newForm, ...this.customForm.value };
+    return formatted;
+  }
+
+  private get formValue(): SelectedPriceAttribute[] {
+    let formatted: SelectedPriceAttribute[] = [];
+    for (let attributeName in this.form.value) {
+      const selectedAttribute: PriceAttribute = this.findAttribute(attributeName);
+      const selectedOption: PriceOption = this.findOption(this.form.value[attributeName], selectedAttribute);
+
+      const priceAttributeDisplayName: string = selectedAttribute.displayName;
+      const priceAttributeName: string = selectedAttribute.name;
+      const selectedAttributeName: string = selectedOption.name;
+      const selectedAttributeValue: string = selectedOption.value;
+
+      formatted.push({
+        priceAttributeDisplayName,
+        priceAttributeName,
+        selectedAttributeName,
+        selectedAttributeValue
+      });
+    }
+    return formatted;
+  }
+
+  private findAttribute(attributeName: string): PriceAttribute {
+    return this.attributes.find(attribute => attribute.name === attributeName);
   }
 
   private findParentOf(currentAttribute: PriceAttribute): PriceAttribute {
     return this.attributes.find((attribute: PriceAttribute) => attribute.childId === currentAttribute.id);
   }
 
-  private findOption(optionValue: string, options: Array<PriceOption>): PriceOption {
-    return options.find((attribute: PriceOption) => attribute.value === optionValue);
+  private findOption(optionValue: string, attribute: PriceAttribute): PriceOption {
+    return attribute.attributeList.find((option: PriceOption) => option.value === optionValue);
   }
 
   private buildForm(): void {

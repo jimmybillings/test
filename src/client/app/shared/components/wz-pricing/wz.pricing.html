@@ -9,7 +9,7 @@
             <mat-form-field *ngFor="let attribute of attributes">
               <mat-select
                 required
-                placeholder="{{attribute.name}}"
+                placeholder="{{attribute.displayName}}"
                 formControlName="{{attribute.name}}">
                 <mat-option
                   *ngFor="let option of validOptionsFor(attribute)"
@@ -69,7 +69,7 @@
         <mat-form-field *ngFor="let attribute of attributes">
           <mat-select
             required
-            placeholder="{{attribute.name}}"
+            placeholder="{{attribute.displayName}}"
             formControlName="{{attribute.name}}">
             <mat-option
               *ngFor="let option of validOptionsFor(attribute)"

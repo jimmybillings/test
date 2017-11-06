@@ -35,7 +35,7 @@ export class QuoteEditEffects {
     .withLatestFrom(this.store.select(state => state.quoteEdit.data))
     .switchMap(([action, quote]: [QuoteEditActions.EditLineItemFromDetails, Quote]) => {
       const lineItemToEdit: AssetLineItem = this.findLineItemBy(action.uuid, quote);
-      return this.service.editLineItem(quote.id, lineItemToEdit, action.markers, action.attributes)
+      return this.service.editLineItemFromDetails(quote.id, lineItemToEdit, action.markers, action.attributes)
         .map(quote => this.store.create(factory => factory.quoteEdit.editLineItemFromDetailsSuccess(quote)))
         .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.editLineItemFromDetailsFailure(error))));
     });
@@ -113,6 +113,227 @@ export class QuoteEditEffects {
           )
         )];
     });
+
+  @Effect()
+  public cloneQuote: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.CloneQuote.Type)
+    .switchMap((action: QuoteEditActions.CloneQuote) =>
+
+      this.service.cloneQuote(action.quote)
+        .map((quote) =>
+          this.store.create(factory => factory.quoteEdit.cloneQuoteSuccess(quote))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public cloneQuoteSuccess: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.CloneQuoteSuccess.Type)
+    .mergeMap(() => {
+      return [
+        this.store.create(factory => factory.router.goToActiveQuote()),
+        this.store.create(factory => factory.snackbar.display('QUOTE.UPDATED'))
+      ];
+    });
+
+  @Effect()
+  public createQuote: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.CreateQuote.Type)
+    .switchMap((action: QuoteEditActions.CloneQuote) =>
+
+      this.service.createQuote()
+        .map((quote) =>
+          this.store.create(factory =>
+            factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED')
+          )
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public updateQuoteFields: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.UpdateQuoteFields.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data))
+    .switchMap(([action, quote]: [QuoteEditActions.UpdateQuoteFields, Quote]) =>
+      this.service.updateQuoteField(action.options, quote)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public addFeeTo: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.AddFeeTo.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.AddFeeTo, number]) =>
+      this.service.addFeeTo(quoteId, action.project, action.fee)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public removeFee: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.RemoveFee.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.AddFeeTo, number]) =>
+      this.service.removeFee(quoteId, action.fee)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public bulkImport: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.BulkImport.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.BulkImport, number]) =>
+      this.service.bulkImport(quoteId, action.rawAssets, action.projectId)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.bulkImportSuccess(quote, action.rawAssets))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public bulkImportSuccess: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.BulkImportSuccess.Type)
+    .map((action: QuoteEditActions.BulkImportSuccess) =>
+      this.store.create(factory => factory.snackbar.display(
+        'QUOTE.BULK_IMPORT.CONFIRMATION',
+        { numOfAssets: action.rawAssets.lineItemAttributes.split('\n').length })
+      )
+    );
+
+  @Effect()
+  public editLineItem: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.EditLineItem.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.EditLineItem, number]) =>
+      this.service.editLineItem(quoteId, action.lineItem, action.fieldToEdit)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public addAssetToProjectInQuote: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.AddAssetToProjectInQuote.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data))
+    .switchMap(([action, quote]: [QuoteEditActions.AddAssetToProjectInQuote, Quote]) => {
+      let existingProjects = (quote.projects || []).map((project: any) => project.name);
+      return this.service.addAssetToProjectInQuote(quote.id, existingProjects, action.parameters)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.addAssetToProjectInQuoteSuccess(quote, action.parameters.lineItem.asset.assetId))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))));
+    });
+
+  @Effect()
+  public addAssetToProjectInQuoteSuccess: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.AddAssetToProjectInQuoteSuccess.Type)
+    .map((action: QuoteEditActions.AddAssetToProjectInQuoteSuccess) =>
+      this.store.create(factory =>
+        factory.snackbar.display('ASSET.ADD_TO_QUOTE_TOAST', { assetId: action.assetId })
+      )
+    );
+
+  @Effect()
+  public addProject: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.AddProject.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.AddProject, number]) =>
+      this.service.addProject(quoteId)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public removeProject: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.RemoveProject.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.RemoveProject, number]) =>
+      this.service.removeProject(quoteId, action.projectId)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public updateProject: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.UpdateProject.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.UpdateProject, number]) =>
+      this.service.updateProject(quoteId, action.project)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public moveLineItem: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.MoveLineItem.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.MoveLineItem, number]) =>
+      this.service.moveLineItem(quoteId, action.project, action.lineItem)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public cloneLineItem: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.CloneLineItem.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.CloneLineItem, number]) =>
+      this.service.cloneLineItem(quoteId, action.lineItem)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public editLineItemMarkers: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.EditLineItemMarkers.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.EditLineItemMarkers, number]) =>
+      this.service.editLineItemMarkers(quoteId, action.lineItem, action.newMarkers)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public updateProjectPriceAttributes: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.UpdateProjectPriceAttributes.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.UpdateProjectPriceAttributes, number]) =>
+      this.service.updateProjectPriceAttributes(quoteId, action.priceAttributes, action.project)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
+  public quoteRefreshAndNotify: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.RefreshAndNotify.Type)
+    .map((action: QuoteEditActions.RefreshAndNotify) =>
+      this.store.create(factory =>
+        factory.snackbar.display(action.translationString)
+      )
+    );
 
   constructor(
     private actions: Actions,

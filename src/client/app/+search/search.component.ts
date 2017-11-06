@@ -11,7 +11,6 @@ import { CartService } from '../shared/services/cart.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
 import { AppStore } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
@@ -49,7 +48,6 @@ export class SearchComponent implements OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private detector: ChangeDetectorRef,
-    private quoteEditService: QuoteEditService,
     private store: AppStore
   ) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
@@ -84,7 +82,7 @@ export class SearchComponent implements OnDestroy {
   public addAssetToCart(asset: any): void {
     let params: AddAssetParameters = { lineItem: { asset: asset } };
     if (this.userCan.administerQuotes()) {
-      this.quoteEditService.addAssetToProjectInQuote(params);
+      this.store.dispatch(factory => factory.quoteEdit.addAssetToProjectInQuote(params));
     } else {
       this.cart.addAssetToProjectInCart(params);
     }

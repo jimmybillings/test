@@ -75,6 +75,10 @@ import * as MultiLingualActions from './store/multi-lingual/multi-lingual.action
 import * as MultiLingualState from './store/multi-lingual/multi-lingual.state';
 export type MultiLingualState = MultiLingualState.State;
 
+import * as FeeConfigActions from './store/fee-config/fee-config.actions';
+import * as FeeConfigState from './store/fee-config/fee-config.state';
+export type FeeConfigState = FeeConfigState.State;
+
 // Temporary imports for LegacyService.
 import { LegacyAssetService } from './store/asset/asset.service';
 
@@ -99,6 +103,7 @@ export interface ActionFactory {
   readonly snackbar: SnackbarActions.ActionFactory;
   readonly speedPreview: SpeedPreviewActions.ActionFactory;
   readonly uiConfig: UiConfigActions.ActionFactory;
+  readonly feeConfig: FeeConfigActions.ActionFactory;
 };
 
 export interface InternalActionFactory {
@@ -122,6 +127,7 @@ export interface InternalActionFactory {
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
   readonly uiConfig: UiConfigActions.InternalActionFactory;
+  readonly feeConfig: FeeConfigActions.InternalActionFactory;
 };
 
 export interface AppState {
@@ -141,6 +147,7 @@ export interface AppState {
   readonly snackbar: SnackbarState;
   readonly speedPreview: SpeedPreviewState;
   readonly uiConfig: UiConfigState;
+  readonly feeConfig: FeeConfigState;
 }
 
 export interface AppReducers {
@@ -168,7 +175,8 @@ export const reducers: AppReducers = {
   quoteShow: QuoteShowState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
-  uiConfig: UiConfigState.reducer
+  uiConfig: UiConfigState.reducer,
+  feeConfig: FeeConfigState.reducer
 };
 
 export type ActionFactoryMapper = (factory: ActionFactory) => Action;
@@ -198,7 +206,8 @@ export class AppStore {
     router: new RouterActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
     speedPreview: new SpeedPreviewActions.ActionFactory(),
-    uiConfig: new UiConfigActions.ActionFactory()
+    uiConfig: new UiConfigActions.ActionFactory(),
+    feeConfig: new FeeConfigActions.ActionFactory()
   };
 
   private readonly internalActionFactory: InternalActionFactory = {
@@ -221,7 +230,8 @@ export class AppStore {
     router: new RouterActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
     speedPreview: new SpeedPreviewActions.InternalActionFactory(),
-    uiConfig: new UiConfigActions.InternalActionFactory()
+    uiConfig: new UiConfigActions.InternalActionFactory(),
+    feeConfig: new FeeConfigActions.InternalActionFactory()
   };
 
   private legacyService: LegacyService;

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
-import { AddAssetParameters, PriceAttribute, Cart } from '../shared/interfaces/commerce.interface';
-import { WzEvent, SelectedPriceAttributes } from '../shared/interfaces/common.interface';
+import { AddAssetParameters, Cart, PriceAttribute, Project } from '../shared/interfaces/commerce.interface';
+import { WzEvent, SelectedPriceAttribute } from '../shared/interfaces/common.interface';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
@@ -12,7 +12,6 @@ import { WzDialogService } from '../shared/modules/wz-dialog/services/wz.dialog.
 import { DefaultComponentOptions } from '../shared/modules/wz-dialog/interfaces/wz.dialog.interface';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
 import { WindowRef } from '../shared/services/window-ref.service';
-import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { Subscription } from 'rxjs/Subscription';
 import { EnhancedAsset, enhanceAsset, AssetType } from '../shared/interfaces/enhanced-asset';
 import * as CommonInterface from '../shared/interfaces/common.interface';
@@ -39,10 +38,10 @@ export class AssetComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
   private pricingSubscription: Subscription;
   private selectedAttributes: CommonInterface.Pojo;
-  private appliedAttributes: CommonInterface.Pojo;
+  private appliedAttributes: SelectedPriceAttribute[];
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
   private cartAsset: EnhancedAsset;
-  private cartAssetPriceAttributes: SelectedPriceAttributes[];
+  private cartAssetPriceAttributes: SelectedPriceAttribute[];
 
   constructor(
     public currentUser: CurrentUserService,
@@ -54,7 +53,6 @@ export class AssetComponent implements OnInit, OnDestroy {
     private userPreference: UserPreferenceService,
     private cartService: CartService,
     private dialogService: WzDialogService,
-    private quoteEditService: QuoteEditService,
     private searchContext: SearchContext
   ) { }
 
@@ -114,10 +112,11 @@ export class AssetComponent implements OnInit, OnDestroy {
           asset: { assetId: parameters.assetId }
         },
         markers: parameters.markers,
-        attributes: this.selectedAttributes ? this.selectedAttributes : null
+        attributes: this.appliedAttributes ? this.appliedAttributes : null
       };
+
       this.userCan.administerQuotes() ?
-        this.quoteEditService.addAssetToProjectInQuote(options) :
+        this.store.dispatch(factory => factory.quoteEdit.addAssetToProjectInQuote(options)) :
         this.cartService.addAssetToProjectInCart(options);
     });
   }
@@ -149,7 +148,7 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   public get assetMatchesCartAsset(): boolean {
     return this.cartAsset
-      ? this.subclipMarkersMatchCartAsset && this.pricingAttributesMatchCartAsset
+      ? this.subclipMarkersMatchCartAsset
       : true; // We populate this.cartAsset for 'cartAsset' and 'quoteEditAsset' types only.
   }
 
@@ -196,11 +195,25 @@ export class AssetComponent implements OnInit, OnDestroy {
         break;
       case 'APPLY_PRICE':
         if (event.payload.updatePrefs) {
-          this.userPreference.updatePricingPreferences(event.payload.attributes);
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
         }
         dialogRef.close();
         this.store.dispatch(factory => factory.pricing.setPriceForDetails(event.payload.price));
         this.store.dispatch(factory => factory.pricing.setAppliedAttributes(event.payload.attributes));
+        if (this.assetType === 'quoteEditAsset') {
+          this.store.dispatch(factory => factory.quoteEdit.editLineItemFromDetails(
+            this.asset.uuid,
+            this.subclipMarkers,
+            event.payload.attributes
+          ));
+        }
+        if (this.assetType === 'cartAsset') {
+          this.store.dispatch(factory => factory.cart.editLineItemFromDetails(
+            this.asset.uuid,
+            this.subclipMarkers,
+            event.payload.attributes
+          ));
+        }
         break;
       case 'ERROR':
         this.store.dispatch(factory => factory.error.handleCustomError(event.payload));
@@ -212,15 +225,20 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.cartAsset = null;
     this.cartAssetPriceAttributes = null;
 
-    let service: CartService | QuoteEditService;
+    let projects: Project[];
 
     switch (this.assetType) {
-      case 'cartAsset': service = this.cartService; break;
-      case 'quoteEditAsset': service = this.quoteEditService; break;
+      case 'cartAsset':
+        projects = this.store.snapshotCloned(state => state.cart.data.projects);
+        break;
+      case 'quoteEditAsset':
+        projects = this.store.snapshotCloned(state => state.quoteEdit.data.projects);
+        break;
       default: return;
     }
 
-    const lineItem = service.state.data.projects
+    const lineItem = projects
+      .filter(project => project.lineItems)
       .reduce((lineItems, project) => lineItems.concat(project.lineItems), [])
       .find(lineItem => lineItem.id === this.asset.uuid);
 
@@ -232,15 +250,6 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   private get subclipMarkersMatchCartAsset(): boolean {
     return SubclipMarkersInterface.matches(this.cartAsset.timeStart, this.cartAsset.timeEnd, this.subclipMarkers);
-  }
-
-  private get pricingAttributesMatchCartAsset(): boolean {
-    if (!this.appliedAttributes) return true;  // We know the user hasn't changed attributes if this.appliedAttributes isn't set.
-    if (this.cartAssetPriceAttributes.length !== Object.keys(this.appliedAttributes).length) return false;
-
-    return this.cartAssetPriceAttributes.every((cartAttribute: SelectedPriceAttributes) => {
-      return cartAttribute.selectedAttributeValue === this.appliedAttributes[cartAttribute.priceAttributeName];
-    });
   }
 
   private commentParentObjectFromRoute(routeParams: any): CommentParentObject {

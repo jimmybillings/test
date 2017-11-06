@@ -12,7 +12,9 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['Load', 'Delete'],
+      actionClassName: ['Load', 'Delete', 'CloneQuote', 'CreateQuote', 'UpdateQuoteFields', 'AddFeeTo', 'RemoveFee',
+        'BulkImport', 'EditLineItem', 'AddAssetToProjectInQuote', 'AddProject', 'RemoveProject', 'UpdateProject',
+        'MoveLineItem', 'CloneLineItem', 'EditLineItemMarkers'],
       customTests: [
         {
           it: 'returns a clone of the state with loading: true',
@@ -24,7 +26,9 @@ export function main() {
 
     stateSpecHelper.generateTestsFor({
       actionClassName: [
-        'LoadSuccess', 'DeleteSuccess', 'EditLineItemFromDetailsSuccess', 'RemoveAssetSuccess', 'AddCustomPriceToLineItemSuccess'
+        'LoadSuccess', 'DeleteSuccess', 'EditLineItemFromDetailsSuccess', 'RemoveAssetSuccess',
+        'AddCustomPriceToLineItemSuccess', 'CloneQuoteSuccess', 'BulkImportSuccess',
+        'AddAssetToProjectInQuoteSuccess', 'RefreshAndNotify'
       ],
       customTests: [
         {
@@ -37,7 +41,8 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['LoadFailure', 'DeleteFailure', 'EditLineItemFromDetailsFailure', 'AddCustomPriceToLineItemFailure'],
+      actionClassName: ['LoadFailure', 'DeleteFailure', 'EditLineItemFromDetailsFailure',
+        'AddCustomPriceToLineItemFailure'],
       mutationTestData: {
         previousState: { loading: true }
       },

@@ -1,4 +1,6 @@
+import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Pojo } from '../../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -25,11 +27,11 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
         {{ 'QUOTE.SAVE_AND_NEW' | translate }}
         </button>
         <button
-          [disabled]="!canOpenQuoteDialog"
+          [disabled]="!userCanProceed"
           mat-raised-button
           color="primary"
-          (click)="onOpenQuoteDialog()">
-          {{ 'QUOTE.CREATE_QUOTE_BTN' | translate }}
+          (click)="goToNextTab()">
+          {{ 'QUOTE.EDIT.NEXT' | translate }}
         </button>
       </section>
     </div>`,
@@ -38,33 +40,21 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 export class AdministerQuoteComponent {
   @Input() public userCanProceed: boolean;
   @Input() public shouldShowCloneButton: boolean;
-  @Output() public saveAsDraft: EventEmitter<null> = new EventEmitter();
-  @Output() public openQuoteDialog: EventEmitter<null> = new EventEmitter();
-  @Output() public openDeleteDialog: EventEmitter<null> = new EventEmitter();
-  @Output() public saveAndNew: EventEmitter<null> = new EventEmitter();
-  @Output() public cloneQuote: EventEmitter<null> = new EventEmitter();
-
-  public get canOpenQuoteDialog() {
-    return this.userCanProceed;
-  }
+  @Output() public notify: EventEmitter<Pojo> = new EventEmitter();
 
   public onSaveAndNew() {
-    this.saveAndNew.emit();
+    this.notify.emit({ type: 'SAVE_AND_NEW' });
   }
 
   public onOpenDeleteDialog() {
-    this.openDeleteDialog.emit();
-  }
-
-  public onOpenQuoteDialog() {
-    this.openQuoteDialog.emit();
+    this.notify.emit({ type: 'OPEN_DELETE_DIALOG' });
   }
 
   public onClickCloneQuoteButton() {
-    this.cloneQuote.emit();
+    this.notify.emit({ type: 'CLONE_QUOTE' });
   }
 
-  public onSaveAsDraft() {
-    this.saveAsDraft.emit();
+  public goToNextTab() {
+    this.notify.emit({ type: 'GO_TO_NEXT_TAB' });
   }
 }

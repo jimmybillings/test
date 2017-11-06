@@ -15,13 +15,13 @@ export function main() {
     let mockWindow: any;
     let mockState: any;
     let mockQuoteService: any;
-    let mockPricingStore: any;
     let mockCurrentUserService: any;
-    let mockPricingService: any;
     let mockCapabilities: any;
+    let mockChangeDetectorRef: any;
     let mockAppStore: MockAppStore;
     let initPricingSpy: jasmine.Spy;
     let setPriceSpy: jasmine.Spy;
+
 
     beforeEach(() => {
       mockState = {
@@ -72,14 +72,7 @@ export function main() {
         createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({}))
       };
 
-      mockPricingStore = {
-        priceForDialog: Observable.of(1000)
-      };
-
-      mockPricingService = {
-        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({ some: 'attribute' })),
-        getPriceFor: jasmine.createSpy('getPriceFor').and.returnValue(Observable.of({ price: 100 }))
-      };
+      mockChangeDetectorRef = { markForCheck: () => true };
 
       mockAppStore = new MockAppStore();
       initPricingSpy = mockAppStore.createActionFactoryMethod('pricing', 'initializePricing');
@@ -91,7 +84,8 @@ export function main() {
       mockCapabilities = { administerQuotes: () => false };
 
       componentUnderTest = new CommerceEditTab(
-        mockCapabilities, mockCartService, mockDialogService, mockWindow, mockUserPreference, mockDocument, mockAppStore
+        mockCapabilities, mockCartService, mockDialogService, mockWindow, mockUserPreference, mockDocument,
+        mockAppStore, mockChangeDetectorRef
       );
     });
 
@@ -111,7 +105,7 @@ export function main() {
       it('should return true if all assets are valid', () => {
         mockState = {
           data: {
-            itemCount: 0,
+            itemCount: 1,
             projects: [{
               lineItems: [
                 { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
@@ -127,7 +121,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -141,7 +135,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -160,7 +154,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(true);
@@ -174,7 +168,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.cartContainsNoAssets).toBe(false);
@@ -192,7 +186,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);
@@ -217,7 +211,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(true);
@@ -242,7 +236,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, mockChangeDetectorRef
         );
 
         expect(componentUnderTest.showUsageWarning).toBe(false);

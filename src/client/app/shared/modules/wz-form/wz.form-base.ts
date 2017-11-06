@@ -196,6 +196,15 @@ export class WzFormBase implements OnInit, OnChanges {
     return this.dateToString(date);
   }
 
+  public shouldShowRequiredError(field: FormFields) {
+    const control: AbstractControl = this.form.controls[field.name];
+    return control.hasError('required') || (control.errors.pattern && control.errors.pattern.requiredPattern === String(/\S/));
+  }
+
+  public shouldShowEmailError(field: FormFields) {
+    return this.form.controls[field.name].hasError('pattern') && field.validation === 'EMAIL';
+  }
+
   private dateToString(date: Date): string {
     return date.toISOString().slice(0, 10).replace(/-/g, '/');
   }
