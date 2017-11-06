@@ -8,7 +8,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  initialized: false,
+  initialized: null,
   feeConfig: { items: [] },
 };
 

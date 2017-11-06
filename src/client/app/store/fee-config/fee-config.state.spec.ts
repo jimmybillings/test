@@ -16,55 +16,39 @@ export function main() {
       state: FeeConfigState,
     });
 
-    // stateSpecHelper.generateTestsFor({
-    //   actionClassName: 'LoadFeeConfig',
-    //   mutationTestData: {
-    //     actionParameters: { asset: { assetId: 444444 } }
-    //   },
-    //   customTests: [
-    //     {
-    //       it: 'returns previous state but with loadingAssetId: ${asset.assetId}',
-    //       previousState: {
-    //         222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-    //         333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-    //         loadingAssetId: undefined
-    //       },
-    //       actionParameters: { asset: { assetId: 444444 } },
+    stateSpecHelper.generateTestsFor({
+      actionClassName: ['LoadFeeConfig'],
+      customTests: [
+        {
+          it: 'Sets initialized to false',
+          previousState: FeeConfigState.initialState,
+          expectedNextState: { ...FeeConfigState.initialState, initialized: false }
+        }
+      ]
+    });
 
-    //       expectedNextState: {
-    //         222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-    //         333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-    //         loadingAssetId: 444444
-    //       }
-    //     }
-    //   ]
-    // });
+    stateSpecHelper.generateTestsFor({
+      actionClassName: ['LoadFeeConfigSuccess'],
+      customTests: [
+        {
+          it: 'Sets feeConfig from server if object has items and initialized to true',
+          actionParameters: { feeConfig: { items: ['one', 'two', 'three'] } },
+          previousState: { ...FeeConfigState.initialState, initialized: false },
+          expectedNextState: { ...FeeConfigState.initialState, feeConfig: { items: ['one', 'two', 'three'] }, initialized: true }
+        }
+      ]
+    });
 
-    // stateSpecHelper.generateTestsFor({
-    //   actionClassName: 'LoadSuccess',
-    //   mutationTestData: {
-    //     actionParameters: { speedViewData: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' } }
-    //   },
-    //   customTests: [
-    //     {
-    //       it: 'returns new state with updated speedview data objects and loadingAssetId: undefined',
-
-    //       previousState: {
-    //         222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-    //         333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-    //         loadingAssetId: 444444
-    //       },
-
-    //       actionParameters: { speedViewData: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' } },
-
-    //       expectedNextState: {
-    //         222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-    //         333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-    //         444444: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-    //         loadingAssetId: undefined
-    //       }
-    //     }
-    //   ]
-    // });
+    stateSpecHelper.generateTestsFor({
+      actionClassName: ['LoadFeeConfigSuccess'],
+      customTests: [
+        {
+          it: 'Sets empty items array if response from server is bad',
+          actionParameters: {},
+          previousState: { ...FeeConfigState.initialState, initialized: false },
+          expectedNextState: { ...FeeConfigState.initialState, feeConfig: { items: [] }, initialized: true }
+        }
+      ]
+    });
   });
 }
