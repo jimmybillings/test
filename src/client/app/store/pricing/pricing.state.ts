@@ -1,13 +1,13 @@
 import * as PricingActions from './pricing.actions';
 import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { Common } from '../../shared/utilities/common.functions';
-import { Pojo } from '../../shared/interfaces/common.interface';
+import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
 
 export interface State {
   priceForDetails: number;
   priceForDialog: number;
   attributes: PriceAttribute[];
-  appliedAttributes: Pojo;
+  appliedAttributes: SelectedPriceAttribute[];
   selectedAttributes: Pojo;
 }
 

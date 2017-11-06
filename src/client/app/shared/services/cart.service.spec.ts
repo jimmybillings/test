@@ -93,7 +93,7 @@ export function main() {
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
         const addAssetParameters: AddAssetParameters = {
           lineItem: { asset: { assetId: 10836 }, selectedTranscodeTarget: '1080p', price: 100.5 },
-          attributes: { key: 'value' }
+          attributes: [{ priceAttributeName: 'key', selectedAttributeValue: 'value' }]
         };
 
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);

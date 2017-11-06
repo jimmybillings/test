@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@a
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AddAssetParameters, Cart, PriceAttribute, Project } from '../shared/interfaces/commerce.interface';
-import { WzEvent, SelectedPriceAttributes } from '../shared/interfaces/common.interface';
+import { WzEvent, SelectedPriceAttribute } from '../shared/interfaces/common.interface';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
@@ -38,10 +38,10 @@ export class AssetComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
   private pricingSubscription: Subscription;
   private selectedAttributes: CommonInterface.Pojo;
-  private appliedAttributes: CommonInterface.Pojo;
+  private appliedAttributes: SelectedPriceAttribute[];
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
   private cartAsset: EnhancedAsset;
-  private cartAssetPriceAttributes: SelectedPriceAttributes[];
+  private cartAssetPriceAttributes: SelectedPriceAttribute[];
 
   constructor(
     public currentUser: CurrentUserService,
@@ -112,7 +112,7 @@ export class AssetComponent implements OnInit, OnDestroy {
           asset: { assetId: parameters.assetId }
         },
         markers: parameters.markers,
-        attributes: this.selectedAttributes ? this.selectedAttributes : null
+        attributes: this.appliedAttributes ? this.appliedAttributes : null
       };
 
       this.userCan.administerQuotes() ?
@@ -148,7 +148,7 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   public get assetMatchesCartAsset(): boolean {
     return this.cartAsset
-      ? this.subclipMarkersMatchCartAsset && this.pricingAttributesMatchCartAsset
+      ? this.subclipMarkersMatchCartAsset
       : true; // We populate this.cartAsset for 'cartAsset' and 'quoteEditAsset' types only.
   }
 
@@ -195,11 +195,25 @@ export class AssetComponent implements OnInit, OnDestroy {
         break;
       case 'APPLY_PRICE':
         if (event.payload.updatePrefs) {
-          this.userPreference.updatePricingPreferences(event.payload.attributes);
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
         }
         dialogRef.close();
         this.store.dispatch(factory => factory.pricing.setPriceForDetails(event.payload.price));
         this.store.dispatch(factory => factory.pricing.setAppliedAttributes(event.payload.attributes));
+        if (this.assetType === 'quoteEditAsset') {
+          this.store.dispatch(factory => factory.quoteEdit.editLineItemFromDetails(
+            this.asset.uuid,
+            this.subclipMarkers,
+            event.payload.attributes
+          ));
+        }
+        if (this.assetType === 'cartAsset') {
+          this.store.dispatch(factory => factory.cart.editLineItemFromDetails(
+            this.asset.uuid,
+            this.subclipMarkers,
+            event.payload.attributes
+          ));
+        }
         break;
       case 'ERROR':
         this.store.dispatch(factory => factory.error.handleCustomError(event.payload));
@@ -236,15 +250,6 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   private get subclipMarkersMatchCartAsset(): boolean {
     return SubclipMarkersInterface.matches(this.cartAsset.timeStart, this.cartAsset.timeEnd, this.subclipMarkers);
-  }
-
-  private get pricingAttributesMatchCartAsset(): boolean {
-    if (!this.appliedAttributes) return true;  // We know the user hasn't changed attributes if this.appliedAttributes isn't set.
-    if (this.cartAssetPriceAttributes.length !== Object.keys(this.appliedAttributes).length) return false;
-
-    return this.cartAssetPriceAttributes.every((cartAttribute: SelectedPriceAttributes) => {
-      return cartAttribute.selectedAttributeValue === this.appliedAttributes[cartAttribute.priceAttributeName];
-    });
   }
 
   private commentParentObjectFromRoute(routeParams: any): CommentParentObject {

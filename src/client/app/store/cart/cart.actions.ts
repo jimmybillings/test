@@ -4,14 +4,18 @@ import { Cart } from '../../shared/interfaces/commerce.interface';
 import { Asset } from '../../shared/interfaces/common.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
-import { Pojo } from '../../shared/interfaces/common.interface';
+import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
 
 export class ActionFactory {
   public load(): Load {
     return new Load();
   }
 
-  public editLineItemFromDetails(uuid: string, markers: SubclipMarkers, attributes: Pojo): EditLineItemFromDetails {
+  public editLineItemFromDetails(
+    uuid: string,
+    markers: SubclipMarkers,
+    attributes: SelectedPriceAttribute[]
+  ): EditLineItemFromDetails {
     return new EditLineItemFromDetails(uuid, markers, attributes);
   }
 
@@ -67,7 +71,11 @@ export class LoadFailure implements Action {
 export class EditLineItemFromDetails implements Action {
   public static readonly Type = '[Cart] Edit Line Item From Details';
   public readonly type = EditLineItemFromDetails.Type;
-  constructor(public readonly uuid: string, public readonly markers: SubclipMarkers, public readonly attributes: Pojo) { }
+  constructor(
+    public readonly uuid: string,
+    public readonly markers: SubclipMarkers,
+    public readonly attributes: SelectedPriceAttribute[]
+  ) { }
 }
 
 export class EditLineItemFromDetailsSuccess implements Action {

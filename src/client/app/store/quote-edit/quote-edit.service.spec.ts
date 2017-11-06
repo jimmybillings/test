@@ -59,7 +59,7 @@ export function main() {
             7,
             { id: 3, asset: { some: 'asset' } } as any,
             { in: new Frame(30).setFromFrameNumber(30), out: new Frame(30).setFromFrameNumber(60) },
-            { some: 'attribute' }
+            [{ selectedAttributeName: 'some', selectedAttributeValue: 'attribute' }] as any
           );
 
           expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
@@ -69,7 +69,7 @@ export function main() {
             id: 3,
             asset: { some: 'asset', timeStart: 1000, timeEnd: 2000 },
             attributes: [
-              { priceAttributeName: 'some', selectedAttributeValue: 'attribute' }
+              { selectedAttributeName: 'some', selectedAttributeValue: 'attribute' }
             ]
           });
           expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
@@ -80,7 +80,7 @@ export function main() {
             7,
             { id: 3, asset: { some: 'asset', timeStart: 333, timeEnd: 999 } } as any,
             null,
-            { some: 'attribute' }
+            [{ selectedAttributeName: 'some', selectedAttributeValue: 'attribute' }] as any
           );
 
           expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
@@ -90,7 +90,7 @@ export function main() {
             id: 3,
             asset: { some: 'asset', timeStart: 333, timeEnd: 999 },
             attributes: [
-              { priceAttributeName: 'some', selectedAttributeValue: 'attribute' }
+              { selectedAttributeName: 'some', selectedAttributeValue: 'attribute' }
             ]
           });
           expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });

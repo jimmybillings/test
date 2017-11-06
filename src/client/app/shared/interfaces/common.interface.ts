@@ -28,8 +28,10 @@ export interface Store {
   pagination: Pagination;
 }
 
-export interface SelectedPriceAttributes {
+export interface SelectedPriceAttribute {
+  priceAttributeDisplayName: string;
   priceAttributeName: string;
+  selectedAttributeName: string;
   selectedAttributeValue: string;
 }
 

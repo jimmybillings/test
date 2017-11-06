@@ -29,7 +29,7 @@ export function main() {
           serviceUnderTest.editLineItem(
             { id: 3, asset: { some: 'asset' } } as any,
             { in: new Frame(30).setFromFrameNumber(30), out: new Frame(30).setFromFrameNumber(60) },
-            { some: 'attribute' }
+            [{ priceAttributeName: 'some', selectedAttributeValue: 'attribute' } as any]
           );
 
           expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
@@ -49,7 +49,7 @@ export function main() {
           serviceUnderTest.editLineItem(
             { id: 3, asset: { some: 'asset', timeStart: 333, timeEnd: 999 } } as any,
             null,
-            { some: 'attribute' }
+            [{ priceAttributeName: 'some', selectedAttributeValue: 'attribute' } as any]
           );
 
           expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);

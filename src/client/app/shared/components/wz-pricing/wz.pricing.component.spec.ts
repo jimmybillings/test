@@ -23,25 +23,25 @@ export function main() {
       it('should build the form properly with no preferences', () => {
         componentUnderTest.pricingPreferences = {};
 
-        expect(componentUnderTest.form.value).toEqual({ A: '' }); // disabled fields don't have a value
+        expect(componentUnderTest.form.value).toEqual({ a: '' }); // disabled fields don't have a value
       });
 
       it('should build the form properly with preferences', () => {
         componentUnderTest.pricingPreferences = {
-          A: 's',
-          B: 'm',
-          C: 'x',
-          D: 's'
+          a: 's',
+          b: 'm',
+          c: 'x',
+          d: 's'
         };
 
-        expect(componentUnderTest.form.value).toEqual({ A: 's', B: 'm', C: 'x', D: 's' });
+        expect(componentUnderTest.form.value).toEqual({ a: 's', b: 'm', c: 'x', d: 's' });
       });
 
       it('should build a blank form if the preferences are invalid', () => {
         componentUnderTest.pricingPreferences = {
           invalid: 'preference'
         };
-        expect(componentUnderTest.form.value).toEqual({ A: '' });
+        expect(componentUnderTest.form.value).toEqual({ a: '' });
       });
     });
 
@@ -55,18 +55,18 @@ export function main() {
         describe('builds the custom pricing attribute form', () => {
           beforeEach(() => {
             componentUnderTest.pricingPreferences = {
-              A: 's',
-              B: 'm',
-              C: 'x',
-              D: 's'
+              a: 's',
+              b: 'm',
+              c: 'x',
+              d: 's'
             };
             componentUnderTest.userCanCustomizeRights = true;
           });
 
           it('with the proper values', () => {
             expect(componentUnderTest.customForm.value).toEqual({
-              A: 's',
-              attributes: 'B,m\nC,x\nD,s'
+              a: 's',
+              attributes: 'b,m\nc,x\nd,s'
             });
           });
 
@@ -106,10 +106,10 @@ export function main() {
     describe('onSubmit()', () => {
       it('should emit the calculatePricing event with the form', () => {
         componentUnderTest.pricingPreferences = {
-          A: 's',
-          B: 'm',
-          C: 'x',
-          D: 's'
+          a: 's',
+          b: 'm',
+          c: 'x',
+          d: 's'
         };
         spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.price = Observable.of(10);
@@ -117,7 +117,30 @@ export function main() {
 
         expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
           type: 'APPLY_PRICE',
-          payload: { price: 10, attributes: { A: 's', B: 'm', C: 'x', D: 's' }, updatePrefs: true }
+          payload: {
+            price: 10,
+            attributes: [
+              {
+                priceAttributeDisplayName: 'A', priceAttributeName: 'a', selectedAttributeName: 'S', selectedAttributeValue: 's'
+              },
+              {
+                priceAttributeDisplayName: 'B', priceAttributeName: 'b', selectedAttributeName: 'M', selectedAttributeValue: 'm'
+              },
+              {
+                priceAttributeDisplayName: 'C', priceAttributeName: 'c', selectedAttributeName: 'X', selectedAttributeValue: 'x'
+              },
+              {
+                priceAttributeDisplayName: 'D', priceAttributeName: 'd', selectedAttributeName: 'S', selectedAttributeValue: 's'
+              }
+            ],
+            updatePrefs: true,
+            preferences: {
+              a: 's',
+              b: 'm',
+              c: 'x',
+              d: 's'
+            }
+          }
         });
       });
     });
@@ -125,10 +148,10 @@ export function main() {
     describe('onSubmitCustom()', () => {
       it('should emit the pricing event with the form', () => {
         componentUnderTest.pricingPreferences = {
-          A: 's',
-          B: 'm',
-          C: 'x',
-          D: 's'
+          a: 's',
+          b: 'm',
+          c: 'x',
+          d: 's'
         };
         componentUnderTest.userCanCustomizeRights = true;
         spyOn(componentUnderTest.pricingEvent, 'emit');
@@ -136,7 +159,23 @@ export function main() {
 
         expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
           type: 'APPLY_PRICE',
-          payload: { attributes: { B: 'm', C: 'x', D: 's', A: 's' }, updatePrefs: false }
+          payload: {
+            attributes: [
+              {
+                priceAttributeDisplayName: 'A', priceAttributeName: 'a', selectedAttributeName: 'S', selectedAttributeValue: 's'
+              },
+              {
+                priceAttributeDisplayName: 'b', priceAttributeName: 'b', selectedAttributeName: 'm', selectedAttributeValue: 'm'
+              },
+              {
+                priceAttributeDisplayName: 'c', priceAttributeName: 'c', selectedAttributeName: 'x', selectedAttributeValue: 'x'
+              },
+              {
+                priceAttributeDisplayName: 'd', priceAttributeName: 'd', selectedAttributeName: 's', selectedAttributeValue: 's'
+              }
+            ],
+            updatePrefs: false
+          }
         });
       });
     });
@@ -160,10 +199,10 @@ export function main() {
 
       it('should return false if the parent is not empty', () => {
         componentUnderTest.form = mockFormBuilder.group({
-          A: ['s'],
-          B: ['m'],
-          C: [''],
-          D: ['']
+          a: ['s'],
+          b: ['m'],
+          c: [''],
+          d: ['']
         });
 
         let result = componentUnderTest.parentIsEmpty(componentUnderTest.attributes[2]);
@@ -189,10 +228,10 @@ export function main() {
       it('should return valid options for a non-primary attribute', () => {
         componentUnderTest.pricingPreferences = {};
         componentUnderTest.form = mockFormBuilder.group({
-          A: ['r'],
-          B: [''],
-          C: [''],
-          D: ['']
+          a: ['r'],
+          b: [''],
+          c: [''],
+          d: ['']
         });
 
         let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[1]);
@@ -204,19 +243,19 @@ export function main() {
         componentUnderTest.pricingPreferences = {};
         spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.form = mockFormBuilder.group({
-          A: ['t'],
-          B: ['n'],
-          C: ['z'],
-          D: ['']
+          a: ['t'],
+          b: ['n'],
+          c: ['z'],
+          d: ['']
         });
 
         componentUnderTest.validOptionsFor(componentUnderTest.attributes[3]);
 
         expect(componentUnderTest.form.value).toEqual({
-          A: '',
-          B: '',
-          C: '',
-          D: ''
+          a: '',
+          b: '',
+          c: '',
+          d: ''
         });
       });
     });
@@ -225,10 +264,10 @@ export function main() {
       beforeEach(() => {
         componentUnderTest.pricingPreferences = {};
         componentUnderTest.form = mockFormBuilder.group({
-          A: ['r'],
-          B: ['j'],
-          C: ['v'],
-          D: ['q']
+          a: ['r'],
+          b: ['j'],
+          c: ['v'],
+          d: ['q']
         });
       });
 
@@ -237,8 +276,8 @@ export function main() {
         componentUnderTest.handleSelect({ isUserInput: true } as any, attribute);
 
         expect(componentUnderTest.form.value).toEqual({
-          A: 'r',
-          B: ''
+          a: 'r',
+          b: ''
         });
       });
     });
@@ -247,66 +286,66 @@ export function main() {
   function mockPriceAttributes() {
     return [
       {
-        'primary': true,
-        'id': 0,
-        'name': 'A',
-        'displayName': 'A',
-        'attributeList': [
+        primary: true,
+        id: 0,
+        name: 'a',
+        displayName: 'A',
+        attributeList: [
           { name: 'R', value: 'r' },
           { name: 'S', value: 's' },
           { name: 'T', value: 't' }
         ],
-        'validChildChoicesMap': {
-          'r': ['j', 'k', 'l'],
-          's': ['k', 'l', 'm'],
-          't': ['n']
+        validChildChoicesMap: {
+          r: ['j', 'k', 'l'],
+          s: ['k', 'l', 'm'],
+          t: ['n']
         },
-        'childId': 1
+        childId: 1
       },
       {
-        'id': 1,
-        'name': 'B',
-        'displayName': 'B',
-        'attributeList': [
+        id: 1,
+        name: 'b',
+        displayName: 'B',
+        attributeList: [
           { name: 'J', value: 'j' },
           { name: 'K', value: 'k' },
           { name: 'L', value: 'l' },
           { name: 'M', value: 'm' },
           { name: 'N', value: 'n' }
         ],
-        'validChildChoicesMap': {
-          'j': ['u', 'v'],
-          'k': ['v', 'w'],
-          'l': ['w', 'x'],
-          'm': ['x', 'y'],
-          'n': ['y', 'z']
+        validChildChoicesMap: {
+          j: ['u', 'v'],
+          k: ['v', 'w'],
+          l: ['w', 'x'],
+          m: ['x', 'y'],
+          n: ['y', 'z']
         },
-        'childId': 2
+        childId: 2
       },
       {
-        'id': 2,
-        'name': 'C',
-        'displayName': 'C',
-        'attributeList': [
+        id: 2,
+        name: 'c',
+        displayName: 'C',
+        attributeList: [
           { name: 'V', value: 'v' },
           { name: 'W', value: 'w' },
           { name: 'X', value: 'x' },
           { name: 'Y', value: 'y' },
           { name: 'Z', value: 'z' }
         ],
-        'validChildChoicesMap': {
-          'v': ['q'],
-          'w': ['r'],
-          'x': ['s'],
-          'y': ['t']
+        validChildChoicesMap: {
+          v: ['q'],
+          w: ['r'],
+          x: ['s'],
+          y: ['t']
         },
-        'childId': 3
+        childId: 3
       },
       {
-        'id': 3,
-        'name': 'D',
-        'displayName': 'D',
-        'attributeList': [
+        id: 3,
+        name: 'd',
+        displayName: 'D',
+        attributeList: [
           { name: 'Q', value: 'q' },
           { name: 'R', value: 'r' },
           { name: 'S', value: 's' },

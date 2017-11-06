@@ -14,7 +14,7 @@ import { FutureApiService } from '../api/api.service';
 import { Api, ApiParameters } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers, Duration, durationFrom, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AssetLineItem, Asset, QuoteOptions } from '../../shared/interfaces/commerce.interface';
-import { Pojo, SelectedPriceAttributes } from '../../shared/interfaces/common.interface';
+import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
 
 @Injectable()
 export class FutureQuoteEditService {
@@ -55,9 +55,14 @@ export class FutureQuoteEditService {
       { parameters: { lineItemId: lineItem.id }, loadingIndicator: true });
   }
 
-  public editLineItemFromDetails(quoteId: number, lineItem: AssetLineItem, markers: SubclipMarkers, attributes: Pojo): Observable<Quote> {
+  public editLineItemFromDetails(
+    quoteId: number,
+    lineItem: AssetLineItem,
+    markers: SubclipMarkers,
+    attributes: SelectedPriceAttribute[]
+  ): Observable<Quote> {
     const duration: Duration = this.durationFrom(lineItem, markers);
-    const newAttributes: SelectedPriceAttributes[] = attributes ? this.format(attributes) : lineItem.attributes || [];
+    const newAttributes: SelectedPriceAttribute[] = attributes ? attributes : lineItem.attributes || [];
     const newAsset: Asset = { ...lineItem.asset, ...duration };
 
     const newLineItem = {
@@ -139,17 +144,17 @@ export class FutureQuoteEditService {
     );
   }
 
-  public updateProjectPriceAttributes(quoteId: number, priceAttributes: SelectedPriceAttributes, project: Project): Observable<Quote> {
+  public updateProjectPriceAttributes(quoteId: number, priceAttributes: SelectedPriceAttribute[], project: Project): Observable<Quote> {
     return this.apiService.put(
       Api.Orders,
       `quote/${quoteId}/project/priceAttributes/${project.id}`,
-      { body: priceAttributes, loadingIndicator: true }
+      { body: this.format(priceAttributes), loadingIndicator: true }
     );
   }
 
   public editLineItem(quoteId: number, lineItem: AssetLineItem, fieldToEdit: any): Observable<Quote> {
     if (!!fieldToEdit.pricingAttributes) {
-      fieldToEdit = { attributes: this.format(fieldToEdit.pricingAttributes) };
+      fieldToEdit = { attributes: fieldToEdit.pricingAttributes };
     }
 
     return this.makeEditLineItemRequest(quoteId, Object.assign(lineItem, fieldToEdit));
@@ -202,21 +207,13 @@ export class FutureQuoteEditService {
     let formatted = {};
     Object.assign(formatted, { lineItem: this.formatLineItem(parameters.lineItem, parameters.markers) });
     if (parameters.attributes) {
-      Object.assign(formatted, { attributes: this.formatAttributes(parameters.attributes) });
+      Object.assign(formatted, { attributes: parameters.attributes });
     }
     return formatted;
   }
 
   private formatLineItem(lineItem: any, markers: SubclipMarkersInterface.SubclipMarkers): any {
     return Object.assign({}, lineItem, { asset: this.formatAsset(lineItem.asset, markers) });
-  }
-
-  private formatAttributes(attributes: any): Array<any> {
-    let formatted: Array<any> = [];
-    for (let attr in attributes) {
-      formatted.push({ priceAttributeName: attr, selectedAttributeValue: attributes[attr] });
-    }
-    return formatted;
   }
 
   private formatAsset(asset: any, markers: SubclipMarkersInterface.SubclipMarkers): any {
@@ -235,8 +232,6 @@ export class FutureQuoteEditService {
     return { assetId: asset.assetId, timeStart: timeStart >= 0 ? timeStart : -1, timeEnd: timeEnd >= 0 ? timeEnd : -2 };
   }
 
-
-
   private durationFrom(lineItem: AssetLineItem, markers: SubclipMarkers): Duration {
     return bothMarkersAreSet(markers) ?
       durationFrom(markers) : { timeStart: lineItem.asset.timeStart, timeEnd: lineItem.asset.timeEnd };
@@ -250,11 +245,11 @@ export class FutureQuoteEditService {
     );
   }
 
-  private format(newAttributes: Pojo): SelectedPriceAttributes[] {
-    let formatted: Array<any> = [];
-    for (let attr in newAttributes) {
-      formatted.push({ priceAttributeName: attr, selectedAttributeValue: newAttributes[attr] });
-    }
-    return formatted;
+  // Should be able to deprecate this when the BE accepts all SelectedPriceAttribute props on project rights package updates
+  private format(attributes: SelectedPriceAttribute[]): Pojo {
+    return attributes.reduce((formatted: Pojo, attribute: SelectedPriceAttribute) => {
+      formatted[attribute.priceAttributeName] = attribute.selectedAttributeValue;
+      return formatted;
+    }, {});
   }
 }

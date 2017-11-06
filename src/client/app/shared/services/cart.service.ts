@@ -25,7 +25,7 @@ import {
   PurchaseOptions,
   LicenseAgreements
 } from '../interfaces/commerce.interface';
-import { SelectedPriceAttributes } from '../interfaces/common.interface';
+import { SelectedPriceAttribute, Pojo } from '../interfaces/common.interface';
 import { Frame } from '../modules/wazee-frame-formatter/index';
 import { enhanceAsset } from '../interfaces/enhanced-asset';
 import { Common } from '../utilities/common.functions';
@@ -150,11 +150,11 @@ export class CartService {
       .subscribe(this.replaceCartWith);
   }
 
-  public updateProjectPriceAttributes(priceAttributes: SelectedPriceAttributes, project: Project) {
+  public updateProjectPriceAttributes(priceAttributes: Array<SelectedPriceAttribute>, project: Project) {
     this.api.put(
       Api.Orders,
       `cart/project/priceAttributes/${project.id}`,
-      { body: priceAttributes, loadingIndicator: true }
+      { body: this.format(priceAttributes), loadingIndicator: true }
     ).subscribe(this.replaceCartWith);
   }
 
@@ -178,7 +178,7 @@ export class CartService {
 
   public editLineItem(lineItem: AssetLineItem, fieldToEdit: any): void {
     if (!!fieldToEdit.pricingAttributes) {
-      fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };
+      fieldToEdit = { attributes: fieldToEdit.pricingAttributes };
     }
 
     Object.assign(lineItem, fieldToEdit);
@@ -240,7 +240,7 @@ export class CartService {
     let formatted = {};
     Object.assign(formatted, { lineItem: this.formatLineItem(parameters.lineItem, parameters.markers) });
     if (parameters.attributes) {
-      Object.assign(formatted, { attributes: this.formatAttributes(parameters.attributes) });
+      Object.assign(formatted, { attributes: parameters.attributes });
     }
     return formatted;
   }
@@ -263,14 +263,6 @@ export class CartService {
     }
 
     return { assetId: asset.assetId, timeStart: timeStart >= 0 ? timeStart : -1, timeEnd: timeEnd >= 0 ? timeEnd : -2 };
-  }
-
-  private formatAttributes(attributes: any): Array<any> {
-    let formatted: Array<any> = [];
-    for (let attr in attributes) {
-      formatted.push({ priceAttributeName: attr, selectedAttributeValue: attributes[attr] });
-    }
-    return formatted;
   }
 
   private addProjectAndReturnObservable(): Observable<any> {
@@ -312,5 +304,13 @@ export class CartService {
       stripeToken: this.checkoutState.authorization.id,
       stripeTokenType: this.checkoutState.authorization.type
     };
+  }
+
+  // Should be able to deprecate this when the BE accepts all SelectedPriceAttribute props on project rights package updates
+  private format(attributes: SelectedPriceAttribute[]): Pojo {
+    return attributes.reduce((formatted: Pojo, attribute: SelectedPriceAttribute) => {
+      formatted[attribute.priceAttributeName] = attribute.selectedAttributeValue;
+      return formatted;
+    }, {});
   }
 }
