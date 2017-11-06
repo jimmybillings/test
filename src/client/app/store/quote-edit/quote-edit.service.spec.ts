@@ -268,7 +268,17 @@ export function main() {
           expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('quote/1/fee/47');
           expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
         });
+      });
 
+      describe('bulkImport', () => {
+        it('calls the api service correctly', () => {
+          serviceUnderTest.bulkImport(1, { lineItemAttributes: 'one\ntwo' }, 'abc-123');
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/asset/direct/lineItem');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({ lineItemAttributes: 'one\ntwo' });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ projectId: 'abc-123' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
       });
     });
   });

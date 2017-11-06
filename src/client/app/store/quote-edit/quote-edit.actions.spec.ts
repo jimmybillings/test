@@ -290,5 +290,31 @@ export function main() {
         fee: '100'
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'bulkImport',
+        parameters: [{ attribute: 'some attribute' }, '1']
+      },
+      expectedAction: {
+        type: '[Quote Edit] Bulk Import',
+        rawAssets: { attribute: 'some attribute' },
+        projectId: '1'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'bulkImportSuccess',
+        parameters: [{ some: 'quote' }, { attribute: 'some attribute' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Bulk Import Success',
+        quote: { some: 'quote' },
+        rawAssets: { attribute: 'some attribute' }
+      }
+    });
   });
 }

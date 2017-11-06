@@ -329,7 +329,7 @@ export function main() {
     });
 
     effectsSpecHelper.generateTestsFor({
-      effectName: 'UpdateQuoteFields',
+      effectName: 'updateQuoteFields',
       effectsInstantiator: instantiator,
       inputAction: {
         type: QuoteEditActions.UpdateQuoteFields.Type,
@@ -354,7 +354,7 @@ export function main() {
     });
 
     effectsSpecHelper.generateTestsFor({
-      effectName: 'AddFeeTo',
+      effectName: 'addFeeTo',
       effectsInstantiator: instantiator,
       inputAction: {
         type: QuoteEditActions.AddFeeTo.Type,
@@ -380,7 +380,7 @@ export function main() {
     });
 
     effectsSpecHelper.generateTestsFor({
-      effectName: 'RemoveFee',
+      effectName: 'removeFee',
       effectsInstantiator: instantiator,
       inputAction: {
         type: QuoteEditActions.RemoveFee.Type,
@@ -401,6 +401,49 @@ export function main() {
           methodName: 'quoteRefreshAndNotfiy',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'bulkImport',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.BulkImport.Type,
+        rawAssets: { attribute: 'some attribute' },
+        projectId: '3'
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'bulkImport',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { attribute: 'some attribute' }, '3'],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'bulkImportSuccess',
+          expectedArguments: [{ some: 'quote' }, { attribute: 'some attribute' }]
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'bulkImportSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.BulkImportSuccess.Type,
+        rawAssets: { lineItemAttributes: 'attribute' }
+
+      },
+      outputActionFactories: {
+        success: [{
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['QUOTE.BULK_IMPORT.CONFIRMATION', { numOfAssets: 'attribute'.split('\n').length }]
+        }]
       }
     });
 
