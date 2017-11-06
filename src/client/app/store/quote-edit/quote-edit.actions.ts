@@ -8,10 +8,9 @@ import {
   Quote,
   QuoteOptions,
 } from '../../shared/interfaces/commerce.interface';
-import { Asset, SelectedPriceAttributes } from '../../shared/interfaces/common.interface';
+import { Asset, SelectedPriceAttribute, Pojo } from '../../shared/interfaces/common.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
-import { Pojo } from '../../shared/interfaces/common.interface';
 
 export class ActionFactory {
   public load(): Load {
@@ -22,7 +21,11 @@ export class ActionFactory {
     return new Delete();
   }
 
-  public editLineItemFromDetails(uuid: string, markers: SubclipMarkers, attributes: Pojo): EditLineItemFromDetails {
+  public editLineItemFromDetails(
+    uuid: string,
+    markers: SubclipMarkers,
+    attributes: SelectedPriceAttribute[]
+  ): EditLineItemFromDetails {
     return new EditLineItemFromDetails(uuid, markers, attributes);
   }
 
@@ -99,7 +102,7 @@ export class ActionFactory {
     return new EditLineItemMarkers(lineItem, newMarkers);
   }
 
-  public updateProjectPriceAttributes(priceAttributes: SelectedPriceAttributes, project: Project): UpdateProjectPriceAttributes {
+  public updateProjectPriceAttributes(priceAttributes: SelectedPriceAttribute[], project: Project): UpdateProjectPriceAttributes {
     return new UpdateProjectPriceAttributes(priceAttributes, project);
   }
 }
@@ -157,7 +160,7 @@ export class InternalActionFactory extends ActionFactory {
     return new AddAssetToProjectInQuoteSuccess(quote, assetId);
   }
 
-  public quoteRefreshAndNotfiy(quote: Quote, translationString: string): RefreshAndNotify {
+  public refreshAndNotify(quote: Quote, translationString: string): RefreshAndNotify {
     return new RefreshAndNotify(quote, translationString);
   }
 }
@@ -199,7 +202,11 @@ export class DeleteFailure implements Action {
 export class EditLineItemFromDetails implements Action {
   public static readonly Type = '[Quote Edit] Edit Line Item From Details';
   public readonly type = EditLineItemFromDetails.Type;
-  constructor(public readonly uuid: string, public readonly markers: SubclipMarkers, public readonly attributes: Pojo) { }
+  constructor(
+    public readonly uuid: string,
+    public readonly markers: SubclipMarkers,
+    public readonly attributes: SelectedPriceAttribute[]
+  ) { }
 }
 
 export class EditLineItemFromDetailsSuccess implements Action {
@@ -370,7 +377,7 @@ export class EditLineItemMarkers implements Action {
 export class UpdateProjectPriceAttributes implements Action {
   public static readonly Type = '[Quote Edit] Update Project Price Attributes';
   public readonly type = UpdateProjectPriceAttributes.Type;
-  constructor(public readonly priceAttributes: SelectedPriceAttributes, public readonly project: Project) { }
+  constructor(public readonly priceAttributes: SelectedPriceAttribute[], public readonly project: Project) { }
 }
 
 export type Any =

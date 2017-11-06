@@ -102,6 +102,25 @@ export interface GoogleAddress {
   vicinity: string;
 }
 
+export interface PaymentAddress {
+  address: Address;
+  creditAccount: string;
+  creditOf: string;
+  entity: string;
+  name: string;
+  routingNumber: string;
+  swiftCode: string;
+}
+
+export interface Payee {
+  businessAddress: Address;
+  email: string;
+  logoUrl: string;
+  payeeName: string;
+  paymentAddresses: Array<PaymentAddress>;
+  taxId: string;
+}
+
 export interface FormattedGoogleAddress {
   [index: string]: { long_name: string, short_name: string, [index: string]: any };
 }

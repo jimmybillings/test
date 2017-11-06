@@ -17,8 +17,6 @@ export function main() {
     let mockRouter: any;
     let mockRoute: any;
     let mockDialogService: any;
-    let mockPricingStore: any;
-    let mockPricingService: any;
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
     let mockStore: MockAppStore;
     let initPricingSpy: jasmine.Spy;
@@ -42,25 +40,11 @@ export function main() {
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
-      mockPricingStore = {
-        priceForDialog: Observable.of(1000),
-        priceForDetails: Observable.of(100),
-        setPriceForDetails: jasmine.createSpy('setPriceForDetails'),
-        state: { priceForDetails: 100, priceForDialog: 1000 }
-      };
-      mockPricingService = {
-        getPriceFor: jasmine.createSpy('getPriceFor').and.returnValue(Observable.of({ price: 10, some: 'data' })),
-        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({}))
-      };
       mockStore = new MockAppStore();
       initPricingSpy = mockStore.createActionFactoryMethod('pricing', 'initializePricing');
       mockStore.createActionFactoryMethod('pricing', 'calculatePrice');
       mockStore.createActionFactoryMethod('pricing', 'setPriceForDetails');
       mockStore.createActionFactoryMethod('pricing', 'setAppliedAttributes');
-      // componentUnderTest = new AssetComponent(
-      // mockCurrentUserService, mockCapabilities,
-      // mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-      // mockDialogService, mockQuoteEditService, null
 
       ['quoteEdit', 'cart'].forEach((storeType) => mockStore.createStateSection(storeType, {
         data: {
@@ -169,7 +153,7 @@ export function main() {
       it('calls the cart service with the correct params', () => {
         mockStore.createStateSection(
           'pricing', {
-            selectedAttributes: { some: 'attributes' },
+            appliedAttributes: { some: 'attributes' },
             priceForDetails: 100
           }
         );
@@ -224,15 +208,6 @@ export function main() {
       });
     });
 
-    describe('onMarkersChange', () => {
-      describe('when there are no selected attributes', () => {
-        it('does not call getPriceFor() on the asset service', () => {
-          componentUnderTest.onMarkersChange({ in: {}, out: {} } as any);
-          expect(mockPricingService.getPriceFor).not.toHaveBeenCalled();
-        });
-      });
-    });
-
     describe('assetMatchesCartAsset()', () => {
       ['collectionAsset', 'orderAsset', 'quoteShowAsset', 'searchAsset'].forEach((assetType: EnhancedMock.AssetType) => {
         it(`returns true (somewhat pointlessly) for an asset with type '${assetType}'`, () => {
@@ -280,85 +255,6 @@ export function main() {
             componentUnderTest.ngOnInit();
 
             expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
-          });
-
-          describe('when price attributes have not been changed by the user', () => {
-            beforeEach(() => {
-              localMockAsset = { uuid: 'ABCD' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              componentUnderTest.ngOnInit();
-            });
-
-            it('returns true when subclip markers match', () => {
-              componentUnderTest.onMarkersChange({
-                in: new Frame(30).setFromFrameNumber(30), // 1000ms
-                out: new Frame(30).setFromFrameNumber(60) // 2000ms
-              });
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
-            });
-
-            it('returns true when neither the cart asset nor the active asset has markers', () => {
-              localMockAsset = { uuid: 'IJKL' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              componentUnderTest.ngOnInit();
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
-            });
-
-            it('returns false when subclip markers don\'t match', () => {
-              componentUnderTest.onMarkersChange({
-                in: new Frame(30).setFromFrameNumber(30), // 1000ms
-                out: new Frame(30).setFromFrameNumber(6000) // 200000ms
-              });
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
-            });
-
-            it('returns false when the cart asset has subclip markers and the active asset doesn\'t', () => {
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
-            });
-
-            it('returns false when the active asset has subclip markers and the cart asset doesn\'t', () => {
-              localMockAsset = { uuid: 'IJKL' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              componentUnderTest.ngOnInit();
-
-              componentUnderTest.onMarkersChange({
-                in: new Frame(30).setFromFrameNumber(30), // 1000ms
-                out: new Frame(30).setFromFrameNumber(60) // 2000ms
-              });
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
-            });
-          });
-
-          describe('when price attributes have been changed by the user', () => {
-            it('returns true when the attributes match', () => {
-              localMockAsset = { uuid: 'IJKL' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              componentUnderTest.ngOnInit();
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(true);
-            });
-
-            it('returns false when the attributes don\'t match', () => {
-              localMockAsset = { uuid: 'MNOP' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              mockStore.createStateSection('pricing', { appliedAttributes: { a: '1', b: '2', c: '4' } });
-              componentUnderTest.ngOnInit();
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
-            });
-
-            it('returns false when the number of attributes doesn\'t match', () => {
-              localMockAsset = { uuid: 'QRST' };
-              mockStore.createStateSection('asset', { activeAsset: localMockAsset });
-              mockStore.createStateSection('pricing', { appliedAttributes: { a: '1' } });
-              componentUnderTest.ngOnInit();
-
-              expect(componentUnderTest.assetMatchesCartAsset).toBe(false);
-            });
           });
         });
       });

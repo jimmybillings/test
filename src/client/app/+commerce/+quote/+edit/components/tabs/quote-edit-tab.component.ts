@@ -11,7 +11,7 @@ import { Capabilities } from '../../../../../shared/services/capabilities.servic
 import { UserPreferenceService } from '../../../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../../../shared/services/window-ref.service';
 import { AssetLineItem, OrderableType, PriceAttribute, Project } from '../../../../../shared/interfaces/commerce.interface';
-import { Pojo, SelectedPriceAttributes, WzEvent } from '../../../../../shared/interfaces/common.interface';
+import { Pojo, SelectedPriceAttribute, WzEvent } from '../../../../../shared/interfaces/common.interface';
 import { FormFields, MdSelectOption } from '../../../../../shared/interfaces/forms.interface';
 import { AppStore } from '../../../../../app.store';
 import { Observable } from 'rxjs/Observable';
@@ -384,7 +384,9 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         this.store.dispatch(factory =>
           factory.quoteEdit.updateProjectPriceAttributes(event.payload.attributes, project)
         );
-        this.userPreference.updatePricingPreferences(event.payload.attributes);
+        if (event.payload.updatePrefs) {
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
+        }
         dialogRef.close();
         break;
       case 'ERROR':
@@ -407,7 +409,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         break;
       case 'APPLY_PRICE':
         if (event.payload.updatePrefs) {
-          this.userPreference.updatePricingPreferences(event.payload.attributes);
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
         }
         this.store.dispatch(factory => factory.quoteEdit.editLineItem(lineItem, { pricingAttributes: event.payload.attributes }));
         dialogRef.close();
@@ -426,7 +428,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
       // if the attributes came from a lineItem, they are an Array of SelectedPriceAttributes
       // we need to map them to a Pojo to pass on to the pricing component
       let mapped: any = {};
-      attributes.forEach((attr: SelectedPriceAttributes) => {
+      attributes.forEach((attr: SelectedPriceAttribute) => {
         mapped[attr.priceAttributeName] = attr.selectedAttributeValue;
       });
       delete mapped['siteName'];

@@ -1,6 +1,7 @@
-import { ViewAddress, Pagination, Common, SelectedPriceAttributes, Store } from './common.interface';
+import { ViewAddress, Pagination, Common, SelectedPriceAttribute, Store } from './common.interface';
 import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
+import { Address, Document, Payee } from './user.interface';
 
 export type OrderableType =
   'SystemLicense' |
@@ -55,7 +56,7 @@ export interface Project {
   creditMemoForProjectId?: number;
   lineItems?: Array<AssetLineItem>;
   feeLineItems?: Array<FeeLineItem>;
-  attributes?: Array<SelectedPriceAttributes>;
+  attributes?: Array<SelectedPriceAttribute>;
   [index: string]: any;
 }
 
@@ -74,7 +75,7 @@ export interface AssetLineItem {
   selectedTranscodeTarget?: string;
   transcodeTargets?: Array<string>;
   expirationDate?: number;
-  attributes?: Array<SelectedPriceAttributes>;
+  attributes?: Array<SelectedPriceAttribute>;
   salesForceId?: string;
   price?: number;
   grossAssetPrice?: number;
@@ -289,7 +290,7 @@ export interface PaymentOptions {
   noCheckout: boolean;
 }
 
-export interface Document {
+export interface LicenseAgreementDocument {
   name: string;
   text: string;
 }
@@ -298,7 +299,7 @@ export interface LicenseAgreement {
   projectType?: string;
   rights?: string;
   matchingAssets: Array<LicenseAsset | EnhancedAsset>;
-  document: Document;
+  document: LicenseAgreementDocument;
 }
 
 export interface LicenseAgreements {
@@ -325,4 +326,9 @@ export interface CreditCardAuthorization {
   };
   id?: string;
   type?: string;
+}
+export interface Invoice {
+  documents: Array<Document>;
+  order: Order;
+  payee: Payee;
 }

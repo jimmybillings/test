@@ -71,6 +71,7 @@ import { FutureCartService } from '../store/cart/cart.service';
 import { FutureQuoteEditService } from '../store/quote-edit/quote-edit.service';
 import { FutureQuoteShowService } from '../store/quote-show/quote-show.service';
 import { OrderService } from '../store/order/order.service';
+import { InvoiceService } from '../store/invoice/invoice.service';
 import { PricingService } from '../store/pricing/pricing.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
 import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
@@ -91,6 +92,7 @@ import * as CommentState from '../store/comment/comment.state';
 import * as DeliveryOptionState from '../store/delivery-options/delivery-options.state';
 import * as FeeConfigState from '../store/fee-config/fee-config.state';
 import * as HeaderDisplayOptions from '../store/header-display-options/header-display-options.state';
+import * as InvoiceState from '../store/invoice/invoice.state';
 import * as LoadingIndicatorState from '../store/loading-indicator/loading-indicator.state';
 import * as MultiLingualState from '../store/multi-lingual/multi-lingual.state';
 import * as OrderState from '../store/order/order.state';
@@ -125,6 +127,7 @@ import { DialogEffects } from '../store/dialog/dialog.effects';
 import { ErrorEffects } from '../store/error/error.effects';
 import { FeeConfigEffects } from '../store/fee-config/fee-config.effects';
 import { HeaderDisplayOptionsEffects } from '../store/header-display-options/header-display-options.effects';
+import { InvoiceEffects } from '../store/invoice/invoice.effects';
 import { MultiLingualEffects } from '../store/multi-lingual/multi-lingual.effects';
 import { NotifierEffects } from '../store/notifier/notifier.effects';
 import { OrderEffects } from '../store/order/order.effects';
@@ -156,6 +159,7 @@ const WAZEE_SERVICES = [
   SearchService,
   UserService,
   OrderService,
+  InvoiceService,
   OrdersService,
   TranslateService,
   GalleryViewService,
@@ -214,6 +218,7 @@ const WAZEE_STORES: any = {
   comment: CommentState.reducer,
   deliveryOptions: DeliveryOptionState.reducer,
   headerDisplayOptions: HeaderDisplayOptions.reducer,
+  invoice: InvoiceState.reducer,
   loadingIndicator: LoadingIndicatorState.reducer,
   multiLingual: MultiLingualState.reducer,
   order: OrderState.reducer,
@@ -236,6 +241,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   ErrorEffects,
   FeeConfigEffects,
   HeaderDisplayOptionsEffects,
+  InvoiceEffects,
   MultiLingualEffects,
   NotifierEffects,
   OrderEffects,

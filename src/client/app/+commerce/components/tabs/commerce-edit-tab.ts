@@ -15,7 +15,7 @@ import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
-import { SelectedPriceAttributes, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
+import { SelectedPriceAttribute, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
 import { AppStore } from '../../../app.store';
 import { EnhancedAsset, enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 import * as SubclipMarkersInterface from '../../../shared/interfaces/subclip-markers';
@@ -148,7 +148,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
       // if the attributes came from a lineItem, they are an Array of SelectedPriceAttributes
       // we need to map them to a Pojo to pass on to the pricing component
       let mapped: any = {};
-      attributes.forEach((attr: SelectedPriceAttributes) => {
+      attributes.forEach((attr: SelectedPriceAttribute) => {
         mapped[attr.priceAttributeName] = attr.selectedAttributeValue;
       });
       delete mapped['siteName'];
@@ -183,7 +183,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     switch (event.type) {
       case 'APPLY_PRICE':
         if (event.payload.updatePrefs) {
-          this.userPreference.updatePricingPreferences(event.payload.attributes);
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
         }
         this.commerceService.updateProjectPriceAttributes(event.payload.attributes, project);
         dialogRef.close();
@@ -225,7 +225,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         break;
       case 'APPLY_PRICE':
         if (event.payload.updatePrefs) {
-          this.userPreference.updatePricingPreferences(event.payload.attributes);
+          this.userPreference.updatePricingPreferences(event.payload.preferences);
         }
         this.commerceService.editLineItem(lineItem, { pricingAttributes: event.payload.attributes });
         dialogRef.close();
