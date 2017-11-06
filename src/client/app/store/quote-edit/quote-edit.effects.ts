@@ -159,6 +159,7 @@ export class QuoteEditEffects {
         .map((quote) => this.store.create(factory =>
           factory.quoteEdit.quoteRefreshAndNotfiy(quote, 'QUOTE.UPDATED'))
         )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
   @Effect()

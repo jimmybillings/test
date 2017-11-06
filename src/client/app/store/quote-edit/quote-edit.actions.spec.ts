@@ -253,5 +253,17 @@ export function main() {
         type: '[Quote Edit] Create Quote',
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'updateQuoteField',
+        parameters: [{ field: 'some field' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Update Quote Fields',
+        options: { field: 'some field' }
+      }
+    });
   });
 }

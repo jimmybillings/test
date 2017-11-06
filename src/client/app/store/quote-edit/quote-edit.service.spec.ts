@@ -212,6 +212,41 @@ export function main() {
           });
         });
       });
+
+      describe('updateQuoteField()', () => {
+        it('should call the API service correctly - add', () => {
+          serviceUnderTest.updateQuoteField(
+            { field: 'somefield' },
+            {
+              id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }]
+            } as any);
+
+          const expectedBody = Object.assign(
+            {
+              id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }],
+              field: 'somefield'
+            }
+          );
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/3');
+          expect(mockApiService.put).toHaveBeenCalledWithBody(expectedBody);
+        });
+
+        it('should call the API service correctly - remove', () => {
+          serviceUnderTest.updateQuoteField(
+            { bulkOrderId: '' },
+            {
+              id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }]
+            } as any);
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/3');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            id: 3, ownerUserId: 10, total: 90, subTotal: 100, projects: [{ name: 'Project A' }]
+          });
+        });
+      });
     });
   });
 }

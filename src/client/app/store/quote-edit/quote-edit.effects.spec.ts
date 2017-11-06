@@ -328,5 +328,30 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'UpdateQuoteFields',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.UpdateQuoteFields.Type,
+        options: { some: 'field' }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { some: 'quote' } }
+      },
+      serviceMethod: {
+        name: 'updateQuoteField',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [{ some: 'field' }, { some: 'quote' }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'quoteRefreshAndNotfiy',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }
