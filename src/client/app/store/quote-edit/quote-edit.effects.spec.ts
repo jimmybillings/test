@@ -447,5 +447,31 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'editLineItem',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.EditLineItem.Type,
+        lineItem: { lineItem: 'some item' },
+        fieldToEdit: { fieldToEdit: 'some field' }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'editLineItem',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { lineItem: 'some item' }, { fieldToEdit: 'some field' }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'quoteRefreshAndNotfiy',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }

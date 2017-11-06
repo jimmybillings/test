@@ -316,5 +316,19 @@ export function main() {
         rawAssets: { attribute: 'some attribute' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'editLineItem',
+        parameters: [{ lineItem: 'some item' }, { fieldToEdit: 'some field' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Edit Line Item',
+        lineItem: { lineItem: 'some item' },
+        fieldToEdit: { fieldToEdit: 'some field' }
+      }
+    });
+
   });
 }

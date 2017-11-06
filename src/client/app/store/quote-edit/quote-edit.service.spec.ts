@@ -280,6 +280,20 @@ export function main() {
           expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
       });
+
+      describe('editLineItem()', () => {
+        it('should call the API service correctly', () => {
+          serviceUnderTest.editLineItem(1, { id: '123' }, { pricingAttributes: { Distribution: 'Online Streaming' } });
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/update/lineItem/123');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            id: '123', attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
+          });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
     });
   });
 }
