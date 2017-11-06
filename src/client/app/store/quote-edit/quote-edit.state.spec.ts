@@ -41,6 +41,20 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
+      actionClassName: [
+        'SaveRecipientInformationOnQuote'
+      ],
+      customTests: [
+        {
+          it: 'returns the state with a recipient and loading: false',
+          previousState: { ...QuoteState.initialState, loading: true },
+          actionParameters: { quoteOptions: { some: 'recipient' } },
+          expectedNextState: { ...QuoteState.initialState, recipient: { some: 'recipient' }, loading: false }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
       actionClassName: ['LoadFailure', 'DeleteFailure', 'EditLineItemFromDetailsFailure',
         'AddCustomPriceToLineItemFailure'],
       mutationTestData: {
