@@ -473,5 +473,48 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addAssetToProjectInQuote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddAssetToProjectInQuote.Type,
+        parameters: { lineItem: { asset: { assetId: 12 } } }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1, projects: [{ name: 'project1' }, { name: 'project2' }] } }
+      },
+      serviceMethod: {
+        name: 'addAssetToProjectInQuote',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, ['project1', 'project2'], { lineItem: { asset: { assetId: 12 } } }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'addAssetToProjectInQuoteSuccess',
+          expectedArguments: [{ some: 'quote' }, 12]
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addAssetToProjectInQuoteSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddAssetToProjectInQuoteSuccess.Type,
+        quote: { some: 'quote' },
+        assetId: 1
+
+      },
+      outputActionFactories: {
+        success: [{
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['ASSET.ADD_TO_QUOTE_TOAST', { assetId: 1 }]
+        }]
+      }
+    });
+
   });
 }

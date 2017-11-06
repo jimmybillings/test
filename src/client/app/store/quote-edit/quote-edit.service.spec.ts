@@ -288,9 +288,37 @@ export function main() {
           expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
           expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/update/lineItem/123');
           expect(mockApiService.put).toHaveBeenCalledWithBody({
-            id: '123', attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
+            id: '123',
+            attributes: {
+              Distribution: 'Online Streaming'
+            }
           });
           expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('addAssetToProjectInQuote()', () => {
+        let snackbarSpy: jasmine.Spy;
+
+
+        it('should call the API service correctly', () => {
+          serviceUnderTest.addAssetToProjectInQuote(1, ['project1', 'project2'], {
+            lineItem: { id: '123', asset: { assetId: 456 } }, attributes: { Distribution: 'Online Streaming' }
+          });
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/asset/lineItem');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            lineItem: { id: '123', asset: { assetId: 456, timeStart: -1, timeEnd: -2 } },
+            attributes: {
+              Distribution: 'Online Streaming'
+            }
+          });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({
+            projectName: 'project2',
+            region: 'AAA'
+          });
           expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
       });

@@ -319,7 +319,7 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
-        class: InternalActionFactory,
+        class: ActionFactory,
         name: 'editLineItem',
         parameters: [{ lineItem: 'some item' }, { fieldToEdit: 'some field' }]
       },
@@ -327,6 +327,31 @@ export function main() {
         type: '[Quote Edit] Edit Line Item',
         lineItem: { lineItem: 'some item' },
         fieldToEdit: { fieldToEdit: 'some field' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addAssetToProjectInQuote',
+        parameters: [{ parameters: 'some parameteres' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Asset To Project In Quote',
+        parameters: { parameters: 'some parameteres' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'addAssetToProjectInQuoteSuccess',
+        parameters: [{ some: 'quote' }, { assetId: 2 }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Asset To Project In Quote Success',
+        quote: { some: 'quote' },
+        assetId: { assetId: 2 }
       }
     });
 
