@@ -1,12 +1,16 @@
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 import { CommerceConfirmTab } from './commerce-confirm-tab';
 
 export function main() {
   describe('Confirm Tab Component', () => {
-    let componentUnderTest: CommerceConfirmTab, mockCommerceService: any;
-    mockCommerceService = { state: { data: { itemCount: 1, projects: [], quoteStauts: 'blah' } } };
+    let componentUnderTest: CommerceConfirmTab;
+    let mockCommerceService: any;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
-      componentUnderTest = new CommerceConfirmTab(null, mockCommerceService, null, null);
+      mockCommerceService = { state: { data: { itemCount: 1, projects: [], quoteStauts: 'blah' } } };
+      mockStore = new MockAppStore();
+      componentUnderTest = new CommerceConfirmTab(null, mockCommerceService, null, null, mockStore);
     });
 
     describe('hasDiscount()', () => {
@@ -20,7 +24,7 @@ export function main() {
         mockCommerceService = {
           state: mockState,
         };
-        componentUnderTest = new CommerceConfirmTab(null, mockCommerceService, null, null);
+        componentUnderTest = new CommerceConfirmTab(null, mockCommerceService, null, null, mockStore);
         expect(componentUnderTest.hasDiscount).toBe(true);
       });
     });

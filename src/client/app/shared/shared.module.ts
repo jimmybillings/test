@@ -119,7 +119,6 @@ import { sortDefinitions } from './services/sort-definitions.service';
 import { ActiveCollectionEffects } from '../store/active-collection/active-collection.effects';
 import { AssetEffects } from '../store/asset/asset.effects';
 import { CartEffects } from '../store/cart/cart.effects';
-import { CheckoutEffects } from '../store/checkout/checkout.effects';
 import { CommentEffects } from '../store/comment/comment.effects';
 import { DeliveryOptionsEffects } from '../store/delivery-options/delivery-options.effects';
 import { DialogEffects } from '../store/dialog/dialog.effects';
@@ -231,7 +230,6 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActiveCollectionEffects,
   AssetEffects,
   CartEffects,
-  CheckoutEffects,
   CommentEffects,
   DeliveryOptionsEffects,
   DialogEffects,

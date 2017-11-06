@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { CartConfirmTabComponent } from './cart-confirm-tab.component';
+import { MockAppStore } from '../../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Cart Confirm Tab Component', () => {
@@ -7,6 +8,7 @@ export function main() {
     let mockCartService: any;
     let mockDialogService: any;
     let mockCapabilities: any;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
       mockCartService = {
@@ -27,7 +29,9 @@ export function main() {
         })
       };
 
-      componentUnderTest = new CartConfirmTabComponent(null, mockCartService, mockDialogService, mockCapabilities);
+      mockStore = new MockAppStore();
+
+      componentUnderTest = new CartConfirmTabComponent(null, mockCartService, mockDialogService, mockCapabilities, mockStore);
     });
 
     describe('showLicenseAgreements()', () => {
@@ -94,7 +98,7 @@ export function main() {
             viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton').and.returnValue(false)
           };
 
-          componentUnderTest = new CartConfirmTabComponent(null, mockCartService, null, mockCapabilities);
+          componentUnderTest = new CartConfirmTabComponent(null, mockCartService, null, mockCapabilities, mockStore);
           componentUnderTest.licensesAreAgreedTo = true;
 
           expect(componentUnderTest.canPurchase).toBe(false);
@@ -106,7 +110,7 @@ export function main() {
             viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton').and.returnValue(false)
           };
 
-          componentUnderTest = new CartConfirmTabComponent(null, mockCartService, null, mockCapabilities);
+          componentUnderTest = new CartConfirmTabComponent(null, mockCartService, null, mockCapabilities, mockStore);
           componentUnderTest.licensesAreAgreedTo = false;
 
           expect(componentUnderTest.canPurchase).toBe(false);

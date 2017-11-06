@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { QuoteConfirmTabComponent } from './quote-confirm-tab.component';
+import { MockAppStore } from '../../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Quote Confirm Tab Component', () => {
@@ -7,6 +8,7 @@ export function main() {
     let mockQuoteService: any;
     let mockDialogService: any;
     let mockCapabilities: any;
+    let mockStore: MockAppStore;
 
     beforeEach(() => {
       mockQuoteService = {
@@ -27,7 +29,9 @@ export function main() {
         })
       };
 
-      componentUnderTest = new QuoteConfirmTabComponent(null, mockQuoteService, mockDialogService, mockCapabilities);
+      mockStore = new MockAppStore();
+
+      componentUnderTest = new QuoteConfirmTabComponent(null, mockQuoteService, mockDialogService, mockCapabilities, mockStore);
     });
 
     describe('showLicenseAgreements()', () => {
@@ -89,7 +93,7 @@ export function main() {
             viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton').and.returnValue(false)
           };
 
-          componentUnderTest = new QuoteConfirmTabComponent(null, mockQuoteService, null, mockCapabilities);
+          componentUnderTest = new QuoteConfirmTabComponent(null, mockQuoteService, null, mockCapabilities, mockStore);
           componentUnderTest.licensesAreAgreedTo = false;
 
           expect(componentUnderTest.canPurchase).toBe(false);

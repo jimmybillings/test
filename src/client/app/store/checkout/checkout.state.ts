@@ -13,12 +13,13 @@ export interface State {
 
 export const initialState: State = {
   paymentOptions: null,
+  selectedPaymentType: null,
   addresses: [],
   selectedAddress: {
     type: null,
     name: '',
-    defaultAddress: undefined,
-    addressEntityId: undefined,
+    defaultAddress: null,
+    addressEntityId: null,
     address: {
       address: '',
       state: '',
@@ -35,8 +36,7 @@ export const initialState: State = {
       exp_month: '',
       exp_year: ''
     }
-  },
-  selectedPaymentType: null
+  }
 };
 
 export function reducer(state: State = initialState, action: CheckoutActions.Any): State {
@@ -52,12 +52,12 @@ export function reducer(state: State = initialState, action: CheckoutActions.Any
       return { ...Common.clone(state), selectedPaymentType: action.selectedPaymentType };
     }
 
-    case CheckoutActions.SetSelectedAddress.Type: {
-      return { ...Common.clone(state), selectedAddress: action.selectedAddress };
-    }
-
     case CheckoutActions.SetAvailableAddresses.Type: {
       return { ...Common.clone(state), addresses: action.addresses };
+    }
+
+    case CheckoutActions.SetSelectedAddress.Type: {
+      return { ...Common.clone(state), selectedAddress: action.selectedAddress };
     }
 
     case CheckoutActions.SetCreditCardAuthorization.Type: {
