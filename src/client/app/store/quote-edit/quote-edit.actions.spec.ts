@@ -278,5 +278,17 @@ export function main() {
         fee: '100'
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'removeFee',
+        parameters: ['100']
+      },
+      expectedAction: {
+        type: '[Quote Edit] Remove Fee',
+        fee: '100'
+      }
+    });
   });
 }

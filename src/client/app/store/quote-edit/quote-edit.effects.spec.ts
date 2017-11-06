@@ -379,5 +379,30 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'RemoveFee',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.RemoveFee.Type,
+        fee: 100
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'removeFee',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, 100],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'quoteRefreshAndNotfiy',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }

@@ -259,6 +259,17 @@ export function main() {
           expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
       });
+
+      describe('removeFee()', () => {
+        it('calls the API service as expected', () => {
+          serviceUnderTest.removeFee(1, { some: 'fee', id: 47 } as any);
+
+          expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('quote/1/fee/47');
+          expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
+        });
+
+      });
     });
   });
 }
