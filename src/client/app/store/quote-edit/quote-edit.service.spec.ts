@@ -203,6 +203,15 @@ export function main() {
         });
       });
 
+      describe('createQuote()', () => {
+        it('calls the API service correctly', () => {
+          serviceUnderTest.createQuote().subscribe(() => {
+            expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Orders);
+            expect(mockApiService.post).toHaveBeenCalledWithEndpoint('quote');
+            expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
+          });
+        });
+      });
     });
   });
 }

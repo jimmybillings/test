@@ -242,5 +242,16 @@ export function main() {
         quote: { some: 'quote' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'createQuote',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Quote Edit] Create Quote',
+      }
+    });
   });
 }

@@ -308,5 +308,25 @@ export function main() {
         }]
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'createQuote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.CreateQuote.Type
+      },
+      serviceMethod: {
+        name: 'createQuote',
+        returnsObservableOf: { some: 'quote' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'quoteRefreshAndNotfiy',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }
