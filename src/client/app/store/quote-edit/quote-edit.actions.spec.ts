@@ -1,3 +1,4 @@
+import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { ActionFactory, InternalActionFactory } from './quote-edit.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
@@ -355,5 +356,103 @@ export function main() {
       }
     });
 
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addProject',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Project'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'removeProject',
+        parameters: [1]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Remove Project',
+        projectId: 1
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'updateProject',
+        parameters: [{ project: 'some project' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Update Project',
+        project: { project: 'some project' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'moveLineItem',
+        parameters: [{ project: 'some project' }, { lineItem: 'some item' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Move Line Item',
+        project: { project: 'some project' },
+        lineItem: { lineItem: 'some item' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'cloneLineItem',
+        parameters: [{ lineItem: 'some item' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Clone Line Item',
+        lineItem: { lineItem: 'some item' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'refreshAndNotify',
+        parameters: [{ some: 'quote' }, 'SOME.TRANSLATION']
+      },
+      expectedAction: {
+        type: '[Quote Edit] Refresh And Notify',
+        quote: { some: 'quote' },
+        translationString: 'SOME.TRANSLATION'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'editLineItemMarkers',
+        parameters: [{ lineItem: 'quote' }, { newMarkers: { timeStart: 1, timeEnd: 4 } }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Edit Line Item Markers',
+        lineItem: { lineItem: 'quote' },
+        newMarkers: { newMarkers: { timeStart: 1, timeEnd: 4 } }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'updateProjectPriceAttributes',
+        parameters: [{ priceAttributes: { attribute: 4 } }, { project: 'project' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Update Project Price Attributes',
+        priceAttributes: { priceAttributes: { attribute: 4 } },
+        project: { project: 'project' }
+      }
+    });
   });
 }

@@ -322,7 +322,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotify',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -347,7 +347,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotify',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -373,7 +373,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotify',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -398,7 +398,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotify',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -467,7 +467,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'quoteEdit',
-          methodName: 'quoteRefreshAndNotfiy',
+          methodName: 'refreshAndNotify',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
         }
       }
@@ -513,6 +513,201 @@ export function main() {
           methodName: 'display',
           expectedArguments: ['ASSET.ADD_TO_QUOTE_TOAST', { assetId: 1 }]
         }]
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addProject',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddProject.Type
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'addProject',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'removeProject',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.RemoveProject.Type,
+        projectId: 3
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'removeProject',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, 3],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'updateProject',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.UpdateProject.Type,
+        project: { project: 'some project' }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'updateProject',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { project: 'some project' }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'moveLineItem',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.MoveLineItem.Type,
+        project: { project: 'some project' },
+        lineItem: { lineItem: 1 }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'moveLineItem',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { project: 'some project' }, { lineItem: 1 }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'cloneLineItem',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.CloneLineItem.Type,
+        lineItem: { lineItem: 1 }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'cloneLineItem',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { lineItem: 1 }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'refreshAndNotify',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.RefreshAndNotify.Type,
+        quote: { some: 'quote' },
+        translationString: 'SOME.TRANSLATION'
+
+      },
+      outputActionFactories: {
+        success: [{
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['SOME.TRANSLATION']
+        }]
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'editLineItemMarkers',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.EditLineItemMarkers.Type,
+        lineItem: { lineItem: 'item' },
+        newMarkers: { newMarkers: { timeStart: 1, timeEnd: 4 } }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'editLineItemMarkers',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { lineItem: 'item' }, { newMarkers: { timeStart: 1, timeEnd: 4 } }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'updateProjectPriceAttributes',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.UpdateProjectPriceAttributes.Type,
+        priceAttributes: { priceAttributes: { attribute: 4 } },
+        project: { project: 'project' }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'updateProjectPriceAttributes',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { priceAttributes: { attribute: 4 } }, { project: 'project' }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
       }
     });
 
