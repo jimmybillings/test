@@ -403,5 +403,16 @@ export function main() {
       }
     });
 
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'cloneLineItem',
+        parameters: [{ lineItem: 'some item' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Clone Line Item',
+        lineItem: { lineItem: 'some item' }
+      }
+    });
   });
 }

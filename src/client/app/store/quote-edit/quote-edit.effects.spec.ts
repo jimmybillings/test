@@ -616,5 +616,30 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'cloneLineItem',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.CloneLineItem.Type,
+        lineItem: { lineItem: 1 }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'cloneLineItem',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { lineItem: 1 }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'quoteRefreshAndNotfiy',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }

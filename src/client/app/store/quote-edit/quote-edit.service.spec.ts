@@ -365,6 +365,17 @@ export function main() {
           expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
       });
+
+      describe('cloneLineItem()', () => {
+        it('should call the API service correctly', () => {
+          serviceUnderTest.cloneLineItem(1, { id: '123' });
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/clone/lineItem');
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ lineItemId: '123' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
     });
   });
 }
