@@ -296,6 +296,21 @@ export function main() {
           expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
           expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
+
+        it('should call the API service correctly without pricingAttributes', () => {
+          serviceUnderTest.editLineItem(1, { id: '123' }, { attributes: { Distribution: 'Online Streaming' } });
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/update/lineItem/123');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            id: '123',
+            attributes: {
+              Distribution: 'Online Streaming'
+            }
+          });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
       });
 
       describe('addAssetToProjectInQuote()', () => {
@@ -392,6 +407,24 @@ export function main() {
               timeEnd: null
             }
           });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('updateProjectPriceAttributes()', () => {
+        it('should call the API service correctly', () => {
+          serviceUnderTest.updateProjectPriceAttributes(1,
+            [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }] as any,
+            { id: '123', name: 'Project A', clientName: 'Ross Edfort', subtotal: 100 }
+          );
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/project/priceAttributes/123');
+          expect(mockApiService.put).toHaveBeenCalledWithBody(
+            {
+              Distribution: 'Online Streaming'
+            }
+          );
           expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
       });

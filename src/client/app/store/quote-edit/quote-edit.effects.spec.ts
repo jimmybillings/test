@@ -685,5 +685,31 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'updateProjectPriceAttributes',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.UpdateProjectPriceAttributes.Type,
+        priceAttributes: { priceAttributes: { attribute: 4 } },
+        project: { project: 'project' }
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'updateProjectPriceAttributes',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { priceAttributes: { attribute: 4 } }, { project: 'project' }],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }

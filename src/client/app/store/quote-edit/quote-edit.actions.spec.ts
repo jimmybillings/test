@@ -441,5 +441,18 @@ export function main() {
         newMarkers: { newMarkers: { timeStart: 1, timeEnd: 4 } }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'updateProjectPriceAttributes',
+        parameters: [{ priceAttributes: { attribute: 4 } }, { project: 'project' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Update Project Price Attributes',
+        priceAttributes: { priceAttributes: { attribute: 4 } },
+        project: { project: 'project' }
+      }
+    });
   });
 }
