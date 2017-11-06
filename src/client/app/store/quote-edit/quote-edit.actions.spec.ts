@@ -265,5 +265,18 @@ export function main() {
         options: { field: 'some field' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addFeeTo',
+        parameters: ['some project', '100']
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Fee To',
+        project: 'some project',
+        fee: '100'
+      }
+    });
   });
 }

@@ -353,5 +353,31 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'AddFeeTo',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddFeeTo.Type,
+        project: { project: 'some project' },
+        fee: 100
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'addFeeTo',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, { project: 'some project' }, 100],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'quoteRefreshAndNotfiy',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
   });
 }

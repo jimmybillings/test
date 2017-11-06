@@ -247,6 +247,18 @@ export function main() {
           });
         });
       });
+
+      describe('addFeeTo()', () => {
+        it('calls the API service as expected', () => {
+          serviceUnderTest.addFeeTo(1, { some: 'project', name: 'projectName' } as any, { some: 'fee' } as any);
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/fee/lineItem');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({ some: 'fee' });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ projectName: 'projectName' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
     });
   });
 }
