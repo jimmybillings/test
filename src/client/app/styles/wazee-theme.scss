@@ -10,6 +10,7 @@
 
 @import '../+commerce/+cart/cart-theme';
 @import '../+commerce/+order/+show/order-show-theme';
+@import '../+commerce/+order/components/invoice-theme';
 @import '../+commerce/+quote/+show/quote-show-theme';
 @import '../+commerce/components/commerce-header/commerce-header-theme';
 @import '../+commerce/components/commerce-list/commerce-list-theme';
@@ -80,6 +81,7 @@
   @include wz-comment-theme($theme);
 
   @include wz-cart-theme($theme);
+  @include wz-invoice-theme($theme);
   @include wz-order-show-theme($theme);
   @include wz-quote-show-theme($theme);
   @include wz-commerce-header-theme($theme);
