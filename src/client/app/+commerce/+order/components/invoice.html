@@ -6,15 +6,21 @@
         flex="100" 
         layout="row" 
         layout-align="space-between end">
-        <h2 flex="grow" class="mat-display-1">Invoice</h2>
+        <h2 flex="grow" class="mat-display-1">{{ 'ORDER.INVOICE.PAGE_TITLE' | translate }}</h2>
         <div class="tools" flex="auto">
           <a [routerLink]="['/orders', invoice.order.id]" class="is-outlined mini" mat-button color="primary">
-            Back to order
+            {{ 'ORDER.INVOICE.BACK_TO_ORDER_TITLE' | translate }}
           </a>
-          <a [routerLink]="['/orders']" mat-icon-button color="primary" title="{{ 'ORDER.SHOW.BACK_TO_INDEX_TITLE' | translate }">
+          <a [routerLink]="['/orders']" 
+            mat-icon-button color="primary" 
+            title="{{ 'ORDER.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
             <mat-icon>description</mat-icon>
           </a>
-          <button disabled="true" mat-icon-button color="primary" title="Print Invoice">          
+          <button 
+            disabled="true" 
+            mat-icon-button 
+            color="primary" 
+            title="{{ 'ORDER.INVOICE.PRINT_BTN_TITLE' | translate }}">          
             <mat-icon>print</mat-icon>
           </button>
         </div>
@@ -25,7 +31,7 @@
   <section flex="100" layout-align="center center" layout="row">
     <mat-card class="invoice" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout="column" layout-gt-xs="row" layout-align="center center">
       <header class="invoice-header" flex="100" layout="column" layout-align="center end">
-        <h1 class="invoice-label mat-display-3" flex="auto">Invoice</h1>
+        <h1 class="invoice-label mat-display-3" flex="auto">{{ 'ORDER.INVOICE.PAGE_TITLE' | translate }}</h1>
       </header>
       <section class="invoice-from" flex="100" layout="column" layout-gt-xs="row">
         <div class="invoice-logo" flex="20">
@@ -66,7 +72,7 @@
                 <div class="row">
                   <div class="cell">
                     <h5 class="mat-subheading-1">
-                      Invoice number:
+                      {{ 'ORDER.INVOICE.NUMBER_LABEL' | translate }}
                     </h5>
                   </div>
                   <div class="cell">
@@ -76,7 +82,7 @@
                 <div class="row">
                   <div class="cell">
                     <h5 class="mat-subheading-1">
-                      Invoice date:
+                      {{ 'ORDER.INVOICE.DATE_LABEL' | translate }}
                     </h5>
                   </div>
                   <div class="cell">
@@ -86,7 +92,7 @@
                 <div class="row">
                   <div class="cell">
                     <h5 class="mat-subheading-1">
-                      Order type:
+                      {{ 'ORDER.INVOICE.ORDER_TYPE_LABEL' | translate }}
                     </h5>
                   </div>
                   <div class="cell">
@@ -96,7 +102,7 @@
                 <div class="row" *ngIf="invoice.order.poNumber">
                   <div class="cell">
                     <h5 class="mat-subheading-1">
-                      Purchase order:
+                      {{ 'ORDER.INVOICE.PURCHASE_ORDER_LABEL' | translate }}
                     </h5>
                   </div>
                   <div class="cell">
@@ -106,7 +112,7 @@
                 <div class="row" *ngIf="invoice.order.paymentTerms">
                   <div class="cell">
                     <h5 class="mat-subheading-1">
-                      Payment terms:
+                      {{ 'ORDER.INVOICE.PAYMENT_TERMS_LABEL' | translate }}
                     </h5>
                   </div>
                   <div class="cell">
@@ -119,7 +125,7 @@
 
           <div class="billing" flex="" layout="column" layout-gt-xs="row">
             <div class="details" flex="50">
-              <h4 class="mat-title">Bill to</h4>
+              <h4 class="mat-title">{{ 'ORDER.INVOICE.ISSUED_TO_TITLE' | translate }}</h4>
               <div class="contact-container">
                 <span class="individual-name">Joyce McCallister</span>
                 <h6 class="mat-subheading-1 company-name" *ngIf="invoice.order.orderAddress.accountName">
@@ -139,7 +145,7 @@
               </div>
             </div>
             <div class="details" flex="50">
-              <h4 class="mat-title">Purchased by</h4>
+              <h4 class="mat-title">{{ 'ORDER.INVOICE.PURCHASED_BY_TITLE' | translate }}</h4>
               <div class="contact-container">
                 <span class="individual-name">Jonathan McDermott</span>
                 <address>
@@ -156,7 +162,7 @@
         </div>
       </section>
 
-      <h4 class="mat-title">Invoice summary</h4>
+      <h4 class="mat-title">{{ 'ORDER.INVOICE.INVOICE_SUMMARY_TITLE' | translate }}</h4>
       <div class="invoice-divider"></div>
 
       <ng-container *ngFor="let project of invoice.order.projects">
@@ -185,16 +191,16 @@
                 layout="row" 
                 hide-xs>
                 <div class="heading" flex="100" flex-gt-xs="40">
-                  <h6 class="mat-subheading-2">Product</h6>
+                  <h6 class="mat-subheading-2">{{ 'ORDER.INVOICE.PRODUCT_COLUMN_HEAD' | translate }}</h6>
                 </div>
                 <div class="heading" flex="100" flex-gt-xs="15">
-                  <h6 class="mat-subheading-2">Rights</h6>
+                  <h6 class="mat-subheading-2">{{ 'ORDER.INVOICE.RIGHTS_COLUMN_HEAD' | translate }}</h6>
                 </div>
                 <div class="heading" flex="100" flex-gt-xs="35">
-                  <h6 class="mat-subheading-2">Use</h6>
+                  <h6 class="mat-subheading-2">{{ 'ORDER.INVOICE.USEAGE_COLUMN_HEAD' | translate }}</h6>
                 </div>
                 <div class="heading" flex="100" flex-gt-xs="10" layout="column" layout-align-gt-xs="end end">
-                  <h6 class="mat-subheading-2">Price</h6>
+                  <h6 class="mat-subheading-2">{{ 'ORDER.INVOICE.PRICE_COLUMN_HEAD' | translate }}</h6>
                 </div>
               <li 
                 *ngFor="let lineItem of project.lineItems"
@@ -255,28 +261,28 @@
       <section class="invoice-totals">
         <div layout="column" layout-gt-xs="row" layout-align-gt-xs="space-between">
           <div class="notes-container" flex="100" flex-gt-xs="60">
-            Notes:
+            {{ 'ORDER.INVOICE.NOTES_LABEL' | translate }}
             <div class="mat-caption invoice-notes"></div>
           </div>
           <div  class="totals-container" flex="100" flex-gt-xs="40" layout="column" layout-align="start end">
             <div class="mat-title">
-              <strong>Total: </strong>{{ invoice.order.subTotal | currency:'USD':true:'1.2-2' }}
+              <strong>{{ 'ORDER.INVOICE.TOTAL_LABEL' | translate }}</strong>{{ invoice.order.subTotal | currency:'USD':true:'1.2-2' }}
             </div>
             <div class="mat-title" *ngIf="invoice.order.discount">
-              <strong>Discount: </strong>{{ invoice.order.discount }}%
+              <strong>{{ 'ORDER.INVOICE.DISCOUNT_LABEL' | translate }}</strong>{{ invoice.order.discount }}%
             </div>
             <div class="amount-due mat-headline">
-              <strong>Amount Due: </strong>{{ invoice.order.total | currency:'USD':true:'1.2-2' }}
+              <strong>{{ 'ORDER.INVOICE.AMOUNT_DUE_LABEL' | translate }}</strong>{{ invoice.order.total | currency:'USD':true:'1.2-2' }}
             </div>
             <div class="mat-title" *ngIf="invoice.order.paymentTerms">
-              <strong>Terms: </strong>{{ invoice.order.paymentTerms }}
+              <strong>{{ 'ORDER.INVOICE.TERMS_LABEL' | translate }}</strong>{{ invoice.order.paymentTerms }}
             </div>
           </div>  
         </div>
       </section>
       
       <section class="remit-payment">
-        <h4 class="mat-title">Please remit payment to</h4>
+        <h4 class="mat-title">{{ 'ORDER.INVOICE.REMIT_PAYMENT_TITLE' | translate }}</h4>
         <div class="invoice-divider"></div>
         
         <div layout="column" layout-gt-xs="row">
