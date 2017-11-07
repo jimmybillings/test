@@ -208,7 +208,7 @@
                     <strong>{{ attribute.priceAttributeName }}: </strong>{{ attribute.selectedAttributeValue }}
                   </div>
                 </div>
-                <div flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
+                <div class="cost" flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
                   <div class="mat-suheading-2">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</div>
                 </div>
               </li>
@@ -240,7 +240,7 @@
                     {{ feeLineItem.notes }}
                   </div>
                 </div>
-                <div flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
+                <div class="cost" flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
                   <div class="mat-suheading-2">{{ feeLineItem.amount | currency:'USD':true:'1.2-2' }}</div>
                 </div>
               </li>
@@ -251,18 +251,26 @@
       
       <section class="invoice-totals">
         <div layout="column" layout-gt-xs="row" layout-align-gt-xs="space-between">
-          <div  flex="100" flex-gt-xs="60">Notes:</div>
-          <div  flex="100" flex-gt-xs="40" layout="column" layout-align="start end">
+          <div class="notes-container" flex="100" flex-gt-xs="60">
+            Notes:
+            <div class="mat-caption invoice-notes"></div>
+          </div>
+          <div  class="totals-container" flex="100" flex-gt-xs="40" layout="column" layout-align="start end">
             <div class="mat-title">
               <strong>Total: </strong>{{ invoice.order.subTotal | currency:'USD':true:'1.2-2' }}
             </div>
-            <div class="mat-title"><strong>Discount: </strong>{{ invoice.order.discount | currency:'USD':true:'1.2-2' }}</div>
-            <div class="mat-headline"><strong>Amount Due: </strong>{{ invoice.order.total | currency:'USD':true:'1.2-2' }}</div>
-            <div class="mat-title"><strong>Terms: </strong>{{ invoice.order.paymentTerms }}</div>
+            <div class="mat-title" *ngIf="invoice.order.discount">
+              <strong>Discount: </strong>{{ invoice.order.discount }}%
+            </div>
+            <div class="amount-due mat-headline">
+              <strong>Amount Due: </strong>{{ invoice.order.total | currency:'USD':true:'1.2-2' }}
+            </div>
+            <div class="mat-title" *ngIf="invoice.order.paymentTerms">
+              <strong>Terms: </strong>{{ invoice.order.paymentTerms }}
+            </div>
           </div>  
         </div>
       </section>
-      
       
       <section class="remit-payment">
         <h4 class="mat-title">Please remit payment to</h4>
@@ -300,8 +308,8 @@
 
 
 
-<pre style="overflow:auto">{{ invoice.payee | json }}</pre>
+<!-- <pre style="overflow:auto">{{ invoice.payee | json }}</pre>
 <pre style="overflow:auto">{{ invoice.order | json }}</pre>
-<pre style="overflow:auto">{{ invoice.documents | json }}</pre>
+<pre style="overflow:auto">{{ invoice.documents | json }}</pre> -->
 
 </ng-container>
