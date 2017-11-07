@@ -11,6 +11,9 @@
           <a [routerLink]="['/orders', invoice.order.id]" class="is-outlined mini" mat-button color="primary">
             Back to order
           </a>
+          <a [routerLink]="['/orders']" mat-icon-button color="primary" title="{{ 'ORDER.SHOW.BACK_TO_INDEX_TITLE' | translate }">
+            <mat-icon>description</mat-icon>
+          </a>
           <button disabled="true" mat-icon-button color="primary" title="Print Invoice">          
             <mat-icon>print</mat-icon>
           </button>
