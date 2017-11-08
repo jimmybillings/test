@@ -27,7 +27,7 @@ import { MdSelectOption } from '../../../shared/interfaces/forms.interface';
 export class QuotePurchaseTypeComponent {
   public types: MdSelectOption[];
   public selectedType: string;
-  @Output() selectQuoteType: EventEmitter<{ type: string }> = new EventEmitter();
+  @Output() selectQuoteType: EventEmitter<{ purchaseType: string }> = new EventEmitter();
   @Input()
   public set quoteTypes(types: MdSelectOption[]) {
     this.types = types;
@@ -35,6 +35,6 @@ export class QuotePurchaseTypeComponent {
   }
 
   public onSelectChange(event: MatSelectChange): void {
-    this.selectQuoteType.emit({ type: event.value });
+    this.selectQuoteType.emit({ purchaseType: event.value });
   }
 }
