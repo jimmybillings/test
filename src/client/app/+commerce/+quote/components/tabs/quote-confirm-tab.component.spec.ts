@@ -66,6 +66,8 @@ export function main() {
     describe('quoteIsTrial() getter', () => {
       describe('returns Observable of true', () => {
         it('when the quote is trial', () => {
+          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'Trial' } });
+
           let quoteIsTrial: boolean;
           componentUnderTest.quoteIsTrial.take(1).subscribe(result => quoteIsTrial = result);
           expect(quoteIsTrial).toBe(true);
@@ -76,19 +78,25 @@ export function main() {
     describe('canPurchase getter', () => {
       describe('returns true', () => {
         it('when the quote is of type \'Trial\'', () => {
+          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'Trial' } });
+          expect(componentUnderTest.canPurchase).toBe(true);
+        });
+
+        it('when the quote is of type \'DeliveryOnly\'', () => {
+          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'DeliveryOnly' } });
           expect(componentUnderTest.canPurchase).toBe(true);
         });
 
         it('when the quote is not of type \'Trial\', but the other conditions are met', () => {
           componentUnderTest.licensesAreAgreedTo = true;
-          mockQuoteService = { hasAssetLineItems: true, state: { data: { purchaseType: 'Not Trial' } } };
+          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'NotTrial' } });
           expect(componentUnderTest.canPurchase).toBe(true);
         });
       });
 
       describe('returns false', () => {
-        it('everything is false', () => {
-          mockQuoteService = { hasAssetLineItems: false, state: { data: { purchaseType: 'Not Trial' } } };
+        it('when everything is false', () => {
+          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'NotTrial' } });
           mockCapabilities = {
             viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton').and.returnValue(false)
           };

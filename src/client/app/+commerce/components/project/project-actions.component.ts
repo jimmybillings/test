@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { AssetLineItem, OrderableType } from '../../../shared/interfaces/commerce.interface';
+import { AssetLineItem, PurchaseType, quotesWithoutPricing } from '../../../shared/interfaces/commerce.interface';
+
 @Component({
   moduleId: module.id,
   selector: 'project-actions-component',
@@ -46,7 +47,7 @@ import { AssetLineItem, OrderableType } from '../../../shared/interfaces/commerc
   `
 })
 export class ProjectActionsComponent {
-  @Input() quoteType: OrderableType;
+  @Input() quoteType: PurchaseType;
   @Input() allowQuoteAdministration: boolean = false;
   @Input() projectHasRmAssets: boolean = false;
   @Input() rmAssetsHaveAttributes: boolean = false;
@@ -73,7 +74,7 @@ export class ProjectActionsComponent {
   }
 
   public get showRightsPricingBtn(): boolean {
-    return this.quoteType !== 'Trial' && this.projectHasRmAssets;
+    return !quotesWithoutPricing.includes(this.quoteType) && this.projectHasRmAssets;
   }
 
   public onBulkImportClick(): void {

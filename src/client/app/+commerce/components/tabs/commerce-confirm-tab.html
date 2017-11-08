@@ -17,7 +17,7 @@
         <span class="phone">{{ (orderInProgress | async).selectedAddress.address.phone }}</span>
       </address>
     </section>
-    <section *ngIf="!(quoteIsTrial | async)" class="payment" flex="auto">
+    <section *ngIf="showPricing | async" class="payment" flex="auto">
       <div layout="row" layout-align="space-between">
         <h5 class="mat-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
         <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(2)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
@@ -63,7 +63,7 @@
 </projects-component>
 
 <section class="commerce-total" layout="column" layout-align="end end">
-  <ng-container *ngIf="!(quoteIsTrial | async)">
+  <ng-container *ngIf="showPricing | async">
     <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal mat-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_SUBTOTAL' | translate }} 

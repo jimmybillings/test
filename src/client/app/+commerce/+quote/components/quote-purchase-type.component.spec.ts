@@ -26,7 +26,7 @@ export function main() {
         spyOn(componentUnderTest.selectQuoteType, 'emit');
         componentUnderTest.onSelectChange({ value: 'someValue' } as any);
 
-        expect(componentUnderTest.selectQuoteType.emit).toHaveBeenCalledWith({ type: 'someValue' });
+        expect(componentUnderTest.selectQuoteType.emit).toHaveBeenCalledWith({ purchaseType: 'someValue' });
       });
     });
   });
