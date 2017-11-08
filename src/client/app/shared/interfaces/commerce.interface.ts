@@ -12,7 +12,6 @@ export type OrderableType =
   'PrepayOfflineLicense' |
   'Trial' |
   'DeliveryOnly' |
-  'BadDebt' |
   'ChannelNoDelivery';
 
 export type PaymentOption =
@@ -40,7 +39,7 @@ export type TranscodeStatus = 'Submitted' | 'Completed' | 'Failed' | 'UrlError' 
 
 export type OrderStatus = 'ORDER' | 'REFUND';
 
-export type EditableQuoteFields = 'bulkOrderId' | 'discount';
+export type EditableQuoteFields = 'bulkOrderId' | 'discount' | 'purchaseType';
 
 // Base interfaces
 
@@ -52,7 +51,7 @@ export interface Project {
   id: string;
   name: string;
   clientName: string;
-  subtotal: number;
+  subTotal?: number;
   creditMemoForProjectId?: number;
   lineItems?: Array<AssetLineItem>;
   feeLineItems?: Array<FeeLineItem>;
@@ -192,7 +191,7 @@ export interface Quote extends CommonCommerce {
   focused?: boolean;
   stripePublicKey?: string;
   bulkOrderId?: string;
-  discount?: string;
+  discount?: number;
   externalAgreementIds?: string[];
   internalAgreementIds?: number[];
   externalLicenseIds?: string[];

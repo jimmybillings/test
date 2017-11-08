@@ -167,7 +167,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     return this.store.select(state => state.quoteEdit.data.subTotal);
   }
 
-  public get discount(): Observable<string> {
+  public get discount(): Observable<number> {
     return this.store.select(state => state.quoteEdit.data.discount);
   }
 
@@ -176,7 +176,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public get showDiscount(): boolean {
-    return !!this.store.snapshot(factory => factory.quoteEdit.data.discount) && this.quoteType !== 'Trial';
+    return this.store.snapshot(factory => factory.quoteEdit.data.discount > 0) && this.quoteType !== 'Trial';
   }
 
   public get shouldShowCloneButton(): Observable<boolean> {
@@ -187,14 +187,8 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     return this.config.quotePurchaseType.items;
   }
 
-  public onSelectQuoteType(event: { type: OrderableType }): void {
-    this.quoteType = event.type;
-    this.config.createQuote.items.map((item: FormFields) => {
-      if (item.name === 'purchaseType') {
-        item.value = this.viewValueFor(event.type);
-      }
-      return item;
-    });
+  public onSelectQuoteType(event: { purchaseType: OrderableType }): void {
+    this.store.dispatch(factory => factory.quoteEdit.updateQuoteField(event));
   }
 
   private get rmAssetsHaveRightsPackage(): boolean {
@@ -444,12 +438,6 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
 
   private costMultiplierFormSubmitLabel(lineItem: AssetLineItem): string {
     return lineItem.multiplier > 1 ? 'QUOTE.EDIT_MULTIPLIER_FORM_SUBMIT' : 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT';
-  }
-
-  private viewValueFor(quoteType: OrderableType): string {
-    return this.purchaseTypeConfig.filter((option: { viewValue: string, value: OrderableType }) => {
-      return option.value === quoteType;
-    }).map((option: MdSelectOption) => option.viewValue)[0];
   }
 
   private markersFrom(asset: EnhancedAsset): SubclipMarkersInterface.SubclipMarkers {
