@@ -128,20 +128,22 @@
               <h4 class="mat-title">{{ 'ORDER.INVOICE.ISSUED_TO_TITLE' | translate }}</h4>
               <div class="contact-container">
                 <span class="individual-name">Joyce McCallister</span>
-                <h6 class="mat-subheading-1 company-name" *ngIf="invoice.order.orderAddress.accountName">
-                  {{ invoice.order.orderAddress.accountName }}
-                </h6>
-                <address *ngIf="invoice.order.orderAddress.billingInfo">
-                  <span class="line-1">
-                    {{ invoice.order.orderAddress.billingInfo.address.address }}
-                  </span>
-                  <span class="line-2">
-                    {{ invoice.order.orderAddress.billingInfo.address.city }},
-                    {{ invoice.order.orderAddress.billingInfo.address.state }} {{ invoice.order.orderAddress.billingInfo.address.zipcode }},
-                    {{ invoice.order.orderAddress.billingInfo.address.country }}
-                  </span>
-                  <span class="phone"><mat-icon>phone_iphone</mat-icon>{{ invoice.order.orderAddress.billingInfo.address.phone }}</span>
-                </address>
+                <ng-container *ngIf="invoice.order.orderAddress">
+                  <h6 class="mat-subheading-1 company-name" *ngIf="invoice.order.orderAddress.accountName">
+                    {{ invoice.order.orderAddress.accountName }}
+                  </h6>
+                  <address *ngIf="invoice.order.orderAddress.billingInfo">
+                    <span class="line-1">
+                      {{ invoice.order.orderAddress.billingInfo.address.address }}
+                    </span>
+                    <span class="line-2">
+                      {{ invoice.order.orderAddress.billingInfo.address.city }},
+                      {{ invoice.order.orderAddress.billingInfo.address.state }} {{ invoice.order.orderAddress.billingInfo.address.zipcode }},
+                      {{ invoice.order.orderAddress.billingInfo.address.country }}
+                    </span>
+                    <span class="phone"><mat-icon>phone_iphone</mat-icon>{{ invoice.order.orderAddress.billingInfo.address.phone }}</span>
+                  </address>
+                </ng-container>
               </div>
             </div>
             <div class="details" flex="50">
