@@ -7,7 +7,6 @@ import {
   AddAssetParameters,
   EditableQuoteFields,
   FeeLineItem,
-  OrderableType,
   Project,
   Quote,
 } from '../../shared/interfaces/commerce.interface';
@@ -202,11 +201,6 @@ export class FutureQuoteEditService {
         loadingIndicator: true
       }
     );
-  }
-
-  public editPurchaseType(purchaseType: OrderableType, quote: Quote): Observable<Quote> {
-    let newQuote: Quote = { ...quote, purchaseType };
-    return this.apiService.put(Api.Orders, `quote/${newQuote.id}`, { body: newQuote, loadingIndicator: true });
   }
 
   private formatAssetBody(parameters: AddAssetParameters): any {
