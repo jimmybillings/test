@@ -1,11 +1,13 @@
 import * as QuoteEditActions from './quote-edit.actions';
+import * as AccountActions from '../account/account.actions';
+import { Pojo } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
-import { Quote, QuoteOptions } from '../../shared/interfaces/commerce.interface';
+import { Quote, QuoteRecipient } from '../../shared/interfaces/commerce.interface';
 
 export interface State {
   data: Quote;
   loading: boolean;
-  recipient?: QuoteOptions;
+  recipient?: QuoteRecipient;
 }
 
 export const initialState: State = {
@@ -16,11 +18,50 @@ export const initialState: State = {
     ownerUserId: 0,
     quoteStatus: 'PENDING'
   },
-  recipient: null,
+  recipient: {
+    user: {
+      field: [{
+        endPoint: "user/searchFields",
+        queryParams: "fields,emailAddress,values",
+        service: "identities",
+        suggestionHeading: "Matching users",
+        name: "emailAddress",
+        label: "Email Address",
+        type: "suggestions",
+        value: "",
+        validation: "REQUIRED"
+      }]
+    },
+    billingAccount: {
+      field: [{
+        endPoint: "account/searchFields",
+        queryParams: "fields,name,values",
+        service: "identities",
+        suggestionHeading: "Matching Accounts",
+        name: "account",
+        label: "Account",
+        type: "suggestions",
+        value: "",
+        validation: "REQUIRED"
+      }]
+    },
+    invoiceContact: {
+      field: [{
+        name: "invoiceContact",
+        options: "",
+        label: "Invoice Contact",
+        type: "select",
+        value: "",
+        validation: "REQUIRED"
+      }]
+    }
+  },
   loading: false
 };
 
-export function reducer(state: State = initialState, action: QuoteEditActions.Any): State {
+export type AllowedActions = AccountActions.Any | QuoteEditActions.Any;
+
+export function reducer(state: State = initialState, action: AllowedActions): State {
   if (state === null) state = initialState;
 
   switch (action.type) {
@@ -59,15 +100,57 @@ export function reducer(state: State = initialState, action: QuoteEditActions.An
         loading: false,
         data: {
           ...action.quote
-        }
+        },
+        recipient: state.recipient
       };
     }
 
-    case QuoteEditActions.SaveRecipientInformationOnQuote.Type: {
+    case QuoteEditActions.AddUserToQuote.Type: {
       return {
         ...Common.clone(state),
         loading: false,
-        recipient: action.quoteOptions
+        recipient: Common.clone(Object.assign({}, state.recipient, {
+          user: {
+            id: action.user.id,
+            name: `${action.user.firstName} ${action.user.lastName}`,
+            email: action.user.emailAddress,
+            field: state.recipient.user.field.map(field => {
+              field.value = action.user.emailAddress;
+              return field;
+            })
+          }
+        }))
+      };
+    }
+
+    case QuoteEditActions.GetBillingAccountSuccess.Type: {
+
+      return {
+        ...Common.clone(state),
+        loading: false,
+        recipient: Common.clone(Object.assign({}, state.recipient, {
+          user: Object.assign(state.recipient.user, { accountName: action.billingAndInvoice.billingAccount.name }),
+          billingAccount: {
+            id: action.billingAndInvoice.billingAccount.id,
+            name: action.billingAndInvoice.billingAccount.name,
+            creditExemption: action.billingAndInvoice.billingAccount.creditExemption,
+            licensingVertical: action.billingAndInvoice.billingAccount.licensingVertical,
+            paymentTermsDays: action.billingAndInvoice.billingAccount.paymentTermsDays,
+            purchaseOnCredit: action.billingAndInvoice.billingAccount.purchaseOnCredit,
+            salesOwner: action.billingAndInvoice.billingAccount.salesOwner,
+            field: state.recipient.billingAccount.field.map(field => {
+              field.value = action.billingAndInvoice.billingAccount.name;
+              return field;
+            })
+          },
+          invoiceContact: {
+            field: state.recipient.invoiceContact.field.map(field => {
+              field.value = `${action.billingAndInvoice.invoiceContactId.firstName} ${action.billingAndInvoice.invoiceContactId.lastName}`
+              field.options = `${action.billingAndInvoice.invoiceContactId.firstName} ${action.billingAndInvoice.invoiceContactId.lastName}`
+              return field;
+            })
+          }
+        }))
       };
     }
 
