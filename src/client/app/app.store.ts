@@ -81,6 +81,8 @@ import * as UiConfigActions from './store/ui-config/ui-config.actions';
 import * as UiConfigState from './store/ui-config/ui-config.state';
 export type UiConfigState = UiConfigState.State;
 
+import * as UserActions from './store/user/user.actions';
+
 import * as MultiLingualActions from './store/multi-lingual/multi-lingual.actions';
 import * as MultiLingualState from './store/multi-lingual/multi-lingual.state';
 export type MultiLingualState = MultiLingualState.State;
@@ -112,6 +114,7 @@ export interface ActionFactory {
   readonly snackbar: SnackbarActions.ActionFactory;
   readonly speedPreview: SpeedPreviewActions.ActionFactory;
   readonly uiConfig: UiConfigActions.ActionFactory;
+  readonly user: UserActions.ActionFactory;
 };
 
 export interface InternalActionFactory {
@@ -138,6 +141,7 @@ export interface InternalActionFactory {
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
   readonly uiConfig: UiConfigActions.InternalActionFactory;
+  readonly user: UserActions.InternalActionFactory;
 };
 
 export interface AppState {
@@ -221,7 +225,8 @@ export class AppStore {
     router: new RouterActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
     speedPreview: new SpeedPreviewActions.ActionFactory(),
-    uiConfig: new UiConfigActions.ActionFactory()
+    uiConfig: new UiConfigActions.ActionFactory(),
+    user: new UserActions.ActionFactory()
   };
 
   private readonly internalActionFactory: InternalActionFactory = {
@@ -247,7 +252,8 @@ export class AppStore {
     router: new RouterActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
     speedPreview: new SpeedPreviewActions.InternalActionFactory(),
-    uiConfig: new UiConfigActions.InternalActionFactory()
+    uiConfig: new UiConfigActions.InternalActionFactory(),
+    user: new UserActions.InternalActionFactory(),
   };
 
   private legacyService: LegacyService;

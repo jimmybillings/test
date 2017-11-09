@@ -45,7 +45,8 @@ export class MockAppStore extends AppStore {
       router: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
-      uiConfig: {} as any
+      uiConfig: {} as any,
+      user: {} as any
     };
 
     this._internalActionFactory = {
@@ -71,7 +72,8 @@ export class MockAppStore extends AppStore {
       router: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
-      uiConfig: {} as any
+      uiConfig: {} as any,
+      user: {} as any
     };
 
     this._state = {
