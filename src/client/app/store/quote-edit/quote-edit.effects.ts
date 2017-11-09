@@ -4,9 +4,11 @@ import { Effect, Actions } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 
 import * as QuoteEditActions from './quote-edit.actions';
+import * as AccountActions from '../account/account.actions';
 import { FutureQuoteEditService } from './quote-edit.service';
 import { AppStore } from '../../app.store';
 import { Quote, AssetLineItem } from '../../shared/interfaces/commerce.interface';
+import { Account } from '../../shared/interfaces/user.interface';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -76,27 +78,27 @@ export class QuoteEditEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.addCustomPriceToLineItemFailure(error))));
     });
 
-  @Effect()
-  public sendQuote: Observable<Action> = this.actions
-    .ofType(QuoteEditActions.SendQuote.Type)
-    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
-    .switchMap(([action, quoteId]: [QuoteEditActions.SendQuote, number]) =>
+  // @Effect()
+  // public sendQuote: Observable<Action> = this.actions
+  //   .ofType(QuoteEditActions.SendQuote.Type)
+  //   .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+  //   .switchMap(([action, quoteId]: [QuoteEditActions.SendQuote, number]) =>
 
-      this.service.sendQuote(quoteId, action.quoteOptions)
-        .map(() =>
-          this.store.create(factory =>
-            factory.quoteEdit.sendQuoteSuccess(
-              quoteId,
-              action.quoteOptions.ownerEmail
-            )
-          )
-        )
-        .catch(error =>
-          Observable.of(this.store.create(factory =>
-            factory.error.handle(error)
-          ))
-        )
-    );
+  //     this.service.sendQuote(quoteId, action.quoteRecipient)
+  //       .map(() =>
+  //         this.store.create(factory =>
+  //           factory.quoteEdit.sendQuoteSuccess(
+  //             quoteId,
+  //             action.quoteRecipient.ownerEmail
+  //           )
+  //         )
+  //       )
+  //       .catch(error =>
+  //         Observable.of(this.store.create(factory =>
+  //           factory.error.handle(error)
+  //         ))
+  //       )
+  //   );
 
   @Effect()
   public sendQuoteSuccess: Observable<Action> = this.actions
@@ -334,6 +336,30 @@ export class QuoteEditEffects {
         factory.snackbar.display(action.translationString)
       )
     );
+
+  @Effect()
+  public addUserToQuote: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.AddUserToQuote.Type)
+    .map((action: QuoteEditActions.AddUserToQuote) =>
+      this.store.create(factory => factory.quoteEdit.getBillingAccount(action.user.accountId))
+    )
+
+  @Effect()
+  public getBillingAccount: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.GetBillingAccount.Type)
+    .switchMap((action: QuoteEditActions.GetBillingAccount) =>
+      this.service.getBillingAccount(action.accountId)
+        .map(billingAccount =>
+          this.store.create(factory => factory.quoteEdit.getBillingAccountSuccess(billingAccount))
+        )
+    )
+
+  @Effect()
+  public addBillingAccountToQuote: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.AddBillingAccountToQuote.Type)
+    .map((action: QuoteEditActions.AddBillingAccountToQuote) =>
+      this.store.create(factory => factory.account.getAccountForQuoteAdmin(action.account.id))
+    )
 
   constructor(
     private actions: Actions,
