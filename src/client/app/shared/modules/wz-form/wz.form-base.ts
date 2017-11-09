@@ -44,12 +44,11 @@ export class WzFormBase implements OnInit, OnChanges {
     });
   }
 
-  public mergeNewValues(formFields?: Array<FormFields>) {
-    let fields: Array<FormFields> = formFields ? formFields : this.items;
-    fields.forEach((field: any) => {
+  public mergeNewValues(formFields: Array<FormFields> = this.items) {
+    formFields.forEach((field: any) => {
       for (let control in this.form.controls) {
         if (control === field.name) {
-          (<FormControl>this.form.controls[control]).patchValue(field.value);
+          (<FormControl>this.form.controls[control]).setValue(field.value);
         }
       }
       if (this.autosize) this.autosize.resizeToFitContent();

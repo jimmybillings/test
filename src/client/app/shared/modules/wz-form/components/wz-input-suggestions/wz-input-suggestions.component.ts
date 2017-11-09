@@ -1,3 +1,4 @@
+import { Pojo } from '../../../../interfaces/common.interface';
 import {
   Component, Input, Output, OnInit, ChangeDetectorRef,
   ChangeDetectionStrategy, Renderer, OnDestroy, EventEmitter
@@ -20,6 +21,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
 
   @Input() fControl: FormControl;
   @Input() rawField: any;
+  @Input() matchOnProperty: string = '';
   @Output() newSuggestion = new EventEmitter();
   public suggestions: Array<string> = [];
   public activeSuggestion: string;
@@ -27,6 +29,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   private clickCatcher: any;
   private inputSubscription: Subscription;
   private userInput: string = '';
+  private rawSuggestions: Pojo[];
 
   constructor(
     private renderer: Renderer,
@@ -60,7 +63,12 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
             return [];
           }
         })
-        .map(response => (response['items'] || response['list'] || []).map((item: any) => item.name || item.emailAddress || item))
+        .map((response) => {
+          this.rawSuggestions = (response['items'] || response['list'] || []);
+          return response;
+        })
+        .map(response => (response['items'] || response['list'] || [])
+          .map((item: any) => item.name || item.emailAddress || item))
         .do((suggestions) => {
           this.suggestions = this.normalizeSuggestions(suggestions);
           this.userInput = this.fControl.value;
@@ -77,7 +85,15 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
 
   public selectSuggestion(suggestion: string) {
     this.fControl.setValue(suggestion);
-    this.newSuggestion.emit(this.activeSuggestion);
+    if (!!this.matchOnProperty) {
+      this.newSuggestion.emit(
+        this.rawSuggestions.find((rawSuggestion) =>
+          rawSuggestion[this.matchOnProperty] === suggestion
+        )
+      );
+    } else {
+      this.newSuggestion.emit(this.activeSuggestion);
+    }
     this.closeSuggestions();
   }
 
