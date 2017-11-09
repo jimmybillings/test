@@ -1,6 +1,6 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { Capabilities } from '../../../../../shared/services/capabilities.service';
-import { Project, QuoteOptions } from '../../../../../shared/interfaces/commerce.interface';
+import { Project, QuoteOptions, QuoteRecipient } from '../../../../../shared/interfaces/commerce.interface';
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { AppStore } from '../../../../../app.store';
 
@@ -38,7 +38,7 @@ export class QuoteEditConfirmTabComponent {
   ) {
   }
 
-  public get recipientInformation(): Observable<QuoteOptions> {
+  public get recipientInformation(): Observable<QuoteRecipient> {
     return this.store.select(state => state.quoteEdit.recipient);
   }
 

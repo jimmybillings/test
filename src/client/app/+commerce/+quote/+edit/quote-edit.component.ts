@@ -1,6 +1,6 @@
 import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 import { Common } from '../../../shared/utilities/common.functions';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { Pojo } from '../../../shared/interfaces/common.interface';
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -50,7 +50,7 @@ export class QuoteEditComponent implements OnInit, OnDestroy {
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
 
-    this.selectedTabIndex = 0;
+    this.selectedTabIndex = 1;
 
     this.projectSubscription = this.store.select(state => state.quoteEdit.data.projects)
       .subscribe(projects => this.projects = this.enhanceAssetsInProjects(projects));
@@ -61,7 +61,6 @@ export class QuoteEditComponent implements OnInit, OnDestroy {
   }
 
   public onNotification(message: CommerceMessage): void {
-    console.log(message);
     switch (message.type) {
       case 'OPEN_DELETE_DIALOG':
         this.onOpenDeleteQuoteDialog();

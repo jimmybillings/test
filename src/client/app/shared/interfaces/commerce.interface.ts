@@ -1,4 +1,4 @@
-import { ViewAddress, Pagination, Common, SelectedPriceAttribute, Store } from './common.interface';
+import { Common, Pagination, Pojo, SelectedPriceAttribute, Store, ViewAddress } from './common.interface';
 import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
 import { Address, Document, Payee } from './user.interface';
@@ -199,10 +199,36 @@ export interface Quote extends CommonCommerce {
   internalLicenseIds?: number[];
 }
 
-export interface QuoteConfirm extends Quote {
-  recipient: QuoteOptions;
+export interface QuoteRecipient {
+  user?: QuoteRecipientUser;
+  billingAccount?: QuoteRecipientBillingAccount;
+  invoiceContact?: QuoteRecipientInvoiceContact;
 }
 
+export interface QuoteRecipientUser {
+  id?: number;
+  accountId?: number;
+  name?: string;
+  email?: string;
+  field: Pojo[];
+}
+
+export interface QuoteRecipientBillingAccount {
+  id?: number;
+  name?: string;
+  salesRep?: string;
+  purchaseOnCreditValue?: number;
+  creditExemptionAmount?: number;
+  paymentTerms?: string;
+  field: Pojo[];
+}
+
+export interface QuoteRecipientInvoiceContact {
+  id?: number;
+  name?: string;
+  email?: string;
+  field: Pojo[];
+}
 
 export interface OrdersApiResponse extends Pagination {
   items: Order[];
