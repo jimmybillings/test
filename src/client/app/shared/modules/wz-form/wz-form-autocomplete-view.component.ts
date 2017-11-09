@@ -35,8 +35,8 @@ export class WzFormAutoCompleteViewComponent extends WzFormBase {
       .filter(property => property !== 'field' && property !== 'id' && property !== 'email')
       .map((property: string) => {
         let label: string = property.replace(/([A-Z])/g, ' $1')
-          .replace(/^./, function (str) { return str.toUpperCase(); })
-        return { label: label, value: properties[property as any] }
+          .replace(/^./, function (str) { return str.toUpperCase(); });
+        return { label: label, value: properties[property as any] };
       });
     this.labels.next(tempLabels);
   }

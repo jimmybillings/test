@@ -342,7 +342,7 @@ export class QuoteEditEffects {
     .ofType(QuoteEditActions.AddUserToQuote.Type)
     .map((action: QuoteEditActions.AddUserToQuote) =>
       this.store.create(factory => factory.quoteEdit.getBillingAccount(action.user.accountId))
-    )
+    );
 
   @Effect()
   public getBillingAccount: Observable<Action> = this.actions
@@ -352,14 +352,14 @@ export class QuoteEditEffects {
         .map(billingAccount =>
           this.store.create(factory => factory.quoteEdit.getBillingAccountSuccess(billingAccount))
         )
-    )
+    );
 
   @Effect()
   public addBillingAccountToQuote: Observable<Action> = this.actions
     .ofType(QuoteEditActions.AddBillingAccountToQuote.Type)
     .map((action: QuoteEditActions.AddBillingAccountToQuote) =>
       this.store.create(factory => factory.account.getAccountForQuoteAdmin(action.account.id))
-    )
+    );
 
   constructor(
     private actions: Actions,

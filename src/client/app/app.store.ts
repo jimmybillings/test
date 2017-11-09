@@ -89,7 +89,7 @@ export type MultiLingualState = MultiLingualState.State;
 import { LegacyAssetService } from './store/asset/asset.service';
 
 export interface ActionFactory {
-  readonly account: AccountActions.ActionFactory
+  readonly account: AccountActions.ActionFactory;
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
   readonly asset: AssetActions.ActionFactory;
   readonly cart: CartActions.ActionFactory;
@@ -115,7 +115,7 @@ export interface ActionFactory {
 };
 
 export interface InternalActionFactory {
-  readonly account: AccountActions.InternalActionFactory
+  readonly account: AccountActions.InternalActionFactory;
   readonly activeCollection: ActiveCollectionActions.InternalActionFactory;
   readonly asset: AssetActions.InternalActionFactory;
   readonly cart: CartActions.InternalActionFactory;

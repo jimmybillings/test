@@ -21,38 +21,38 @@ export const initialState: State = {
   recipient: {
     user: {
       field: [{
-        endPoint: "user/searchFields",
-        queryParams: "fields,emailAddress,values",
-        service: "identities",
-        suggestionHeading: "Matching users",
-        name: "emailAddress",
-        label: "Email Address",
-        type: "suggestions",
-        value: "",
-        validation: "REQUIRED"
+        endPoint: 'user/searchFields',
+        queryParams: 'fields,emailAddress,values',
+        service: 'identities',
+        suggestionHeading: 'Matching users',
+        name: 'emailAddress',
+        label: 'Email Address',
+        type: 'suggestions',
+        value: '',
+        validation: 'REQUIRED'
       }]
     },
     billingAccount: {
       field: [{
-        endPoint: "account/searchFields",
-        queryParams: "fields,name,values",
-        service: "identities",
-        suggestionHeading: "Matching Accounts",
-        name: "account",
-        label: "Account",
-        type: "suggestions",
-        value: "",
-        validation: "REQUIRED"
+        endPoint: 'account/searchFields',
+        queryParams: 'fields,name,values',
+        service: 'identities',
+        suggestionHeading: 'Matching Accounts',
+        name: 'account',
+        label: 'Account',
+        type: 'suggestions',
+        value: '',
+        validation: 'REQUIRED'
       }]
     },
     invoiceContact: {
       field: [{
-        name: "invoiceContact",
-        options: "",
-        label: "Invoice Contact",
-        type: "select",
-        value: "",
-        validation: "REQUIRED"
+        name: 'invoiceContact',
+        options: '',
+        label: 'Invoice Contact',
+        type: 'select',
+        value: '',
+        validation: 'REQUIRED'
       }]
     }
   },
@@ -145,8 +145,10 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           },
           invoiceContact: {
             field: state.recipient.invoiceContact.field.map(field => {
-              field.value = `${action.billingAndInvoice.invoiceContactId.firstName} ${action.billingAndInvoice.invoiceContactId.lastName}`
-              field.options = `${action.billingAndInvoice.invoiceContactId.firstName} ${action.billingAndInvoice.invoiceContactId.lastName}`
+              field.value = `${action.billingAndInvoice.invoiceContactId.firstName} 
+              ${action.billingAndInvoice.invoiceContactId.lastName}`;
+              field.options = `${action.billingAndInvoice.invoiceContactId.firstName} 
+              ${action.billingAndInvoice.invoiceContactId.lastName}`;
               return field;
             })
           }

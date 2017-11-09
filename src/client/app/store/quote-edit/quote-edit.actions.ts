@@ -444,7 +444,9 @@ export type Any =
   EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
   RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure |
   AddCustomPriceToLineItem | AddCustomPriceToLineItemSuccess | AddCustomPriceToLineItemFailure |
-  SendQuote | SaveRecipientInformationOnQuote | CloneQuote | CloneQuoteSuccess | CreateQuote | UpdateQuoteFields | AddFeeTo |
-  RemoveFee | BulkImport | BulkImportSuccess | EditLineItem | AddAssetToProjectInQuote |
-  AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject | UpdateProject | MoveLineItem |
-  CloneLineItem | RefreshAndNotify | EditLineItemMarkers | UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | GetBillingAccount | GetBillingAccountSuccess;
+  SendQuote | SaveRecipientInformationOnQuote | CloneQuote | CloneQuoteSuccess | CreateQuote |
+  UpdateQuoteFields | AddFeeTo | RemoveFee | BulkImport | BulkImportSuccess | EditLineItem |
+  AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject |
+  UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
+  UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | GetBillingAccount |
+  GetBillingAccountSuccess;
