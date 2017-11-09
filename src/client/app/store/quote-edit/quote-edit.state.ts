@@ -1,5 +1,6 @@
 import * as QuoteEditActions from './quote-edit.actions';
 import * as AccountActions from '../account/account.actions';
+import * as UserActions from '../user/user.actions';
 import { Pojo } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
 import { Quote, QuoteRecipient } from '../../shared/interfaces/commerce.interface';
@@ -59,7 +60,7 @@ export const initialState: State = {
   loading: false
 };
 
-export type AllowedActions = AccountActions.Any | QuoteEditActions.Any;
+export type AllowedActions = AccountActions.Any | QuoteEditActions.Any | UserActions.Any;
 
 export function reducer(state: State = initialState, action: AllowedActions): State {
   if (state === null) state = initialState;
@@ -124,7 +125,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.GetBillingAccountSuccess.Type: {
-
+      console.log('billing');
       return {
         ...Common.clone(state),
         loading: false,
@@ -145,16 +146,55 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           },
           invoiceContact: {
             field: state.recipient.invoiceContact.field.map(field => {
-              field.value = `${action.billingAndInvoice.invoiceContactId.firstName} 
-              ${action.billingAndInvoice.invoiceContactId.lastName}`;
-              field.options = `${action.billingAndInvoice.invoiceContactId.firstName} 
-              ${action.billingAndInvoice.invoiceContactId.lastName}`;
+              console.log(field);
+              field.value = `${action.billingAndInvoice.invoiceContactId.firstName} ${action.billingAndInvoice.invoiceContactId.lastName}`;
               return field;
             })
           }
         }))
       };
     }
+
+    case AccountActions.GetAccountForQuoteAdminSuccess.Type: {
+      return {
+        ...Common.clone(state),
+        loading: false,
+        recipient: Common.clone(Object.assign({}, state.recipient, {
+          billingAccount: {
+            id: action.account.id,
+            name: action.account.name,
+            creditExemption: action.account.creditExemption,
+            licensingVertical: action.account.licensingVertical,
+            paymentTermsDays: action.account.paymentTermsDays,
+            purchaseOnCredit: action.account.purchaseOnCredit,
+            salesOwner: action.account.salesOwner,
+            field: state.recipient.billingAccount.field.map(field => {
+              field.value = action.account.name;
+              return field;
+            })
+          },
+        }))
+      };
+    }
+
+    case UserActions.GetAllUsersByAccountIdSuccess.Type: {
+      console.log('users');
+      return {
+        ...Common.clone(state),
+        loading: false,
+        recipient: Common.clone(Object.assign({}, state.recipient, {
+          invoiceContact: Object.assign(state.recipient.invoiceContact, {
+            field: state.recipient.invoiceContact.field.map(field => {
+              field.options = action.users.map(user => `${user.firstName} ${user.lastName}`).join();
+              console.log(state.recipient.invoiceContact.field);
+              field.value = state.recipient.invoiceContact.field[0].value;
+              return field;
+            })
+          })
+        }))
+      };
+    }
+
 
     case QuoteEditActions.DeleteFailure.Type:
     case QuoteEditActions.EditLineItemFromDetailsFailure.Type:

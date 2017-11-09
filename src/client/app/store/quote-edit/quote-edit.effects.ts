@@ -340,8 +340,12 @@ export class QuoteEditEffects {
   @Effect()
   public addUserToQuote: Observable<Action> = this.actions
     .ofType(QuoteEditActions.AddUserToQuote.Type)
-    .map((action: QuoteEditActions.AddUserToQuote) =>
-      this.store.create(factory => factory.quoteEdit.getBillingAccount(action.user.accountId))
+    .mergeMap((action: QuoteEditActions.AddUserToQuote) => {
+      return [
+        this.store.create(factory => factory.quoteEdit.getBillingAccount(action.user.accountId)),
+        this.store.create(factory => factory.user.getAllUsersByAccountId(action.user.accountId))
+      ];
+    }
     );
 
   @Effect()

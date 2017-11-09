@@ -77,6 +77,8 @@ import { PricingService } from '../store/pricing/pricing.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
 import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
 import { UiConfigService } from '../store/ui-config/ui-config.service';
+import { FutureUserService } from '../store/user/user.service';
+
 import { FeeConfigService } from '../store/fee-config/fee-config.service';
 
 // WAZEE STORES
@@ -140,6 +142,7 @@ import { RouterEffects } from '../store/router/router.effects';
 import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
 import { UiConfigEffects } from '../store/ui-config/ui-config.effects';
+import { UserEffects } from '../store/user/user.effects';
 
 const WAZEE_SERVICES = [
   AccountService,
@@ -180,6 +183,7 @@ const WAZEE_SERVICES = [
   PricingService,
   AsperaService,
   FeeConfigService,
+  FutureUserService,
   // Temporary legacy services accessed through AppStore
   LegacyAssetService
 ];
@@ -255,7 +259,8 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   RouterEffects,
   SnackbarEffects,
   SpeedPreviewEffects,
-  UiConfigEffects
+  UiConfigEffects,
+  UserEffects
 ]);
 
 // Shared pipes
