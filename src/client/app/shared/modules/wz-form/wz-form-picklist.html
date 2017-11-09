@@ -1,0 +1,26 @@
+<form 
+  layout="column" 
+  [formGroup]="form" 
+  novalidate 
+  class="mat-inline-form" 
+  autocomplete="{{autocomplete}}" 
+  (ngSubmit)="onSubmit()">
+  <div *ngFor="let field of items; let i=index">
+    <div *ngIf="field.type == 'select'">
+      <mat-form-field>
+        <mat-select
+          [value]="field.value"
+          class="mat-block"
+          [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+          placeholder="{{field.label | translate}}"
+          formControlName="{{field.name}}"
+          [required]="isRequiredField(field)"
+          id="{{field.name}}"
+          (change)="onSelectChange($event, field)">
+          <mat-option *ngFor="let option of parseOptions(field.options)" [value]="option">{{option}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</form>
+    
