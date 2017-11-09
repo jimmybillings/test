@@ -1,14 +1,14 @@
-import { AssetShareLinkComponent } from './asset-share-link.component';
-import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
+import { WzShareLinkComponent } from './wz.share-link.component';
+import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {
-  describe('Asset Share Link Component', () => {
-    let componentUnderTest: AssetShareLinkComponent;
+  describe('Wz Share Link Component', () => {
+    let componentUnderTest: WzShareLinkComponent;
     let mockStore: MockAppStore;
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      componentUnderTest = new AssetShareLinkComponent(mockStore);
+      componentUnderTest = new WzShareLinkComponent(mockStore);
     });
 
     describe('onCopyShareLinkButtonClick()', () => {
@@ -17,7 +17,7 @@ export function main() {
 
         componentUnderTest.onCopyShareLinkButtonClick();
 
-        expect(snackbarSpy).toHaveBeenCalledWith('ASSET.SHARING.SHARE_LINK.COPIED_CONFIRMED_MESSAGE');
+        expect(snackbarSpy).toHaveBeenCalledWith('SHARING.SHARE_LINK.COPIED_CONFIRMED_MESSAGE');
       });
     });
 

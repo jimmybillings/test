@@ -2,7 +2,6 @@
 @import '../+asset/components/asset-detail-theme';
 @import '../+asset/components/asset-save-subclip-theme';
 @import '../+asset/components/asset-share-theme';
-@import '../+asset/components/asset-share-link-theme';
 
 @import '../+collection/+index/collections-theme';
 @import '../+collection/+show/collection-show-theme';
@@ -48,6 +47,7 @@
 @import '../shared/components/wz-not-found/wz-not-found-theme';
 @import '../shared/components/wz-comment/wz.comment-theme';
 @import '../shared/components/wz-delivery-options/wz.delivery-options-theme';
+@import '../shared/components/wz-share-link/wz.share-link-theme';
 
 @import '../shared/modules/wz-asset/wz-asset-grid/wz.asset-grid-theme';
 @import '../shared/modules/wz-asset/wz-asset-list/wz-asset-list-theme';
@@ -73,7 +73,6 @@
   @include wz-asset-detail-theme($theme);
   @include wz-asset-save-subclip-theme($theme);
   @include wz-asset-share-theme($theme);
-  @include wz-asset-share-link-theme($theme);
 
   @include wz-collections-theme($theme);
   @include wz-collection-show-theme($theme);
@@ -122,6 +121,7 @@
   @include wz-asset-list-theme($theme);
   @include wz-speedview-theme($theme);
   @include wz-delivery-options-theme($theme);
+  @include wz-share-link-theme($theme);
 
   @include wz-form-theme($theme);
   @include wz-autocomplete-search-theme($theme);

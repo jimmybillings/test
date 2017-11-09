@@ -1,9 +1,9 @@
-@mixin wz-asset-share-link-theme($theme) {
+@mixin wz-share-link-theme($theme) {
   $foreground: map-get($theme, foreground);
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
 
-  asset-share-link .link {
+  wz-share-link .link {
     .link-input {
       border: 1px solid rgba(mat-color($foreground, base), .8);
       color: rgba(mat-color($primary, default),.75);

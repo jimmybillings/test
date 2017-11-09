@@ -3,7 +3,7 @@
   $foreground: map-get($theme, foreground);
   $primary: map-get($theme, primary);
 
-  collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, asset-share-link { 
+  collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, wz-share-link { 
     .collections-dd-menu {   
       background-color: mat-color($background, background);
       color: rgba(mat-color($foreground, text), .7);  
@@ -55,7 +55,7 @@
   }
 
 
-  .dd-menu-wrapper asset-share-link .collections-dd-menu,
+  .dd-menu-wrapper wz-share-link .collections-dd-menu,
   .dd-menu-wrapper collections-filter-dd .collections-dd-menu,
   .dd-menu-wrapper collections-sort-dd .collections-dd-menu {
     header {

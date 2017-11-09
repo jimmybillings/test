@@ -20,6 +20,7 @@
 @import '../shared/components/wz-not-found/wz-not-found';
 @import '../shared/components/wz-comment/wz.comment';
 @import '../shared/components/wz-delivery-options/wz.delivery-options';
+@import '../shared/components/wz-share-link/wz.share-link';
 
 // SHARED MODULES
 @import '../shared/modules/wz-asset/wz-asset-grid/wz.asset-grid';
@@ -42,7 +43,6 @@
 @import '../+asset/components/asset-data';
 @import '../+asset/components/asset-detail';
 @import '../+asset/components/asset-save-subclip';
-@import '../+asset/components/asset-share-link';
 @import '../+asset/components/asset-share';
 
 @import '../+collection/+index/collections';

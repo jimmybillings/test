@@ -1,12 +1,12 @@
 <div class="collections-dd-menu">
   <div class="dd-menu-wrapper">
     <header>
-      <asset-share-link
+      <wz-share-link
         *ngIf="assetLinkIsShowing"
         flex="100"
-        [assetLink]="assetShareLink"
+        [shareLink]="assetShareLink"
         (close)="resetShareLinkShowing()">
-      </asset-share-link>
+      </wz-share-link>
       <div flex="100" layout="row">
         <h4 class="mat-headline" flex="100" layout-align="start center">
             {{ shareAssetDialogTitle | translate}}

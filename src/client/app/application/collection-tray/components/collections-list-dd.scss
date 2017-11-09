@@ -1,4 +1,4 @@
-collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, asset-share-link {
+collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, wz-share-link {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -220,13 +220,13 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
 .dd-menu-wrapper {
   position: relative;
 }
-.dd-menu-wrapper asset-share-link,
+.dd-menu-wrapper wz-share-link,
 .dd-menu-wrapper collections-filter-dd,
 .dd-menu-wrapper collections-sort-dd {
   right: 0;
   top: 0;
 }  
-.dd-menu-wrapper asset-share-link .collections-dd-menu,
+.dd-menu-wrapper wz-share-link .collections-dd-menu,
 .dd-menu-wrapper collections-filter-dd .collections-dd-menu,
 .dd-menu-wrapper collections-sort-dd .collections-dd-menu {
   position: absolute;
