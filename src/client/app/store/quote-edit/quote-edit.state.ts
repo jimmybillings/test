@@ -185,14 +185,14 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         recipient: Common.clone(Object.assign({}, state.recipient, {
           invoiceContact: Object.assign(state.recipient.invoiceContact, {
             field: state.recipient.invoiceContact.field.map(field => {
-              field.options = action.users.map(user => `${user.firstName} ${user.lastName}`).join()
+              field.options = action.users.map(user => `${user.firstName} ${user.lastName}`).join();
               console.log(state.recipient.invoiceContact.field);
-              field.value = state.recipient.invoiceContact.field[0].value
+              field.value = state.recipient.invoiceContact.field[0].value;
               return field;
             })
           })
         }))
-      }
+      };
     }
 
 

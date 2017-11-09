@@ -344,7 +344,7 @@ export class QuoteEditEffects {
       return [
         this.store.create(factory => factory.quoteEdit.getBillingAccount(action.user.accountId)),
         this.store.create(factory => factory.user.getAllUsersByAccountId(action.user.accountId))
-      ]
+      ];
     }
     );
 
