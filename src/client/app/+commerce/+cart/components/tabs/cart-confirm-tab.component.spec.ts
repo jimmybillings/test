@@ -70,6 +70,14 @@ export function main() {
       });
     });
 
+    describe('quoteIsTrial() getter', () => {
+      it('always returns Observable of false - because we\'re in the cart', () => {
+        let quoteIsTrial: boolean;
+        componentUnderTest.quoteIsTrial.take(1).subscribe(result => quoteIsTrial = result);
+        expect(quoteIsTrial).toBe(false);
+      });
+    });
+
     describe('canPurchase getter', () => {
       describe('returns true', () => {
         it('when the licenseAgreement checkbox has been checked, the cart has lineItems, and the capability returns true', () => {

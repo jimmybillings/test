@@ -136,11 +136,11 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
   }
 
   public get quoteIsTrial(): Observable<boolean> {
-    return this.quote.map(quote => quote.purchaseType === 'Trial');
+    return this.store.select(state => state.quoteShow.data.purchaseType === 'Trial');
   }
 
   public get showPricing(): Observable<boolean> {
-    return this.store.select(state => !quotesWithoutPricing.includes(state.quoteEdit.data.purchaseType));
+    return this.store.select(state => !quotesWithoutPricing.includes(state.quoteShow.data.purchaseType));
   }
 
   private get isActiveQuote(): boolean {

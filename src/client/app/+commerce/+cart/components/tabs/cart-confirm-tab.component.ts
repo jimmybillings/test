@@ -54,6 +54,10 @@ export class CartConfirmTabComponent extends CommerceConfirmTab {
     return Observable.of(true);
   }
 
+  public get quoteIsTrial(): Observable<boolean> {
+    return Observable.of(false);
+  }
+
   public get canPurchase(): boolean {
     return this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn();
   }
