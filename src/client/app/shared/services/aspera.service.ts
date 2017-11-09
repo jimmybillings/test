@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { Injectable } from '@angular/core';
 import { Api, ApiOptions } from '../interfaces/api.interface';
+import { AsperaSpec, AsperaSpecs } from '../interfaces/common.interface';
 import { ApiService } from '../services/api.service';
 import { AppStore } from '../../app.store';
 
@@ -11,7 +12,7 @@ declare var AW4: any;
 export class AsperaService {
   constructor(private api: ApiService, private store: AppStore) { }
 
-  public initConnect(asperaSpec: string) {
+  public initConnect(stringifiedAsperaSpec: string) {
     const id = Math.floor((Math.random() * 10000) + 1);
     const CONNECT_INSTALLER = '//d3gcli72yxqn2z.cloudfront.net/connect/v4';
     const asperaWeb = new AW4.Connect({
@@ -23,6 +24,8 @@ export class AsperaService {
     const asperaInstaller = new AW4.ConnectInstaller({
       sdkLocation: CONNECT_INSTALLER
     });
+
+    let asperaSpec: AsperaSpec = this.parse(stringifiedAsperaSpec);
 
     asperaWeb.addEventListener(
       AW4.Connect.EVENT.STATUS,
@@ -39,7 +42,7 @@ export class AsperaService {
             return;
           case AW4.Connect.STATUS.RUNNING:
             asperaInstaller.connected();
-            this.handleDownload(JSON.parse(asperaSpec), asperaWeb, id);
+            this.handleDownload(asperaSpec, asperaWeb, id);
             return;
           default:
             return;
@@ -57,10 +60,20 @@ export class AsperaService {
     );
   }
 
-  private handleDownload(spec: any, asperaWeb: any, random: number) {
-    const transferSpec = spec.transfer_specs[0].transfer_spec;
-    transferSpec['target_rate_kbps'] = 100000;
-    transferSpec.authentication = 'token';
-    asperaWeb.startTransfer(transferSpec, { 'allow_dialogs': 'yes' });
+  private handleDownload(spec: AsperaSpec, asperaWeb: any, random: number) {
+    spec.target_rate_kbps = 100000;
+    spec.authentication = 'token';
+
+    asperaWeb.startTransfer(spec, { 'allow_dialogs': 'yes' });
+  }
+
+  private parse(stringifiedAsperaSpec: string): AsperaSpec {
+    const parsedSpec: AsperaSpec | AsperaSpecs = JSON.parse(stringifiedAsperaSpec);
+
+    if (parsedSpec.hasOwnProperty('transfer_specs')) {
+      return (parsedSpec as AsperaSpecs).transfer_specs[0].transfer_spec;
+    }
+
+    return parsedSpec as AsperaSpec;
   }
 }
