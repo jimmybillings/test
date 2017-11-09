@@ -1,0 +1,33 @@
+<form layout="column" [formGroup]="form" novalidate class="mat-inline-form" autocomplete="{{autocomplete}}" (ngSubmit)="onSubmit()">
+  <div *ngFor="let field of items; let i=index">
+    <wz-input-suggestions
+      *ngIf="field.type == 'suggestions'" 
+      #suggestions 
+      [fControl]="form.controls[field.name]" 
+      [rawField]="field"
+      [matchOnProperty]="matchOnProperty"
+      (newSuggestion)="onSelectSuggestion($event)">
+      <mat-input-container>
+        <input matInput placeholder="{{field.label | translate}}" 
+        (keydown)="suggestions.inputKeyDown($event)"
+        [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+        formControlName="{{field.name}}"
+        type="text"
+        [required]="isRequiredField(field)">
+        <mat-error *ngIf="hasErrorType(form.controls[field.name])">
+          <span *ngIf="form.controls[field.name].hasError('required')">
+            {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+          </span>
+          <span *ngIf="form.controls[field.name].hasError('serverError')">
+            {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
+          </span>
+        </mat-error>
+      </mat-input-container>
+    </wz-input-suggestions>
+  </div>
+</form>
+
+<div>
+  <ul><li *ngFor="let property of labels | async">{{property.label}}: {{property.value}}</li></ul>
+</div>
+  

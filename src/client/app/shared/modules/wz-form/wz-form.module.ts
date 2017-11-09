@@ -1,3 +1,4 @@
+import { WzFormAutoCompleteViewComponent } from './wz-form-autocomplete-view.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../wz-design/wz.design.module';
@@ -32,14 +33,16 @@ import { WzAddressFormComponent } from './components/wz-address-form/wz.address-
     WzInputSuggestionsComponent,
     EqualValidatorDirective,
     WzPikaDayDirective,
-    WzAutocompleteSearchComponent
+    WzAutocompleteSearchComponent,
+    WzFormAutoCompleteViewComponent
   ],
   exports: [
     WzFormComponent,
     WzCcFormComponent,
     WzPikaDayDirective,
     WzAutocompleteSearchComponent,
-    WzAddressFormComponent
+    WzAddressFormComponent,
+    WzFormAutoCompleteViewComponent
   ],
   entryComponents: [WzAddressFormComponent],
   providers: [FormModel, GooglePlacesService]
