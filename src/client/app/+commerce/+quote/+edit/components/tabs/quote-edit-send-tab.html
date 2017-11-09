@@ -6,6 +6,8 @@
   <section layout="column" flex="40" class="recipient-options-select">
 
     <wz-form-autocomplete-view *ngIf="user | async" flex="100" 
+      class="recipient"
+      [ngClass]="{ 'is-empty' : !(!!(user | async).id) }"
       [items]="(user | async).field" 
       [matchOnProperty]="'emailAddress'"
       [displayProperties]="user | async"
@@ -15,8 +17,10 @@
       submitLabel="COMMENTS.SUBMIT_BTN_LABEL"
       (formSubmit)="userSelect($event)">
     </wz-form-autocomplete-view>
-
+    
     <wz-form-autocomplete-view *ngIf="billingAccount | async" flex="100"
+      class="billing-account"
+      [ngClass]="{ 'is-empty' : !(!!(billingAccount | async).id) }"
       [items]="(billingAccount | async).field" 
       [matchOnProperty]="'name'"
       [displayProperties]="billingAccount | async"
@@ -28,6 +32,7 @@
     </wz-form-autocomplete-view>
 
     <wz-form *ngIf="invoiceContact | async" flex="100"
+      class="invoice-contact"
       [items]="(invoiceContact | async).field" 
       autocomplete="off"
       (formSubmit)="invoiceContactSelect($event)">

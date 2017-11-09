@@ -1,3 +1,6 @@
+<h5 class="mat-title">
+  Billing account
+</h5>
 <form
   layout="column" 
   [formGroup]="form" 
@@ -37,5 +40,15 @@
   <li *ngFor="let property of labels | async">
     <strong>{{property.label}}:</strong> {{property.value}}
   </li>
+</ul>
+<ul class="mat-caption recipient empty-properties">
+  <li><strong>Name:</strong></li>
+  <li><strong>Account:</strong></li>
+</ul>
+<ul class="mat-caption billing empty-properties">
+  <li><strong>Sales rep:</strong></li>
+  <li><strong>Purchase on credit:</strong></li>
+  <li><strong>Credit Exemption:</strong></li>
+  <li><strong>Payment Terms Days:</strong></li>
 </ul>
   
