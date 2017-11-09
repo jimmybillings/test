@@ -38,6 +38,7 @@ export class QuoteEditSendTabComponent extends Tab {
     this.goToNextTab();
   }
 
+
   public get user(): Observable<QuoteRecipientUser> {
     return this.store.select(state => state.quoteEdit)
       .map(quoteEdit => quoteEdit.recipient.user);

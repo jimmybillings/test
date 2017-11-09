@@ -216,10 +216,11 @@ export interface QuoteRecipientUser {
 export interface QuoteRecipientBillingAccount {
   id?: number;
   name?: string;
-  salesRep?: string;
-  purchaseOnCreditValue?: number;
-  creditExemptionAmount?: number;
-  paymentTerms?: string;
+  salesOwner?: string;
+  purchaseOnCredit?: number;
+  creditExemption?: number;
+  paymentTermsDays?: string;
+  licensingVertical?: string;
   field: Pojo[];
 }
 

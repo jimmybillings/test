@@ -16,7 +16,7 @@
       (formSubmit)="userSelect($event)">
     </wz-form-autocomplete-view>
 
-    <wz-form-autocomplete-view *ngIf="billingAccount | async" flex="100"
+    <wz-form-autocomplete-view *ngIf="(billingAccount | async)" flex="100"
       [items]="(billingAccount | async).field" 
       [matchOnProperty]="'name'"
       [displayProperties]="billingAccount | async"
@@ -27,11 +27,11 @@
       (formSubmit)="accountSelect($event)">
     </wz-form-autocomplete-view>
 
-    <wz-form *ngIf="invoiceContact | async" flex="100"
+    <wz-form-picklist-component *ngIf="(invoiceContact | async)" flex="100"
       [items]="(invoiceContact | async).field" 
       autocomplete="off"
       (formSubmit)="invoiceContactSelect($event)">
-    </wz-form>
+    </wz-form-picklist-component>
     
   </section>
   <section class="creator-options-select" layout="column" flex="60">
