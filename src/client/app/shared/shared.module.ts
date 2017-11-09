@@ -62,6 +62,7 @@ import { QuoteService } from './services/quote.service';
 import { QuotesService } from './services/quotes.service';
 import { AsperaService } from './services/aspera.service';
 // New-ish services
+import { AccountService } from '../store/account/account.service';
 import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
 import { ActiveCollectionService } from '../store/active-collection/active-collection.service';
 import { CommentService } from '../store/comment/comment.service';
@@ -118,6 +119,7 @@ import { collectionOptions } from './services/collection-context.service';
 import { sortDefinitions } from './services/sort-definitions.service';
 
 // WAZEE EFFECTS
+import { AccountEffects } from '../store/account/account.effects';
 import { ActiveCollectionEffects } from '../store/active-collection/active-collection.effects';
 import { AssetEffects } from '../store/asset/asset.effects';
 import { CartEffects } from '../store/cart/cart.effects';
@@ -140,6 +142,7 @@ import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effect
 import { UiConfigEffects } from '../store/ui-config/ui-config.effects';
 
 const WAZEE_SERVICES = [
+  AccountService,
   ApiConfig,
   CurrentUserService,
   AssetService,
@@ -232,6 +235,7 @@ const WAZEE_STORES: any = {
 };
 
 const WAZEE_EFFECTS = EffectsModule.forRoot([
+  AccountEffects,
   ActiveCollectionEffects,
   AssetEffects,
   CartEffects,
