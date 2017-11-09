@@ -1,38 +1,42 @@
 <header flex="100" layout="row">
-  <h2 class="commerce-heading">Recipient Details</h2>
+  <h2 class="commerce-heading">Please select recipient options</h2>
 </header>
+<div layout="column" layout-gt-xs="row" layout-padding>
 
-<section layout="row" flex="100" layout-align="space-between end">
+  <section layout="column" flex="40" class="recipient-options-select">
 
-  <wz-form-autocomplete-view *ngIf="user | async" flex="30" 
-    [items]="(user | async).field" 
-    [matchOnProperty]="'emailAddress'"
-    [displayProperties]="user | async"
-    includeCancel="true"
-    autocomplete="off"
-    cancelLabel="COMMENTS.CANCEL_BTN_LABEL"
-    submitLabel="COMMENTS.SUBMIT_BTN_LABEL"
-    (formSubmit)="userSelect($event)">
-  </wz-form-autocomplete-view>
+    <wz-form-autocomplete-view *ngIf="user | async" flex="100" 
+      [items]="(user | async).field" 
+      [matchOnProperty]="'emailAddress'"
+      [displayProperties]="user | async"
+      includeCancel="true"
+      autocomplete="off"
+      cancelLabel="COMMENTS.CANCEL_BTN_LABEL"
+      submitLabel="COMMENTS.SUBMIT_BTN_LABEL"
+      (formSubmit)="userSelect($event)">
+    </wz-form-autocomplete-view>
 
-  <wz-form-autocomplete-view *ngIf="billingAccount | async" flex="30"
-    [items]="(billingAccount | async).field" 
-    [matchOnProperty]="'name'"
-    [displayProperties]="billingAccount | async"
-    includeCancel="true"
-    autocomplete="off"
-    cancelLabel="COMMENTS.CANCEL_BTN_LABEL"
-    submitLabel="COMMENTS.SUBMIT_BTN_LABEL"
-    (formSubmit)="accountSelect($event)">
-  </wz-form-autocomplete-view>
+    <wz-form-autocomplete-view *ngIf="billingAccount | async" flex="100"
+      [items]="(billingAccount | async).field" 
+      [matchOnProperty]="'name'"
+      [displayProperties]="billingAccount | async"
+      includeCancel="true"
+      autocomplete="off"
+      cancelLabel="COMMENTS.CANCEL_BTN_LABEL"
+      submitLabel="COMMENTS.SUBMIT_BTN_LABEL"
+      (formSubmit)="accountSelect($event)">
+    </wz-form-autocomplete-view>
 
-  <wz-form *ngIf="invoiceContact | async" flex="30"
-    [items]="(invoiceContact | async).field" 
-    autocomplete="off"
-    (formSubmit)="invoiceContactSelect($event)">
-  </wz-form>
-  
+    <wz-form *ngIf="invoiceContact | async" flex="100"
+      [items]="(invoiceContact | async).field" 
+      autocomplete="off"
+      (formSubmit)="invoiceContactSelect($event)">
+    </wz-form>
+    
+  </section>
+  <section class="creator-options-select" layout="column" flex="60">
+    other form here
+
 </section>
-
-
+</div>
 

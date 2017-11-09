@@ -12,17 +12,6 @@ import { WzFormBase } from './wz.form-base';
   moduleId: module.id,
   selector: 'wz-form-autocomplete-view',
   templateUrl: 'wz-form-autocomplete-view.html',
-  styles: [
-    `:host {
-      height: 200px;
-      background: white;
-      padding: 20px;
-    }
-    :host ul {
-      list-style-type:none;
-      padding:0;
-    }`
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

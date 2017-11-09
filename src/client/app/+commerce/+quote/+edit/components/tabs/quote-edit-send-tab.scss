@@ -1,0 +1,27 @@
+quote-edit-send-tab-component {
+
+  .recipient-options-select {
+    wz-form-autocomplete-view {
+      margin-top: 14px;
+      padding: 18px 20px;
+      @include mat-elevation(1);
+      &:first-child {
+        margin: 0;
+      }
+      ul {
+        list-style-type: none;
+        padding: 2px 0 0 2px;
+        margin: 0;
+        li {
+          strong  {
+            padding-right: 4px;
+          }
+        }
+      }
+    }
+  }
+  // .creator-options-select {
+
+  // }
+
+}

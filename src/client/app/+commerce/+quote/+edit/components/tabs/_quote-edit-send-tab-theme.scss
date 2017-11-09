@@ -1,0 +1,16 @@
+@mixin wz-quote-edit-send-tab-theme($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $primary: map-get($theme, primary);
+  $warn: map-get($theme, warn);
+
+
+
+  .recipient-options-select wz-form-autocomplete-view {
+    background-color: mat-color($background, card);
+  }
+
+
+
+
+}
