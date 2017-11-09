@@ -23,6 +23,7 @@ export class MockAppStore extends AppStore {
     super(null, null);
 
     this._actionFactory = {
+      account: {} as any,
       activeCollection: {} as any,
       asset: {} as any,
       cart: {} as any,
@@ -48,6 +49,7 @@ export class MockAppStore extends AppStore {
     };
 
     this._internalActionFactory = {
+      account: {} as any,
       activeCollection: {} as any,
       asset: {} as any,
       cart: {} as any,
