@@ -35,7 +35,6 @@
 
     <wz-form-picklist-component *ngIf="(invoiceContact | async)" flex="100"
       class="invoice-contact"
-      [ngClass]="{ 'is-empty' : !(!!(invoiceContact | async).id) }"
       [items]="(invoiceContact | async).field"
       [title]="'Invoice contact'"
       [displayProperties]="invoiceContact | async"

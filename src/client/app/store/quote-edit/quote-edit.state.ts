@@ -27,7 +27,7 @@ export const initialState: State = {
         service: 'identities',
         suggestionHeading: 'Matching users',
         name: 'emailAddress',
-        label: 'Quote recipient email address',
+        label: 'Recipient email address',
         type: 'suggestions',
         value: '',
         validation: 'REQUIRED'
