@@ -1,3 +1,4 @@
+<h5 class="mat-title">{{title}}</h5>
 <form 
   layout="column" 
   [formGroup]="form" 
@@ -25,3 +26,11 @@
   </div>
 </form>
     
+<ul class="mat-caption">
+  <li *ngFor="let property of labels | async">
+    <strong>{{property.label}}:</strong> {{property.value}}
+  </li>
+</ul>
+<ul class="mat-caption invoice-contact empty-properties">
+  <li><strong>Email:</strong></li>
+</ul>

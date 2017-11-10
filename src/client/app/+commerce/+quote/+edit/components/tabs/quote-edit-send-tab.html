@@ -6,7 +6,10 @@
   <section layout="column" flex="40" class="recipient-options-select">
 
     <wz-form-autocomplete-view *ngIf="user | async" flex="100" 
-      [items]="(user | async).field" 
+      class="recipient"
+      [ngClass]="{ 'is-empty' : !(!!(user | async).id) }"
+      [items]="(user | async).field"
+      [title]="'Recipient'"
       [matchOnProperty]="'emailAddress'"
       [displayProperties]="user | async"
       includeCancel="true"
@@ -15,9 +18,12 @@
       submitLabel="COMMENTS.SUBMIT_BTN_LABEL"
       (formSubmit)="userSelect($event)">
     </wz-form-autocomplete-view>
-
+    
     <wz-form-autocomplete-view *ngIf="(billingAccount | async)" flex="100"
-      [items]="(billingAccount | async).field" 
+      class="billing-account"
+      [ngClass]="{ 'is-empty' : !(!!(billingAccount | async).id) }"
+      [items]="(billingAccount | async).field"
+      [title]="'Billing account'"
       [matchOnProperty]="'name'"
       [displayProperties]="billingAccount | async"
       includeCancel="true"
@@ -28,7 +34,11 @@
     </wz-form-autocomplete-view>
 
     <wz-form-picklist-component *ngIf="(invoiceContact | async)" flex="100"
-      [items]="(invoiceContact | async).field" 
+      class="invoice-contact"
+      [ngClass]="{ 'is-empty' : !(!!(invoiceContact | async).id) }"
+      [items]="(invoiceContact | async).field"
+      [title]="'Invoice contact'"
+      [displayProperties]="invoiceContact | async"
       autocomplete="off"
       (formSubmit)="invoiceContactSelect($event)">
     </wz-form-picklist-component>
@@ -36,7 +46,5 @@
   </section>
   <section class="creator-options-select" layout="column" flex="60">
     other form here
-
-</section>
+  </section>
 </div>
-

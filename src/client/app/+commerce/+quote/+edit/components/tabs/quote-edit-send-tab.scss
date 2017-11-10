@@ -1,12 +1,19 @@
 quote-edit-send-tab-component {
 
   .recipient-options-select {
+    wz-form-picklist-component,
     wz-form-autocomplete-view {
       margin-top: 14px;
-      padding: 18px 20px;
+      padding: 12px 18px 18px;
+      border-radius: 2px;
       @include mat-elevation(1);
       &:first-child {
         margin: 0;
+      }
+      .mat-title {
+        font-weight: 400;
+        margin: 0 0 5px 0;
+        opacity: .7;
       }
       ul {
         list-style-type: none;
@@ -17,6 +24,47 @@ quote-edit-send-tab-component {
             padding-right: 4px;
           }
         }
+        &.empty-properties {
+          display: none;
+        }
+      }
+      &.recipient.is-empty {
+        ul.recipient.empty-properties {
+          display: block;
+          opacity:.4;
+        }
+      }
+      &.billing-account.is-empty {
+        @include mat-elevation(0);
+        background-color: transparent;
+        opacity: .4;
+        border-width: 1px;
+        border-style: solid;
+        ul.billing.empty-properties {
+          display: block;
+          margin-top: 50px;
+        }
+        form {
+          display: none;
+        }
+      }
+      .suggestions-menu {
+        width: 40%;
+        top: 137px;
+      }
+    }
+    wz-form-autocomplete-view.billing-account.is-empty + wz-form-picklist-component.invoice-contact {
+      @include mat-elevation(0);
+      background-color: transparent;
+      opacity: .4;
+      border-width: 1px;
+      border-style: solid;
+      ul.invoice-contact.empty-properties {
+        display: block;
+        margin-top: 50px;
+      }
+      form {
+        display: none;
       }
     }
   }
