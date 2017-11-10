@@ -14,7 +14,8 @@
         type="{{field.type}}"
         formControlName="{{field.name}}"
         [required]="isRequiredField(field)"
-        id="{{field.name}}">
+        id="{{field.name}}"
+        (blur)="onBlur()">
 
 			<!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
 			<mat-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
@@ -93,6 +94,7 @@
       [maxDate]="calculateDateFor(field.maximum)"
       [defaultDate]="calculateDateFor(field.default)"
       (pikadayChange)="updateDateValueFor(field.name, $event.value)"
+      (blur)="onBlur()"
       class="mat-block"
       name="{{field.name}}"
       [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
@@ -347,12 +349,16 @@
 		<span>{{ 'ERRORS.INDICATES_REQUIRED_FIELD' | translate }}</span>
 	</div>
 
-	<mat-card-actions layout="row" layout-align="end center" *ngIf="includeCancel">
+	<mat-card-actions layout="row" layout-align="end center" *ngIf="includeCancel && !disableUntilValid">
 		<button mat-button type="reset" color="primary" (click)="formCancel.emit($event)">{{cancelLabel | translate}}</button>
 		<button mat-button type="submit" color="primary">{{submitLabel | translate}}</button>
 	</mat-card-actions>
 
-	<mat-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel">
+	<mat-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel && !disableUntilValid">
 		<button mat-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
-	</mat-card-actions>
+  </mat-card-actions>
+  
+  <mat-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel && disableUntilValid">
+      <button mat-raised-button [disabled]="!allPropertiesValid" type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
+    </mat-card-actions>
 </form>

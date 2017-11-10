@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Rx';
 import { Pojo } from '../../interfaces/common.interface';
-import { Component, ChangeDetectionStrategy, ElementRef, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { FormModel } from './wz.form.model';
 import { WzFormBase } from './wz.form-base';
@@ -28,6 +28,7 @@ export class WzFormPicklistComponent extends WzFormBase {
       });
     this.labels.next(tempLabels);
   }
+  @Output() selectContact: EventEmitter<Pojo> = new EventEmitter();
 
   constructor(
     fb: FormBuilder,
@@ -37,7 +38,7 @@ export class WzFormPicklistComponent extends WzFormBase {
   }
 
   public onSelectChange(suggestion: Pojo) {
-    this.formSubmit.emit(suggestion);
+    this.selectContact.emit(suggestion);
   }
 
 }

@@ -37,14 +37,17 @@
       [title]="'Invoice contact'"
       [displayProperties]="invoiceContact | async"
       autocomplete="off"
-      (formSubmit)="invoiceContactSelect($event)">
+      (selectContact)="invoiceContactSelect($event)">
     </wz-form-picklist-component>
   </section>
   <section class="creator-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form *ngIf="(invoiceContact | async)"
       [items]="(salesManager | async).field" 
+      [disableUntilValid]="true"
+      [outSidePropertiesValid]="allBillingSelectionComplete | async"
       submitLabel="PROCEED TO CONFIRM" 
-      (formSubmit)="onSubmit($event)">
+      (formSubmit)="onSubmit($event)"
+      (blur)=onBlur($event)>
     </wz-form>
   </section>
   <section class="col-spacer" flex="none" flex-md="10" flex-lg="30" flex-gt-lg="40" show-gt-sm></section>

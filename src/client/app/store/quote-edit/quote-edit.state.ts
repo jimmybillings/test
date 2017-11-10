@@ -132,7 +132,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     // SELECT USER START
     case QuoteEditActions.AddUserToQuote.Type: {
       return {
-        ...Common.clone(state),
+        ...state,
         loading: false,
         sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
           user: {
@@ -151,7 +151,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     case QuoteEditActions.GetBillingAccountSuccess.Type: {
       console.log(action.billingAndInvoice.invoiceContactId.addressId);
       return {
-        ...Common.clone(state),
+        ...state,
         loading: false,
         sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
           user: Object.assign(state.sendDetails.user, { accountName: action.billingAndInvoice.billingAccount.name }),
@@ -178,7 +178,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
 
     case UserActions.GetAllUsersByAccountIdSuccess.Type: {
       return {
-        ...Common.clone(state),
+        ...state,
         loading: false,
         sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
           invoiceContact: Object.assign(state.sendDetails.invoiceContact, {
@@ -198,7 +198,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
 
     case AccountActions.GetAccountForQuoteAdminSuccess.Type: {
       return {
-        ...Common.clone(state),
+        ...state,
         loading: false,
         sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
           billingAccount: {
@@ -219,17 +219,45 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       };
     }
 
-    // case QuoteEditActions.AddInvoiceContactToQuote.Type: {
-    //   return {
-    //     ...Common.clone(state),
-    //     loading: false,
-    //     sendDetails: Common.clone(Object.assign(state.sendDetails, {
-    //       invoiceContact: Object.assign(state.sendDetails.invoiceContact, {
-    //         id: action.userId
-    //       })
-    //     }))
-    //   }
-    // }
+    case QuoteEditActions.AddSalesManagerToQuote.Type: {
+      return {
+        ...state,
+        sendDetails: Object.assign(state.sendDetails, {
+          salesManager: Object.assign(state.sendDetails.salesManager, {
+            field: state.sendDetails.salesManager.field.map(field => {
+              if (field.type === 'email') field.value = action.emailAddress;
+              return field;
+            })
+          })
+        })
+      }
+    }
+
+    case QuoteEditActions.UpdateSalesManagerFormOnQuote.Type: {
+      return {
+        ...state,
+        sendDetails: Object.assign(state.sendDetails, {
+          salesManager: Object.assign(state.sendDetails.salesManager, {
+            field: state.sendDetails.salesManager.field.map(field => {
+              if (field.type === 'wzdate') field.default = action.form[field.name];
+              field.value = action.form[field.name]
+              return field;
+            })
+          })
+        })
+      }
+    }
+
+    case QuoteEditActions.AddInvoiceContactToQuote.Type: {
+      return {
+        ...state,
+        sendDetails: Object.assign({}, state.sendDetails, {
+          invoiceContact: Object.assign(state.sendDetails.invoiceContact, {
+            id: action.userId
+          })
+        })
+      }
+    }
 
     case QuoteEditActions.DeleteFailure.Type:
     case QuoteEditActions.EditLineItemFromDetailsFailure.Type:
