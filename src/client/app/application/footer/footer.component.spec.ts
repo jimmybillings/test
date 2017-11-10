@@ -22,18 +22,32 @@ export function main() {
     });
 
     describe('privacyPolicyExists', () => {
-      it('returns true when the config has a privacyPolicyId value', () => {
+      it('returns true when the config is loaded and has a privacyPolicyId value', () => {
         mockStore.createStateSection('uiConfig', {
           loaded: true, components: { footer: { config: { privacyPolicyId: { value: '1' } } } }
         });
         componentUnderTest.ngOnInit();
-        expect(componentUnderTest.privacyPolicyExists).toBe(true);
+        let exists: boolean;
+        componentUnderTest.privacyPolicyExists.take(1).subscribe(e => exists = e);
+        expect(exists).toBe(true);
       });
 
-      it('returns false when the config does not have a privacyPolicyId value', () => {
-        mockStore.createStateSection('uiConfig', { loaded: true, components: { footer: { config: {} } } });
-        componentUnderTest.ngOnInit();
-        expect(componentUnderTest.privacyPolicyExists).toBe(false);
+      describe('returns false', () => {
+        it('when the config is not yet loaded', () => {
+          mockStore.createStateSection('uiConfig', { loaded: false });
+          componentUnderTest.ngOnInit();
+          let exists: boolean;
+          componentUnderTest.privacyPolicyExists.take(1).subscribe(e => exists = e);
+          expect(exists).toBe(undefined);
+        });
+
+        it('when the config does not have a privacyPolicyId value', () => {
+          mockStore.createStateSection('uiConfig', { loaded: true, components: { footer: { config: {} } } });
+          componentUnderTest.ngOnInit();
+          let exists: boolean;
+          componentUnderTest.privacyPolicyExists.take(1).subscribe(e => exists = e);
+          expect(exists).toBe(false);
+        });
       });
     });
   });

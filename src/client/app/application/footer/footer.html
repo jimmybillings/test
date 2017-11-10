@@ -147,7 +147,7 @@
         </mat-list>
       </div>
       <!-- LEGAL -->
-      <ng-container *ngIf="privacyPolicyExists">
+      <ng-container *ngIf="privacyPolicyExists | async">
         <div flex-gt-sm="15" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start">
           <h3 class="mat-title">{{ 'FOOTER.LEGAL_TITLE' | translate }}</h3>
           <p class="mat-caption">
@@ -254,7 +254,7 @@
         </mat-list>
       </div>
       <!-- LEGAL -->
-      <ng-container *ngIf="privacyPolicyExists">
+      <ng-container *ngIf="privacyPolicyExists | async">
         <div flex-gt-sm="15" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start">
           <h3 class="mat-title">{{ 'FOOTER.LEGAL_TITLE' | translate }}</h3>
           <p class="mat-caption">
