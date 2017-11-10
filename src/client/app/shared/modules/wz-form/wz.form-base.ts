@@ -11,15 +11,22 @@ export class WzFormBase implements OnInit, OnChanges {
   @Input() includeCancel: boolean = false;
   @Input() cancelLabel: string = 'Cancel';
   @Input() autocomplete: string = 'on';
+  @Input() disableUntilValid: boolean = false;
+  @Input()
+  set outSidePropertiesValid(outSidePropertiesValid: boolean) {
+    this._outSidePropertiesValid = outSidePropertiesValid;
+  }
+
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
   @Output() onAction = new EventEmitter();
+  @Output() blur = new EventEmitter();
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
   @ViewChild(MatTextareaAutosize) private autosize: MatTextareaAutosize;
   @ViewChild(FormGroupDirective) private internalForm: FormGroupDirective;
-
+  private _outSidePropertiesValid: boolean = false;
   constructor(
     private fb: FormBuilder,
     private formModel: FormModel,
@@ -202,6 +209,14 @@ export class WzFormBase implements OnInit, OnChanges {
 
   public shouldShowEmailError(field: FormFields) {
     return this.form.controls[field.name].hasError('pattern') && field.validation === 'EMAIL';
+  }
+
+  public get allPropertiesValid() {
+    return this.form.valid && this._outSidePropertiesValid;
+  }
+
+  public onBlur() {
+    this.blur.emit(this.form.value);
   }
 
   private dateToString(date: Date): string {
