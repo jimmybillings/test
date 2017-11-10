@@ -67,7 +67,7 @@ export class QuoteEditSendTabComponent extends Tab {
   }
 
   public invoiceContactSelect(userId: number) {
-    this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(userId))
+    // this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(userId))
   }
 
 }

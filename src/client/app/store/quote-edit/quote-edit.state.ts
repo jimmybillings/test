@@ -219,17 +219,17 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       };
     }
 
-    case QuoteEditActions.AddInvoiceContactToQuote.Type: {
-      return {
-        ...Common.clone(state),
-        loading: false,
-        sendDetails: Common.clone(Object.assign(state.sendDetails, {
-          invoiceContact: Object.assign(state.sendDetails.invoiceContact, {
-            id: action.userId
-          })
-        }))
-      }
-    }
+    // case QuoteEditActions.AddInvoiceContactToQuote.Type: {
+    //   return {
+    //     ...Common.clone(state),
+    //     loading: false,
+    //     sendDetails: Common.clone(Object.assign(state.sendDetails, {
+    //       invoiceContact: Object.assign(state.sendDetails.invoiceContact, {
+    //         id: action.userId
+    //       })
+    //     }))
+    //   }
+    // }
 
     case QuoteEditActions.DeleteFailure.Type:
     case QuoteEditActions.EditLineItemFromDetailsFailure.Type:
