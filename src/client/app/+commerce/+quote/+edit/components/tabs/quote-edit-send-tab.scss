@@ -1,6 +1,7 @@
 quote-edit-send-tab-component {
 
   .recipient-options-select {
+    wz-form-picklist-component,
     wz-form-autocomplete-view {
       margin-top: 14px;
       padding: 12px 18px 18px;
@@ -39,7 +40,6 @@ quote-edit-send-tab-component {
         opacity: .4;
         border-width: 1px;
         border-style: solid;
-        border-color: #c0c0c0;
         ul.billing.empty-properties {
           display: block;
           margin-top: 50px;
@@ -47,6 +47,24 @@ quote-edit-send-tab-component {
         form {
           display: none;
         }
+      }
+      .suggestions-menu {
+        width: 40%;
+        top: 137px;
+      }
+    }
+    wz-form-autocomplete-view.billing-account.is-empty + wz-form-picklist-component.invoice-contact {
+      @include mat-elevation(0);
+      background-color: transparent;
+      opacity: .4;
+      border-width: 1px;
+      border-style: solid;
+      ul.invoice-contact.empty-properties {
+        display: block;
+        margin-top: 50px;
+      }
+      form {
+        display: none;
       }
     }
   }

@@ -4,13 +4,16 @@
   $primary: map-get($theme, primary);
   $warn: map-get($theme, warn);
 
-
-
-  .recipient-options-select wz-form-autocomplete-view {
-    background-color: mat-color($background, card);
+  .recipient-options-select {
+    wz-form-picklist-component,
+    wz-form-autocomplete-view {
+      background-color: mat-color($background, card);
+      &.billing-account.is-empty {
+        border-color: mat-color($foreground, disabled);
+      }
+    }
+    wz-form-autocomplete-view.billing-account.is-empty + wz-form-picklist-component.invoice-contact {
+      border-color: mat-color($foreground, disabled);
+    }
   }
-
-
-
-
 }

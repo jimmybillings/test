@@ -27,7 +27,7 @@ export const initialState: State = {
         service: 'identities',
         suggestionHeading: 'Matching users',
         name: 'emailAddress',
-        label: 'Email Address',
+        label: 'Quote recipient email address',
         type: 'suggestions',
         value: '',
         validation: 'REQUIRED'
@@ -40,7 +40,7 @@ export const initialState: State = {
         service: 'identities',
         suggestionHeading: 'Matching Accounts',
         name: 'account',
-        label: 'Account',
+        label: 'Account name',
         type: 'suggestions',
         value: '',
         validation: 'REQUIRED'
@@ -50,7 +50,7 @@ export const initialState: State = {
       field: [{
         name: 'invoiceContact',
         options: '',
-        label: 'Invoice Contact',
+        label: 'Invoice contact name',
         type: 'select',
         value: '',
         validation: 'REQUIRED'

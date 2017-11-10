@@ -8,7 +8,8 @@
     <wz-form-autocomplete-view *ngIf="user | async" flex="100" 
       class="recipient"
       [ngClass]="{ 'is-empty' : !(!!(user | async).id) }"
-      [items]="(user | async).field" 
+      [items]="(user | async).field"
+      [title]="'Recipient'"
       [matchOnProperty]="'emailAddress'"
       [displayProperties]="user | async"
       includeCancel="true"
@@ -21,7 +22,8 @@
     <wz-form-autocomplete-view *ngIf="(billingAccount | async)" flex="100"
       class="billing-account"
       [ngClass]="{ 'is-empty' : !(!!(billingAccount | async).id) }"
-      [items]="(billingAccount | async).field" 
+      [items]="(billingAccount | async).field"
+      [title]="'Billing account'"
       [matchOnProperty]="'name'"
       [displayProperties]="billingAccount | async"
       includeCancel="true"
@@ -33,7 +35,10 @@
 
     <wz-form-picklist-component *ngIf="(invoiceContact | async)" flex="100"
       class="invoice-contact"
-      [items]="(invoiceContact | async).field" 
+      [ngClass]="{ 'is-empty' : !(!!(invoiceContact | async).id) }"
+      [items]="(invoiceContact | async).field"
+      [title]="'Invoice contact'"
+      [displayProperties]="invoiceContact | async"
       autocomplete="off"
       (formSubmit)="invoiceContactSelect($event)">
     </wz-form-picklist-component>

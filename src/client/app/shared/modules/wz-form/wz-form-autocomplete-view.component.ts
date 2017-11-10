@@ -17,6 +17,7 @@ import { WzFormBase } from './wz.form-base';
 
 export class WzFormAutoCompleteViewComponent extends WzFormBase {
   public labels: Subject<Pojo[]> = new Subject();
+  @Input() title: string;
   @Input() matchOnProperty: string;
   @Input()
   set displayProperties(properties: string[]) {
