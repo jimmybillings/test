@@ -365,7 +365,7 @@ export class QuoteEditEffects {
       return [
         this.store.create(factory => factory.account.getAccountForQuoteAdmin(action.account.id)),
         this.store.create(factory => factory.user.getAllUsersByAccountId(action.account.id))
-      ]
+      ];
     });
 
   constructor(

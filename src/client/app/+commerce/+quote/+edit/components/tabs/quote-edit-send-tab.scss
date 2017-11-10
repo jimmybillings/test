@@ -48,11 +48,15 @@ quote-edit-send-tab-component {
           display: none;
         }
       }
+    }
+    wz-form-autocomplete-view {
+      position: relative;
       .suggestions-menu {
-        width: 40%;
-        top: 137px;
+        width: 100%;
+        top: 94px;
       }
     }
+
     wz-form-autocomplete-view.billing-account.is-empty + wz-form-picklist-component.invoice-contact {
       @include mat-elevation(0);
       background-color: transparent;

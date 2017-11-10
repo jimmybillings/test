@@ -129,7 +129,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       };
     }
 
-    // SELECT USER START 
+    // SELECT USER START
     case QuoteEditActions.AddUserToQuote.Type: {
       return {
         ...Common.clone(state),
@@ -187,7 +187,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
                 { id: user.id, name: `${user.firstName} ${user.lastName}` }
               ));
               if (state.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
-                field.value = field.options.find((option: Pojo) => option.id === state.sendDetails.billingAccount.invoiceContactId)
+                field.value = field.options.find((option: Pojo) => option.id === state.sendDetails.billingAccount.invoiceContactId);
               }
               return field;
             })
