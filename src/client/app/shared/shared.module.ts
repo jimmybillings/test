@@ -38,6 +38,7 @@ import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb
 import { WzSiteChangerComponent } from './components/wz-site-changer/wz-site-changer.component';
 import { WzNotFoundComponent } from './components/wz-not-found/wz-not-found.component';
 import { WzCommentComponent } from './components/wz-comment/wz.comment.component';
+import { WzShareComponent } from './components/wz-share/wz.share.component';
 import { WzShareLinkComponent } from './components/wz-share-link/wz.share-link.component';
 
 // WAZEE SERVICES
@@ -321,6 +322,7 @@ export function createTranslateLoader(http: HttpClient) {
     WzSiteChangerComponent,
     WzNotFoundComponent,
     WzCommentComponent,
+    WzShareComponent,
     WzShareLinkComponent
   ],
   exports: [
@@ -357,6 +359,7 @@ export function createTranslateLoader(http: HttpClient) {
     WzSiteChangerComponent,
     WzNotFoundComponent,
     WzCommentComponent,
+    WzShareComponent,
     WzShareLinkComponent
   ],
   entryComponents: [

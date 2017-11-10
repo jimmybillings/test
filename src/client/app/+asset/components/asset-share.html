@@ -1,50 +1,24 @@
-<div class="collections-dd-menu">
-  <div class="dd-menu-wrapper">
-    <header>
-      <wz-share-link
-        *ngIf="assetLinkIsShowing"
-        flex="100"
-        [shareLink]="assetShareLink"
-        (close)="resetShareLinkShowing()">
-      </wz-share-link>
-      <div flex="100" layout="row">
-        <h4 class="mat-headline" flex="100" layout-align="start center">
-            {{ shareAssetDialogTitle | translate}}
-        </h4>
-        <div class="tools" flex="auto" layout-align="end center">
-          <button mat-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK_BTN_TITLE' | translate }}" (click)="showShareLink()"><mat-icon>link</mat-icon></button>
-        </div>
-      </div>
-    </header>
-
-    <div class="subclip-info" *ngIf="showSubclippingInfo" layout="column" layout-align="center">
-      <p class="in-out-markers" flex>
-        <strong>{{ 'ASSET.SHARING.SUBCLIP_IN_LABEL' | translate}}</strong>
-        <span>{{ subclipMarkers.in | timecode }}</span>
-        <strong>{{ 'ASSET.SHARING.SUBCLIP_OUT_LABEL' | translate}}</strong>
-        <span>{{ subclipMarkers.out | timecode }}</span>
-        <!-- I think it would be nice to display subclip duration -->
-        <!-- <strong>/</strong>
-        <span class="duration">{{ currentAsset.subclipDurationFrame | timecode }}</span> -->
-      </p>
-    </div>
-    <div class="asset-name" layout="column" layout-align="center">
-      <span flex>{{ currentAsset.primary[1].value }}</span>
-    </div>
-    <div class="form-panel" layout="column">
-      <div class="wz-form-card">
-        <mat-card-content>
-          <wz-form 
-            [items]="config.form.items"
-            includeCancel="true"
-            cancelLabel="ASSET.SHARING.FORM.CANCEL_BTN_LABEL"
-            submitLabel="ASSET.SHARING.FORM.SUBMIT_BTN_LABEL"
-            (formCancel)="formCancel()"
-            (formSubmit)="createShareLink($event)">
-          </wz-form>
-        </mat-card-content>
-      </div>
-    </div>
+<wz-share
+  [titleKey]="shareAssetDialogTitle"
+  [formFields]="config.form.items"
+  [shareLink]="shareLink | async"
+  (shareLinkRequest)="onShareLinkRequest()"
+  (closeRequest)="onCloseRequest()"
+  (formSubmit)="onFormSubmit($event)"
+>
+  <div class="subclip-info" *ngIf="showSubclippingInfo" layout="column" layout-align="center">
+    <p class="in-out-markers" flex>
+      <strong>{{ 'ASSET.SHARING.SUBCLIP_IN_LABEL' | translate}}</strong>
+      <span>{{ subclipMarkers.in | timecode }}</span>
+      <strong>{{ 'ASSET.SHARING.SUBCLIP_OUT_LABEL' | translate}}</strong>
+      <span>{{ subclipMarkers.out | timecode }}</span>
+      <!-- I think it would be nice to display subclip duration -->
+      <!-- <strong>/</strong>
+      <span class="duration">{{ currentAsset.subclipDurationFrame | timecode }}</span> -->
+    </p>
   </div>
-</div>
 
+  <div class="asset-name" layout="column" layout-align="center">
+    <span flex>{{ assetName }}</span>
+  </div>
+</wz-share>

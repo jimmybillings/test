@@ -11,7 +11,7 @@ import { AppStore } from '../../../app.store';
 
 export class WzShareLinkComponent {
   @Input() shareLink: string;
-  @Output() close = new EventEmitter();
+  @Output() closeRequest: EventEmitter<void> = new EventEmitter();
 
   constructor(private store: AppStore) { }
 
@@ -21,5 +21,21 @@ export class WzShareLinkComponent {
 
   public onCopyShareLinkButtonClick(): void {
     this.store.dispatch(factory => factory.snackbar.display('SHARING.SHARE_LINK.COPIED_CONFIRMED_MESSAGE'));
+  }
+
+  public onPreviousButtonClick(): void {
+    this.requestClose();
+  }
+
+  public onCloseButtonClick(): void {
+    this.requestClose();
+  }
+
+  public onOutsideClick(): void {
+    this.requestClose();
+  }
+
+  private requestClose(): void {
+    this.closeRequest.emit();
   }
 }

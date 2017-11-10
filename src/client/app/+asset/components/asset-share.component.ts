@@ -1,10 +1,7 @@
-import {
-  Component, Input, Output, ViewChild, OnDestroy,
-  EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
 import { FormFields } from '../../shared/interfaces/forms.interface';
-import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component';
-import { User } from '../../shared/interfaces/user.interface';
 import { Pojo } from '../../shared/interfaces/common.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
@@ -17,59 +14,25 @@ import { AppStore } from '../../app.store';
   templateUrl: 'asset-share.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class AssetShareComponent implements OnDestroy {
   @Input() userEmail: string;
   @Input() config: any;
-  @Input()
-  set enhancedAsset(value: EnhancedAsset) {
-    this.currentAsset = value;
-    this.assetLinkIsShowing = false;
-    this.closeAssetShare();
-  };
+  @Input() set enhancedAsset(asset: EnhancedAsset) {
+    this.currentAsset = asset;
+    this.close();
+  }
   @Input() subclipMarkers: SubclipMarkersInterface.SubclipMarkers;
-  @Output() close = new EventEmitter();
-  public currentAsset: EnhancedAsset;
-  public assetLinkIsShowing: boolean = false;
-  public assetShareLink: string;
-  public serverErrors: any;
-  public formItems: Array<any> = [];
-  public user: User;
+  @Output() closeRequest = new EventEmitter();
 
-  @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
+  public shareLink: Observable<string>;
 
-  constructor(private store: AppStore, private changeDetector: ChangeDetectorRef) { }
+  private currentAsset: EnhancedAsset;
 
-  ngOnDestroy() {
-    this.closeAssetShare();
+  constructor(private store: AppStore) { }
+
+  public ngOnDestroy(): void {
+    this.close();
   }
-
-  public closeAssetShare(): void {
-    this.close.emit();
-  }
-
-  public showShareLink(): void {
-    this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.prepareShareLink()))
-      .subscribe((res) => {
-        this.assetShareLink = `${window.location.href};share_key=${res.apiKey}`;
-        this.changeDetector.markForCheck();
-      });
-    this.assetLinkIsShowing = true;
-  }
-
-  public resetShareLinkShowing() {
-    this.assetLinkIsShowing = false;
-  }
-
-  public createShareLink(shareLink: Pojo): void {
-    this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.prepareShareLink(shareLink)))
-      .subscribe((res) => {
-        this.resetForm();
-        this.store.dispatch(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE'));
-      }, this.error.bind(this));
-  }
-
-  public formCancel() { this.resetForm(); }
 
   public get shareAssetDialogTitle(): string {
     return SubclipMarkersInterface.bothMarkersAreSet(this.subclipMarkers)
@@ -81,49 +44,49 @@ export class AssetShareComponent implements OnDestroy {
     return SubclipMarkersInterface.bothMarkersAreSet(this.subclipMarkers);
   }
 
-  private prepareShareLink(shareLink: Pojo = {}): Pojo {
+  public get assetName(): string {
+    return this.currentAsset.getMetadataValueFor('name');
+  }
+
+  public onShareLinkRequest(): void {
+    this.shareLink =
+      this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.backendify()))
+        .map(response => `${window.location.href};share_key=${response.apiKey}`);
+  }
+
+  public onCloseRequest(): void {
+    this.close();
+  }
+
+  public onFormSubmit(shareParameters: Pojo): void {
+    this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.backendify(shareParameters)))
+      .subscribe(() => {
+        this.store.dispatch(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE'));
+      });
+  }
+
+  private backendify(shareParameters: Pojo = {}): Pojo {
     const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(this.subclipMarkers);
     let endDate = new Date();
     endDate.setDate(endDate.getDate() + 10);
-    Object.assign(shareLink, {
+    Object.assign(shareParameters, {
       accessEndDate: this.IsoFormatLocalDate(endDate),
       accessStartDate: this.IsoFormatLocalDate(new Date()),
       accessInfo: this.currentAsset.assetId,
       type: 'asset',
-      recipientEmails: (shareLink.recipientEmails) ?
-        shareLink.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [],
+      recipientEmails: (shareParameters.recipientEmails) ?
+        shareParameters.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [],
       properties: {
         timeStart: duration.timeStart,
         timeEnd: duration.timeEnd
       }
     });
 
-    if (shareLink.copyMe) {
-      shareLink.recipientEmails.push(this.userEmail);
+    if (shareParameters.copyMe) {
+      shareParameters.recipientEmails.push(this.userEmail);
     }
 
-    return shareLink;
-  }
-
-  private resetForm(): void {
-    this.formItems = this.clearForm();
-    this.wzForm.resetForm();
-    this.changeDetector.markForCheck();
-    this.closeAssetShare();
-  }
-
-  private clearForm() {
-    return this.formItems
-      .map((field: FormFields) => {
-        field.value = '';
-        if (field.type === 'tags') field.tags = [];
-        return field;
-      });
-  }
-
-  private error(error: Pojo) {
-    this.serverErrors = error.json();
-    this.changeDetector.markForCheck();
+    return shareParameters;
   }
 
   // we need to submit date/timestamps in ISO format. This does that.
@@ -143,5 +106,9 @@ export class AssetShareComponent implements OnDestroy {
       + ':' + pad(d.getSeconds())
       + dif + pad(tzo / 60)
       + ':' + pad(tzo % 60);
+  }
+
+  private close(): void {
+    this.closeRequest.emit();
   }
 }

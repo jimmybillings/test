@@ -2,7 +2,10 @@
   <header>
     <div flex="100" layout="row">
       <div class="tools" flex="auto" layout-align="start center">
-        <button mat-icon-button title="{{ 'SHARING.SHARE_LINK.PREVIOUS_HOVER_TITLE' | translate }}" (click)="close.emit()">
+        <button mat-icon-button
+          title="{{ 'SHARING.SHARE_LINK.PREVIOUS_HOVER_TITLE' | translate }}"
+          (click)="onPreviousButtonClick()"
+        >
           <mat-icon>arrow_back</mat-icon>
         </button>
       </div>
@@ -10,7 +13,7 @@
         {{ 'SHARING.SHARE_LINK.HEADING' | translate }}
       </h4>
       <div class="tools" flex="auto" layout-align="end center">
-        <button mat-icon-button title="{{ 'SHARING.SHARE_LINK.CLOSE_HOVER_TITLE' | translate }}" (click)="close.emit()">
+        <button mat-icon-button title="{{ 'SHARING.SHARE_LINK.CLOSE_HOVER_TITLE' | translate }}" (click)="onCloseButtonClick()">
           <mat-icon>close</mat-icon>
         </button>
       </div>
@@ -39,5 +42,5 @@
     </div>
   </section>
 </div>
-<div class="wz-dd-click-catcher" (click)="close.emit()"></div>
+<div class="wz-dd-click-catcher" (click)="onOutsideClick()"></div>
 
