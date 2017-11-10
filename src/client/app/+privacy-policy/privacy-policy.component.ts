@@ -17,7 +17,7 @@ import { AppStore } from '../app.store';
 export class PrivacyPolicyComponent {
   constructor(private store: AppStore) { }
 
-  public get document(): Observable<any> {
+  public get document(): Observable<string> {
     return this.store.select(state => state.privacyPolicy.document);
   }
 }

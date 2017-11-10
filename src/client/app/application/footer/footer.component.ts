@@ -25,6 +25,6 @@ export class FooterComponent implements OnInit {
 
   public get privacyPolicyExists(): boolean {
     if (!this.config) return false;
-    return this.config.privacyPolicyId && this.config.privacyPolicyId.value && this.config.privacyPolicyId.value !== '';
+    return !!this.config.privacyPolicyId && !!this.config.privacyPolicyId.value && this.config.privacyPolicyId.value !== '';
   }
 }

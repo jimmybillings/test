@@ -10,5 +10,17 @@ export function main() {
       actions: PrivacyPolicyActions,
       state: PrivacyPolicyState,
     });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'LoadSuccess',
+      customTests: [
+        {
+          it: 'returns the state with the document propopulated',
+          actionParameters: { document: 'some doc' },
+          previousState: PrivacyPolicyState.initialState,
+          expectedNextState: { document: 'some doc' }
+        }
+      ]
+    });
   });
 }

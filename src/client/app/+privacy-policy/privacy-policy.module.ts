@@ -1,3 +1,4 @@
+import { PrivacyPolicyGuard } from './services/privacy-policy.guard';
 import { RouterModule } from '@angular/router';
 
 import { PrivacyPolicyComponent } from './privacy-policy.component';
@@ -10,6 +11,6 @@ import { PrivacyPolicyResolver } from './services/privacy-policy.resolver';
   imports: [SharedModule, RouterModule.forChild(PRIVACY_POLICY_ROUTES)],
   declarations: [PrivacyPolicyComponent],
   exports: [PrivacyPolicyComponent],
-  providers: [PrivacyPolicyResolver]
+  providers: [PrivacyPolicyResolver, PrivacyPolicyGuard]
 })
 export class PrivacyPolicyModule { }

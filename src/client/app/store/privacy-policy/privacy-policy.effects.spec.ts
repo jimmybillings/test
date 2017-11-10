@@ -11,5 +11,30 @@ export function main() {
         effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
       );
     }
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'load',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: '[Privacy Policy] Load',
+        documentId: '12'
+      },
+      serviceMethod: {
+        name: 'load',
+        expectedArguments: ['12'],
+        returnsObservableOf: 'some-document'
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'privacyPolicy',
+          methodName: 'loadSuccess',
+          expectedArguments: ['some-document']
+        },
+        failure: {
+          sectionName: 'privacyPolicy',
+          methodName: 'loadFailure'
+        }
+      }
+    });
   });
 }
