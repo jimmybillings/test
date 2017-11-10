@@ -50,7 +50,7 @@ export class AssetShareComponent implements OnDestroy {
 
   public onShareLinkRequest(): void {
     this.shareLink =
-      this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.backendify()))
+      this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.currentAsset.assetId, this.subclipMarkers))
         .map(response => `${window.location.href};share_key=${response.apiKey}`);
   }
 
@@ -59,53 +59,11 @@ export class AssetShareComponent implements OnDestroy {
   }
 
   public onFormSubmit(shareParameters: Pojo): void {
-    this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.backendify(shareParameters)))
-      .subscribe(() => {
-        this.store.dispatch(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE'));
-      });
-  }
-
-  private backendify(shareParameters: Pojo = {}): Pojo {
-    const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(this.subclipMarkers);
-    let endDate = new Date();
-    endDate.setDate(endDate.getDate() + 10);
-    Object.assign(shareParameters, {
-      accessEndDate: this.IsoFormatLocalDate(endDate),
-      accessStartDate: this.IsoFormatLocalDate(new Date()),
-      accessInfo: this.currentAsset.assetId,
-      type: 'asset',
-      recipientEmails: (shareParameters.recipientEmails) ?
-        shareParameters.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [],
-      properties: {
-        timeStart: duration.timeStart,
-        timeEnd: duration.timeEnd
-      }
+    this.store.callLegacyServiceMethod(service =>
+      service.asset.createShareLink(this.currentAsset.assetId, this.subclipMarkers, shareParameters)
+    ).subscribe(() => {
+      this.store.dispatch(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE'));
     });
-
-    if (shareParameters.copyMe) {
-      shareParameters.recipientEmails.push(this.userEmail);
-    }
-
-    return shareParameters;
-  }
-
-  // we need to submit date/timestamps in ISO format. This does that.
-  private IsoFormatLocalDate(date: Date) {
-    var d = date,
-      tzo = -d.getTimezoneOffset(),
-      dif = tzo >= 0 ? '+' : '-',
-      pad = function (num: any) {
-        var norm = Math.abs(Math.floor(num));
-        return (norm < 10 ? '0' : '') + norm;
-      };
-    return d.getFullYear()
-      + '-' + pad(d.getMonth() + 1)
-      + '-' + pad(d.getDate())
-      + 'T' + pad(d.getHours())
-      + ':' + pad(d.getMinutes())
-      + ':' + pad(d.getSeconds())
-      + dif + pad(tzo / 60)
-      + ':' + pad(tzo % 60);
   }
 
   private close(): void {
