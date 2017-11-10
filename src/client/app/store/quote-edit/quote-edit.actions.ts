@@ -129,6 +129,14 @@ export class ActionFactory {
     return new AddInvoiceContactToQuote(userId);
   }
 
+  public addSalesManagerToQuote(emailAddress: string): AddSalesManagerToQuote {
+    return new AddSalesManagerToQuote(emailAddress);
+  }
+
+  public updateSalesManagerFormOnQuote(form: Pojo): UpdateSalesManagerFormOnQuote {
+    return new UpdateSalesManagerFormOnQuote(form);
+  }
+
 }
 
 export class InternalActionFactory extends ActionFactory {
@@ -441,12 +449,24 @@ export class GetBillingAccountSuccess implements Action {
 }
 
 export class AddInvoiceContactToQuote implements Action {
-  public static readonly Type = '[Quote Edit] Add Invoice To Quote';
+  public static readonly Type = '[Quote Edit] Add Invoice Contact To Quote';
   public readonly type = AddInvoiceContactToQuote.Type;
-  constructor(public readonly userId: number) { }
+  constructor(public readonly userId: number) {
+    console.log(userId);
+  }
 }
 
+export class AddSalesManagerToQuote implements Action {
+  public static readonly Type = '[Quote Edit] Add Sales Manager To Quote';
+  public readonly type = AddSalesManagerToQuote.Type;
+  constructor(public readonly emailAddress: string) { }
+}
 
+export class UpdateSalesManagerFormOnQuote implements Action {
+  public static readonly Type = '[Quote Edit] Add Sales Manager Form On Quote';
+  public readonly type = UpdateSalesManagerFormOnQuote.Type;
+  constructor(public readonly form: Pojo) { }
+}
 
 export type Any =
   Load | LoadSuccess | LoadFailure |
@@ -459,4 +479,4 @@ export type Any =
   AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject |
   UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
   UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | GetBillingAccount |
-  GetBillingAccountSuccess | AddInvoiceContactToQuote;
+  GetBillingAccountSuccess | AddInvoiceContactToQuote | AddSalesManagerToQuote | UpdateSalesManagerFormOnQuote;
