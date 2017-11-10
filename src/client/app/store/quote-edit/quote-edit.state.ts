@@ -106,6 +106,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       };
     }
 
+    // SELECT USER START 
     case QuoteEditActions.AddUserToQuote.Type: {
       return {
         ...Common.clone(state),
@@ -125,7 +126,6 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.GetBillingAccountSuccess.Type: {
-      console.log('billing');
       return {
         ...Common.clone(state),
         loading: false,
@@ -137,6 +137,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
             creditExemption: action.billingAndInvoice.billingAccount.creditExemption,
             licensingVertical: action.billingAndInvoice.billingAccount.licensingVertical,
             paymentTermsDays: action.billingAndInvoice.billingAccount.paymentTermsDays,
+            invoiceContactId: action.billingAndInvoice.billingAccount.invoiceContactId,
             purchaseOnCredit: action.billingAndInvoice.billingAccount.purchaseOnCredit,
             salesOwner: action.billingAndInvoice.billingAccount.salesOwner,
             field: state.recipient.billingAccount.field.map(field => {
@@ -146,11 +147,33 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           },
           invoiceContact: {
             field: state.recipient.invoiceContact.field.map(field => {
-              console.log(field);
-              field.value = `${action.billingAndInvoice.invoiceContactId.firstName} ${action.billingAndInvoice.invoiceContactId.lastName}`;
+              field.value = {
+                id: action.billingAndInvoice.invoiceContactId.addressId,
+                name: `${action.billingAndInvoice.invoiceContactId.firstName} ${action.billingAndInvoice.invoiceContactId.lastName}`
+              };
               return field;
             })
           }
+        }))
+      };
+    }
+
+    case UserActions.GetAllUsersByAccountIdSuccess.Type: {
+      return {
+        ...Common.clone(state),
+        loading: false,
+        recipient: Common.clone(Object.assign({}, state.recipient, {
+          invoiceContact: Object.assign(state.recipient.invoiceContact, {
+            field: state.recipient.invoiceContact.field.map(field => {
+              field.options = (action.users || []).map(user => (
+                { id: user.id, name: `${user.firstName} ${user.lastName}` }
+              ));
+              if (state.recipient.billingAccount.hasOwnProperty('invoiceContactId')) {
+                field.value = field.options.find((option: Pojo) => option.id === state.recipient.billingAccount.invoiceContactId)
+              }
+              return field;
+            })
+          })
         }))
       };
     }
@@ -167,6 +190,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
             licensingVertical: action.account.licensingVertical,
             paymentTermsDays: action.account.paymentTermsDays,
             purchaseOnCredit: action.account.purchaseOnCredit,
+            invoiceContactId: action.account.invoiceContactId,
             salesOwner: action.account.salesOwner,
             field: state.recipient.billingAccount.field.map(field => {
               field.value = action.account.name;
@@ -176,25 +200,6 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         }))
       };
     }
-
-    case UserActions.GetAllUsersByAccountIdSuccess.Type: {
-      console.log('users');
-      return {
-        ...Common.clone(state),
-        loading: false,
-        recipient: Common.clone(Object.assign({}, state.recipient, {
-          invoiceContact: Object.assign(state.recipient.invoiceContact, {
-            field: state.recipient.invoiceContact.field.map(field => {
-              field.options = action.users.map(user => `${user.firstName} ${user.lastName}`).join();
-              console.log(state.recipient.invoiceContact.field);
-              field.value = state.recipient.invoiceContact.field[0].value;
-              return field;
-            })
-          })
-        }))
-      };
-    }
-
 
     case QuoteEditActions.DeleteFailure.Type:
     case QuoteEditActions.EditLineItemFromDetailsFailure.Type:

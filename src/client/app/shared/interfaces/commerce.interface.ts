@@ -221,6 +221,7 @@ export interface QuoteRecipientBillingAccount {
   creditExemption?: number;
   paymentTermsDays?: string;
   licensingVertical?: string;
+  invoiceContactId?: number;
   field: Pojo[];
 }
 
