@@ -1,5 +1,4 @@
 import * as PrivacyPolicyActions from './privacy-policy.actions';
-import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
   document: string;

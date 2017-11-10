@@ -1,6 +1,7 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { AppStore } from '../../app.store';
 import { Observable } from 'rxjs/Observable';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+
+import { AppStore } from '../../app.store';
 /**
  * site footer component - renders the footer information
  */
