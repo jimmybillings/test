@@ -6,7 +6,13 @@ import { AppStore } from '../app.store';
 @Component({
   moduleId: module.id,
   selector: 'privacy-policy-component',
-  templateUrl: `./privacy-policy.html`,
+  template: `
+    <div class="privacy-policy" layout="row" layout-align="center center">
+      <mat-card flex="90">
+        <mat-card-content [innerHTML]="document | async"></mat-card-content>
+      </mat-card>
+    </div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
