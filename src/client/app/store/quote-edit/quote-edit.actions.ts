@@ -8,7 +8,7 @@ import {
   Project,
   Quote,
   QuoteOptions,
-  QuoteRecipient,
+  SendDetails,
 } from '../../shared/interfaces/commerce.interface';
 import { Asset, SelectedPriceAttribute, Pojo } from '../../shared/interfaces/common.interface';
 import { Account } from '../../shared/interfaces/user.interface';
@@ -40,7 +40,7 @@ export class ActionFactory {
     return new AddCustomPriceToLineItem(lineItem, price);
   }
 
-  public sendQuote(quoteRecipient: QuoteRecipient) {
+  public sendQuote(quoteRecipient: SendDetails) {
     return new SendQuote(quoteRecipient);
   }
 
@@ -123,6 +123,10 @@ export class ActionFactory {
 
   public getBillingAccount(accountId: number): GetBillingAccount {
     return new GetBillingAccount(accountId);
+  }
+
+  public addInvoiceContactToQuote(userId: number): AddInvoiceContactToQuote {
+    return new AddInvoiceContactToQuote(userId);
   }
 
 }
@@ -287,7 +291,7 @@ export class AddCustomPriceToLineItemFailure implements Action {
 export class SendQuote implements Action {
   public static readonly Type = '[Quote Edit] Send Quote';
   public readonly type = SendQuote.Type;
-  constructor(public readonly quoteRecipient: QuoteRecipient) { }
+  constructor(public readonly quoteRecipient: SendDetails) { }
 }
 
 export class SaveRecipientInformationOnQuote implements Action {
@@ -436,6 +440,12 @@ export class GetBillingAccountSuccess implements Action {
   constructor(public readonly billingAndInvoice: any) { }
 }
 
+export class AddInvoiceContactToQuote implements Action {
+  public static readonly Type = '[Quote Edit] Add Invoice To Quote';
+  public readonly type = AddInvoiceContactToQuote.Type;
+  constructor(public readonly userId: number) { }
+}
+
 
 
 export type Any =
@@ -449,4 +459,4 @@ export type Any =
   AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject |
   UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
   UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | GetBillingAccount |
-  GetBillingAccountSuccess;
+  GetBillingAccountSuccess | AddInvoiceContactToQuote;
