@@ -80,21 +80,22 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   public closeSuggestions() {
     this.activeSuggestion = null;
     this.suggestions = [];
-    this.detector.markForCheck();
+    // this.detector.markForCheck();
   }
 
   public selectSuggestion(suggestion: string) {
+    const tempSuggestion: string = this.activeSuggestion;
+    this.closeSuggestions();
     this.fControl.setValue(suggestion);
     if (!!this.matchOnProperty) {
-      this.newSuggestion.emit(
+      setTimeout(() => this.newSuggestion.emit(
         this.rawSuggestions.find((rawSuggestion) =>
           rawSuggestion[this.matchOnProperty] === suggestion
         )
-      );
+      ), 20);
     } else {
-      this.newSuggestion.emit(this.activeSuggestion);
+      this.newSuggestion.emit(tempSuggestion);
     }
-    this.closeSuggestions();
   }
 
   public parseSuggestion(suggestion: string) {

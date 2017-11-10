@@ -199,13 +199,14 @@ export interface Quote extends CommonCommerce {
   internalLicenseIds?: number[];
 }
 
-export interface QuoteRecipient {
-  user?: QuoteRecipientUser;
-  billingAccount?: QuoteRecipientBillingAccount;
-  invoiceContact?: QuoteRecipientInvoiceContact;
+export interface SendDetails {
+  user?: SendDetailsUser;
+  billingAccount?: SendDetailsBillingAccount;
+  invoiceContact?: SendDetailsInvoiceContact;
+  salesManager?: SendDetailsSalesManager
 }
 
-export interface QuoteRecipientUser {
+export interface SendDetailsUser {
   id?: number;
   accountId?: number;
   name?: string;
@@ -213,7 +214,7 @@ export interface QuoteRecipientUser {
   field: Pojo[];
 }
 
-export interface QuoteRecipientBillingAccount {
+export interface SendDetailsBillingAccount {
   id?: number;
   name?: string;
   salesOwner?: string;
@@ -221,10 +222,15 @@ export interface QuoteRecipientBillingAccount {
   creditExemption?: number;
   paymentTermsDays?: string;
   licensingVertical?: string;
+  invoiceContactId?: number;
   field: Pojo[];
 }
 
-export interface QuoteRecipientInvoiceContact {
+export interface SendDetailsSalesManager {
+  field: Pojo[]
+}
+
+export interface SendDetailsInvoiceContact {
   id?: number;
   name?: string;
   email?: string;

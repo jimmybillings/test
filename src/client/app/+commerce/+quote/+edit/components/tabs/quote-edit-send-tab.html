@@ -44,6 +44,10 @@
     
   </section>
   <section class="creator-options-select" layout="column" flex="60">
-    other form here
+    <wz-form *ngIf="(invoiceContact | async)"
+      [items]="(salesManager | async).field" 
+      submitLabel="PROCEED TO CONFIRM" 
+      (formSubmit)="onSubmit($event)">
+    </wz-form>
   </section>
 </div>

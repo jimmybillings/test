@@ -10,7 +10,8 @@
     <div *ngIf="field.type == 'select'">
       <mat-form-field>
         <mat-select
-          [value]="field.value"
+          [value]="field.value.id"
+          [ngModel]="field.value.id"
           class="mat-block"
           [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
           placeholder="{{field.label | translate}}"
@@ -18,7 +19,7 @@
           [required]="isRequiredField(field)"
           id="{{field.name}}"
           (change)="onSelectChange($event, field)">
-          <mat-option *ngFor="let option of parseOptions(field.options)" [value]="option">{{option}}</mat-option>
+          <mat-option *ngFor="let option of field.options" [value]="option.id">{{option.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

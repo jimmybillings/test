@@ -75,6 +75,7 @@ export interface Account {
   creditExemption?: number;
   paymentTermsDays?: string;
   licensingVertical?: string;
+  invoiceContactId?: number;
 }
 
 export interface Document extends Common {

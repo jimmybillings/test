@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Capabilities } from '../../../../../shared/services/capabilities.service';
-import { Project, QuoteOptions, QuoteRecipient } from '../../../../../shared/interfaces/commerce.interface';
+import { Project, QuoteOptions, SendDetails } from '../../../../../shared/interfaces/commerce.interface';
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { AppStore } from '../../../../../app.store';
 
@@ -35,16 +35,15 @@ export class QuoteEditConfirmTabComponent {
   constructor(
     public userCan: Capabilities,
     private store: AppStore
-  ) {
-  }
+  ) { }
 
-  public get recipientInformation(): Observable<QuoteRecipient> {
-    return this.store.select(state => state.quoteEdit.recipient);
+  public get recipientInformation(): Observable<SendDetails> {
+    return this.store.select(state => state.quoteEdit.sendDetails);
   }
 
   public sendQuote() {
     this.store.dispatch(factory =>
-      factory.quoteEdit.sendQuote(this.store.snapshot(state => state.quoteEdit.recipient))
+      factory.quoteEdit.sendQuote(this.store.snapshot(state => state.quoteEdit.sendDetails))
     );
   }
 

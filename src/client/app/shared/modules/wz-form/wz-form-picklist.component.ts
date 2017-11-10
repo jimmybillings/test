@@ -36,4 +36,8 @@ export class WzFormPicklistComponent extends WzFormBase {
     super(fb, formModel, element);
   }
 
+  public onSelectChange(suggestion: Pojo) {
+    this.formSubmit.emit(suggestion);
+  }
+
 }

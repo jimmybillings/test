@@ -6,10 +6,10 @@ import { Tab } from '../../../../components/tabs/tab';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   QuoteOptions,
-  QuoteRecipient,
-  QuoteRecipientBillingAccount,
-  QuoteRecipientInvoiceContact,
-  QuoteRecipientUser,
+  SendDetails,
+  SendDetailsBillingAccount,
+  SendDetailsInvoiceContact,
+  SendDetailsUser,
 } from '../../../../../shared/interfaces/commerce.interface';
 import { AppStore } from '../../../../../app.store';
 import { Pojo } from '../../../../../shared/interfaces/common.interface';
@@ -25,7 +25,6 @@ export class QuoteEditSendTabComponent extends Tab {
 
   constructor(private store: AppStore) {
     super();
-    this.store.select(state => state.quoteEdit).subscribe(c => console.log(c));
   }
 
   public onSubmitSendQuote(options: QuoteOptions): void {
@@ -39,19 +38,24 @@ export class QuoteEditSendTabComponent extends Tab {
   }
 
 
-  public get user(): Observable<QuoteRecipientUser> {
+  public get user(): Observable<SendDetailsUser> {
     return this.store.select(state => state.quoteEdit)
-      .map(quoteEdit => quoteEdit.recipient.user);
+      .map(quoteEdit => quoteEdit.sendDetails.user);
   }
 
-  public get billingAccount(): Observable<QuoteRecipientBillingAccount> {
+  public get billingAccount(): Observable<SendDetailsBillingAccount> {
     return this.store.select(state => state.quoteEdit)
-      .map(quoteEdit => quoteEdit.recipient.billingAccount);
+      .map(quoteEdit => quoteEdit.sendDetails.billingAccount);
   }
 
-  public get invoiceContact(): Observable<QuoteRecipientInvoiceContact> {
+  public get invoiceContact(): Observable<SendDetailsInvoiceContact> {
     return this.store.select(state => state.quoteEdit)
-      .map(quoteEdit => quoteEdit.recipient.invoiceContact);
+      .map(quoteEdit => quoteEdit.sendDetails.invoiceContact);
+  }
+
+  public get salesManager(): Observable<SendDetailsInvoiceContact> {
+    return this.store.select(state => state.quoteEdit)
+      .map(quoteEdit => quoteEdit.sendDetails.salesManager);
   }
 
   public userSelect(user: User) {
@@ -62,8 +66,8 @@ export class QuoteEditSendTabComponent extends Tab {
     this.store.dispatch(factory => factory.quoteEdit.addBillingAccountToQuote(account));
   }
 
-  public invoiceContactSelect(info: any) {
-    console.log(info);
+  public invoiceContactSelect(userId: number) {
+    // this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(userId))
   }
 
 }

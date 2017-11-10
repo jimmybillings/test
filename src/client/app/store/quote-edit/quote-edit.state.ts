@@ -3,12 +3,12 @@ import * as AccountActions from '../account/account.actions';
 import * as UserActions from '../user/user.actions';
 import { Pojo } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
-import { Quote, QuoteRecipient } from '../../shared/interfaces/commerce.interface';
+import { Quote, SendDetails } from '../../shared/interfaces/commerce.interface';
 
 export interface State {
   data: Quote;
   loading: boolean;
-  recipient?: QuoteRecipient;
+  sendDetails?: SendDetails;
 }
 
 export const initialState: State = {
@@ -19,7 +19,7 @@ export const initialState: State = {
     ownerUserId: 0,
     quoteStatus: 'PENDING'
   },
-  recipient: {
+  sendDetails: {
     user: {
       field: [{
         endPoint: 'user/searchFields',
@@ -52,6 +52,29 @@ export const initialState: State = {
         options: '',
         label: 'Invoice contact name',
         type: 'select',
+        value: '',
+        validation: 'REQUIRED'
+      }]
+    },
+    salesManager: {
+      field: [{
+        default: 'TODAY+30',
+        name: 'expirationDate',
+        label: 'Expiration Date',
+        type: 'wzdate',
+        minimum: 'TODAY',
+        validation: 'REQUIRED'
+      },
+      {
+        name: 'salesManager',
+        label: 'REGISTER.FORM.EMAIL_LABEL',
+        type: 'email',
+        value: '',
+        validation: 'EMAIL'
+      }, {
+        name: 'offlineAgreementReference',
+        label: 'REGISTER.FORM.LAST_NAME_LABEL',
+        type: 'text',
         value: '',
         validation: 'REQUIRED'
       }]
@@ -102,20 +125,21 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         data: {
           ...action.quote
         },
-        recipient: state.recipient
+        sendDetails: state.sendDetails
       };
     }
 
+    // SELECT USER START 
     case QuoteEditActions.AddUserToQuote.Type: {
       return {
         ...Common.clone(state),
         loading: false,
-        recipient: Common.clone(Object.assign({}, state.recipient, {
+        sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
           user: {
             id: action.user.id,
             name: `${action.user.firstName} ${action.user.lastName}`,
             email: action.user.emailAddress,
-            field: state.recipient.user.field.map(field => {
+            field: state.sendDetails.user.field.map(field => {
               field.value = action.user.emailAddress;
               return field;
             })
@@ -125,32 +149,49 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.GetBillingAccountSuccess.Type: {
-      console.log('billing');
+      console.log(action.billingAndInvoice.invoiceContactId.addressId);
       return {
         ...Common.clone(state),
         loading: false,
-        recipient: Common.clone(Object.assign({}, state.recipient, {
-          user: Object.assign(state.recipient.user, { accountName: action.billingAndInvoice.billingAccount.name }),
+        sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
+          user: Object.assign(state.sendDetails.user, { accountName: action.billingAndInvoice.billingAccount.name }),
           billingAccount: {
-            id: action.billingAndInvoice.billingAccount.id,
-            name: action.billingAndInvoice.billingAccount.name,
-            creditExemption: action.billingAndInvoice.billingAccount.creditExemption,
-            licensingVertical: action.billingAndInvoice.billingAccount.licensingVertical,
-            paymentTermsDays: action.billingAndInvoice.billingAccount.paymentTermsDays,
-            purchaseOnCredit: action.billingAndInvoice.billingAccount.purchaseOnCredit,
-            salesOwner: action.billingAndInvoice.billingAccount.salesOwner,
-            field: state.recipient.billingAccount.field.map(field => {
+            ...action.billingAndInvoice.billingAccount,
+            field: state.sendDetails.billingAccount.field.map(field => {
               field.value = action.billingAndInvoice.billingAccount.name;
               return field;
             })
           },
           invoiceContact: {
-            field: state.recipient.invoiceContact.field.map(field => {
-              console.log(field);
-              field.value = `${action.billingAndInvoice.invoiceContactId.firstName} ${action.billingAndInvoice.invoiceContactId.lastName}`;
+            id: action.billingAndInvoice.invoiceContactId.addressId,
+            field: state.sendDetails.invoiceContact.field.map(field => {
+              field.value = {
+                id: action.billingAndInvoice.invoiceContactId.addressId,
+                name: `${action.billingAndInvoice.invoiceContactId.firstName} ${action.billingAndInvoice.invoiceContactId.lastName}`
+              };
               return field;
             })
           }
+        }))
+      };
+    }
+
+    case UserActions.GetAllUsersByAccountIdSuccess.Type: {
+      return {
+        ...Common.clone(state),
+        loading: false,
+        sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
+          invoiceContact: Object.assign(state.sendDetails.invoiceContact, {
+            field: state.sendDetails.invoiceContact.field.map(field => {
+              field.options = (action.users || []).map(user => (
+                { id: user.id, name: `${user.firstName} ${user.lastName}` }
+              ));
+              if (state.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
+                field.value = field.options.find((option: Pojo) => option.id === state.sendDetails.billingAccount.invoiceContactId)
+              }
+              return field;
+            })
+          })
         }))
       };
     }
@@ -159,7 +200,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       return {
         ...Common.clone(state),
         loading: false,
-        recipient: Common.clone(Object.assign({}, state.recipient, {
+        sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
           billingAccount: {
             id: action.account.id,
             name: action.account.name,
@@ -167,8 +208,9 @@ export function reducer(state: State = initialState, action: AllowedActions): St
             licensingVertical: action.account.licensingVertical,
             paymentTermsDays: action.account.paymentTermsDays,
             purchaseOnCredit: action.account.purchaseOnCredit,
+            invoiceContactId: action.account.invoiceContactId,
             salesOwner: action.account.salesOwner,
-            field: state.recipient.billingAccount.field.map(field => {
+            field: state.sendDetails.billingAccount.field.map(field => {
               field.value = action.account.name;
               return field;
             })
@@ -177,24 +219,17 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       };
     }
 
-    case UserActions.GetAllUsersByAccountIdSuccess.Type: {
-      console.log('users');
-      return {
-        ...Common.clone(state),
-        loading: false,
-        recipient: Common.clone(Object.assign({}, state.recipient, {
-          invoiceContact: Object.assign(state.recipient.invoiceContact, {
-            field: state.recipient.invoiceContact.field.map(field => {
-              field.options = action.users.map(user => `${user.firstName} ${user.lastName}`).join();
-              console.log(state.recipient.invoiceContact.field);
-              field.value = state.recipient.invoiceContact.field[0].value;
-              return field;
-            })
-          })
-        }))
-      };
-    }
-
+    // case QuoteEditActions.AddInvoiceContactToQuote.Type: {
+    //   return {
+    //     ...Common.clone(state),
+    //     loading: false,
+    //     sendDetails: Common.clone(Object.assign(state.sendDetails, {
+    //       invoiceContact: Object.assign(state.sendDetails.invoiceContact, {
+    //         id: action.userId
+    //       })
+    //     }))
+    //   }
+    // }
 
     case QuoteEditActions.DeleteFailure.Type:
     case QuoteEditActions.EditLineItemFromDetailsFailure.Type:
