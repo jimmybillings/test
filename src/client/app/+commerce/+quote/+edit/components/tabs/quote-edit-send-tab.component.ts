@@ -24,7 +24,13 @@ import { Pojo } from '../../../../../shared/interfaces/common.interface';
 export class QuoteEditSendTabComponent extends Tab {
 
   constructor(private store: AppStore) {
+
     super();
+    this.store.dispatch(factory =>
+      factory.quoteEdit.addSalesManagerToQuote(
+        JSON.parse(localStorage.getItem('currentUser')).emailAddress
+      )
+    )
   }
 
   public onSubmitSendQuote(options: QuoteOptions): void {
@@ -66,8 +72,33 @@ export class QuoteEditSendTabComponent extends Tab {
     this.store.dispatch(factory => factory.quoteEdit.addBillingAccountToQuote(account));
   }
 
-  public invoiceContactSelect(userId: number) {
-    // this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(userId))
+  public invoiceContactSelect(event: Pojo) {
+    this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(event.value))
+  }
+
+  public get allBillingSelectionComplete(): Observable<Boolean> {
+    return this.store.select(state => state.quoteEdit)
+      .filter(quoteEdit => (
+        this.userAccountMatchesBillingAccount(quoteEdit.sendDetails) ||
+        this.allBillingFieldsSelected(quoteEdit.sendDetails)
+      )
+      ).map(() => true);
+  }
+
+  public onBlur(form: Pojo) {
+    this.store.dispatch(factory => factory.quoteEdit.updateSalesManagerFormOnQuote(form));
+  }
+
+  private userAccountMatchesBillingAccount(sendDetails: SendDetails) {
+    console.log(sendDetails);
+    return (sendDetails.user.hasOwnProperty('accountName') && sendDetails.billingAccount.hasOwnProperty('name'))
+      && (sendDetails.user.accountName === sendDetails.billingAccount.name);
+  }
+
+  private allBillingFieldsSelected(sendDetails: SendDetails) {
+    return sendDetails.user.hasOwnProperty('accountName') &&
+      sendDetails.billingAccount.hasOwnProperty('id') &&
+      sendDetails.invoiceContact.hasOwnProperty('id')
   }
 
 }

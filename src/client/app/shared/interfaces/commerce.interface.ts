@@ -208,7 +208,7 @@ export interface SendDetails {
 
 export interface SendDetailsUser {
   id?: number;
-  accountId?: number;
+  accountName?: string;
   name?: string;
   email?: string;
   field: Pojo[];
