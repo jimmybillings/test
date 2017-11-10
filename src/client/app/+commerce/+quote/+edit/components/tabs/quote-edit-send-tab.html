@@ -1,10 +1,8 @@
 <header flex="100" layout="row">
   <h2 class="commerce-heading">Please select recipient options</h2>
 </header>
-<div layout="column" layout-gt-xs="row" layout-padding>
-
-  <section layout="column" flex="40" class="recipient-options-select">
-
+<div layout="column" layout-gt-xs="row">
+  <section class="recipient-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form-autocomplete-view *ngIf="user | async" flex="100" 
       class="recipient"
       [ngClass]="{ 'is-empty' : !(!!(user | async).id) }"
@@ -35,16 +33,14 @@
 
     <wz-form-picklist-component *ngIf="(invoiceContact | async)" flex="100"
       class="invoice-contact"
-      [ngClass]="{ 'is-empty' : !(!!(invoiceContact | async).id) }"
       [items]="(invoiceContact | async).field"
       [title]="'Invoice contact'"
       [displayProperties]="invoiceContact | async"
       autocomplete="off"
       (selectContact)="invoiceContactSelect($event)">
     </wz-form-picklist-component>
-    
   </section>
-  <section class="creator-options-select" layout="column" flex="60">
+  <section class="creator-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form *ngIf="(invoiceContact | async)"
       [items]="(salesManager | async).field" 
       [disableUntilValid]="true"
@@ -54,4 +50,5 @@
       (blur)=onBlur($event)>
     </wz-form>
   </section>
+  <section class="col-spacer" flex="none" flex-md="10" flex-lg="30" flex-gt-lg="40" show-gt-sm></section>
 </div>

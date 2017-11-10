@@ -203,7 +203,7 @@ export interface SendDetails {
   user?: SendDetailsUser;
   billingAccount?: SendDetailsBillingAccount;
   invoiceContact?: SendDetailsInvoiceContact;
-  salesManager?: SendDetailsSalesManager
+  salesManager?: SendDetailsSalesManager;
 }
 
 export interface SendDetailsUser {
@@ -227,7 +227,7 @@ export interface SendDetailsBillingAccount {
 }
 
 export interface SendDetailsSalesManager {
-  field: Pojo[]
+  field: Pojo[];
 }
 
 export interface SendDetailsInvoiceContact {
