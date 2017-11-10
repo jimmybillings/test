@@ -58,7 +58,7 @@ export const initialState: State = {
     },
     salesManager: {
       field: [{
-        default: 'TODAY+30',
+        default: 'TODAY+15',
         name: 'expirationDate',
         label: 'Expiration Date',
         type: 'wzdate',
@@ -67,16 +67,16 @@ export const initialState: State = {
       },
       {
         name: 'salesManager',
-        label: 'REGISTER.FORM.EMAIL_LABEL',
+        label: 'Sales Manager',
         type: 'email',
         value: '',
         validation: 'EMAIL'
       }, {
         name: 'offlineAgreementReference',
-        label: 'REGISTER.FORM.LAST_NAME_LABEL',
+        label: 'Offline Agreement',
         type: 'text',
         value: '',
-        validation: 'REQUIRED'
+        validation: 'OPTIONAL'
       }]
     }
   },
