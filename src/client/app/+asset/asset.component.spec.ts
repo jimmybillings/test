@@ -8,7 +8,6 @@ import { Frame } from '../shared/modules/wazee-frame-formatter/index';
 
 export function main() {
   describe('Asset Component', () => {
-    let mockCurrentUserService: any;
     let mockCapabilities: any;
     let mockSearchContext: any;
     let mockUserPreference: any;
@@ -23,7 +22,6 @@ export function main() {
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
-      mockCurrentUserService = {};
       mockCapabilities = { administerQuotes: () => false };
       mockUserPreference = {
         openCollectionTray: jasmine.createSpy('openCollectionTray'),
@@ -84,9 +82,8 @@ export function main() {
         }
       }));
       componentUnderTest = new AssetComponent(
-        mockCurrentUserService, mockCapabilities,
-        mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-        mockDialogService, null);
+        mockCapabilities, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService, mockDialogService, null
+      );
     });
 
     describe('ngOnInit()', () => {
@@ -234,9 +231,8 @@ export function main() {
               });
 
             componentUnderTest = new AssetComponent(
-              mockCurrentUserService, mockCapabilities,
-              mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService,
-              mockDialogService, null);
+              mockCapabilities, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService, mockDialogService, null
+            );
 
             componentUnderTest.assetType = assetType;
           });
@@ -273,10 +269,7 @@ export function main() {
         mockCapabilities = { administerQuotes: () => true };
         mockStore.createActionFactoryMethod('quoteEdit', 'editLineItemFromDetails');
 
-        componentUnderTest = new AssetComponent(
-          null, mockCapabilities, null, null, null,
-          mockStore, null, null, null, null
-        );
+        componentUnderTest = new AssetComponent(mockCapabilities, null, null, null, mockStore, null, null, null, null);
         componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');
         componentUnderTest.onUpdateAssetLineItem();
 

@@ -15,7 +15,6 @@ import { AppStore } from '../../app.store';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AssetShareComponent implements OnDestroy {
-  @Input() userEmail: string;
   @Input() config: any;
   @Input() set enhancedAsset(asset: EnhancedAsset) {
     this.currentAsset = asset;

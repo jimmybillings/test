@@ -34,7 +34,6 @@ export class AssetDetailComponent implements OnInit {
     this.setAssetCollectionMembershipFlags();
   }
 
-  @Input() public userEmail: Observable<string>;
   @Input() public userCan: Capabilities;
   @Input() public usagePrice: number;
   @Input() public window: Window;

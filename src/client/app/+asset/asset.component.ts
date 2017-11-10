@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CurrentUserService } from '../shared/services/current-user.service';
 import { AddAssetParameters, Cart, PriceAttribute, Project } from '../shared/interfaces/commerce.interface';
 import { WzEvent, SelectedPriceAttribute } from '../shared/interfaces/common.interface';
 import { Capabilities } from '../shared/services/capabilities.service';
@@ -45,7 +44,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   private cartAssetPriceAttributes: SelectedPriceAttribute[];
 
   constructor(
-    public currentUser: CurrentUserService,
     public userCan: Capabilities,
     public window: WindowRef,
     private router: Router,
@@ -91,10 +89,6 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   public get activeCollection(): Observable<Collection> {
     return this.store.select(state => state.activeCollection.collection);
-  }
-
-  public get userEmail(): Observable<string> {
-    return this.currentUser.data.map(user => user.emailAddress);
   }
 
   public get priceForDetails(): Observable<number> {
