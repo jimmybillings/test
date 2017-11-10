@@ -13,6 +13,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { CommerceModule } from './+commerce/commerce.module';
 import { GalleryViewModule } from './+gallery-view/gallery-view.module';
+import { PrivacyPolicyModule } from './+privacy-policy/privacy-policy.module';
 
 import { CurrentUserService } from './shared/services/current-user.service';
 import { ApiConfig } from './shared/services/api.config';
@@ -34,6 +35,7 @@ import { APP_ROUTES } from './app.routes';
     CommerceModule,
     ApplicationModule,
     GalleryViewModule,
+    PrivacyPolicyModule
   ],
   providers: [{
     provide: APP_BASE_HREF,

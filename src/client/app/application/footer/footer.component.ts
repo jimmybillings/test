@@ -18,7 +18,13 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
     this.store.selectCloned(state => state.uiConfig)
       .filter(state => state.loaded)
-      .do(config => this.config = config.components.footer.config)
-      .take(1).subscribe();
+      .do(config => {
+        this.config = config.components.footer.config;
+      }).take(1).subscribe();
+  }
+
+  public get privacyPolicyExists(): boolean {
+    if (!this.config) return false;
+    return this.config.privacyPolicyId && this.config.privacyPolicyId.value && this.config.privacyPolicyId.value !== '';
   }
 }
