@@ -66,6 +66,7 @@ import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
 import { ActiveCollectionService } from '../store/active-collection/active-collection.service';
 import { CommentService } from '../store/comment/comment.service';
 import { DeliveryOptionsService } from '../store/delivery-options/delivery-options.service';
+import { FeeConfigService } from '../store/fee-config/fee-config.service';
 import { FutureApiService } from '../store/api/api.service';
 import { FutureCartService } from '../store/cart/cart.service';
 import { FutureQuoteEditService } from '../store/quote-edit/quote-edit.service';
@@ -73,10 +74,10 @@ import { FutureQuoteShowService } from '../store/quote-show/quote-show.service';
 import { OrderService } from '../store/order/order.service';
 import { InvoiceService } from '../store/invoice/invoice.service';
 import { PricingService } from '../store/pricing/pricing.service';
+import { PrivacyPolicyService } from '../store/privacy-policy/privacy-policy.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
 import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
 import { UiConfigService } from '../store/ui-config/ui-config.service';
-import { FeeConfigService } from '../store/fee-config/fee-config.service';
 
 // WAZEE STORES
 import {
@@ -97,6 +98,7 @@ import * as LoadingIndicatorState from '../store/loading-indicator/loading-indic
 import * as MultiLingualState from '../store/multi-lingual/multi-lingual.state';
 import * as OrderState from '../store/order/order.state';
 import * as PricingState from '../store/pricing/pricing.state';
+import * as PrivacyPolicyState from '../store/privacy-policy/privacy-policy.state';
 import * as QuoteEditState from '../store/quote-edit/quote-edit.state';
 import * as QuoteShowState from '../store/quote-show/quote-show.state';
 import * as SnackbarState from '../store/snackbar/snackbar.state';
@@ -132,6 +134,7 @@ import { MultiLingualEffects } from '../store/multi-lingual/multi-lingual.effect
 import { NotifierEffects } from '../store/notifier/notifier.effects';
 import { OrderEffects } from '../store/order/order.effects';
 import { PricingEffects } from '../store/pricing/pricing.effects';
+import { PrivacyPolicyEffects } from '../store/privacy-policy/privacy-policy.effects';
 import { QuoteEditEffects } from '../store/quote-edit/quote-edit.effects';
 import { QuoteShowEffects } from '../store/quote-show/quote-show.effects';
 import { RouterEffects } from '../store/router/router.effects';
@@ -177,6 +180,7 @@ const WAZEE_SERVICES = [
   PricingService,
   AsperaService,
   FeeConfigService,
+  PrivacyPolicyService,
   // Temporary legacy services accessed through AppStore
   LegacyAssetService
 ];
@@ -223,6 +227,7 @@ const WAZEE_STORES: any = {
   multiLingual: MultiLingualState.reducer,
   order: OrderState.reducer,
   pricing: PricingState.reducer,
+  privacyPolicy: PrivacyPolicyState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteShow: QuoteShowState.reducer,
   snackbar: SnackbarState.reducer,
@@ -246,6 +251,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   NotifierEffects,
   OrderEffects,
   PricingEffects,
+  PrivacyPolicyEffects,
   QuoteEditEffects,
   QuoteShowEffects,
   RouterEffects,
