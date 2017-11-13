@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/Rx';
 import { Pojo } from '../../interfaces/common.interface';
 import { Component, ChangeDetectionStrategy, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
@@ -15,7 +15,7 @@ import { WzFormBase } from './wz.form-base';
 })
 
 export class WzFormPicklistComponent extends WzFormBase {
-  public labels: Subject<Pojo[]> = new Subject();
+  public labels: BehaviorSubject<Pojo[]> = new BehaviorSubject([]);
   @Input() title: string;
   @Input()
   set displayProperties(properties: string[]) {
