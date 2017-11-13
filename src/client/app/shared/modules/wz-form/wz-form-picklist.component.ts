@@ -20,7 +20,7 @@ export class WzFormPicklistComponent extends WzFormBase {
   @Input()
   set displayProperties(properties: string[]) {
     const tempLabels: Pojo[] = Object.keys(properties || [])
-      .filter(property => property !== 'field' && property !== 'id' && property !== 'email')
+      .filter(property => property !== 'field')
       .map((property: string) => {
         let label: string = property.replace(/([A-Z])/g, ' $1')
           .replace(/^./, function (str) { return str.toUpperCase(); });

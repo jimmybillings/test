@@ -30,7 +30,7 @@ export class QuoteEditSendTabComponent extends Tab {
       factory.quoteEdit.addSalesManagerToQuote(
         JSON.parse(localStorage.getItem('currentUser')).emailAddress
       )
-    )
+    );
   }
 
   public onSubmitSendQuote(options: QuoteOptions): void {
@@ -73,7 +73,7 @@ export class QuoteEditSendTabComponent extends Tab {
   }
 
   public invoiceContactSelect(event: Pojo) {
-    this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(event.value))
+    this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(event.value));
   }
 
   public get allBillingSelectionComplete(): Observable<Boolean> {
@@ -98,7 +98,7 @@ export class QuoteEditSendTabComponent extends Tab {
   private allBillingFieldsSelected(sendDetails: SendDetails) {
     return sendDetails.user.hasOwnProperty('accountName') &&
       sendDetails.billingAccount.hasOwnProperty('id') &&
-      sendDetails.invoiceContact.hasOwnProperty('id')
+      sendDetails.invoiceContact.hasOwnProperty('id');
   }
 
 }
