@@ -37,12 +37,12 @@ export const initialState: State = {
       }]
     },
     billingAccount: {
-      creditExemption: null,
-      licensingVertical: null,
-      paymentTermsDays: null,
-      purchaseOnCredit: null,
-      invoiceContactId: null,
       salesOwner: null,
+      purchaseOnCredit: null,
+      creditExemption: null,
+      paymentTermsDays: null,
+      licensingVertical: null,
+      invoiceContactId: null,
       field: [{
         endPoint: 'account/searchFields',
         queryParams: 'fields,name,values',
