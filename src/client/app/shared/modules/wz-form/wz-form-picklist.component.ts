@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/Rx';
 import { Pojo } from '../../interfaces/common.interface';
 import { Component, ChangeDetectionStrategy, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
@@ -15,18 +15,20 @@ import { WzFormBase } from './wz.form-base';
 })
 
 export class WzFormPicklistComponent extends WzFormBase {
-  public labels: Subject<Pojo[]> = new Subject();
+  public labels: BehaviorSubject<Pojo[]> = new BehaviorSubject([]);
   @Input() title: string;
   @Input()
   set displayProperties(properties: string[]) {
     const tempLabels: Pojo[] = Object.keys(properties || [])
-      .filter(property => property !== 'field' && property !== 'id' && property !== 'email')
+      .filter(property => property !== 'field')
       .map((property: string) => {
         let label: string = property.replace(/([A-Z])/g, ' $1')
           .replace(/^./, function (str) { return str.toUpperCase(); });
         return { label: label, value: properties[property as any] };
       });
     this.labels.next(tempLabels);
+    console.log(tempLabels);
+    console.log(this.labels);
   }
   @Output() selectContact: EventEmitter<Pojo> = new EventEmitter();
 

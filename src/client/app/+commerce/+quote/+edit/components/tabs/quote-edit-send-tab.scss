@@ -1,7 +1,7 @@
 quote-edit-send-tab-component {
 
   .recipient-options-select {
-    padding: 1% 1% 0 0;
+    padding: 1% 1% 4px 0;
     @media screen and (max-width: $layout-breakpoint-xs)  {
       padding-right: 0;
     }
@@ -33,21 +33,29 @@ quote-edit-send-tab-component {
         // }
       }
       &.recipient.is-empty {
-        ul.recipient.empty-properties {
-          display: block;
+        ul.mat-caption {
           opacity:.4;
         }
       }
+      // &.recipient.is-empty {
+      //   ul.recipient.empty-properties {
+      //     display: block;
+      //     opacity:.4;
+      //   }
+      // }
       &.billing-account.is-empty {
         @include mat-elevation(0);
         background-color: transparent;
         opacity: .4;
         border-width: 1px;
         border-style: solid;
-        ul.billing.empty-properties {
-          display: block;
+        ul.mat-caption {
           margin-top: 50px;
         }
+        // ul.billing.empty-properties {
+        //   display: block;
+        //   margin-top: 50px;
+        // }
         form {
           display: none;
         }

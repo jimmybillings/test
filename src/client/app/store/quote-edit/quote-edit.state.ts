@@ -48,6 +48,7 @@ export const initialState: State = {
       }]
     },
     invoiceContact: {
+      email: '',
       field: [{
         name: 'invoiceContact',
         options: '',
@@ -205,7 +206,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
             })
           })
         })
-      }
+      };
     }
 
     case QuoteEditActions.UpdateSalesManagerFormOnQuote.Type: {
@@ -214,16 +215,13 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         sendDetails: Object.assign(state.sendDetails, {
           salesManager: Object.assign(state.sendDetails.salesManager, {
             field: state.sendDetails.salesManager.field.map(field => {
-              if (field.type === 'wzdate') {
-                field.default = action.form[field.name];
-              }
+              if (field.type === 'wzdate') field.default = action.form[field.name];
               field.value = action.form[field.name];
-
               return field;
             })
           })
         })
-      }
+      };
     }
 
     case QuoteEditActions.AddInvoiceContactToQuote.Type: {
@@ -234,7 +232,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
             id: action.userId
           })
         })
-      }
+      };
     }
 
     case QuoteEditActions.DeleteFailure.Type:
