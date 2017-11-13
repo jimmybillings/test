@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs/Rx';
+import { BehaviorSubject, Subject } from 'rxjs/Rx';
 import { Pojo } from '../../interfaces/common.interface';
 import { Component, ChangeDetectionStrategy, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
@@ -16,19 +16,19 @@ import { WzFormBase } from './wz.form-base';
 })
 
 export class WzFormAutoCompleteViewComponent extends WzFormBase {
-  public labels: Subject<Pojo[]> = new Subject();
+  public labels: BehaviorSubject<Pojo[]>;
   @Input() title: string;
   @Input() matchOnProperty: string;
   @Input()
   set displayProperties(properties: string[]) {
     const tempLabels: Pojo[] = Object.keys(properties || [])
-      .filter(property => property !== 'field' && property !== 'id' && property !== 'email')
+      .filter(property => property !== 'name' && property !== 'field' && property !== 'id' && property !== 'email')
       .map((property: string) => {
         let label: string = property.replace(/([A-Z])/g, ' $1')
           .replace(/^./, function (str) { return str.toUpperCase(); });
         return { label: label, value: properties[property as any] };
       });
-    this.labels.next(tempLabels);
+    this.labels = new BehaviorSubject(tempLabels);
   }
 
   constructor(

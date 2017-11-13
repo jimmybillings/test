@@ -1,9 +1,10 @@
+import { WzFormComponent } from '../../../../../shared/modules/wz-form/wz.form.component';
 import { Common } from '../../../../../shared/utilities/common.functions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { User, Account } from '../../../../../shared/interfaces/user.interface';
 import { Tab } from '../../../../components/tabs/tab';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import {
   QuoteOptions,
   SendDetails,
@@ -22,6 +23,7 @@ import { Pojo } from '../../../../../shared/interfaces/common.interface';
 })
 
 export class QuoteEditSendTabComponent extends Tab {
+  @ViewChild('invoiceContactform') private invoiceContactform: WzFormComponent;
 
   constructor(private store: AppStore) {
 
@@ -31,6 +33,25 @@ export class QuoteEditSendTabComponent extends Tab {
         JSON.parse(localStorage.getItem('currentUser')).emailAddress
       )
     )
+  }
+
+  ngOnInit() {
+    this.store.select(state => state.quoteEdit.sendDetails).subscribe(c => {
+      if ((c.billingAccount.name === c.user.accountName) &&
+        !c.invoiceContact.hasOwnProperty('id')) {
+        if (!!this.invoiceContactform) {
+          console.log('Reset Form');
+          this.invoiceContactform.resetForm();
+        }
+      }
+      if ((c.billingAccount.name !== c.user.accountName) &&
+        !c.invoiceContact.hasOwnProperty('id')) {
+        if (!!this.invoiceContactform) {
+          console.log('Mark as dirty');
+          this.invoiceContactform.markFieldsAsTouched();
+        }
+      }
+    });
   }
 
   public onSubmitSendQuote(options: QuoteOptions): void {
@@ -90,12 +111,16 @@ export class QuoteEditSendTabComponent extends Tab {
   }
 
   private userAccountMatchesBillingAccount(sendDetails: SendDetails) {
-    console.log(sendDetails);
+    // console.log((sendDetails.user.hasOwnProperty('accountName') && sendDetails.billingAccount.hasOwnProperty('name'))
+    //   && (sendDetails.user.accountName === sendDetails.billingAccount.name));
     return (sendDetails.user.hasOwnProperty('accountName') && sendDetails.billingAccount.hasOwnProperty('name'))
       && (sendDetails.user.accountName === sendDetails.billingAccount.name);
   }
 
   private allBillingFieldsSelected(sendDetails: SendDetails) {
+    // console.log('sendDetails.user.hasOwnProperty(\'accountName\')', sendDetails.user.hasOwnProperty('accountName'));
+    // console.log('sendDetails.billingAccount.hasOwnProperty(\'id\')', sendDetails.billingAccount.hasOwnProperty('id'));
+    // console.log('sendDetails.invoiceContact.hasOwnProperty(\'id\')', sendDetails.invoiceContact.hasOwnProperty('id'));
     return sendDetails.user.hasOwnProperty('accountName') &&
       sendDetails.billingAccount.hasOwnProperty('id') &&
       sendDetails.invoiceContact.hasOwnProperty('id')

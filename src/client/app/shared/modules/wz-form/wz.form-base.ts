@@ -102,6 +102,12 @@ export class WzFormBase implements OnInit, OnChanges {
     }
   }
 
+  public markFieldsAsTouched() {
+    for (let control in this.form.controls) {
+      (<FormControl>this.form.controls[control]).markAsTouched();
+    }
+  }
+
   public parseOptions(options: any) {
     return options.split(',');
   }
