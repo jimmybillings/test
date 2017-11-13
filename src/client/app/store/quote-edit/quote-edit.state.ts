@@ -170,7 +170,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
               if (state.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
                 field.value = field.options.find((option: Pojo) => option.id === state.sendDetails.billingAccount.invoiceContactId);
               } else {
-                field.value = "";
+                field.value = '';
               }
               return field;
             }),

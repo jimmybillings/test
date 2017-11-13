@@ -21,7 +21,7 @@ export class AccountService {
           purchaseOnCredit: account.purchaseOnCredit || null,
           invoiceContactId: account.invoiceContactId,
           salesOwner: account.salesOwner || null
-        }
+        };
       });
   }
 }

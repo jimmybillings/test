@@ -453,4 +453,5 @@ export type Any =
   UpdateQuoteFields | AddFeeTo | RemoveFee | BulkImport | BulkImportSuccess | EditLineItem |
   AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject |
   UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
-  UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | AddInvoiceContactToQuote | AddSalesManagerToQuote | UpdateSalesManagerFormOnQuote;
+  UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | AddInvoiceContactToQuote |
+  AddSalesManagerToQuote | UpdateSalesManagerFormOnQuote;
