@@ -46,7 +46,7 @@
 	*ngIf="shouldShowCheckoutOptions"
   class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
-    <ng-container *ngIf="!(quoteIsTrial | async)">
+    <ng-container *ngIf="showPricing | async">
       <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal mat-headline">
         <span class="total-label" flex="100">
           {{ 'CART.CART_SUBTOTAL' | translate }} 

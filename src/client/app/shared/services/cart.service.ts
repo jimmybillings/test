@@ -14,7 +14,6 @@ import {
   AssetLineItem,
   AddAssetParameters,
   QuoteOptions,
-  OrderableType,
   PaymentType,
   PaymentOptions,
   PaymentOption,
@@ -71,7 +70,7 @@ export class CartService {
     });
   }
 
-  public get total(): Observable<Number> {
+  public get total(): Observable<number> {
     return this.cart.map((data: Cart) => data.total);
   }
 

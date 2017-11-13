@@ -16,14 +16,13 @@
   flex="100"
   [readOnly]="true"
   [projects]="projects"
-  [quoteType]="'quoteEdit'"
+  [quoteType]="quoteType | async"
   [userCan]="userCan">
 </projects-component>
 
 <section class="cart-total" layout="row" layout-align="center center">
   <div flex="100">
-    
-    <div flex="100" layout="row" layout-align="end center" class="total mat-headline">
+    <div *ngIf="showTotal | async" flex="100" layout="row" layout-align="end center" class="total mat-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_TOTAL' | translate }} 
       </span>
@@ -31,7 +30,6 @@
         {{ total | async | currency:'USD':true:'1.2-2' }}
       </span>
     </div>
-
   </div>
 </section>
 

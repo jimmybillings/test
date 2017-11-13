@@ -1,5 +1,4 @@
 <projects-component
-  [quoteType]="quoteType"
   [projects]="projects" 
   [config]="config" 
   [userCan]="userCan" 
@@ -8,12 +7,12 @@
 
 <section class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
-    <div *ngIf="!quoteIsTrial" flex="100" layout="row" layout-align="end center" class="total mat-headline">
+    <div *ngIf="total | async" flex="100" layout="row" layout-align="end center" class="total mat-headline">
       <span class="total-label">
         {{ 'CART.CART_TOTAL' | translate }} 
       </span>
       <span class="total-amount">
-        {{ cartService.total | async | currency:'USD':true:'1.2-2' }}
+        {{ total | async | currency:'USD':true:'1.2-2' }}
       </span>
 		</div>
     <div flex="100" layout="row" layout-align="end center">
