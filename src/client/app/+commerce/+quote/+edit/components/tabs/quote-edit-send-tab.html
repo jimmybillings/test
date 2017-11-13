@@ -5,6 +5,7 @@
   <section class="recipient-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form-autocomplete-view *ngIf="user | async" flex="100" 
       class="recipient"
+      [ngClass]="{ 'is-empty' : !(!!(user | async).id) }"
       [items]="(user | async).field"
       [title]="'Recipient'"
       [matchOnProperty]="'emailAddress'"
@@ -18,6 +19,7 @@
     
     <wz-form-autocomplete-view flex="100"
       class="billing-account"
+      [ngClass]="{ 'is-empty' : !(!!(billingAccount | async).id) }"
       [items]="(billingAccount | async).field"
       [title]="'Billing account'"
       [matchOnProperty]="'name'"
@@ -46,7 +48,7 @@
       [disableUntilValid]="true"
       [outSidePropertiesValid]="allBillingSelectionComplete | async"
       submitLabel="PROCEED TO CONFIRM" 
-      (formSubmit)="onSubmit($event)"
+      (formSubmit)="onSubmitSendQuote($event)"
       (blur)=onBlur($event)>
     </wz-form>
   </section>
