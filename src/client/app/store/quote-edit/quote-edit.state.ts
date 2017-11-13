@@ -34,7 +34,12 @@ export const initialState: State = {
       }]
     },
     billingAccount: {
-      paymentTermsDays: 'sdlfkj',
+      creditExemption: null,
+      licensingVertical: null,
+      paymentTermsDays: null,
+      purchaseOnCredit: null,
+      invoiceContactId: null,
+      salesOwner: null,
       field: [{
         endPoint: 'account/searchFields',
         queryParams: 'fields,name,values',

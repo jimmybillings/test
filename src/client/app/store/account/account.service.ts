@@ -15,12 +15,12 @@ export class AccountService {
         return {
           id: account.id,
           name: account.name,
-          creditExemption: account.creditExemption,
-          licensingVertical: account.licensingVertical,
-          paymentTermsDays: account.paymentTermsDays,
-          purchaseOnCredit: account.purchaseOnCredit,
+          creditExemption: account.creditExemption || null,
+          licensingVertical: account.licensingVertical || null,
+          paymentTermsDays: account.paymentTermsDays || null,
+          purchaseOnCredit: account.purchaseOnCredit || null,
           invoiceContactId: account.invoiceContactId,
-          salesOwner: account.salesOwner
+          salesOwner: account.salesOwner || null
         }
       });
   }
