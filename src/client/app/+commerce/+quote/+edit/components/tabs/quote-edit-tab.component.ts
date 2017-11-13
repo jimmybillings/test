@@ -198,14 +198,15 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   private get rmAssetsHaveRightsPackage(): boolean {
-    return this.store.snapshot(state => state.quoteEdit.data.projects || [])
-      .filter(project => project.lineItems)
-      .map(project => project.lineItems)
-      .reduce((next, all) => next.concat(all))
+    const allLineItems: Array<AssetLineItem>[] =
+      this.store.snapshot(state => state.quoteEdit.data.projects || [])
+        .filter(project => project.lineItems)
+        .map(project => project.lineItems)
+
+    return [].concat.apply([], allLineItems)
       .filter((lineItem: Pojo) => (
-        lineItem.rightsManaged === 'Rights Managed' &&
-        !lineItem.hasOwnProperty('attributes')
-      )).length === 0;
+        lineItem.rightsManaged === 'Rights Managed' && !lineItem.hasOwnProperty('attributes')
+      )).length === 0
   }
 
   private onOpenBulkImportDialog(projectId: string): void {
