@@ -134,6 +134,7 @@ header.app-header + div.main-content order-show-component,
 header.app-header + div.main-content quote-edit-component,
 header.app-header + div.main-content quotes-component,
 header.app-header + div.main-content invoice-component,
+header.app-header + div.main-content privacy-policy-component,
 header.app-header + div.main-content quote-show-component {
   display: block;
   transition: border-top-width 200ms $swift-ease-in-out-timing-function 200ms;
@@ -157,6 +158,7 @@ header.app-header.collection-tray-closed + div.main-content order-show-component
 header.app-header.collection-tray-closed + div.main-content quote-edit-component,
 header.app-header.collection-tray-closed + div.main-content quotes-component,
 header.app-header.collection-tray-closed + div.main-content invoice-component,
+header.app-header.collection-tray-closed + div.main-content privacy-policy-component,
 header.app-header.collection-tray-closed + div.main-content quote-show-component {
   transition: border-top-width 150ms linear 50ms;
   border-top-width: 106px;
@@ -179,6 +181,7 @@ header.app-header.collection-tray-closed.search-closed + div.main-content order-
 header.app-header.collection-tray-closed.search-closed + div.main-content quote-edit-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content quotes-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content invoice-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content privacy-policy-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content quote-show-component {
   transition: border-top-width 150ms linear 50ms;
   border-top-width: 64px;
@@ -201,6 +204,7 @@ header.app-header.search-closed + div.main-content order-show-component,
 header.app-header.search-closed + div.main-content quote-edit-component,
 header.app-header.search-closed + div.main-content quotes-component,
 header.app-header.search-closed + div.main-content invoice-component,
+header.app-header.search-closed + div.main-content privacy-policy-component,
 header.app-header.search-closed + div.main-content quote-show-component {
   transition: border-top-width 150ms linear 50ms;
   border-top-width: 116px;

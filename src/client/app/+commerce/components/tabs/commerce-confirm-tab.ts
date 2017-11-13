@@ -6,9 +6,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
-import {
-  CartState, QuoteState, PaymentOption, OrderableType
-} from '../../../shared/interfaces/commerce.interface';
+import { CartState, QuoteState, PaymentOption } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Common } from '../../../shared/utilities/common.functions';

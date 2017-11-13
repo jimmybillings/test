@@ -18,7 +18,7 @@
     .invoice-divider {
       border-bottom-color: mat-color($foreground, base, .15);
     }
-    .contact-container {
+    .contact-container, .notes-container {
       border-color: mat-color($foreground, base, .15);
     }
     div.project {
@@ -35,21 +35,31 @@
           }
           li.cart-asset, li.fee-item {
             border-color: mat-color($foreground, base, .15);
-            &:nth-child(odd) {
-              background-color:  transparent;
-              // background-color:  mat-color($foreground, base, .1);
-              @media screen and (max-width: $layout-breakpoint-xs)  {
-                background-color:  transparent;
-              }
+            & > div[layout-padding] {
+              border-left-color:  mat-color($foreground, base, .15); 
             }
-            &:nth-child(even) {
-              background-color:  transparent;
-              // background-color: mat-color($foreground, base, .02);
-              @media screen and (max-width: $layout-breakpoint-xs)  {
-                background-color:  transparent;
-              }
-            }
+            // &:nth-child(odd) {
+            //   background-color:  transparent;
+            //   @media screen and (max-width: $layout-breakpoint-xs)  {
+            //     background-color:  transparent;
+            //   }
+            // }
+            // &:nth-child(even) {
+            //   background-color:  transparent;
+            //   @media screen and (max-width: $layout-breakpoint-xs)  {
+            //     background-color:  transparent;
+            //   }
+            // }
           }
+        }
+      }
+    }
+    .totals-container {
+      background-color: mat-color($foreground, base, .06);
+      & > div {
+        border-bottom-color:  mat-color($background, card, .9);
+        &.amount-due {
+          background-color: mat-color($foreground, base, .06);
         }
       }
     }

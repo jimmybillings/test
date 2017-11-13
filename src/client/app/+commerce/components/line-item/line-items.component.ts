@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project, AssetLineItem, OrderableType } from '../../../shared/interfaces/commerce.interface';
+import { Project, AssetLineItem, PurchaseType, quotesWithoutPricing } from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 
@@ -17,7 +17,7 @@ export class LineItemsComponent {
   @Input() set lineItems(items: AssetLineItem[]) {
     if (items) this.items = items;
   };
-  @Input() quoteType: OrderableType;
+  @Input() quoteType: PurchaseType;
   @Input() otherProjects: Project[];
   @Input() userCan: Capabilities;
   @Input() readOnly: boolean = false;
@@ -64,7 +64,7 @@ export class LineItemsComponent {
   }
 
   public shouldDisplayRights(lineItem: AssetLineItem): boolean {
-    return lineItem.rightsManaged === 'Rights Managed' && this.quoteType !== 'Trial';
+    return lineItem.rightsManaged === 'Rights Managed' && !quotesWithoutPricing.includes(this.quoteType);
   }
 
   public shouldShowTargets(lineItem: AssetLineItem): boolean {
@@ -72,7 +72,7 @@ export class LineItemsComponent {
   }
 
   public get shouldDisplayPricing(): boolean {
-    return this.quoteType !== 'Trial';
+    return !quotesWithoutPricing.includes(this.quoteType);
   }
 
   public onOpenCostMultiplierForm(lineItem: AssetLineItem): void {

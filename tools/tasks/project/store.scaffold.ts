@@ -4,308 +4,270 @@ import { join } from 'path';
 import { argv } from 'yargs';
 import Config from '../../config';
 
-let section: string;
-let skips: string[];
-let path: string;
-
 export = () => {
-  validateInput();
+  let scaffolder: Scaffolder = new Scaffolder(argv['section'], argv['skip'], argv['help']);
 
-  return mkdir(path, () => {
-    makeFiles();
-  });
-}
+  scaffolder.init();
+};
 
-const validateInput = (): void => {
-  if (!argv['section']) {
-    gutil.log('Please provide a store section name');
-    process.exit(1);
+class Scaffolder {
+  private sectionName: string;
+  private path: string;
+  private className: string;
+  private stateName: string;
+  private serviceName: string;
+  private effectsName: string;
+  private actionsName: string;
+  private classNameWithSpaces: string;
+  private skips: string[];
+
+  constructor(sectionName: string, skips: string, help: boolean) {
+    if (help || !sectionName) {
+      this.logInstructions();
+      process.exit(0);
+    }
+    this.sectionName = this.kebab(sectionName);
+    this.skips = skips ? skips.split(',') : [];
+    this.path = join(Config.APP_SRC, 'app/store/', this.sectionName);
+
+    this.className = this.sectionName.split('-').map(this.capitalize).join('');
+    this.classNameWithSpaces = this.sectionName.split('-').map(this.capitalize).join(' ');
+
+    this.stateName = `${this.className}State`;
+    this.serviceName = `${this.className}Service`;
+    this.effectsName = `${this.className}Effects`;
+    this.actionsName = `${this.className}Actions`;
   }
 
-  section = kebab(argv['section']);
-  path = join(Config.APP_SRC, 'app/store/', section);
+  public init(): void {
+    if (!this.sectionName) {
+      gutil.log(gutil.colors.red('Please provide a store section name'));
+      process.exit(1);
+    }
 
-  if (!argv['skip']) {
-    gutil.log(`Creating all store files ${section}`);
-    skips = [];
-  } else {
-    skips = parse(argv['skip']);
+    if (this.skips.length === 0) {
+      gutil.log(gutil.colors.cyan(`Creating all store files for ${this.sectionName}`));
+    } else {
+      gutil.log(gutil.colors.red(`Skipping ${this.skips.join(', ')} for ${this.sectionName}`));
+    }
+
+    this.writeFiles();
   }
-}
 
-const makeFiles = (): void => {
-  makeActionFiles();
-  makeEffectsFiles();
-  makeStateFiles();
-  makeServiceFiles();
-}
-
-const makeActionFiles = (): void => {
-  const fullPath: string = join(path, `${section}.actions.ts`);
-  const fullSpecPath: string = join(path, `${section}.actions.spec.ts`);
-
-  if (skips.indexOf('actions') === -1) {
-    writeFile(fullPath, actionFileFor(section), { flag: 'wx' }, (err) => {
-      if (err) {
-        gutil.log(gutil.colors.red(`Skipping ${fullPath}, it already exists`));
-      } else {
-        gutil.log(gutil.colors.green(`Created ${fullPath}`));
-      }
+  private writeFiles(): void {
+    mkdir(this.path, () => {
+      this.makeActionFiles();
+      this.makeEffectsFiles();
+      this.makeStateFiles();
+      this.makeServiceFiles();
     });
-    if (skips.indexOf('specs') === -1) {
-      writeFile(fullSpecPath, actionSpecFileFor(section), { flag: 'wx' }, (err) => {
-        if (err) {
-          gutil.log(gutil.colors.red(`Skipping ${fullSpecPath}, it already exists`));
-        } else {
-          gutil.log(gutil.colors.green(`Created ${fullSpecPath}`));
-        }
-      });
+  }
+
+  private makeActionFiles(): void {
+    const fullPath: string = join(this.path, `${this.sectionName}.actions.ts`);
+    const fullSpecPath: string = join(this.path, `${this.sectionName}.actions.spec.ts`);
+
+    if (this.include('actions')) {
+      this.writeFile(fullPath, this.actionFile);
+      if (this.include('specs')) {
+        this.writeFile(fullSpecPath, this.actionSpecFile);
+      }
     }
   }
-}
 
-const makeEffectsFiles = (): void => {
-  const fullPath: string = join(path, `${section}.effects.ts`);
-  const fullSpecPath: string = join(path, `${section}.effects.spec.ts`);
+  private makeEffectsFiles(): void {
+    const fullPath: string = join(this.path, `${this.sectionName}.effects.ts`);
+    const fullSpecPath: string = join(this.path, `${this.sectionName}.effects.spec.ts`);
 
-  if (skips.indexOf('effects') === -1) {
-    writeFile(fullPath, effectFileFor(section), { flag: 'wx' }, (err) => {
-      if (err) {
-        gutil.log(gutil.colors.red(`Skipping ${fullPath}, it already exists`));
-      } else {
-        gutil.log(gutil.colors.green(`Created ${fullPath}`));
+    if (this.include('effects')) {
+      this.writeFile(fullPath, this.effectFile);
+      if (this.include('specs')) {
+        this.writeFile(fullSpecPath, this.effectSpecFile);
       }
-    });
-    if (skips.indexOf('specs') === -1) {
-      writeFile(fullSpecPath, effectSpecFileFor(section), { flag: 'wx' }, (err) => {
-        if (err) {
-          gutil.log(gutil.colors.red(`Skipping ${fullSpecPath}, it already exists`));
-        } else {
-          gutil.log(gutil.colors.green(`Created ${fullSpecPath}`));
-        }
-      });
     }
   }
-}
 
-const makeStateFiles = (): void => {
-  const fullPath: string = join(path, `${section}.state.ts`);
-  const fullSpecPath: string = join(path, `${section}.state.spec.ts`);
+  private makeStateFiles(): void {
+    const fullPath: string = join(this.path, `${this.sectionName}.state.ts`);
+    const fullSpecPath: string = join(this.path, `${this.sectionName}.state.spec.ts`);
 
-  if (skips.indexOf('state') === -1) {
-    writeFile(fullPath, stateFileFor(section), { flag: 'wx' }, (err) => {
-      if (err) {
-        gutil.log(gutil.colors.red(`Skipping ${fullPath}, it already exists`));
-      } else {
-        gutil.log(gutil.colors.green(`Created ${fullPath}`));
+    if (this.include('state')) {
+      this.writeFile(fullPath, this.stateFile);
+      if (this.include('specs')) {
+        this.writeFile(fullSpecPath, this.stateSpecFile);
       }
-    });
-    if (skips.indexOf('specs') === -1) {
-      writeFile(fullSpecPath, stateSpecFileFor(section), { flag: 'wx' }, (err) => {
-        if (err) {
-          gutil.log(gutil.colors.red(`Skipping ${fullSpecPath}, it already exists`));
-        } else {
-          gutil.log(gutil.colors.green(`Created ${fullSpecPath}`));
-        }
-      });
     }
   }
-}
 
-const makeServiceFiles = (): void => {
-  const fullPath: string = join(path, `${section}.service.ts`);
-  const fullSpecPath: string = join(path, `${section}.service.spec.ts`);
+  private makeServiceFiles(): void {
+    const fullPath: string = join(this.path, `${this.sectionName}.service.ts`);
+    const fullSpecPath: string = join(this.path, `${this.sectionName}.service.spec.ts`);
 
-  if (skips.indexOf('service') === -1) {
-    writeFile(fullPath, serviceFileFor(section), { flag: 'wx' }, (err) => {
-      if (err) {
-        gutil.log(gutil.colors.red(`Skipping ${fullPath}, it already exists`));
-      } else {
-        gutil.log(gutil.colors.green(`Created ${fullPath}`));
+    if (this.include('service')) {
+      this.writeFile(fullPath, this.serviceFile);
+      if (this.include('specs')) {
+        this.writeFile(fullSpecPath, this.serviceSpecFile);
       }
-    });
-    if (skips.indexOf('specs') === -1) {
-      writeFile(fullSpecPath, serviceSpecFileFor(section), { flag: 'wx' }, (err) => {
-        if (err) {
-          gutil.log(gutil.colors.red(`Skipping ${fullSpecPath}, it already exists`));
-        } else {
-          gutil.log(gutil.colors.green(`Created ${fullSpecPath}`));
-          gutil.log(gutil.colors.yellow('Don\'t forget to add to app.store, mock-app.store and shared.module!!'));
-        }
-      });
     }
   }
-}
 
-const serviceNameFor = (className: string): string => {
-  return `${className}Service`;
-}
+  private include(storeSegmentType: string): boolean {
+    return this.skips.indexOf(storeSegmentType) === -1;
+  }
 
-const effectsNameFor = (className: string): string => {
-  return `${className}Effects`;
-}
+  private capitalize(s: string): string {
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
 
-const actionsNameFor = (className: string): string => {
-  return `${className}Actions`;
-}
+  private kebab(s: string): string {
+    return s.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').toLowerCase();
+  }
 
-const stateNameFor = (className: string): string => {
-  return `${className}State`;
-}
+  private writeFile(path: string, fileTemplate: string): void {
+    writeFile(path, fileTemplate, { flag: 'wx' }, (err) => {
+      if (err) {
+        gutil.log(gutil.colors.red(`Skipping ${path}, it already exists!`));
+      } else {
+        gutil.log(gutil.colors.green(`Created ${path}`));
+      }
+    });
+  }
 
-const classNameFor = (section: string): string => {
-  return section.split('-').map(capitalize).join('');
-}
+  private logInstructions(): void {
+    this.instructions.forEach((instruction: string) => {
+      gutil.log(gutil.colors.white(instruction));
+    });
+  }
 
-const capitalize = (s: string): string => {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
+  private get instructions(): string[] {
+    return [
+      '',
+      'usage:',
+      '  npm run store.scaffold -- [args]',
+      '',
+      'args:',
+      '--section',
+      '  whatever you want the files and classes to be named',
+      '  expects "kebab-case"',
+      '',
+      '--skip',
+      '  if you want to skip a particular part of the store scaffolding',
+      '  expects csv of valid options',
+      '  valid options: specs,actions,effects,service,state',
+      '',
+      '--help',
+      '  displays this message',
+      '',
+      'example:',
+      '  npm run store.scaffold -- --section=some-section --skip=state',
+      ''
+    ];
+  }
 
-const actionTypeFor = (section: string): string => {
-  return section.split('-').map(capitalize).join(' ');
-}
-
-const describeHeaderFor = (section: string): string => {
-  return actionTypeFor(section);
-}
-
-const kebab = (s: string): string => {
-  return s.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').toLowerCase();
-}
-
-const parse = (skips: string): string[] => {
-  return skips.split(',');
-}
-
-const actionFileFor = (section: string): string => {
-  const actionType: string = actionTypeFor(section);
-
-  return `import { Action } from '@ngrx/store';
+  private get actionFile(): string {
+    return `import { Action } from '@ngrx/store';
 
 export class ActionFactory { }
 
 export class InternalActionFactory extends ActionFactory { }
 
 export class SomeAction implements Action {
-  public static readonly Type = '[${actionType}] Some Action';
+  public static readonly Type = '[${this.classNameWithSpaces}] Some Action';
   public readonly type = SomeAction.Type;
 }
 
 export type Any = SomeAction;
 `;
-}
+  }
 
-const actionSpecFileFor = (section: string): string => {
-  const describeHeader = describeHeaderFor(section);
-
-  return `import { ActionFactory, InternalActionFactory } from './${section}.actions';
+  private get actionSpecFile(): string {
+    return `import { ActionFactory, InternalActionFactory } from './${this.sectionName}.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
 export function main() {
-  describe('${describeHeader} Actions', () => {
+  describe('${this.classNameWithSpaces} Actions', () => {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
   });
 }
 `;
-}
+  }
 
-const effectFileFor = (section: string): string => {
-  const className: string = classNameFor(section);
-  const serviceName: string = serviceNameFor(className);
-  const effectsName: string = effectsNameFor(className);
-  const actionsName: string = actionsNameFor(className);
-
-  return `import { Injectable } from '@angular/core';
+  private get effectFile(): string {
+    return `import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
 import { Effect, Actions } from '@ngrx/effects';
 
 import { AppStore } from '../../app.store';
-import { ${serviceName} } from './${section}.service';
-import * as ${actionsName} from './${section}.actions';
+import { ${this.serviceName} } from './${this.sectionName}.service';
+import * as ${this.actionsName} from './${this.sectionName}.actions';
 
 @Injectable()
-export class ${effectsName} {
-  constructor(private actions: Actions, private store: AppStore, private service: ${serviceName}) { }
+export class ${this.effectsName} {
+  constructor(private actions: Actions, private store: AppStore, private service: ${this.serviceName}) { }
 }
 `;
-}
+  }
 
-const effectSpecFileFor = (section: string): string => {
-  const className: string = classNameFor(section);
-  const effectsName: string = effectsNameFor(className);
-  const actionsName: string = actionsNameFor(className);
-  const describeHeader = describeHeaderFor(section);
-
-  return `import { ${effectsName} } from './${section}.effects';
-import * as ${actionsName} from './${section}.actions';
+  private get effectSpecFile(): string {
+    return `import { ${this.effectsName} } from './${this.sectionName}.effects';
+import * as ${this.actionsName} from './${this.sectionName}.actions';
 import { EffectsSpecHelper, EffectTestParameters } from '../spec-helpers/effects.spec-helper';
 
 export function main() {
-  describe('${describeHeader} Effects', () => {
+  describe('${this.classNameWithSpaces} Effects', () => {
     const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
 
-    function instantiator(): ${effectsName} {
-      return new ${effectsName}(
+    function instantiator(): ${this.effectsName} {
+      return new ${this.effectsName}(
         effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
       );
     }
   });
 }
 `;
-}
+  }
 
-const serviceFileFor = (section: string): string => {
-  const capitalizedSectionName = capitalize(section);
-  const className: string = classNameFor(section);
-  const serviceName: string = serviceNameFor(className);
-
-  return `import { Injectable } from '@angular/core';
+  private get serviceFile(): string {
+    return `import { Injectable } from '@angular/core';
 
 import { FutureApiService } from '../api/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 
 @Injectable()
-export class ${serviceName} {
+export class ${this.serviceName} {
   constructor(private apiService: FutureApiService) { }
 }
 `;
-}
+  }
 
-const serviceSpecFileFor = (section: string): string => {
-  const className: string = classNameFor(section);
-  const serviceName: string = serviceNameFor(className);
-  const describeHeader = describeHeaderFor(section);
-
-  return `import { ${serviceName} } from './${section}.service';
+  private get serviceSpecFile(): string {
+    return `import { ${this.serviceName} } from './${this.sectionName}.service';
 import { MockApiService, mockApiMatchers } from '../spec-helpers/mock-api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
-  describe('${describeHeader} Service', () => {
-    let serviceUnderTest: ${serviceName}, mockApiService: MockApiService;
+  describe('${this.classNameWithSpaces} Service', () => {
+    let serviceUnderTest: ${this.serviceName}, mockApiService: MockApiService;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApiService = new MockApiService();
-      serviceUnderTest = new ${serviceName}(mockApiService.injector);
+      serviceUnderTest = new ${this.serviceName}(mockApiService.injector);
     });
   });
 }
 `;
-}
+  }
 
-const stateFileFor = (section: string): string => {
-  const className: string = classNameFor(section);
-  const actionsName: string = actionsNameFor(className);
-
-  return `import * as ${actionsName} from './${section}.actions';
+  private get stateFile(): string {
+    return `import * as ${this.actionsName} from './${this.sectionName}.actions';
 
 export interface State { }
 
 export const initialState: State = { };
 
-export function reducer(state: State = initialState, action: ${actionsName}.Any): State {
+export function reducer(state: State = initialState, action: ${this.actionsName}.Any): State {
   if (state === null) state = initialState;
 
   switch (action.type) {
@@ -317,27 +279,24 @@ export function reducer(state: State = initialState, action: ${actionsName}.Any)
   }
 }
 `;
-}
+  }
 
-const stateSpecFileFor = (section: string): string => {
-  const className: string = classNameFor(section);
-  const describeHeader = describeHeaderFor(section);
-  const stateName = stateNameFor(className);
-  const actionsName: string = actionsNameFor(className);
-
-  return `import * as ${stateName} from './${section}.state';
-import * as ${actionsName} from './${section}.actions';
+  private get stateSpecFile(): string {
+    return `import * as ${this.stateName} from './${this.sectionName}.state';
+import * as ${this.actionsName} from './${this.sectionName}.actions';
 import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 
 export function main() {
   const stateSpecHelper: StateSpecHelper = new StateSpecHelper();
 
-  describe('${describeHeader} Reducer', () => {
+  describe('${this.classNameWithSpaces} Reducer', () => {
     stateSpecHelper.setReducerTestModules({
-      actions: ${actionsName},
-      state: ${stateName},
+      actions: ${this.actionsName},
+      state: ${this.stateName},
     });
   });
 }
 `;
+  }
 }
+

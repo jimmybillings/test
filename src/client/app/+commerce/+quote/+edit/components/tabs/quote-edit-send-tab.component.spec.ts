@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import { CommerceEditTab } from '../../../../components/tabs/commerce-edit-tab';
 import { MockAppStore } from '../../../../../store/spec-helpers/mock-app.store';
 import { QuoteEditSendTabComponent } from './quote-edit-send-tab.component';
 

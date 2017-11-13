@@ -9,7 +9,6 @@ import {
   Quote,
   Order,
   QuoteOptions,
-  OrderableType,
   PaymentType,
   AddressPurchaseOptions,
   CreditCardPurchaseOptions,

@@ -3,7 +3,7 @@ import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
 import { Address, Document, Payee } from './user.interface';
 
-export type OrderableType =
+export type PurchaseType =
   'SystemLicense' |
   'SystemLicenseNoDelivery' |
   'OfflineLicense' |
@@ -12,7 +12,6 @@ export type OrderableType =
   'PrepayOfflineLicense' |
   'Trial' |
   'DeliveryOnly' |
-  'BadDebt' |
   'ChannelNoDelivery';
 
 export type PaymentOption =
@@ -40,7 +39,12 @@ export type TranscodeStatus = 'Submitted' | 'Completed' | 'Failed' | 'UrlError' 
 
 export type OrderStatus = 'ORDER' | 'REFUND';
 
-export type EditableQuoteFields = 'bulkOrderId' | 'discount';
+export type EditableQuoteFields = 'bulkOrderId' | 'discount' | 'purchaseType';
+
+export const quotesWithoutPricing: PurchaseType[] = [
+  'Trial',
+  'DeliveryOnly'
+];
 
 // Base interfaces
 
@@ -52,7 +56,7 @@ export interface Project {
   id: string;
   name: string;
   clientName: string;
-  subtotal: number;
+  subTotal?: number;
   creditMemoForProjectId?: number;
   lineItems?: Array<AssetLineItem>;
   feeLineItems?: Array<FeeLineItem>;
@@ -160,7 +164,7 @@ export interface Order extends CommonCommerce {
   createdUserId: number;
   ownerUserId: number;
   orderStatus: OrderStatus;
-  orderType: OrderableType;
+  orderType: PurchaseType;
   paymentType: PaymentType;
   quoteId: number;
   taxAmount: number;
@@ -185,14 +189,14 @@ export interface Quote extends CommonCommerce {
   total: number;
   subTotal?: number;
   quoteStatus: QuoteStatus;
-  purchaseType?: OrderableType;
+  purchaseType?: PurchaseType;
   projects?: Project[];
   itemCount?: number;
   expirationDate?: string;
   focused?: boolean;
   stripePublicKey?: string;
   bulkOrderId?: string;
-  discount?: string;
+  discount?: number;
   externalAgreementIds?: string[];
   internalAgreementIds?: number[];
   externalLicenseIds?: string[];

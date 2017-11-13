@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { QuoteService } from '../../../shared/services/quote.service';
-import { Quote, QuoteState, AssetLineItem, OrderableType } from '../../../shared/interfaces/commerce.interface';
-import { Observable } from 'rxjs/Observable';
+import { Quote, QuoteState, AssetLineItem, PurchaseType } from '../../../shared/interfaces/commerce.interface';
 import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';

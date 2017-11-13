@@ -8,7 +8,7 @@ import {
   Project,
   Quote,
   QuoteOptions,
-  SendDetails,
+  SendDetails
 } from '../../shared/interfaces/commerce.interface';
 import { Asset, SelectedPriceAttribute, Pojo } from '../../shared/interfaces/common.interface';
 import { Account } from '../../shared/interfaces/user.interface';
@@ -46,11 +46,6 @@ export class ActionFactory {
 
   public saveRecipientInformationOnQuote(quoteOptions: QuoteOptions): SaveRecipientInformationOnQuote {
     return new SaveRecipientInformationOnQuote(quoteOptions);
-  }
-
-  // Move this to internal action factory when quote is fully "effected"
-  public loadSuccess(quote: Quote): LoadSuccess {
-    return new LoadSuccess(quote);
   }
 
   public cloneQuote(quote: Quote): CloneQuote {
@@ -136,6 +131,10 @@ export class ActionFactory {
 }
 
 export class InternalActionFactory extends ActionFactory {
+  public loadSuccess(quote: Quote): LoadSuccess {
+    return new LoadSuccess(quote);
+  }
+
   public loadFailure(error: ApiErrorResponse): LoadFailure {
     return new LoadFailure(error);
   }

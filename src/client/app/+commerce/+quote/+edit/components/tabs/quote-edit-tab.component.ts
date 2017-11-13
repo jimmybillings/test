@@ -10,7 +10,9 @@ import { WzDialogService } from '../../../../../shared/modules/wz-dialog/service
 import { Capabilities } from '../../../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../../../shared/services/window-ref.service';
-import { AssetLineItem, OrderableType, PriceAttribute, Project } from '../../../../../shared/interfaces/commerce.interface';
+import {
+  AssetLineItem, PurchaseType, PriceAttribute, Project, quotesWithoutPricing
+} from '../../../../../shared/interfaces/commerce.interface';
 import { Pojo, SelectedPriceAttribute, WzEvent } from '../../../../../shared/interfaces/common.interface';
 import { FormFields, MdSelectOption } from '../../../../../shared/interfaces/forms.interface';
 import { AppStore } from '../../../../../app.store';
@@ -28,7 +30,6 @@ import { MatDialogRef } from '@angular/material';
 
 export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   public config: Pojo;
-  public quoteType: OrderableType = null;
   public pricingPreferences: Pojo;
   public priceAttributes: Array<PriceAttribute> = null;
   @Input() projects: Project[];
@@ -46,7 +47,6 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-
     this.preferencesSubscription = this.userPreference.data.subscribe((data: any) => {
       this.pricingPreferences = data.pricingPreferences;
     });
@@ -147,12 +147,16 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     };
   }
 
+  public get quoteType(): PurchaseType {
+    return this.store.snapshot(state => state.quoteEdit.data.purchaseType);
+  }
+
   public get showUsageWarning(): boolean {
-    return this.cartContainsAssets && !this.userCanProceed;
+    return (!quotesWithoutPricing.includes(this.quoteType)) && (this.cartContainsAssets && !this.rmAssetsHaveRightsPackage);
   }
 
   public get userCanProceed(): boolean {
-    return (this.quoteType === 'Trial') || (this.cartContainsAssets && this.rmAssetsHaveRightsPackage);
+    return (quotesWithoutPricing.includes(this.quoteType)) || (this.cartContainsAssets && this.rmAssetsHaveRightsPackage);
   }
 
   public get cartContainsAssets(): boolean {
@@ -167,16 +171,16 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     return this.store.select(state => state.quoteEdit.data.subTotal);
   }
 
-  public get discount(): Observable<string> {
+  public get discount(): Observable<number> {
     return this.store.select(state => state.quoteEdit.data.discount);
   }
 
-  public get quoteIsTrial(): Observable<boolean> {
-    return this.store.select(state => state.quoteEdit.data).map(quote => quote.purchaseType === 'Trial');
+  public get showTotal(): boolean {
+    return this.store.snapshot(factory => factory.quoteEdit.data.total > 0) && !quotesWithoutPricing.includes(this.quoteType);
   }
 
   public get showDiscount(): boolean {
-    return !!this.store.snapshot(factory => factory.quoteEdit.data.discount) && this.quoteType !== 'Trial';
+    return this.store.snapshot(factory => factory.quoteEdit.data.discount > 0) && !quotesWithoutPricing.includes(this.quoteType);
   }
 
   public get shouldShowCloneButton(): Observable<boolean> {
@@ -187,14 +191,8 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     return this.config.quotePurchaseType.items;
   }
 
-  public onSelectQuoteType(event: { type: OrderableType }): void {
-    this.quoteType = event.type;
-    this.config.createQuote.items.map((item: FormFields) => {
-      if (item.name === 'purchaseType') {
-        item.value = this.viewValueFor(event.type);
-      }
-      return item;
-    });
+  public onSelectQuoteType(event: { purchaseType: PurchaseType }): void {
+    this.store.dispatch(factory => factory.quoteEdit.updateQuoteField(event));
   }
 
   private get rmAssetsHaveRightsPackage(): boolean {
@@ -445,12 +443,6 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
 
   private costMultiplierFormSubmitLabel(lineItem: AssetLineItem): string {
     return lineItem.multiplier > 1 ? 'QUOTE.EDIT_MULTIPLIER_FORM_SUBMIT' : 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT';
-  }
-
-  private viewValueFor(quoteType: OrderableType): string {
-    return this.purchaseTypeConfig.filter((option: { viewValue: string, value: OrderableType }) => {
-      return option.value === quoteType;
-    }).map((option: MdSelectOption) => option.viewValue)[0];
   }
 
   private markersFrom(asset: EnhancedAsset): SubclipMarkersInterface.SubclipMarkers {

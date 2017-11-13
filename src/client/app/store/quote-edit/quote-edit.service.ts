@@ -119,7 +119,7 @@ export class FutureQuoteEditService {
     if (quoteField[property] === '') {
       delete quote[property];
     } else {
-      Object.assign(quote, quoteField);
+      quote = { ...quote, ...quoteField };
     }
 
     return this.apiService.put(

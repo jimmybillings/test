@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { MatSelectChange } from '@angular/material';
 import { MdSelectOption } from '../../../shared/interfaces/forms.interface';
+import { PurchaseType } from '../../../shared/interfaces/commerce.interface';
 
 @Component({
   moduleId: module.id,
@@ -26,15 +27,15 @@ import { MdSelectOption } from '../../../shared/interfaces/forms.interface';
 })
 export class QuotePurchaseTypeComponent {
   public types: MdSelectOption[];
-  public selectedType: string;
-  @Output() selectQuoteType: EventEmitter<{ type: string }> = new EventEmitter();
+  @Output() selectQuoteType: EventEmitter<{ purchaseType: PurchaseType }> = new EventEmitter();
+  @Input() selectedType: string = null;
   @Input()
   public set quoteTypes(types: MdSelectOption[]) {
     this.types = types;
-    this.selectedType = this.types[0].value;
+    if (!this.selectedType) this.selectedType = this.types[0].value;
   }
 
   public onSelectChange(event: MatSelectChange): void {
-    this.selectQuoteType.emit({ type: event.value });
+    this.selectQuoteType.emit({ purchaseType: event.value });
   }
 }

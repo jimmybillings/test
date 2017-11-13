@@ -45,11 +45,15 @@ import * as InvoiceActions from './store/invoice/invoice.actions';
 import * as InvoiceState from './store/invoice/invoice.state';
 export type InvoiceState = InvoiceState.State;
 
-import * as NotifierActions from './store/notifier/notifier.actions';
-
 import * as LoadingIndicatorActions from './store/loading-indicator/loading-indicator.actions';
 import * as LoadingIndicatorState from './store/loading-indicator/loading-indicator.state';
 export type LoadingIndicatorState = LoadingIndicatorState.State;
+
+import * as MultiLingualActions from './store/multi-lingual/multi-lingual.actions';
+import * as MultiLingualState from './store/multi-lingual/multi-lingual.state';
+export type MultiLingualState = MultiLingualState.State;
+
+import * as NotifierActions from './store/notifier/notifier.actions';
 
 import * as OrderActions from './store/order/order.actions';
 import * as OrderState from './store/order/order.state';
@@ -58,6 +62,10 @@ export type OrderState = OrderState.State;
 import * as PricingActions from './store/pricing/pricing.actions';
 import * as PricingState from './store/pricing/pricing.state';
 export type PricingState = PricingState.State;
+
+import * as PrivacyPolicyActions from './store/privacy-policy/privacy-policy.actions';
+import * as PrivacyPolicyState from './store/privacy-policy/privacy-policy.state';
+export type PrivacyPolicyState = PrivacyPolicyState.State;
 
 import * as QuoteEditActions from './store/quote-edit/quote-edit.actions';
 import * as QuoteEditState from './store/quote-edit/quote-edit.state';
@@ -83,10 +91,6 @@ export type UiConfigState = UiConfigState.State;
 
 import * as UserActions from './store/user/user.actions';
 
-import * as MultiLingualActions from './store/multi-lingual/multi-lingual.actions';
-import * as MultiLingualState from './store/multi-lingual/multi-lingual.state';
-export type MultiLingualState = MultiLingualState.State;
-
 // Temporary imports for LegacyService.
 import { LegacyAssetService } from './store/asset/asset.service';
 
@@ -107,6 +111,7 @@ export interface ActionFactory {
   readonly multiLingual: MultiLingualActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
   readonly pricing: PricingActions.ActionFactory;
+  readonly privacyPolicy: PrivacyPolicyActions.ActionFactory;
   readonly quoteEdit: QuoteEditActions.ActionFactory;
   readonly quoteShow: QuoteShowActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
@@ -135,6 +140,7 @@ export interface InternalActionFactory {
   readonly notifier: NotifierActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
   readonly pricing: PricingActions.InternalActionFactory;
+  readonly privacyPolicy: PrivacyPolicyActions.InternalActionFactory;
   readonly quoteEdit: QuoteEditActions.InternalActionFactory;
   readonly quoteShow: QuoteShowActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
@@ -158,6 +164,7 @@ export interface AppState {
   readonly multiLingual: MultiLingualState;
   readonly order: OrderState;
   readonly pricing: PricingState;
+  readonly privacyPolicy: PrivacyPolicyState;
   readonly quoteEdit: QuoteEditState;
   readonly quoteShow: QuoteShowState;
   readonly snackbar: SnackbarState;
@@ -187,6 +194,7 @@ export const reducers: AppReducers = {
   loadingIndicator: LoadingIndicatorState.reducer,
   order: OrderState.reducer,
   pricing: PricingState.reducer,
+  privacyPolicy: PrivacyPolicyState.reducer,
   multiLingual: MultiLingualState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteShow: QuoteShowState.reducer,
@@ -220,6 +228,7 @@ export class AppStore {
     notifier: new NotifierActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
     pricing: new PricingActions.ActionFactory(),
+    privacyPolicy: new PrivacyPolicyActions.ActionFactory(),
     quoteEdit: new QuoteEditActions.ActionFactory(),
     quoteShow: new QuoteShowActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
@@ -247,6 +256,7 @@ export class AppStore {
     notifier: new NotifierActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
     pricing: new PricingActions.InternalActionFactory(),
+    privacyPolicy: new PrivacyPolicyActions.InternalActionFactory(),
     quoteEdit: new QuoteEditActions.InternalActionFactory(),
     quoteShow: new QuoteShowActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),

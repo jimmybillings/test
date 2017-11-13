@@ -172,3 +172,30 @@ export interface UiConfigComponents {
   'quoteComment': UiConfigSegment;
   [index: string]: UiConfigSegment;
 };
+
+export interface AsperaSpec {
+  authentication: string;
+  direction: string;
+  paths: { source: string }[];
+  resume: string;
+  tags: Pojo;
+  token: string;
+  remote_user: string;
+  remote_host: string;
+  ssh_port: number;
+  source_root?: string;
+  destination_root?: string;
+  cipher?: string;
+  rate_policy_allowed?: string;
+  rate_policy?: string;
+  target_rate_kbps?: number;
+  min_rate_kbps?: number;
+  sshfp?: string;
+  fasp_port?: number;
+  http_fallback?: boolean;
+
+};
+
+export interface AsperaSpecs {
+  transfer_specs: { transfer_spec: AsperaSpec }[];
+}
