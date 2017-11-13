@@ -429,6 +429,7 @@ export function main() {
         componentUnderTest.quoteType = 'Trial';
         expect(componentUnderTest.userCanProceed).toBe(true);
       });
+
       it(`Should return true if component quoteType is not Trial but 
       the cart has assets and all right managed assets have rights packages`, () => {
           componentUnderTest.quoteType = 'SystemLicense';
@@ -488,6 +489,12 @@ export function main() {
         mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
         expect(componentUnderTest.userCanProceed).toBe(false);
       });
+
+      // it('Should return true if there are no projects', () => {
+      //   componentUnderTest.quoteType = 'SystemLicense';
+      //   mockStore.createStateSection('quoteEdit', { data: {} });
+      //   expect(componentUnderTest.userCanProceed).toBe(true);
+      // })
 
       it('Should return false if component quoteType is not Trial and the cart has rights managed assets with no attributes', () => {
         componentUnderTest.quoteType = 'SystemLicense';
