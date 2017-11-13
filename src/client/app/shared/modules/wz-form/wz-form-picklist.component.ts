@@ -20,15 +20,13 @@ export class WzFormPicklistComponent extends WzFormBase {
   @Input()
   set displayProperties(properties: string[]) {
     const tempLabels: Pojo[] = Object.keys(properties || [])
-      .filter(property => property !== 'field')
+      .filter(property => property !== 'field' && property !== 'id')
       .map((property: string) => {
         let label: string = property.replace(/([A-Z])/g, ' $1')
           .replace(/^./, function (str) { return str.toUpperCase(); });
         return { label: label, value: properties[property as any] };
       });
     this.labels.next(tempLabels);
-    console.log(tempLabels);
-    console.log(this.labels);
   }
   @Output() selectContact: EventEmitter<Pojo> = new EventEmitter();
 

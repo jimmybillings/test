@@ -32,7 +32,7 @@ export class QuoteEditSendTabComponent extends Tab {
       factory.quoteEdit.addSalesManagerToQuote(
         JSON.parse(localStorage.getItem('currentUser')).emailAddress
       )
-    );
+    )
   }
 
   ngOnInit() {
@@ -40,14 +40,12 @@ export class QuoteEditSendTabComponent extends Tab {
       if ((c.billingAccount.name === c.user.accountName) &&
         !c.invoiceContact.hasOwnProperty('id')) {
         if (!!this.invoiceContactform) {
-          console.log('Reset Form');
           this.invoiceContactform.resetForm();
         }
       }
       if ((c.billingAccount.name !== c.user.accountName) &&
         !c.invoiceContact.hasOwnProperty('id')) {
         if (!!this.invoiceContactform) {
-          console.log('Mark as dirty');
           this.invoiceContactform.markFieldsAsTouched();
         }
       }
@@ -63,7 +61,6 @@ export class QuoteEditSendTabComponent extends Tab {
     }));
     this.goToNextTab();
   }
-
 
   public get user(): Observable<SendDetailsUser> {
     return this.store.select(state => state.quoteEdit)
@@ -94,7 +91,7 @@ export class QuoteEditSendTabComponent extends Tab {
   }
 
   public invoiceContactSelect(event: Pojo) {
-    this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(event.value));
+    this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(event.value))
   }
 
   public get allBillingSelectionComplete(): Observable<Boolean> {
@@ -123,7 +120,7 @@ export class QuoteEditSendTabComponent extends Tab {
     // console.log('sendDetails.invoiceContact.hasOwnProperty(\'id\')', sendDetails.invoiceContact.hasOwnProperty('id'));
     return sendDetails.user.hasOwnProperty('accountName') &&
       sendDetails.billingAccount.hasOwnProperty('id') &&
-      sendDetails.invoiceContact.hasOwnProperty('id');
+      sendDetails.invoiceContact.hasOwnProperty('id')
   }
 
 }

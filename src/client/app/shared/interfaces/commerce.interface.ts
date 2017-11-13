@@ -209,7 +209,7 @@ export interface SendDetails {
 export interface SendDetailsUser {
   id?: number;
   accountName?: string;
-  name?: string;
+  customerName?: string;
   email?: string;
   field: Pojo[];
 }
@@ -233,7 +233,7 @@ export interface SendDetailsSalesManager {
 export interface SendDetailsInvoiceContact {
   id?: number;
   name?: string;
-  email?: string;
+  contactEmail?: string;
   field: Pojo[];
 }
 

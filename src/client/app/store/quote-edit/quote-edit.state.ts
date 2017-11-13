@@ -1,9 +1,10 @@
+import { User } from '../../shared/interfaces/user.interface';
 import * as QuoteEditActions from './quote-edit.actions';
 import * as AccountActions from '../account/account.actions';
 import * as UserActions from '../user/user.actions';
 import { Pojo } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
-import { Quote, SendDetails } from '../../shared/interfaces/commerce.interface';
+import { Quote, SendDetails, SendDetailsUser } from '../../shared/interfaces/commerce.interface';
 
 export interface State {
   data: Quote;
@@ -21,6 +22,8 @@ export const initialState: State = {
   },
   sendDetails: {
     user: {
+      customerName: null,
+      accountName: null,
       field: [{
         endPoint: 'user/searchFields',
         queryParams: 'fields,emailAddress,values',
@@ -53,7 +56,7 @@ export const initialState: State = {
       }]
     },
     invoiceContact: {
-      email: '',
+      contactEmail: null,
       field: [{
         name: 'invoiceContact',
         options: '',
@@ -94,7 +97,7 @@ export type AllowedActions = AccountActions.Any | QuoteEditActions.Any | UserAct
 
 export function reducer(state: State = initialState, action: AllowedActions): State {
   if (state === null) state = initialState;
-  // console.log(state);
+
   switch (action.type) {
     case QuoteEditActions.Delete.Type:
     case QuoteEditActions.Load.Type:
@@ -143,7 +146,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
           user: {
             id: action.user.id,
-            name: `${action.user.firstName} ${action.user.lastName}`,
+            customerName: `${action.user.firstName} ${action.user.lastName}`,
             email: action.user.emailAddress,
             field: state.sendDetails.user.field.map(field => {
               field.value = action.user.emailAddress;
@@ -162,19 +165,36 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           invoiceContact: Object.assign(state.sendDetails.invoiceContact, {
             field: state.sendDetails.invoiceContact.field.map(field => {
               field.options = (action.users || []).map(user => (
-                { id: user.id, name: `${user.firstName} ${user.lastName}` }
+                { id: user.id, name: `${user.firstName} ${user.lastName}`, emailAddress: user.emailAddress }
               ));
               if (state.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
-                // console.log('has invoice id');
                 field.value = field.options.find((option: Pojo) => option.id === state.sendDetails.billingAccount.invoiceContactId);
               } else {
-                // console.log('no invoice id');
                 field.value = "";
               }
               return field;
-            })
+            }),
+            contactEmail: state.sendDetails.invoiceContact.field[0].value.emailAddress || null
           })
         }))
+      };
+    }
+
+    case QuoteEditActions.AddInvoiceContactToQuote.Type: {
+      let selectedUser: User;
+      return {
+        ...state,
+        sendDetails: Object.assign({}, state.sendDetails, {
+          invoiceContact: Common.clone(Object.assign(state.sendDetails.invoiceContact, {
+            id: action.userId,
+            field: state.sendDetails.invoiceContact.field.map(field => {
+              selectedUser = field.options.find((option: Pojo) => option.id === action.userId);
+              field.value = selectedUser;
+              return field;
+            }),
+            contactEmail: selectedUser.emailAddress
+          }))
+        })
       };
     }
 
@@ -224,17 +244,6 @@ export function reducer(state: State = initialState, action: AllowedActions): St
               field.value = action.form[field.name];
               return field;
             })
-          })
-        })
-      };
-    }
-
-    case QuoteEditActions.AddInvoiceContactToQuote.Type: {
-      return {
-        ...state,
-        sendDetails: Object.assign({}, state.sendDetails, {
-          invoiceContact: Object.assign(state.sendDetails.invoiceContact, {
-            id: action.userId
           })
         })
       };
