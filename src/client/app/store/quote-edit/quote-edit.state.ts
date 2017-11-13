@@ -34,6 +34,7 @@ export const initialState: State = {
       }]
     },
     billingAccount: {
+      paymentTermsDays: 'sdlfkj',
       field: [{
         endPoint: 'account/searchFields',
         queryParams: 'fields,name,values',
@@ -87,7 +88,7 @@ export type AllowedActions = AccountActions.Any | QuoteEditActions.Any | UserAct
 
 export function reducer(state: State = initialState, action: AllowedActions): State {
   if (state === null) state = initialState;
-
+  // console.log(state);
   switch (action.type) {
     case QuoteEditActions.Delete.Type:
     case QuoteEditActions.Load.Type:
@@ -129,7 +130,6 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       };
     }
 
-    // SELECT USER START
     case QuoteEditActions.AddUserToQuote.Type: {
       return {
         ...state,
@@ -148,34 +148,6 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       };
     }
 
-    case QuoteEditActions.GetBillingAccountSuccess.Type: {
-      console.log(action.billingAndInvoice.invoiceContactId.addressId);
-      return {
-        ...state,
-        loading: false,
-        sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
-          user: Object.assign(state.sendDetails.user, { accountName: action.billingAndInvoice.billingAccount.name }),
-          billingAccount: {
-            ...action.billingAndInvoice.billingAccount,
-            field: state.sendDetails.billingAccount.field.map(field => {
-              field.value = action.billingAndInvoice.billingAccount.name;
-              return field;
-            })
-          },
-          invoiceContact: {
-            id: action.billingAndInvoice.invoiceContactId.addressId,
-            field: state.sendDetails.invoiceContact.field.map(field => {
-              field.value = {
-                id: action.billingAndInvoice.invoiceContactId.addressId,
-                name: `${action.billingAndInvoice.invoiceContactId.firstName} ${action.billingAndInvoice.invoiceContactId.lastName}`
-              };
-              return field;
-            })
-          }
-        }))
-      };
-    }
-
     case UserActions.GetAllUsersByAccountIdSuccess.Type: {
       return {
         ...state,
@@ -187,7 +159,11 @@ export function reducer(state: State = initialState, action: AllowedActions): St
                 { id: user.id, name: `${user.firstName} ${user.lastName}` }
               ));
               if (state.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
+                // console.log('has invoice id');
                 field.value = field.options.find((option: Pojo) => option.id === state.sendDetails.billingAccount.invoiceContactId);
+              } else {
+                // console.log('no invoice id');
+                field.value = "";
               }
               return field;
             })
@@ -197,24 +173,23 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case AccountActions.GetAccountForQuoteAdminSuccess.Type: {
+      if (!state.sendDetails.user.accountName) {
+        state.sendDetails.user.accountName = action.account.name;
+      }
+      if (state.sendDetails.invoiceContact.id) {
+        delete state.sendDetails.invoiceContact.id;
+      }
       return {
         ...state,
         loading: false,
         sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
           billingAccount: {
-            id: action.account.id,
-            name: action.account.name,
-            creditExemption: action.account.creditExemption,
-            licensingVertical: action.account.licensingVertical,
-            paymentTermsDays: action.account.paymentTermsDays,
-            purchaseOnCredit: action.account.purchaseOnCredit,
-            invoiceContactId: action.account.invoiceContactId,
-            salesOwner: action.account.salesOwner,
+            ...action.account,
             field: state.sendDetails.billingAccount.field.map(field => {
               field.value = action.account.name;
               return field;
             })
-          },
+          }
         }))
       };
     }
@@ -239,8 +214,11 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         sendDetails: Object.assign(state.sendDetails, {
           salesManager: Object.assign(state.sendDetails.salesManager, {
             field: state.sendDetails.salesManager.field.map(field => {
-              if (field.type === 'wzdate') field.default = action.form[field.name];
-              field.value = action.form[field.name]
+              if (field.type === 'wzdate') {
+                field.default = action.form[field.name];
+              }
+              field.value = action.form[field.name];
+
               return field;
             })
           })
