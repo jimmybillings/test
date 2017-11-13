@@ -28,26 +28,34 @@ quote-edit-send-tab-component {
             padding-right: 4px;
           }
         }
-        &.empty-properties {
-          display: none;
-        }
+        // &.empty-properties {
+        //   display: none;
+        // }
       }
       &.recipient.is-empty {
-        ul.recipient.empty-properties {
-          display: block;
+        ul.mat-caption {
           opacity:.4;
         }
       }
+      // &.recipient.is-empty {
+      //   ul.recipient.empty-properties {
+      //     display: block;
+      //     opacity:.4;
+      //   }
+      // }
       &.billing-account.is-empty {
         @include mat-elevation(0);
         background-color: transparent;
         opacity: .4;
         border-width: 1px;
         border-style: solid;
-        ul.billing.empty-properties {
-          display: block;
+        ul.mat-caption {
           margin-top: 50px;
         }
+        // ul.billing.empty-properties {
+        //   display: block;
+        //   margin-top: 50px;
+        // }
         form {
           display: none;
         }

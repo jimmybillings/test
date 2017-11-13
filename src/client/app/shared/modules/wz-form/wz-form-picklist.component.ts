@@ -27,6 +27,8 @@ export class WzFormPicklistComponent extends WzFormBase {
         return { label: label, value: properties[property as any] };
       });
     this.labels.next(tempLabels);
+    console.log(tempLabels);
+    console.log(this.labels);
   }
   @Output() selectContact: EventEmitter<Pojo> = new EventEmitter();
 

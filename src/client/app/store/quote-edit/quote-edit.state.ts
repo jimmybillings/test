@@ -47,6 +47,7 @@ export const initialState: State = {
       }]
     },
     invoiceContact: {
+      email: '',
       field: [{
         name: 'invoiceContact',
         options: '',
