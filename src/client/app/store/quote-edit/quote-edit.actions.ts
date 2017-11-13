@@ -121,10 +121,6 @@ export class ActionFactory {
     return new AddBillingAccountToQuote(account);
   }
 
-  public getBillingAccount(accountId: number): GetBillingAccount {
-    return new GetBillingAccount(accountId);
-  }
-
   public addInvoiceContactToQuote(userId: number): AddInvoiceContactToQuote {
     return new AddInvoiceContactToQuote(userId);
   }
@@ -192,16 +188,9 @@ export class InternalActionFactory extends ActionFactory {
     return new AddAssetToProjectInQuoteSuccess(quote, assetId);
   }
 
-  public getBillingAccountSuccess(billingAndInvoice: any): GetBillingAccountSuccess {
-    return new GetBillingAccountSuccess(billingAndInvoice);
-  }
-
   public refreshAndNotify(quote: Quote, translationString: string): RefreshAndNotify {
     return new RefreshAndNotify(quote, translationString);
   }
-
-
-
 }
 
 export class Load implements Action {
@@ -436,24 +425,10 @@ export class AddBillingAccountToQuote implements Action {
   constructor(public readonly account: Account) { }
 }
 
-export class GetBillingAccount implements Action {
-  public static readonly Type = '[Quote Edit] Get Billing Account';
-  public readonly type = GetBillingAccount.Type;
-  constructor(public readonly accountId: number) { }
-}
-
-export class GetBillingAccountSuccess implements Action {
-  public static readonly Type = '[Quote Edit] Get Billing Account Success';
-  public readonly type = GetBillingAccountSuccess.Type;
-  constructor(public readonly billingAndInvoice: any) { }
-}
-
 export class AddInvoiceContactToQuote implements Action {
   public static readonly Type = '[Quote Edit] Add Invoice Contact To Quote';
   public readonly type = AddInvoiceContactToQuote.Type;
-  constructor(public readonly userId: number) {
-    console.log(userId);
-  }
+  constructor(public readonly userId: number) { }
 }
 
 export class AddSalesManagerToQuote implements Action {
@@ -478,5 +453,4 @@ export type Any =
   UpdateQuoteFields | AddFeeTo | RemoveFee | BulkImport | BulkImportSuccess | EditLineItem |
   AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject |
   UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
-  UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | GetBillingAccount |
-  GetBillingAccountSuccess | AddInvoiceContactToQuote | AddSalesManagerToQuote | UpdateSalesManagerFormOnQuote;
+  UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | AddInvoiceContactToQuote | AddSalesManagerToQuote | UpdateSalesManagerFormOnQuote;
