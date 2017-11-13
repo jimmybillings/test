@@ -5,7 +5,6 @@
   <section class="recipient-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form-autocomplete-view *ngIf="user | async" flex="100" 
       class="recipient"
-      [ngClass]="{ 'is-empty' : !(!!(user | async).id) }"
       [items]="(user | async).field"
       [title]="'Recipient'"
       [matchOnProperty]="'emailAddress'"
@@ -17,9 +16,8 @@
       (formSubmit)="userSelect($event)">
     </wz-form-autocomplete-view>
     
-    <wz-form-autocomplete-view *ngIf="(billingAccount | async)" flex="100"
+    <wz-form-autocomplete-view flex="100"
       class="billing-account"
-      [ngClass]="{ 'is-empty' : !(!!(billingAccount | async).id) }"
       [items]="(billingAccount | async).field"
       [title]="'Billing account'"
       [matchOnProperty]="'name'"
@@ -32,6 +30,7 @@
     </wz-form-autocomplete-view>
 
     <wz-form-picklist-component *ngIf="(invoiceContact | async)" flex="100"
+      #invoiceContactform
       class="invoice-contact"
       [items]="(invoiceContact | async).field"
       [title]="'Invoice contact'"
@@ -39,6 +38,7 @@
       autocomplete="off"
       (selectContact)="invoiceContactSelect($event)">
     </wz-form-picklist-component>
+
   </section>
   <section class="creator-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form *ngIf="(invoiceContact | async)"

@@ -28,9 +28,9 @@ quote-edit-send-tab-component {
             padding-right: 4px;
           }
         }
-        &.empty-properties {
-          display: none;
-        }
+        // &.empty-properties {
+        //   display: none;
+        // }
       }
       &.recipient.is-empty {
         ul.recipient.empty-properties {
