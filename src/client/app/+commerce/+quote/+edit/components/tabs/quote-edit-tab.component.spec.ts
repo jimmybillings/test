@@ -484,6 +484,29 @@ export function main() {
         expect(componentUnderTest.userCanProceed).toBe(false);
       });
 
+      it('Should return true if there are no projects with line items', () => {
+        mockStore.createStateSection('quoteEdit', {
+          data: {
+            purchaseType: 'SystemLicense',
+            itemCount: 1,
+            projects: [{
+              feeLineItems: { some: 'feeLineItem' }
+            }]
+          }
+        });
+        expect(componentUnderTest.userCanProceed).toBe(true);
+      });
+
+      it('Should return true if there are no projects at all', () => {
+        mockStore.createStateSection('quoteEdit', {
+          data: {
+            purchaseType: 'SystemLicense',
+            itemCount: 1
+          }
+        });
+        expect(componentUnderTest.userCanProceed).toBe(true);
+      });
+
       it('Should return false if component quoteType is not Trial and the cart has rights managed assets with no attributes', () => {
         mockStore.createStateSection('quoteEdit', {
           data: {
