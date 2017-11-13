@@ -3,7 +3,7 @@ import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
 import { Address, Document, Payee } from './user.interface';
 
-export type OrderableType =
+export type PurchaseType =
   'SystemLicense' |
   'SystemLicenseNoDelivery' |
   'OfflineLicense' |
@@ -40,6 +40,11 @@ export type TranscodeStatus = 'Submitted' | 'Completed' | 'Failed' | 'UrlError' 
 export type OrderStatus = 'ORDER' | 'REFUND';
 
 export type EditableQuoteFields = 'bulkOrderId' | 'discount' | 'purchaseType';
+
+export const quotesWithoutPricing: PurchaseType[] = [
+  'Trial',
+  'DeliveryOnly'
+];
 
 // Base interfaces
 
@@ -159,7 +164,7 @@ export interface Order extends CommonCommerce {
   createdUserId: number;
   ownerUserId: number;
   orderStatus: OrderStatus;
-  orderType: OrderableType;
+  orderType: PurchaseType;
   paymentType: PaymentType;
   quoteId: number;
   taxAmount: number;
@@ -184,7 +189,7 @@ export interface Quote extends CommonCommerce {
   total: number;
   subTotal?: number;
   quoteStatus: QuoteStatus;
-  purchaseType?: OrderableType;
+  purchaseType?: PurchaseType;
   projects?: Project[];
   itemCount?: number;
   expirationDate?: string;

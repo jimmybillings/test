@@ -1,6 +1,5 @@
 import { QuoteEditComponent } from './quote-edit.component';
 import { Observable } from 'rxjs/Observable';
-import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 
 export function main() {

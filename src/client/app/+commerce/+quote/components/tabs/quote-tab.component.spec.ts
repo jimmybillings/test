@@ -293,27 +293,43 @@ export function main() {
       });
     });
 
-    describe('quoteIsTrial', () => {
-      it('returns true if the quote is of type \'Trial\'', () => {
-        mockStore = new MockAppStore();
-        mockStore.createStateSection('uiConfig', { components: { cart: { config: {} } } });
-        mockQuoteService = { data: Observable.of({ data: { purchaseType: 'Trial' } }), projects: Observable.of([]) };
-        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockStore);
-        let is: boolean;
-        componentUnderTest.quoteIsTrial.take(1).subscribe(res => is = res);
+    describe('get quoteIsTrial()', () => {
+      beforeEach(() => {
+        componentUnderTest = buildComponent(true, true, true);
+      });
 
+      it('returns true when the quote is of type \'Trial\'', () => {
+        mockStore.createStateSection('quoteShow', { data: { purchaseType: 'Trial' } });
+        let is: boolean;
+        componentUnderTest.quoteIsTrial.take(1).subscribe(i => is = i);
         expect(is).toBe(true);
       });
 
-      it('returns false if the quote is NOT of type \'Trial\'', () => {
-        mockStore = new MockAppStore();
-        mockStore.createStateSection('uiConfig', { components: { cart: { config: {} } } });
-        mockQuoteService = { data: Observable.of({ data: { purchaseType: 'Blah' } }), projects: Observable.of([]) };
-        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null, mockStore);
+      it('returns false when the quote is not of type \'Trial\'', () => {
+        mockStore.createStateSection('quoteShow', { data: { purchaseType: 'NotTrial' } });
         let is: boolean;
-        componentUnderTest.quoteIsTrial.take(1).subscribe(res => is = res);
-
+        componentUnderTest.quoteIsTrial.take(1).subscribe(i => is = i);
         expect(is).toBe(false);
+      });
+    });
+
+    describe('get showPricing()', () => {
+      beforeEach(() => {
+        componentUnderTest = buildComponent(true, true, true);
+      });
+
+      it('returns true when the quote is not included in \'quotesWithoutPricing\' ', () => {
+        mockStore.createStateSection('quoteShow', { data: { purchaseType: 'Trial' } });
+        let show: boolean;
+        componentUnderTest.showPricing.take(1).subscribe(s => show = s);
+        expect(show).toBe(false);
+      });
+
+      it('returns false when the quote is included in \'quotesWithoutPricing\'', () => {
+        mockStore.createStateSection('quoteShow', { data: { purchaseType: 'NotIncluded' } });
+        let show: boolean;
+        componentUnderTest.showPricing.take(1).subscribe(s => show = s);
+        expect(show).toBe(true);
       });
     });
   });

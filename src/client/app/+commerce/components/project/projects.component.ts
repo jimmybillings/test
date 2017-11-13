@@ -1,7 +1,8 @@
 import { AppStore } from '../../../app.store';
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project, OrderableType, FeeLineItem, FeeConfig, FeeConfigItem, AssetLineItem }
-  from '../../../shared/interfaces/commerce.interface';
+import {
+  Project, PurchaseType, FeeLineItem, FeeConfig, FeeConfigItem, AssetLineItem, quotesWithoutPricing
+} from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
@@ -19,7 +20,7 @@ export class ProjectsComponent {
   @Input() config: any;
   @Input() projects: Array<Project>;
   @Input() userCan: Capabilities;
-  @Input() quoteType: OrderableType;
+  @Input() quoteType: PurchaseType;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
 
@@ -105,7 +106,7 @@ export class ProjectsComponent {
   }
 
   public get showPricing(): boolean {
-    return this.quoteType !== 'Trial';
+    return !quotesWithoutPricing.includes(this.quoteType);
   }
 
   private initializeQuoteFeeFieldsFrom(feeConfig: FeeConfig): FormFields[] {

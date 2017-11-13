@@ -1,6 +1,5 @@
 import { Pojo } from '../../../../../shared/interfaces/common.interface';
 import { Observable } from 'rxjs/Observable';
-import { CommerceEditTab } from '../../../../components/tabs/commerce-edit-tab';
 import { MockAppStore } from '../../../../../store/spec-helpers/mock-app.store';
 import { QuoteEditTabComponent } from './quote-edit-tab.component';
 
@@ -340,8 +339,6 @@ export function main() {
       });
 
       describe('SHOW_PRICING_DIALOG', () => {
-
-
         it('calls openPricingDialog with SHOW_PRICING_DIALOG', () => {
           let mockLineItem = { asset: { assetId: 123456 } };
           componentUnderTest.ngOnInit();
@@ -388,7 +385,7 @@ export function main() {
     });
 
     describe('get showUsageWarning()', () => {
-      it('Should show the usage warning if the cart has assets but userCanProceed is false', () => {
+      it('returns true if the cart has assets but rm assets dont have a rights package', () => {
         mockStore.createStateSection('quoteEdit', {
           data: {
             itemCount: 2,
@@ -399,16 +396,15 @@ export function main() {
             }]
           }
         });
-        componentUnderTest.quoteType = 'SystemLicense';
         expect(componentUnderTest.showUsageWarning).toBe(true);
       });
 
-      it('Should not show the usage warning if the user has no assets in the cart', () => {
+      it('return false if the user has no assets in the cart', () => {
         mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
         expect(componentUnderTest.showUsageWarning).toBe(false);
       });
 
-      it('Should not show the usage warning if the user has assess and userCanProceed is true', () => {
+      it('returns false if the user has assess and userCanProceed is true', () => {
         mockStore.createStateSection('quoteEdit', {
           data: {
             itemCount: 2,
@@ -419,22 +415,21 @@ export function main() {
             }]
           }
         });
-        componentUnderTest.quoteType = 'Trial';
         expect(componentUnderTest.showUsageWarning).toBe(false);
       });
     });
 
     describe('get userCanProceed()', () => {
       it('Should return true if component quoteType is Trial', () => {
-        componentUnderTest.quoteType = 'Trial';
+        mockStore.createStateSection('quoteEdit', { data: { purchaseType: 'Trial' } });
         expect(componentUnderTest.userCanProceed).toBe(true);
       });
 
       it(`Should return true if component quoteType is not Trial but 
       the cart has assets and all right managed assets have rights packages`, () => {
-          componentUnderTest.quoteType = 'SystemLicense';
           mockStore.createStateSection('quoteEdit', {
             data: {
+              purchaseType: 'SystemLicense',
               itemCount: 1,
               projects: [{
                 lineItems: [
@@ -450,9 +445,9 @@ export function main() {
 
       it(`Should return true if component quoteType is not Trial but 
         the cart has assets and none are rights managed`, () => {
-          componentUnderTest.quoteType = 'SystemLicense';
           mockStore.createStateSection('quoteEdit', {
             data: {
+              purchaseType: 'SystemLicense',
               itemCount: 1,
               projects: [{
                 lineItems: [
@@ -468,9 +463,9 @@ export function main() {
 
       it(`Should return false if component quoteType is not Trial and 
         the cart has assets but not all right managed assets have rights packages`, () => {
-          componentUnderTest.quoteType = 'SystemLicense';
           mockStore.createStateSection('quoteEdit', {
             data: {
+              purchaseType: 'SystemLicense',
               itemCount: 1,
               projects: [{
                 lineItems: [
@@ -485,8 +480,7 @@ export function main() {
         });
 
       it('Should return false if component quoteType is not Trial and the cart has no assets', () => {
-        componentUnderTest.quoteType = 'SystemLicense';
-        mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
+        mockStore.createStateSection('quoteEdit', { data: { itemCount: 0, purchaseType: 'SystemLicense' } });
         expect(componentUnderTest.userCanProceed).toBe(false);
       });
 
@@ -497,9 +491,9 @@ export function main() {
       // })
 
       it('Should return false if component quoteType is not Trial and the cart has rights managed assets with no attributes', () => {
-        componentUnderTest.quoteType = 'SystemLicense';
         mockStore.createStateSection('quoteEdit', {
           data: {
+            purchaseType: 'SystemLicense',
             itemCount: 3,
             projects: [{
               lineItems: [
@@ -541,15 +535,6 @@ export function main() {
       });
     });
 
-    describe('get quoteIsTrial()', () => {
-      it('Should return true if purchaseType is Trial', () => {
-        mockStore.createStateSection('quoteEdit', { data: { purchaseType: 'Trial' } });
-        let purchaseType;
-        componentUnderTest.quoteIsTrial.subscribe((response) => purchaseType = response);
-        expect(purchaseType).toBe(true);
-      });
-    });
-
     describe('get cartContainsNoAssets()', () => {
       it('Should return true if cart has no assets', () => {
         mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
@@ -570,28 +555,19 @@ export function main() {
         });
 
         it('when the quoteType is "Trial" and the quote DOES NOT have the property', () => {
-          mockStore.createStateSection('quoteEdit', { data: {} });
-          componentUnderTest.quoteType = 'Trial';
+          mockStore.createStateSection('quoteEdit', { data: { purchaseType: 'Trial' } });
           expect(componentUnderTest.showDiscount).toBe(false);
         });
 
         it('when the quoteType is "Trial" and the quote DOES have the property', () => {
-          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } });
-          componentUnderTest.quoteType = 'Trial';
+          mockStore.createStateSection('quoteEdit', { data: { discount: '100', purchaseType: 'Trial' } });
           expect(componentUnderTest.showDiscount).toBe(false);
         });
       });
 
       describe('returns true', () => {
-        it('when the quote does have the property AND the quoteType is null (indicates "Standard" quote)', () => {
-          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } });
-          componentUnderTest.quoteType = null;
-          expect(componentUnderTest.showDiscount).toBe(true);
-        });
-
         it('when the quote does have the property AND the quoteType is NOT Trial', () => {
-          mockStore.createStateSection('quoteEdit', { data: { discount: '100' } });
-          componentUnderTest.quoteType = 'NotTrial' as any;
+          mockStore.createStateSection('quoteEdit', { data: { discount: '100', purchaseType: 'NotTrial' } });
           expect(componentUnderTest.showDiscount).toBe(true);
         });
       });
