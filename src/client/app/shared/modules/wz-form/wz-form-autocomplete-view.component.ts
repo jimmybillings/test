@@ -22,7 +22,12 @@ export class WzFormAutoCompleteViewComponent extends WzFormBase {
   @Input()
   set displayProperties(properties: string[]) {
     const tempLabels: Pojo[] = Object.keys(properties || [])
-      .filter(property => property !== 'name' && property !== 'field' && property !== 'id' && property !== 'email')
+      .filter(property =>
+        property !== 'name' &&
+        property !== 'field' &&
+        property !== 'id' &&
+        property !== 'email' &&
+        property !== 'invoiceContactId')
       .map((property: string) => {
         let label: string = property.replace(/([A-Z])/g, ' $1')
           .replace(/^./, function (str) { return str.toUpperCase(); });
