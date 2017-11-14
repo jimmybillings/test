@@ -27,14 +27,6 @@ export function main() {
       //   expect(componentUnderTest.close).toHaveBeenCalled();
       // });
     });
-
-    describe('ngOnDestroy', () => {
-      it('calls the closeAssetShare method', () => {
-        componentUnderTest.ngOnDestroy();
-
-        // expect(componentUnderTest.close).toHaveBeenCalled();
-      });
-    });
   });
 };
 

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { FormFields } from '../../shared/interfaces/forms.interface';
@@ -14,7 +14,7 @@ import { AppStore } from '../../app.store';
   templateUrl: 'asset-share.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AssetShareComponent implements OnDestroy {
+export class AssetShareComponent {
   @Input() config: any;
   @Input() set enhancedAsset(asset: EnhancedAsset) {
     this.currentAsset = asset;
@@ -31,10 +31,6 @@ export class AssetShareComponent implements OnDestroy {
 
   public ngOnInit(): void {
     this.shareLink = this.store.select(state => state.sharing.assetLink);
-  }
-
-  public ngOnDestroy(): void {
-    this.close();
   }
 
   public get shareAssetDialogTitle(): string {
