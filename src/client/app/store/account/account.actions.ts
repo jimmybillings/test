@@ -1,28 +1,50 @@
+import { SendDetailsBillingAccount } from '../../shared/interfaces/commerce.interface';
 import { User, Account } from '../../shared/interfaces/user.interface';
 import { Action } from '@ngrx/store';
 
 export class ActionFactory {
   getAccountForQuoteAdmin(accountId: number): GetAccountForQuoteAdmin {
-    return new GetAccountForQuoteAdmin(accountId);
+    return new GetAccountForQuoteAdmin(accountId, false);
   }
 }
 
 export class InternalActionFactory extends ActionFactory {
-  getAccountForQuoteAdminSuccess(account: Account): GetAccountForQuoteAdminSuccess {
+  getAccountForQuoteAdminSuccess(account: SendDetailsBillingAccount): GetAccountForQuoteAdminSuccess {
     return new GetAccountForQuoteAdminSuccess(account);
+  }
+
+  getAccountForQuoteAdminOnUserAdd(accountId: number): GetAccountForQuoteAdminOnUserAdd {
+    return new GetAccountForQuoteAdminOnUserAdd(accountId, true);
+  }
+
+  getAccountForQuoteAdminOnUserAddSuccess(account: SendDetailsBillingAccount): GetAccountForQuoteAdminOnUserAddSuccess {
+    return new GetAccountForQuoteAdminOnUserAddSuccess(account);
   }
 }
 
 export class GetAccountForQuoteAdmin implements Action {
   public static readonly Type = '[Account] Get Account For Quote Admin';
   public readonly type = GetAccountForQuoteAdmin.Type;
-  constructor(public readonly accountId: number) { }
+  constructor(public readonly accountId: number, public readonly onUserAdd: boolean) { }
 }
 
 export class GetAccountForQuoteAdminSuccess implements Action {
   public static readonly Type = '[Account] Get Account For Quote Admin Success';
   public readonly type = GetAccountForQuoteAdminSuccess.Type;
-  constructor(public readonly account: Account) { }
+  constructor(public readonly account: SendDetailsBillingAccount) { }
 }
 
-export type Any = GetAccountForQuoteAdmin | GetAccountForQuoteAdminSuccess;
+export class GetAccountForQuoteAdminOnUserAdd implements Action {
+  public static readonly Type = '[Account] Get Account For Quote Admin On User Add';
+  public readonly type = GetAccountForQuoteAdminOnUserAdd.Type;
+  constructor(public readonly accountId: number, public readonly onUserAdd: boolean) { }
+}
+
+export class GetAccountForQuoteAdminOnUserAddSuccess implements Action {
+  public static readonly Type = '[Account] Get Account For Quote Admin On User Add Success';
+  public readonly type = GetAccountForQuoteAdminOnUserAddSuccess.Type;
+  constructor(public readonly account: SendDetailsBillingAccount) { }
+}
+
+export type Any = GetAccountForQuoteAdmin | GetAccountForQuoteAdminSuccess
+  | GetAccountForQuoteAdminOnUserAdd | GetAccountForQuoteAdminOnUserAddSuccess;
