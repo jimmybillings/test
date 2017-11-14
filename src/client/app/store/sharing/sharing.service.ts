@@ -4,40 +4,42 @@ import { Observable } from 'rxjs/Observable';
 import { FutureApiService } from '../api/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers, Duration, durationFrom, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
-import { Pojo } from '../../shared/interfaces/common.interface';
+import { AssetShareParameters } from '../../shared/interfaces/common.interface';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Injectable()
 export class SharingService {
   constructor(private apiService: FutureApiService, private currentUserService: CurrentUserService) { }
 
-  public createAssetShareLink(assetId: number, subclipMarkers: SubclipMarkers): Observable<string> {
-    return this.callSharingEndpointWith(this.formatAssetCreateBodyWith(assetId, subclipMarkers))
+  public createAssetShareLink(assetId: number, markers: SubclipMarkers): Observable<string> {
+    return this.callSharingEndpointWith(this.formatAssetCreateBodyWith(assetId, markers))
       .map(response => `${window.location.href};share_key=${response.apiKey}`);
   }
 
-  public emailAssetShareLink(assetId: number, subclipMarkers: SubclipMarkers, parameters: Pojo): Observable<null> {
-    return this.callSharingEndpointWith(this.formatAssetEmailBodyWith(assetId, subclipMarkers, parameters))
+  public emailAssetShareLink(assetId: number, markers: SubclipMarkers, parameters: AssetShareParameters): Observable<null> {
+    return this.callSharingEndpointWith(this.formatAssetEmailBodyWith(assetId, markers, parameters))
       .map(response => null);
   }
 
-  private callSharingEndpointWith(body: Pojo): Observable<Pojo> {
+  private callSharingEndpointWith(body: AccessInfoRequestBody): Observable<AccessInfoResponse> {
     return this.apiService.post(Api.Identities, 'accessInfo', { body: body });
   }
 
-  private formatAssetCreateBodyWith(assetId: number, subclipMarkers: SubclipMarkers): Pojo {
+  private formatAssetCreateBodyWith(assetId: number, markers: SubclipMarkers): AccessInfoRequestBody {
     return {
       type: 'asset',
       accessInfo: String(assetId),
       accessStartDate: this.formatStartDate(),
       accessEndDate: this.formatEndDate(),
-      properties: this.formatTimePropertiesFrom(subclipMarkers)
+      properties: this.formatTimePropertiesFrom(markers)
     };
   }
 
-  private formatAssetEmailBodyWith(assetId: number, subclipMarkers: SubclipMarkers, parameters: Pojo): Pojo {
+  private formatAssetEmailBodyWith(
+    assetId: number, markers: SubclipMarkers, parameters: AssetShareParameters
+  ): AccessInfoRequestBody {
     return {
-      ...this.formatAssetCreateBodyWith(assetId, subclipMarkers),
+      ...this.formatAssetCreateBodyWith(assetId, markers),
       recipientEmails: this.formatEmailReceipientsFrom(parameters.recipientEmails, parameters.copyMe),
       comment: parameters.comment,
       project: parameters.project
@@ -70,11 +72,26 @@ export class SharingService {
     return integer < 10 ? `0${integer}` : String(integer);
   }
 
-  private formatTimePropertiesFrom(subclipMarkers: SubclipMarkers): Duration {
-    return bothMarkersAreSet(subclipMarkers) ? durationFrom(subclipMarkers) : null;
+  private formatTimePropertiesFrom(markers: SubclipMarkers): Duration {
+    return bothMarkersAreSet(markers) ? durationFrom(markers) : null;
   }
 
   private formatEmailReceipientsFrom(recipientsString: string, copyMe: boolean): string[] {
     return recipientsString.split(/\s*,\s*|\s*;\s*/).concat(copyMe ? [this.currentUserService.state.emailAddress] : []);
   }
+}
+
+interface AccessInfoRequestBody {
+  type: 'asset';
+  accessInfo: string;
+  accessStartDate: string;
+  accessEndDate: string;
+  properties?: Duration;
+  recipientEmails?: string[];
+  comment?: string;
+  project?: string;
+}
+
+interface AccessInfoResponse {
+  apiKey: string;
 }

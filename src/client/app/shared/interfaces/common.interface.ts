@@ -96,6 +96,13 @@ export interface AssetUrls {
   https?: string;
 }
 
+export interface AssetShareParameters {
+  recipientEmails: string;  // comma-delimited list
+  comment: string;
+  project: string;
+  copyMe: boolean;
+}
+
 export interface Pojo {
   [index: string]: any;
 }

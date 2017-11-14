@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { Pojo } from '../../shared/interfaces/common.interface';
+import { AssetShareParameters } from '../../shared/interfaces/common.interface';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 import { SubclipMarkers, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AppStore } from '../../app.store';
@@ -53,7 +53,7 @@ export class AssetShareComponent {
     this.requestClose();
   }
 
-  public onFormSubmit(shareParameters: Pojo): void {
+  public onFormSubmit(shareParameters: AssetShareParameters): void {
     this.store.dispatch(factory =>
       factory.sharing.emailAssetShareLink(this.currentAsset.assetId, this.subclipMarkers, shareParameters)
     );

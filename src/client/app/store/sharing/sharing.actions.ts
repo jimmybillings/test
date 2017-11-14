@@ -1,15 +1,15 @@
 import { Action } from '@ngrx/store';
 
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
-import { Pojo } from '../../shared/interfaces/common.interface';
+import { AssetShareParameters } from '../../shared/interfaces/common.interface';
 
 export class ActionFactory {
   public createAssetShareLink(assetId: number, subclipMarkers: SubclipMarkers): CreateAssetShareLink {
     return new CreateAssetShareLink(assetId, subclipMarkers);
   }
 
-  public emailAssetShareLink(assetId: number, subclipMarkers: SubclipMarkers, parameters: Pojo): EmailAssetShareLink {
-    return new EmailAssetShareLink(assetId, subclipMarkers, parameters);
+  public emailAssetShareLink(assetId: number, markers: SubclipMarkers, parameters: AssetShareParameters): EmailAssetShareLink {
+    return new EmailAssetShareLink(assetId, markers, parameters);
   }
 }
 
@@ -22,7 +22,7 @@ export class InternalActionFactory extends ActionFactory {
 export class CreateAssetShareLink implements Action {
   public static readonly Type = '[Sharing] Create Asset Share Link';
   public readonly type = CreateAssetShareLink.Type;
-  constructor(public readonly assetId: number, public readonly subclipMarkers: SubclipMarkers) { }
+  constructor(public readonly assetId: number, public readonly markers: SubclipMarkers) { }
 }
 
 export class CreateAssetShareLinkSuccess implements Action {
@@ -35,7 +35,9 @@ export class EmailAssetShareLink implements Action {
   public static readonly Type = '[Sharing] Email Asset Share Link';
   public readonly type = EmailAssetShareLink.Type;
   constructor(
-    public readonly assetId: number, public readonly subclipMarkers: SubclipMarkers, public readonly parameters: Pojo
+    public readonly assetId: number,
+    public readonly markers: SubclipMarkers,
+    public readonly parameters: AssetShareParameters
   ) { }
 }
 

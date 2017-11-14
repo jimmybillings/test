@@ -12,7 +12,7 @@ export class SharingEffects {
   @Effect()
   createAssetShareLink: Observable<Action> = this.actions.ofType(SharingActions.CreateAssetShareLink.Type)
     .switchMap((action: SharingActions.CreateAssetShareLink) =>
-      this.service.createAssetShareLink(action.assetId, action.subclipMarkers)
+      this.service.createAssetShareLink(action.assetId, action.markers)
         .map(link => this.store.create(factory => factory.sharing.createAssetShareLinkSuccess(link)))
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
@@ -20,7 +20,7 @@ export class SharingEffects {
   @Effect()
   emailAssetShareLink: Observable<Action> = this.actions.ofType(SharingActions.EmailAssetShareLink.Type)
     .switchMap((action: SharingActions.EmailAssetShareLink) =>
-      this.service.emailAssetShareLink(action.assetId, action.subclipMarkers, action.parameters)
+      this.service.emailAssetShareLink(action.assetId, action.markers, action.parameters)
         .map(() => this.store.create(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE')))
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
