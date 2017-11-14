@@ -67,6 +67,9 @@ export const initialState: State = {
       }]
     },
     salesManager: {
+      expirationDate: null,
+      salesManager: null,
+      offlineAgreement: null,
       field: [{
         default: 'TODAY+15',
         name: 'expirationDate',
@@ -116,7 +119,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     case QuoteEditActions.CloneLineItem.Type:
     case QuoteEditActions.EditLineItemMarkers.Type: {
       return {
-        ...Common.clone(state),
+        ...state,
         loading: true
       };
     }
@@ -142,8 +145,8 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     case QuoteEditActions.AddUserToQuote.Type: {
       return {
         ...state,
-        loading: false,
-        sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
+        sendDetails: {
+          ...state.sendDetails,
           user: {
             id: action.user.id,
             customerName: `${action.user.firstName} ${action.user.lastName}`,
@@ -153,20 +156,19 @@ export function reducer(state: State = initialState, action: AllowedActions): St
               return field;
             })
           }
-        }))
+        }
       };
     }
 
     case UserActions.GetAllUsersByAccountIdSuccess.Type: {
       return {
         ...state,
-        loading: false,
-        sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
-          invoiceContact: Object.assign(state.sendDetails.invoiceContact, {
+        sendDetails: {
+          ...state.sendDetails,
+          invoiceContact: {
+            ...Common.clone(state.sendDetails.invoiceContact),
             field: state.sendDetails.invoiceContact.field.map(field => {
-              field.options = (action.users || []).map(user => (
-                { id: user.id, name: `${user.firstName} ${user.lastName}`, emailAddress: user.emailAddress }
-              ));
+              field.options = (action.users || []);
               if (state.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
                 field.value = field.options.find((option: Pojo) => option.id === state.sendDetails.billingAccount.invoiceContactId);
               } else {
@@ -175,8 +177,8 @@ export function reducer(state: State = initialState, action: AllowedActions): St
               return field;
             }),
             contactEmail: state.sendDetails.invoiceContact.field[0].value.emailAddress || null
-          })
-        }))
+          }
+        }
       };
     }
 
@@ -184,8 +186,10 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       let selectedUser: User;
       return {
         ...state,
-        sendDetails: Object.assign({}, state.sendDetails, {
-          invoiceContact: Common.clone(Object.assign(state.sendDetails.invoiceContact, {
+        sendDetails: {
+          ...state.sendDetails,
+          invoiceContact: {
+            ...Common.clone(state.sendDetails.invoiceContact),
             id: action.userId,
             field: state.sendDetails.invoiceContact.field.map(field => {
               selectedUser = field.options.find((option: Pojo) => option.id === action.userId);
@@ -193,59 +197,88 @@ export function reducer(state: State = initialState, action: AllowedActions): St
               return field;
             }),
             contactEmail: selectedUser.emailAddress
-          }))
-        })
+          }
+        }
       };
     }
 
     case AccountActions.GetAccountForQuoteAdminSuccess.Type: {
-      if (!state.sendDetails.user.accountName) {
-        state.sendDetails.user.accountName = action.account.name;
-      }
-      if (state.sendDetails.invoiceContact.id) {
-        delete state.sendDetails.invoiceContact.id;
-      }
+
       return {
         ...state,
-        loading: false,
-        sendDetails: Common.clone(Object.assign({}, state.sendDetails, {
+        sendDetails: {
+          ...state.sendDetails,
           billingAccount: {
-            ...action.account,
+            ...Common.clone(action.account),
             field: state.sendDetails.billingAccount.field.map(field => {
               field.value = action.account.name;
               return field;
             })
+          },
+          invoiceContact: {
+            ...Common.clone(state.sendDetails.invoiceContact),
+            id: action.account.invoiceContactId
           }
-        }))
+        }
+      };
+    }
+
+    case AccountActions.GetAccountForQuoteAdminOnUserAddSuccess.Type: {
+      return {
+        ...state,
+        sendDetails: {
+          ...state.sendDetails,
+          billingAccount: {
+            ...Common.clone(action.account),
+            field: state.sendDetails.billingAccount.field.map(field => {
+              field.value = action.account.name;
+              return field;
+            })
+          },
+          invoiceContact: {
+            ...Common.clone(state.sendDetails.invoiceContact),
+            id: action.account.invoiceContactId
+          },
+          user: {
+            ...Common.clone(state.sendDetails.user),
+            accountName: action.account.name
+          }
+        }
       };
     }
 
     case QuoteEditActions.AddSalesManagerToQuote.Type: {
       return {
         ...state,
-        sendDetails: Object.assign(state.sendDetails, {
-          salesManager: Object.assign(state.sendDetails.salesManager, {
+        sendDetails: {
+          ...state.sendDetails,
+          salesManager: {
+            ...Common.clone(state.sendDetails.salesManager),
             field: state.sendDetails.salesManager.field.map(field => {
               if (field.type === 'email') field.value = action.emailAddress;
               return field;
             })
-          })
-        })
+          }
+        }
       };
     }
 
     case QuoteEditActions.UpdateSalesManagerFormOnQuote.Type: {
       return {
         ...state,
-        sendDetails: Object.assign(state.sendDetails, {
-          salesManager: Object.assign(state.sendDetails.salesManager, {
+        sendDetails: {
+          ...state.sendDetails,
+          salesManager: {
             field: state.sendDetails.salesManager.field.map(field => {
               if (field.type === 'wzdate') field.default = action.form[field.name];
               field.value = action.form[field.name];
               return field;
-            })
-          })
-        })
+            }),
+            expirationDate: action.form.expirationDate,
+            salesManager: action.form.salesManager,
+            offlineAgreement: action.form.offlineAgreementReference,
+          }
+        }
       };
     }
 
