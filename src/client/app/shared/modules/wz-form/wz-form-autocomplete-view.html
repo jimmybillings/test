@@ -36,6 +36,6 @@
 
 <ul class="mat-caption">
   <li *ngFor="let property of labels | async">
-    <strong>{{property.label}}:</strong> {{property.value}}
+    <strong>{{property.label | translate}}</strong>{{property.value}}
   </li>
 </ul>

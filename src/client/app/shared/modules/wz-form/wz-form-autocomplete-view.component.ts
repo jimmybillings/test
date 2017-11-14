@@ -29,8 +29,8 @@ export class WzFormAutoCompleteViewComponent extends WzFormBase {
         property !== 'email' &&
         property !== 'invoiceContactId')
       .map((property: string) => {
-        let label: string = property.replace(/([A-Z])/g, function (str) { return ` ${str.toLowerCase()}`; })
-          .replace(/^./, function (str) { return str.toUpperCase(); });
+        let label: string = property.replace(/([A-Z])/g, function (str) { return `_${str.toLowerCase()}`; });
+        label = `QUOTE.EDIT.${label.toUpperCase()}_KEY`;
         return { label: label, value: properties[property as any] };
       });
     this.labels = new BehaviorSubject(tempLabels);
