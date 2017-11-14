@@ -53,12 +53,12 @@ export class QuoteEditSendTabComponent extends Tab implements OnInit {
   }
 
   public onSubmitSendQuote(options: QuoteOptions): void {
-    this.store.dispatch(factory => factory.quoteEdit.saveRecipientInformationOnQuote({
-      ownerEmail: options.ownerEmail,
-      expirationDate: new Date(options.expirationDate).toISOString(),
-      purchaseType: options.purchaseType.split(' ').join(''),
-      offlineAgreementId: options.offlineAgreementId
-    }));
+    // this.store.dispatch(factory => factory.quoteEdit.saveRecipientInformationOnQuote({
+    //   ownerEmail: options.ownerEmail,
+    //   expirationDate: new Date(options.expirationDate).toISOString(),
+    //   purchaseType: options.purchaseType.split(' ').join(''),
+    //   offlineAgreementId: options.offlineAgreementId
+    // }));
     this.goToNextTab();
   }
 
