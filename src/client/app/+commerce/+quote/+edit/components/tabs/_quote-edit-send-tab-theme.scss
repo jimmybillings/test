@@ -16,4 +16,7 @@
       border-color: mat-color($foreground, disabled);
     }
   }
+  quote-edit-confirm-tab-component .contact-data.card {
+    background-color: mat-color($background, card);
+  }
 }

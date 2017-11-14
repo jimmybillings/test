@@ -103,3 +103,24 @@ quote-edit-send-tab-component {
     }
   }
 }
+quote-edit-confirm-tab-component .contact-data {
+  .mat-title {
+    font-weight: 400;
+    margin: 0 0 2px 0;
+    opacity: .7;
+  }
+  ul {
+    list-style-type: none;
+    padding: 2px 0 0 2px;
+    margin: 0;
+    li {
+      strong  {
+        padding-right: 4px;
+      }
+    }
+  }
+  &.card {
+    padding: 12px 18px 18px;
+    border-radius: 2px;
+  } 
+}
