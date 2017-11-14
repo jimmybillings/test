@@ -31,7 +31,7 @@ export class AccountEffects {
         .map((billingAccount: SendDetailsBillingAccount) => {
           return (action.onUserAdd) ?
             this.store.create(factory => factory.account.getAccountForQuoteAdminOnUserAddSuccess(billingAccount)) :
-            this.store.create(factory => factory.account.getAccountForQuoteAdminSuccess(billingAccount))
+            this.store.create(factory => factory.account.getAccountForQuoteAdminSuccess(billingAccount));
         })
     );
 

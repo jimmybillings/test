@@ -231,9 +231,9 @@ export interface SendDetailsBillingAccount {
 }
 
 export interface SendDetailsSalesManager {
-  expirationDate?: string,
-  salesManager?: string,
-  offlineAgreement?: string,
+  expirationDate?: string;
+  salesManager?: string;
+  offlineAgreement?: string;
   field?: Pojo[];
 }
 
