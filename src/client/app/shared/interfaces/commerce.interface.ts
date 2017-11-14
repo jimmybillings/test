@@ -108,6 +108,7 @@ export interface Asset {
   timeEnd?: number;
   clipUrl?: string;
   uuid?: string;
+  price?: number;
 }
 
 export interface Metadatum {
