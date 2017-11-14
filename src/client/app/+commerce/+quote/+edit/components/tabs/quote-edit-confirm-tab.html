@@ -1,19 +1,22 @@
 <header flex="100" layout="column" layout-align="start">
   <h2 class="commerce-heading">Review your quote</h2>
 </header>
-<section class="contact-data overview" flex="100" layout="column">
-  <div flex="33" class="contact-data">
+<section class="contact-data overview" flex="100" layout="row">
+  <div class="contact-data" flex="33" flex-xs="100" layout="row" layout-align="space-between start">
     <ul class="mat-caption">
       <li>
-        <strong>Expiration date:</strong>{{ (recipientInformation | async).salesManager}}
+        <strong>Expiration date:</strong>{{ (recipientInformation | async).salesManager.expirationDate}}
       </li>
       <li>
-        <strong>Sales mananger:</strong>{{ (recipientInformation | async).salesManager}}
+        <strong>Sales mananger:</strong>{{ (recipientInformation | async).salesManager.salesManager}}
       </li>
       <li>
-        <strong>Offline agreement reference:</strong>{{ (recipientInformation | async).salesManager}}
+        <strong>Offline agreement reference:</strong>{{ (recipientInformation | async).salesManager.offlineAgreement}}
       </li>
     </ul>
+    <button *ngIf="true" mat-button class="mini is-outlined" color="primary" (click)="goToTab(1)">
+      {{ 'CART.CONFIRM.EDIT' | translate }}
+    </button>
   </div>
 </section>
 <section class="recipient" flex="100" layout="column" layout-gt-xs="row" layout-align="space-between">
@@ -27,7 +30,7 @@
         <strong>Customer email:</strong>{{ (recipientInformation | async).user.email}}
       </li>
       <li>
-        <strong>Account:</strong>{{ (recipientInformation | async).billingAccount.name}}
+        <strong>Account:</strong>{{ (recipientInformation | async).user.accountName}}
       </li>
     </ul>
   </div>
@@ -38,7 +41,7 @@
         <strong>Account name:</strong>{{ (recipientInformation | async).billingAccount.name}}
       </li>
       <li>
-        <strong>Sales rep:</strong>{{ (recipientInformation | async).user.email}}
+        <strong>Sales rep:</strong>{{ (recipientInformation | async).billingAccount.salesOwner}}
       </li>
       <li>
         <strong>Purchase on credit:</strong>{{ (recipientInformation | async).billingAccount.purchaseOnCredit}}
@@ -61,6 +64,19 @@
         <strong>Contact email:</strong>{{ (recipientInformation | async).invoiceContact.contactEmail}}
       </li>
     </ul>
+  </div>
+</section>
+<section class="contact-data summary-heading" flex="100" layout="row">
+  <div flex="33"  flex-xs="100" layout="row" layout-align="space-between start">
+    <ul class="mat-caption">
+      <h5 class="mat-title">Quote summary</h5>
+      <li>
+        <strong>Purchase type:</strong>{{ quoteType | async}}
+      </li>
+    </ul>
+    <button *ngIf="true" mat-button class="mini is-outlined" color="primary" (click)="goToTab(0)">
+      {{ 'CART.CONFIRM.EDIT' | translate }}
+    </button>
   </div>
 </section>
 <projects-component

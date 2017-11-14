@@ -196,7 +196,8 @@ export function reducer(state: State = initialState, action: AllowedActions): St
               field.value = selectedUser;
               return field;
             }),
-            contactEmail: selectedUser.emailAddress
+            contactEmail: selectedUser.emailAddress,
+            name: selectedUser.name
           }
         }
       };

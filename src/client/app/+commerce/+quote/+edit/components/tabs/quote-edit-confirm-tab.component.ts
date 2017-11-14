@@ -7,10 +7,9 @@ import {
   quotesWithoutPricing
 } from '../../../../../shared/interfaces/commerce.interface';
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-
 import { Capabilities } from '../../../../../shared/services/capabilities.service';
-
 import { AppStore } from '../../../../../app.store';
+import { Tab } from '../../../../components/tabs/tab';
 
 @Component({
   moduleId: module.id,
@@ -19,10 +18,12 @@ import { AppStore } from '../../../../../app.store';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class QuoteEditConfirmTabComponent {
+export class QuoteEditConfirmTabComponent extends Tab {
   @Input() projects: Project[];
 
-  constructor(public userCan: Capabilities, private store: AppStore) { }
+  constructor(public userCan: Capabilities, private store: AppStore) {
+    super();
+  }
 
   public get recipientInformation(): Observable<SendDetails> {
     return this.store.select(state => state.quoteEdit.sendDetails);

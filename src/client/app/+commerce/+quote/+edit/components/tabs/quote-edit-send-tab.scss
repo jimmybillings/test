@@ -8,7 +8,7 @@ quote-edit-send-tab-component {
     wz-form-picklist-component,
     wz-form-autocomplete-view {
       margin-top: 14px;
-      padding: 12px 18px 18px;
+      padding: 10px 16px 16px;
       border-radius: 2px;
       @include mat-elevation(1);
       &:first-child {
@@ -25,7 +25,7 @@ quote-edit-send-tab-component {
         margin: 0;
         li {
           strong  {
-            padding-right: 4px;
+            padding-right: 5px;
           }
         }
       }
@@ -103,24 +103,47 @@ quote-edit-send-tab-component {
     }
   }
 }
-quote-edit-confirm-tab-component .contact-data {
-  .mat-title {
-    font-weight: 400;
-    margin: 0 0 2px 0;
-    opacity: .7;
+quote-edit-confirm-tab-component {
+  .overview {
+    margin-bottom: 10px;
   }
-  ul {
-    list-style-type: none;
-    padding: 2px 0 0 2px;
-    margin: 0;
-    li {
-      strong  {
-        padding-right: 4px;
+  .contact-data {
+    .mat-title {
+      font-weight: 400;
+      opacity: .6;
+      margin: .3em 0;
+      line-height: 1;
+    }
+    ul {
+      list-style-type: none;
+      padding: 2px 0 0 2px;
+      margin: 0;
+      li {
+        strong  {
+          padding-right: 5px;
+        }
+      }
+    }
+    &.card {
+      padding: 10px 16px 16px;
+      border-radius: 2px;
+      margin: 12px 0 12px 12px;
+      &:first-child {
+        margin-left: 0;
+      }
+      @media screen and (max-width: $layout-breakpoint-xs)  {
+        margin: 0 0 12px 0;
+      }
+    }
+    button.is-outlined.mini {
+      margin-right: 8px;
+      @media screen and (max-width: $layout-breakpoint-xs)  {
+        margin-right: 0;
       }
     }
   }
-  &.card {
-    padding: 12px 18px 18px;
-    border-radius: 2px;
-  } 
+  .summary-heading {
+    margin-top: 24px;
+    margin-bottom: 3px;
+  }
 }

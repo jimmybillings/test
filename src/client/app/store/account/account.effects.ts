@@ -20,12 +20,12 @@ export class AccountEffects {
           {
             id: account.id,
             name: account.name,
-            creditExemption: account.creditExemption || null,
-            licensingVertical: account.licensingVertical || null,
+            salesOwner: account.salesOwner || null,
             paymentTermsDays: account.paymentTermsDays || null,
             purchaseOnCredit: account.purchaseOnCredit || null,
-            invoiceContactId: account.invoiceContactId,
-            salesOwner: account.salesOwner || null
+            creditExemption: account.creditExemption || null,
+            licensingVertical: account.licensingVertical || null,
+            invoiceContactId: account.invoiceContactId
           }
         ))
         .map((billingAccount: SendDetailsBillingAccount) => {
