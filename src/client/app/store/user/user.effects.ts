@@ -18,11 +18,12 @@ export class UserEffects {
     .switchMap((action: UserActions.GetAllUsersByAccountId) =>
       this.service.getUsersByAccountId(action.accountId, 'offAfterResponse')
         .map((users: User[]) => (
-          users.map(user => ({
-            id: user.id,
-            name: `${user.firstName} ${user.lastName}`,
-            emailAddress: user.emailAddress
-          }))
+          (users || [])
+            .map(user => ({
+              id: user.id,
+              name: `${user.firstName} ${user.lastName}`,
+              emailAddress: user.emailAddress
+            }))
         ))
         .map((invoiceContactUsers: SendDetailsBillingAccount[]) =>
           this.store.create(factory => factory.user.getAllUsersByAccountIdSuccess(invoiceContactUsers))
