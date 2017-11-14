@@ -52,6 +52,7 @@ export function main() {
           assetSharing: { config: {} }
         }
       });
+      mockStore.createStateSection('speedPreview', { 1234: { price: 100 }, 1235: {} });
 
       componentUnderTest = new AssetDetailComponent(mockStore);
 
@@ -591,15 +592,48 @@ export function main() {
     });
 
     describe('canAddToCart getter', () => {
-      it('returns true with addToCart capability', () => {
-        componentUnderTest.userCan = { addToCart: () => true } as any;
+      it('returns false without addToCart capability', () => {
+        componentUnderTest.userCan = { addToCart: () => false } as any;
+        expect(componentUnderTest.canAddToCart).toBe(false);
+      });
 
+      it('returns false for an asset without Rights.Reproduction', () => {
+        componentUnderTest.userCan = { addToCart: () => true } as any;
+        componentUnderTest.asset = enhanceAsset(
+          { primary: [{ name: 'some-name', value: 'some value' }] } as any, 'searchAsset'
+        );
+        expect(componentUnderTest.canAddToCart).toBe(false);
+      });
+
+      it('returns false for an asset with a non-acceptable Rights.Reproduction value', () => {
+        componentUnderTest.userCan = { addToCart: () => true } as any;
+        componentUnderTest.asset = enhanceAsset(
+          { primary: [{ name: 'Rights.Reproduction', value: 'some value' }] } as any, 'searchAsset'
+        );
+        expect(componentUnderTest.canAddToCart).toBe(false);
+      });
+
+      it('returns true for an asset with a Rights.Reproduction field of "Royalty Free" that has a price', () => {
+        componentUnderTest.userCan = { addToCart: () => true } as any;
+        componentUnderTest.asset = enhanceAsset(
+          { assetId: 1234, primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any, 'searchAsset'
+        );
         expect(componentUnderTest.canAddToCart).toBe(true);
       });
 
-      it('returns false without addToCart capability', () => {
-        componentUnderTest.userCan = { addToCart: () => false } as any;
+      it('returns true for an asset with a Rights.Reproduction field of "Rights Managed" that has a price', () => {
+        componentUnderTest.userCan = { addToCart: () => true } as any;
+        componentUnderTest.asset = enhanceAsset(
+          { assetId: 1234, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any, 'searchAsset'
+        );
+        expect(componentUnderTest.canAddToCart).toBe(true);
+      });
 
+      it('returns false for an asset with a Rights.Reproduction field of "Rights Managed" that does not have a price', () => {
+        componentUnderTest.userCan = { addToCart: () => true } as any;
+        componentUnderTest.asset = enhanceAsset(
+          { assetId: 1235, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any, 'searchAsset'
+        );
         expect(componentUnderTest.canAddToCart).toBe(false);
       });
     });
@@ -1000,5 +1034,24 @@ export function main() {
         expect(componentUnderTest.updateAssetLineItem.emit).toHaveBeenCalled();
       });
     });
+
+    describe('showDownloadButton()', () => {
+      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', expectedResult: true },
+        { assetType: 'collectionAsset', expectedResult: true },
+        { assetType: 'orderAsset', expectedResult: false },
+        { assetType: 'quoteEditAsset', expectedResult: true },
+        { assetType: 'quoteShowAsset', expectedResult: true },
+        { assetType: 'searchAsset', expectedResult: true },
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
+          expect(componentUnderTest.showDownloadButton).toBe(test.expectedResult);
+        });
+      });
+    });
+
   });
 }

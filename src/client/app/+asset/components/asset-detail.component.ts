@@ -274,8 +274,10 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canAddToCart(): boolean {
-    return this.userCan.addToCart();
+    return this.userCan.addToCart() && this.canBePurchased(this.asset);
   }
+
+
 
   public get primaryAssetFields(): Metadatum | { value: string }[] {
     return this.asset.primary.slice(4, -1).filter(field => field.value !== null);
@@ -341,6 +343,13 @@ export class AssetDetailComponent implements OnInit {
 
   public get showDownloadButton(): boolean {
     return this.asset.type !== 'orderAsset';
+  }
+
+  private canBePurchased(asset: any): boolean {
+    const rights: any = asset.primary && asset.primary.find((metadatum: Metadatum) => metadatum.name === 'Rights.Reproduction');
+    if (!rights) return false;
+    return ['Rights Managed', 'Royalty Free'].includes(rights.value) &&
+      this.store.snapshot(state => state.speedPreview[asset.assetId] ? state.speedPreview[asset.assetId].price : 0) > 0;
   }
 
   private assetTypeIsOneOf(...assetTypes: AssetType[]) {
