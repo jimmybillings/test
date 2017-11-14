@@ -215,7 +215,7 @@ export interface SendDetailsUser {
   accountName?: string;
   customerName?: string;
   email?: string;
-  field: Pojo[];
+  field?: Pojo[];
 }
 
 export interface SendDetailsBillingAccount {
@@ -227,18 +227,21 @@ export interface SendDetailsBillingAccount {
   paymentTermsDays?: string;
   licensingVertical?: string;
   invoiceContactId?: number;
-  field: Pojo[];
+  field?: Pojo[];
 }
 
 export interface SendDetailsSalesManager {
-  field: Pojo[];
+  expirationDate?: string,
+  salesManager?: string,
+  offlineAgreement?: string,
+  field?: Pojo[];
 }
 
 export interface SendDetailsInvoiceContact {
   id?: number;
   name?: string;
   contactEmail?: string;
-  field: Pojo[];
+  field?: Pojo[];
 }
 
 export interface OrdersApiResponse extends Pagination {
