@@ -1,11 +1,9 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { FormFields } from '../../shared/interfaces/forms.interface';
 import { Pojo } from '../../shared/interfaces/common.interface';
-import { Subscription } from 'rxjs/Subscription';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
-import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
+import { SubclipMarkers, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AppStore } from '../../app.store';
 
 @Component({
@@ -18,10 +16,10 @@ export class AssetShareComponent {
   @Input() config: any;
   @Input() set enhancedAsset(asset: EnhancedAsset) {
     this.currentAsset = asset;
-    this.close();
+    this.requestClose();
   }
-  @Input() subclipMarkers: SubclipMarkersInterface.SubclipMarkers;
-  @Output() closeRequest = new EventEmitter();
+  @Input() subclipMarkers: SubclipMarkers;
+  @Output() closeRequest: EventEmitter<null> = new EventEmitter();
 
   public shareLink: Observable<string>;
 
@@ -34,13 +32,13 @@ export class AssetShareComponent {
   }
 
   public get shareAssetDialogTitle(): string {
-    return SubclipMarkersInterface.bothMarkersAreSet(this.subclipMarkers)
+    return bothMarkersAreSet(this.subclipMarkers)
       ? 'ASSET.SHARING.SUBCLIP_DIALOG_HEADER_TITLE'
       : 'ASSET.SHARING.DIALOG_HEADER_TITLE';
   }
 
   public get showSubclippingInfo(): boolean {
-    return SubclipMarkersInterface.bothMarkersAreSet(this.subclipMarkers);
+    return bothMarkersAreSet(this.subclipMarkers);
   }
 
   public get assetName(): string {
@@ -52,7 +50,7 @@ export class AssetShareComponent {
   }
 
   public onCloseRequest(): void {
-    this.close();
+    this.requestClose();
   }
 
   public onFormSubmit(shareParameters: Pojo): void {
@@ -61,7 +59,7 @@ export class AssetShareComponent {
     );
   }
 
-  private close(): void {
+  private requestClose(): void {
     this.closeRequest.emit();
   }
 }
