@@ -52,7 +52,7 @@ export function main() {
           assetSharing: { config: {} }
         }
       });
-      mockStore.createStateSection('speedPreview', { 1234: { price: 100 }, 1235: {} });
+      mockStore.createStateSection('asset', { activeAsset: { assetId: 1234, price: 99 } });
 
       componentUnderTest = new AssetDetailComponent(mockStore);
 
@@ -630,6 +630,7 @@ export function main() {
       });
 
       it('returns false for an asset with a Rights.Reproduction field of "Rights Managed" that does not have a price', () => {
+        mockStore.createStateSection('asset', { activeAsset: { assetId: 1235 } });
         componentUnderTest.userCan = { addToCart: () => true } as any;
         componentUnderTest.asset = enhanceAsset(
           { assetId: 1235, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any, 'searchAsset'

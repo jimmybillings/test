@@ -32,7 +32,10 @@
   two-level-view .carousel .carousel-content-9 .carousel-item,
   two-level-view .carousel .carousel-content-10 .carousel-item,
   two-level-view .carousel .carousel-content-11 .carousel-item,
-  two-level-view .carousel .carousel-content-12 .carousel-item {
+  two-level-view .carousel .carousel-content-12 .carousel-item,
+  two-level-view .carousel .carousel-content-13 .carousel-item,
+  two-level-view .carousel .carousel-content-14 .carousel-item,
+  two-level-view .carousel .carousel-content-15 .carousel-item {
     a {
       section {
         @include text-contrast(mat-color($mat-grey, 900), mat-color($foreground, text), mat-color($background, card));
