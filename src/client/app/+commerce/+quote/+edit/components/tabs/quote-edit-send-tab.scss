@@ -16,7 +16,7 @@ quote-edit-send-tab-component {
       }
       .mat-title {
         font-weight: 400;
-        margin: 0 0 5px 0;
+        margin: 0 0 2px 0;
         opacity: .7;
       }
       ul {
@@ -28,21 +28,12 @@ quote-edit-send-tab-component {
             padding-right: 4px;
           }
         }
-        // &.empty-properties {
-        //   display: none;
-        // }
       }
       &.recipient.is-empty {
         ul.mat-caption {
           opacity:.4;
         }
       }
-      // &.recipient.is-empty {
-      //   ul.recipient.empty-properties {
-      //     display: block;
-      //     opacity:.4;
-      //   }
-      // }
       &.billing-account.is-empty {
         @include mat-elevation(0);
         background-color: transparent;
@@ -50,12 +41,8 @@ quote-edit-send-tab-component {
         border-width: 1px;
         border-style: solid;
         ul.mat-caption {
-          margin-top: 50px;
+          margin-top: 73px;
         }
-        // ul.billing.empty-properties {
-        //   display: block;
-        //   margin-top: 50px;
-        // }
         form {
           display: none;
         }
@@ -75,9 +62,8 @@ quote-edit-send-tab-component {
       opacity: .4;
       border-width: 1px;
       border-style: solid;
-      ul.invoice-contact.empty-properties {
-        display: block;
-        margin-top: 50px;
+      ul.mat-caption {
+        margin-top: 73px;
       }
       form {
         display: none;

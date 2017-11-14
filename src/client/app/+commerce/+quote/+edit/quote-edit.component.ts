@@ -45,12 +45,12 @@ export class QuoteEditComponent implements OnInit, OnDestroy {
     // For example, don't include 'billing' and 'payment' if the cart total is 0.
     // this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
     // I think the confirm tab should be place order
-    this.tabLabelKeys = ['quote', 'recipient details', 'confirm'];
+    this.tabLabelKeys = ['quote', 'recipient', 'confirm'];
 
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
 
-    this.selectedTabIndex = 1;
+    this.selectedTabIndex = 0;
 
     this.projectSubscription = this.store.select(state => state.quoteEdit.data.projects)
       .subscribe(projects => this.projects = this.enhanceAssetsInProjects(projects));
