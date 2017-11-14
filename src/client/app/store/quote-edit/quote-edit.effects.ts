@@ -340,23 +340,16 @@ export class QuoteEditEffects {
   @Effect()
   public addUserToQuote: Observable<Action> = this.actions
     .ofType(QuoteEditActions.AddUserToQuote.Type)
-    .mergeMap((action: QuoteEditActions.AddUserToQuote) => {
-      return [
-        this.store.create(factory => factory.account.getAccountForQuoteAdmin(action.user.accountId)),
-        this.store.create(factory => factory.user.getAllUsersByAccountId(action.user.accountId))
-      ];
-    }
+    .map((action: QuoteEditActions.AddUserToQuote) =>
+      this.store.create(factory => factory.account.getAccountForQuoteAdminOnUserAdd(action.user.accountId))
     );
 
   @Effect()
   public addBillingAccountToQuote: Observable<Action> = this.actions
     .ofType(QuoteEditActions.AddBillingAccountToQuote.Type)
-    .mergeMap((action: QuoteEditActions.AddBillingAccountToQuote) => {
-      return [
-        this.store.create(factory => factory.account.getAccountForQuoteAdmin(action.account.id)),
-        this.store.create(factory => factory.user.getAllUsersByAccountId(action.account.id))
-      ];
-    });
+    .map((action: QuoteEditActions.AddBillingAccountToQuote) =>
+      this.store.create(factory => factory.account.getAccountForQuoteAdmin(action.account.id)),
+  );
 
   constructor(
     private actions: Actions,

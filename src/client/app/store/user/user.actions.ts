@@ -1,3 +1,4 @@
+import { SendDetailsBillingAccount } from '../../shared/interfaces/commerce.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { Action } from '@ngrx/store';
 
@@ -8,7 +9,7 @@ export class ActionFactory {
 }
 
 export class InternalActionFactory extends ActionFactory {
-  getAllUsersByAccountIdSuccess(users: User[]): GetAllUsersByAccountIdSuccess {
+  getAllUsersByAccountIdSuccess(users: SendDetailsBillingAccount[]): GetAllUsersByAccountIdSuccess {
     return new GetAllUsersByAccountIdSuccess(users);
   }
 }
@@ -22,7 +23,7 @@ export class GetAllUsersByAccountId implements Action {
 export class GetAllUsersByAccountIdSuccess implements Action {
   public static readonly Type = '[User] Get All Users By Account Id Success';
   public readonly type = GetAllUsersByAccountIdSuccess.Type;
-  constructor(public readonly users: User[]) { }
+  constructor(public readonly users: SendDetailsBillingAccount[]) { }
 }
 
 export type Any = GetAllUsersByAccountId | GetAllUsersByAccountIdSuccess;
