@@ -44,6 +44,7 @@ export class MockAppStore extends AppStore {
       quoteEdit: {} as any,
       quoteShow: {} as any,
       router: {} as any,
+      sharing: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
       uiConfig: {} as any
@@ -71,6 +72,7 @@ export class MockAppStore extends AppStore {
       quoteEdit: {} as any,
       quoteShow: {} as any,
       router: {} as any,
+      sharing: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
       uiConfig: {} as any
@@ -93,6 +95,7 @@ export class MockAppStore extends AppStore {
       privacyPolicy: {} as any,
       quoteEdit: {} as any,
       quoteShow: {} as any,
+      sharing: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
       uiConfig: {} as any

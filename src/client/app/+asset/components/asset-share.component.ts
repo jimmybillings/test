@@ -29,6 +29,10 @@ export class AssetShareComponent implements OnDestroy {
 
   constructor(private store: AppStore) { }
 
+  public ngOnInit(): void {
+    this.shareLink = this.store.select(state => state.sharing.assetLink);
+  }
+
   public ngOnDestroy(): void {
     this.close();
   }
@@ -48,9 +52,7 @@ export class AssetShareComponent implements OnDestroy {
   }
 
   public onShareLinkRequest(): void {
-    this.shareLink =
-      this.store.callLegacyServiceMethod(service => service.asset.createShareLink(this.currentAsset.assetId, this.subclipMarkers))
-        .map(response => `${window.location.href};share_key=${response.apiKey}`);
+    this.store.dispatch(factory => factory.sharing.createAssetShareLink(this.currentAsset.assetId, this.subclipMarkers));
   }
 
   public onCloseRequest(): void {
@@ -58,11 +60,9 @@ export class AssetShareComponent implements OnDestroy {
   }
 
   public onFormSubmit(shareParameters: Pojo): void {
-    this.store.callLegacyServiceMethod(service =>
-      service.asset.createShareLink(this.currentAsset.assetId, this.subclipMarkers, shareParameters)
-    ).subscribe(() => {
-      this.store.dispatch(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE'));
-    });
+    this.store.dispatch(factory =>
+      factory.sharing.emailAssetShareLink(this.currentAsset.assetId, this.subclipMarkers, shareParameters)
+    );
   }
 
   private close(): void {

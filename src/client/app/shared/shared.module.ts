@@ -78,6 +78,7 @@ import { OrderService } from '../store/order/order.service';
 import { PageDataService } from '../store/page-data/page-data.service';
 import { PricingService } from '../store/pricing/pricing.service';
 import { PrivacyPolicyService } from '../store/privacy-policy/privacy-policy.service';
+import { SharingService } from '../store/sharing/sharing.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
 import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
 import { UiConfigService } from '../store/ui-config/ui-config.service';
@@ -104,6 +105,7 @@ import * as PricingState from '../store/pricing/pricing.state';
 import * as PrivacyPolicyState from '../store/privacy-policy/privacy-policy.state';
 import * as QuoteEditState from '../store/quote-edit/quote-edit.state';
 import * as QuoteShowState from '../store/quote-show/quote-show.state';
+import * as SharingState from '../store/sharing/sharing.state';
 import * as SnackbarState from '../store/snackbar/snackbar.state';
 import * as SpeedPreviewState from '../store/speed-preview/speed-preview.state';
 import * as UiConfigState from '../store/ui-config/ui-config.state';
@@ -142,6 +144,7 @@ import { PrivacyPolicyEffects } from '../store/privacy-policy/privacy-policy.eff
 import { QuoteEditEffects } from '../store/quote-edit/quote-edit.effects';
 import { QuoteShowEffects } from '../store/quote-show/quote-show.effects';
 import { RouterEffects } from '../store/router/router.effects';
+import { SharingEffects } from '../store/sharing/sharing.effects';
 import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
 import { UiConfigEffects } from '../store/ui-config/ui-config.effects';
@@ -175,6 +178,7 @@ const WAZEE_SERVICES = [
   FutureQuoteShowService,
   QuoteService,
   QuotesService,
+  SharingService,
   SnackbarService,
   CommentService,
   DeliveryOptionsService,
@@ -235,6 +239,7 @@ const WAZEE_STORES: any = {
   privacyPolicy: PrivacyPolicyState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteShow: QuoteShowState.reducer,
+  sharing: SharingState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
   uiConfig: UiConfigState.reducer,
@@ -261,6 +266,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   QuoteEditEffects,
   QuoteShowEffects,
   RouterEffects,
+  SharingEffects,
   SnackbarEffects,
   SpeedPreviewEffects,
   UiConfigEffects

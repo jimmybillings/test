@@ -77,6 +77,10 @@ export type QuoteShowState = QuoteShowState.State;
 
 import * as RouterActions from './store/router/router.actions';
 
+import * as SharingActions from './store/sharing/sharing.actions';
+import * as SharingState from './store/sharing/sharing.state';
+export type SharingState = SharingState.State;
+
 import * as SnackbarActions from './store/snackbar/snackbar.actions';
 import * as SnackbarState from './store/snackbar/snackbar.state';
 export type SnackbarState = SnackbarState.State;
@@ -107,6 +111,7 @@ export interface ActionFactory {
   readonly invoice: InvoiceActions.ActionFactory;
   readonly loadingIndicator: LoadingIndicatorActions.ActionFactory;
   readonly multiLingual: MultiLingualActions.ActionFactory;
+  readonly notifier: NotifierActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
   readonly page: PageDataActions.ActionFactory;
   readonly pricing: PricingActions.ActionFactory;
@@ -114,7 +119,7 @@ export interface ActionFactory {
   readonly quoteEdit: QuoteEditActions.ActionFactory;
   readonly quoteShow: QuoteShowActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
-  readonly notifier: NotifierActions.ActionFactory;
+  readonly sharing: SharingActions.ActionFactory;
   readonly snackbar: SnackbarActions.ActionFactory;
   readonly speedPreview: SpeedPreviewActions.ActionFactory;
   readonly uiConfig: UiConfigActions.ActionFactory;
@@ -142,6 +147,7 @@ export interface InternalActionFactory {
   readonly quoteEdit: QuoteEditActions.InternalActionFactory;
   readonly quoteShow: QuoteShowActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
+  readonly sharing: SharingActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
   readonly uiConfig: UiConfigActions.InternalActionFactory;
@@ -164,6 +170,7 @@ export interface AppState {
   readonly privacyPolicy: PrivacyPolicyState;
   readonly quoteEdit: QuoteEditState;
   readonly quoteShow: QuoteShowState;
+  readonly sharing: SharingState;
   readonly snackbar: SnackbarState;
   readonly speedPreview: SpeedPreviewState;
   readonly uiConfig: UiConfigState;
@@ -195,6 +202,7 @@ export const reducers: AppReducers = {
   multiLingual: MultiLingualState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteShow: QuoteShowState.reducer,
+  sharing: SharingState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
   uiConfig: UiConfigState.reducer
@@ -229,6 +237,7 @@ export class AppStore {
     quoteEdit: new QuoteEditActions.ActionFactory(),
     quoteShow: new QuoteShowActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
+    sharing: new SharingActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
     speedPreview: new SpeedPreviewActions.ActionFactory(),
     uiConfig: new UiConfigActions.ActionFactory()
@@ -256,6 +265,7 @@ export class AppStore {
     quoteEdit: new QuoteEditActions.InternalActionFactory(),
     quoteShow: new QuoteShowActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),
+    sharing: new SharingActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
     speedPreview: new SpeedPreviewActions.InternalActionFactory(),
     uiConfig: new UiConfigActions.InternalActionFactory()

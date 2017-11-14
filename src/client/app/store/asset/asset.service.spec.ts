@@ -86,18 +86,13 @@ export function main() {
   describe('Legacy Asset Service', () => {
     let serviceUnderTest: LegacyAssetService;
     let mockApiService: MockApiService;
-    let mockCurrentUserService: any;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApiService = new MockApiService();
       mockApiService.getResponse = { some: 'asset' };
 
-      mockCurrentUserService = {
-        state: { emailAddress: 'some email address' }
-      };
-
-      serviceUnderTest = new LegacyAssetService(mockApiService.injector, mockCurrentUserService);
+      serviceUnderTest = new LegacyAssetService(mockApiService.injector);
     });
 
     describe('createShareLink()', () => {
