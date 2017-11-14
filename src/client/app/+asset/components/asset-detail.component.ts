@@ -345,11 +345,11 @@ export class AssetDetailComponent implements OnInit {
     return this.asset.type !== 'orderAsset';
   }
 
-  private canBePurchased(asset: any): boolean {
-    const rights: any = asset.primary && asset.primary.find((metadatum: Metadatum) => metadatum.name === 'Rights.Reproduction');
+  private canBePurchased(asset: EnhancedAsset): boolean {
+    const rights: string = asset.getMetadataValueFor('Rights.Reproduction');
     if (!rights) return false;
-    return ['Rights Managed', 'Royalty Free'].includes(rights.value) &&
-      this.store.snapshot(state => state.speedPreview[asset.assetId] ? state.speedPreview[asset.assetId].price : 0) > 0;
+    const price: number = this.store.snapshot(state => state.asset.activeAsset.assetId ? state.asset.activeAsset.price : 0);
+    return ['Rights Managed', 'Royalty Free'].includes(rights) && price > 0;
   }
 
   private assetTypeIsOneOf(...assetTypes: AssetType[]) {
