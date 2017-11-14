@@ -25,7 +25,7 @@ export class QuoteEditConfirmTabComponent extends Tab {
     super();
   }
 
-  public get recipientInformation(): Observable<SendDetails> {
+  public get sendDetails(): Observable<SendDetails> {
     return this.store.select(state => state.quoteEdit.sendDetails);
   }
 
@@ -33,6 +33,18 @@ export class QuoteEditConfirmTabComponent extends Tab {
     this.store.dispatch(factory =>
       factory.quoteEdit.sendQuote(this.store.snapshot(state => state.quoteEdit.sendDetails))
     );
+  }
+
+  public get discount(): Observable<number> {
+    return this.store.select(state => state.quoteEdit.data.discount);
+  }
+
+  public get showDiscount(): boolean {
+    return this.store.snapshot(factory => factory.quoteEdit.data.discount > 0) && !quotesWithoutPricing.includes(this.quoteType);
+  }
+
+  public get subTotal(): Observable<number> {
+    return this.store.select(state => state.quoteEdit.data.subTotal);
   }
 
   public get showTotal(): Observable<boolean> {

@@ -47,7 +47,7 @@ export const initialState: State = {
         endPoint: 'account/searchFields',
         queryParams: 'fields,name,values',
         service: 'identities',
-        suggestionHeading: 'Matching Accounts',
+        suggestionHeading: 'Matching accounts',
         name: 'account',
         label: 'Account name',
         type: 'suggestions',
@@ -73,20 +73,20 @@ export const initialState: State = {
       field: [{
         default: 'TODAY+15',
         name: 'expirationDate',
-        label: 'Expiration Date',
+        label: 'Expiration date',
         type: 'wzdate',
         minimum: 'TODAY',
         validation: 'REQUIRED'
       },
       {
         name: 'salesManager',
-        label: 'Sales Manager',
+        label: 'Sales manager',
         type: 'email',
         value: '',
         validation: 'EMAIL'
       }, {
         name: 'offlineAgreementReference',
-        label: 'Offline Agreement',
+        label: 'Offline agreement reference',
         type: 'text',
         value: '',
         validation: 'OPTIONAL'

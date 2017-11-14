@@ -1,4 +1,4 @@
-<h5 class="mat-title">{{title}}</h5>
+<h5 class="mat-title">{{title | translate}}</h5>
 <form 
   layout="column" 
   [formGroup]="form" 
@@ -31,6 +31,3 @@
     <strong>{{property.label}}:</strong> {{property.value}}
   </li>
 </ul>
-<!-- <ul class="mat-caption invoice-contact empty-properties">
-  <li><strong>Email:</strong></li>
-</ul> -->

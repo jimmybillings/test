@@ -1,5 +1,5 @@
 <header flex="100" layout="row">
-  <h2 class="commerce-heading">Please select recipient options</h2>
+  <h2 class="commerce-heading">{{'QUOTE.EDIT.RECIPIENT_TAB_PG_TITLE' | translate}}</h2>
 </header>
 <div layout="column" layout-gt-xs="row">
   <section class="recipient-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
@@ -7,13 +7,11 @@
       class="recipient"
       [ngClass]="{ 'is-empty' : !(!!(user | async).id) }"
       [items]="(user | async).field"
-      [title]="'Recipient'"
+      [title]="'QUOTE.EDIT.RECIPIENT_TITLE'"
       [matchOnProperty]="'emailAddress'"
       [displayProperties]="user | async"
       includeCancel="true"
       autocomplete="off"
-      cancelLabel="COMMENTS.CANCEL_BTN_LABEL"
-      submitLabel="COMMENTS.SUBMIT_BTN_LABEL"
       (formSubmit)="userSelect($event)">
     </wz-form-autocomplete-view>
     
@@ -21,13 +19,11 @@
       class="billing-account"
       [ngClass]="{ 'is-empty' : !(!!(billingAccount | async).id) }"
       [items]="(billingAccount | async).field"
-      [title]="'Billing account'"
+      [title]="'QUOTE.EDIT.BILLING_ACCOUNT_TITLE'"
       [matchOnProperty]="'name'"
       [displayProperties]="billingAccount | async"
       includeCancel="true"
       autocomplete="off"
-      cancelLabel="COMMENTS.CANCEL_BTN_LABEL"
-      submitLabel="COMMENTS.SUBMIT_BTN_LABEL"
       (formSubmit)="accountSelect($event)">
     </wz-form-autocomplete-view>
 
@@ -35,7 +31,7 @@
       #invoiceContactform
       class="invoice-contact"
       [items]="(invoiceContact | async).field"
-      [title]="'Invoice contact'"
+      [title]="'QUOTE.EDIT.INVOICE_CONTACT_TITLE'"
       [displayProperties]="invoiceContact | async"
       autocomplete="off"
       (selectContact)="invoiceContactSelect($event)">
@@ -47,7 +43,7 @@
       [items]="(salesManager | async).field" 
       [disableUntilValid]="true"
       [outSidePropertiesValid]="allBillingSelectionComplete | async"
-      submitLabel="PROCEED TO CONFIRM" 
+      submitLabel="{{'QUOTE.EDIT.TO_CONFIRM_TAB_BTN' | translate}}" 
       (formSubmit)="onSubmitSendQuote($event)"
       (blur)=onBlur($event)>
     </wz-form>
