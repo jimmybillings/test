@@ -29,7 +29,7 @@ export class WzFormAutoCompleteViewComponent extends WzFormBase {
         property !== 'email' &&
         property !== 'invoiceContactId')
       .map((property: string) => {
-        let label: string = property.replace(/([A-Z])/g, function (str) { return ' ' + str.toLowerCase(); })
+        let label: string = property.replace(/([A-Z])/g, function (str) { return ` ${str.toLowerCase()}`; })
           .replace(/^./, function (str) { return str.toUpperCase(); });
         return { label: label, value: properties[property as any] };
       });
