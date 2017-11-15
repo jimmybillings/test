@@ -161,6 +161,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case UserActions.GetAllUsersByAccountIdSuccess.Type: {
+      console.log(state);
       return {
         ...state,
         sendDetails: {
@@ -171,6 +172,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
               field.options = (action.users || []);
               if (state.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
                 field.value = field.options.find((option: Pojo) => option.id === state.sendDetails.billingAccount.invoiceContactId);
+                if (!field.value) field.value = '';
               } else {
                 field.value = '';
               }
@@ -248,7 +250,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       };
     }
 
-    case QuoteEditActions.AddSalesManagerToQuote.Type: {
+    case QuoteEditActions.InitializeSalesManagerFormOnQuote.Type: {
       return {
         ...state,
         sendDetails: {
@@ -258,7 +260,9 @@ export function reducer(state: State = initialState, action: AllowedActions): St
             field: state.sendDetails.salesManager.field.map(field => {
               if (field.type === 'email') field.value = action.emailAddress;
               return field;
-            })
+            }),
+            expirationDate: action.defaultDate,
+            salesManager: action.emailAddress
           }
         }
       };

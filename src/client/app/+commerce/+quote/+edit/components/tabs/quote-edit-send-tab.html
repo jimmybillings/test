@@ -44,7 +44,7 @@
       [disableUntilValid]="true"
       [outSidePropertiesValid]="allBillingSelectionComplete | async"
       submitLabel="{{'QUOTE.EDIT.TO_CONFIRM_TAB_BTN' | translate}}" 
-      (formSubmit)="onSubmitSendQuote($event)"
+      (formSubmit)="goToNextTab()"
       (blur)=onBlur($event)>
     </wz-form>
   </section>

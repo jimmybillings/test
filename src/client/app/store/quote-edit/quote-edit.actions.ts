@@ -120,8 +120,8 @@ export class ActionFactory {
     return new AddInvoiceContactToQuote(userId);
   }
 
-  public addSalesManagerToQuote(emailAddress: string): AddSalesManagerToQuote {
-    return new AddSalesManagerToQuote(emailAddress);
+  public initializeSalesManagerFormOnQuote(emailAddress: string, defaultDate: string): InitializeSalesManagerFormOnQuote {
+    return new InitializeSalesManagerFormOnQuote(emailAddress, defaultDate);
   }
 
   public updateSalesManagerFormOnQuote(form: Pojo): UpdateSalesManagerFormOnQuote {
@@ -430,10 +430,10 @@ export class AddInvoiceContactToQuote implements Action {
   constructor(public readonly userId: number) { }
 }
 
-export class AddSalesManagerToQuote implements Action {
-  public static readonly Type = '[Quote Edit] Add Sales Manager To Quote';
-  public readonly type = AddSalesManagerToQuote.Type;
-  constructor(public readonly emailAddress: string) { }
+export class InitializeSalesManagerFormOnQuote implements Action {
+  public static readonly Type = '[Quote Edit] Initialize Sales Manager Form On Quote';
+  public readonly type = InitializeSalesManagerFormOnQuote.Type;
+  constructor(public readonly emailAddress: string, public readonly defaultDate: string) { }
 }
 
 export class UpdateSalesManagerFormOnQuote implements Action {
@@ -453,4 +453,4 @@ export type Any =
   AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject |
   UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
   UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | AddInvoiceContactToQuote |
-  AddSalesManagerToQuote | UpdateSalesManagerFormOnQuote;
+  InitializeSalesManagerFormOnQuote | UpdateSalesManagerFormOnQuote;

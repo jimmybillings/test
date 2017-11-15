@@ -29,8 +29,9 @@ export class QuoteEditSendTabComponent extends Tab implements OnInit {
 
     super();
     this.store.dispatch(factory =>
-      factory.quoteEdit.addSalesManagerToQuote(
-        JSON.parse(localStorage.getItem('currentUser')).emailAddress
+      factory.quoteEdit.initializeSalesManagerFormOnQuote(
+        JSON.parse(localStorage.getItem('currentUser')).emailAddress,
+        this.defaultDate(15)
       )
     );
   }
@@ -50,16 +51,6 @@ export class QuoteEditSendTabComponent extends Tab implements OnInit {
         }
       }
     });
-  }
-
-  public onSubmitSendQuote(options: QuoteOptions): void {
-    // this.store.dispatch(factory => factory.quoteEdit.saveRecipientInformationOnQuote({
-    //   ownerEmail: options.ownerEmail,
-    //   expirationDate: new Date(options.expirationDate).toISOString(),
-    //   purchaseType: options.purchaseType.split(' ').join(''),
-    //   offlineAgreementId: options.offlineAgreementId
-    // }));
-    this.goToNextTab();
   }
 
   public get user(): Observable<SendDetailsUser> {
@@ -108,19 +99,20 @@ export class QuoteEditSendTabComponent extends Tab implements OnInit {
   }
 
   private userAccountMatchesBillingAccount(sendDetails: SendDetails) {
-    // console.log((sendDetails.user.hasOwnProperty('accountName') && sendDetails.billingAccount.hasOwnProperty('name'))
-    //   && (sendDetails.user.accountName === sendDetails.billingAccount.name));
     return (sendDetails.user.hasOwnProperty('accountName') && sendDetails.billingAccount.hasOwnProperty('name'))
       && (sendDetails.user.accountName === sendDetails.billingAccount.name);
   }
 
   private allBillingFieldsSelected(sendDetails: SendDetails) {
-    // console.log('sendDetails.user.hasOwnProperty(\'accountName\')', sendDetails.user.hasOwnProperty('accountName'));
-    // console.log('sendDetails.billingAccount.hasOwnProperty(\'id\')', sendDetails.billingAccount.hasOwnProperty('id'));
-    // console.log('sendDetails.invoiceContact.hasOwnProperty(\'id\')', sendDetails.invoiceContact.hasOwnProperty('id'));
     return sendDetails.user.hasOwnProperty('accountName') &&
       sendDetails.billingAccount.hasOwnProperty('id') &&
       sendDetails.invoiceContact.hasOwnProperty('id');
+  }
+
+  private defaultDate(days: number) {
+    let date = new Date();
+    date.setDate(date.getDate() + days);
+    return date.toISOString().slice(0, 10).replace(/-/g, '/');
   }
 
 }
