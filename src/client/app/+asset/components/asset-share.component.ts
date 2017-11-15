@@ -14,16 +14,11 @@ import { AppStore } from '../../app.store';
 })
 export class AssetShareComponent {
   @Input() config: any;
-  @Input() set enhancedAsset(asset: EnhancedAsset) {
-    this.currentAsset = asset;
-    this.requestClose();
-  }
+  @Input() enhancedAsset: EnhancedAsset;
   @Input() subclipMarkers: SubclipMarkers;
   @Output() closeRequest: EventEmitter<null> = new EventEmitter();
 
   public shareLink: Observable<string>;
-
-  private currentAsset: EnhancedAsset;
 
   constructor(private store: AppStore) { }
 
@@ -42,24 +37,20 @@ export class AssetShareComponent {
   }
 
   public get assetName(): string {
-    return this.currentAsset.getMetadataValueFor('name');
+    return this.enhancedAsset.getMetadataValueFor('name');
   }
 
   public onShareLinkRequest(): void {
-    this.store.dispatch(factory => factory.sharing.createAssetShareLink(this.currentAsset.assetId, this.subclipMarkers));
+    this.store.dispatch(factory => factory.sharing.createAssetShareLink(this.enhancedAsset.assetId, this.subclipMarkers));
   }
 
   public onCloseRequest(): void {
-    this.requestClose();
+    this.closeRequest.emit();
   }
 
   public onFormSubmit(shareParameters: AssetShareParameters): void {
     this.store.dispatch(factory =>
-      factory.sharing.emailAssetShareLink(this.currentAsset.assetId, this.subclipMarkers, shareParameters)
+      factory.sharing.emailAssetShareLink(this.enhancedAsset.assetId, this.subclipMarkers, shareParameters)
     );
-  }
-
-  private requestClose(): void {
-    this.closeRequest.emit();
   }
 }
