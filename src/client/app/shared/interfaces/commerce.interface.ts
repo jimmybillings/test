@@ -204,6 +204,12 @@ export interface Quote extends CommonCommerce {
   internalLicenseIds?: number[];
 }
 
+export interface QuoteEdit {
+  data: Quote;
+  sendDetails: SendDetails;
+  loading: boolean;
+}
+
 export interface SendDetails {
   user?: SendDetailsUser;
   billingAccount?: SendDetailsBillingAccount;

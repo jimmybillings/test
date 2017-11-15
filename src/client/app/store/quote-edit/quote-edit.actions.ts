@@ -40,8 +40,8 @@ export class ActionFactory {
     return new AddCustomPriceToLineItem(lineItem, price);
   }
 
-  public sendQuote(quoteRecipient: SendDetails) {
-    return new SendQuote(quoteRecipient);
+  public sendQuote(): SendQuote {
+    return new SendQuote();
   }
 
   public saveRecipientInformationOnQuote(quoteOptions: QuoteOptions): SaveRecipientInformationOnQuote {
@@ -287,7 +287,6 @@ export class AddCustomPriceToLineItemFailure implements Action {
 export class SendQuote implements Action {
   public static readonly Type = '[Quote Edit] Send Quote';
   public readonly type = SendQuote.Type;
-  constructor(public readonly quoteRecipient: SendDetails) { }
 }
 
 export class SaveRecipientInformationOnQuote implements Action {
