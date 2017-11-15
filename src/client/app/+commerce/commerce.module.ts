@@ -59,6 +59,8 @@ import { QuoteConfirmTabComponent } from './+quote/components/tabs/quote-confirm
 import { CommerceListComponent } from './components/commerce-list/commerce-list.component';
 import { CommerceHeaderComponent } from './components/commerce-header/commerce-header.component';
 import { LicenseAgreementComponent } from './components/license-agreement/license-agreement.component';
+import { WzFormAutoCompleteViewComponent } from './+quote/+edit/components/wz-form-autocomplete-view.component';
+import { WzFormPicklistComponent } from './+quote/+edit/components/wz-form-picklist.component';
 
 // project
 import { ProjectsComponent } from './components/project/projects.component';
@@ -125,7 +127,9 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuoteConfirmTabComponent,
     QuoteEditTabComponent,
     QuoteEditSendTabComponent,
-    QuoteEditConfirmTabComponent
+    QuoteEditConfirmTabComponent,
+    WzFormAutoCompleteViewComponent,
+    WzFormPicklistComponent
   ],
   exports: [CartComponent, OrderShowComponent, OrdersComponent],
   providers: [

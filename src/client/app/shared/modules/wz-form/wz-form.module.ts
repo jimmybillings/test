@@ -12,8 +12,6 @@ import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-sear
 import { EqualValidatorDirective } from './wz-validators/wz-equal-validator.directive';
 import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
 import { FormModel } from './wz.form.model';
-import { WzFormAutoCompleteViewComponent } from './wz-form-autocomplete-view.component';
-import { WzFormPicklistComponent } from './wz-form-picklist.component';
 
 import { GooglePlacesService } from './services/google-places.service';
 import { WzAddressFormComponent } from './components/wz-address-form/wz.address-form.component';
@@ -34,9 +32,7 @@ import { WzAddressFormComponent } from './components/wz-address-form/wz.address-
     WzInputSuggestionsComponent,
     EqualValidatorDirective,
     WzPikaDayDirective,
-    WzAutocompleteSearchComponent,
-    WzFormAutoCompleteViewComponent,
-    WzFormPicklistComponent
+    WzAutocompleteSearchComponent
   ],
   exports: [
     WzFormComponent,
@@ -44,8 +40,7 @@ import { WzAddressFormComponent } from './components/wz-address-form/wz.address-
     WzPikaDayDirective,
     WzAutocompleteSearchComponent,
     WzAddressFormComponent,
-    WzFormAutoCompleteViewComponent,
-    WzFormPicklistComponent
+    WzInputSuggestionsComponent
   ],
   entryComponents: [WzAddressFormComponent],
   providers: [FormModel, GooglePlacesService]

@@ -1,9 +1,9 @@
 import { BehaviorSubject } from 'rxjs/Rx';
-import { Pojo } from '../../interfaces/common.interface';
+import { Pojo } from '../../../../shared/interfaces/common.interface';
 import { Component, ChangeDetectionStrategy, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { FormModel } from './wz.form.model';
-import { WzFormBase } from './wz.form-base';
+import { FormModel } from '../../../../shared/modules/wz-form/wz.form.model';
+import { WzFormBase } from '../../../../shared/modules/wz-form/wz.form-base';
 /**
  * Home page component - renders the home page
  */
