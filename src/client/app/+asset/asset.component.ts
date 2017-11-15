@@ -42,6 +42,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
   private cartAsset: EnhancedAsset;
   private cartAssetPriceAttributes: SelectedPriceAttribute[];
+  private isShared: boolean;
 
   constructor(
     public currentUser: CurrentUserService,
@@ -73,6 +74,7 @@ export class AssetComponent implements OnInit, OnDestroy {
       });
 
     this.routeSubscription = this.route.params.subscribe((params: any) => {
+      this.isShared = !!params.share_key;
       this.commentParentObject = this.commentParentObjectFromRoute(params);
     });
   }

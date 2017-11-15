@@ -9,11 +9,12 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'load',
-        parameters: [{ some: 'asset' }]
+        parameters: [{ some: 'asset' }, 'abc-123']
       },
       expectedAction: {
         type: '[Delivery Options] Load',
-        activeAsset: { some: 'asset' }
+        activeAsset: { some: 'asset' },
+        shareKey: 'abc-123'
       }
     });
 

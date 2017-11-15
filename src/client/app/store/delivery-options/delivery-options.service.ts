@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
 import { FutureApiService } from '../api/api.service';
-import { Api, ApiParameters } from '../../shared/interfaces/api.interface';
+import { Api, ApiParameters, ApiOptions } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers, durationFrom, Duration } from '../../shared/interfaces/subclip-markers';
 import { Order } from '../../shared/interfaces/commerce.interface';
 import { AsperaService } from '../../shared/services/aspera.service';
@@ -18,8 +18,11 @@ import {
 export class DeliveryOptionsService {
   constructor(private apiService: FutureApiService, private asperaService: AsperaService) { }
 
-  public getDeliveryOptions(assetId: number): Observable<DeliveryOptions> {
-    return this.apiService.get(Api.Assets, `renditionType/deliveryOptions/${assetId}`).map(this.formatDeliveryOptions);
+  public getDeliveryOptions(assetId: number, shareKey?: string): Observable<DeliveryOptions> {
+    let options: ApiOptions = {};
+    if (shareKey) options.overridingToken = shareKey;
+
+    return this.apiService.get(Api.Assets, `renditionType/deliveryOptions/${assetId}`, options).map(this.formatDeliveryOptions);
   }
 
   public deliverAsset(assetId: number, optionId: number, markers?: SubclipMarkers): Observable<Order> {

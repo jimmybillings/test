@@ -42,6 +42,7 @@ export class AssetDetailComponent implements OnInit {
   @Input() public assetMatchesCartAsset: boolean;
   @Input() public commentParentObject: CommentParentObject;
   @Input() public commentFormConfig: FormFields;
+  @Input() public assetIsShared: boolean;
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
@@ -212,6 +213,10 @@ export class AssetDetailComponent implements OnInit {
 
   public get canShare(): boolean {
     return this.assetTypeIsOneOf('searchAsset') && this.userCan.createAccessInfo();
+  }
+
+  public get showAdvancedPlayer(): boolean {
+    return this.userCan.createSubclips(this.asset) || this.assetIsShared;
   }
 
   public get shareButtonLabelKey(): string {

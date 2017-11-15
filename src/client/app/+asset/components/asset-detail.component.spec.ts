@@ -262,6 +262,26 @@ export function main() {
       });
     });
 
+    describe('showAdvancedPlayer getter', () => {
+      it('returns true if the user can createSubclips', () => {
+        componentUnderTest.userCan = { createSubclips: () => true } as any;
+        expect(componentUnderTest.showAdvancedPlayer).toBe(true);
+      });
+
+      it('returns false if the user cannot createSubclips', () => {
+        componentUnderTest.userCan = { createSubclips: () => false } as any;
+        componentUnderTest.assetIsShared = false;
+        expect(componentUnderTest.showAdvancedPlayer).toBe(false);
+      });
+
+      it('returns true if the asset is shared', () => {
+        componentUnderTest.userCan = { createSubclips: () => false } as any;
+        componentUnderTest.assetIsShared = true;
+
+        expect(componentUnderTest.showAdvancedPlayer).toBe(true);
+      });
+    });
+
     describe('shareButtonLabelKey getter', () => {
       const tests: { markers: any, expectedKey: string }[] = [
         { markers: undefined, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },

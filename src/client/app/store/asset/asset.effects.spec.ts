@@ -680,11 +680,11 @@ export function main() {
       effectsInstantiator: instantiator,
       inputAction: {
         type: AssetActions.LoadSearchAsset.Type,
-        loadParameters: { some: 'loadParameters' }
+        loadParameters: { some: 'loadParameters', share_key: 'abc-123' },
       },
       serviceMethod: {
         name: 'load',
-        expectedArguments: [{ some: 'loadParameters' }],
+        expectedArguments: [{ some: 'loadParameters', share_key: 'abc-123' }],
         returnsObservableOf: { some: 'asset' }
       },
       outputActionFactories: {
@@ -697,7 +697,7 @@ export function main() {
           {
             sectionName: 'deliveryOptions',
             methodName: 'load',
-            expectedArguments: [{ some: 'asset' }]
+            expectedArguments: [{ some: 'asset' }, 'abc-123']
           },
         ],
         failure: {
