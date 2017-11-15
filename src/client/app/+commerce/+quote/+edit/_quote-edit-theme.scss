@@ -1,4 +1,4 @@
-@mixin wz-quote-edit-send-tab-theme($theme) {
+@mixin wz-quote-edit-theme($theme) {
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
   $primary: map-get($theme, primary);
