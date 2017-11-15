@@ -40,7 +40,9 @@ export class QuoteEditConfirmTabComponent extends Tab {
   }
 
   public get showDiscount(): boolean {
-    return this.store.snapshot(factory => factory.quoteEdit.data.discount > 0) && !quotesWithoutPricing.includes(this.quoteType);
+    return this.store.snapshot(
+      state => state.quoteEdit.data.discount > 0 && !quotesWithoutPricing.includes(state.quoteEdit.data.purchaseType)
+    );
   }
 
   public get subTotal(): Observable<number> {
