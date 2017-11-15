@@ -25,32 +25,11 @@ import { Pojo } from '../../../../../shared/interfaces/common.interface';
 export class QuoteEditSendTabComponent extends Tab implements OnInit {
   @ViewChild('invoiceContactform') private invoiceContactform: WzFormComponent;
 
-  constructor(private store: AppStore) {
-
-    super();
-    this.store.dispatch(factory =>
-      factory.quoteEdit.initializeSalesManagerFormOnQuote(
-        JSON.parse(localStorage.getItem('currentUser')).emailAddress,
-        this.defaultDate(15)
-      )
-    );
-  }
+  constructor(private store: AppStore) { super(); }
 
   ngOnInit() {
-    this.store.select(state => state.quoteEdit.sendDetails).subscribe(c => {
-      if ((c.billingAccount.name === c.user.accountName) &&
-        !c.invoiceContact.hasOwnProperty('id')) {
-        if (!!this.invoiceContactform) {
-          this.invoiceContactform.resetForm();
-        }
-      }
-      if ((c.billingAccount.name !== c.user.accountName) &&
-        !c.invoiceContact.hasOwnProperty('id')) {
-        if (!!this.invoiceContactform) {
-          this.invoiceContactform.markFieldsAsTouched();
-        }
-      }
-    });
+    this.initializeSalesManagerForm();
+    this.monitorAndUpdateFormValidity();
   }
 
   public get user(): Observable<SendDetailsUser> {
@@ -85,17 +64,16 @@ export class QuoteEditSendTabComponent extends Tab implements OnInit {
     this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(event.value));
   }
 
+  public onBlur(form: Pojo) {
+    this.store.dispatch(factory => factory.quoteEdit.updateSalesManagerFormOnQuote(form));
+  }
+
   public get allBillingSelectionComplete(): Observable<Boolean> {
     return this.store.select(state => state.quoteEdit)
       .filter(quoteEdit => (
         this.userAccountMatchesBillingAccount(quoteEdit.sendDetails) ||
         this.allBillingFieldsSelected(quoteEdit.sendDetails)
-      )
-      ).map(() => true);
-  }
-
-  public onBlur(form: Pojo) {
-    this.store.dispatch(factory => factory.quoteEdit.updateSalesManagerFormOnQuote(form));
+      )).map(() => true);
   }
 
   private userAccountMatchesBillingAccount(sendDetails: SendDetails) {
@@ -113,6 +91,27 @@ export class QuoteEditSendTabComponent extends Tab implements OnInit {
     let date = new Date();
     date.setDate(date.getDate() + days);
     return date.toISOString().slice(0, 10).replace(/-/g, '/');
+  }
+
+  private initializeSalesManagerForm() {
+    this.store.dispatch(factory =>
+      factory.quoteEdit.initializeSalesManagerFormOnQuote(
+        JSON.parse(localStorage.getItem('currentUser')).emailAddress,
+        this.defaultDate(15)
+      )
+    );
+  }
+
+  private monitorAndUpdateFormValidity() {
+    this.store.select(state => state.quoteEdit.sendDetails).subscribe(c => {
+      if (!this.invoiceContactform) return;
+      if ((c.billingAccount.name === c.user.accountName) && !c.invoiceContact.hasOwnProperty('id')) {
+        this.invoiceContactform.resetForm();
+      }
+      if ((c.billingAccount.name !== c.user.accountName) && !c.invoiceContact.hasOwnProperty('id')) {
+        this.invoiceContactform.markFieldsAsTouched();
+      }
+    });
   }
 
 }

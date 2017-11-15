@@ -35,21 +35,7 @@ export function main() {
           it: 'returns the state with the requested quote and loading: false',
           previousState: { ...QuoteState.initialState, loading: true },
           actionParameters: { quote: { some: 'quote' } },
-          expectedNextState: { data: { some: 'quote' }, loading: false }
-        }
-      ]
-    });
-
-    stateSpecHelper.generateTestsFor({
-      actionClassName: [
-        'SaveRecipientInformationOnQuote'
-      ],
-      customTests: [
-        {
-          it: 'returns the state with a recipient and loading: false',
-          previousState: { ...QuoteState.initialState, loading: true },
-          actionParameters: { quoteOptions: { some: 'recipient' } },
-          expectedNextState: { ...QuoteState.initialState, recipient: { some: 'recipient' }, loading: false }
+          expectedNextState: { data: { some: 'quote' }, sendDetails: QuoteState.initialState.sendDetails, loading: false }
         }
       ]
     });
@@ -64,7 +50,7 @@ export function main() {
         {
           it: 'returns a clone of the state with loading: false',
           previousState: { ...QuoteState.initialState, loading: true },
-          expectedNextState: { ...QuoteState.initialState, loading: false }
+          expectedNextState: { ...QuoteState.initialState, sendDetails: QuoteState.initialState.sendDetails, loading: false }
         }
       ]
     });

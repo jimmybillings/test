@@ -119,7 +119,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     case QuoteEditActions.CloneLineItem.Type:
     case QuoteEditActions.EditLineItemMarkers.Type: {
       return {
-        ...state,
+        ...Common.clone(state),
         loading: true
       };
     }
@@ -138,7 +138,9 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         data: {
           ...action.quote
         },
-        sendDetails: state.sendDetails
+        sendDetails: {
+          ...Common.clone(state.sendDetails)
+        }
       };
     }
 

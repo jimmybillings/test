@@ -40,29 +40,5 @@ export function main() {
         new QuoteEditSendTabComponent(mockStore);
     });
 
-    describe('Initialize', () => {
-      it('Sets form items to a variable', () => {
-        expect(componentUnderTest.config).toEqual({ items: 'form items' });
-      });
-    });
-
-    describe('onSubmitSendQuote()', () => {
-
-      it('calls the callback on form submit', () => {
-        componentUnderTest.onSubmitSendQuote({
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017/05/03',
-          purchaseType: 'Trial',
-          offlineAgreementId: 'abc123'
-        });
-
-        expect(sendQuoteDispatchSpy).toHaveBeenCalledWith({
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017-05-03T06:00:00.000Z',
-          purchaseType: 'Trial',
-          offlineAgreementId: 'abc123'
-        });
-      });
-    });
   });
 }

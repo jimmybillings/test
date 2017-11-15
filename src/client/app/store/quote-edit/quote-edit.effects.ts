@@ -44,9 +44,9 @@ export class QuoteEditEffects {
 
   @Effect()
   public showSnackbarOnEditLineItemSuccess: Observable<Action> =
-  this.actions.ofType(QuoteEditActions.EditLineItemFromDetailsSuccess.Type).map(() => {
-    return this.store.create(factory => factory.snackbar.display('ASSET.DETAIL.QUOTE_ITEM_UPDATED'));
-  });
+    this.actions.ofType(QuoteEditActions.EditLineItemFromDetailsSuccess.Type).map(() => {
+      return this.store.create(factory => factory.snackbar.display('ASSET.DETAIL.QUOTE_ITEM_UPDATED'));
+    });
 
   @Effect()
   public removeAsset: Observable<Action> = this.actions.ofType(QuoteEditActions.RemoveAsset.Type)
@@ -59,15 +59,15 @@ export class QuoteEditEffects {
 
   @Effect()
   public showSnackbarOnRemoveAssetSuccess: Observable<Action> =
-  this.actions.ofType(QuoteEditActions.RemoveAssetSuccess.Type).map((action: QuoteEditActions.RemoveAssetSuccess) =>
-    this.store.create(factory => factory.snackbar.display('QUOTE.REMOVE_ASSET.SUCCESS'))
-  );
+    this.actions.ofType(QuoteEditActions.RemoveAssetSuccess.Type).map((action: QuoteEditActions.RemoveAssetSuccess) =>
+      this.store.create(factory => factory.snackbar.display('QUOTE.REMOVE_ASSET.SUCCESS'))
+    );
 
   @Effect()
   public changeRouteOnRemoveAssetSuccess: Observable<Action> =
-  this.actions.ofType(QuoteEditActions.RemoveAssetSuccess.Type).map((action: QuoteEditActions.RemoveAssetSuccess) =>
-    this.store.create(factory => factory.router.goToActiveQuote())
-  );
+    this.actions.ofType(QuoteEditActions.RemoveAssetSuccess.Type).map((action: QuoteEditActions.RemoveAssetSuccess) =>
+      this.store.create(factory => factory.router.goToActiveQuote())
+    );
 
   @Effect()
   public addCustomPriceToLineItem: Observable<Action> = this.actions.ofType(QuoteEditActions.AddCustomPriceToLineItem.Type)
