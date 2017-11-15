@@ -5,6 +5,7 @@ import { AssetShareParameters } from '../../shared/interfaces/common.interface';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 import { SubclipMarkers, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AppStore } from '../../app.store';
+import { FormFields } from '../../shared/interfaces/forms.interface';
 
 @Component({
   moduleId: module.id,
@@ -13,7 +14,7 @@ import { AppStore } from '../../app.store';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AssetShareComponent {
-  @Input() config: any;
+  @Input() formFields: FormFields[];
   @Input() enhancedAsset: EnhancedAsset;
   @Input() subclipMarkers: SubclipMarkers;
   @Output() closeRequest: EventEmitter<null> = new EventEmitter();

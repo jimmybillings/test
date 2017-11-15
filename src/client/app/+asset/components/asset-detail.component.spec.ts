@@ -49,7 +49,7 @@ export function main() {
       mockStore.createStateSection('uiConfig', {
         components: {
           global: { config: { pageSize: { value: '50' } } },
-          assetSharing: { config: {} }
+          assetSharing: { config: { form: { items: [] } } }
         }
       });
       mockStore.createStateSection('asset', { activeAsset: { assetId: 1234, price: 99 } });

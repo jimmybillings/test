@@ -46,7 +46,7 @@ export class AssetDetailComponent implements OnInit {
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
-  public shareComponentConfig: Pojo;
+  public shareFormFields: FormFields[];
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
   public subclipMarkers: SubclipMarkers;
@@ -66,7 +66,7 @@ export class AssetDetailComponent implements OnInit {
   ngOnInit() {
     const config: UiConfigComponents = this.store.snapshotCloned(state => state.uiConfig.components);
     this.pageSize = parseInt(config.global.config.pageSize.value);
-    this.shareComponentConfig = config.assetSharing.config;
+    this.shareFormFields = config.assetSharing.config.form.items;
     this.setDeliveryOptionsFlag();
   }
 

@@ -1,6 +1,6 @@
 <wz-share
   [titleKey]="shareAssetDialogTitle"
-  [formFields]="config.form.items"
+  [formFields]="formFields"
   [shareLink]="shareLink | async"
   (shareLinkRequest)="onShareLinkRequest()"
   (closeRequest)="onCloseRequest()"
