@@ -15,7 +15,8 @@ export const SEARCH_ROUTES: Routes = [
         path: 'asset/:id',
         component: SearchAssetComponent,
         resolve: { asset: SearchAssetResolver },
-        canActivate: [SearchAssetGuard]
+        canActivate: [SearchAssetGuard],
+        data: { title: 'PAGE_TITLE.SEARCH' }
       }
     ]
   }
