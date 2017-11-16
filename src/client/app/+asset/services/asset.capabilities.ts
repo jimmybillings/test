@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { Router } from '@angular/router';
 
+import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
+
 @Injectable()
 export class AssetCapabilities {
   constructor(public currentUser: CurrentUserService, public route: Router) { }
@@ -26,9 +28,13 @@ export class AssetCapabilities {
     return this.userHas('CreateAccessInfo');
   }
 
-  public createSubclips(asset: any): boolean {
+  public createSubclips(asset: EnhancedAsset): boolean {
     // TODO: Unit test this if/when it has more functionality than just a simple boolean!
     return this.userHas('CreateSubclips') && typeof this.findMetadataValueFor('Format.FrameRate', asset) === 'string';
+  }
+
+  public viewAdvancedPlayer(asset: EnhancedAsset, isShared: boolean): boolean {
+    return this.createSubclips(asset) || isShared;
   }
 
   public userHas(permission: string): boolean {

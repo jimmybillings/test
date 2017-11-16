@@ -34,6 +34,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   @Input() commentFormConfig: FormFields;
   public asset: EnhancedAsset;
   public commentParentObject: CommentParentObject;
+  public isShared: boolean;
   private assetSubscription: Subscription;
   private routeSubscription: Subscription;
   private pricingSubscription: Subscription;
@@ -42,7 +43,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
   private cartAsset: EnhancedAsset;
   private cartAssetPriceAttributes: SelectedPriceAttribute[];
-  private isShared: boolean;
 
   constructor(
     public currentUser: CurrentUserService,

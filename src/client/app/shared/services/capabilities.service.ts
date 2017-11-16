@@ -8,6 +8,7 @@ import { CollectionCapabilities } from '../../+collection/services/collection.ca
 import { SearchCapabilities } from '../../+search/services/search.capabilities';
 import { QuoteState } from '../../shared/interfaces/commerce.interface';
 import { Collection } from '../../shared/interfaces/collection.interface';
+import { EnhancedAsset } from '../interfaces/enhanced-asset';
 
 import { CurrentUserService } from './current-user.service';
 import { AppStore } from '../../app.store';
@@ -24,7 +25,8 @@ export class Capabilities implements CommerceCapabilities, CollectionCapabilitie
   downloadCleanComps: (hasComp: boolean) => boolean;
   downloadFullComps: (hasComp: boolean) => boolean;
   createAccessInfo: () => boolean;
-  createSubclips: (asset: any) => boolean;
+  createSubclips: (asset: EnhancedAsset) => boolean;
+  viewAdvancedPlayer: (asset: EnhancedAsset, isShared: boolean) => boolean;
   viewCollectionTray: () => boolean;
   viewSearchBar: () => Observable<boolean>;
   viewCartIcon: () => boolean;

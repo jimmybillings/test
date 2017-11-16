@@ -263,22 +263,14 @@ export function main() {
     });
 
     describe('showAdvancedPlayer getter', () => {
-      it('returns true if the user can createSubclips', () => {
-        componentUnderTest.userCan = { createSubclips: () => true } as any;
+      it('returns true if the user can view the advanced player', () => {
+        componentUnderTest.userCan = { viewAdvancedPlayer: () => true } as any;
         expect(componentUnderTest.showAdvancedPlayer).toBe(true);
       });
 
-      it('returns false if the user cannot createSubclips', () => {
-        componentUnderTest.userCan = { createSubclips: () => false } as any;
-        componentUnderTest.assetIsShared = false;
+      it('returns false if the user cannot view the advanced player', () => {
+        componentUnderTest.userCan = { viewAdvancedPlayer: () => false } as any;
         expect(componentUnderTest.showAdvancedPlayer).toBe(false);
-      });
-
-      it('returns true if the asset is shared', () => {
-        componentUnderTest.userCan = { createSubclips: () => false } as any;
-        componentUnderTest.assetIsShared = true;
-
-        expect(componentUnderTest.showAdvancedPlayer).toBe(true);
       });
     });
 
