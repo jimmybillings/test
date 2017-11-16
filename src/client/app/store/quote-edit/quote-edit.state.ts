@@ -42,7 +42,6 @@ export const initialState: State = {
       creditExemption: null,
       paymentTermsDays: null,
       licensingVertical: null,
-      invoiceContactId: null,
       field: [{
         endPoint: 'account/searchFields',
         queryParams: 'fields,name,values',
@@ -59,7 +58,7 @@ export const initialState: State = {
       contactEmail: null,
       field: [{
         name: 'invoiceContact',
-        options: '',
+        options: [],
         label: 'Invoice contact name',
         type: 'select',
         value: '',
@@ -145,83 +144,94 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.AddUserToQuote.Type: {
+      const cloneState = Common.clone(state);
       return {
-        ...state,
+        ...cloneState,
         sendDetails: {
-          ...state.sendDetails,
+          ...cloneState.sendDetails,
           user: {
             id: action.user.id,
             customerName: `${action.user.firstName} ${action.user.lastName}`,
             email: action.user.emailAddress,
-            field: state.sendDetails.user.field.map(field => {
-              field.value = action.user.emailAddress;
-              return field;
-            })
+            field: cloneState.sendDetails.user.field.map(field => (
+              { ...field, value: action.user.emailAddress }
+            ))
           }
         }
       };
     }
 
     case UserActions.GetAllUsersByAccountIdSuccess.Type: {
-      console.log(state);
+      const cloneState = Common.clone(state);
+      let contactEmail: string = null;
       return {
-        ...state,
+        ...cloneState,
         sendDetails: {
-          ...state.sendDetails,
+          ...cloneState.sendDetails,
           invoiceContact: {
-            ...Common.clone(state.sendDetails.invoiceContact),
-            field: state.sendDetails.invoiceContact.field.map(field => {
+            ...cloneState.sendDetails.invoiceContact,
+            field: cloneState.sendDetails.invoiceContact.field.map(field => {
               field.options = (action.users || []);
-              if (state.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
-                field.value = field.options.find((option: Pojo) => option.id === state.sendDetails.billingAccount.invoiceContactId);
-                if (!field.value) field.value = '';
+
+              if (cloneState.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
+
+                field.value = field.options.find((option: Pojo) =>
+                  option.id === cloneState.sendDetails.billingAccount.invoiceContactId);
+
+                if (field.value) {
+                  contactEmail = field.value.emailAddress;
+                } else {
+                  field.value = '';
+                }
+
               } else {
                 field.value = '';
               }
+
               return field;
             }),
-            contactEmail: state.sendDetails.invoiceContact.field[0].value.emailAddress || null
+            contactEmail: contactEmail
           }
         }
       };
     }
 
     case QuoteEditActions.AddInvoiceContactToQuote.Type: {
+      const cloneState = Common.clone(state);
       let selectedUser: User;
       return {
-        ...state,
+        ...cloneState,
         sendDetails: {
-          ...state.sendDetails,
+          ...cloneState.sendDetails,
           invoiceContact: {
-            ...Common.clone(state.sendDetails.invoiceContact),
+            ...cloneState.sendDetails.invoiceContact,
             id: action.userId,
-            field: state.sendDetails.invoiceContact.field.map(field => {
+            field: cloneState.sendDetails.invoiceContact.field.map(field => {
               selectedUser = field.options.find((option: Pojo) => option.id === action.userId);
               field.value = selectedUser;
               return field;
             }),
-            contactEmail: selectedUser.emailAddress,
-            name: selectedUser.name
+            contactEmail: (selectedUser) ? selectedUser.emailAddress : null,
+            name: (selectedUser) ? selectedUser.name : null
           }
         }
       };
     }
 
     case AccountActions.GetAccountForQuoteAdminSuccess.Type: {
-
+      const cloneState = Common.clone(state);
       return {
-        ...state,
+        ...cloneState,
         sendDetails: {
-          ...state.sendDetails,
+          ...cloneState.sendDetails,
           billingAccount: {
-            ...Common.clone(action.account),
-            field: state.sendDetails.billingAccount.field.map(field => {
-              field.value = action.account.name;
-              return field;
-            })
+            ...action.account,
+            field: cloneState.sendDetails.billingAccount.field.map(field => (
+              { ...field, value: action.account.name }
+            ))
           },
           invoiceContact: {
-            ...Common.clone(state.sendDetails.invoiceContact),
+            ...cloneState.sendDetails.invoiceContact,
             id: action.account.invoiceContactId
           }
         }
@@ -229,23 +239,23 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case AccountActions.GetAccountForQuoteAdminOnUserAddSuccess.Type: {
+      const cloneState = Common.clone(state);
       return {
-        ...state,
+        ...cloneState,
         sendDetails: {
-          ...state.sendDetails,
+          ...cloneState.sendDetails,
           billingAccount: {
-            ...Common.clone(action.account),
-            field: state.sendDetails.billingAccount.field.map(field => {
-              field.value = action.account.name;
-              return field;
-            })
+            ...action.account,
+            field: cloneState.sendDetails.billingAccount.field.map(field => (
+              { ...field, value: action.account.name }
+            ))
           },
           invoiceContact: {
-            ...Common.clone(state.sendDetails.invoiceContact),
+            ...cloneState.sendDetails.invoiceContact,
             id: action.account.invoiceContactId
           },
           user: {
-            ...Common.clone(state.sendDetails.user),
+            ...cloneState.sendDetails.user,
             accountName: action.account.name
           }
         }
@@ -253,13 +263,14 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.InitializeSalesManagerFormOnQuote.Type: {
+      const cloneState = Common.clone(state);
       return {
-        ...state,
+        ...cloneState,
         sendDetails: {
-          ...state.sendDetails,
+          ...cloneState.sendDetails,
           salesManager: {
-            ...Common.clone(state.sendDetails.salesManager),
-            field: state.sendDetails.salesManager.field.map(field => {
+            ...cloneState.sendDetails.salesManager,
+            field: cloneState.sendDetails.salesManager.field.map(field => {
               if (field.type === 'email') field.value = action.emailAddress;
               return field;
             }),
@@ -271,15 +282,16 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.UpdateSalesManagerFormOnQuote.Type: {
+      const cloneState = Common.clone(state);
       return {
-        ...state,
+        ...cloneState,
         sendDetails: {
-          ...state.sendDetails,
+          ...cloneState.sendDetails,
           salesManager: {
-            field: state.sendDetails.salesManager.field.map(field => {
-              if (field.type === 'wzdate') field.default = action.form[field.name];
-              field.value = action.form[field.name];
-              return field;
+            field: cloneState.sendDetails.salesManager.field.map(field => {
+              return (field.type === 'wzdate') ?
+                { ...field, default: action.form[field.name], value: action.form[field.name] } :
+                { ...field, value: action.form[field.name] };
             }),
             expirationDate: action.form.expirationDate,
             salesManager: action.form.salesManager,
