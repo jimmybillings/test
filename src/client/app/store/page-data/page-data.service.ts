@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Title } from '@angular/platform-browser';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +10,11 @@ export class PageDataService {
   constructor(private translateService: TranslateService, private titleService: Title) { }
 
   public updateTitle(trKey: string, trParams?: Pojo): void {
-    this.translateService.get(trKey).subscribe(value => this.titleService.setTitle(value));
+    Observable.forkJoin([
+      this.translateService.get('COMPANY_NAME'),
+      this.translateService.get(trKey, trParams)
+    ]).subscribe((values: string[]) => {
+      this.titleService.setTitle(values.join(''));
+    });
   }
 }

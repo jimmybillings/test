@@ -1,6 +1,6 @@
 import './operators';
 import { Component, OnInit, HostListener, NgZone, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute, Event, NavigationEnd, Router, RoutesRecognized } from '@angular/router';
+import { ActivatedRoute, Event, NavigationEnd, Router, RoutesRecognized, Data } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 // Services
@@ -16,6 +16,7 @@ import { AppStore } from './app.store';
 
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
+import { Pojo } from './shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -112,9 +113,10 @@ export class AppComponent implements OnInit {
       .map(() => this.activatedRoute)
       .map((route: ActivatedRoute) => { while (route.firstChild) route = route.firstChild; return route; })
       .filter((route: ActivatedRoute) => route.outlet === 'primary')
-      .mergeMap((route: ActivatedRoute) => route.data)
-      .subscribe((data: { title: string }) => {
-        this.store.dispatch(factory => factory.page.updateTitle(data.title));
+      .subscribe((route: ActivatedRoute) => {
+        route.params.combineLatest(route.data, (params, data) => {
+          this.store.dispatch(factory => factory.page.updateTitle(data.title, params));
+        }).take(1).subscribe();
       });
   }
 
