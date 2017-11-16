@@ -42,6 +42,7 @@ export class AssetDetailComponent implements OnInit {
   @Input() public assetMatchesCartAsset: boolean;
   @Input() public commentParentObject: CommentParentObject;
   @Input() public commentFormConfig: FormFields;
+  @Input() public assetIsShared: boolean;
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
@@ -214,6 +215,10 @@ export class AssetDetailComponent implements OnInit {
     return this.assetTypeIsOneOf('searchAsset') && this.userCan.createAccessInfo();
   }
 
+  public get showAdvancedPlayer(): boolean {
+    return this.userCan.viewAdvancedPlayer(this.asset, this.assetIsShared);
+  }
+
   public get shareButtonLabelKey(): string {
     return this.markersAreDefined ? 'ASSET.DETAIL.SHARING_SUBCLIP_BTN_TITLE' : 'ASSET.DETAIL.SHARING_BTN_TITLE';
   }
@@ -276,8 +281,6 @@ export class AssetDetailComponent implements OnInit {
   public get canAddToCart(): boolean {
     return this.userCan.addToCart() && this.canBePurchased(this.asset);
   }
-
-
 
   public get primaryAssetFields(): Metadatum | { value: string }[] {
     return this.asset.primary.slice(4, -1).filter(field => field.value !== null);

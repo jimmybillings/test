@@ -19,11 +19,12 @@ export function main() {
       effectsInstantiator: instantiator,
       inputAction: {
         type: DeliveryOptionsActions.Load.Type,
-        activeAsset: { assetId: 123 }
+        activeAsset: { assetId: 123 },
+        shareKey: 'abc-123'
       },
       serviceMethod: {
         name: 'getDeliveryOptions',
-        expectedArguments: [123],
+        expectedArguments: [123, 'abc-123'],
         returnsObservableOf: [{ some: 'deliveryOption' }]
       },
       outputActionFactories: {

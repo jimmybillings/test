@@ -23,6 +23,13 @@ export function main() {
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('renditionType/deliveryOptions/47');
       });
 
+      it('calls the API correctly, with a shareKey', () => {
+        serviceUnderTest.getDeliveryOptions(47, 'abc-123');
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('renditionType/deliveryOptions/47');
+        expect(mockApiService.get).toHaveBeenCalledWithOverridingToken('abc-123');
+      });
+
       it('maps the data to a more suitable format for the UI', () => {
         mockApiService.getResponse = mockApiDeliveryOptions();
 
