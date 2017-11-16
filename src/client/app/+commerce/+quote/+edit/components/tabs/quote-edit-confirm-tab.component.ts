@@ -30,9 +30,7 @@ export class QuoteEditConfirmTabComponent extends Tab {
   }
 
   public sendQuote() {
-    this.store.dispatch(factory =>
-      factory.quoteEdit.sendQuote()
-    );
+    this.store.dispatch(factory => factory.quoteEdit.sendQuote());
   }
 
   public get discount(): Observable<number> {
