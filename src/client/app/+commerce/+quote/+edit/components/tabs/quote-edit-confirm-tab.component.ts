@@ -47,15 +47,21 @@ export class QuoteEditConfirmTabComponent extends Tab {
     return this.store.select(state => state.quoteEdit.data.subTotal);
   }
 
-  public get showTotal(): Observable<boolean> {
-    return this.store.select(state => !quotesWithoutPricing.includes(state.quoteEdit.data.purchaseType));
+  public get total(): Observable<number> {
+    return this.store.select(state => state.quoteEdit.data.total);
   }
+
+  public get showTotal(): boolean {
+    return this.store.snapshot(
+      state => state.quoteEdit.data.total > 0 && !quotesWithoutPricing.includes(state.quoteEdit.data.purchaseType)
+    );
+  }
+
+  // public get showTotal(): Observable<boolean> {
+  //   return this.store.select(state => !quotesWithoutPricing.includes(state.quoteEdit.data.purchaseType));
+  // }
 
   public get quoteType(): Observable<PurchaseType> {
     return this.store.select(state => state.quoteEdit.data.purchaseType);
-  }
-
-  public get total(): Observable<number> {
-    return this.store.select(state => state.quoteEdit.data.total);
   }
 }
