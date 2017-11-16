@@ -1,15 +1,28 @@
+import { Observable } from 'rxjs/Observable';
 import { PageDataService } from './page-data.service';
-import { MockApiService, mockApiMatchers } from '../spec-helpers/mock-api.service';
-import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
   describe('Page Data Service', () => {
-    let serviceUnderTest: PageDataService, mockApiService: MockApiService;
+    let serviceUnderTest: PageDataService;
+    let mockTranslateService: any;
+    let mockTitleService: any;
 
     beforeEach(() => {
-      jasmine.addMatchers(mockApiMatchers);
-      mockApiService = new MockApiService();
-      serviceUnderTest = new PageDataService(mockApiService.injector);
+      mockTranslateService = {
+        get: (key: string, params: any) => Observable.of('some value')
+      };
+      mockTitleService = {
+        setTitle: jasmine.createSpy('setTitle')
+      };
+      serviceUnderTest = new PageDataService(mockTranslateService, mockTitleService);
+    });
+
+    describe('updateTitle()', () => {
+      it('calls translateService::setTitle with the proper value', () => {
+        serviceUnderTest.updateTitle('ross', { some: 'params' });
+
+        expect(mockTitleService.setTitle).toHaveBeenCalledWith('some valuesome value');
+      });
     });
   });
 }

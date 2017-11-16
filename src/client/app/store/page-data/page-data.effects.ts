@@ -11,7 +11,7 @@ import * as PageDataActions from './page-data.actions';
 export class PageDataEffects {
   @Effect({ dispatch: false })
   updateTitle: Observable<Action> = this.actions.ofType(PageDataActions.UpdateTitle.Type)
-    .do((action: PageDataActions.UpdateTitle) => this.service.updateTitle(action.trKey, action.params));
+    .do((action: PageDataActions.UpdateTitle) => this.service.updateTitle(action.trKey, action.trParams));
 
   constructor(private actions: Actions, private store: AppStore, private service: PageDataService) { }
 }

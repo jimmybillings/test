@@ -11,5 +11,19 @@ export function main() {
         effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
       );
     }
+
+    effectsSpecHelper.generateTestsFor({
+      effectsInstantiator: instantiator,
+      effectName: 'updateTitle',
+      inputAction: {
+        type: PageDataActions.UpdateTitle.Type,
+        trKey: 'key',
+        trParams: { some: 'params' }
+      },
+      serviceMethod: {
+        name: 'updateTitle',
+        expectedArguments: ['key', { some: 'params' }]
+      }
+    });
   });
 }

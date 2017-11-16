@@ -13,7 +13,7 @@ export class PageDataService {
     Observable.forkJoin([
       this.translateService.get('COMPANY_NAME'),
       this.translateService.get(trKey, trParams)
-    ]).subscribe((values: string[]) => {
+    ]).take(1).subscribe((values: string[]) => {
       this.titleService.setTitle(values.join(''));
     });
   }
