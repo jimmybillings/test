@@ -61,8 +61,7 @@
         </button>
         <button mat-icon-button 
           title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" 
-          (click)="showShare(collection)" 
-          [disabled]="true">
+          (click)="sharing.show($event)">
           <mat-icon>share</mat-icon></button>
         <button
           mat-icon-button
@@ -83,6 +82,12 @@
         <button mat-button class="is-outlined" (click)="selectActiveCollection(collection.id)">{{'COLLECTION.INDEX.SELECT_BTN_LABEL' | translate }}</button>
       </div>
     </div>
+    <wz-dropdown #sharing>
+      <collection-share layout="row" layout-align="end start" class="revealed"
+        [collection]="collection" 
+        (closeRequest)="sharing.close()">
+      </collection-share>
+    </wz-dropdown>
   </li>
 </ul>
 
@@ -110,3 +115,4 @@
     </button>
   </div>
 </mat-menu>
+

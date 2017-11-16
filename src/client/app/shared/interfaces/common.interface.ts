@@ -174,6 +174,7 @@ export interface UiConfigComponents {
   'changePassword': UiConfigSegment;
   'collection': UiConfigSegment;
   'assetSharing': UiConfigSegment;
+  'collectionSharing': UiConfigSegment;
   'cartComment': UiConfigSegment;
   'collectionComment': UiConfigSegment;
   'quoteComment': UiConfigSegment;

@@ -12,6 +12,7 @@ import { WzCollectionItemListComponent } from './components/wz.collection-item-l
 import { CollectionDeleteComponent } from './components/collection-delete.component';
 import { CollectionComponent } from './collection.component';
 import { CollectionAssetComponent } from './components/collection-asset.component';
+import { CollectionShareComponent } from './components/collection-share.component';
 import { CollectionShareMembersComponent } from './components/collection-share-members.component';
 import { AssetModule } from '../+asset/asset.module';
 
@@ -24,6 +25,7 @@ import { AssetModule } from '../+asset/asset.module';
     WzCollectionItemListComponent,
     CollectionDeleteComponent,
     CollectionAssetComponent,
+    CollectionShareComponent,
     CollectionShareMembersComponent
   ],
   exports: [CollectionComponent, CollectionsComponent, CollectionShowComponent],
