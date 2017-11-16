@@ -711,5 +711,37 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addUserToQuote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddUserToQuote.Type,
+        user: { accountId: 1 }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'account',
+          methodName: 'getAccountForQuoteAdminOnUserAdd',
+          expectedArguments: [1]
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addBillingAccountToQuote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddBillingAccountToQuote.Type,
+        account: { id: 1 }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'account',
+          methodName: 'getAccountForQuoteAdmin',
+          expectedArguments: [1]
+        }
+      }
+    });
+
   });
 }
