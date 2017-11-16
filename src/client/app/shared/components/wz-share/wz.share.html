@@ -8,7 +8,7 @@
         <h4 class="mat-headline" flex="100" layout-align="start center">
           {{ titleKey | translate }}
         </h4>
-        <div class="tools" flex="auto" layout-align="end center">
+        <div *ngIf="allowShareLink" class="tools" flex="auto" layout-align="end center">
           <button mat-icon-button title="{{ 'SHARING.SHARE_LINK_BTN_TITLE' | translate }}" (click)="openShareLink()">
             <mat-icon>link</mat-icon>
           </button>

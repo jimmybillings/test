@@ -17,6 +17,7 @@ import { Pojo } from '../../interfaces/common.interface';
 export class WzShareComponent implements OnDestroy {
   @Input() titleKey: string;
   @Input() formFields: FormFields[];
+  @Input() allowShareLink: boolean = true;
   @Input() shareLink: string;
 
   @Output() shareLinkRequest: EventEmitter<void> = new EventEmitter();
