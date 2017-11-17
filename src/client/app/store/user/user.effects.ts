@@ -13,20 +13,24 @@ import { SendDetailsBillingAccount } from '../../shared/interfaces/commerce.inte
 export class UserEffects {
 
   @Effect()
-  public addBillingAccountToQuote: Observable<Action> = this.actions
+  public getAllUsersByAccountId: Observable<Action> = this.actions
     .ofType(UserActions.GetAllUsersByAccountId.Type)
     .switchMap((action: UserActions.GetAllUsersByAccountId) =>
       this.service.getUsersByAccountId(action.accountId, 'offAfterResponse')
-        .map((users: User[]) => (
-          (users || [])
+        .map((users: User[]) => {
+          return (users || [])
             .map(user => ({
               id: user.id,
               name: `${user.firstName} ${user.lastName}`,
               emailAddress: user.emailAddress
             }))
-        ))
+        })
         .map((invoiceContactUsers: SendDetailsBillingAccount[]) =>
           this.store.create(factory => factory.user.getAllUsersByAccountIdSuccess(invoiceContactUsers))
+        ).catch(error =>
+          Observable.of(this.store.create(factory =>
+            factory.error.handle(error)
+          ))
         )
     );
 
