@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { User, Account } from '../../../../../shared/interfaces/user.interface';
 import { Tab } from '../../../../components/tabs/tab';
 import { Component, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
+import { CurrentUserService } from '../../../../../shared/services/current-user.service';
 import {
   QuoteOptions,
   SendDetails,
@@ -23,9 +24,9 @@ import { Pojo } from '../../../../../shared/interfaces/common.interface';
 })
 
 export class QuoteEditSendTabComponent extends Tab implements OnInit {
-  @ViewChild('invoiceContactform') private invoiceContactform: WzFormComponent;
+  @ViewChild('invoiceContactform') public invoiceContactform: WzFormComponent;
 
-  constructor(private store: AppStore) { super(); }
+  constructor(private store: AppStore, private currentUserService: CurrentUserService) { super(); }
 
   ngOnInit() {
     this.initializeSalesManagerForm();
@@ -96,7 +97,7 @@ export class QuoteEditSendTabComponent extends Tab implements OnInit {
   private initializeSalesManagerForm() {
     this.store.dispatch(factory =>
       factory.quoteEdit.initializeSalesManagerFormOnQuote(
-        JSON.parse(localStorage.getItem('currentUser')).emailAddress,
+        this.currentUserService.state.emailAddress,
         this.defaultDate(15)
       )
     );
