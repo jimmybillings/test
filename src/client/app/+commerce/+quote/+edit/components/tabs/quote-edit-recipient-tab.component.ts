@@ -51,19 +51,19 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
     return this.store.select(state => state.quoteEdit.sendDetails.salesManager);
   }
 
-  public userSelect(user: User) {
+  public userSelect(user: User): void {
     this.store.dispatch(factory => factory.quoteEdit.addUserToQuote(user));
   }
 
-  public accountSelect(account: Account) {
+  public accountSelect(account: Account): void {
     this.store.dispatch(factory => factory.quoteEdit.addBillingAccountToQuote(account));
   }
 
-  public invoiceContactSelect(event: Pojo) {
+  public invoiceContactSelect(event: Pojo): void {
     this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(event.value));
   }
 
-  public onBlur(form: Pojo) {
+  public onBlur(form: Pojo): void {
     this.store.dispatch(factory => factory.quoteEdit.updateSalesManagerFormOnQuote(form));
   }
 
@@ -75,18 +75,18 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
       )).map(() => true);
   }
 
-  private userAccountMatchesBillingAccount(sendDetails: SendDetails) {
+  private userAccountMatchesBillingAccount(sendDetails: SendDetails): boolean {
     return (sendDetails.user.hasOwnProperty('accountName') && sendDetails.billingAccount.hasOwnProperty('name'))
       && (sendDetails.user.accountName === sendDetails.billingAccount.name);
   }
 
-  private allBillingFieldsSelected(sendDetails: SendDetails) {
+  private allBillingFieldsSelected(sendDetails: SendDetails): boolean {
     return sendDetails.user.hasOwnProperty('accountName') &&
       sendDetails.billingAccount.hasOwnProperty('id') &&
       sendDetails.invoiceContact.hasOwnProperty('id');
   }
 
-  private initializeSalesManagerForm() {
+  private initializeSalesManagerForm(): void {
     this.store.dispatch(factory =>
       factory.quoteEdit.initializeSalesManagerFormOnQuote(
         this.currentUserService.state.emailAddress,
@@ -95,13 +95,13 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
     );
   }
 
-  private defaultDate(days: number) {
+  private defaultDate(days: number): string {
     let date = new Date();
     date.setDate(date.getDate() + days);
     return date.toISOString().slice(0, 10).replace(/-/g, '/');
   }
 
-  private monitorAndUpdateFormValidity() {
+  private monitorAndUpdateFormValidity(): void {
     this.store.select(state => state.quoteEdit.sendDetails).subscribe(c => {
       if (!this.invoiceContactform) return;
       if ((c.billingAccount.name === c.user.accountName) && !c.invoiceContact.hasOwnProperty('id')) {

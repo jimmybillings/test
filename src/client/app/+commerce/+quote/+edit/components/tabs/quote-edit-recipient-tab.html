@@ -1,6 +1,7 @@
 <header flex="100" layout="row">
   <h2 class="commerce-heading">{{'QUOTE.EDIT.RECIPIENT_TAB_PG_TITLE' | translate}}</h2>
 </header>
+
 <div layout="column" layout-gt-xs="row">
   <section class="recipient-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form-autocomplete-view *ngIf="user | async as user" flex="100" 
@@ -10,7 +11,6 @@
       [title]="'QUOTE.EDIT.RECIPIENT_TITLE'"
       [matchOnProperty]="'emailAddress'"
       [displayProperties]="user"
-      includeCancel="true"
       autocomplete="off"
       (formSubmit)="userSelect($event)">
     </wz-form-autocomplete-view>
@@ -22,7 +22,6 @@
       [title]="'QUOTE.EDIT.BILLING_ACCOUNT_TITLE'"
       [matchOnProperty]="'name'"
       [displayProperties]="billingAccount"
-      includeCancel="true"
       autocomplete="off"
       (formSubmit)="accountSelect($event)">
     </wz-form-autocomplete-view>
