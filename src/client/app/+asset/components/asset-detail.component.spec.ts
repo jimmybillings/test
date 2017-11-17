@@ -262,6 +262,18 @@ export function main() {
       });
     });
 
+    describe('showAdvancedPlayer getter', () => {
+      it('returns true if the user can view the advanced player', () => {
+        componentUnderTest.userCan = { viewAdvancedPlayer: () => true } as any;
+        expect(componentUnderTest.showAdvancedPlayer).toBe(true);
+      });
+
+      it('returns false if the user cannot view the advanced player', () => {
+        componentUnderTest.userCan = { viewAdvancedPlayer: () => false } as any;
+        expect(componentUnderTest.showAdvancedPlayer).toBe(false);
+      });
+    });
+
     describe('shareButtonLabelKey getter', () => {
       const tests: { markers: any, expectedKey: string }[] = [
         { markers: undefined, expectedKey: 'ASSET.DETAIL.SHARING_BTN_TITLE' },

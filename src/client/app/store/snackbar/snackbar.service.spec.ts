@@ -29,7 +29,7 @@ export function main() {
           expect(mockSnackBar.open).toHaveBeenCalledWith('someTranslatedString', '', {
             duration: jasmine.any(Number),
             verticalPosition: 'top',
-            horizontalPosition: 'right',
+            horizontalPosition: 'left',
             extraClasses: ['wz-snackbar']
           });
         });

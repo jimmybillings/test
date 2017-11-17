@@ -16,7 +16,7 @@ export class DeliveryOptionsEffects {
   @Effect()
   public loadDeliveryOptions: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.Load.Type)
     .switchMap((action: DeliveryOptionsActions.Load) =>
-      this.service.getDeliveryOptions(action.activeAsset.assetId)
+      this.service.getDeliveryOptions(action.activeAsset.assetId, action.shareKey)
         .map(options => this.store.create(factory => factory.deliveryOptions.loadSuccess(options)))
         .catch(error => Observable.of(this.store.create(factory => factory.deliveryOptions.loadFailure(error))))
     );

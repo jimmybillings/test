@@ -34,6 +34,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   @Input() commentFormConfig: FormFields;
   public asset: EnhancedAsset;
   public commentParentObject: CommentParentObject;
+  public isShared: boolean;
   private assetSubscription: Subscription;
   private routeSubscription: Subscription;
   private pricingSubscription: Subscription;
@@ -73,6 +74,7 @@ export class AssetComponent implements OnInit, OnDestroy {
       });
 
     this.routeSubscription = this.route.params.subscribe((params: any) => {
+      this.isShared = !!params.share_key;
       this.commentParentObject = this.commentParentObjectFromRoute(params);
     });
   }

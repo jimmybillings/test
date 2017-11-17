@@ -140,7 +140,7 @@ export class AssetEffects {
       this.service.load(action.loadParameters)
         .mergeMap((asset: CommonInterface.Asset) => [
           this.store.create(factory => factory.asset.loadSuccess(asset)),
-          this.store.create(factory => factory.deliveryOptions.load(asset))
+          this.store.create(factory => factory.deliveryOptions.load(asset, action.loadParameters.share_key))
         ])
         .catch(error => Observable.of(this.store.create(factory => factory.asset.loadFailure(error))))
     );
