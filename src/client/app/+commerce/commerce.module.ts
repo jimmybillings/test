@@ -46,7 +46,7 @@ import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 
 // Quote Edit Tabs
 import { QuoteEditTabComponent } from './+quote/+edit/components/tabs/quote-edit-tab.component';
-import { QuoteEditSendTabComponent } from './+quote/+edit/components/tabs/quote-edit-send-tab.component';
+import { QuoteEditRecipientTabComponent } from './+quote/+edit/components/tabs/quote-edit-recipient-tab.component';
 import { QuoteEditConfirmTabComponent } from './+quote/+edit/components/tabs/quote-edit-confirm-tab.component';
 
 // tabs
@@ -126,7 +126,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuotePaymentTabComponent,
     QuoteConfirmTabComponent,
     QuoteEditTabComponent,
-    QuoteEditSendTabComponent,
+    QuoteEditRecipientTabComponent,
     QuoteEditConfirmTabComponent,
     WzFormAutoCompleteViewComponent,
     WzFormPicklistComponent

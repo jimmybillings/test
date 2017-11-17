@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { MockAppStore } from '../../../../../store/spec-helpers/mock-app.store';
-import { QuoteEditSendTabComponent } from './quote-edit-send-tab.component';
+import { QuoteEditRecipientTabComponent } from './quote-edit-recipient-tab.component';
 import {
   SendDetailsBillingAccount,
   SendDetailsInvoiceContact,
@@ -15,8 +15,8 @@ function defaultDate(days: number) {
 }
 
 export function main() {
-  describe('Quote Edit Send Tab Component', () => {
-    let componentUnderTest: QuoteEditSendTabComponent;
+  describe('Quote Edit Recipient Tab Component', () => {
+    let componentUnderTest: QuoteEditRecipientTabComponent;
     let addUserToQuoteDispatchSpy: jasmine.Spy;
     let addBillingAccountToQuoteDispatchSpy: jasmine.Spy;
     let addInvoiceContactToQuoteDispatchSpy: jasmine.Spy;
@@ -111,7 +111,7 @@ export function main() {
       initializeSalesManagerFormOnQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'initializeSalesManagerFormOnQuote');
 
       componentUnderTest =
-        new QuoteEditSendTabComponent(mockStore, { state: { emailAddress: 'test email' } } as any);
+        new QuoteEditRecipientTabComponent(mockStore, { state: { emailAddress: 'test email' } } as any);
     });
 
     describe('ngOnInit()', () => {

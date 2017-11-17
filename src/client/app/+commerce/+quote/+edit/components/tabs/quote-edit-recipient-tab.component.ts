@@ -2,7 +2,9 @@ import { WzFormComponent } from '../../../../../shared/modules/wz-form/wz.form.c
 import { Common } from '../../../../../shared/utilities/common.functions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { User, Account } from '../../../../../shared/interfaces/user.interface';
+import { User } from '../../../../../shared/interfaces/user.interface';
+import { Account } from '../../../../../shared/interfaces/account.interface';
+
 import { Tab } from '../../../../components/tabs/tab';
 import { Component, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
 import { CurrentUserService } from '../../../../../shared/services/current-user.service';
@@ -18,12 +20,12 @@ import { Pojo } from '../../../../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
-  selector: 'quote-edit-send-tab-component',
-  templateUrl: 'quote-edit-send-tab.html',
+  selector: 'quote-edit-recipient-tab-component',
+  templateUrl: 'quote-edit-recipient-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class QuoteEditSendTabComponent extends Tab implements OnInit {
+export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
   @ViewChild('invoiceContactform') public invoiceContactform: WzFormComponent;
 
   constructor(private store: AppStore, private currentUserService: CurrentUserService) { super(); }
@@ -34,23 +36,19 @@ export class QuoteEditSendTabComponent extends Tab implements OnInit {
   }
 
   public get user(): Observable<SendDetailsUser> {
-    return this.store.select(state => state.quoteEdit)
-      .map(quoteEdit => quoteEdit.sendDetails.user);
+    return this.store.select(state => state.quoteEdit.sendDetails.user)
   }
 
   public get billingAccount(): Observable<SendDetailsBillingAccount> {
-    return this.store.select(state => state.quoteEdit)
-      .map(quoteEdit => quoteEdit.sendDetails.billingAccount);
+    return this.store.select(state => state.quoteEdit.sendDetails.billingAccount)
   }
 
   public get invoiceContact(): Observable<SendDetailsInvoiceContact> {
-    return this.store.select(state => state.quoteEdit)
-      .map(quoteEdit => quoteEdit.sendDetails.invoiceContact);
+    return this.store.select(state => state.quoteEdit.sendDetails.invoiceContact)
   }
 
   public get salesManager(): Observable<SendDetailsInvoiceContact> {
-    return this.store.select(state => state.quoteEdit)
-      .map(quoteEdit => quoteEdit.sendDetails.salesManager);
+    return this.store.select(state => state.quoteEdit.sendDetails.salesManager)
   }
 
   public userSelect(user: User) {
@@ -88,12 +86,6 @@ export class QuoteEditSendTabComponent extends Tab implements OnInit {
       sendDetails.invoiceContact.hasOwnProperty('id');
   }
 
-  private defaultDate(days: number) {
-    let date = new Date();
-    date.setDate(date.getDate() + days);
-    return date.toISOString().slice(0, 10).replace(/-/g, '/');
-  }
-
   private initializeSalesManagerForm() {
     this.store.dispatch(factory =>
       factory.quoteEdit.initializeSalesManagerFormOnQuote(
@@ -101,6 +93,12 @@ export class QuoteEditSendTabComponent extends Tab implements OnInit {
         this.defaultDate(15)
       )
     );
+  }
+
+  private defaultDate(days: number) {
+    let date = new Date();
+    date.setDate(date.getDate() + days);
+    return date.toISOString().slice(0, 10).replace(/-/g, '/');
   }
 
   private monitorAndUpdateFormValidity() {

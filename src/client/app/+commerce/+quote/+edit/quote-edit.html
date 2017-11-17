@@ -80,10 +80,10 @@
             (notify)="onNotification($event)"
             [projects]="projects">
           </quote-edit-tab-component>
-          <quote-edit-send-tab-component
+          <quote-edit-recipient-tab-component
             *ngIf="tabLabelKey === 'recipient'"
             (notify)="onNotification($event)">
-          </quote-edit-send-tab-component>
+          </quote-edit-recipient-tab-component>
           <quote-edit-confirm-tab-component 
           *ngIf="tabLabelKey === 'confirm'" 
           (notify)="onNotification($event)"
