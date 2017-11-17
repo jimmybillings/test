@@ -23,7 +23,7 @@ export class UserEffects {
               id: user.id,
               name: `${user.firstName} ${user.lastName}`,
               emailAddress: user.emailAddress
-            }))
+            }));
         })
         .map((invoiceContactUsers: SendDetailsBillingAccount[]) =>
           this.store.create(factory => factory.user.getAllUsersByAccountIdSuccess(invoiceContactUsers))

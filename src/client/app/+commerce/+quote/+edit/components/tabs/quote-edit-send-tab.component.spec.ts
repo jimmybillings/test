@@ -187,7 +187,7 @@ export function main() {
             value: '',
             validation: 'REQUIRED'
           }]
-        })
+        });
       });
     });
 
@@ -212,7 +212,7 @@ export function main() {
             value: '',
             validation: 'REQUIRED'
           }]
-        })
+        });
       });
     });
 
@@ -230,7 +230,7 @@ export function main() {
             value: '',
             validation: 'REQUIRED'
           }]
-        })
+        });
       });
     });
 
@@ -263,7 +263,7 @@ export function main() {
             value: '',
             validation: 'OPTIONAL'
           }]
-        })
+        });
       });
     });
 

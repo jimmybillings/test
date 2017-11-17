@@ -18,7 +18,7 @@ export function main() {
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('user/searchFields');
-        expect(mockApiService.get).toHaveBeenCalledWithParameters({ 'fields': 'accountId', 'values': `1`, 'n': '500' })
+        expect(mockApiService.get).toHaveBeenCalledWithParameters({ 'fields': 'accountId', 'values': `1`, 'n': '500' });
         expect(mockApiService.get).toHaveBeenCalledWithLoading(true);
       });
 
