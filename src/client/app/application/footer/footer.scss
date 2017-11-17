@@ -29,22 +29,6 @@ app-footer {
         }
       }
     }
-    .language-selector {
-      position: relative;
-      padding-left: 38px;
-      padding-top: 22px;
-      &::before {
-        content: "\e80b";
-        font-family: 'Material Icons';
-        position: absolute;
-        top: 20px;
-        left: 4px;
-        font-size: 1.7em;
-      }
-      .mat-select {
-        min-width: 167px;
-      }  
-    }
     h3.mat-title {
       margin-bottom: .2em;
       margin-top: .2em;
@@ -56,6 +40,13 @@ app-footer {
     .footer-link {
       text-decoration: none;
       transition: $swift-ease-in;
+    }
+    .contact {
+      margin-bottom: 6px;
+      p, h3, a {
+        margin-top: 2px;
+        margin-bottom: 2px;
+      }
     }
     .sales {
       mat-list {
