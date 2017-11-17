@@ -32,7 +32,12 @@ export class AccountEffects {
           return (action.onUserAdd) ?
             this.store.create(factory => factory.account.getAccountForQuoteAdminOnUserAddSuccess(billingAccount)) :
             this.store.create(factory => factory.account.getAccountForQuoteAdminSuccess(billingAccount));
-        })
+        }).catch(error =>
+          Observable.of(this.store.create(factory =>
+            factory.error.handle(error)
+          ))
+        )
+
     );
 
   @Effect()
