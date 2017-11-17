@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 
 export class ActionFactory {
   getAccountForQuoteAdmin(accountId: number): GetAccountForQuoteAdmin {
-    return new GetAccountForQuoteAdmin(accountId, false);
+    return new GetAccountForQuoteAdmin(accountId);
   }
 }
 
@@ -15,7 +15,7 @@ export class InternalActionFactory extends ActionFactory {
   }
 
   getAccountForQuoteAdminOnUserAdd(accountId: number): GetAccountForQuoteAdminOnUserAdd {
-    return new GetAccountForQuoteAdminOnUserAdd(accountId, true);
+    return new GetAccountForQuoteAdminOnUserAdd(accountId);
   }
 
   getAccountForQuoteAdminOnUserAddSuccess(account: SendDetailsBillingAccount): GetAccountForQuoteAdminOnUserAddSuccess {
@@ -26,7 +26,7 @@ export class InternalActionFactory extends ActionFactory {
 export class GetAccountForQuoteAdmin implements Action {
   public static readonly Type = '[Account] Get Account For Quote Admin';
   public readonly type = GetAccountForQuoteAdmin.Type;
-  constructor(public readonly accountId: number, public readonly onUserAdd: boolean) { }
+  constructor(public readonly accountId: number) { }
 }
 
 export class GetAccountForQuoteAdminSuccess implements Action {
@@ -38,7 +38,7 @@ export class GetAccountForQuoteAdminSuccess implements Action {
 export class GetAccountForQuoteAdminOnUserAdd implements Action {
   public static readonly Type = '[Account] Get Account For Quote Admin On User Add';
   public readonly type = GetAccountForQuoteAdminOnUserAdd.Type;
-  constructor(public readonly accountId: number, public readonly onUserAdd: boolean) { }
+  constructor(public readonly accountId: number) { }
 }
 
 export class GetAccountForQuoteAdminOnUserAddSuccess implements Action {

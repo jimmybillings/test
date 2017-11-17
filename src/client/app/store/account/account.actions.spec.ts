@@ -14,7 +14,6 @@ export function main() {
       expectedAction: {
         type: '[Account] Get Account For Quote Admin',
         accountId: 1,
-        onUserAdd: false
       }
     });
 
@@ -39,7 +38,6 @@ export function main() {
       expectedAction: {
         type: '[Account] Get Account For Quote Admin On User Add',
         accountId: { accountId: 1 },
-        onUserAdd: true
       }
     });
 

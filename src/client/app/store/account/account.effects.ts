@@ -29,9 +29,10 @@ export class AccountEffects {
           }
         ))
         .map((billingAccount: SendDetailsBillingAccount) => {
-          return (action.onUserAdd) ?
-            this.store.create(factory => factory.account.getAccountForQuoteAdminOnUserAddSuccess(billingAccount)) :
-            this.store.create(factory => factory.account.getAccountForQuoteAdminSuccess(billingAccount));
+          return this.store.create(factory =>
+            (action.type === AccountActions.GetAccountForQuoteAdminOnUserAdd.Type) ?
+              factory.account.getAccountForQuoteAdminOnUserAddSuccess(billingAccount) :
+              factory.account.getAccountForQuoteAdminSuccess(billingAccount));
         }).catch(error =>
           Observable.of(this.store.create(factory =>
             factory.error.handle(error)

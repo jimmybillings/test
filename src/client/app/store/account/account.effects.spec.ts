@@ -72,9 +72,8 @@ export function main() {
       effectName: 'getAccountForQuoteAdmin',
       effectsInstantiator: instantiator,
       inputAction: {
-        type: AccountActions.GetAccountForQuoteAdmin.Type,
+        type: AccountActions.GetAccountForQuoteAdminOnUserAdd.Type,
         accountId: 1,
-        onUserAdd: true
       },
       serviceMethod: {
         name: 'getAccount',
@@ -114,7 +113,6 @@ export function main() {
       inputAction: {
         type: AccountActions.GetAccountForQuoteAdmin.Type,
         accountId: 1,
-        onUserAdd: true
       },
       serviceMethod: {
         name: 'getAccount',
@@ -128,7 +126,7 @@ export function main() {
       outputActionFactories: {
         success: {
           sectionName: 'account',
-          methodName: 'getAccountForQuoteAdminOnUserAddSuccess',
+          methodName: 'getAccountForQuoteAdminSuccess',
           expectedArguments: [{
             id: 1,
             name: 'test',
@@ -142,7 +140,5 @@ export function main() {
         }
       }
     });
-
-
   });
 }
