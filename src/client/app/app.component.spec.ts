@@ -33,6 +33,7 @@ export function main() {
     let canViewCollections: boolean = true;
     let canAdministerQuotes: boolean = false;
     let nextNavigation: Event;
+    let mockActivatedRoute: any;
 
     beforeEach(() => {
       mockRouter = { events: Observable.of(nextNavigation), initialNavigation: jasmine.createSpy('initialNavigation') };
@@ -72,6 +73,11 @@ export function main() {
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       mockNgZone = { runOutsideAngular: () => true };
+      mockActivatedRoute = {
+        data: { title: 'wow' },
+        params: { some: 'params' },
+        firstChild: 'primary'
+      };
 
       mockStore = new MockAppStore();
       configLoadSpy = mockStore.createActionFactoryMethod('uiConfig', 'load');
@@ -87,7 +93,7 @@ export function main() {
       componentUnderTest = new AppComponent(
         mockRouter, mockSearchContext, mockCurrentUserService,
         mockCollections, mockUserPreference, mockUserCan, mockWindow,
-        mockFilter, mockSortDefinition, mockNgZone, mockStore
+        mockFilter, mockSortDefinition, mockNgZone, mockStore, mockActivatedRoute
       );
     });
 

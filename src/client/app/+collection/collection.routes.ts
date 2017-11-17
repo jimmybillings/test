@@ -16,19 +16,22 @@ export const COLLECTION_ROUTES: Routes = [
         path: '',
         component: CollectionsComponent,
         canActivate: [CollectionGuard],
-        resolve: { collections: CollectionsResolver }
+        resolve: { collections: CollectionsResolver },
+        data: { title: 'PAGE_TITLE.COLLECTIONS' }
       },
       {
         path: ':id',
         component: CollectionShowComponent,
         canActivate: [CollectionGuard],
-        resolve: { collection: CollectionShowResolver }
+        resolve: { collection: CollectionShowResolver },
+        data: { title: 'PAGE_TITLE.COLLECTION' }
       },
       {
         path: ':id/asset/:uuid',
         component: CollectionAssetComponent,
         canActivate: [CollectionGuard],
-        resolve: { asset: CollectionAssetResolver }
+        resolve: { asset: CollectionAssetResolver },
+        data: { title: 'PAGE_TITLE.COLLECTION_ASSET' }
       },
     ]
   }
