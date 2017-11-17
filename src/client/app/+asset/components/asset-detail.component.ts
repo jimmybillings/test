@@ -216,7 +216,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get showAdvancedPlayer(): boolean {
-    return this.userCan.createSubclips(this.asset) || this.assetIsShared;
+    return this.userCan.viewAdvancedPlayer(this.asset, this.assetIsShared);
   }
 
   public get shareButtonLabelKey(): string {
@@ -281,8 +281,6 @@ export class AssetDetailComponent implements OnInit {
   public get canAddToCart(): boolean {
     return this.userCan.addToCart() && this.canBePurchased(this.asset);
   }
-
-
 
   public get primaryAssetFields(): Metadatum | { value: string }[] {
     return this.asset.primary.slice(4, -1).filter(field => field.value !== null);

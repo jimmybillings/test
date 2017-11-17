@@ -43,7 +43,7 @@ export class InternalActionFactory extends ActionFactory {
 export class Load implements Action {
   public static readonly Type = '[Delivery Options] Load';
   public readonly type = Load.Type;
-  constructor(public readonly activeAsset: Asset, public readonly shareKey?: string) { }
+  constructor(public readonly activeAsset: Asset, public readonly shareKey: string) { }
 }
 
 export class LoadSuccess implements Action {

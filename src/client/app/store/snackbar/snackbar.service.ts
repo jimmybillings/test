@@ -11,9 +11,9 @@ export class SnackbarService {
     return this.translateService.get(messageKey, messageParameters)
       .take(1)
       .do((translatedString: string) => this.snackBar.open(translatedString, '', {
-        duration: 2000,
+        duration: 1500,
         verticalPosition: 'top',
-        horizontalPosition: 'right',
+        horizontalPosition: 'left',
         extraClasses: ['wz-snackbar']
       }));
   }
