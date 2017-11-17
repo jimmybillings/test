@@ -12,11 +12,7 @@ export class WzFormBase implements OnInit, OnChanges {
   @Input() cancelLabel: string = 'Cancel';
   @Input() autocomplete: string = 'on';
   @Input() disableUntilValid: boolean = false;
-  @Input()
-  set outSidePropertiesValid(outSidePropertiesValid: boolean) {
-    this._outSidePropertiesValid = outSidePropertiesValid;
-  }
-
+  @Input() outSidePropertiesValid: boolean = false;
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
   @Output() onAction = new EventEmitter();
@@ -26,7 +22,7 @@ export class WzFormBase implements OnInit, OnChanges {
   public form: FormGroup;
   @ViewChild(MatTextareaAutosize) private autosize: MatTextareaAutosize;
   @ViewChild(FormGroupDirective) private internalForm: FormGroupDirective;
-  private _outSidePropertiesValid: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private formModel: FormModel,
@@ -218,7 +214,7 @@ export class WzFormBase implements OnInit, OnChanges {
   }
 
   public get allPropertiesValid() {
-    return this.form.valid && this._outSidePropertiesValid;
+    return this.form.valid && this.outSidePropertiesValid;
   }
 
   public onBlur() {
