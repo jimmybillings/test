@@ -1,6 +1,6 @@
 import './operators';
 import { Component, OnInit, HostListener, NgZone, ChangeDetectionStrategy } from '@angular/core';
-import { Router, RoutesRecognized, NavigationEnd, Event } from '@angular/router';
+import { ActivatedRoute, Event, NavigationEnd, Router, RoutesRecognized, Data } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 // Services
@@ -16,6 +16,7 @@ import { AppStore } from './app.store';
 
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
+import { Pojo } from './shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -38,7 +39,8 @@ export class AppComponent implements OnInit {
     private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
     private zone: NgZone,
-    private store: AppStore
+    private store: AppStore,
+    private activatedRoute: ActivatedRoute
   ) {
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
@@ -101,11 +103,20 @@ export class AppComponent implements OnInit {
   private routerChanges() {
     this.router.events
       .filter((event: Event) => event instanceof NavigationEnd)
-      .subscribe((event: NavigationEnd) => {
+      .do((event: NavigationEnd) => {
         this.store.dispatch(factory => factory.headerDisplayOptions.checkIfHeaderCanBeFixed(event.url));
         this.store.dispatch(factory => factory.headerDisplayOptions.checkIfFiltersAreAvailable(event.url));
         this.state = event.url;
         this.window.nativeWindow.scrollTo(0, 0);
+        return event;
+      })
+      .map(() => this.activatedRoute)
+      .map((route: ActivatedRoute) => { while (route.firstChild) route = route.firstChild; return route; })
+      .filter((route: ActivatedRoute) => route.outlet === 'primary')
+      .subscribe((route: ActivatedRoute) => {
+        route.params.combineLatest(route.data, (params, data) => {
+          this.store.dispatch(factory => factory.page.updateTitle(data.title, params));
+        }).take(1).subscribe();
       });
   }
 

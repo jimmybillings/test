@@ -57,6 +57,8 @@ import * as OrderActions from './store/order/order.actions';
 import * as OrderState from './store/order/order.state';
 export type OrderState = OrderState.State;
 
+import * as PageDataActions from './store/page-data/page-data.actions';
+
 import * as PricingActions from './store/pricing/pricing.actions';
 import * as PricingState from './store/pricing/pricing.state';
 export type PricingState = PricingState.State;
@@ -106,6 +108,7 @@ export interface ActionFactory {
   readonly loadingIndicator: LoadingIndicatorActions.ActionFactory;
   readonly multiLingual: MultiLingualActions.ActionFactory;
   readonly order: OrderActions.ActionFactory;
+  readonly page: PageDataActions.ActionFactory;
   readonly pricing: PricingActions.ActionFactory;
   readonly privacyPolicy: PrivacyPolicyActions.ActionFactory;
   readonly quoteEdit: QuoteEditActions.ActionFactory;
@@ -132,6 +135,7 @@ export interface InternalActionFactory {
   readonly loadingIndicator: LoadingIndicatorActions.InternalActionFactory;
   readonly multiLingual: MultiLingualActions.InternalActionFactory;
   readonly notifier: NotifierActions.InternalActionFactory;
+  readonly page: PageDataActions.InternalActionFactory;
   readonly order: OrderActions.InternalActionFactory;
   readonly pricing: PricingActions.InternalActionFactory;
   readonly privacyPolicy: PrivacyPolicyActions.InternalActionFactory;
@@ -218,6 +222,7 @@ export class AppStore {
     loadingIndicator: new LoadingIndicatorActions.ActionFactory(),
     multiLingual: new MultiLingualActions.ActionFactory(),
     notifier: new NotifierActions.ActionFactory(),
+    page: new PageDataActions.ActionFactory(),
     order: new OrderActions.ActionFactory(),
     pricing: new PricingActions.ActionFactory(),
     privacyPolicy: new PrivacyPolicyActions.ActionFactory(),
@@ -244,6 +249,7 @@ export class AppStore {
     loadingIndicator: new LoadingIndicatorActions.InternalActionFactory(),
     multiLingual: new MultiLingualActions.InternalActionFactory(),
     notifier: new NotifierActions.InternalActionFactory(),
+    page: new PageDataActions.InternalActionFactory(),
     order: new OrderActions.InternalActionFactory(),
     pricing: new PricingActions.InternalActionFactory(),
     privacyPolicy: new PrivacyPolicyActions.InternalActionFactory(),
