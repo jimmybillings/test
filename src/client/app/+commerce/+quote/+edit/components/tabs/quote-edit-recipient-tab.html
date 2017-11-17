@@ -3,36 +3,36 @@
 </header>
 <div layout="column" layout-gt-xs="row">
   <section class="recipient-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
-    <wz-form-autocomplete-view *ngIf="user | async" flex="100" 
+    <wz-form-autocomplete-view *ngIf="user | async as user" flex="100" 
       class="recipient"
-      [ngClass]="{ 'is-empty' : !(!!(user | async).id) }"
-      [items]="(user | async).field"
+      [ngClass]="{ 'is-empty' : !(!!user.id) }"
+      [items]="user.field"
       [title]="'QUOTE.EDIT.RECIPIENT_TITLE'"
       [matchOnProperty]="'emailAddress'"
-      [displayProperties]="user | async"
+      [displayProperties]="user"
       includeCancel="true"
       autocomplete="off"
       (formSubmit)="userSelect($event)">
     </wz-form-autocomplete-view>
     
-    <wz-form-autocomplete-view flex="100"
+    <wz-form-autocomplete-view *ngIf="billingAccount | async as billingAccount" flex="100"
       class="billing-account"
-      [ngClass]="{ 'is-empty' : !(!!(billingAccount | async).id) }"
-      [items]="(billingAccount | async).field"
+      [ngClass]="{ 'is-empty' : !(!!billingAccount.id) }"
+      [items]="billingAccount.field"
       [title]="'QUOTE.EDIT.BILLING_ACCOUNT_TITLE'"
       [matchOnProperty]="'name'"
-      [displayProperties]="billingAccount | async"
+      [displayProperties]="billingAccount"
       includeCancel="true"
       autocomplete="off"
       (formSubmit)="accountSelect($event)">
     </wz-form-autocomplete-view>
 
-    <wz-form-picklist-component *ngIf="(invoiceContact | async)" flex="100"
+    <wz-form-picklist-component *ngIf="invoiceContact | async as invoiceContact" flex="100"
       #invoiceContactform
       class="invoice-contact"
-      [items]="(invoiceContact | async).field"
+      [items]="invoiceContact.field"
       [title]="'QUOTE.EDIT.INVOICE_CONTACT_TITLE'"
-      [displayProperties]="invoiceContact | async"
+      [displayProperties]="invoiceContact"
       autocomplete="off"
       (selectContact)="invoiceContactSelect($event)">
     </wz-form-picklist-component>
