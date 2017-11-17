@@ -63,7 +63,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
             return [];
           }
         })
-        .map((response) => {
+        .do((response) => {
           this.rawSuggestions = (response['items'] || response['list'] || []);
           return response;
         })
