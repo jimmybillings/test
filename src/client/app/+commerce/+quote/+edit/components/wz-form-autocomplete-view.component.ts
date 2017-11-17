@@ -1,13 +1,11 @@
-import { BehaviorSubject, Subject } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Pojo } from '../../../../shared/interfaces/common.interface';
 import { Component, ChangeDetectionStrategy, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { FormModel } from '../../../../shared/modules/wz-form/wz.form.model';
 import { FormFields, ServerErrors } from '../../../../shared/interfaces/forms.interface';
 import { WzFormBase } from '../../../../shared/modules/wz-form/wz.form-base';
-/**
- * Home page component - renders the home page
- */
+
 @Component({
   moduleId: module.id,
   selector: 'wz-form-autocomplete-view',
@@ -20,7 +18,7 @@ export class WzFormAutoCompleteViewComponent extends WzFormBase {
   @Input() title: string;
   @Input() matchOnProperty: string;
   @Input()
-  set displayProperties(properties: string[]) {
+  set displayProperties(properties: Pojo) {
     const tempLabels: Pojo[] = Object.keys(properties || [])
       .filter(property =>
         property !== 'name' &&
@@ -44,6 +42,6 @@ export class WzFormAutoCompleteViewComponent extends WzFormBase {
   }
 
   public onSelectSuggestion(suggestion: Pojo) {
-    if (suggestion) this.formSubmit.emit(suggestion);
+    this.formSubmit.emit(suggestion);
   }
 }
