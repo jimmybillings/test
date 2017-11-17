@@ -36,7 +36,9 @@ export class FooterComponent implements OnInit {
   }
 
   public get showContacts(): boolean {
-    return this.config.contacts && this.config.contacts.items && this.config.contacts.items.length > 0;
+    return this.config.hasOwnProperty('contacts') &&
+      this.config.contacts.hasOwnProperty('items') &&
+      this.config.contacts.items.length > 0;
   }
 
   public get contacts(): any {
