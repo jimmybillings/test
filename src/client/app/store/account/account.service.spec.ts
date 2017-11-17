@@ -22,8 +22,10 @@ export function main() {
       });
 
       it('returns an observable', () => {
+        let reponse: any;
         mockApiService.getResponse = { some: 'account' };
-        serviceUnderTest.getAccount(1, true).subscribe(q => expect(q).toEqual({ some: 'account' }));
+        serviceUnderTest.getAccount(1, true).subscribe(q => reponse = q);
+        expect(reponse).toEqual({ some: 'account' });
       });
     });
   });
