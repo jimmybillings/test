@@ -10,12 +10,18 @@ export const SEARCH_ROUTES: Routes = [
   {
     path: 'search',
     children: [
-      { path: '', component: SearchComponent, resolve: { search: SearchResolver } },
+      {
+        path: '',
+        component: SearchComponent,
+        resolve: { search: SearchResolver },
+        data: { title: 'PAGE_TITLE.SEARCH' }
+      },
       {
         path: 'asset/:id',
         component: SearchAssetComponent,
         resolve: { asset: SearchAssetResolver },
-        canActivate: [SearchAssetGuard]
+        canActivate: [SearchAssetGuard],
+        data: { title: 'PAGE_TITLE.SEARCH_ASSET' }
       }
     ]
   }

@@ -75,6 +75,8 @@ import { FutureQuoteShowService } from '../store/quote-show/quote-show.service';
 import { FutureUserService } from '../store/user/user.service';
 import { OrderService } from '../store/order/order.service';
 import { InvoiceService } from '../store/invoice/invoice.service';
+import { OrderService } from '../store/order/order.service';
+import { PageDataService } from '../store/page-data/page-data.service';
 import { PricingService } from '../store/pricing/pricing.service';
 import { PrivacyPolicyService } from '../store/privacy-policy/privacy-policy.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
@@ -136,6 +138,7 @@ import { InvoiceEffects } from '../store/invoice/invoice.effects';
 import { MultiLingualEffects } from '../store/multi-lingual/multi-lingual.effects';
 import { NotifierEffects } from '../store/notifier/notifier.effects';
 import { OrderEffects } from '../store/order/order.effects';
+import { PageDataEffects } from '../store/page-data/page-data.effects';
 import { PricingEffects } from '../store/pricing/pricing.effects';
 import { PrivacyPolicyEffects } from '../store/privacy-policy/privacy-policy.effects';
 import { QuoteEditEffects } from '../store/quote-edit/quote-edit.effects';
@@ -187,6 +190,7 @@ const WAZEE_SERVICES = [
   FeeConfigService,
   FutureUserService,
   PrivacyPolicyService,
+  PageDataService,
   // Temporary legacy services accessed through AppStore
   LegacyAssetService
 ];
@@ -257,6 +261,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   MultiLingualEffects,
   NotifierEffects,
   OrderEffects,
+  PageDataEffects,
   PricingEffects,
   PrivacyPolicyEffects,
   QuoteEditEffects,

@@ -9,6 +9,7 @@ export const PRIVACY_POLICY_ROUTES: Routes = [
     path: 'privacy-policy',
     component: PrivacyPolicyComponent,
     resolve: { document: PrivacyPolicyResolver },
-    canActivate: [PrivacyPolicyGuard]
+    canActivate: [PrivacyPolicyGuard],
+    data: { title: 'PAGE_TITLE.PRIVACY_POLICY' }
   }
 ];
