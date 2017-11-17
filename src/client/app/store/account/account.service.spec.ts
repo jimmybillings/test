@@ -11,5 +11,20 @@ export function main() {
       mockApiService = new MockApiService();
       serviceUnderTest = new AccountService(mockApiService.injector);
     });
+
+    describe('getAccount()', () => {
+      it('calls the api service correctly', () => {
+        serviceUnderTest.getAccount(1, true);
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint(`account/1`);
+        expect(mockApiService.get).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('returns an observable', () => {
+        mockApiService.getResponse = { some: 'account' };
+        serviceUnderTest.getAccount(1, true).subscribe(q => expect(q).toEqual({ some: 'account' }));
+      });
+    });
   });
 }
