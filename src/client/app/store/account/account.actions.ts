@@ -1,5 +1,6 @@
 import { SendDetailsBillingAccount } from '../../shared/interfaces/commerce.interface';
-import { User, Account } from '../../shared/interfaces/user.interface';
+import { User } from '../../shared/interfaces/user.interface';
+import { Account } from '../../shared/interfaces/account.interface';
 import { Action } from '@ngrx/store';
 
 export class ActionFactory {

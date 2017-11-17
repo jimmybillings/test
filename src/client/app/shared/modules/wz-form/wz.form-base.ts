@@ -55,7 +55,7 @@ export class WzFormBase implements OnInit, OnChanges {
     formFields.forEach((field: any) => {
       for (let control in this.form.controls) {
         if (control === field.name) {
-          (<FormControl>this.form.controls[control]).setValue(field.value);
+          (<FormControl>this.form.controls[control]).patchValue(field.value);
         }
       }
       if (this.autosize) this.autosize.resizeToFitContent();

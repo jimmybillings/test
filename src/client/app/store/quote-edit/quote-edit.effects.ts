@@ -8,7 +8,7 @@ import * as AccountActions from '../account/account.actions';
 import { FutureQuoteEditService } from './quote-edit.service';
 import { AppStore } from '../../app.store';
 import { Quote, AssetLineItem, QuoteEdit } from '../../shared/interfaces/commerce.interface';
-import { Account } from '../../shared/interfaces/user.interface';
+import { Account } from '../../shared/interfaces/account.interface';
 import { Router } from '@angular/router';
 
 @Injectable()

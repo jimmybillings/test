@@ -66,18 +66,6 @@ export interface ViewAddress {
   address?: Address;
   [index: string]: any;
 }
-
-export interface Account {
-  id: number;
-  name: string;
-  salesOwner?: string;
-  purchaseOnCredit?: number;
-  creditExemption?: number;
-  paymentTermsDays?: string;
-  licensingVertical?: string;
-  invoiceContactId?: number;
-}
-
 export interface Document extends Common {
   name: string;
   description: string;

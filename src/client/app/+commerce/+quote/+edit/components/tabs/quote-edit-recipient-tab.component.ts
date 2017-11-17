@@ -36,19 +36,19 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
   }
 
   public get user(): Observable<SendDetailsUser> {
-    return this.store.select(state => state.quoteEdit.sendDetails.user)
+    return this.store.select(state => state.quoteEdit.sendDetails.user);
   }
 
   public get billingAccount(): Observable<SendDetailsBillingAccount> {
-    return this.store.select(state => state.quoteEdit.sendDetails.billingAccount)
+    return this.store.select(state => state.quoteEdit.sendDetails.billingAccount);
   }
 
   public get invoiceContact(): Observable<SendDetailsInvoiceContact> {
-    return this.store.select(state => state.quoteEdit.sendDetails.invoiceContact)
+    return this.store.select(state => state.quoteEdit.sendDetails.invoiceContact);
   }
 
   public get salesManager(): Observable<SendDetailsInvoiceContact> {
-    return this.store.select(state => state.quoteEdit.sendDetails.salesManager)
+    return this.store.select(state => state.quoteEdit.sendDetails.salesManager);
   }
 
   public userSelect(user: User) {

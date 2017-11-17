@@ -2,7 +2,6 @@ import { Observable } from 'rxjs/Observable';
 import {
   PurchaseType,
   Project,
-  QuoteOptions,
   SendDetails,
   quotesWithoutPricing
 } from '../../../../../shared/interfaces/commerce.interface';
@@ -38,8 +37,8 @@ export class QuoteEditConfirmTabComponent extends Tab {
   }
 
   public get showDiscount(): boolean {
-    return this.store.snapshot(
-      state => state.quoteEdit.data.discount > 0 && !quotesWithoutPricing.includes(state.quoteEdit.data.purchaseType)
+    return this.store.snapshot(state =>
+      state.quoteEdit.data.discount > 0 && !quotesWithoutPricing.includes(state.quoteEdit.data.purchaseType)
     );
   }
 
@@ -52,8 +51,8 @@ export class QuoteEditConfirmTabComponent extends Tab {
   }
 
   public get showTotal(): boolean {
-    return this.store.snapshot(
-      state => state.quoteEdit.data.total > 0 && !quotesWithoutPricing.includes(state.quoteEdit.data.purchaseType)
+    return this.store.snapshot(state =>
+      state.quoteEdit.data.total > 0 && !quotesWithoutPricing.includes(state.quoteEdit.data.purchaseType)
     );
   }
 

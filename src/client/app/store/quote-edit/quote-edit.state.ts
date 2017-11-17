@@ -161,63 +161,6 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       };
     }
 
-    case UserActions.GetAllUsersByAccountIdSuccess.Type: {
-      const cloneState = Common.clone(state);
-      let contactEmail: string = null;
-      return {
-        ...cloneState,
-        sendDetails: {
-          ...cloneState.sendDetails,
-          invoiceContact: {
-            ...cloneState.sendDetails.invoiceContact,
-            field: cloneState.sendDetails.invoiceContact.field.map(field => {
-              field.options = (action.users || []);
-
-              if (cloneState.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
-
-                field.value = field.options.find((option: Pojo) =>
-                  option.id === cloneState.sendDetails.billingAccount.invoiceContactId);
-
-                if (field.value) {
-                  contactEmail = field.value.emailAddress;
-                } else {
-                  field.value = '';
-                }
-
-              } else {
-                field.value = '';
-              }
-
-              return field;
-            }),
-            contactEmail: contactEmail
-          }
-        }
-      };
-    }
-
-    case QuoteEditActions.AddInvoiceContactToQuote.Type: {
-      const cloneState = Common.clone(state);
-      let selectedUser: User;
-      return {
-        ...cloneState,
-        sendDetails: {
-          ...cloneState.sendDetails,
-          invoiceContact: {
-            ...cloneState.sendDetails.invoiceContact,
-            id: action.userId,
-            field: cloneState.sendDetails.invoiceContact.field.map(field => {
-              selectedUser = field.options.find((option: Pojo) => option.id === action.userId);
-              field.value = selectedUser;
-              return field;
-            }),
-            contactEmail: (selectedUser) ? selectedUser.emailAddress : null,
-            name: (selectedUser) ? selectedUser.name : null
-          }
-        }
-      };
-    }
-
     case AccountActions.GetAccountForQuoteAdminSuccess.Type: {
       const cloneState = Common.clone(state);
       return {
@@ -257,6 +200,65 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           user: {
             ...cloneState.sendDetails.user,
             accountName: action.account.name
+          }
+        }
+      };
+    }
+
+    case UserActions.GetAllUsersByAccountIdSuccess.Type: {
+      const cloneState = Common.clone(state);
+      let contactEmail: string = null;
+      return {
+        ...cloneState,
+        sendDetails: {
+          ...cloneState.sendDetails,
+          invoiceContact: {
+            ...cloneState.sendDetails.invoiceContact,
+            field: cloneState.sendDetails.invoiceContact.field.map(field => {
+              field.options = (action.users || []);
+              // Only preselect an invoice contact field option if the billingAccount has an Invoice Contact
+              if (cloneState.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
+
+                // Set value to the user who's id matches the invoiceContactId otherwise return
+                // an empty string
+                field.value = field.options.find((option: Pojo) =>
+                  option.id === cloneState.sendDetails.billingAccount.invoiceContactId) || '';
+
+                // Check that a match was found first before caching the email address.
+                // This could happen if the API has bad data, e.g. the user who is the invoiceContactId
+                // for an account has been move to a different account.
+                if (field.value !== '') contactEmail = field.value.emailAddress;
+
+              } else {
+                // Ensure value is an empty string if no invoiceContactId
+                field.value = '';
+              }
+
+              return field;
+            }),
+            contactEmail: contactEmail
+          }
+        }
+      };
+    }
+
+    case QuoteEditActions.AddInvoiceContactToQuote.Type: {
+      const cloneState = Common.clone(state);
+      let selectedUser: User;
+      return {
+        ...cloneState,
+        sendDetails: {
+          ...cloneState.sendDetails,
+          invoiceContact: {
+            ...cloneState.sendDetails.invoiceContact,
+            id: action.userId,
+            field: cloneState.sendDetails.invoiceContact.field.map(field => {
+              selectedUser = field.options.find((option: Pojo) => option.id === action.userId);
+              field.value = selectedUser;
+              return field;
+            }),
+            contactEmail: (selectedUser) ? selectedUser.emailAddress : null,
+            name: (selectedUser) ? selectedUser.name : null
           }
         }
       };

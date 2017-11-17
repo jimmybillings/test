@@ -211,10 +211,10 @@ export interface QuoteEdit {
 }
 
 export interface SendDetails {
-  user?: SendDetailsUser;
-  billingAccount?: SendDetailsBillingAccount;
-  invoiceContact?: SendDetailsInvoiceContact;
-  salesManager?: SendDetailsSalesManager;
+  user: SendDetailsUser;
+  billingAccount: SendDetailsBillingAccount;
+  invoiceContact: SendDetailsInvoiceContact;
+  salesManager: SendDetailsSalesManager;
 }
 
 export interface SendDetailsUser {

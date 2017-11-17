@@ -1,6 +1,3 @@
-import { User } from '../../shared/interfaces/user.interface';
-import { Action } from '@ngrx/store';
-
 import {
   AddAssetParameters,
   AssetLineItem,
@@ -11,10 +8,11 @@ import {
   SendDetails
 } from '../../shared/interfaces/commerce.interface';
 import { Asset, SelectedPriceAttribute, Pojo } from '../../shared/interfaces/common.interface';
-import { Account } from '../../shared/interfaces/user.interface';
+import { Account } from '../../shared/interfaces/account.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
-
+import { User } from '../../shared/interfaces/user.interface';
+import { Action } from '@ngrx/store';
 export class ActionFactory {
   public load(): Load {
     return new Load();

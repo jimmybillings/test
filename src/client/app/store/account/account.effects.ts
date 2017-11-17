@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
 import { Effect, Actions } from '@ngrx/effects';
-import { Account } from '../../shared/interfaces/user.interface';
+import { Account } from '../../shared/interfaces/account.interface';
 import { AppStore } from '../../app.store';
 import { AccountService } from './account.service';
 import * as AccountActions from './account.actions';

@@ -80,7 +80,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   public closeSuggestions() {
     this.activeSuggestion = null;
     this.suggestions = [];
-    // this.detector.markForCheck();
+    this.detector.markForCheck();
   }
 
   public selectSuggestion(suggestion: string) {
@@ -88,6 +88,9 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
     this.closeSuggestions();
     this.fControl.setValue(suggestion);
     if (!!this.matchOnProperty) {
+      // A timeout here to help fix animation lag when
+      // other external processing may be happening. Without it
+      // it causes lag on closing the suggestion pop up menu.
       setTimeout(() => this.newSuggestion.emit(
         this.rawSuggestions.find((rawSuggestion) =>
           rawSuggestion[this.matchOnProperty] === suggestion
