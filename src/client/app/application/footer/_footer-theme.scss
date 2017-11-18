@@ -23,20 +23,11 @@
           }
         }
       }
-      .language-selector {
-        &::before {
-          color: rgba(mat-color($mat-grey, 100),0.18);
+      .contact {
+        a.email {
+          color: mat-color($mat-grey, 500);
         }
-        .mat-select-value {
-          color: rgba(mat-color($background, background), .55);
-        }
-        .mat-select-arrow {
-          color: rgba(mat-color($background, background), .38);
-        }
-        .mat-select-underline {
-          background-color:rgba(mat-color($mat-grey, 100),0.07);
-        }
-      } 
+      }
       .footer-link {
         color: mat-color($mat-grey, 500);
         &:hover {
@@ -56,6 +47,9 @@
           }
         }
       }
+    }
+    .glb.powered-by {
+      background-color: mat-color($foreground, base, .12);
     }
   }
 }
