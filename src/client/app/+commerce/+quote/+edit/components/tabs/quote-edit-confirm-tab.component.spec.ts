@@ -64,14 +64,14 @@ export function main() {
         });
 
         it('when the quoteType is "Trial" and the quote DOES have the property', () => {
-          mockStore.createStateSection('quoteEdit', { data: { discount: '100', purchaseType: 'Trial' } });
+          mockStore.createStateSection('quoteEdit', { data: { discount: 100, purchaseType: 'Trial' } });
           expect(componentUnderTest.showDiscount).toBe(false);
         });
       });
 
       describe('returns true', () => {
         it('when the quote does have the property AND the quoteType is NOT Trial', () => {
-          mockStore.createStateSection('quoteEdit', { data: { discount: '100', purchaseType: 'NotTrial' } });
+          mockStore.createStateSection('quoteEdit', { data: { discount: 100, purchaseType: 'NotTrial' } });
           expect(componentUnderTest.showDiscount).toBe(true);
         });
       });
@@ -108,14 +108,14 @@ export function main() {
         });
 
         it('when the quoteType is "Trial" and the quote does have a total value', () => {
-          mockStore.createStateSection('quoteEdit', { data: { total: '100', purchaseType: 'Trial' } });
+          mockStore.createStateSection('quoteEdit', { data: { total: 100, purchaseType: 'Trial' } });
           expect(componentUnderTest.showTotal).toBe(false);
         });
       });
 
       describe('returns true', () => {
         it('when the quote does have does have a total value AND the quoteType is NOT Trial', () => {
-          mockStore.createStateSection('quoteEdit', { data: { total: '100', purchaseType: 'NotTrial' } });
+          mockStore.createStateSection('quoteEdit', { data: { total: 100, purchaseType: 'NotTrial' } });
           expect(componentUnderTest.showTotal).toBe(true);
         });
       });
