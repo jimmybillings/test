@@ -34,4 +34,18 @@ export class FooterComponent implements OnInit {
         state.components.footer.config.privacyPolicyId.value !== ''
       );
   }
+
+  public get showContacts(): boolean {
+    return this.config.hasOwnProperty('contacts') &&
+      this.config.contacts.hasOwnProperty('items') &&
+      this.config.contacts.items.length > 0;
+  }
+
+  public get contacts(): any {
+    return this.config.contacts.items;
+  }
+
+  public show(value: string): boolean {
+    return value !== undefined;
+  }
 }

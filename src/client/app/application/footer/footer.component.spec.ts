@@ -50,5 +50,35 @@ export function main() {
         });
       });
     });
+
+    describe('showCont', () => {
+      describe('returns true', () => {
+        it('when the object is valid', () => {
+          componentUnderTest.config = { contacts: { items: [{ some: 'item' }] } };
+
+          expect(componentUnderTest.showContacts).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the object has an empty items array', () => {
+          componentUnderTest.config = { contacts: { items: [] } };
+
+          expect(componentUnderTest.showContacts).toBe(false);
+        });
+
+        it('when the object does not have an items property', () => {
+          componentUnderTest.config = { contacts: {} };
+
+          expect(componentUnderTest.showContacts).toBe(false);
+        });
+
+        it('when the object does not have a contacts property', () => {
+          componentUnderTest.config = {};
+
+          expect(componentUnderTest.showContacts).toBe(false);
+        });
+      });
+    });
   });
 }

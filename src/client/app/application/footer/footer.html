@@ -122,7 +122,19 @@
       <!-- CONTACT -->
       <div flex-gt-sm="20" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start">
         <h3 class="mat-title">{{'FOOTER.OFFICE' | translate }}</h3>
-        <p class="mat-body-1">{{'FOOTER.ADDRESS' | translate }}</p>
+        <ng-container *ngIf="!showContacts">
+          <p class="mat-caption">{{'FOOTER.ADDRESS' | translate }}</p>
+        </ng-container>
+        <ng-container *ngIf="showContacts">
+          <div class="contact" *ngFor="let contact of contacts">
+            <p class="mat-body-2" *ngIf="show(contact.department)">{{ contact.department }}</p>
+            <p class="mat-caption" *ngIf="show(contact.name)">{{ contact.name }}</p>
+            <p class="mat-caption" *ngIf="show(contact.title)">{{ contact.title }}</p>
+            <a class="email" *ngIf="show(contact.email)" href="{{ 'mailto:' + contact.email }}">
+              <p class="mat-caption">{{ contact.email }}</p>              
+            </a>
+          </div>
+        </ng-container>
         <p class="mat-caption">
           <a flex="" href="{{'FOOTER.SUPPORT_URL' | translate }}" target="_blank" title="Help" class="footer-link">
             {{'FOOTER.SUPPORT_LABEL' | translate }}
