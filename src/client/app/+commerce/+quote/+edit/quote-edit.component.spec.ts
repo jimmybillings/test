@@ -115,7 +115,7 @@ export function main() {
       });
 
       it('defines the expected tabs', () => {
-        expect(componentUnderTest.tabLabelKeys).toEqual(['quote', 'recipient details', 'confirm']);
+        expect(componentUnderTest.tabLabelKeys).toEqual(['quote', 'recipient', 'confirm']);
       });
 
       it('disables all but the first tab', () => {

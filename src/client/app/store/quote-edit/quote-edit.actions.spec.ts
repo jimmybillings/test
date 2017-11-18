@@ -191,19 +191,23 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'sendQuote',
-        parameters: [{
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017-03-22T06:00:00.000Z',
-          purchaseType: 'Standard'
-        }]
+        parameters: []
       },
       expectedAction: {
-        type: '[Quote Edit] Send Quote',
-        quoteOptions: {
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017-03-22T06:00:00.000Z',
-          purchaseType: 'Standard'
-        }
+        type: '[Quote Edit] Send Quote'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'sendQuoteSuccess',
+        parameters: [10, 'ross.edfort@wazeedigital.com']
+      },
+      expectedAction: {
+        type: '[Quote Edit] Send Quote Success',
+        quoteId: 10,
+        ownerEmail: 'ross.edfort@wazeedigital.com'
       }
     });
 
@@ -224,19 +228,6 @@ export function main() {
           expirationDate: '2017-03-22T06:00:00.000Z',
           purchaseType: 'Standard'
         }
-      }
-    });
-
-    actionsSpecHelper.generateTestFor({
-      factoryMethod: {
-        class: InternalActionFactory,
-        name: 'sendQuoteSuccess',
-        parameters: [10, 'ross.edfort@wazeedigital.com']
-      },
-      expectedAction: {
-        type: '[Quote Edit] Send Quote Success',
-        quoteId: 10,
-        ownerEmail: 'ross.edfort@wazeedigital.com'
       }
     });
 
@@ -474,5 +465,70 @@ export function main() {
         project: { project: 'project' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addUserToQuote',
+        parameters: [{ user: 'Some User' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add User To Quote',
+        user: { user: 'Some User' },
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addBillingAccountToQuote',
+        parameters: [{ account: 'Some Account' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Billing Account To Quote',
+        account: { account: 'Some Account' },
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addInvoiceContactToQuote',
+        parameters: [{ userId: 1 }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Invoice Contact To Quote',
+        userId: { userId: 1 },
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'initializeSalesManagerFormOnQuote',
+        parameters: [{ emailAddress: 'email@email.com' }, { defaultDate: '2017/12/12' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Initialize Sales Manager Form On Quote',
+        emailAddress: { emailAddress: 'email@email.com' },
+        defaultDate: { defaultDate: '2017/12/12' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'updateSalesManagerFormOnQuote',
+        parameters: [{ form: 'formData' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Sales Manager Form On Quote',
+        form: { form: 'formData' }
+      }
+    });
+
+
+
+
   });
 }

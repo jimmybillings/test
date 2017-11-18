@@ -1,11 +1,15 @@
+import { User } from '../../shared/interfaces/user.interface';
 import * as QuoteEditActions from './quote-edit.actions';
+import * as AccountActions from '../account/account.actions';
+import * as UserActions from '../user/user.actions';
+import { Pojo } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
-import { Quote, QuoteOptions } from '../../shared/interfaces/commerce.interface';
+import { Quote, SendDetails, SendDetailsUser } from '../../shared/interfaces/commerce.interface';
 
 export interface State {
   data: Quote;
   loading: boolean;
-  recipient?: QuoteOptions;
+  sendDetails?: SendDetails;
 }
 
 export const initialState: State = {
@@ -16,11 +20,84 @@ export const initialState: State = {
     ownerUserId: 0,
     quoteStatus: 'PENDING'
   },
-  recipient: null,
+  sendDetails: {
+    user: {
+      customerName: null,
+      accountName: null,
+      field: [{
+        endPoint: 'user/searchFields',
+        queryParams: 'fields,emailAddress,values',
+        service: 'identities',
+        suggestionHeading: 'Matching users',
+        name: 'emailAddress',
+        label: 'Recipient email address',
+        type: 'suggestions',
+        value: '',
+        validation: 'REQUIRED'
+      }]
+    },
+    billingAccount: {
+      salesOwner: null,
+      purchaseOnCredit: null,
+      creditExemption: null,
+      paymentTermsDays: null,
+      licensingVertical: null,
+      field: [{
+        endPoint: 'account/searchFields',
+        queryParams: 'fields,name,values',
+        service: 'identities',
+        suggestionHeading: 'Matching accounts',
+        name: 'account',
+        label: 'Account name',
+        type: 'suggestions',
+        value: '',
+        validation: 'REQUIRED'
+      }]
+    },
+    invoiceContact: {
+      contactEmail: null,
+      field: [{
+        name: 'invoiceContact',
+        options: [],
+        label: 'Invoice contact name',
+        type: 'select',
+        value: '',
+        validation: 'REQUIRED'
+      }]
+    },
+    salesManager: {
+      expirationDate: null,
+      salesManager: null,
+      offlineAgreement: null,
+      field: [{
+        default: 'TODAY+15',
+        name: 'expirationDate',
+        label: 'Expiration date',
+        type: 'wzdate',
+        minimum: 'TODAY',
+        validation: 'REQUIRED'
+      },
+      {
+        name: 'salesManager',
+        label: 'Sales manager',
+        type: 'email',
+        value: '',
+        validation: 'EMAIL'
+      }, {
+        name: 'offlineAgreementReference',
+        label: 'Offline agreement reference',
+        type: 'text',
+        value: '',
+        validation: 'OPTIONAL'
+      }]
+    }
+  },
   loading: false
 };
 
-export function reducer(state: State = initialState, action: QuoteEditActions.Any): State {
+export type AllowedActions = AccountActions.Any | QuoteEditActions.Any | UserActions.Any;
+
+export function reducer(state: State = initialState, action: AllowedActions): State {
   if (state === null) state = initialState;
 
   switch (action.type) {
@@ -59,15 +136,158 @@ export function reducer(state: State = initialState, action: QuoteEditActions.An
         loading: false,
         data: {
           ...action.quote
+        },
+        sendDetails: {
+          ...Common.clone(state.sendDetails)
         }
       };
     }
 
-    case QuoteEditActions.SaveRecipientInformationOnQuote.Type: {
+    case QuoteEditActions.AddUserToQuote.Type: {
+      const clonedState = Common.clone(state);
       return {
-        ...Common.clone(state),
-        loading: false,
-        recipient: action.quoteOptions
+        ...clonedState,
+        sendDetails: {
+          ...clonedState.sendDetails,
+          user: {
+            id: action.user.id,
+            customerName: `${action.user.firstName} ${action.user.lastName}`,
+            email: action.user.emailAddress,
+            field: clonedState.sendDetails.user.field.map(field => (
+              { ...field, value: action.user.emailAddress }
+            ))
+          }
+        }
+      };
+    }
+
+    case AccountActions.GetAccountForQuoteAdminSuccess.Type: {
+      const clonedState = Common.clone(state);
+      return {
+        ...clonedState,
+        sendDetails: {
+          ...clonedState.sendDetails,
+          billingAccount: {
+            ...action.account,
+            field: clonedState.sendDetails.billingAccount.field.map(field => (
+              { ...field, value: action.account.name }
+            ))
+          },
+          invoiceContact: {
+            ...clonedState.sendDetails.invoiceContact,
+            id: action.account.invoiceContactId
+          }
+        }
+      };
+    }
+
+    case AccountActions.GetAccountForQuoteAdminOnUserAddSuccess.Type: {
+      const clonedState = Common.clone(state);
+      return {
+        ...clonedState,
+        sendDetails: {
+          ...clonedState.sendDetails,
+          billingAccount: {
+            ...action.account,
+            field: clonedState.sendDetails.billingAccount.field.map(field => (
+              { ...field, value: action.account.name }
+            ))
+          },
+          invoiceContact: {
+            ...clonedState.sendDetails.invoiceContact,
+            id: action.account.invoiceContactId
+          },
+          user: {
+            ...clonedState.sendDetails.user,
+            accountName: action.account.name
+          }
+        }
+      };
+    }
+
+    case UserActions.GetAllUsersByAccountIdSuccess.Type: {
+      const clonedState = Common.clone(state);
+      let contactEmail: string = null;
+      return {
+        ...clonedState,
+        sendDetails: {
+          ...clonedState.sendDetails,
+          invoiceContact: {
+            ...clonedState.sendDetails.invoiceContact,
+            field: clonedState.sendDetails.invoiceContact.field.map(item => {
+              item.options = (action.users || []);
+
+              item.value = item.options.find((option: Pojo) =>
+                option.id === clonedState.sendDetails.billingAccount.invoiceContactId) || '';
+
+              if (item.value !== '') contactEmail = item.value.emailAddress;
+
+              return item;
+            }),
+            contactEmail: contactEmail
+          }
+        }
+      };
+    }
+
+    case QuoteEditActions.AddInvoiceContactToQuote.Type: {
+      const clonedState = Common.clone(state);
+      let selectedUser: User;
+      return {
+        ...clonedState,
+        sendDetails: {
+          ...clonedState.sendDetails,
+          invoiceContact: {
+            ...clonedState.sendDetails.invoiceContact,
+            id: action.userId,
+            field: clonedState.sendDetails.invoiceContact.field.map(field => {
+              selectedUser = field.options.find((option: Pojo) => option.id === action.userId);
+              field.value = selectedUser;
+              return field;
+            }),
+            contactEmail: (selectedUser) ? selectedUser.emailAddress : null,
+            name: (selectedUser) ? selectedUser.name : null
+          }
+        }
+      };
+    }
+
+    case QuoteEditActions.InitializeSalesManagerFormOnQuote.Type: {
+      const clonedState = Common.clone(state);
+      return {
+        ...clonedState,
+        sendDetails: {
+          ...clonedState.sendDetails,
+          salesManager: {
+            ...clonedState.sendDetails.salesManager,
+            field: clonedState.sendDetails.salesManager.field.map(field => {
+              if (field.type === 'email') field.value = action.emailAddress;
+              return field;
+            }),
+            expirationDate: action.defaultDate,
+            salesManager: action.emailAddress
+          }
+        }
+      };
+    }
+
+    case QuoteEditActions.UpdateSalesManagerFormOnQuote.Type: {
+      const clonedState = Common.clone(state);
+      return {
+        ...clonedState,
+        sendDetails: {
+          ...clonedState.sendDetails,
+          salesManager: {
+            field: clonedState.sendDetails.salesManager.field.map(field => {
+              return (field.type === 'wzdate') ?
+                { ...field, default: action.form[field.name], value: action.form[field.name] } :
+                { ...field, value: action.form[field.name] };
+            }),
+            expirationDate: action.form.expirationDate,
+            salesManager: action.form.salesManager,
+            offlineAgreement: action.form.offlineAgreementReference,
+          }
+        }
       };
     }
 

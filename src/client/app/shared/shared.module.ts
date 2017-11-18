@@ -62,6 +62,7 @@ import { QuoteService } from './services/quote.service';
 import { QuotesService } from './services/quotes.service';
 import { AsperaService } from './services/aspera.service';
 // New-ish services
+import { AccountService } from '../store/account/account.service';
 import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
 import { ActiveCollectionService } from '../store/active-collection/active-collection.service';
 import { CommentService } from '../store/comment/comment.service';
@@ -71,8 +72,9 @@ import { FutureApiService } from '../store/api/api.service';
 import { FutureCartService } from '../store/cart/cart.service';
 import { FutureQuoteEditService } from '../store/quote-edit/quote-edit.service';
 import { FutureQuoteShowService } from '../store/quote-show/quote-show.service';
-import { InvoiceService } from '../store/invoice/invoice.service';
+import { FutureUserService } from '../store/user/user.service';
 import { OrderService } from '../store/order/order.service';
+import { InvoiceService } from '../store/invoice/invoice.service';
 import { PageDataService } from '../store/page-data/page-data.service';
 import { PricingService } from '../store/pricing/pricing.service';
 import { PrivacyPolicyService } from '../store/privacy-policy/privacy-policy.service';
@@ -121,6 +123,7 @@ import { collectionOptions } from './services/collection-context.service';
 import { sortDefinitions } from './services/sort-definitions.service';
 
 // WAZEE EFFECTS
+import { AccountEffects } from '../store/account/account.effects';
 import { ActiveCollectionEffects } from '../store/active-collection/active-collection.effects';
 import { AssetEffects } from '../store/asset/asset.effects';
 import { CartEffects } from '../store/cart/cart.effects';
@@ -143,8 +146,10 @@ import { RouterEffects } from '../store/router/router.effects';
 import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
 import { UiConfigEffects } from '../store/ui-config/ui-config.effects';
+import { UserEffects } from '../store/user/user.effects';
 
 const WAZEE_SERVICES = [
+  AccountService,
   ApiConfig,
   CurrentUserService,
   AssetService,
@@ -182,6 +187,7 @@ const WAZEE_SERVICES = [
   PricingService,
   AsperaService,
   FeeConfigService,
+  FutureUserService,
   PrivacyPolicyService,
   PageDataService,
   // Temporary legacy services accessed through AppStore
@@ -240,6 +246,7 @@ const WAZEE_STORES: any = {
 };
 
 const WAZEE_EFFECTS = EffectsModule.forRoot([
+  AccountEffects,
   ActiveCollectionEffects,
   AssetEffects,
   CartEffects,
@@ -261,7 +268,8 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   RouterEffects,
   SnackbarEffects,
   SpeedPreviewEffects,
-  UiConfigEffects
+  UiConfigEffects,
+  UserEffects
 ]);
 
 // Shared pipes

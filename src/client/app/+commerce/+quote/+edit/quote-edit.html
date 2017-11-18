@@ -31,7 +31,7 @@
           <button
             mat-icon-button
             color="primary"
-            title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
+            title="{{ 'QUOTE.COMMENTS_BTN_TITLE' | translate }}"
             (click)="toggleCommentsVisibility()">
               <mat-icon>mode_comment</mat-icon>
               <span *ngIf="(commentCount | async) > 0" class="comment-count">{{ commentCount | async }}</span>
@@ -80,10 +80,10 @@
             (notify)="onNotification($event)"
             [projects]="projects">
           </quote-edit-tab-component>
-          <quote-edit-send-tab-component
-            *ngIf="tabLabelKey === 'recipient details'"
+          <quote-edit-recipient-tab-component
+            *ngIf="tabLabelKey === 'recipient'"
             (notify)="onNotification($event)">
-          </quote-edit-send-tab-component>
+          </quote-edit-recipient-tab-component>
           <quote-edit-confirm-tab-component 
           *ngIf="tabLabelKey === 'confirm'" 
           (notify)="onNotification($event)"

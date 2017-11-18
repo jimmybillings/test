@@ -1,3 +1,4 @@
+import { Pojo } from '../../../../interfaces/common.interface';
 import {
   Component, Input, Output, OnInit, ChangeDetectorRef,
   ChangeDetectionStrategy, Renderer, OnDestroy, EventEmitter
@@ -20,6 +21,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
 
   @Input() fControl: FormControl;
   @Input() rawField: any;
+  @Input() matchOnProperty: string = '';
   @Output() newSuggestion = new EventEmitter();
   public suggestions: Array<string> = [];
   public activeSuggestion: string;
@@ -27,6 +29,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   private clickCatcher: any;
   private inputSubscription: Subscription;
   private userInput: string = '';
+  private rawSuggestions: Pojo[];
 
   constructor(
     private renderer: Renderer,
@@ -60,7 +63,12 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
             return [];
           }
         })
-        .map(response => (response['items'] || response['list'] || []).map((item: any) => item.name || item.emailAddress || item))
+        .do((response) => {
+          this.rawSuggestions = (response['items'] || response['list'] || []);
+          return response;
+        })
+        .map(response => (response['items'] || response['list'] || [])
+          .map((item: any) => item.name || item.emailAddress || item))
         .do((suggestions) => {
           this.suggestions = this.normalizeSuggestions(suggestions);
           this.userInput = this.fControl.value;
@@ -76,9 +84,21 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   }
 
   public selectSuggestion(suggestion: string) {
-    this.fControl.setValue(suggestion);
-    this.newSuggestion.emit(this.activeSuggestion);
+    const tempSuggestion: string = this.activeSuggestion;
     this.closeSuggestions();
+    this.fControl.setValue(suggestion);
+    if (!!this.matchOnProperty) {
+      // A timeout here to help fix animation lag when
+      // other external processing may be happening. Without it
+      // it causes lag on closing the suggestion pop up menu.
+      setTimeout(() => this.newSuggestion.emit(
+        this.rawSuggestions.find((rawSuggestion) =>
+          rawSuggestion[this.matchOnProperty] === suggestion
+        )
+      ), 20);
+    } else {
+      this.newSuggestion.emit(tempSuggestion);
+    }
   }
 
   public parseSuggestion(suggestion: string) {

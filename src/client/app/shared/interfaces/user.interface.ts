@@ -66,7 +66,6 @@ export interface ViewAddress {
   address?: Address;
   [index: string]: any;
 }
-
 export interface Document extends Common {
   name: string;
   description: string;

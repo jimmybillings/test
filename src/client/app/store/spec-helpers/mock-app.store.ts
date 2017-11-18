@@ -23,11 +23,13 @@ export class MockAppStore extends AppStore {
     super(null, null);
 
     this._actionFactory = {
+      account: {} as any,
       activeCollection: {} as any,
       asset: {} as any,
       cart: {} as any,
       checkout: {} as any,
       comment: {} as any,
+      currentUser: {} as any,
       deliveryOptions: {} as any,
       dialog: {} as any,
       error: {} as any,
@@ -46,15 +48,18 @@ export class MockAppStore extends AppStore {
       router: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
-      uiConfig: {} as any
+      uiConfig: {} as any,
+      user: {} as any
     };
 
     this._internalActionFactory = {
+      account: {} as any,
       activeCollection: {} as any,
       asset: {} as any,
       cart: {} as any,
       checkout: {} as any,
       comment: {} as any,
+      currentUser: {} as any,
       deliveryOptions: {} as any,
       dialog: {} as any,
       error: {} as any,
@@ -73,7 +78,8 @@ export class MockAppStore extends AppStore {
       router: {} as any,
       snackbar: {} as any,
       speedPreview: {} as any,
-      uiConfig: {} as any
+      uiConfig: {} as any,
+      user: {} as any
     };
 
     this._state = {
@@ -82,6 +88,7 @@ export class MockAppStore extends AppStore {
       cart: {} as any,
       checkout: {} as any,
       comment: {} as any,
+      currentUser: {} as any,
       deliveryOptions: {} as any,
       feeConfig: {} as any,
       headerDisplayOptions: {} as any,

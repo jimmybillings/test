@@ -1,17 +1,18 @@
-import { Action } from '@ngrx/store';
-
 import {
   AddAssetParameters,
   AssetLineItem,
   FeeLineItem,
   Project,
   Quote,
-  QuoteOptions
+  QuoteOptions,
+  SendDetails
 } from '../../shared/interfaces/commerce.interface';
 import { Asset, SelectedPriceAttribute, Pojo } from '../../shared/interfaces/common.interface';
+import { Account } from '../../shared/interfaces/account.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
-
+import { User } from '../../shared/interfaces/user.interface';
+import { Action } from '@ngrx/store';
 export class ActionFactory {
   public load(): Load {
     return new Load();
@@ -37,8 +38,8 @@ export class ActionFactory {
     return new AddCustomPriceToLineItem(lineItem, price);
   }
 
-  public sendQuote(quoteOptions: QuoteOptions) {
-    return new SendQuote(quoteOptions);
+  public sendQuote(): SendQuote {
+    return new SendQuote();
   }
 
   public saveRecipientInformationOnQuote(quoteOptions: QuoteOptions): SaveRecipientInformationOnQuote {
@@ -104,6 +105,27 @@ export class ActionFactory {
   public updateProjectPriceAttributes(priceAttributes: SelectedPriceAttribute[], project: Project): UpdateProjectPriceAttributes {
     return new UpdateProjectPriceAttributes(priceAttributes, project);
   }
+
+  public addUserToQuote(user: User): AddUserToQuote {
+    return new AddUserToQuote(user);
+  }
+
+  public addBillingAccountToQuote(account: Account): AddBillingAccountToQuote {
+    return new AddBillingAccountToQuote(account);
+  }
+
+  public addInvoiceContactToQuote(userId: number): AddInvoiceContactToQuote {
+    return new AddInvoiceContactToQuote(userId);
+  }
+
+  public initializeSalesManagerFormOnQuote(emailAddress: string, defaultDate: string): InitializeSalesManagerFormOnQuote {
+    return new InitializeSalesManagerFormOnQuote(emailAddress, defaultDate);
+  }
+
+  public updateSalesManagerFormOnQuote(form: Pojo): UpdateSalesManagerFormOnQuote {
+    return new UpdateSalesManagerFormOnQuote(form);
+  }
+
 }
 
 export class InternalActionFactory extends ActionFactory {
@@ -263,7 +285,6 @@ export class AddCustomPriceToLineItemFailure implements Action {
 export class SendQuote implements Action {
   public static readonly Type = '[Quote Edit] Send Quote';
   public readonly type = SendQuote.Type;
-  constructor(public readonly quoteOptions: QuoteOptions) { }
 }
 
 export class SaveRecipientInformationOnQuote implements Action {
@@ -389,13 +410,44 @@ export class UpdateProjectPriceAttributes implements Action {
   constructor(public readonly priceAttributes: SelectedPriceAttribute[], public readonly project: Project) { }
 }
 
+export class AddUserToQuote implements Action {
+  public static readonly Type = '[Quote Edit] Add User To Quote';
+  public readonly type = AddUserToQuote.Type;
+  constructor(public readonly user: User) { }
+}
+export class AddBillingAccountToQuote implements Action {
+  public static readonly Type = '[Quote Edit] Add Billing Account To Quote';
+  public readonly type = AddBillingAccountToQuote.Type;
+  constructor(public readonly account: Account) { }
+}
+
+export class AddInvoiceContactToQuote implements Action {
+  public static readonly Type = '[Quote Edit] Add Invoice Contact To Quote';
+  public readonly type = AddInvoiceContactToQuote.Type;
+  constructor(public readonly userId: number) { }
+}
+
+export class InitializeSalesManagerFormOnQuote implements Action {
+  public static readonly Type = '[Quote Edit] Initialize Sales Manager Form On Quote';
+  public readonly type = InitializeSalesManagerFormOnQuote.Type;
+  constructor(public readonly emailAddress: string, public readonly defaultDate: string) { }
+}
+
+export class UpdateSalesManagerFormOnQuote implements Action {
+  public static readonly Type = '[Quote Edit] Add Sales Manager Form On Quote';
+  public readonly type = UpdateSalesManagerFormOnQuote.Type;
+  constructor(public readonly form: Pojo) { }
+}
+
 export type Any =
   Load | LoadSuccess | LoadFailure |
   Delete | DeleteSuccess | DeleteFailure |
   EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
   RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure |
   AddCustomPriceToLineItem | AddCustomPriceToLineItemSuccess | AddCustomPriceToLineItemFailure |
-  SendQuote | SaveRecipientInformationOnQuote | CloneQuote | CloneQuoteSuccess | CreateQuote | UpdateQuoteFields | AddFeeTo |
-  RemoveFee | BulkImport | BulkImportSuccess | EditLineItem | AddAssetToProjectInQuote |
-  AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject | UpdateProject | MoveLineItem |
-  CloneLineItem | RefreshAndNotify | EditLineItemMarkers | UpdateProjectPriceAttributes;
+  SendQuote | SaveRecipientInformationOnQuote | CloneQuote | CloneQuoteSuccess | CreateQuote |
+  UpdateQuoteFields | AddFeeTo | RemoveFee | BulkImport | BulkImportSuccess | EditLineItem |
+  AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject |
+  UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
+  UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | AddInvoiceContactToQuote |
+  InitializeSalesManagerFormOnQuote | UpdateSalesManagerFormOnQuote;

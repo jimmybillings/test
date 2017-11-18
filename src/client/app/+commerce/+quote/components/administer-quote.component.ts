@@ -31,7 +31,7 @@ import { Pojo } from '../../../shared/interfaces/common.interface';
           mat-raised-button
           color="primary"
           (click)="goToNextTab()">
-          {{ 'QUOTE.EDIT.NEXT' | translate }}
+          {{ 'QUOTE.EDIT.TO_RECIPIENT_TAB_BTN' | translate }}
         </button>
       </section>
     </div>`,

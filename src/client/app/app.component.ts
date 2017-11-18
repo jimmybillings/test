@@ -2,7 +2,6 @@ import './operators';
 import { Component, OnInit, HostListener, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Event, NavigationEnd, Router, RoutesRecognized, Data } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-
 // Services
 import { CurrentUserService } from './shared/services/current-user.service';
 import { SearchContext } from './shared/services/search-context.service';
@@ -13,7 +12,6 @@ import { UserPreferenceService } from './shared/services/user-preference.service
 import { Capabilities } from './shared/services/capabilities.service';
 import { WindowRef } from './shared/services/window-ref.service';
 import { AppStore } from './app.store';
-
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
 import { Pojo } from './shared/interfaces/common.interface';

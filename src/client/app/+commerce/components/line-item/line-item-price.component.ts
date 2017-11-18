@@ -6,11 +6,9 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
-      layout="row"
-      layout-gt-xs="column"
+      layout="column"
       class="line-item-price"
-      layout-align="end center"
-      layout-align-gt-xs="center end">
+      layout-align="center end">
         <div *ngIf="shouldShowMultiplier" 
           class="multiplier-base"
           layout="row"

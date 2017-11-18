@@ -15,6 +15,7 @@ import { Api, ApiParameters } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers, Duration, durationFrom, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AssetLineItem, Asset, QuoteOptions } from '../../shared/interfaces/commerce.interface';
 import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
+import { Body } from '@angular/http/src/body';
 
 @Injectable()
 export class FutureQuoteEditService {
@@ -93,12 +94,11 @@ export class FutureQuoteEditService {
     return this.apiService.post(Api.Orders, 'quote', { loadingIndicator: true });
   }
 
-  public sendQuote(quoteId: number, options: QuoteOptions): Observable<any> {
-    if (options.purchaseType === 'Standard') delete options.purchaseType;
+  public sendQuote(quoteId: number, ownerEmail: string, body: Pojo): Observable<any> {
     return this.apiService.put(
       Api.Orders,
       `quote/send/${quoteId}`,
-      { parameters: options as ApiParameters, loadingIndicator: true }
+      { body: body, parameters: { ownerEmail: ownerEmail }, loadingIndicator: true }
     );
   }
 
