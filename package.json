@@ -66,7 +66,7 @@
     "@types/gulp-sass": "^0.0.29",
     "@types/gulp-util": "^3.0.29",
     "@types/jasmine": "2.5.41",
-    "@types/node": "^6.0.45",
+    "@types/node": "^6.0.92",
     "@types/rimraf": "0.0.28",
     "@types/run-sequence": "^0.0.28",
     "@types/selenium-webdriver": "^2.53.39",
@@ -140,7 +140,7 @@
     "serve-static": "^1.11.1",
     "slash": "~1.0.0",
     "supports-color": "^3.1.2",
-    "systemjs-builder": "0.15.34",
+    "systemjs-builder": "0.16.12",
     "tildify": "^1.2.0",
     "traceur": "^0.0.111",
     "ts-node": "3.1.0",
@@ -174,7 +174,7 @@
     "intl": "1.2.5",
     "pikaday": "^1.6.1",
     "reflect-metadata": "0.1.10",
-    "rxjs": "5.4.3",
+    "rxjs": "^5.5.2",
     "systemjs": "0.19.41",
     "zone.js": "0.8.12"
   }
