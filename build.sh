@@ -148,7 +148,7 @@ build_prod
 # ###### 1. The import statement for StoreDevTools - import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 # ###### 2. The StoreDevtoolsModule.instrument() item in the imports array.
 # # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-build_library
+# build_library
 # #
 # ####################################################################################################################
 
