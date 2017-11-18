@@ -14,7 +14,7 @@
         <strong>{{'QUOTE.EDIT.OFFLINE_AGREEMENT_KEY' | translate}}</strong>{{ (sendDetails | async).salesManager.offlineAgreement}}
       </li>
     </ul>
-    <button *ngIf="true" mat-button class="mini is-outlined" color="primary" (click)="goToTab(1)">
+    <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(1)">
       {{ 'CART.CONFIRM.EDIT' | translate }}
     </button>
   </div>
@@ -74,7 +74,7 @@
         <strong>{{'QUOTE.PURCHASE_TYPE_LABEL' | translate}}</strong>{{ 'QUOTE.'+(quoteType | async) | translate }}
       </li>
     </ul>
-    <button *ngIf="true" mat-button class="mini is-outlined" color="primary" (click)="goToTab(0)">
+    <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(0)">
       {{ 'CART.CONFIRM.EDIT' | translate }}
     </button>
   </div>
