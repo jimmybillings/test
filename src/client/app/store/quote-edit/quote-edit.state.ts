@@ -144,16 +144,16 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.AddUserToQuote.Type: {
-      const cloneState = Common.clone(state);
+      const clonedState = Common.clone(state);
       return {
-        ...cloneState,
+        ...clonedState,
         sendDetails: {
-          ...cloneState.sendDetails,
+          ...clonedState.sendDetails,
           user: {
             id: action.user.id,
             customerName: `${action.user.firstName} ${action.user.lastName}`,
             email: action.user.emailAddress,
-            field: cloneState.sendDetails.user.field.map(field => (
+            field: clonedState.sendDetails.user.field.map(field => (
               { ...field, value: action.user.emailAddress }
             ))
           }
@@ -162,19 +162,19 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case AccountActions.GetAccountForQuoteAdminSuccess.Type: {
-      const cloneState = Common.clone(state);
+      const clonedState = Common.clone(state);
       return {
-        ...cloneState,
+        ...clonedState,
         sendDetails: {
-          ...cloneState.sendDetails,
+          ...clonedState.sendDetails,
           billingAccount: {
             ...action.account,
-            field: cloneState.sendDetails.billingAccount.field.map(field => (
+            field: clonedState.sendDetails.billingAccount.field.map(field => (
               { ...field, value: action.account.name }
             ))
           },
           invoiceContact: {
-            ...cloneState.sendDetails.invoiceContact,
+            ...clonedState.sendDetails.invoiceContact,
             id: action.account.invoiceContactId
           }
         }
@@ -182,23 +182,23 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case AccountActions.GetAccountForQuoteAdminOnUserAddSuccess.Type: {
-      const cloneState = Common.clone(state);
+      const clonedState = Common.clone(state);
       return {
-        ...cloneState,
+        ...clonedState,
         sendDetails: {
-          ...cloneState.sendDetails,
+          ...clonedState.sendDetails,
           billingAccount: {
             ...action.account,
-            field: cloneState.sendDetails.billingAccount.field.map(field => (
+            field: clonedState.sendDetails.billingAccount.field.map(field => (
               { ...field, value: action.account.name }
             ))
           },
           invoiceContact: {
-            ...cloneState.sendDetails.invoiceContact,
+            ...clonedState.sendDetails.invoiceContact,
             id: action.account.invoiceContactId
           },
           user: {
-            ...cloneState.sendDetails.user,
+            ...clonedState.sendDetails.user,
             accountName: action.account.name
           }
         }
@@ -206,35 +206,23 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case UserActions.GetAllUsersByAccountIdSuccess.Type: {
-      const cloneState = Common.clone(state);
+      const clonedState = Common.clone(state);
       let contactEmail: string = null;
       return {
-        ...cloneState,
+        ...clonedState,
         sendDetails: {
-          ...cloneState.sendDetails,
+          ...clonedState.sendDetails,
           invoiceContact: {
-            ...cloneState.sendDetails.invoiceContact,
-            field: cloneState.sendDetails.invoiceContact.field.map(field => {
-              field.options = (action.users || []);
-              // Only preselect an invoice contact field option if the billingAccount has an Invoice Contact
-              if (cloneState.sendDetails.billingAccount.hasOwnProperty('invoiceContactId')) {
+            ...clonedState.sendDetails.invoiceContact,
+            field: clonedState.sendDetails.invoiceContact.field.map(item => {
+              item.options = (action.users || []);
 
-                // Set value to the user who's id matches the invoiceContactId otherwise return
-                // an empty string
-                field.value = field.options.find((option: Pojo) =>
-                  option.id === cloneState.sendDetails.billingAccount.invoiceContactId) || '';
+              item.value = item.options.find((option: Pojo) =>
+                option.id === clonedState.sendDetails.billingAccount.invoiceContactId) || '';
 
-                // Check that a match was found first before caching the email address.
-                // This could happen if the API has bad data, e.g. the user who is the invoiceContactId
-                // for an account has been move to a different account.
-                if (field.value !== '') contactEmail = field.value.emailAddress;
+              if (item.value !== '') contactEmail = item.value.emailAddress;
 
-              } else {
-                // Ensure value is an empty string if no invoiceContactId
-                field.value = '';
-              }
-
-              return field;
+              return item;
             }),
             contactEmail: contactEmail
           }
@@ -243,16 +231,16 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.AddInvoiceContactToQuote.Type: {
-      const cloneState = Common.clone(state);
+      const clonedState = Common.clone(state);
       let selectedUser: User;
       return {
-        ...cloneState,
+        ...clonedState,
         sendDetails: {
-          ...cloneState.sendDetails,
+          ...clonedState.sendDetails,
           invoiceContact: {
-            ...cloneState.sendDetails.invoiceContact,
+            ...clonedState.sendDetails.invoiceContact,
             id: action.userId,
-            field: cloneState.sendDetails.invoiceContact.field.map(field => {
+            field: clonedState.sendDetails.invoiceContact.field.map(field => {
               selectedUser = field.options.find((option: Pojo) => option.id === action.userId);
               field.value = selectedUser;
               return field;
@@ -265,14 +253,14 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.InitializeSalesManagerFormOnQuote.Type: {
-      const cloneState = Common.clone(state);
+      const clonedState = Common.clone(state);
       return {
-        ...cloneState,
+        ...clonedState,
         sendDetails: {
-          ...cloneState.sendDetails,
+          ...clonedState.sendDetails,
           salesManager: {
-            ...cloneState.sendDetails.salesManager,
-            field: cloneState.sendDetails.salesManager.field.map(field => {
+            ...clonedState.sendDetails.salesManager,
+            field: clonedState.sendDetails.salesManager.field.map(field => {
               if (field.type === 'email') field.value = action.emailAddress;
               return field;
             }),
@@ -284,13 +272,13 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.UpdateSalesManagerFormOnQuote.Type: {
-      const cloneState = Common.clone(state);
+      const clonedState = Common.clone(state);
       return {
-        ...cloneState,
+        ...clonedState,
         sendDetails: {
-          ...cloneState.sendDetails,
+          ...clonedState.sendDetails,
           salesManager: {
-            field: cloneState.sendDetails.salesManager.field.map(field => {
+            field: clonedState.sendDetails.salesManager.field.map(field => {
               return (field.type === 'wzdate') ?
                 { ...field, default: action.form[field.name], value: action.form[field.name] } :
                 { ...field, value: action.form[field.name] };
