@@ -73,7 +73,7 @@
     <ul class="mat-caption">
       <h5 class="mat-title">{{ 'QUOTE.EDIT.QUOTE_SUMMARY_TITLE' | translate }}</h5>
       <li>
-        <strong>{{'QUOTE.PURCHASE_TYPE_LABEL' | translate}}</strong>{{ 'QUOTE.'+(quoteType | async) | translate }}
+        <strong>{{'QUOTE.PURCHASE_TYPE_LABEL' | translate}}</strong>{{ ( quoteTypeTranslationKey | async) | translate }}
       </li>
     </ul>
     <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(0)">

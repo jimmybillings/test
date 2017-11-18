@@ -129,5 +129,14 @@ export function main() {
         expect(currentPurchaseType).toBe('NotTrial');
       });
     });
+
+    describe('get quoteTypeTranslationKey()', () => {
+      it('Should return the translation key for the quote type', () => {
+        mockStore.createStateSection('quoteEdit', { data: { purchaseType: 'NotTrial' } });
+        let currentPurchaseType: string;
+        componentUnderTest.quoteTypeTranslationKey.subscribe(purchaseType => currentPurchaseType = purchaseType);
+        expect(currentPurchaseType).toBe('QUOTE.NotTrial');
+      });
+    });
   });
 }

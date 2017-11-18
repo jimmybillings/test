@@ -59,4 +59,8 @@ export class QuoteEditConfirmTabComponent extends Tab {
   public get quoteType(): Observable<PurchaseType> {
     return this.store.select(state => state.quoteEdit.data.purchaseType);
   }
+
+  public get quoteTypeTranslationKey(): Observable<string> {
+    return this.quoteType.map(quoteType => `QUOTE.${quoteType}`);
+  }
 }
