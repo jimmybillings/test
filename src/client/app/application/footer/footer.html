@@ -97,8 +97,7 @@
 
 <!-- BASIC HEADER -->
 <ng-container *ngIf="!config || (config.template.value === 'basic')">
-  <div layout="row" layout-align="start start" class="glb">
-    <div flex=""></div>
+  <div layout="row" layout-align="center start" class="glb">
     <div
       flex-gt-lg="80"
       flex-lg="90"
@@ -165,7 +164,7 @@
       <div flex-gt-sm="20" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start">
         <h3 class="mat-title">{{'FOOTER.COMMUNITY' | translate }}</h3>
         <ul class="social">
-          <li>
+          <li class="facebook">
             <a href="{{'FOOTER.SOCIAL_URL_FACEBOOK' | translate }}" target="_blank" class="facebook">
               <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
@@ -173,7 +172,7 @@
               </span>
             </a>
           </li>
-          <li>
+          <li class="twitter">
             <a href="{{'FOOTER.SOCIAL_URL_TWITTER' | translate }}" target="_blank" class="twitter">
               <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
@@ -181,7 +180,7 @@
               </span>
             </a>
           </li>
-          <li>
+          <li class="google-plus">
             <a href="{{'FOOTER.SOCIAL_URL_GOOGLE' | translate }}" target="_blank" class="google-plus">
               <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
@@ -189,7 +188,7 @@
               </span>
             </a>
           </li>
-          <li>
+          <li class="linkedin">
             <a href="{{'FOOTER.SOCIAL_URL_LINKEDIN' | translate }}" target="_blank" class="linkedin">
               <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
@@ -197,7 +196,7 @@
               </span>
             </a>
           </li>
-          <li>
+          <li class="youtube">
             <a href="{{'FOOTER.SOCIAL_URL_YOUTUBE' | translate }}" target="_blank" class="youtube">
               <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
@@ -205,16 +204,54 @@
               </span>
             </a>
           </li>
+          <li class="instagram">
+            <a href="{{'FOOTER.SOCIAL_URL_INSTAGRAM' | translate }}" target="_blank" class="instagram">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
-    <div flex=""></div>
+  </div>
+  <div layout="row" layout-align="center start" class="glb powered-by">
+    <div
+      flex-gt-lg="80"
+      flex-lg="90"
+      flex-gt-md="95"
+      flex="100"
+      layout="row"
+      layout-align-gt-xs="start center"
+      layout-wrap="">
+      <ul class="logos">
+        <li class="wazee">
+          <a href="{{'FOOTER.POWERED_BY.WAZEE_URL' | translate }}" target="_blank">
+            <span></span>
+          </a>
+        </li>
+        <li class="base-media">
+          <a href="{{'FOOTER.POWERED_BY.BASE_MEDIA_URL' | translate }}" target="_blank">
+            <span></span>
+          </a>
+        </li>
+      </ul>
+      <div layout="column" layout-gt-xs="row">
+        <h5 class="mat-caption italic">{{'FOOTER.POWERED_BY.DMH' | translate }}</h5>
+        <h5 class="mat-caption">
+          <strong>{{'FOOTER.POWERED_BY.WAZEE' | translate }}</strong>
+          <span class="and separator">{{'FOOTER.POWERED_BY.AND' | translate }}</span>
+          <strong>{{'FOOTER.POWERED_BY.BASE_MEDIA' | translate }}</strong>
+        </h5>
+      </div>
+    </div>
   </div>
 </ng-container>
 
 <!-- SUPPORT ONLY HEADER -->
 <ng-container *ngIf="config && (config.template.value === 'supportOnly')">
-    <div layout="row" layout-align="start center" class="glb">
+    <div layout="row" layout-align="center start" class="glb">
     <div flex=""></div>
     <!-- LOGO -->
     <div
@@ -269,6 +306,5 @@
         </div>
       </ng-container>
     </div>
-    <div flex=""></div>
   </div>
 </ng-container>

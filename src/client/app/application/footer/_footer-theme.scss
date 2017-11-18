@@ -57,5 +57,8 @@
         }
       }
     }
+    .glb.powered-by {
+      background-color: mat-color($foreground, base, .12);
+    }
   }
 }
