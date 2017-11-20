@@ -398,7 +398,6 @@ export class SeedConfig {
       '@angular/platform-browser-dynamic':
         'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
       '@angular/router': 'node_modules/@angular/router/bundles/router.umd.js',
-      'rxjs/operators': 'node_modules/rxjs/operators/index.js',
       '@angular/animations/browser':
         'node_modules/@angular/animations/bundles/animations-browser.umd.js',
       'tslib': 'node_modules/tslib/tslib.js',
@@ -463,7 +462,6 @@ export class SeedConfig {
       '@angular/common/http':
         'node_modules/@angular/common/bundles/common-http.umd.js',
       'tslib': 'node_modules/tslib/tslib.js',
-      'rxjs/operators': 'node_modules/rxjs/operators/index.js',
       'dist/tmp/node_modules/*': 'dist/tmp/node_modules/*',
       'node_modules/*': 'node_modules/*',
       '*': 'node_modules/*'
