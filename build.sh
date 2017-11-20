@@ -56,6 +56,7 @@ trap clean_up EXIT
 
 
 build_prod() {
+  npm test || exit 1
   npm run aot || exit 1
 
   # create build.properties file
