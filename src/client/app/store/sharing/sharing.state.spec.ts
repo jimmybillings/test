@@ -11,4 +11,20 @@ export function main() {
       state: SharingState,
     });
   });
+
+  stateSpecHelper.generateTestsFor({
+    actionClassName: 'CreateAssetShareLinkSuccess',
+    customTests: [
+      {
+        it: 'with previous state, returns previous state with assetLink',
+        previousState: {
+          assetLink: 'old link',
+        },
+        actionParameters: { link: 'new link' },
+        expectedNextState: {
+          assetLink: 'new link',
+        }
+      }
+    ]
+  });
 }
