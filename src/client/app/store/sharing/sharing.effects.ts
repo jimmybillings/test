@@ -25,5 +25,16 @@ export class SharingEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
+  @Effect()
+  emailCollectionShareLink: Observable<Action> = this.actions.ofType(SharingActions.EmailCollectionShareLink.Type)
+    .switchMap((action: SharingActions.EmailCollectionShareLink) =>
+      this.service.emailCollectionShareLink(action.collectionId, action.parameters)
+        .map(() => this.store.create(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE')))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+
+
+
   constructor(private actions: Actions, private store: AppStore, private service: SharingService) { }
 }

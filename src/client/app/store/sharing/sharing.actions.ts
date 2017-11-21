@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
-import { AssetShareParameters } from '../../shared/interfaces/common.interface';
+import { AssetShareParameters, CollectionShareParameters } from '../../shared/interfaces/common.interface';
 
 export class ActionFactory {
   public createAssetShareLink(assetId: number, subclipMarkers: SubclipMarkers): CreateAssetShareLink {
@@ -10,6 +10,10 @@ export class ActionFactory {
 
   public emailAssetShareLink(assetId: number, markers: SubclipMarkers, parameters: AssetShareParameters): EmailAssetShareLink {
     return new EmailAssetShareLink(assetId, markers, parameters);
+  }
+
+  public emailCollectionShareLink(collectionId: number, parameters: CollectionShareParameters): EmailCollectionShareLink {
+    return new EmailCollectionShareLink(collectionId, parameters);
   }
 }
 
@@ -31,6 +35,15 @@ export class CreateAssetShareLinkSuccess implements Action {
   constructor(public readonly link: string) { }
 }
 
+export class EmailCollectionShareLink implements Action {
+  public static readonly Type = '[Sharing] Email Collection Share Link';
+  public readonly type = EmailCollectionShareLink.Type;
+  constructor(
+    public readonly collectionId: number,
+    public readonly parameters: CollectionShareParameters
+  ) { }
+}
+
 export class EmailAssetShareLink implements Action {
   public static readonly Type = '[Sharing] Email Asset Share Link';
   public readonly type = EmailAssetShareLink.Type;
@@ -41,4 +54,4 @@ export class EmailAssetShareLink implements Action {
   ) { }
 }
 
-export type Any = CreateAssetShareLink | CreateAssetShareLinkSuccess | EmailAssetShareLink;
+export type Any = CreateAssetShareLink | CreateAssetShareLinkSuccess | EmailAssetShareLink | EmailCollectionShareLink;

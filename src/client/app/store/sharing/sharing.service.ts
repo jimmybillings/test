@@ -1,10 +1,11 @@
+import { visitAll } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { FutureApiService } from '../api/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers, Duration, durationFrom, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
-import { AssetShareParameters } from '../../shared/interfaces/common.interface';
+import { AssetShareParameters, CollectionShareParameters } from '../../shared/interfaces/common.interface';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Injectable()
@@ -18,6 +19,22 @@ export class SharingService {
 
   public emailAssetShareLink(assetId: number, markers: SubclipMarkers, parameters: AssetShareParameters): Observable<null> {
     return this.callSharingEndpointWith(this.formatAssetEmailBodyWith(assetId, markers, parameters))
+      .map(response => null);
+  }
+
+  public emailCollectionShareLink(collectionId: number, parameters: CollectionShareParameters): Observable<null> {
+    return this.apiService.post(Api.Identities, 'collection/share', {
+      body: {
+        userEmail: [
+          parameters.recipientEmails
+        ],
+        collections: [
+          collectionId
+        ],
+        accessLevel: parameters.accessLevel,
+        comment: parameters.comment
+      }
+    })
       .map(response => null);
   }
 

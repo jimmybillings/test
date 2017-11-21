@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { AssetShareParameters } from '../../shared/interfaces/common.interface';
+import { AssetShareParameters, CollectionShareParameters } from '../../shared/interfaces/common.interface';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 import { SubclipMarkers, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AppStore } from '../../app.store';
@@ -34,10 +34,9 @@ export class CollectionShareComponent {
     this.closeRequest.emit();
   }
 
-  public onFormSubmit(shareParameters: AssetShareParameters): void {
-    alert('share link would be emailed now');
-    // this.store.dispatch(factory =>
-    //   factory.sharing.emailAssetShareLink(this.enhancedAsset.assetId, this.subclipMarkers, shareParameters)
-    // );
+  public onFormSubmit(shareParameters: CollectionShareParameters): void {
+    this.store.dispatch(factory =>
+      factory.sharing.emailCollectionShareLink(this.collection.id, shareParameters)
+    );
   }
 }
