@@ -43,25 +43,26 @@
           &.active {
             @include mat-elevation(2);
           }
-          header > span:last-child {
-            font-size: 20px;
-            font-weight: 600;
-          }
-          header > span:first-child {
-            font-size: 11px;
-            font-weight: 300;
-            display: block;
-            text-transform: capitalize;
-            margin-top: -6px;
-            &.user {
-              display: none;
+          header {
+            margin-bottom: 6px;
+            span:last-child {
+              font-size: 20px;
+              font-weight: 600;
+            }
+            span:first-child {
+              font-size: 11px;
+              font-weight: 300;
+              display: block;
+              text-transform: capitalize;
+              &.user {
+                display: none;
+              }
             }
           }
           address {
             font-size: 14px;
             line-height: 1.55;
             padding-top: 8px;
-            margin-bottom: 24px;
             span {
               display: flex;
             }
@@ -71,11 +72,6 @@
             }
           }
           nav.actions {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            min-width: 100%;
-            padding: 16px;
             button {
               margin-left: 5px;
               &:first-child {

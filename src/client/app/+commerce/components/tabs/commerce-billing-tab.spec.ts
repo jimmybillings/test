@@ -81,20 +81,6 @@ export function main() {
       );
     });
 
-    describe('ngOnInit()', () => {
-      beforeEach(() => {
-        componentUnderTest.ngOnInit();
-      });
-
-      it('should set up an observable of the orderInProgress', () => {
-        componentUnderTest.orderInProgress.take(1).subscribe((data: any) => {
-          expect(data).toEqual({
-            selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB]
-          });
-        });
-      });
-    });
-
     describe('typeFor()', () => {
       it('returns the address\'s type', () => {
         expect(componentUnderTest.typeFor(mockAddressA)).toBe('User');
@@ -185,10 +171,6 @@ export function main() {
     });
 
     describe('addUserAddress()', () => {
-      beforeEach(() => {
-        componentUnderTest.ngOnInit();
-      });
-
       it('should call addBillingAddress() on the user service', () => {
         componentUnderTest.addUserAddress(mockAddressA.address);
 
@@ -203,10 +185,6 @@ export function main() {
     });
 
     describe('addAccountAddress()', () => {
-      beforeEach(() => {
-        componentUnderTest.ngOnInit();
-      });
-
       it('should call addAccountBillingAddress() on the user service', () => {
         componentUnderTest.addAccountAddress(mockAddressB.address, mockAddressA);
 
@@ -217,10 +195,6 @@ export function main() {
     });
 
     describe('openFormFor', () => {
-      beforeEach(() => {
-        componentUnderTest.ngOnInit();
-      });
-
       describe('user', () => {
         it('should open a dialog and call addBillingAddress if mode is "edit"', () => {
           componentUnderTest.openFormFor('user', 'edit', mockAddressB);
@@ -284,7 +258,6 @@ export function main() {
         mockStore.createStateSection('checkout', {
           addresses: [mockAddressA], selectedAddress: { type: 'user', address: { address: '', state: '' } }
         });
-        componentUnderTest.ngOnInit();
         let userCanProceed: boolean;
         componentUnderTest.userCanProceed.take(1).subscribe((data: boolean) => {
           userCanProceed = data;
@@ -296,7 +269,6 @@ export function main() {
         mockStore.createStateSection('checkout', {
           addresses: [mockAddressA], selectedAddress: { type: 'user', address: { address: 'b', state: 'a' } }
         });
-        componentUnderTest.ngOnInit();
         let userCanProceed: boolean;
         componentUnderTest.userCanProceed.take(1).subscribe((data: boolean) => {
           userCanProceed = data;
