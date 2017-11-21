@@ -237,6 +237,10 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     return collection.userRole === 'owner' ? true : false;
   }
 
+  public notOwnerOfCollection() {
+    return this.activeCollection.userRole !== 'owner';
+  }
+
   private buildRouteParams(params: Pojo): void {
     this.routeParams = Object.assign({}, this.routeParams, params);
     delete this.routeParams['id'];
