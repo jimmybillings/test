@@ -99,8 +99,15 @@ export interface AssetUrls {
 export interface AssetShareParameters {
   recipientEmails: string;  // comma-delimited list
   comment: string;
-  project: string;
+  project?: string;
   copyMe: boolean;
+}
+
+export interface CollectionShareParameters {
+  recipientEmails: string;  // comma-delimited list
+  accessLevel: string;
+  comment: string;
+  project?: string;
 }
 
 export interface Pojo {
