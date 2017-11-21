@@ -67,6 +67,12 @@ export class AppComponent implements OnInit {
     this.currentUser.destroy();
   }
 
+  public get footerConfig(): Observable<any> {
+    return this.store.selectCloned(state => state.uiConfig)
+      .filter(state => state.loaded)
+      .map(state => state.components.footer.config).take(1);
+  }
+
   public newSearchContext(query: any) {
     this.searchContext.remove = 'gq';
     let searchContext: any = Object.assign({}, this.searchContext.state, { q: query, i: 1, n: 100 });

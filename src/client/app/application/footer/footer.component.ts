@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs/Observable';
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
-import { AppStore } from '../../app.store';
 /**
  * site footer component - renders the footer information
  */
@@ -12,31 +11,19 @@ import { AppStore } from '../../app.store';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class FooterComponent implements OnInit {
-  public config: any;
+export class FooterComponent {
+  @Input() config: any;
 
-  constructor(public store: AppStore) { }
-
-  ngOnInit() {
-    this.store.selectCloned(state => state.uiConfig)
-      .filter(state => state.loaded)
-      .do(config => {
-        this.config = config.components.footer.config;
-      }).take(1).subscribe();
-  }
-
-  public get privacyPolicyExists(): Observable<boolean> {
-    return this.store.selectCloned(state => state.uiConfig)
-      .filter(state => state.loaded)
-      .map(state =>
-        !!state.components.footer.config.privacyPolicyId &&
-        !!state.components.footer.config.privacyPolicyId.value &&
-        state.components.footer.config.privacyPolicyId.value !== ''
-      );
+  public get privacyPolicyExists(): boolean {
+    return this.config &&
+      this.config.hasOwnProperty('privacyPolicyId') &&
+      this.config.privacyPolicyId.hasOwnProperty('value') &&
+      this.config.privacyPolicyId.value !== '';
   }
 
   public get showContacts(): boolean {
-    return this.config.hasOwnProperty('contacts') &&
+    return this.config &&
+      this.config.hasOwnProperty('contacts') &&
       this.config.contacts.hasOwnProperty('items') &&
       this.config.contacts.items.length > 0;
   }

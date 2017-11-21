@@ -33,5 +33,5 @@
     }" class="main-content">
     <router-outlet></router-outlet>
   </div>
-  <app-footer></app-footer>
+  <app-footer [config]="footerConfig | async"></app-footer>
 </div>
