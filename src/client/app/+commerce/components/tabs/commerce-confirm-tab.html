@@ -9,7 +9,7 @@
         <h5 class="mat-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
         <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(1)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
       </div>
-      <address *ngIf="(orderInProgress | async).selectedAddress.address">
+      <address *ngIf="(orderInProgress | async).selectedAddress">
         <span class="line-1">{{ (orderInProgress | async).selectedAddress.address.address }}</span>
         <span class="line-2">{{ (orderInProgress | async).selectedAddress.address.city }},
           {{ (orderInProgress | async).selectedAddress.address.state }} {{ (orderInProgress | async).selectedAddress.address.zipcode }},
