@@ -69,7 +69,14 @@ two-level-view .carousel {
   .carousel-content-9,
   .carousel-content-10,
   .carousel-content-11,
-  .carousel-content-12 {
+  .carousel-content-12,
+  .carousel-content-13,
+  .carousel-content-14,
+  .carousel-content-15,
+  .carousel-content-16,
+  .carousel-content-17,
+  .carousel-content-18,
+  .carousel-content-19 {
     // overflow-x: scroll;
     white-space: nowrap;
     transition: $tr-duration transform;
@@ -112,7 +119,15 @@ two-level-view .carousel .carousel-content-8 .carousel-item,
 two-level-view .carousel .carousel-content-9 .carousel-item,
 two-level-view .carousel .carousel-content-10 .carousel-item,
 two-level-view .carousel .carousel-content-11 .carousel-item,
-two-level-view .carousel .carousel-content-12 .carousel-item {
+two-level-view .carousel .carousel-content-12 .carousel-item,
+two-level-view .carousel .carousel-content-13 .carousel-item,
+two-level-view .carousel .carousel-content-14 .carousel-item,
+two-level-view .carousel .carousel-content-15 .carousel-item,
+two-level-view .carousel .carousel-content-16 .carousel-item,
+two-level-view .carousel .carousel-content-17 .carousel-item,
+two-level-view .carousel .carousel-content-18 .carousel-item,
+two-level-view .carousel .carousel-content-19 .carousel-item {
+
     white-space: normal;
     position: relative;
     display: inline-block;
@@ -268,7 +283,15 @@ two-level-view .carousel .carousel-content-8 .carousel-item.disabled,
 two-level-view .carousel .carousel-content-9 .carousel-item.disabled,
 two-level-view .carousel .carousel-content-10 .carousel-item.disabled,
 two-level-view .carousel .carousel-content-11 .carousel-item.disabled,
-two-level-view .carousel .carousel-content-12 .carousel-item.disabled {
+two-level-view .carousel .carousel-content-12 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-13 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-14 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-15 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-16 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-17 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-18 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-19 .carousel-item.disabled {
+
   img {
     display: none;
   }

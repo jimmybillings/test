@@ -46,7 +46,7 @@ import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 
 // Quote Edit Tabs
 import { QuoteEditTabComponent } from './+quote/+edit/components/tabs/quote-edit-tab.component';
-import { QuoteEditSendTabComponent } from './+quote/+edit/components/tabs/quote-edit-send-tab.component';
+import { QuoteEditRecipientTabComponent } from './+quote/+edit/components/tabs/quote-edit-recipient-tab.component';
 import { QuoteEditConfirmTabComponent } from './+quote/+edit/components/tabs/quote-edit-confirm-tab.component';
 
 // tabs
@@ -59,6 +59,8 @@ import { QuoteConfirmTabComponent } from './+quote/components/tabs/quote-confirm
 import { CommerceListComponent } from './components/commerce-list/commerce-list.component';
 import { CommerceHeaderComponent } from './components/commerce-header/commerce-header.component';
 import { LicenseAgreementComponent } from './components/license-agreement/license-agreement.component';
+import { WzFormAutoCompleteViewComponent } from './+quote/+edit/components/wz-form-autocomplete-view.component';
+import { WzFormPicklistComponent } from './+quote/+edit/components/wz-form-picklist.component';
 
 // project
 import { ProjectsComponent } from './components/project/projects.component';
@@ -124,8 +126,10 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuotePaymentTabComponent,
     QuoteConfirmTabComponent,
     QuoteEditTabComponent,
-    QuoteEditSendTabComponent,
-    QuoteEditConfirmTabComponent
+    QuoteEditRecipientTabComponent,
+    QuoteEditConfirmTabComponent,
+    WzFormAutoCompleteViewComponent,
+    WzFormPicklistComponent
   ],
   exports: [CartComponent, OrderShowComponent, OrdersComponent],
   providers: [

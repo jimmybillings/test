@@ -23,10 +23,10 @@ export = (done: any) => {
       'rxjs': 'n:rxjs',
     },
     packages: {
-      'rxjs': {main: 'Rx.js', defaultExtension: 'js'},
+      'rxjs': { main: 'Rx.js', defaultExtension: 'js' },
     }
   });
   builder.bundle('rxjs', 'node_modules/.tmp/Rx.min.js', options)
     .then(() => done())
-    .catch((error:any) => done(error));
+    .catch((error: any) => done(error));
 };

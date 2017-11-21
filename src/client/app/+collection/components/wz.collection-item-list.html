@@ -92,6 +92,8 @@
   </li>
 </ul>
 
+<!-- COMMENTING OUT THESE UNUSED ACTIONS UNTIL THEY BECOME AVAILABLE,
+  OR HAVE A PERMISSION TIED TO THEM (PER CRUX-2913) - R.E. 11/20/17 -->
 <mat-menu class="more-collections-menu" x-position="before" #moreCollectionOptions="matMenu">
   <button *ngIf="currentCollection" mat-menu-item (click)="selectActiveCollection(currentCollection.id)">
     <mat-icon>star_border</mat-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.SELECT' | translate }}
@@ -103,12 +105,12 @@
     <button mat-menu-item (click)="duplicate()">
       <mat-icon>layers</mat-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.DUPLICATE_COLLECTION' | translate }}
     </button>
-  <button mat-menu-item disabled>
+  <!-- <button mat-menu-item disabled>
     <mat-icon>history</mat-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.HISTORY' | translate }}
-  </button>
-  <button (click)="generateLegacyLink()" mat-menu-item>
+  </button> -->
+  <!-- <button (click)="generateLegacyLink()" mat-menu-item>
     <mat-icon>link</mat-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
-  </button>
+  </button> -->
   <div *ngIf="currentCollection && !!currentCollection.owner">
     <div class="divider"></div>
     <button mat-menu-item class="delete" (click)="delete(currentCollection)">

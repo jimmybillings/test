@@ -11,9 +11,12 @@ export class WzFormBase implements OnInit, OnChanges {
   @Input() includeCancel: boolean = false;
   @Input() cancelLabel: string = 'Cancel';
   @Input() autocomplete: string = 'on';
+  @Input() disableUntilValid: boolean = false;
+  @Input() outSidePropertiesValid: boolean = false;
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
   @Output() onAction = new EventEmitter();
+  @Output() blur = new EventEmitter();
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
@@ -44,9 +47,8 @@ export class WzFormBase implements OnInit, OnChanges {
     });
   }
 
-  public mergeNewValues(formFields?: Array<FormFields>) {
-    let fields: Array<FormFields> = formFields ? formFields : this.items;
-    fields.forEach((field: any) => {
+  public mergeNewValues(formFields: Array<FormFields> = this.items) {
+    formFields.forEach((field: any) => {
       for (let control in this.form.controls) {
         if (control === field.name) {
           (<FormControl>this.form.controls[control]).patchValue(field.value);
@@ -93,6 +95,12 @@ export class WzFormBase implements OnInit, OnChanges {
   public markFieldsAsDirty() {
     for (let control in this.form.controls) {
       (<FormControl>this.form.controls[control]).markAsDirty();
+    }
+  }
+
+  public markFieldsAsTouched() {
+    for (let control in this.form.controls) {
+      (<FormControl>this.form.controls[control]).markAsTouched();
     }
   }
 
@@ -203,6 +211,14 @@ export class WzFormBase implements OnInit, OnChanges {
 
   public shouldShowEmailError(field: FormFields) {
     return this.form.controls[field.name].hasError('pattern') && field.validation === 'EMAIL';
+  }
+
+  public get allPropertiesValid() {
+    return this.form.valid && this.outSidePropertiesValid;
+  }
+
+  public onBlur() {
+    this.blur.emit(this.form.value);
   }
 
   private dateToString(date: Date): string {

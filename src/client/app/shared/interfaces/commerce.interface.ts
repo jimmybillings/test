@@ -1,4 +1,4 @@
-import { ViewAddress, Pagination, Common, SelectedPriceAttribute, Store } from './common.interface';
+import { Common, Pagination, Pojo, SelectedPriceAttribute, Store, ViewAddress } from './common.interface';
 import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
 import { Address, Document, Payee } from './user.interface';
@@ -204,10 +204,52 @@ export interface Quote extends CommonCommerce {
   internalLicenseIds?: number[];
 }
 
-export interface QuoteConfirm extends Quote {
-  recipient: QuoteOptions;
+export interface QuoteEdit {
+  data: Quote;
+  sendDetails: SendDetails;
+  loading: boolean;
 }
 
+export interface SendDetails {
+  user: SendDetailsUser;
+  billingAccount: SendDetailsBillingAccount;
+  invoiceContact: SendDetailsInvoiceContact;
+  salesManager: SendDetailsSalesManager;
+}
+
+export interface SendDetailsUser {
+  id?: number;
+  accountName?: string;
+  customerName?: string;
+  email?: string;
+  field?: Pojo[];
+}
+
+export interface SendDetailsBillingAccount {
+  id?: number;
+  name?: string;
+  salesOwner?: string;
+  purchaseOnCredit?: number;
+  creditExemption?: number;
+  paymentTermsDays?: string;
+  licensingVertical?: string;
+  invoiceContactId?: number;
+  field?: Pojo[];
+}
+
+export interface SendDetailsSalesManager {
+  expirationDate?: string;
+  salesManager?: string;
+  offlineAgreement?: string;
+  field?: Pojo[];
+}
+
+export interface SendDetailsInvoiceContact {
+  id?: number;
+  name?: string;
+  contactEmail?: string;
+  field?: Pojo[];
+}
 
 export interface OrdersApiResponse extends Pagination {
   items: Order[];

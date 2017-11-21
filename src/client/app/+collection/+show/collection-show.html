@@ -99,17 +99,19 @@
               <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="matMenu">
-            <button mat-menu-item disabled>
+              <!-- COMMENTING OUT THESE UNUSED ACTIONS UNTIL THEY BECOME AVAILABLE,
+              OR HAVE A PERMISSION TIED TO THEM (PER CRUX-2913) - R.E. 11/20/17 -->
+            <!-- <button mat-menu-item disabled>
               <mat-icon>file_download</mat-icon>Download all comps
             </button>
             <button mat-menu-item disabled>
               <mat-icon>history</mat-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}
             </button>
-            <div class="divider"></div>
+            <div class="divider"></div> -->
             <button mat-menu-item (click)="duplicateCollection()">
               <mat-icon>layers</mat-icon>{{'COLLECTION.MORE_DD_MENU.DUPLICATE_COLLECTION' | translate }}
             </button>
-            <button mat-menu-item disabled>
+            <!-- <button mat-menu-item disabled>
               <mat-icon>import_export</mat-icon>Export collection as XML
             </button>
             <button mat-menu-item disabled>
@@ -117,7 +119,7 @@
             </button>
             <button mat-menu-item (click)="getAssetsForLink()">
               <mat-icon>link</mat-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
-            </button>
+            </button> -->
             <div *ngIf="!!activeCollection.owner">
               <div class="divider"></div>
               <button mat-menu-item class="delete" (click)="setCollectionForDelete()">

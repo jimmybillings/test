@@ -5,11 +5,11 @@ app-footer {
       height: 170px;
       width: 100%;
       .logo {
-        margin: 3px 0 0 0;
+        margin: 0 0 0 0;
         background-position: left center;
         background-repeat:no-repeat;
-        background-size: 133px;
-        height: 133px;
+        background-size: 113px;
+        height: 113px;
         opacity: .25;
       }
     }
@@ -27,23 +27,10 @@ app-footer {
             opacity: 1;
           } 
         }
+        &.instagram {
+          display: none;
+        }
       }
-    }
-    .language-selector {
-      position: relative;
-      padding-left: 38px;
-      padding-top: 22px;
-      &::before {
-        content: "\e80b";
-        font-family: 'Material Icons';
-        position: absolute;
-        top: 20px;
-        left: 4px;
-        font-size: 1.7em;
-      }
-      .mat-select {
-        min-width: 167px;
-      }  
     }
     h3.mat-title {
       margin-bottom: .2em;
@@ -56,6 +43,13 @@ app-footer {
     .footer-link {
       text-decoration: none;
       transition: $swift-ease-in;
+    }
+    .contact {
+      margin-bottom: 6px;
+      p, h3, a {
+        margin-top: 2px;
+        margin-bottom: 2px;
+      }
     }
     .sales {
       mat-list {
@@ -98,6 +92,66 @@ app-footer {
             left: -1px;
             opacity: .25;
              transition: $swift-ease-in;
+          }
+        }
+      }
+    }
+  }
+  .powered-by {
+    display: none;
+    & > div {
+      padding: 4px 8px;
+    }
+    .mat-caption {
+      margin: 0;
+      font-size: .8em;
+      line-height: 1.6;
+      &.italic {
+        font-style: italic;
+        font-weight: 300;
+        padding-right: 5px;
+      }
+
+    }
+    ul {
+      padding: 0 0 0 3%;
+      margin: 0 3px; 
+      li {
+        list-style: none;
+        display: inline-block;
+        padding: 0 2px;
+        &.wazee a {
+          &:hover span {
+            opacity: 1;
+          }
+          span {
+            transition: $swift-ease-out;
+            display: block;
+            background-image: url(/assets/img/logo/logo-m-rev.svg);
+            margin: 0 0 0 0;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 34px;
+            height: 31px;
+            width: 35px;
+            opacity: .8;
+          }
+        }
+        &.base-media a {
+          &:hover span {
+            opacity: 1;
+          }
+          span {
+            transition: $swift-ease-out;
+            display: block;
+            background-image: url(/assets/img/logo/base_media-logo-m-rev.svg);
+            margin: 0 0 0 0;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 50px;
+            height: 26px;
+            width: 56px;
+            opacity: .8;
           }
         }
       }

@@ -39,7 +39,8 @@ import { WzAddressFormComponent } from './components/wz-address-form/wz.address-
     WzCcFormComponent,
     WzPikaDayDirective,
     WzAutocompleteSearchComponent,
-    WzAddressFormComponent
+    WzAddressFormComponent,
+    WzInputSuggestionsComponent
   ],
   entryComponents: [WzAddressFormComponent],
   providers: [FormModel, GooglePlacesService]

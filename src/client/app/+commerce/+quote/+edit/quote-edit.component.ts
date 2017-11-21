@@ -1,6 +1,6 @@
 import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 import { Common } from '../../../shared/utilities/common.functions';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { Pojo } from '../../../shared/interfaces/common.interface';
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -45,7 +45,7 @@ export class QuoteEditComponent implements OnInit, OnDestroy {
     // For example, don't include 'billing' and 'payment' if the cart total is 0.
     // this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
     // I think the confirm tab should be place order
-    this.tabLabelKeys = ['quote', 'recipient details', 'confirm'];
+    this.tabLabelKeys = ['quote', 'recipient', 'confirm'];
 
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
@@ -61,7 +61,6 @@ export class QuoteEditComponent implements OnInit, OnDestroy {
   }
 
   public onNotification(message: CommerceMessage): void {
-    console.log(message);
     switch (message.type) {
       case 'OPEN_DELETE_DIALOG':
         this.onOpenDeleteQuoteDialog();

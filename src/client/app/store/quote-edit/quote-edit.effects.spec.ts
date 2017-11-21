@@ -220,22 +220,32 @@ export function main() {
       effectsInstantiator: instantiator,
       inputAction: {
         type: QuoteEditActions.SendQuote.Type,
-        quoteOptions: {
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017-03-22T06:00:00.000Z',
-          purchaseType: 'ProvisionalOrder'
-        },
       },
       state: {
         storeSectionName: 'quoteEdit',
-        value: { data: { id: 10 } }
+        value: {
+          data: { id: 10 },
+          sendDetails: {
+            user: { email: 'ross.edfort@wazeedigital.com' },
+            billingAccount: { id: 20 },
+            invoiceContact: { id: 123 },
+            salesManager: {
+              salesManager: 'sven.peterson@wazeedigital.com',
+              offlineAgreement: 'OFFL-1234',
+              expirationDate: '2017-03-22T06:00:00.000Z',
+            },
+          }
+        }
       },
       serviceMethod: {
         name: 'sendQuote',
-        expectedArguments: [10, {
-          ownerEmail: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017-03-22T06:00:00.000Z',
-          purchaseType: 'ProvisionalOrder'
+        expectedArguments: [10, 'ross.edfort@wazeedigital.com', {
+          expirationDate: new Date('2017/03/22'),
+          agreementId: 'OFFL-1234',
+          salesManager: 'sven.peterson@wazeedigital.com',
+          billingAccountId: 20,
+          invoiceContactType: 'User',
+          invoiceContactId: 123
         }],
         returnsObservableOf: { some: 'quote' }
       },
@@ -707,6 +717,38 @@ export function main() {
           sectionName: 'quoteEdit',
           methodName: 'refreshAndNotify',
           expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addUserToQuote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddUserToQuote.Type,
+        user: { accountId: 1 }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'account',
+          methodName: 'getAccountForQuoteAdminOnUserAdd',
+          expectedArguments: [1]
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addBillingAccountToQuote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddBillingAccountToQuote.Type,
+        account: { id: 1 }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'account',
+          methodName: 'getAccountForQuoteAdmin',
+          expectedArguments: [1]
         }
       }
     });
