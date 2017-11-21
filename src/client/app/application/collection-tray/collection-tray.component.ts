@@ -69,7 +69,11 @@ export class CollectionTrayComponent implements OnInit {
       },
       outputOptions: [{
         event: 'collectionSaved',
-        callback: (collection: Collection) => this.store.dispatch(factory => factory.router.goToCollection(collection.id)),
+        callback: (collection: Collection | undefined) => {
+          if (collection) {
+            this.store.dispatch(factory => factory.router.goToCollection(collection.id));
+          }
+        },
         closeOnEvent: true
       }]
     });
