@@ -60,6 +60,7 @@
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button 
+          [disabled]="notOwnerOf(collection)"
           title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" 
           (click)="sharing.show($event)">
           <mat-icon>share</mat-icon></button>

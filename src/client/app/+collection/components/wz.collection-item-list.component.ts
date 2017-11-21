@@ -62,5 +62,9 @@ export class WzCollectionItemListComponent {
     this.generateCollectionLink.emit(this.currentCollection.id);
   }
 
+  public notOwnerOf(collection: Collection) {
+    return collection.userRole !== 'owner';
+  }
+
 
 }
