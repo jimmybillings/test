@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { AssetShareParameters, CollectionShareParameters } from '../../shared/interfaces/common.interface';
@@ -14,7 +14,7 @@ import { Collection } from '../../shared/interfaces/collection.interface';
   templateUrl: 'collection-share.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CollectionShareComponent {
+export class CollectionShareComponent implements OnInit {
   @Input() collection: Collection;
   @Output() closeRequest: EventEmitter<null> = new EventEmitter();
 

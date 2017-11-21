@@ -20,17 +20,17 @@ export function main() {
     describe('createAssetShareLink()', () => {
       it('Should call the api correctly to create a share link', () => {
         serviceUnderTest.createAssetShareLink(1234, {
-          "in": undefined,
-          "out": undefined
+          'in': undefined,
+          'out': undefined
         }).subscribe();
         expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.post).toHaveBeenCalledWithEndpoint('accessInfo');
         // expect(mockApiService.post).toHaveBeenCalledWithBody({
-        //   "type": "asset",
-        //   "accessInfo": "1234",
-        //   "accessStartDate": "2017-11-21T09:07:20-07:00",
-        //   "accessEndDate": "2017-12-01T09:07:20-07:00",
-        //   "properties": null
+        //   'type': 'asset',
+        //   'accessInfo': '1234',
+        //   'accessStartDate': '2017-11-21T09:07:20-07:00',
+        //   'accessEndDate': '2017-12-01T09:07:20-07:00',
+        //   'properties': null
         // });
       });
     });
@@ -39,21 +39,21 @@ export function main() {
     describe('emailAssetShareLink()', () => {
       it('Should call the api correctly to create a share link', () => {
         serviceUnderTest.emailAssetShareLink(1234, {
-          "in": undefined,
-          "out": undefined
+          'in': undefined,
+          'out': undefined
         }, {
-            "recipientEmails": "james.billings@wazeedigital.com",
-            "comment": "Some Comment",
-            "copyMe": true
+            'recipientEmails': 'james.billings@wazeedigital.com',
+            'comment': 'Some Comment',
+            'copyMe': true
           }).subscribe();
         expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.post).toHaveBeenCalledWithEndpoint('accessInfo');
         // expect(mockApiService.post).toHaveBeenCalledWithBody({
-        //   "type": "asset",
-        //   "accessInfo": "1234",
-        //   "accessStartate": "2017-11-21T09:07:20-07:00",
-        //   "accessEndDate": "2017-12-01T09:07:20-07:00",
-        //   "properties": null
+        //   'type': 'asset',
+        //   'accessInfo': '1234',
+        //   'accessStartate': '2017-11-21T09:07:20-07:00',
+        //   'accessEndDate': '2017-12-01T09:07:20-07:00',
+        //   'properties': null
         // });
       });
     });
@@ -61,21 +61,21 @@ export function main() {
     describe('emailCollectionShareLink()', () => {
       it('Should call the api correctly to share a collection', () => {
         serviceUnderTest.emailCollectionShareLink(1, {
-          "recipientEmails": "james.billings@wazeedigital.com",
-          "accessLevel": "Viewer",
-          "comment": "Some Comment"
+          'recipientEmails': 'james.billings@wazeedigital.com',
+          'accessLevel': 'Viewer',
+          'comment': 'Some Comment'
         }).subscribe();
         expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.post).toHaveBeenCalledWithEndpoint('collection/share');
         expect(mockApiService.post).toHaveBeenCalledWithBody({
           userEmail: [
-            "james.billings@wazeedigital.com"
+            'james.billings@wazeedigital.com'
           ],
           collections: [
             1
           ],
-          accessLevel: "Viewer",
-          comment: "Some Comment"
+          accessLevel: 'Viewer',
+          comment: 'Some Comment'
         });
       });
     });

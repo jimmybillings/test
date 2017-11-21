@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { AssetShareParameters } from '../../shared/interfaces/common.interface';
@@ -13,7 +13,7 @@ import { FormFields } from '../../shared/interfaces/forms.interface';
   templateUrl: 'asset-share.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AssetShareComponent {
+export class AssetShareComponent implements OnInit {
   @Input() formFields: FormFields[];
   @Input() enhancedAsset: EnhancedAsset;
   @Input() subclipMarkers: SubclipMarkers;
