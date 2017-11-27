@@ -4,12 +4,25 @@ import { Api } from '../../shared/interfaces/api.interface';
 
 export function main() {
   describe('Activity Service', () => {
-    let serviceUnderTest: ActivityService, mockApiService: MockApiService;
+    let serviceUnderTest: ActivityService;
+    let mockApiService: MockApiService;
+    let mockCurrentUserService: any;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApiService = new MockApiService();
-      serviceUnderTest = new ActivityService(mockApiService.injector, null);
+      mockCurrentUserService = { state: { id: 123 } };
+      serviceUnderTest = new ActivityService(mockApiService.injector, mockCurrentUserService);
+    });
+
+    describe('record()', () => {
+      it('calls the api service correctly', () => {
+        serviceUnderTest.record({ some: 'options' } as any);
+
+        expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApiService.post).toHaveBeenCalledWithEndpoint('activityAudit');
+        expect(mockApiService.post).toHaveBeenCalledWithBody({ some: 'options', userId: 123 });
+      });
     });
   });
 }

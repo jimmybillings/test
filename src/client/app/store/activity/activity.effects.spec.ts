@@ -8,8 +8,21 @@ export function main() {
 
     function instantiator(): ActivityEffects {
       return new ActivityEffects(
-        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
+        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockService
       );
     }
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'record',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: ActivityActions.Record.Type,
+        options: { some: 'options' }
+      },
+      serviceMethod: {
+        name: 'record',
+        expectedArguments: [{ some: 'options' }]
+      }
+    });
   });
 }

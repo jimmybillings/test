@@ -1,15 +1,11 @@
 import { ActivityOptions } from '../../shared/interfaces/common.interface';
 import { Action } from '@ngrx/store';
 
-export class ActionFactory {
-  public record(options: ActivityOptions): Record {
-    return new Record(options);
-  }
-}
+export class ActionFactory { }
 
 export class InternalActionFactory extends ActionFactory {
-  public recordSuccess(): RecordSuccess {
-    return new RecordSuccess();
+  public record(options: ActivityOptions): Record {
+    return new Record(options);
   }
 }
 
@@ -19,10 +15,4 @@ export class Record implements Action {
   constructor(public readonly options: ActivityOptions) { }
 }
 
-export class RecordSuccess implements Action {
-  public static readonly Type = '[Activity] Record Success';
-  public readonly type = RecordSuccess.Type;
-  constructor() { }
-}
-
-export type Any = Record | RecordSuccess;
+export type Any = Record;

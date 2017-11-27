@@ -23,23 +23,26 @@ export class DeliveryOptionsEffects {
 
   @Effect()
   public deliver: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.Deliver.Type)
-    .withLatestFrom(this.store.select(state => state.deliveryOptions.activeAssetId))
-    .switchMap(([action, assetId]: [DeliveryOptionsActions.Deliver, number]) =>
+    .switchMap((action: DeliveryOptionsActions.Deliver) =>
       this.service.deliverAsset(action.assetId, action.option.deliveryOptionId, action.markers)
-        .mergeMap((order: Order) => [
-          this.store.create(factory => factory.deliveryOptions.deliverySuccess(order.id)),
-          this.store.create(factory => factory.activity.record(this.activityOptions(action.option, assetId)))
-        ])
+        .map((order: Order) => this.store.create(factory => factory.deliveryOptions.deliverySuccess(order.id, action.option)))
         .catch(error => Observable.of(this.store.create(factory => factory.deliveryOptions.deliveryFailure(error))))
     );
 
   @Effect()
-  public deliverySuccess: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.DeliverySuccess.Type)
+  public showSnackbarOnDeliverySuccess: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.DeliverySuccess.Type)
     .map((action: DeliveryOptionsActions.DeliverySuccess) =>
       this.store.create(factory => factory.snackbar.display(
         'ASSET.DELIVERY_OPTIONS.DELIVERY_SUCCESS',
         { orderId: action.orderId }
       ))
+    );
+
+  @Effect()
+  public recordActivityOnDeliverySuccess: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.DeliverySuccess.Type)
+    .withLatestFrom(this.store.select(state => state.deliveryOptions.activeAssetId))
+    .map(([action, assetId]: [DeliveryOptionsActions.DeliverySuccess, number]) =>
+      this.store.create(factory => factory.activity.record(this.activityOptions(action.option, assetId)))
     );
 
   @Effect()
@@ -51,22 +54,22 @@ export class DeliveryOptionsEffects {
   @Effect()
   public download: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.Download.Type)
     .withLatestFrom(this.store.select(state => state.deliveryOptions.activeAssetId))
-    .do(([action, assetId]: [DeliveryOptionsActions.Download, number]) => {
-      this.window.nativeWindow.location.href = action.option.renditionUrl.url;
-    })
-    .map(([action, assetId]: [DeliveryOptionsActions.Download, number]) => {
-      return this.store.create(factory => factory.activity.record(this.activityOptions(action.option, assetId)));
-    });
+    .do(([action, assetId]: [DeliveryOptionsActions.Download, number]) =>
+      this.window.nativeWindow.location.href = action.option.renditionUrl.url
+    )
+    .map(([action, assetId]: [DeliveryOptionsActions.Download, number]) =>
+      this.store.create(factory => factory.activity.record(this.activityOptions(action.option, assetId)))
+    );
 
   @Effect()
   public downloadViaAspera: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.DownloadViaAspera.Type)
     .withLatestFrom(this.store.select(state => state.deliveryOptions.activeAssetId))
-    .do(([action, assetId]: [DeliveryOptionsActions.Download, number]) => {
-      this.service.initializeAsperaConnection(action.option.renditionUrl.asperaSpec);
-    })
-    .map(([action, assetId]: [DeliveryOptionsActions.Download, number]) => {
-      return this.store.create(factory => factory.activity.record(this.activityOptions(action.option, assetId)));
-    });
+    .do(([action, assetId]: [DeliveryOptionsActions.Download, number]) =>
+      this.service.initializeAsperaConnection(action.option.renditionUrl.asperaSpec)
+    )
+    .map(([action, assetId]: [DeliveryOptionsActions.Download, number]) =>
+      this.store.create(factory => factory.activity.record(this.activityOptions(action.option, assetId)))
+    );
 
   constructor(
     private actions: Actions,
