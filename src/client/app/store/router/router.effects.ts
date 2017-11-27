@@ -20,8 +20,8 @@ export class RouterEffects {
   @Effect({ dispatch: false })
   public goToLoginWithRedirect: Observable<Action> = this.actions.ofType(RouterActions.GoToLoginWithRedirect.Type)
     .do((action: RouterActions.GoToLoginWithRedirect) => {
-      const currentPath: string = this.location.path().split(';')[0];
-      if (currentPath !== this.LoginPath) {
+      const currentPath: string = this.location.path();
+      if (currentPath.split(';')[0] !== this.LoginPath) {
         localStorage.setItem(this.RedirectUrlKey, currentPath);
         this.router.navigate([this.LoginPath, { requireLogin: true }]);
       }
