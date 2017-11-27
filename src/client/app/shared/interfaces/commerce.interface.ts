@@ -202,6 +202,9 @@ export interface Quote extends CommonCommerce {
   internalAgreementIds?: number[];
   externalLicenseIds?: string[];
   internalLicenseIds?: number[];
+  billingAccountId?: number;
+  invoiceContact?: ViewAddress;
+  billingAccountData?: SendDetailsBillingAccount;
 }
 
 export interface QuoteEdit {

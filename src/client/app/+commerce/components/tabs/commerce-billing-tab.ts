@@ -1,4 +1,4 @@
-import { Component, Output, Input, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Output, Input, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -12,13 +12,17 @@ import { RowFormFields } from '../../../shared/interfaces/forms.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzAddressFormComponent } from '../../../shared/modules/wz-form/components/wz-address-form/wz.address-form.component';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { SendDetailsInvoiceContact } from '../../../shared/interfaces/commerce.interface';
 import { AppStore, CheckoutState } from '../../../app.store';
+import { Pojo } from '../../../shared/interfaces/common.interface';
 
-export class CommerceBillingTab extends Tab implements OnInit {
+export class CommerceBillingTab extends Tab {
   public orderInProgress: Observable<CheckoutState>;
-  public addressErrors: any = {};
+  public addressErrors: Pojo = {};
   public showAddAddressForm: boolean;
   public showEditAddressForm: boolean;
+  public quoteBillingAccountInfo: Observable<SendDetailsInvoiceContact>;
+  public quoteInvoiceContactInfo: Observable<ViewAddress>;
   @Input() loaded: boolean;
   @Output() tabNotify: EventEmitter<Object> = this.notify;
 
@@ -31,11 +35,6 @@ export class CommerceBillingTab extends Tab implements OnInit {
     protected store: AppStore
   ) {
     super();
-  }
-
-  ngOnInit() {
-    this.orderInProgress = this.store.select(state => state.checkout);
-    this.fetchAddresses().subscribe();
   }
 
   public typeFor(address: ViewAddress): string {
@@ -146,6 +145,15 @@ export class CommerceBillingTab extends Tab implements OnInit {
       (this.addressErrors[address.addressEntityId] && this.addressErrors[address.addressEntityId].length > 0);
   }
 
+  public fetchAddresses(): Observable<Array<ViewAddress>> {
+    return this.user.getAddresses().do((addresses: Array<ViewAddress>) => {
+      this.validate(addresses);
+      this.showAddAddressForm = this.showAddForm(addresses);
+      this.showEditAddressForm = this.showEditForm(addresses);
+      this.store.dispatch(factory => factory.checkout.setAvailableAddresses(addresses));
+    });
+  }
+
   private addressSegment(address: ViewAddress, segment: string): string | null {
     return address.address && address.address[segment] ? address.address[segment] : null;
   }
@@ -165,15 +173,6 @@ export class CommerceBillingTab extends Tab implements OnInit {
 
   private createFormTitle(resourceType: 'user' | 'account'): string {
     return `CART.BILLING.ADD_${resourceType.toUpperCase()}_ADDRESS_TITLE`;
-  }
-
-  private fetchAddresses(): Observable<Array<ViewAddress>> {
-    return this.user.getAddresses().do((addresses: Array<ViewAddress>) => {
-      this.validate(addresses);
-      this.showAddAddressForm = this.showAddForm(addresses);
-      this.showEditAddressForm = this.showEditForm(addresses);
-      this.store.dispatch(factory => factory.checkout.setAvailableAddresses(addresses));
-    });
   }
 
   // If GET /currentUsersAssociatedAddresses does not return ANY addresses,

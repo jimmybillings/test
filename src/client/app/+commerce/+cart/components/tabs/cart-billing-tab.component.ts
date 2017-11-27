@@ -1,4 +1,4 @@
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommerceBillingTab } from '../../../components/tabs/commerce-billing-tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UserService } from '../../../../shared/services/user.service';
@@ -14,7 +14,7 @@ import { AppStore } from '../../../../app.store';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CartBillingTabComponent extends CommerceBillingTab {
+export class CartBillingTabComponent extends CommerceBillingTab implements OnInit {
   constructor(
     public userCan: CommerceCapabilities,
     protected cartService: CartService,
@@ -24,5 +24,12 @@ export class CartBillingTabComponent extends CommerceBillingTab {
     protected store: AppStore
   ) {
     super(userCan, cartService, user, currentUser, dialog, store);
+  }
+
+  ngOnInit() {
+    this.quoteBillingAccountInfo = null;
+    this.quoteInvoiceContactInfo = null;
+    this.fetchAddresses().subscribe();
+    this.orderInProgress = this.store.select(state => state.checkout);
   }
 }
