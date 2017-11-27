@@ -10,12 +10,12 @@ import { Api } from '../../shared/interfaces/api.interface';
 export class ActivityService {
   constructor(private apiService: FutureApiService, private currentUserService: CurrentUserService) { }
 
-  public record(activityOptions: ActivityOptions): Observable<ActivityOptions> {
+  public record(activityOptions: ActivityOptions): void {
     const body: ActivityOptions = {
       ...activityOptions,
       userId: this.currentUserService.state.id
     };
 
-    return this.apiService.post(Api.Identities, 'activityAudit', { body });
+    this.apiService.post(Api.Identities, 'activityAudit', { body }).subscribe();
   }
 }
