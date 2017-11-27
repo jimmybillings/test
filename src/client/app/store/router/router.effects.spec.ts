@@ -81,6 +81,34 @@ export function main() {
         });
       });
 
+      describe('from any path containing url params except /user/login;withparams=param', () => {
+        beforeEach(() => {
+          mockCurrentPath = 'rooturl/collections/123;i=1;n=100';
+        });
+
+        effectsSpecHelper.generateTestsFor({
+          effectName: 'goToLoginWithRedirect',
+          effectsInstantiator: instantiator,
+          inputAction: {
+            type: RouterActions.GoToLoginWithRedirect.Type
+          },
+          customTests: [
+            {
+              it: 'stores the current location in local storage',
+              expectation: () => {
+                expect(localStorageSetSpy).toHaveBeenCalledWith('RouterEffects.RedirectUrl', 'rooturl/collections/123;i=1;n=100');
+              }
+            },
+            {
+              it: 'navigates to /user/login',
+              expectation: () => {
+                expect(mockRouter.navigate).toHaveBeenCalledWith(['/user/login', { requireLogin: true }]);
+              }
+            }
+          ]
+        });
+      });
+
       describe('from /user/login', () => {
         beforeEach(() => {
           mockCurrentPath = '/user/login';
