@@ -214,3 +214,9 @@ export interface AsperaSpec {
 export interface AsperaSpecs {
   transfer_specs: { transfer_spec: AsperaSpec }[];
 }
+
+export interface ActivityOptions extends Common {
+  activityName: string;
+  activities: Pojo;
+  userId?: number;
+}

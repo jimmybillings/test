@@ -25,6 +25,7 @@ export class MockAppStore extends AppStore {
     this._actionFactory = {
       account: {} as any,
       activeCollection: {} as any,
+      activity: {} as any,
       asset: {} as any,
       cart: {} as any,
       checkout: {} as any,
@@ -56,6 +57,7 @@ export class MockAppStore extends AppStore {
     this._internalActionFactory = {
       account: {} as any,
       activeCollection: {} as any,
+      activity: {} as any,
       asset: {} as any,
       cart: {} as any,
       checkout: {} as any,
