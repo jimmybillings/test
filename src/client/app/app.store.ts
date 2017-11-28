@@ -9,6 +9,8 @@ import * as ActiveCollectionActions from './store/active-collection/active-colle
 import * as ActiveCollectionState from './store/active-collection/active-collection.state';
 export type ActiveCollectionState = ActiveCollectionState.State;
 
+import * as ActivityActions from './store/activity/activity.actions';
+
 import * as AssetActions from './store/asset/asset.actions';
 import * as AssetState from './store/asset/asset.state';
 export type AssetState = AssetState.State;
@@ -103,6 +105,7 @@ import { LegacyAssetService } from './store/asset/asset.service';
 export interface ActionFactory {
   readonly account: AccountActions.ActionFactory;
   readonly activeCollection: ActiveCollectionActions.ActionFactory;
+  readonly activity: ActivityActions.ActionFactory;
   readonly asset: AssetActions.ActionFactory;
   readonly cart: CartActions.ActionFactory;
   readonly checkout: CheckoutActions.ActionFactory;
@@ -133,6 +136,7 @@ export interface ActionFactory {
 export interface InternalActionFactory {
   readonly account: AccountActions.InternalActionFactory;
   readonly activeCollection: ActiveCollectionActions.InternalActionFactory;
+  readonly activity: ActivityActions.InternalActionFactory;
   readonly asset: AssetActions.InternalActionFactory;
   readonly cart: CartActions.InternalActionFactory;
   readonly checkout: CheckoutActions.InternalActionFactory;
@@ -225,6 +229,7 @@ export class AppStore {
   private readonly actionFactory: ActionFactory = {
     account: new AccountActions.ActionFactory(),
     activeCollection: new ActiveCollectionActions.ActionFactory(),
+    activity: new ActivityActions.ActionFactory(),
     asset: new AssetActions.ActionFactory(),
     cart: new CartActions.ActionFactory(),
     checkout: new CheckoutActions.ActionFactory(),
@@ -255,6 +260,7 @@ export class AppStore {
   private readonly internalActionFactory: InternalActionFactory = {
     account: new AccountActions.InternalActionFactory(),
     activeCollection: new ActiveCollectionActions.InternalActionFactory(),
+    activity: new ActivityActions.InternalActionFactory(),
     asset: new AssetActions.InternalActionFactory(),
     cart: new CartActions.InternalActionFactory(),
     checkout: new CheckoutActions.InternalActionFactory(),

@@ -6,12 +6,14 @@ import { Common } from '../../shared/utilities/common.functions';
 export interface State {
   loading: boolean;
   hasDeliveryOptions: boolean;
+  activeAssetId: number;
   options: DeliveryOptions;
 };
 
 export const initialState: State = {
   loading: false,
   hasDeliveryOptions: false,
+  activeAssetId: null,
   options: []
 };
 
@@ -27,14 +29,22 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     case AssetActions.LoadCartAsset.Type:
     case AssetActions.LoadQuoteEditAsset.Type:
     case AssetActions.LoadQuoteShowAsset.Type:
-    case AssetActions.LoadSearchAsset.Type:
-    case DeliveryOptionsActions.Load.Type: {
+    case AssetActions.LoadSearchAsset.Type: {
       return { ...Common.clone(initialState), loading: true };
+    }
+
+    case DeliveryOptionsActions.Load.Type: {
+      return { ...Common.clone(initialState), loading: true, activeAssetId: action.activeAsset.assetId };
     }
 
     case DeliveryOptionsActions.LoadSuccess.Type: {
       const hasDeliveryOptions: boolean = action.options.length > 0;
-      return { loading: false, hasDeliveryOptions, options: action.options };
+      return {
+        ...Common.clone(state),
+        loading: false,
+        hasDeliveryOptions,
+        options: action.options
+      };
     }
 
     default: {

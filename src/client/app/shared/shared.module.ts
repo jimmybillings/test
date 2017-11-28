@@ -65,8 +65,9 @@ import { QuotesService } from './services/quotes.service';
 import { AsperaService } from './services/aspera.service';
 // New-ish services
 import { AccountService } from '../store/account/account.service';
-import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
 import { ActiveCollectionService } from '../store/active-collection/active-collection.service';
+import { ActivityService } from '../store/activity/activity.service';
+import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
 import { CommentService } from '../store/comment/comment.service';
 import { DeliveryOptionsService } from '../store/delivery-options/delivery-options.service';
 import { FeeConfigService } from '../store/fee-config/fee-config.service';
@@ -129,6 +130,7 @@ import { sortDefinitions } from './services/sort-definitions.service';
 // WAZEE EFFECTS
 import { AccountEffects } from '../store/account/account.effects';
 import { ActiveCollectionEffects } from '../store/active-collection/active-collection.effects';
+import { ActivityEffects } from '../store/activity/activity.effects';
 import { AssetEffects } from '../store/asset/asset.effects';
 import { CartEffects } from '../store/cart/cart.effects';
 import { CommentEffects } from '../store/comment/comment.effects';
@@ -155,6 +157,7 @@ import { UserEffects } from '../store/user/user.effects';
 
 const WAZEE_SERVICES = [
   AccountService,
+  ActivityService,
   ApiConfig,
   CurrentUserService,
   AssetService,
@@ -255,6 +258,7 @@ const WAZEE_STORES: any = {
 const WAZEE_EFFECTS = EffectsModule.forRoot([
   AccountEffects,
   ActiveCollectionEffects,
+  ActivityEffects,
   AssetEffects,
   CartEffects,
   CommentEffects,

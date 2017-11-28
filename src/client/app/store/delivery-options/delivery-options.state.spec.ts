@@ -1,5 +1,6 @@
 import * as DeliveryOptionsState from './delivery-options.state';
 import * as DeliveryOptionsActions from './delivery-options.actions';
+import * as AssetActions from '../asset/asset.actions';
 import { StateSpecHelper } from '../spec-helpers/state.spec-helper';
 
 export function main() {
@@ -12,7 +13,10 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'Load',
+      actionClassName: [
+        'LoadSearchAsset', 'LoadQuoteShowAsset', 'LoadQuoteEditAsset', 'LoadCartAsset', 'LoadActiveCollectionAsset'
+      ],
+      overrideActionClass: AssetActions,
       mutationTestData: {
         previousState: DeliveryOptionsState.initialState
       },
@@ -21,6 +25,22 @@ export function main() {
           it: 'returns the default state but with loading: true',
           previousState: DeliveryOptionsState.initialState,
           expectedNextState: { ...DeliveryOptionsState.initialState, loading: true }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'Load',
+      mutationTestData: {
+        previousState: DeliveryOptionsState.initialState,
+        actionParameters: { activeAsset: { assetId: 123 } }
+      },
+      customTests: [
+        {
+          it: 'returns the default state but with loading: true and the activeAssetId',
+          previousState: DeliveryOptionsState.initialState,
+          actionParameters: { activeAsset: { assetId: 123 } },
+          expectedNextState: { ...DeliveryOptionsState.initialState, loading: true, activeAssetId: 123 }
         }
       ]
     });

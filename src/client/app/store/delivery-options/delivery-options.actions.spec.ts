@@ -84,11 +84,12 @@ export function main() {
       factoryMethod: {
         class: InternalActionFactory,
         name: 'deliverySuccess',
-        parameters: [1]
+        parameters: [1, { some: 'option' }]
       },
       expectedAction: {
         type: '[Delivery Options] Delivery Success',
-        orderId: 1
+        orderId: 1,
+        option: { some: 'option' }
       }
     });
 

@@ -31,8 +31,8 @@ export class InternalActionFactory extends ActionFactory {
     return new LoadFailure(error);
   }
 
-  public deliverySuccess(orderId: number): DeliverySuccess {
-    return new DeliverySuccess(orderId);
+  public deliverySuccess(orderId: number, option: DeliveryOption): DeliverySuccess {
+    return new DeliverySuccess(orderId, option);
   }
 
   public deliveryFailure(error: ApiErrorResponse): DeliveryFailure {
@@ -83,7 +83,7 @@ export class Deliver implements Action {
 export class DeliverySuccess implements Action {
   public static readonly Type = '[Delivery Options] Delivery Success';
   public readonly type = DeliverySuccess.Type;
-  constructor(public readonly orderId: number) { }
+  constructor(public readonly orderId: number, public readonly option: DeliveryOption) { }
 }
 
 export class DeliveryFailure implements Action {

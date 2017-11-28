@@ -10,11 +10,10 @@ export class PageDataService {
   constructor(private translateService: TranslateService, private titleService: Title) { }
 
   public updateTitle(trKey: string, trParams?: Pojo): void {
-    Observable.forkJoin([
-      this.translateService.get('COMPANY_NAME'),
-      this.translateService.get(trKey, trParams)
-    ]).take(1).subscribe((values: string[]) => {
-      this.titleService.setTitle(values.join(''));
-    });
+    this.translateService.get(['COMPANY_NAME', trKey], trParams)
+      .subscribe((values: { [index: string]: string }) => {
+        values[trKey] = values[trKey].replace('{{q}}', 'all');
+        this.titleService.setTitle(values['COMPANY_NAME'] + values[trKey]);
+      });
   }
 }
