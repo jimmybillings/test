@@ -1,59 +1,55 @@
 import { Observable } from 'rxjs/Observable';
 import { CollectionsResolver } from './collections.resolver';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 export function main() {
   describe('Collections Resolver', () => {
     let resolverUnderTest: CollectionsResolver;
     let mockCollectionsService: any;
-    let mockState: any;
+    let mockState: BehaviorSubject<any>;
     let resolved: jasmine.Spy;
 
-    function instanstiator() {
-      resolved = jasmine.createSpy('resolved');
+    function instantiator(initialState: any) {
+      mockState = new BehaviorSubject<any>({ items: [] });
+
       mockCollectionsService = {
-        state: mockState,
-        data: Observable.of(mockState),
-        load: jasmine.createSpy('load').and.returnValue(Observable.of({ some: 'collections' }))
+        data: mockState.asObservable(),
+        reset: jasmine.createSpy('reset').and.callFake(() => { mockState.next({ items: [] }) }),
+        load: jasmine.createSpy('load').and.returnValue(Observable.of('whatever')),
       };
+
       resolverUnderTest = new CollectionsResolver(mockCollectionsService);
+      resolved = jasmine.createSpy('resolved');
     }
 
     describe('resolve()', () => {
-      describe('when there are no items in the store', () => {
-        beforeEach(() => {
-          mockState = { items: [] };
-          instanstiator();
-        });
+      const tests: { description: string, initialState: any }[] = [
+        { description: 'no items', initialState: { items: [] } },
+        { description: 'items', initialState: { items: [{ some: 'collection' }] } }
+      ];
 
-        it('should call load() on the collections service', () => {
-          resolverUnderTest.resolve().take(1).subscribe();
+      tests.forEach(test => {
+        describe(`when there are ${test.description} in the store`, () => {
+          beforeEach(() => {
+            instantiator(test.initialState);
+          });
 
-          expect(mockCollectionsService.load).toHaveBeenCalled();
-        });
+          it('should call reset() and load() on the collections service', () => {
+            resolverUnderTest.resolve().subscribe();
 
-        it('should not resolve', () => {
-          resolverUnderTest.resolve().take(1).subscribe(resolved);
+            expect(mockCollectionsService.reset).toHaveBeenCalled();
+            expect(mockCollectionsService.load).toHaveBeenCalled();
+          });
 
-          expect(resolved).not.toHaveBeenCalled();
-        });
-      });
+          it('should not resolve until the data is ready', () => {
+            resolverUnderTest.resolve().subscribe(resolved);
 
-      describe('when there are items in the store', () => {
-        beforeEach(() => {
-          mockState = { items: [{ some: 'collection' }] };
-          instanstiator();
-        });
+            expect(resolved).not.toHaveBeenCalled();
 
-        it('should call load() on the collections service', () => {
-          resolverUnderTest.resolve().take(1).subscribe();
+            mockState.next({ items: [{ some: 'collection' }] });
 
-          expect(mockCollectionsService.load).not.toHaveBeenCalled();
-        });
-
-        it('should resolve', () => {
-          resolverUnderTest.resolve().take(1).subscribe(resolved);
-
-          expect(resolved).toHaveBeenCalled();
+            expect(resolved).toHaveBeenCalledTimes(1);
+          });
         });
       });
     });

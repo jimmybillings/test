@@ -83,6 +83,10 @@ export class CollectionsService {
       });
   }
 
+  public reset(): void {
+    this.collectionsStore.deleteAllCollections();
+  }
+
   public destroyAll(): void {
     this.collectionsStore.deleteAllCollections();
     this.store.dispatch(factory => factory.activeCollection.reset());
