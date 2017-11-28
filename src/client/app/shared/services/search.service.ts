@@ -38,8 +38,6 @@ export class SearchService {
       });
   }
 
-
-
   public searchAssets(params: any): Observable<any> {
     let cloneParams = this.normalizeParams(params);
     return this.api.get(
@@ -61,7 +59,7 @@ export class SearchService {
     let cloneParams = Common.clone(params);
     if (!cloneParams.q) cloneParams.q = 'itemType:clip';
     if (cloneParams.gq) cloneParams.gq = this.galleryViewService.stringifyPathForSearch(JSON.parse(cloneParams.gq));
-    cloneParams['i'] = (parseFloat(cloneParams['i']) - 1).toString();
+    cloneParams['i'] = (cloneParams['i']) ? (parseFloat(cloneParams['i']) - 1).toString() : 0;
     cloneParams['viewType'] = this.userPreference.state.assetView;
     return cloneParams;
   }
