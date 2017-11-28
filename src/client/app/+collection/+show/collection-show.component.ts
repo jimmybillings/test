@@ -213,17 +213,17 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     return this.userCan.editCollection(this.activeCollection);
   }
 
-  public collectionIsShared(collection: Collection): boolean {
-    return !!collection.editors || !!collection.viewers ? true : false;
+  public get collectionIsShared(): boolean {
+    return !!this.activeCollection.editors || !!this.activeCollection.viewers ? true : false;
   }
 
-  public showShareMembers(collection: Collection) {
+  public showShareMembers() {
     this.dialogService.openComponentInDialog(
       {
         componentType: CollectionShareMembersComponent,
         dialogConfig: { position: { top: '12%' } },
         inputOptions: {
-          collection: Common.clone(collection),
+          collection: this.activeCollection,
         },
         outputOptions: [{
           event: 'close',
@@ -233,12 +233,9 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       }
     );
   }
-  public collectionViewerIsOwner(collection: Collection): boolean {
-    return collection.userRole === 'owner' ? true : false;
-  }
 
-  public notOwnerOfCollection() {
-    return this.activeCollection.userRole !== 'owner';
+  public get collectionViewerIsOwner(): boolean {
+    return this.activeCollection.userRole === 'owner';
   }
 
   private buildRouteParams(params: Pojo): void {
