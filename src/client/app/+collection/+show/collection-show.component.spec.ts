@@ -309,35 +309,36 @@ export function main() {
     });
 
     describe('showShareMembers()', () => {
-
       it('Should call the dialog service to open the share members dialog', () => {
-        componentUnderTest.showShareMembers(({ id: 123, name: 'Collection name', owner: 123 }));
+        componentUnderTest.activeCollection = { id: 123, name: 'Collection name', owner: 123 };
+        componentUnderTest.showShareMembers();
         expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
       });
     });
 
     describe('collectionIsShared()', () => {
       it('should return true when collection has editors or viewers', () => {
-
-        expect(componentUnderTest.collectionIsShared(mockCollection())).toBe(true);
+        componentUnderTest.activeCollection = mockCollection();
+        expect(componentUnderTest.collectionIsShared).toBe(true);
       });
-      it('should return false when collection does not have editors or viewers', () => {
 
-        expect(componentUnderTest.collectionIsShared(mockCollectionNotShared())).toBe(false);
+      it('should return false when collection does not have editors or viewers', () => {
+        componentUnderTest.activeCollection = mockCollectionNotShared();
+        expect(componentUnderTest.collectionIsShared).toBe(false);
       });
     });
 
     describe('collectionViewerIsOwner()', () => {
       it('should return true when person viewing the collection is the owner', () => {
-
-        expect(componentUnderTest.collectionViewerIsOwner(mockCollection())).toBe(true);
+        componentUnderTest.activeCollection = mockCollection();
+        expect(componentUnderTest.collectionViewerIsOwner).toBe(true);
       });
-      it('should return false when person viewing the collection is the NOT owner', () => {
 
-        expect(componentUnderTest.collectionViewerIsOwner(mockCollectionNotOwned())).toBe(false);
+      it('should return false when person viewing the collection is the NOT owner', () => {
+        componentUnderTest.activeCollection = mockCollectionNotOwned();
+        expect(componentUnderTest.collectionViewerIsOwner).toBe(false);
       });
     });
-
   });
 }
 
@@ -357,6 +358,7 @@ function mockCollection(): Collection {
     viewers: [{ id: 5, firstName: 'Mary', lastName: 'Maze', emailAddress: 'mm@test.co' }]
   };
 }
+
 function mockCollectionNotShared(): Collection {
   return {
     id: 4,
@@ -368,6 +370,7 @@ function mockCollectionNotShared(): Collection {
     userRole: 'owner'
   };
 }
+
 function mockCollectionNotOwned(): Collection {
   return {
     id: 5,

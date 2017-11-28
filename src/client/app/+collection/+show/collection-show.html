@@ -22,7 +22,7 @@
                 <div class="asset-thb">
                   <div class="selected">
                     <!-- <mat-icon *ngIf="activeCollection === collection.id" title="Selected collection">star</mat-icon> -->
-                    <mat-icon *ngIf="collectionIsShared(activeCollection)" title="Collection is shared">share</mat-icon>
+                    <mat-icon *ngIf="collectionIsShared" title="Collection is shared">share</mat-icon>
                   </div>
                   <!-- I don't think this needs to be here anymore. It was more for troubleshooting JH -->
                   <!-- <span class="asset-id"><span class="id">{{activeCollection.id}}</span></span> -->
@@ -38,11 +38,11 @@
                 </span>
               </h3>
               <div class="mat-caption collection-info">
-                <span *ngIf="!collectionViewerIsOwner(activeCollection)">
+                <span *ngIf="!collectionViewerIsOwner">
                   <strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>
                   <a href="mailto:{{ activeCollection.email }}">{{ activeCollection.email }}</a>
                 </span>
-                <span *ngIf="collectionViewerIsOwner(activeCollection)">
+                <span *ngIf="collectionViewerIsOwner">
                   <strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ activeCollection.email }}
                 </span>
                 <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ activeCollection.userRole }}</span>
@@ -67,13 +67,14 @@
           [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
           <button
             mat-icon-button
+            [disabled]="!(userCanEditCollection | async)"
             title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}"
             (click)="editCollection()">
               <mat-icon>edit</mat-icon>
           </button>
           <button
             mat-icon-button
-            [disabled]="notOwnerOfCollection()"
+            [disabled]="!collectionViewerIsOwner"
             title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}"
             (click)="sharing.show($event)">
               <mat-icon>share</mat-icon>
@@ -81,12 +82,13 @@
           <button
             mat-icon-button
             title="{{ 'COLLECTION.SHARE_MEMBERS_HOVER_TITLE' | translate }}"
-            *ngIf="collectionViewerIsOwner(activeCollection) && collectionIsShared(activeCollection)"
-            (click)="showShareMembers(activeCollection)">
+            *ngIf="collectionViewerIsOwner && collectionIsShared"
+            (click)="showShareMembers()">
               <mat-icon>group</mat-icon>
           </button>
           <button
             mat-icon-button
+            [disabled]="!(userCanEditCollection | async)"
             title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
             (click)="toggleCommentsVisibility()">
               <mat-icon>mode_comment</mat-icon>
@@ -99,7 +101,7 @@
               <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="matMenu">
-              <!-- COMMENTING OUT THESE UNUSED ACTIONS UNTIL THEY BECOME AVAILABLE,
+            <!-- COMMENTING OUT THESE UNUSED ACTIONS UNTIL THEY BECOME AVAILABLE,
               OR HAVE A PERMISSION TIED TO THEM (PER CRUX-2913) - R.E. 11/20/17 -->
             <!-- <button mat-menu-item disabled>
               <mat-icon>file_download</mat-icon>Download all comps
@@ -120,9 +122,13 @@
             <button mat-menu-item (click)="getAssetsForLink()">
               <mat-icon>link</mat-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
             </button> -->
-            <div *ngIf="!!activeCollection.owner">
+            <div>
               <div class="divider"></div>
-              <button mat-menu-item class="delete" (click)="setCollectionForDelete()">
+              <button
+                [disabled]="!collectionViewerIsOwner"
+                mat-menu-item
+                class="delete"
+                (click)="setCollectionForDelete()">
                 <mat-icon>delete</mat-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
               </button>
             </div>
