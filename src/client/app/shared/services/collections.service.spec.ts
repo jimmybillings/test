@@ -160,6 +160,22 @@ export function main() {
       });
     });
 
+    describe('reset()', () => {
+      it('should call deleteAllCollections() on the collections store', () => {
+        serviceUnderTest.reset();
+
+        expect(mockCollectionsStore.deleteAllCollections).toHaveBeenCalled();
+      });
+
+      it('does not dispatch an active collection reset action', () => {
+        const spy = mockStore.createActionFactoryMethod('activeCollection', 'reset');
+
+        serviceUnderTest.reset();
+
+        mockStore.expectNoDispatchFor(spy);
+      });
+    });
+
     describe('destroyAll()', () => {
       it('should call deleteAllCollections() on the collections store', () => {
         mockStore.createActionFactoryMethod('activeCollection', 'reset');
