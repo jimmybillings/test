@@ -55,12 +55,13 @@
     <div flex-gt-xs="33" layout-sm="100" flex="auto" class="actions">
       <div class="tools" hide-xs flex="100">
         <button mat-icon-button
+          [disabled]="!(userCanEditCollection(collection) | async)"
           title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" 
           (click)="edit(collection)">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button 
-          [disabled]="notOwnerOf(collection)"
+          [disabled]="!collectionViewerIsOwner(collection)"
           title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" 
           (click)="sharing.show($event)">
           <mat-icon>share</mat-icon></button>
@@ -111,9 +112,12 @@
   <!-- <button (click)="generateLegacyLink()" mat-menu-item>
     <mat-icon>link</mat-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
   </button> -->
-  <div *ngIf="currentCollection && !!currentCollection.owner">
+  <div *ngIf="currentCollection">
     <div class="divider"></div>
-    <button mat-menu-item class="delete" (click)="delete(currentCollection)">
+    <button mat-menu-item 
+      [disabled]="!collectionViewerIsOwner(currentCollection)"
+      class="delete" 
+      (click)="delete(currentCollection)">
       <mat-icon>delete</mat-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
     </button>
   </div>

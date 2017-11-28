@@ -1,5 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { Collection } from '../../shared/interfaces/collection.interface';
+import { CollectionCapabilities } from '../services/collection.capabilities';
 @Component({
   moduleId: module.id,
   selector: 'wz-collection-item-list',
@@ -21,6 +23,10 @@ export class WzCollectionItemListComponent {
   @Output() generateCollectionLink = new EventEmitter();
   @Output() duplicateCollection = new EventEmitter();
   public currentCollection: Collection;
+
+  constructor(
+    public userCan: CollectionCapabilities) {
+  }
 
   public selectActiveCollection(collectionId: Collection['id']) {
     this.setActiveCollection.emit(collectionId);
@@ -46,8 +52,12 @@ export class WzCollectionItemListComponent {
     this.showShareMembers.emit(collection);
   }
 
+  public userCanEditCollection(collection: Collection): Observable<boolean> {
+    return this.userCan.editCollection(collection);
+  }
+
   public collectionViewerIsOwner(collection: Collection): boolean {
-    return collection.userRole === 'owner' ? true : false;
+    return collection.userRole === 'owner';
   }
 
   public delete(collection: Collection): void {
@@ -61,10 +71,4 @@ export class WzCollectionItemListComponent {
   public generateLegacyLink(): void {
     this.generateCollectionLink.emit(this.currentCollection.id);
   }
-
-  public notOwnerOf(collection: Collection) {
-    return collection.userRole !== 'owner';
-  }
-
-
 }
