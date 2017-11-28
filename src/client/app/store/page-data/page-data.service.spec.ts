@@ -9,7 +9,16 @@ export function main() {
 
     beforeEach(() => {
       mockTranslateService = {
-        get: (key: string, params: any) => Observable.of('some value')
+        values: {
+          COMPANY_NAME: 'Wazee Digital -',
+          SOME_KEY: ' Some value',
+          SEARCH: ' Search for {{q}}'
+        },
+        get: (keys: string[], params: any) => {
+          let v: any = {};
+          keys.forEach((k: string, i: number) => v[k] = mockTranslateService.values[k]);
+          return Observable.of(v);
+        }
       };
       mockTitleService = {
         setTitle: jasmine.createSpy('setTitle')
@@ -18,10 +27,18 @@ export function main() {
     });
 
     describe('updateTitle()', () => {
-      it('calls translateService::setTitle with the proper value', () => {
-        serviceUnderTest.updateTitle('ross', { some: 'params' });
+      describe('calls translateService::setTitle with the proper value', () => {
+        it('when there is no search param', () => {
+          serviceUnderTest.updateTitle('SEARCH', { some: 'params' });
 
-        expect(mockTitleService.setTitle).toHaveBeenCalledWith('some valuesome value');
+          expect(mockTitleService.setTitle).toHaveBeenCalledWith('Wazee Digital - Search for all');
+        });
+
+        it('for a generic string', () => {
+          serviceUnderTest.updateTitle('SOME_KEY', { some: 'params' });
+
+          expect(mockTitleService.setTitle).toHaveBeenCalledWith('Wazee Digital - Some value');
+        });
       });
     });
   });
