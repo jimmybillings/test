@@ -59,7 +59,10 @@
                     {{ invoice.payee.businessAddress.state }} {{ invoice.payee.businessAddress.zipcode }},
                     {{ invoice.payee.businessAddress.country }}
                   </span>
-                  <span class="identification-number tax-ein"><span class="key">EIN</span>{{ invoice.payee.taxId }}</span>
+                  <span class="identification-number tax-ein">
+                    <span class="key">{{ 'ORDER.INVOICE.TAX_EIN_NUMBER_LABEL' | translate }}</span>
+                    {{ invoice.payee.taxId }}
+                  </span>
                   <span class="phone"><mat-icon>phone_iphone</mat-icon>{{ invoice.payee.businessAddress.phone }}</span>
                   <span class="email">
                     <a class="mailto" href="mailto:{{invoice.payee.email}}"><mat-icon>email</mat-icon>{{ invoice.payee.email }}</a>
@@ -109,14 +112,14 @@
                     <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.poNumber }}</p>
                   </div>
                 </div>
-                <div class="row" *ngIf="invoice.order.paymentTerms">
+                <div class="row" *ngIf="invoice.order.paymentTermsDays">
                   <div class="cell">
                     <h5 class="mat-subheading-1">
                       {{ 'ORDER.INVOICE.PAYMENT_TERMS_LABEL' | translate }}
                     </h5>
                   </div>
                   <div class="cell">
-                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.paymentTerms }}</p>
+                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.paymentTermsDays }}</p>
                   </div>
                 </div>
               </div>
@@ -127,7 +130,9 @@
             <div class="details" flex="50">
               <h4 class="mat-title">{{ 'ORDER.INVOICE.ISSUED_TO_TITLE' | translate }}</h4>
               <div class="contact-container">
-                <span class="individual-name">Joyce McCallister</span>
+                <span class="individual-name" *ngIf="invoice.order.orderAddress.firstName">
+                  {{ invoice.order.orderAddress.firstName }} {{ invoice.order.orderAddress.lastName }}
+                </span>
                 <ng-container *ngIf="invoice.order.orderAddress">
                   <h6 class="mat-subheading-1 company-name" *ngIf="invoice.order.orderAddress.accountName">
                     {{ invoice.order.orderAddress.accountName }}
@@ -141,7 +146,15 @@
                       {{ invoice.order.orderAddress.billingInfo.address.state }} {{ invoice.order.orderAddress.billingInfo.address.zipcode }},
                       {{ invoice.order.orderAddress.billingInfo.address.country }}
                     </span>
-                    <span class="phone"><mat-icon>phone_iphone</mat-icon>{{ invoice.order.orderAddress.billingInfo.address.phone }}</span>
+                    <span class="phone">
+                      <mat-icon>phone_iphone</mat-icon>
+                      {{ invoice.order.orderAddress.billingInfo.address.phone }}
+                    </span>
+                    <span class="email" *ngIf="invoice.order.orderAddress.email">
+                      <a class="mailto" href="mailto:{{invoice.order.orderAddress.email}">
+                        <mat-icon>email</mat-icon>{{invoice.order.orderAddress.email}}
+                      </a>
+                    </span>
                   </address>
                 </ng-container>
               </div>
@@ -149,12 +162,18 @@
             <div class="details" flex="50">
               <h4 class="mat-title">{{ 'ORDER.INVOICE.PURCHASED_BY_TITLE' | translate }}</h4>
               <div class="contact-container">
-                <span class="individual-name">Jonathan McDermott</span>
+                <span class="individual-name" *ngIf="invoice.order.orderAddress.firstName">
+                  {{invoice.order.ownerData.firstName}} {{invoice.order.ownerData.lastName}}
+                </span>
                 <address>
-                  <span class="identification-number user-id"><span class="key">ID</span>{{ invoice.order.ownerUserId }}</span>
-                  <span class="email">
-                    <a class="mailto" href="mailto:{{invoice.payee.email}">
-                      <mat-icon>email</mat-icon>jmcdermott@freelancer.com
+                  <span class="identification-number user-id" *ngIf="invoice.order.ownerData.accountName">
+                    <span class="key">Account name:</span>
+                    {{ invoice.order.ownerData.accountName }}
+                  </span>
+                  <span class="email" *ngIf="invoice.order.orderAddress.email">
+                    <a class="mailto" href="mailto:{{invoice.order.ownerData.email}">
+                      <mat-icon>email</mat-icon>
+                      {{invoice.order.ownerData.email}}
                     </a>
                   </span>
                 </address>
@@ -293,6 +312,18 @@
             <h6 class="mat-subheading-1 company-name" *ngIf="payee.entity">
               {{ payee.entity }}
             </h6>
+            <div class="payee-attribute" *ngIf="payee.swiftCode">
+              <strong>{{ 'ORDER.INVOICE.SWIFT_CODE_LABEL' | translate }}</strong>{{ payee.swiftCode }}
+            </div>
+            <div class="payee-attribute" *ngIf="payee.routingNumber">
+              <strong>{{ 'ORDER.INVOICE.ROUTING_NUMBER_LABEL' | translate }}</strong>{{ payee.routingNumber }}
+            </div>
+            <div class="payee-attribute" *ngIf="payee.creditOf">
+              <strong>{{ 'ORDER.INVOICE.CREDIT_OF_LABEL' | translate }}</strong>{{ payee.creditOf }}
+            </div>
+            <div class="payee-attribute" *ngIf="payee.creditAccount">
+              <strong>{{ 'ORDER.INVOICE.CREDIT_ACCOUNT_LABEL' | translate }}</strong>{{ payee.creditAccount }}
+            </div>
             <address>
               <span class="line-1">{{ payee.address.address }}</span>
               <span class="line-2" *ngIf="payee.address.address2">
@@ -301,12 +332,15 @@
               <span class="line-3" *ngIf="payee.address.address3">
                 {{ payee.address.address3 }}
               </span>
-              <span class="line-4">
-                {{ payee.address.city }},
-                {{ payee.address.state }} {{ payee.address.zipcode }},
+              <span class="line-4" *ngIf="payee.address">
+                {{ payee.address.city }}
+                {{ payee.address.state }} {{ payee.address.zipcode }}
                 {{ payee.address.country }}
               </span>
-              <span class="phone"><mat-icon>phone_iphone</mat-icon>{{ payee.address.phone }}</span>
+              <span class="phone" *ngIf="payee.address.phone">
+                <mat-icon>phone_iphone</mat-icon>
+                {{ payee.address.phone }}
+              </span>
             </address>
           </div>
           <div flex="30"></div>

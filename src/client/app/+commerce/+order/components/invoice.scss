@@ -243,6 +243,15 @@ invoice-component {
     &:last-child {
       margin-right: 0;
     }
+    .payee-attribute {
+      font-size: 13px;
+      line-height: 1.55;
+      font-weight: 300;
+      strong {
+        font-weight: 500;
+        padding-right: 5px;
+      }
+    }
     @media screen and (max-width: $layout-breakpoint-xs)  {
       margin-right: 0;
     }
