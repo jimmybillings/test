@@ -89,7 +89,7 @@
                     </h5>
                   </div>
                   <div class="cell">
-                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.createdOn }}</p>
+                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.createdOn | date:'short' }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -112,14 +112,14 @@
                     <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.poNumber }}</p>
                   </div>
                 </div>
-                <div class="row" *ngIf="invoice.order.paymentTermsDays">
+                <div class="row" *ngIf="invoice.order.paymentTerms">
                   <div class="cell">
                     <h5 class="mat-subheading-1">
                       {{ 'ORDER.INVOICE.PAYMENT_TERMS_LABEL' | translate }}
                     </h5>
                   </div>
                   <div class="cell">
-                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.paymentTermsDays }}</p>
+                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.paymentTerms }}</p>
                   </div>
                 </div>
               </div>
@@ -297,6 +297,10 @@
             </div>
             <div class="mat-title" *ngIf="invoice.order.paymentTerms">
               <strong>{{ 'ORDER.INVOICE.TERMS_LABEL' | translate }}</strong>{{ invoice.order.paymentTerms }}
+            </div>
+            <div class="mat-title due-date" *ngIf="invoice.order.paymentDueDate">
+              <strong>{{ 'ORDER.INVOICE.DUE_DATE_LABEL' | translate }}</strong>
+              {{ invoice.order.paymentDueDate | date:'MM/dd/yyyy' }}
             </div>
           </div>  
         </div>

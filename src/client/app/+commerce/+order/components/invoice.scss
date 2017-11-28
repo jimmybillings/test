@@ -77,9 +77,10 @@ invoice-component {
       line-height: 1.7;
       .mat-icon {
         font-size: 18px;
-        line-height: 22px;
+        line-height: 1.6;
         width: 22px;
         opacity: .8;
+        margin-top: -3px;
       }
       & > a.mailto {
         display: flex;
