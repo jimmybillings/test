@@ -45,6 +45,7 @@ export class AssetDetailComponent implements OnInit {
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
+  @Output() createShareDialog: EventEmitter<Pojo> = new EventEmitter();
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   public shareFormFields: FormFields[];
   public selectedTarget: string;
@@ -172,6 +173,14 @@ export class AssetDetailComponent implements OnInit {
       factory => factory.activeCollection.addAsset(this._asset, this.subclipMarkers ? this.subclipMarkers : null)
     );
     this.showAssetSaveSubclip = false;
+  }
+
+  public onCreateShareDialog() {
+    this.createShareDialog.emit({
+      asset: this._asset,
+      subClipMarkers: this.subclipMarkers,
+      formFields: this.shareFormFields
+    });
   }
 
   public removeAssetFromActiveCollection(): void {

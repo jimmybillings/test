@@ -79,7 +79,7 @@
             mat-icon-button
             *ngIf="canShare"
             title="{{ shareButtonLabelKey | translate }}"
-            (click)="sharing.show($event)">
+            (click)="onCreateShareDialog()">
             <mat-icon>share</mat-icon>
           </button>
 
@@ -250,15 +250,6 @@
   </div>
 
 </section>
-
-<wz-dropdown #sharing>
-  <asset-share layout="row" layout-align="end start" class="revealed"
-    [enhancedAsset]="asset" 
-    [subclipMarkers]="subclipMarkers"
-    [formFields]="shareFormFields"
-    (closeRequest)="sharing.close()">
-  </asset-share>
-</wz-dropdown>
 
 <mat-menu x-position="before" #downloadCompMenu="matMenu">
   <wz-delivery-options [assetId]="asset.assetId" [markers]="subclipMarkers"></wz-delivery-options>

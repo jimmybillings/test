@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AddAssetParameters, Cart, PriceAttribute, Project } from '../shared/interfaces/commerce.interface';
-import { WzEvent, SelectedPriceAttribute } from '../shared/interfaces/common.interface';
+import { Pojo, SelectedPriceAttribute, WzEvent } from '../shared/interfaces/common.interface';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
@@ -21,6 +21,7 @@ import { CommentParentObject, ObjectType } from '../shared/interfaces/comment.in
 import { FormFields } from '../shared/interfaces/forms.interface';
 import { Common } from '../shared/utilities/common.functions';
 import { SearchContext, SearchState } from '../shared/services/search-context.service';
+import { AssetShareComponent } from './components/asset-share.component';
 
 @Component({
   moduleId: module.id,
@@ -160,6 +161,26 @@ export class AssetComponent implements OnInit, OnDestroy {
         this.subclipMarkers,
         this.appliedAttributes
       ));
+  }
+
+  public onCreateShareDialog(params: Pojo) {
+    console.log(params);
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: AssetShareComponent,
+        dialogConfig: { position: { top: '12%' }, panelClass: 'wz-share-dialog' },
+        inputOptions: {
+          enhancedAsset: params.asset,
+          subclipMarkers: params.subclipMarkers,
+          formFields: params.formFields
+        },
+        outputOptions: [{
+          event: 'closeRequest',
+          callback: () => true,
+          closeOnEvent: true
+        }]
+      }
+    );
   }
 
   private get pricingDialogOptions(): DefaultComponentOptions {
