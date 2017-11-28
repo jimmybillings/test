@@ -1,7 +1,8 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { CollectionCapabilities } from '../services/collection.capabilities';
+import { Capabilities } from '../../shared/services/capabilities.service';
+
 @Component({
   moduleId: module.id,
   selector: 'wz-collection-item-list',
@@ -24,9 +25,7 @@ export class WzCollectionItemListComponent {
   @Output() duplicateCollection = new EventEmitter();
   public currentCollection: Collection;
 
-  constructor(
-    public userCan: CollectionCapabilities) {
-  }
+  constructor(public userCan: Capabilities) { }
 
   public selectActiveCollection(collectionId: Collection['id']) {
     this.setActiveCollection.emit(collectionId);
