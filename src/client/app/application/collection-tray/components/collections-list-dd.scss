@@ -1,11 +1,6 @@
 collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, collection-share, wz-share-link {
   width: 100%;
   height: 100%;
-  position: absolute;
-  z-index: 20;
-  &:parent {
-    z-index: 100;
-  }
   &.revealed {
     margin-top: 0;
   }

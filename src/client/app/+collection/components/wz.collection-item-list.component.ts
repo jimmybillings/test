@@ -20,6 +20,7 @@ export class WzCollectionItemListComponent {
   @Output() deleteCollection = new EventEmitter();
   @Output() generateCollectionLink = new EventEmitter();
   @Output() duplicateCollection = new EventEmitter();
+  @Output() createShareDialog: EventEmitter<Collection> = new EventEmitter();
   public currentCollection: Collection;
 
   public selectActiveCollection(collectionId: Collection['id']) {
@@ -66,5 +67,7 @@ export class WzCollectionItemListComponent {
     return collection.userRole !== 'owner';
   }
 
-
+  public onCreateShareDialog(collection: Collection) {
+    this.createShareDialog.emit(collection);
+  }
 }
