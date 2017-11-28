@@ -7,7 +7,7 @@ import { WindowRef } from '../../shared/services/window-ref.service';
 import { AppStore } from '../../app.store';
 import { DeliveryOption } from '../../shared/interfaces/asset.interface';
 import { Order } from '../../shared/interfaces/commerce.interface';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { ActivityOptions, Asset } from '../../shared/interfaces/common.interface';
 import { DeliveryOptionsService } from './delivery-options.service';
 import * as DeliveryOptionsActions from './delivery-options.actions';
 
@@ -25,14 +25,24 @@ export class DeliveryOptionsEffects {
   public deliver: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.Deliver.Type)
     .switchMap((action: DeliveryOptionsActions.Deliver) =>
       this.service.deliverAsset(action.assetId, action.option.deliveryOptionId, action.markers)
-        .map((order: Order) => this.store.create(factory => factory.deliveryOptions.deliverySuccess(order.id)))
+        .map((order: Order) => this.store.create(factory => factory.deliveryOptions.deliverySuccess(order.id, action.option)))
         .catch(error => Observable.of(this.store.create(factory => factory.deliveryOptions.deliveryFailure(error))))
     );
 
   @Effect()
-  public deliverySuccess: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.DeliverySuccess.Type)
+  public showSnackbarOnDeliverySuccess: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.DeliverySuccess.Type)
     .map((action: DeliveryOptionsActions.DeliverySuccess) =>
-      this.store.create(factory => factory.snackbar.display('ASSET.DELIVERY_OPTIONS.DELIVERY_SUCCESS', { orderId: action.orderId }))
+      this.store.create(factory => factory.snackbar.display(
+        'ASSET.DELIVERY_OPTIONS.DELIVERY_SUCCESS',
+        { orderId: action.orderId }
+      ))
+    );
+
+  @Effect()
+  public recordActivityOnDeliverySuccess: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.DeliverySuccess.Type)
+    .withLatestFrom(this.store.select(state => state.deliveryOptions.activeAssetId))
+    .map(([action, assetId]: [DeliveryOptionsActions.DeliverySuccess, number]) =>
+      this.store.create(factory => factory.activity.record(this.activityOptions(action.option, assetId)))
     );
 
   @Effect()
@@ -41,14 +51,24 @@ export class DeliveryOptionsEffects {
       this.store.create(factory => factory.snackbar.display('ASSET.DELIVERY_OPTIONS.DELIVERY_ERROR'))
     );
 
-  @Effect({ dispatch: false })
+  @Effect()
   public download: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.Download.Type)
-    .do((action: DeliveryOptionsActions.Download) => this.window.nativeWindow.location.href = action.option.renditionUrl.url);
+    .withLatestFrom(this.store.select(state => state.deliveryOptions.activeAssetId))
+    .do(([action, assetId]: [DeliveryOptionsActions.Download, number]) =>
+      this.window.nativeWindow.location.href = action.option.renditionUrl.url
+    )
+    .map(([action, assetId]: [DeliveryOptionsActions.Download, number]) =>
+      this.store.create(factory => factory.activity.record(this.activityOptions(action.option, assetId)))
+    );
 
-  @Effect({ dispatch: false })
+  @Effect()
   public downloadViaAspera: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.DownloadViaAspera.Type)
-    .do((action: DeliveryOptionsActions.Download) =>
+    .withLatestFrom(this.store.select(state => state.deliveryOptions.activeAssetId))
+    .do(([action, assetId]: [DeliveryOptionsActions.Download, number]) =>
       this.service.initializeAsperaConnection(action.option.renditionUrl.asperaSpec)
+    )
+    .map(([action, assetId]: [DeliveryOptionsActions.Download, number]) =>
+      this.store.create(factory => factory.activity.record(this.activityOptions(action.option, assetId)))
     );
 
   constructor(
@@ -57,4 +77,15 @@ export class DeliveryOptionsEffects {
     private service: DeliveryOptionsService,
     private window: WindowRef
   ) { }
+
+  private activityOptions(deliveryOption: DeliveryOption, assetId: number): ActivityOptions {
+    return {
+      activityName: deliveryOption.deliveryOptionLabel,
+      activities: {
+        assetId,
+        transferType: deliveryOption.deliveryOptionTransferType,
+        sourceUseType: deliveryOption.deliveryOptionUseType
+      }
+    };
+  }
 }
