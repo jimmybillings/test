@@ -1,12 +1,18 @@
 import { WzCollectionItemListComponent } from './wz.collection-item-list.component';
 import { Collection } from '../../shared/interfaces/collection.interface';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Wz Collection Item List Component', () => {
     let componentUnderTest: WzCollectionItemListComponent;
+    let mockCapabilitiesService: any;
 
     beforeEach(() => {
-      componentUnderTest = new WzCollectionItemListComponent();
+      mockCapabilitiesService = {
+        editCollection: jasmine.createSpy('editCollection').and.returnValue(Observable.of(true))
+      };
+
+      componentUnderTest = new WzCollectionItemListComponent(mockCapabilitiesService);
       componentUnderTest.currentCollection = mockCurrentCollection();
     });
 
@@ -35,6 +41,14 @@ export function main() {
       it('should return false when collection does not have editors or viewers', () => {
 
         expect(componentUnderTest.collectionIsShared(mockCollectionNotShared())).toBe(false);
+      });
+    });
+
+    describe('userCanEditCollection()', () => {
+      it('should call editCollection() on the cababilities service', () => {
+        let result: Observable<boolean> = componentUnderTest.userCanEditCollection(mockCollection());
+
+        result.take(1).subscribe(res => expect(res).toEqual(true));
       });
     });
 
