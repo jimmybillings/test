@@ -11,7 +11,7 @@ export class ActivityService {
   constructor(private apiService: FutureApiService, private currentUserService: CurrentUserService) { }
 
   public record(activityOptions: ActivityOptions): void {
-    const body: ActivityOptions = {
+    const body: ActivityOptionsRequestBody = {
       ...activityOptions,
       userId: this.currentUserService.state.id
     };
@@ -19,3 +19,7 @@ export class ActivityService {
     this.apiService.post(Api.Identities, 'activityAudit', { body }).subscribe();
   }
 }
+
+interface ActivityOptionsRequestBody extends ActivityOptions {
+  userId: number;
+};

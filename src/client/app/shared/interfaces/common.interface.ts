@@ -208,15 +208,13 @@ export interface AsperaSpec {
   sshfp?: string;
   fasp_port?: number;
   http_fallback?: boolean;
-
 };
 
 export interface AsperaSpecs {
   transfer_specs: { transfer_spec: AsperaSpec }[];
-}
+};
 
-export interface ActivityOptions extends Common {
+export interface ActivityOptions {
   activityName: string;
   activities: Pojo;
-  userId?: number;
-}
+};
