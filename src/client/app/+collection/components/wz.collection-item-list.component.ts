@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Capabilities } from '../../shared/services/capabilities.service';
 import { Collection } from '../../shared/interfaces/collection.interface';
+import { CollectionCapabilities } from '../services/collection.capabilities';
 @Component({
   moduleId: module.id,
   selector: 'wz-collection-item-list',
@@ -25,7 +25,7 @@ export class WzCollectionItemListComponent {
   public currentCollection: Collection;
 
   constructor(
-    public userCan: Capabilities) {
+    public userCan: CollectionCapabilities) {
   }
 
   public selectActiveCollection(collectionId: Collection['id']) {

@@ -46,9 +46,10 @@ export function main() {
 
     describe('userCanEditCollection()', () => {
       it('should call editCollection() on the cababilities service', () => {
-        let result: Observable<boolean> = componentUnderTest.userCanEditCollection(mockCollection());
+        let result: boolean;
+        componentUnderTest.userCanEditCollection(mockCollection()).take(1).subscribe(r => result = r);
 
-        result.take(1).subscribe(res => expect(res).toEqual(true));
+        expect(result).toBe(true);
       });
     });
 
