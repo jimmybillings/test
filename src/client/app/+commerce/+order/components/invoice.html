@@ -146,7 +146,7 @@
                       {{ invoice.order.orderAddress.billingInfo.address.state }} {{ invoice.order.orderAddress.billingInfo.address.zipcode }},
                       {{ invoice.order.orderAddress.billingInfo.address.country }}
                     </span>
-                    <span class="phone">
+                    <span class="phone" *ngIf="invoice.order.orderAddress.billingInfo.address.phone">
                       <mat-icon>phone_iphone</mat-icon>
                       {{ invoice.order.orderAddress.billingInfo.address.phone }}
                     </span>
