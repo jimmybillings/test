@@ -850,21 +850,20 @@ export function main() {
       });
     });
 
-    fdescribe('userCanEditCollection getter', () => {
+    describe('userCanEditCollection getter', () => {
       beforeEach(() => {
         componentUnderTest = new AssetDetailComponent(mockStore);
-        componentUnderTest.activeCollection = { name: 'some collection' } as any;
       });
 
       it('returns an observable of false when the capability returns false', () => {
-        componentUnderTest.userCan = { editCollection: () => false } as any;
+        componentUnderTest.userCan = { editCollection: () => Observable.of(false) } as any;
         let canEdit: boolean;
         componentUnderTest.userCanEditCollection.subscribe(can => canEdit = can);
         expect(canEdit).toBe(false);
       });
 
       it('returns an observable of true when the capability returns true', () => {
-        componentUnderTest.userCan = { editCollection: () => true } as any;
+        componentUnderTest.userCan = { editCollection: () => Observable.of(true) } as any;
         let canEdit: boolean;
         componentUnderTest.userCanEditCollection.subscribe(can => canEdit = can);
         expect(canEdit).toBe(true);
