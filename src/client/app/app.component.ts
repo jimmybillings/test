@@ -150,6 +150,7 @@ export class AppComponent implements OnInit {
     });
   }
 
+
   private loadConfig() {
     if (this.store.snapshotCloned(state => state.uiConfig.loaded)) {
       this.router.initialNavigation();
