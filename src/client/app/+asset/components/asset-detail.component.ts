@@ -135,6 +135,10 @@ export class AssetDetailComponent implements OnInit {
     return this._asset.type === 'collectionAsset' && this.activeCollectionContainsAssetUuid;
   }
 
+  public get userCanEditCollection(): Observable<boolean> {
+    return this.userCan.editCollection(this._activeCollection);
+  }
+
   public get canAddAgainToActiveCollection(): boolean {
     return (this._asset.type === 'searchAsset' && this.activeCollectionContainsAssetId) ||
       (this._asset.type === 'collectionAsset' && (this.activeCollectionContainsAssetId || this.showAssetSaveSubclip));
