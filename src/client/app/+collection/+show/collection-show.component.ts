@@ -26,6 +26,7 @@ import { FormFields } from '../../shared/interfaces/forms.interface';
 import { AppStore } from '../../app.store';
 import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 import { Common } from '../../shared/utilities/common.functions';
+import { CollectionShareComponent } from '../components/collection-share.component';
 
 @Component({
   moduleId: module.id,
@@ -239,6 +240,23 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public notOwnerOfCollection() {
     return this.activeCollection.userRole !== 'owner';
+  }
+
+  public createShareDialog() {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: CollectionShareComponent,
+        dialogConfig: { position: { top: '12%' }, panelClass: 'wz-share-dialog' },
+        inputOptions: {
+          collection: Common.clone(this.activeCollection),
+        },
+        outputOptions: [{
+          event: 'closeRequest',
+          callback: () => true,
+          closeOnEvent: true
+        }]
+      }
+    );
   }
 
   private buildRouteParams(params: Pojo): void {
