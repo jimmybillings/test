@@ -38,7 +38,10 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.collections.load().subscribe();
+    this.collections.data
+      .take(1)
+      .filter((data) => data.items.length === 0)
+      .subscribe(() => this.collections.load().subscribe());
     this.pageSize = this.store.snapshotCloned(state => state.uiConfig.components.global.config.pageSize.value);
     this.optionsSubscription = this.collectionContext.data.subscribe(data => this.options = data);
   }
@@ -47,7 +50,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
     this.optionsSubscription.unsubscribe();
   }
 
-  public closeCollectionsList(): void {
+  public closeCollectionsList() {
     this.close.emit();
   }
 
@@ -57,6 +60,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
     } else {
       this.store.dispatch(factory => factory.activeCollection.set(collection.id));
     }
+    this.closeCollectionsList();
   }
 
   public navigateToCollectionShow(collectionId: number): void {
