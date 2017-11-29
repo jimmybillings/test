@@ -1,10 +1,24 @@
 <div class="wz-dialog">
-  <button mat-icon-button mat-dialog-close title="{{ 'COLLECTION.MEMBERS.CLOSE_BTN_TITLE' | translate }}" type="button" class="close">
+  <!-- <button mat-icon-button mat-dialog-close title="{{ 'COLLECTION.MEMBERS.CLOSE_BTN_TITLE' | translate }}" type="button" class="close">
     <mat-icon>close</mat-icon>
   </button>
   <h1 class="mat-dialog-title" mat-dialog-title>
     {{ 'COLLECTION.MEMBERS.DIALOG_TITLE' | translate }}
-  </h1>
+  </h1> -->
+  <header>
+    <div flex="100" layout="row">
+      <h4 class="mat-headline" flex="100" layout-align="start center">
+        {{ 'COLLECTION.MEMBERS.DIALOG_TITLE' | translate }}
+      </h4>
+      <button 
+        mat-dialog-close
+        mat-icon-button
+        class="close"
+        title="{{ 'COLLECTION.MEMBERS.CLOSE_BTN_TITLE' | translate }}">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </header>
   <p class="collection-name mat-caption">{{ collection.name }}</p>
   <div class="mat-dialog-content">
     <div class="m-data">
