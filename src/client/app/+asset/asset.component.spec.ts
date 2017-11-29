@@ -276,6 +276,31 @@ export function main() {
         expect(mockStore.dispatch).toHaveBeenCalled();
       });
     });
+
+    describe('onCreateShareDialog()', () => {
+      it('Should call the dialog service to open the asset sharing dialog', () => {
+        let params = {
+          asset: 'some asset',
+          subclipMarkers: 'markers',
+          formFields: ['field1', 'field2']
+        };
+        componentUnderTest.onCreateShareDialog(params);
+        expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
+          componentType: jasmine.any(Function),
+          dialogConfig: { position: { top: '12%' }, panelClass: 'wz-share-dialog' },
+          inputOptions: {
+            enhancedAsset: params.asset,
+            subclipMarkers: params.subclipMarkers,
+            formFields: params.formFields
+          },
+          outputOptions: [{
+            event: 'closeRequest',
+            callback: jasmine.any(Function),
+            closeOnEvent: true
+          }]
+        });
+      });
+    });
   });
 
   function mockActiveCollectionAndAsset(id?: number) {
