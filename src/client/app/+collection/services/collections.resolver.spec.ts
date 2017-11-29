@@ -14,7 +14,7 @@ export function main() {
 
       mockCollectionsService = {
         data: mockState.asObservable(),
-        reset: jasmine.createSpy('reset').and.callFake(() => { mockState.next({ items: [] }) }),
+        reset: jasmine.createSpy('reset').and.callFake(() => { mockState.next({ items: [] }); }),
         load: jasmine.createSpy('load').and.returnValue(Observable.of('whatever')),
       };
 

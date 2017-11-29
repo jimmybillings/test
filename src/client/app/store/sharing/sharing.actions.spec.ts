@@ -56,6 +56,16 @@ export function main() {
         link: 'someLink'
       }
     });
-  });
 
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'emailCollectionShareLinkSuccess',
+        parameters: [],
+      },
+      expectedAction: {
+        type: '[Sharing] Email Collection Share Link Success'
+      }
+    });
+  });
 }

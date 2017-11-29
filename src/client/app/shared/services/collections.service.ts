@@ -28,7 +28,7 @@ export class CollectionsService {
     return this.collectionsStore.state;
   }
 
-  public load(params?: any, loadingIndicator: boolean = false): Observable<any> {
+  public load(params?: any, loadingIndicator: LoadingIndicatorOption = false): Observable<any> {
     if (params) this.params = Object.assign({}, this.params, params);
 
     return this.api.get(Api.Assets, `collectionSummary/search`, { parameters: this.params, loadingIndicator: loadingIndicator })
