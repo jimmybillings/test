@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
-import { AssetShareParameters, CollectionShareParameters } from '../../shared/interfaces/common.interface';
+import { AssetShareParameters, CollectionShareParameters, Pojo } from '../../shared/interfaces/common.interface';
 import { CollectionReloadType } from '../../shared/interfaces/collection.interface';
 
 export class ActionFactory {
@@ -9,8 +9,13 @@ export class ActionFactory {
     return new CreateAssetShareLink(assetId, subclipMarkers);
   }
 
-  public emailAssetShareLink(assetId: number, markers: SubclipMarkers, parameters: AssetShareParameters): EmailAssetShareLink {
-    return new EmailAssetShareLink(assetId, markers, parameters);
+  public emailAssetShareLink(
+    assetId: number,
+    markers: SubclipMarkers,
+    parameters: AssetShareParameters,
+    properties: Pojo
+  ): EmailAssetShareLink {
+    return new EmailAssetShareLink(assetId, markers, parameters, properties);
   }
 
   public emailCollectionShareLink(
@@ -64,7 +69,8 @@ export class EmailAssetShareLink implements Action {
   constructor(
     public readonly assetId: number,
     public readonly markers: SubclipMarkers,
-    public readonly parameters: AssetShareParameters
+    public readonly parameters: AssetShareParameters,
+    public readonly properties: Pojo
   ) { }
 }
 
