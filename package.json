@@ -107,7 +107,7 @@
     "gulp-sourcemaps": "2.2.0",
     "gulp-template": "^4.0.0",
     "gulp-tslint": "^8.0.0",
-    "gulp-typescript": "~3.2.2",
+    "gulp-typescript": "~3.2.3",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.10",
@@ -145,7 +145,7 @@
     "traceur": "^0.0.111",
     "ts-node": "3.1.0",
     "tslint": "^4.3.0",
-    "typescript": "^2.4.1",
+    "typescript": "2.6.2",
     "walk": "^2.3.9",
     "yargs": "^6.0.0"
   },
