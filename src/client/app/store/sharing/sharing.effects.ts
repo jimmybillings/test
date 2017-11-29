@@ -4,7 +4,6 @@ import { Action } from '@ngrx/store';
 import { Effect, Actions } from '@ngrx/effects';
 
 import { AppStore } from '../../app.store';
-import { Pagination } from '../../shared/interfaces/common.interface';
 import { SharingService } from './sharing.service';
 import * as SharingActions from './sharing.actions';
 import { CollectionsService } from '../../shared/services/collections.service';
