@@ -212,6 +212,24 @@ export function main() {
           expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
       });
+
+      describe('onCreateShareDialog()', () => {
+        it('Should call the dialog service to open the collection sharing dialog', () => {
+          componentUnderTest.onCreateShareDialog({ id: 123, name: 'Collection name', owner: 123 });
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
+            componentType: jasmine.any(Function),
+            dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
+            inputOptions: {
+              collection: { id: 123, name: 'Collection name', owner: 123 },
+            },
+            outputOptions: [{
+              event: 'closeRequest',
+              callback: jasmine.any(Function),
+              closeOnEvent: true
+            }]
+          });
+        });
+      });
     });
   });
 }

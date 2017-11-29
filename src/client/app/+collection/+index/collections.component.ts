@@ -1,3 +1,4 @@
+import { CollectionShareComponent } from '../components/collection-share.component';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -56,7 +57,7 @@ export class CollectionsComponent {
         },
         'second': {
           'id': 3, 'name':
-          'COLLECTION.INDEX.FILTER_DD_MENU.VIEWER',
+            'COLLECTION.INDEX.FILTER_DD_MENU.VIEWER',
           'value': 'viewer',
           'access': { 'accessLevel': 'viewer' }
         }
@@ -223,6 +224,23 @@ export class CollectionsComponent {
           this.collectionFormComponentOptions('duplicate', collection)
         );
       });
+  }
+
+  public onCreateShareDialog(collection: Collection) {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: CollectionShareComponent,
+        dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
+        inputOptions: {
+          collection: Common.clone(collection),
+        },
+        outputOptions: [{
+          event: 'closeRequest',
+          callback: () => true,
+          closeOnEvent: true
+        }]
+      }
+    );
   }
 
   private collectionFormComponentOptions(actionType: CollectionActionType, collection: Pojo | boolean = false) {

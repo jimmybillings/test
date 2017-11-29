@@ -30,7 +30,7 @@ import { AssetModule } from '../+asset/asset.module';
   ],
   exports: [CollectionComponent, CollectionsComponent, CollectionShowComponent],
   providers: [CollectionShowResolver, CollectionGuard, CollectionAssetResolver, CollectionsResolver],
-  entryComponents: [CollectionDeleteComponent, CollectionShareMembersComponent]
+  entryComponents: [CollectionDeleteComponent, CollectionShareMembersComponent, CollectionShareComponent]
 })
 
 export class CollectionModule { }

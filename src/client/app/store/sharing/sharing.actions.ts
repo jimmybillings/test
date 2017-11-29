@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { AssetShareParameters, CollectionShareParameters } from '../../shared/interfaces/common.interface';
+import { CollectionReloadType } from '../../shared/interfaces/collection.interface';
 
 export class ActionFactory {
   public createAssetShareLink(assetId: number, subclipMarkers: SubclipMarkers): CreateAssetShareLink {
@@ -12,8 +13,10 @@ export class ActionFactory {
     return new EmailAssetShareLink(assetId, markers, parameters);
   }
 
-  public emailCollectionShareLink(collectionId: number, parameters: CollectionShareParameters): EmailCollectionShareLink {
-    return new EmailCollectionShareLink(collectionId, parameters);
+  public emailCollectionShareLink(
+    collectionId: number, parameters: CollectionShareParameters, reloadType: CollectionReloadType
+  ): EmailCollectionShareLink {
+    return new EmailCollectionShareLink(collectionId, parameters, reloadType);
   }
 }
 
@@ -22,8 +25,8 @@ export class InternalActionFactory extends ActionFactory {
     return new CreateAssetShareLinkSuccess(link);
   }
 
-  public emailCollectionShareLinkSuccess(): EmailCollectionShareLinkSuccess {
-    return new EmailCollectionShareLinkSuccess();
+  public emailCollectionShareLinkSuccess(reloadType: CollectionReloadType): EmailCollectionShareLinkSuccess {
+    return new EmailCollectionShareLinkSuccess(reloadType);
   }
 }
 
@@ -44,13 +47,15 @@ export class EmailCollectionShareLink implements Action {
   public readonly type = EmailCollectionShareLink.Type;
   constructor(
     public readonly collectionId: number,
-    public readonly parameters: CollectionShareParameters
+    public readonly parameters: CollectionShareParameters,
+    public readonly reloadType: CollectionReloadType
   ) { }
 }
 
 export class EmailCollectionShareLinkSuccess implements Action {
   public static readonly Type = '[Sharing] Email Collection Share Link Success';
   public readonly type = EmailCollectionShareLinkSuccess.Type;
+  constructor(public readonly reloadType: CollectionReloadType) { }
 }
 
 export class EmailAssetShareLink implements Action {

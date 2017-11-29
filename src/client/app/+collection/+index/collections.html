@@ -91,7 +91,8 @@
 			(deleteCollection)="setCollectionForDelete($event);"
 			(showShareMembers)="showShareMembers($event);"
 			(generateCollectionLink)="getAssetsForLink($event);"
-			(duplicateCollection)="onDuplicateCollection($event)">
+			(duplicateCollection)="onDuplicateCollection($event)"
+			(createShareDialog)="onCreateShareDialog($event)">
 		</wz-collection-item-list>
 		<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
 			flex layout-align="end stretch">

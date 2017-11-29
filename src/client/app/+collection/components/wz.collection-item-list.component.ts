@@ -23,6 +23,7 @@ export class WzCollectionItemListComponent {
   @Output() deleteCollection = new EventEmitter();
   @Output() generateCollectionLink = new EventEmitter();
   @Output() duplicateCollection = new EventEmitter();
+  @Output() createShareDialog: EventEmitter<Collection> = new EventEmitter();
   public currentCollection: Collection;
 
   constructor(public userCan: Capabilities) { }
@@ -69,5 +70,13 @@ export class WzCollectionItemListComponent {
 
   public generateLegacyLink(): void {
     this.generateCollectionLink.emit(this.currentCollection.id);
+  }
+
+  public notOwnerOf(collection: Collection) {
+    return collection.userRole !== 'owner';
+  }
+
+  public onCreateShareDialog(collection: Collection) {
+    this.createShareDialog.emit(collection);
   }
 }
