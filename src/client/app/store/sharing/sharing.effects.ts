@@ -4,8 +4,10 @@ import { Action } from '@ngrx/store';
 import { Effect, Actions } from '@ngrx/effects';
 
 import { AppStore } from '../../app.store';
+import { Pagination } from '../../shared/interfaces/common.interface';
 import { SharingService } from './sharing.service';
 import * as SharingActions from './sharing.actions';
+import { CollectionsService } from '../../shared/services/collections.service';
 
 @Injectable()
 export class SharingEffects {
@@ -29,12 +31,24 @@ export class SharingEffects {
   emailCollectionShareLink: Observable<Action> = this.actions.ofType(SharingActions.EmailCollectionShareLink.Type)
     .switchMap((action: SharingActions.EmailCollectionShareLink) =>
       this.service.emailCollectionShareLink(action.collectionId, action.parameters)
-        .map(() => this.store.create(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE')))
+        .map(() => this.store.create(factory => factory.sharing.emailCollectionShareLinkSuccess()))
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
+  @Effect()
+  public showToastOnCollectionEmailSuccess: Observable<Action> =
+    this.actions.ofType(SharingActions.EmailCollectionShareLinkSuccess.Type)
+      .map(() => this.store.create(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE')));
 
+  @Effect({ dispatch: false })
+  public reloadCollectionsOnCollectionEmailSuccess: Observable<Action> =
+    this.actions.ofType(SharingActions.EmailCollectionShareLinkSuccess.Type)
+      .do(() => this.collectionsService.load(null, 'offAfterResponse').subscribe());
 
-
-  constructor(private actions: Actions, private store: AppStore, private service: SharingService) { }
+  constructor(
+    private actions: Actions,
+    private store: AppStore,
+    private service: SharingService,
+    private collectionsService: CollectionsService
+  ) { }
 }

@@ -1,3 +1,4 @@
+import { InternalActionFactoryMapper } from '../../app.store';
 import { ActionFactory, InternalActionFactory } from './sharing.actions';
 import { ActionsSpecHelper } from '../spec-helpers/actions.spec-helper';
 
@@ -56,6 +57,16 @@ export function main() {
         link: 'someLink'
       }
     });
-  });
 
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'emailCollectionShareLinkSuccess',
+        parameters: [],
+      },
+      expectedAction: {
+        type: '[Sharing] Email Collection Share Link Success'
+      }
+    });
+  });
 }

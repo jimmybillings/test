@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+
 import { SharingEffects } from './sharing.effects';
 import * as SharingActions from './sharing.actions';
 import { EffectsSpecHelper, EffectTestParameters } from '../spec-helpers/effects.spec-helper';
@@ -5,10 +7,13 @@ import { EffectsSpecHelper, EffectTestParameters } from '../spec-helpers/effects
 export function main() {
   describe('Sharing Effects', () => {
     const effectsSpecHelper: EffectsSpecHelper = new EffectsSpecHelper();
+    let mockCollectionsService: any;
 
     function instantiator(): SharingEffects {
+      mockCollectionsService = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       return new SharingEffects(
-        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore, effectsSpecHelper.mockService
+        effectsSpecHelper.mockNgrxEffectsActions, effectsSpecHelper.mockStore,
+        effectsSpecHelper.mockService, mockCollectionsService
       );
     }
 
@@ -70,6 +75,21 @@ export function main() {
       },
       outputActionFactories: {
         success: {
+          sectionName: 'sharing',
+          methodName: 'emailCollectionShareLinkSuccess',
+          expectedArguments: []
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'showToastOnCollectionEmailSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: SharingActions.EmailCollectionShareLinkSuccess.Type
+      },
+      outputActionFactories: {
+        success: {
           sectionName: 'snackbar',
           methodName: 'display',
           expectedArguments: ['ASSET.SHARING.SHARED_CONFIRMED_MESSAGE']
@@ -77,5 +97,16 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'reloadCollectionsOnCollectionEmailSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: SharingActions.EmailCollectionShareLinkSuccess.Type
+      },
+      customTests: [{
+        it: 'calls load() on the collections service',
+        expectation: () => expect(mockCollectionsService.load).toHaveBeenCalledWith(null, 'offAfterResponse')
+      }]
+    });
   });
 }

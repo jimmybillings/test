@@ -179,6 +179,7 @@ export function main() {
           accessLevel: 'Viewer',
           comment: 'Some Comment'
         });
+        expect(mockApiService.post).toHaveBeenCalledWithLoading('onBeforeRequest');
       });
     });
   });

@@ -21,6 +21,10 @@ export class InternalActionFactory extends ActionFactory {
   public createAssetShareLinkSuccess(link: string): CreateAssetShareLinkSuccess {
     return new CreateAssetShareLinkSuccess(link);
   }
+
+  public emailCollectionShareLinkSuccess(): EmailCollectionShareLinkSuccess {
+    return new EmailCollectionShareLinkSuccess();
+  }
 }
 
 export class CreateAssetShareLink implements Action {
@@ -44,6 +48,11 @@ export class EmailCollectionShareLink implements Action {
   ) { }
 }
 
+export class EmailCollectionShareLinkSuccess implements Action {
+  public static readonly Type = '[Sharing] Email Collection Share Link Success';
+  public readonly type = EmailCollectionShareLinkSuccess.Type;
+}
+
 export class EmailAssetShareLink implements Action {
   public static readonly Type = '[Sharing] Email Asset Share Link';
   public readonly type = EmailAssetShareLink.Type;
@@ -54,4 +63,5 @@ export class EmailAssetShareLink implements Action {
   ) { }
 }
 
-export type Any = CreateAssetShareLink | CreateAssetShareLinkSuccess | EmailAssetShareLink | EmailCollectionShareLink;
+export type Any = CreateAssetShareLink | CreateAssetShareLinkSuccess | EmailAssetShareLink | EmailCollectionShareLink
+  | EmailCollectionShareLinkSuccess;

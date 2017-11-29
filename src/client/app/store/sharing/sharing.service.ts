@@ -33,9 +33,9 @@ export class SharingService {
         ],
         accessLevel: parameters.accessLevel,
         comment: parameters.comment
-      }
-    })
-      .map(response => null);
+      },
+      loadingIndicator: 'onBeforeRequest'
+    }).map(response => null);
   }
 
   private callSharingEndpointWith(body: AccessInfoRequestBody): Observable<AccessInfoResponse> {
