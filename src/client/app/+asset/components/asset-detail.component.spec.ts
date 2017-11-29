@@ -850,6 +850,26 @@ export function main() {
       });
     });
 
+    describe('userCanEditCollection getter', () => {
+      beforeEach(() => {
+        componentUnderTest = new AssetDetailComponent(mockStore);
+      });
+
+      it('returns an observable of false when the capability returns false', () => {
+        componentUnderTest.userCan = { editCollection: () => Observable.of(false) } as any;
+        let canEdit: boolean;
+        componentUnderTest.userCanEditCollection.subscribe(can => canEdit = can);
+        expect(canEdit).toBe(false);
+      });
+
+      it('returns an observable of true when the capability returns true', () => {
+        componentUnderTest.userCan = { editCollection: () => Observable.of(true) } as any;
+        let canEdit: boolean;
+        componentUnderTest.userCanEditCollection.subscribe(can => canEdit = can);
+        expect(canEdit).toBe(true);
+      });
+    });
+
     describe('canUpdateInActiveCollection getter', () => {
       const tests: {
         assetType: AssetType, matchingUuid: boolean, subclipsSet: boolean, subclipsExact: boolean, expectedResult: boolean

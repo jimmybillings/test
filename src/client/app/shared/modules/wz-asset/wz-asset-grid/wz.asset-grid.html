@@ -51,18 +51,27 @@
 
           <!-- ADD / ADD_AGAIN / REMOVE FROM COLLECTION -->
           <ng-container *ngIf="userCan.haveCollections()">
-            <button [disabled]="!userCan.editCollections()" mat-icon-button *ngIf="canBeRemoved(asset)"
+            <button
+              [disabled]="!(userCanEditActiveCollection | async)"
+              mat-icon-button
+              *ngIf="canBeRemoved(asset)"
               title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="removeFromActiveCollection(asset)">
               <mat-icon>remove_circle</mat-icon>
             </button>
-            <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" mat-icon-button 
+            <button
+              class="add-to-collection-btn"
+              [disabled]="!userCan.editCollections()"
+              mat-icon-button 
               *ngIf="!inCollection(asset)"
               title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="addToActiveCollection(asset)">
               <mat-icon>add_box</mat-icon>
             </button>
-            <button [disabled]="!userCan.editCollections()" mat-icon-button *ngIf="canBeAddedAgain(asset)"
+            <button
+              [disabled]="!userCan.editCollections()"
+              mat-icon-button
+              *ngIf="canBeAddedAgain(asset)"
               title="{{ 'COLLECTION.ADD_AGAIN_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:activeCollection.name} }}"
               (click)="addToActiveCollection(asset)">
               <mat-icon>library_add</mat-icon>
@@ -76,7 +85,10 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu x-position="before" y-position="below" #moreCollectionAssetMenu="matMenu">
-            <button mat-menu-item (click)="editAsset(asset)">
+            <button
+              [disabled]="!(userCanEditActiveCollection | async)"
+              mat-menu-item
+              (click)="editAsset(asset)">
               <mat-icon>theaters</mat-icon>
               <span>
                 {{ (isSubclipped(asset)

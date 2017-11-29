@@ -77,9 +77,10 @@ invoice-component {
       line-height: 1.7;
       .mat-icon {
         font-size: 18px;
-        line-height: 22px;
+        line-height: 1.6;
         width: 22px;
         opacity: .8;
+        margin-top: -3px;
       }
       & > a.mailto {
         display: flex;
@@ -242,6 +243,15 @@ invoice-component {
     margin-right: 16px;
     &:last-child {
       margin-right: 0;
+    }
+    .payee-attribute {
+      font-size: 13px;
+      line-height: 1.55;
+      font-weight: 300;
+      strong {
+        font-weight: 500;
+        padding-right: 5px;
+      }
     }
     @media screen and (max-width: $layout-breakpoint-xs)  {
       margin-right: 0;
