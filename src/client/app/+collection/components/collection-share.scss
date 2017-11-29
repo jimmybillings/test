@@ -6,8 +6,11 @@ collection-share {
     line-height: 1.25;
   }
   wz-share {
-    display: block;
-    width: 430px;
+    display: flex;
+    width: 400px;
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+      width: 100%;
+    }
   }
 }
 

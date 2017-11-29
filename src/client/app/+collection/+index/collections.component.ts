@@ -230,7 +230,7 @@ export class CollectionsComponent {
     this.dialogService.openComponentInDialog(
       {
         componentType: CollectionShareComponent,
-        dialogConfig: { position: { top: '12%' }, panelClass: 'wz-share-dialog' },
+        dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
         inputOptions: {
           collection: Common.clone(collection),
         },
