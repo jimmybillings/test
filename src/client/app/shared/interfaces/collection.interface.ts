@@ -35,6 +35,8 @@ export interface CollectionSummaryItem {
   userRole?: string;
 }
 
+export type CollectionReloadType = 'activeCollection' | 'collections';
+
 export type CollectionActionType = 'create' | 'edit' | 'duplicate';
 
 export interface CollectionsStoreI {

@@ -36,12 +36,13 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'emailCollectionShareLink',
-        parameters: [1, { parameters: 'some paramaters' }]
+        parameters: [1, { parameters: 'some paramaters' }, 'collection']
       },
       expectedAction: {
         type: '[Sharing] Email Collection Share Link',
         collectionId: 1,
-        parameters: { parameters: 'some paramaters' }
+        parameters: { parameters: 'some paramaters' },
+        reloadType: 'collection'
       }
     });
 
@@ -56,6 +57,17 @@ export function main() {
         link: 'someLink'
       }
     });
-  });
 
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'emailCollectionShareLinkSuccess',
+        parameters: ['collection'],
+      },
+      expectedAction: {
+        type: '[Sharing] Email Collection Share Link Success',
+        reloadType: 'collection'
+      }
+    });
+  });
 }
