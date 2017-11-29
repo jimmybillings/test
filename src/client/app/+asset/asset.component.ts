@@ -168,7 +168,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.dialogService.openComponentInDialog(
       {
         componentType: AssetShareComponent,
-        dialogConfig: { position: { top: '12%' }, panelClass: 'wz-share-dialog' },
+        dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
         inputOptions: {
           enhancedAsset: params.asset,
           subclipMarkers: params.subclipMarkers,

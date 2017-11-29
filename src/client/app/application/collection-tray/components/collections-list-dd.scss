@@ -1,24 +1,24 @@
-collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, collection-share, wz-share-link {
-  width: 100%;
-  height: 100%;
-  &.revealed {
-    margin-top: 0;
-  }
-  &.revealed .collections-dd-menu {
+collections-list-dd, collections-filter-dd, collections-sort-dd, wz-share, collection-share, wz-share-link {
+  // width: 100%;
+  // height: 100%;
+  // &.revealed {
+  //   margin-top: 0;
+  // }
+  &.revealed wz-share-link .collections-dd-menu {
     animation-name: dd-open;
     animation-duration: 200ms;
     animation-timing-function: $swift-ease-in-timing-function;
     animation-iteration-count: 1;
     animation-fill-mode: backwards;
   }
-  &.revealed .dd-menu-wrapper {
-    animation-name: fadeIn;
-    animation-duration: 200ms;
-    animation-timing-function: $swift-ease-in-timing-function;
-    animation-iteration-count: 1;
-    animation-delay: 250ms;
-    animation-fill-mode: backwards;
-  }
+  // &.revealed .dd-menu-wrapper {
+    // animation-name: fadeIn;
+    // animation-duration: 200ms;
+    // animation-timing-function: $swift-ease-in-timing-function;
+    // animation-iteration-count: 1;
+    // animation-delay: 250ms;
+    // animation-fill-mode: backwards;
+  // }
   .collections-dd-menu {
     @include mat-elevation(6);
     transition: $swift-ease-out;
@@ -226,12 +226,15 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, co
 .dd-menu-wrapper collections-sort-dd .collections-dd-menu {
   position: absolute;
   right: 0;
+  top: 0;
+  // border-radius: 2px 2px 0 0;
   min-width: 100%;
   @include mat-elevation(2);
+  z-index: 1;
   header {
     display: flex;
     padding-left: 3px;
-    padding-right: 3px;
+    // padding-right: 3px;
     .mat-headline {
       margin-left: 21px;
     }
