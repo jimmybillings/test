@@ -31,7 +31,10 @@ export class CollectionCapabilities {
 
   public editCollection(collection: Collection): Observable<boolean> {
     return this.currentUser.data.map((user: User) => {
-      return user.id === collection.owner || (user.editableCollections && user.editableCollections.includes(collection.id));
+      return (user.id === collection.owner) ||
+        (user.editableCollections && user.editableCollections.includes(collection.id)) ||
+        (collection.editors && collection.editors.map(editor => editor.id).includes(user.id)) ||
+        (collection.userRole === 'editor' || collection.userRole === 'owner');
     });
   }
 

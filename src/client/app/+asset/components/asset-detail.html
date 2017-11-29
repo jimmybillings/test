@@ -86,6 +86,7 @@
           <button mat-icon-button
             (click)="toggleCommentsVisibility()"
             *ngIf="canComment"
+            [disabled]="!(userCanAddComments | async)"
             title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
               <mat-icon>mode_comment</mat-icon>
               <span *ngIf="(commentCount | async) > 0" class="comment-count">{{commentCount| async}}</span>
@@ -96,28 +97,28 @@
               data-pendo='asset-detail_add-to-collection-btn'
               mat-icon-button 
               *ngIf="canAddToActiveCollection"
-              [disabled]="!userCan.editCollections()" 
+              [disabled]="!(userCanEditCollection | async)" 
               title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
               (click)="addAssetToActiveCollection()">
               <mat-icon>add_box</mat-icon>
             </button>
             <button mat-icon-button 
               *ngIf="canAddAgainToActiveCollection"
-              [disabled]="!userCan.editCollections()" 
+              [disabled]="!(userCanEditCollection | async)" 
               title="{{ 'COLLECTION.ADD_AGAIN_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
               (click)="addAssetToActiveCollection()">
               <mat-icon>library_add</mat-icon>
             </button>
             <button mat-icon-button 
               *ngIf="canUpdateInActiveCollection"  
-              [disabled]="!userCan.editCollections()"
+              [disabled]="!(userCanEditCollection | async)"
               title="{{ 'COLLECTION.UPDATE_IN_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
               (click)="updateAssetInActiveCollection()">
               <mat-icon>update</mat-icon>
             </button>
             <button mat-icon-button 
               *ngIf="canRemoveFromActiveCollection"  
-              [disabled]="!userCan.editCollections()"
+              [disabled]="!(userCanEditCollection | async)"
               title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
               (click)="removeAssetFromActiveCollection()">
               <mat-icon>remove_circle</mat-icon>

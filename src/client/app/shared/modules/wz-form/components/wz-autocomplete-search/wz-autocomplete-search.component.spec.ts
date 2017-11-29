@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { MockAppStore } from '../../../../../store/spec-helpers/mock-app.store';
 
 export function main() {
-  let mockStore: MockAppStore = new MockAppStore();
+  let mockStore: MockAppStore;
 
   describe('Wz autocomplete component', () => {
     var HTMLElements: any = {};
@@ -21,7 +21,9 @@ export function main() {
       destroySubscription: jasmine.createSpy('destroySubscription'),
       suggestionChangeListener: jasmine.createSpy('suggestionChangeListener')
     };
+
     beforeEach(() => {
+      mockStore = new MockAppStore();
       componentUnderTest = new WzAutocompleteSearchComponent(fb, mockStore);
       componentUnderTest.wzInputSuggestions = wzInputSuggestions;
       spyOn(componentUnderTest.searchContext, 'emit');

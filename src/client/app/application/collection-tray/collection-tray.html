@@ -1,5 +1,5 @@
 
-<section layout="row" flex="100" layout-align="start" class="header-tray">
+<section *ngIf="collection | async as collection" layout="row" flex="100" layout-align="start" class="header-tray">
   <div flex="100" class="asset-carousel grid">
     <ul class="asset-list" *ngIf="collection.assets">
       <li *ngIf="collection.assets.items.length === 0"
@@ -66,7 +66,7 @@
       <button
         data-pendo="collection-tray-menu_change-focused-btn"
         mat-menu-item
-        (click)="list.show($event)">
+        (click)="createCollectionlistDialog()">
         <mat-icon>folder_special</mat-icon>{{ 'COLLECTION.MORE_DD_MENU.CHANGE_SELECTED' | translate }}
       </button>
       <a
@@ -83,13 +83,4 @@
   </div>
 </section>
 
-<wz-dropdown #list>
-  <collections-list-dd
-    [focusedCollection]="collection"
-    [config]="collectionFormConfig"
-    (close)="list.close()"
-    (onCreateCollection)="createCollection()"
-    layout="row" layout-align="end start" class="revealed">
-  </collections-list-dd>
-</wz-dropdown>
 

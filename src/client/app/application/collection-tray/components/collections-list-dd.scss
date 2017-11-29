@@ -1,3 +1,4 @@
+// .collections-list-dd
 collections-list-dd, collections-filter-dd, collections-sort-dd, wz-share, collection-share, wz-share-link {
   // width: 100%;
   // height: 100%;
@@ -23,6 +24,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, wz-share, colle
     @include mat-elevation(6);
     transition: $swift-ease-out;
     min-width: 400px;
+    z-index: 1;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       position: static;
       min-width: 100%;
@@ -102,7 +104,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, wz-share, colle
       }
     }
     .mat-list[dense] {
-      margin: 8px 0;
+      margin: 8px 0 0 0;
       padding-top: 0;
       max-height: 342px;
       min-height: 312px;
@@ -315,4 +317,8 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper wz-item-search-form {
     max-width: 400px;
     min-width: 320px;
   }
+}
+
+.collection-list-dd-component .mat-dialog-container {
+  padding:0;
 }

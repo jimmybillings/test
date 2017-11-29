@@ -191,4 +191,8 @@ export class WzAsset implements OnInit {
     this.store.blockUntil(state => !!state.speedPreview[asset.assetId])
       .subscribe(() => this.detector.markForCheck());
   }
+
+  public get userCanEditActiveCollection(): Observable<boolean> {
+    return this.userCan.editCollection(this._activeCollection);
+  }
 }

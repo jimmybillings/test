@@ -15,7 +15,8 @@ import { CollectionListDdComponent } from './collection-tray/components/collecti
     CollectionListDdComponent,
     AppLoadingIndicatorComponent
   ],
-  exports: [AppNavComponent, CollectionTrayComponent, FooterComponent, AppLoadingIndicatorComponent]
+  exports: [AppNavComponent, CollectionTrayComponent, FooterComponent, AppLoadingIndicatorComponent],
+  entryComponents: [CollectionListDdComponent]
 })
 
 export class ApplicationModule { }

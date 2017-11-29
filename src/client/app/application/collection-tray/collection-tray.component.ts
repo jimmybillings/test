@@ -1,4 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 import { CollectionLinkComponent } from '../../+collection/components/collection-link.component';
 import { CollectionFormComponent } from './components/collection-form.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -7,6 +8,7 @@ import { Collection } from '../../shared/interfaces/collection.interface';
 import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 import { AppStore } from '../../app.store';
 import { Common } from '../../shared/utilities/common.functions';
+import { CollectionListDdComponent } from './components/collections-list-dd.component';
 
 @Component({
   moduleId: module.id,
@@ -18,7 +20,7 @@ import { Common } from '../../shared/utilities/common.functions';
 export class CollectionTrayComponent implements OnInit {
   @Input() userPreference: any;
   public pageSize: string;
-  public collection: any;
+  public collection: Subject<Collection> = new Subject();;
   public collectionFormConfig: any;
   private enhancedAssets: { [uuid: string]: EnhancedAsset } = {};
 
@@ -53,9 +55,27 @@ export class CollectionTrayComponent implements OnInit {
   }
 
   public getAssetsForLink(): void {
+    let items: Asset[];
+    this.collection.take(1).subscribe(collection => items = collection.assets.items);
     this.dialogService.openComponentInDialog({
       componentType: CollectionLinkComponent,
-      inputOptions: { assets: this.collection.assets.items }
+      inputOptions: { assets: items }
+    });
+  }
+
+  public createCollectionlistDialog() {
+    this.dialogService.openComponentInDialog({
+      componentType: CollectionListDdComponent,
+      dialogConfig: { panelClass: 'collection-list-dd-component' },
+      inputOptions: {
+        focusedCollection: this.collection,
+        config: this.collectionFormConfig
+      },
+      outputOptions: [{
+        event: 'close',
+        callback: () => true,
+        closeOnEvent: true
+      }]
     });
   }
 
@@ -89,6 +109,6 @@ export class CollectionTrayComponent implements OnInit {
             .map(item => enhanceAsset(item, 'collectionAsset', collection.id));
         }
         return collection;
-      }).subscribe((collection) => this.collection = collection);
+      }).subscribe((collection) => this.collection.next(collection));
   }
 }
