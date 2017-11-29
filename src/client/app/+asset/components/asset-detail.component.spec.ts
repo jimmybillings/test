@@ -1,3 +1,4 @@
+import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
 import { Observable } from 'rxjs/Observable';
 import { AssetDetailComponent } from './asset-detail.component';
 import { MockAppStore } from '../../store/spec-helpers/mock-app.store';
@@ -1082,6 +1083,23 @@ export function main() {
         it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
           componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
           expect(componentUnderTest.showDownloadButton).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('onCreateShareDialog()', () => {
+      it('emits the right event', () => {
+        spyOn(componentUnderTest.createShareDialog, 'emit');
+        componentUnderTest.subclipMarkers = 'some markers' as any;
+        componentUnderTest.shareFormFields = 'some form fields' as any;
+        componentUnderTest.onCreateShareDialog();
+
+        expect(componentUnderTest.createShareDialog.emit).toHaveBeenCalledWith({
+          asset: {
+            assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl', transcodeTargets: transcodeTargets
+          },
+          subClipMarkers: 'some markers',
+          formFields: 'some form fields'
         });
       });
     });

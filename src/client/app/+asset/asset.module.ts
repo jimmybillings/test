@@ -16,7 +16,8 @@ import { AssetSaveSubclipComponent } from './components/asset-save-subclip.compo
     AssetShareComponent,
     AssetSaveSubclipComponent
   ],
-  exports: [AssetComponent]
+  exports: [AssetComponent],
+  entryComponents: [AssetShareComponent]
 })
 
 export class AssetModule { }
