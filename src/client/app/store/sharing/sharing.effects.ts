@@ -1,3 +1,4 @@
+import { Pagination } from '../../shared/interfaces/common.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
@@ -30,7 +31,7 @@ export class SharingEffects {
   emailCollectionShareLink: Observable<Action> = this.actions.ofType(SharingActions.EmailCollectionShareLink.Type)
     .switchMap((action: SharingActions.EmailCollectionShareLink) =>
       this.service.emailCollectionShareLink(action.collectionId, action.parameters)
-        .map(() => this.store.create(factory => factory.sharing.emailCollectionShareLinkSuccess()))
+        .map(() => this.store.create(factory => factory.sharing.emailCollectionShareLinkSuccess(action.reloadType)))
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
@@ -42,7 +43,20 @@ export class SharingEffects {
   @Effect({ dispatch: false })
   public reloadCollectionsOnCollectionEmailSuccess: Observable<Action> =
     this.actions.ofType(SharingActions.EmailCollectionShareLinkSuccess.Type)
+      .filter((action: SharingActions.EmailCollectionShareLinkSuccess) => action.reloadType === 'collections')
       .do(() => this.collectionsService.load(null, 'offAfterResponse').subscribe());
+
+  @Effect()
+  public reloadCollectionOnCollectionEmailSuccess: Observable<Action> =
+    this.actions.ofType(SharingActions.EmailCollectionShareLinkSuccess.Type)
+      .filter((action: SharingActions.EmailCollectionShareLinkSuccess) => action.reloadType === 'activeCollection')
+      .withLatestFrom(this.store.select(state => state.activeCollection.collection.assets.pagination))
+      .map(([action, pagination]: [SharingActions.EmailCollectionShareLinkSuccess, Pagination]) =>
+        this.store.create(factory => factory.activeCollection.load({
+          pageSize: pagination.pageSize,
+          currentPage: pagination.currentPage
+        }))
+      );
 
   constructor(
     private actions: Actions,

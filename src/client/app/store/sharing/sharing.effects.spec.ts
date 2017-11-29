@@ -67,7 +67,8 @@ export function main() {
       inputAction: {
         type: SharingActions.EmailCollectionShareLink.Type,
         collectionId: 'someCollectionId',
-        parameters: { some: 'paramaters' }
+        parameters: { some: 'paramaters' },
+        reloadType: 'collection'
       },
       serviceMethod: {
         name: 'emailCollectionShareLink',
@@ -77,7 +78,7 @@ export function main() {
         success: {
           sectionName: 'sharing',
           methodName: 'emailCollectionShareLinkSuccess',
-          expectedArguments: []
+          expectedArguments: ['collection']
         }
       }
     });
@@ -86,7 +87,8 @@ export function main() {
       effectName: 'showToastOnCollectionEmailSuccess',
       effectsInstantiator: instantiator,
       inputAction: {
-        type: SharingActions.EmailCollectionShareLinkSuccess.Type
+        type: SharingActions.EmailCollectionShareLinkSuccess.Type,
+        reloadTpe: 'collections'
       },
       outputActionFactories: {
         success: {
@@ -101,12 +103,33 @@ export function main() {
       effectName: 'reloadCollectionsOnCollectionEmailSuccess',
       effectsInstantiator: instantiator,
       inputAction: {
-        type: SharingActions.EmailCollectionShareLinkSuccess.Type
+        type: SharingActions.EmailCollectionShareLinkSuccess.Type,
+        reloadType: 'collections'
       },
       customTests: [{
         it: 'calls load() on the collections service',
         expectation: () => expect(mockCollectionsService.load).toHaveBeenCalledWith(null, 'offAfterResponse')
       }]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'reloadCollectionOnCollectionEmailSuccess',
+      effectsInstantiator: instantiator,
+      state: {
+        storeSectionName: 'activeCollection',
+        value: { collection: { assets: { pagination: { pageSize: 20, currentPage: 1 } } } }
+      },
+      inputAction: {
+        type: SharingActions.EmailCollectionShareLinkSuccess.Type,
+        reloadType: 'activeCollection'
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'activeCollection',
+          methodName: 'load',
+          expectedArguments: [{ pageSize: 20, currentPage: 1 }]
+        }
+      }
     });
   });
 }

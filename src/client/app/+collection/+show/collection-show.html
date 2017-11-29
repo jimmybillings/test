@@ -188,6 +188,7 @@
 
 <wz-dropdown #sharing>
   <collection-share layout="row" layout-align="end start" class="revealed"
+    [reloadType]="'activeCollection'"
     [collection]="activeCollection" 
     (closeRequest)="sharing.close()">
   </collection-share>
