@@ -108,6 +108,28 @@ export function main() {
         expect(componentUnderTest.generateCollectionLink.emit).toHaveBeenCalledWith(3);
       });
     });
+
+    describe('onCreateShareDialog()', () => {
+      it('emits createShareDialog with the current collection', () => {
+        spyOn(componentUnderTest.createShareDialog, 'emit');
+        componentUnderTest.onCreateShareDialog({ collection: 'some collection' } as any);
+
+        expect(componentUnderTest.createShareDialog.emit).toHaveBeenCalledWith({ collection: 'some collection' });
+      });
+    });
+
+    describe('notOwnerOf()', () => {
+      it('return true if the current user is not the collection owner', () => {
+
+        expect(componentUnderTest.notOwnerOf({ userRole: 'editor' } as any)).toBe(true);
+      });
+
+      it('return false if the current user is the collection owner', () => {
+
+        expect(componentUnderTest.notOwnerOf({ userRole: 'owner' } as any)).toBe(false);
+      });
+    });
+
   });
 };
 

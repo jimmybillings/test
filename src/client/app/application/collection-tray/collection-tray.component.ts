@@ -1,5 +1,5 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { CollectionLinkComponent } from '../../+collection/components/collection-link.component';
 import { CollectionFormComponent } from './components/collection-form.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -17,21 +17,25 @@ import { CollectionListDdComponent } from './components/collections-list-dd.comp
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class CollectionTrayComponent implements OnInit {
+export class CollectionTrayComponent implements OnInit, OnDestroy {
   @Input() userPreference: any;
   public pageSize: string;
-  public collection: Subject<Collection> = new Subject();;
+  public collection: Collection;
   public collectionFormConfig: any;
   private enhancedAssets: { [uuid: string]: EnhancedAsset } = {};
-
-  constructor(private dialogService: WzDialogService, private store: AppStore) { }
+  private collectionSubscription: Subscription;
+  constructor(private dialogService: WzDialogService, private store: AppStore, private detector: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.store.dispatch(factory => factory.activeCollection.loadIfNeeded());
-    this.setCollection();
+    this.collectionSubscription = this.setCollection();
     const config: UiConfigComponents = this.store.snapshotCloned(state => state.uiConfig.components);
     this.pageSize = config.global.config.pageSize.value;
     this.collectionFormConfig = config.collection.config;
+  }
+
+  ngOnDestroy() {
+    this.collectionSubscription.unsubscribe();
   }
 
   public toggleCollectionTray(): void {
@@ -55,15 +59,14 @@ export class CollectionTrayComponent implements OnInit {
   }
 
   public getAssetsForLink(): void {
-    let items: Asset[];
-    this.collection.take(1).subscribe(collection => items = collection.assets.items);
     this.dialogService.openComponentInDialog({
       componentType: CollectionLinkComponent,
-      inputOptions: { assets: items }
+      inputOptions: { assets: this.collection.assets.items }
     });
   }
 
   public createCollectionlistDialog() {
+    let focusedCollection: Collection;
     this.dialogService.openComponentInDialog({
       componentType: CollectionListDdComponent,
       dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
@@ -99,8 +102,8 @@ export class CollectionTrayComponent implements OnInit {
     });
   }
 
-  private setCollection() {
-    this.store.select(state => state.activeCollection)
+  private setCollection(): Subscription {
+    return this.store.select(state => state.activeCollection)
       .filter(state => state.collection !== undefined)
       .map(state => {
         let collection: Collection = Common.clone(state.collection);
@@ -109,6 +112,9 @@ export class CollectionTrayComponent implements OnInit {
             .map(item => enhanceAsset(item, 'collectionAsset', collection.id));
         }
         return collection;
-      }).subscribe((collection) => this.collection.next(collection));
+      }).subscribe((collection) => {
+        this.collection = collection;
+        this.detector.markForCheck();
+      });
   }
 }

@@ -97,6 +97,27 @@ export function main() {
         });
       });
 
+      describe('createCollectionlistDialog()', () => {
+        it('Should call the dialog service to open the asset sharing dialog', () => {
+          componentUnderTest.collection = { id: 1, name: 'some collection' } as any;
+          componentUnderTest.collectionFormConfig = { config: 'some config' } as any;
+          componentUnderTest.createCollectionlistDialog();
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
+            componentType: jasmine.any(Function),
+            dialogConfig: { panelClass: 'collection-list-dd-component' },
+            inputOptions: {
+              focusedCollection: componentUnderTest.collection,
+              config: componentUnderTest.collectionFormConfig,
+            },
+            outputOptions: [{
+              event: 'close',
+              callback: jasmine.any(Function),
+              closeOnEvent: true
+            }]
+          });
+        });
+      });
+
       it('dispatches the proper action when the callback is called', () => {
         mockDialogService.onSubmitCallback({ id: 123 });
 

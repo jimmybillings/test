@@ -164,7 +164,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   public onCreateShareDialog(params: Pojo) {
-    console.log(params);
     this.dialogService.openComponentInDialog(
       {
         componentType: AssetShareComponent,

@@ -1,3 +1,5 @@
+import { Common } from '../../shared/utilities/common.functions';
+import { CollectionShareComponent } from '../components/collection-share.component';
 import { Observable } from 'rxjs/Observable';
 import { CollectionShowComponent } from './collection-show.component';
 import { Collection } from '../../shared/interfaces/collection.interface';
@@ -313,6 +315,26 @@ export function main() {
         componentUnderTest.activeCollection = { id: 123, name: 'Collection name', owner: 123 };
         componentUnderTest.showShareMembers();
         expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
+      });
+    });
+
+    describe('createShareDialog()', () => {
+      it('Should call the dialog service to open the collection sharing dialog', () => {
+        componentUnderTest.activeCollection = { id: 123, name: 'Collection name', owner: 123 };
+
+        componentUnderTest.createShareDialog();
+        expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
+          componentType: jasmine.any(Function),
+          dialogConfig: { position: { top: '12%' }, panelClass: 'wz-share-dialog' },
+          inputOptions: {
+            collection: { id: 123, name: 'Collection name', owner: 123 },
+          },
+          outputOptions: [{
+            event: 'closeRequest',
+            callback: jasmine.any(Function),
+            closeOnEvent: true
+          }]
+        });
       });
     });
 
