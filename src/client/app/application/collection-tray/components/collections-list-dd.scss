@@ -96,7 +96,7 @@ collection-share {
       }
     }
     .mat-list[dense] {
-      margin: 2px 0;
+      margin: 1px 0 1px 0;
       padding-top: 0;
       max-height: 342px;
       min-height: 336px;
@@ -113,8 +113,6 @@ collection-share {
           margin: 0;
           border: none;
           text-align: left;
-          // background: none;
-          // background-color: transparent;
           font-size: 1.1em;
           line-height: 1;
           transition: $swift-ease-out;
