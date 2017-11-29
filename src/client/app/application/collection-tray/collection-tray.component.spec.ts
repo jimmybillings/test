@@ -33,7 +33,7 @@ export function main() {
         })
       };
 
-      componentUnderTest = new CollectionTrayComponent(mockDialogService, mockAppStore);
+      componentUnderTest = new CollectionTrayComponent(mockDialogService, mockAppStore, null);
 
       componentUnderTest.collection = { assets: { items: [EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset')] } } as any;
     });
@@ -104,7 +104,7 @@ export function main() {
           componentUnderTest.createCollectionlistDialog();
           expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
             componentType: jasmine.any(Function),
-            dialogConfig: { panelClass: 'collection-list-dd-component' },
+            dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
             inputOptions: {
               focusedCollection: componentUnderTest.collection,
               config: componentUnderTest.collectionFormConfig,

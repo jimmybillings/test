@@ -325,7 +325,7 @@ export function main() {
         componentUnderTest.createShareDialog();
         expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
           componentType: jasmine.any(Function),
-          dialogConfig: { position: { top: '12%' }, panelClass: 'wz-share-dialog' },
+          dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
           inputOptions: {
             collection: { id: 123, name: 'Collection name', owner: 123 },
           },

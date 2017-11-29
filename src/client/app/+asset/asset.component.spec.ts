@@ -287,7 +287,7 @@ export function main() {
         componentUnderTest.onCreateShareDialog(params);
         expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
           componentType: jasmine.any(Function),
-          dialogConfig: { position: { top: '12%' }, panelClass: 'wz-share-dialog' },
+          dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
           inputOptions: {
             enhancedAsset: params.asset,
             subclipMarkers: params.subclipMarkers,
