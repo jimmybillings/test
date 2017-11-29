@@ -66,7 +66,7 @@ export class CollectionTrayComponent implements OnInit {
   public createCollectionlistDialog() {
     this.dialogService.openComponentInDialog({
       componentType: CollectionListDdComponent,
-      dialogConfig: { panelClass: 'collection-list-dd-component' },
+      dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
       inputOptions: {
         focusedCollection: this.collection,
         config: this.collectionFormConfig

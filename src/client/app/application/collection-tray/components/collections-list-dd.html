@@ -61,7 +61,7 @@
             <mat-icon class="select-indicator" *ngIf="focusedCollection.id === collection.id">star</mat-icon>
             <mat-icon class="select-indicator" *ngIf="focusedCollection.id !== collection.id">star_border</mat-icon>
             {{collection.name}}
-            <mat-icon class="not-owner right-align" title="{{ 'COLLECTION.DD_MENU.SHARED_TITLE' | translate:{role:collection.userRole} }}" *ngIf="collection.userRole !== 'owner'">folder_shared</mat-icon>
+            <mat-icon class="not-owner right-align" title="{{ 'COLLECTION.DD_MENU.SHARED_TITLE' | translate:{role:collection.userRole} }}" *ngIf="collection.userRole !== 'owner'">shared</mat-icon>
             <a mat-icon-button
               color="primary"
               class="open-collection-link"
