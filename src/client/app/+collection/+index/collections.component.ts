@@ -232,6 +232,7 @@ export class CollectionsComponent {
         componentType: CollectionShareComponent,
         dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
         inputOptions: {
+          reloadType: 'collections',
           collection: Common.clone(collection),
         },
         outputOptions: [{
