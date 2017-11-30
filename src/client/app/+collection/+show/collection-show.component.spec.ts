@@ -327,6 +327,7 @@ export function main() {
           componentType: jasmine.any(Function),
           dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
           inputOptions: {
+            reloadType: 'activeCollection',
             collection: { id: 123, name: 'Collection name', owner: 123 },
           },
           outputOptions: [{

@@ -220,6 +220,7 @@ export function main() {
             componentType: jasmine.any(Function),
             dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
             inputOptions: {
+              reloadType: 'collections',
               collection: { id: 123, name: 'Collection name', owner: 123 },
             },
             outputOptions: [{

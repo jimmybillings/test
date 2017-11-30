@@ -245,6 +245,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         componentType: CollectionShareComponent,
         dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
         inputOptions: {
+          reloadType: 'activeCollection',
           collection: Common.clone(this.activeCollection),
         },
         outputOptions: [{
