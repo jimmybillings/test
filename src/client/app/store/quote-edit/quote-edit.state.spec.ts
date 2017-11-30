@@ -83,7 +83,7 @@ export function main() {
                   service: 'identities',
                   suggestionHeading: 'Matching users',
                   name: 'emailAddress',
-                  label: 'Recipient email address',
+                  label: 'QUOTE.EDIT.FORMS.RECIPIENT_EMAIL_LABEL',
                   type: 'suggestions',
                   value: 'test@email.com',
                   validation: 'REQUIRED'
@@ -123,7 +123,7 @@ export function main() {
                 field: [{
                   name: 'invoiceContact',
                   options: '',
-                  label: 'Invoice contact name',
+                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
                   type: 'select',
                   value: null,
                   validation: 'REQUIRED'
@@ -155,7 +155,7 @@ export function main() {
                     { id: 2, user: 'test 2', emailAddress: 'email2@test.com' },
                     { id: 3, user: 'test 3', emailAddress: 'email3@test.com' }
                   ],
-                  label: 'Invoice contact name',
+                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
                   type: 'select',
                   value: { id: 2, user: 'test 2', emailAddress: 'email2@test.com' },
                   validation: 'REQUIRED'
@@ -175,7 +175,7 @@ export function main() {
                 field: [{
                   name: 'invoiceContact',
                   options: '',
-                  label: 'Invoice contact name',
+                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
                   type: 'select',
                   value: null,
                   validation: 'REQUIRED'
@@ -192,7 +192,7 @@ export function main() {
                 field: [{
                   name: 'invoiceContact',
                   options: [],
-                  label: 'Invoice contact name',
+                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
                   type: 'select',
                   value: '',
                   validation: 'REQUIRED'
@@ -216,7 +216,7 @@ export function main() {
                 field: [{
                   name: 'invoiceContact',
                   options: '',
-                  label: 'Invoice contact name',
+                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
                   type: 'select',
                   value: null,
                   validation: 'REQUIRED'
@@ -248,7 +248,7 @@ export function main() {
                     { id: 2, user: 'test 2', emailAddress: 'email2@test.com' },
                     { id: 3, user: 'test 3', emailAddress: 'email3@test.com' }
                   ],
-                  label: 'Invoice contact name',
+                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
                   type: 'select',
                   value: '',
                   validation: 'REQUIRED'
@@ -281,7 +281,7 @@ export function main() {
                     { id: 2, name: 'test 2', emailAddress: 'email2@test.com' },
                     { id: 3, name: 'test 3', emailAddress: 'email3@test.com' }
                   ],
-                  label: 'Invoice contact name',
+                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
                   type: 'select',
                   value: '',
                   validation: 'REQUIRED'
@@ -303,7 +303,7 @@ export function main() {
                     { id: 2, name: 'test 2', emailAddress: 'email2@test.com' },
                     { id: 3, name: 'test 3', emailAddress: 'email3@test.com' }
                   ],
-                  label: 'Invoice contact name',
+                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
                   type: 'select',
                   value: { id: 1, name: 'test', emailAddress: 'email1@test.com' },
                   validation: 'REQUIRED'
@@ -370,7 +370,7 @@ export function main() {
                   service: 'identities',
                   suggestionHeading: 'Matching accounts',
                   name: 'account',
-                  label: 'Account name',
+                  label: 'QUOTE.EDIT.FORMS.ACCOUNT_NAME_LABEL',
                   type: 'suggestions',
                   value: 'Wazee Account',
                   validation: 'REQUIRED'
@@ -439,7 +439,7 @@ export function main() {
                   service: 'identities',
                   suggestionHeading: 'Matching accounts',
                   name: 'account',
-                  label: 'Account name',
+                  label: 'QUOTE.EDIT.FORMS.ACCOUNT_NAME_LABEL',
                   type: 'suggestions',
                   value: 'Wazee Account',
                   validation: 'REQUIRED'
@@ -483,20 +483,20 @@ export function main() {
                 field: [{
                   default: 'TODAY+15',
                   name: 'expirationDate',
-                  label: 'Expiration date',
+                  label: 'QUOTE.EDIT.FORMS.EXPIRATION_DATE_LABEL',
                   type: 'wzdate',
                   minimum: 'TODAY',
                   validation: 'REQUIRED'
                 },
                 {
                   name: 'salesManager',
-                  label: 'Sales manager',
+                  label: 'QUOTE.EDIT.FORMS.SALES_MANAGER_LABEL',
                   type: 'email',
                   value: 'email@test.com',
                   validation: 'EMAIL'
                 }, {
                   name: 'offlineAgreementReference',
-                  label: 'Offline agreement reference',
+                  label: 'QUOTE.EDIT.FORMS.OFFLINE_AGREEMENT_LABEL',
                   type: 'text',
                   value: '',
                   validation: 'OPTIONAL'
@@ -540,7 +540,7 @@ export function main() {
                 field: [
                   {
                     name: 'expirationDate',
-                    label: 'Expiration date',
+                    label: 'QUOTE.EDIT.FORMS.EXPIRATION_DATE_LABEL',
                     type: 'wzdate',
                     minimum: 'TODAY',
                     validation: 'REQUIRED',
@@ -549,13 +549,13 @@ export function main() {
                   },
                   {
                     name: 'salesManager',
-                    label: 'Sales manager',
+                    label: 'QUOTE.EDIT.FORMS.SALES_MANAGER_LABEL',
                     type: 'email',
                     value: 'email@test.com',
                     validation: 'EMAIL'
                   }, {
                     name: 'offlineAgreementReference',
-                    label: 'Offline agreement reference',
+                    label: 'QUOTE.EDIT.FORMS.OFFLINE_AGREEMENT_LABEL',
                     type: 'text',
                     value: 'SD12FJ23GJ23',
                     validation: 'OPTIONAL'
