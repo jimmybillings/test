@@ -3,7 +3,9 @@
   $foreground: map-get($theme, foreground);
   $primary: map-get($theme, primary);
 
-  collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, collection-share, wz-share-link { 
+  .collections-list-dd, 
+  asset-share, 
+  collection-share{ 
     .collections-dd-menu {   
       background-color: mat-color($background, card);
       color: rgba(mat-color($foreground, text), .7);  
