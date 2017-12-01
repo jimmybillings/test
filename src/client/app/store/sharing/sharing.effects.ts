@@ -22,7 +22,7 @@ export class SharingEffects {
   @Effect()
   emailAssetShareLink: Observable<Action> = this.actions.ofType(SharingActions.EmailAssetShareLink.Type)
     .switchMap((action: SharingActions.EmailAssetShareLink) =>
-      this.service.emailAssetShareLink(action.assetId, action.markers, action.parameters)
+      this.service.emailAssetShareLink(action.assetId, action.markers, action.parameters, action.properties)
         .map(() => this.store.create(factory => factory.snackbar.display('ASSET.SHARING.SHARED_CONFIRMED_MESSAGE')))
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );

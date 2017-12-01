@@ -22,13 +22,14 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'emailAssetShareLink',
-        parameters: [1, { markers: 'some markers' }, { parameters: 'some paramaters' }]
+        parameters: [1, { markers: 'some markers' }, { parameters: 'some paramaters' }, { some: 'props' }]
       },
       expectedAction: {
         type: '[Sharing] Email Asset Share Link',
         assetId: 1,
         markers: { markers: 'some markers' },
-        parameters: { parameters: 'some paramaters' }
+        parameters: { parameters: 'some paramaters' },
+        properties: { some: 'props' }
       }
     });
 

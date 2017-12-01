@@ -46,11 +46,12 @@ export function main() {
         type: SharingActions.EmailAssetShareLink.Type,
         assetId: 'someAssetId',
         markers: { some: 'markers' },
-        parameters: { some: 'paramaters' }
+        parameters: { some: 'paramaters' },
+        properties: { some: 'properties' }
       },
       serviceMethod: {
         name: 'emailAssetShareLink',
-        expectedArguments: ['someAssetId', { some: 'markers' }, { some: 'paramaters' }],
+        expectedArguments: ['someAssetId', { some: 'markers' }, { some: 'paramaters' }, { some: 'properties' }],
       },
       outputActionFactories: {
         success: {
