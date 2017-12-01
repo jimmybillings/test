@@ -9,6 +9,7 @@ export class MockJwPlayer {
 
   public setup: jasmine.Spy = jasmine.createSpy('setup').and.callFake((options: any) => {
     this.autoplay = options.autostart;
+    this.controlsActive = options.controls;
   });
 
   public remove: jasmine.Spy = jasmine.createSpy('remove');
@@ -78,7 +79,7 @@ export class MockJwPlayer {
 
   private state: MockJwState = 'playing';  // Assumes autoplay is configured.
   private provider: Object = null;
-  private controlsActive: boolean = true;
+  private controlsActive: boolean = false;
 
   private onCallbacks: MockJwCallbacks = {
     ready: new Array<Function>(),

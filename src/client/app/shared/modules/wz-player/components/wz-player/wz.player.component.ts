@@ -184,21 +184,21 @@ export class WzPlayerComponent implements OnDestroy {
     this.jwPlayer = this.window.jwplayer(this.element.nativeElement);
     this.setupInMarker();
     this.setupOutMarker();
+
     const autostartInAdvancedMode: boolean = !this.inMarker || !this.outMarker;
 
     this.jwPlayer.setup({
       image: this.enhancedAsset.thumbnailUrl || null,
       file: this.enhancedAsset.clipUrl,
-      autostart: this.mode === 'basic' || autostartInAdvancedMode
+      autostart: this.mode === 'basic' || autostartInAdvancedMode,
+      controls: false
     });
 
-    if (this.mode === 'advanced') {
-      this.jwPlayer.on('ready', () => {
+    this.jwPlayer.on('ready', () => {
+      if (this.mode === 'advanced') {
         const jwPlayerProvider = this.jwPlayer.getProvider();
-
         if (jwPlayerProvider && jwPlayerProvider.name === 'html5') {
           this.currentAssetType = 'html5Video';
-          this.jwPlayer.setControls(false);
           this.jwPlayer.on('displayClick', this.togglePlayback.bind(this));
 
           // Seems like the "correct" Angular-y way to do this would be to
@@ -219,12 +219,18 @@ export class WzPlayerComponent implements OnDestroy {
           });
 
           if (!autostartInAdvancedMode) this.toggleMarkersPlayback();
+
         } else {
           if (!autostartInAdvancedMode) this.jwPlayer.play(true);
+          this.jwPlayer.setControls(true);
           this.emitStateChangeRequestWith({ ready: true, canSupportCustomControls: false });
         }
-      });
-    }
+      } else {
+        // Default control setting is false, so we turn them
+        // on here if we're using the simple player.
+        this.jwPlayer.setControls(true);
+      }
+    });
   }
 
   private setupInMarker(): void {
