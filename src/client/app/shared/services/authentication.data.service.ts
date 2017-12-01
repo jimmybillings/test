@@ -17,6 +17,6 @@ export class Authentication {
   }
 
   public destroy(): Observable<null> {
-    return this.api.post(Api.Identities, 'invalidate');
+    return this.api.put(Api.Identities, 'session/invalidate');
   }
 }

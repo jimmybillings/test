@@ -1,9 +1,9 @@
-import { User } from '../interfaces/user.interface';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 
 import { LegacyAction } from '../interfaces/common.interface';
+import { User } from '../interfaces/user.interface';
 
 export function currentUser(state = {}, action: LegacyAction) {
 
@@ -87,21 +87,21 @@ export class CurrentUserService {
 
   private mayflyUser(): User {
     return {
-      'lastUpdated': new Date(),
-      'createdOn': new Date(),
-      'id': 0,
-      'emailAddress': '',
-      'password': '',
-      'firstName': '',
-      'lastName': '',
-      'siteName': '',
-      'accountIds': [0],
-      'permissions': [''],
-      'purchaseOnCredit': false,
-      'focusedCollection': null,
-      'ownedCollections': null,
-      'editableCollections': null,
-      'accessibleCollections': null
+      lastUpdated: new Date(),
+      createdOn: new Date(),
+      id: 0,
+      emailAddress: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      siteName: '',
+      accountIds: [0],
+      permissions: [''],
+      purchaseOnCredit: false,
+      focusedCollection: null,
+      ownedCollections: null,
+      editableCollections: null,
+      accessibleCollections: null
     };
   }
 }

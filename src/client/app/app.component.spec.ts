@@ -34,6 +34,7 @@ export function main() {
     let canAdministerQuotes: boolean = false;
     let nextNavigation: Event;
     let mockActivatedRoute: any;
+    let mockAuthenticationService: any;
 
     beforeEach(() => {
       mockRouter = { events: Observable.of(nextNavigation), initialNavigation: jasmine.createSpy('initialNavigation') };
@@ -90,10 +91,12 @@ export function main() {
       resetSpy = mockStore.createActionFactoryMethod('headerDisplayOptions', 'reset');
       setLanguageSpy = mockStore.createActionFactoryMethod('multiLingual', 'setLanguage');
 
+      mockAuthenticationService = { destroy: jasmine.createSpy('destroy').and.returnValue(Observable.of({})) };
+
       componentUnderTest = new AppComponent(
         mockRouter, mockSearchContext, mockCurrentUserService,
         mockCollections, mockUserPreference, mockUserCan, mockWindow,
-        mockFilter, mockSortDefinition, mockNgZone, mockStore, mockActivatedRoute
+        mockFilter, mockSortDefinition, mockNgZone, mockStore, mockActivatedRoute, mockAuthenticationService
       );
     });
 
@@ -191,9 +194,14 @@ export function main() {
     });
 
     describe('logout()', () => {
-      it('Should log out the user in the browser', () => {
-        componentUnderTest.logout();
+      beforeEach(() => componentUnderTest.logout());
+
+      it('Should call destroy() on the currentUserService', () => {
         expect(mockCurrentUserService.destroy).toHaveBeenCalled();
+      });
+
+      it('Should call destroy() on the authenticationService', () => {
+        expect(mockAuthenticationService.destroy).toHaveBeenCalled();
       });
     });
 
