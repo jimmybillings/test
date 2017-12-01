@@ -30,7 +30,7 @@ export const initialState: State = {
         service: 'identities',
         suggestionHeading: 'Matching users',
         name: 'emailAddress',
-        label: 'Recipient email address',
+        label: 'QUOTE.EDIT.FORMS.RECIPIENT_EMAIL_LABEL',
         type: 'suggestions',
         value: '',
         validation: 'REQUIRED'
@@ -48,7 +48,7 @@ export const initialState: State = {
         service: 'identities',
         suggestionHeading: 'Matching accounts',
         name: 'account',
-        label: 'Account name',
+        label: 'QUOTE.EDIT.FORMS.ACCOUNT_NAME_LABEL',
         type: 'suggestions',
         value: '',
         validation: 'REQUIRED'
@@ -59,7 +59,7 @@ export const initialState: State = {
       field: [{
         name: 'invoiceContact',
         options: [],
-        label: 'Invoice contact name',
+        label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
         type: 'select',
         value: '',
         validation: 'REQUIRED'
@@ -72,20 +72,20 @@ export const initialState: State = {
       field: [{
         default: 'TODAY+15',
         name: 'expirationDate',
-        label: 'Expiration date',
+        label: 'QUOTE.EDIT.FORMS.EXPIRATION_DATE_LABEL',
         type: 'wzdate',
         minimum: 'TODAY',
         validation: 'REQUIRED'
       },
       {
         name: 'salesManager',
-        label: 'Sales manager',
+        label: 'QUOTE.EDIT.FORMS.SALES_MANAGER_LABEL',
         type: 'email',
         value: '',
         validation: 'EMAIL'
       }, {
         name: 'offlineAgreementReference',
-        label: 'Offline agreement reference',
+        label: 'QUOTE.EDIT.FORMS.OFFLINE_AGREEMENT_LABEL',
         type: 'text',
         value: '',
         validation: 'OPTIONAL'
