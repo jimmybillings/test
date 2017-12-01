@@ -29,8 +29,8 @@ export function main() {
       it('Calls the API correctly', () => {
         serviceUnderTest.destroy()
           .subscribe(() => {
-            expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
-            expect(mockApi.post).toHaveBeenCalledWithEndpoint('invalidate');
+            expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
+            expect(mockApi.put).toHaveBeenCalledWithEndpoint('session/invalidate');
           });
       });
     });
