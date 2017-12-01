@@ -15,6 +15,7 @@ import { AppStore } from './app.store';
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
 import { Pojo } from './shared/interfaces/common.interface';
+import { Authentication } from './shared/services/authentication.data.service';
 
 @Component({
   moduleId: module.id,
@@ -38,7 +39,8 @@ export class AppComponent implements OnInit {
     private sortDefinition: SortDefinitionsService,
     private zone: NgZone,
     private store: AppStore,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private authentication: Authentication
   ) {
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
@@ -64,7 +66,7 @@ export class AppComponent implements OnInit {
   }
 
   public logout(): void {
-    this.currentUser.destroy();
+    this.authentication.destroy().subscribe(() => this.currentUser.destroy());
   }
 
   public get footerConfig(): Observable<any> {

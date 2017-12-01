@@ -49,14 +49,21 @@ export function main() {
 
     describe('emailAssetShareLink()', () => {
       it('Should call the api correctly to create a share link', () => {
-        serviceUnderTest.emailAssetShareLink(1234, {
-          in: undefined,
-          out: undefined
-        }, {
+        serviceUnderTest.emailAssetShareLink(
+          1234,
+          {
+            in: undefined,
+            out: undefined
+          },
+          {
             recipientEmails: 'james.billings@wazeedigital.com',
             comment: 'Some Comment',
             copyMe: true
-          }).subscribe();
+          },
+          {
+            some: 'properties'
+          }
+        ).subscribe();
 
         expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApiService.post).toHaveBeenCalledWithEndpoint('accessInfo');
@@ -65,7 +72,7 @@ export function main() {
           accessInfo: '1234',
           accessStartDate: '2017-11-12T13:14:15-07:00',
           accessEndDate: '2017-11-22T13:14:15-07:00',
-          properties: null,
+          properties: { some: 'properties' },
           recipientEmails: [
             'james.billings@wazeedigital.com', 'test@gmail.com'
           ],
@@ -74,14 +81,21 @@ export function main() {
       });
 
       it('handles specified markers', () => {
-        serviceUnderTest.emailAssetShareLink(1234, {
-          in: new Frame(30).setFromSeconds(1),
-          out: new Frame(30).setFromSeconds(2)
-        }, {
+        serviceUnderTest.emailAssetShareLink(
+          1234,
+          {
+            in: new Frame(30).setFromSeconds(1),
+            out: new Frame(30).setFromSeconds(2)
+          },
+          {
             recipientEmails: 'james.billings@wazeedigital.com',
             comment: 'Some Comment',
             copyMe: true
-          }).subscribe();
+          },
+          {
+            some: 'properties'
+          }
+        ).subscribe();
 
         expect(mockApiService.post).toHaveBeenCalledWithBody({
           type: 'asset',
@@ -90,7 +104,8 @@ export function main() {
           accessEndDate: '2017-11-22T13:14:15-07:00',
           properties: {
             timeStart: 1000,
-            timeEnd: 2000
+            timeEnd: 2000,
+            some: 'properties'
           },
           recipientEmails: [
             'james.billings@wazeedigital.com', 'test@gmail.com'
@@ -100,18 +115,25 @@ export function main() {
       });
 
       it('handles undefined markers', () => {
-        serviceUnderTest.emailAssetShareLink(1234, undefined, {
-          recipientEmails: 'james.billings@wazeedigital.com',
-          comment: 'Some Comment',
-          copyMe: true
-        }).subscribe();
+        serviceUnderTest.emailAssetShareLink(
+          1234,
+          undefined,
+          {
+            recipientEmails: 'james.billings@wazeedigital.com',
+            comment: 'Some Comment',
+            copyMe: true
+          },
+          {
+            some: 'properties'
+          }
+        ).subscribe();
 
         expect(mockApiService.post).toHaveBeenCalledWithBody({
           type: 'asset',
           accessInfo: '1234',
           accessStartDate: '2017-11-12T13:14:15-07:00',
           accessEndDate: '2017-11-22T13:14:15-07:00',
-          properties: null,
+          properties: { some: 'properties' },
           recipientEmails: [
             'james.billings@wazeedigital.com', 'test@gmail.com'
           ],
@@ -120,18 +142,25 @@ export function main() {
       });
 
       it('handles null markers', () => {
-        serviceUnderTest.emailAssetShareLink(1234, null, {
-          recipientEmails: 'james.billings@wazeedigital.com',
-          comment: 'Some Comment',
-          copyMe: true
-        }).subscribe();
+        serviceUnderTest.emailAssetShareLink(
+          1234,
+          null,
+          {
+            recipientEmails: 'james.billings@wazeedigital.com',
+            comment: 'Some Comment',
+            copyMe: true
+          },
+          {
+            some: 'properties'
+          }
+        ).subscribe();
 
         expect(mockApiService.post).toHaveBeenCalledWithBody({
           type: 'asset',
           accessInfo: '1234',
           accessStartDate: '2017-11-12T13:14:15-07:00',
           accessEndDate: '2017-11-22T13:14:15-07:00',
-          properties: null,
+          properties: { some: 'properties' },
           recipientEmails: [
             'james.billings@wazeedigital.com', 'test@gmail.com'
           ],
@@ -140,18 +169,25 @@ export function main() {
       });
 
       it('handles copyMe = false', () => {
-        serviceUnderTest.emailAssetShareLink(1234, null, {
-          recipientEmails: 'james.billings@wazeedigital.com',
-          comment: 'Some Comment',
-          copyMe: false
-        }).subscribe();
+        serviceUnderTest.emailAssetShareLink(
+          1234,
+          null,
+          {
+            recipientEmails: 'james.billings@wazeedigital.com',
+            comment: 'Some Comment',
+            copyMe: false
+          },
+          {
+            some: 'properties'
+          }
+        ).subscribe();
 
         expect(mockApiService.post).toHaveBeenCalledWithBody({
           type: 'asset',
           accessInfo: '1234',
           accessStartDate: '2017-11-12T13:14:15-07:00',
           accessEndDate: '2017-11-22T13:14:15-07:00',
-          properties: null,
+          properties: { some: 'properties' },
           recipientEmails: [
             'james.billings@wazeedigital.com'
           ],

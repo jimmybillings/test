@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { AssetShareParameters } from '../../shared/interfaces/common.interface';
+import { AssetShareParameters, Pojo } from '../../shared/interfaces/common.interface';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 import { SubclipMarkers, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AppStore } from '../../app.store';
@@ -50,8 +50,13 @@ export class AssetShareComponent implements OnInit {
   }
 
   public onFormSubmit(shareParameters: AssetShareParameters): void {
+    const properties: Pojo = {
+      assetName: this.enhancedAsset.getMetadataValueFor('name'),
+      assetDescription: this.enhancedAsset.getMetadataValueFor('Description'),
+      assetThumbnailUrl: this.enhancedAsset.thumbnailUrl
+    };
     this.store.dispatch(factory =>
-      factory.sharing.emailAssetShareLink(this.enhancedAsset.assetId, this.subclipMarkers, shareParameters)
+      factory.sharing.emailAssetShareLink(this.enhancedAsset.assetId, this.subclipMarkers, shareParameters, properties)
     );
   }
 }
