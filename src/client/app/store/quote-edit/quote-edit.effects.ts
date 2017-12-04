@@ -115,6 +115,7 @@ export class QuoteEditEffects {
         this.store.create(factory =>
           factory.router.goToQuoteById(action.quoteId)
         ),
+        this.store.create(factory => factory.quoteEdit.load()),
         this.store.create(factory =>
           factory.snackbar.display(
             'QUOTE.CREATED_FOR_TOAST',

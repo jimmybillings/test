@@ -272,6 +272,10 @@ export function main() {
           methodName: 'goToQuoteById',
           expectedArguments: [10]
         }, {
+          sectionName: 'quoteEdit',
+          methodName: 'load',
+          expectedArguments: null,
+        }, {
           sectionName: 'snackbar',
           methodName: 'display',
           expectedArguments: ['QUOTE.CREATED_FOR_TOAST', { emailAddress: 'ross.edfort@wazeedigital.com' }]
