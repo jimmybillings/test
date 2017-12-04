@@ -101,9 +101,9 @@ export function main() {
       mutationTestData: {
         actionParameters: {
           users: [
-            { id: 1, user: 'test', emailAddress: 'email1@test.com' },
-            { id: 2, user: 'test 2', emailAddress: 'email2@test.com' },
-            { id: 3, user: 'test 3', emailAddress: 'email3@test.com' }
+            { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
+            { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
+            { id: 3, user: 'test 3', name: 'test3', emailAddress: 'email3@test.com' }
           ]
         }
       },
@@ -133,9 +133,9 @@ export function main() {
           },
           actionParameters: {
             users: [
-              { id: 1, user: 'test', emailAddress: 'email1@test.com' },
-              { id: 2, user: 'test 2', emailAddress: 'email2@test.com' },
-              { id: 3, user: 'test 3', emailAddress: 'email3@test.com' }
+              { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
+              { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
+              { id: 3, user: 'test 3', name: 'test3', emailAddress: 'email3@test.com' }
             ]
           },
           expectedNextState: {
@@ -148,16 +148,17 @@ export function main() {
               },
               invoiceContact: {
                 contactEmail: 'email2@test.com',
+                name: 'test2',
                 field: [{
                   name: 'invoiceContact',
                   options: [
-                    { id: 1, user: 'test', emailAddress: 'email1@test.com' },
-                    { id: 2, user: 'test 2', emailAddress: 'email2@test.com' },
-                    { id: 3, user: 'test 3', emailAddress: 'email3@test.com' }
+                    { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
+                    { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
+                    { id: 3, user: 'test 3', name: 'test3', emailAddress: 'email3@test.com' }
                   ],
                   label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
                   type: 'select',
-                  value: { id: 2, user: 'test 2', emailAddress: 'email2@test.com' },
+                  value: { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
                   validation: 'REQUIRED'
                 }]
               }
@@ -189,6 +190,7 @@ export function main() {
               ...QuoteState.initialState.sendDetails,
               invoiceContact: {
                 contactEmail: null,
+                name: null,
                 field: [{
                   name: 'invoiceContact',
                   options: [],
@@ -226,9 +228,9 @@ export function main() {
           },
           actionParameters: {
             users: [
-              { id: 1, user: 'test', emailAddress: 'email1@test.com' },
-              { id: 2, user: 'test 2', emailAddress: 'email2@test.com' },
-              { id: 3, user: 'test 3', emailAddress: 'email3@test.com' }
+              { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
+              { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
+              { id: 3, user: 'test 3', name: 'test3', emailAddress: 'email3@test.com' }
             ]
           },
           expectedNextState: {
@@ -241,12 +243,13 @@ export function main() {
               },
               invoiceContact: {
                 contactEmail: null,
+                name: null,
                 field: [{
                   name: 'invoiceContact',
                   options: [
-                    { id: 1, user: 'test', emailAddress: 'email1@test.com' },
-                    { id: 2, user: 'test 2', emailAddress: 'email2@test.com' },
-                    { id: 3, user: 'test 3', emailAddress: 'email3@test.com' }
+                    { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
+                    { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
+                    { id: 3, user: 'test 3', name: 'test3', emailAddress: 'email3@test.com' }
                   ],
                   label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
                   type: 'select',
