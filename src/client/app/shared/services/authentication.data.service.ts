@@ -19,4 +19,8 @@ export class Authentication {
   public destroy(): Observable<null> {
     return this.api.put(Api.Identities, 'session/invalidate');
   }
+
+  public validate(token: string): Observable<null> {
+    return this.api.get(Api.Identities, 'session/validate/' + token);
+  }
 }

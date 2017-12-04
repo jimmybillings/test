@@ -15,23 +15,30 @@ export function main() {
 
     describe('create()', () => {
       it('Calls the API correctly', () => {
-        serviceUnderTest.create({ userId: 'james@gmail.com', password: 'testpassword' })
-          .subscribe(() => {
-            expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
-            expect(mockApi.post).toHaveBeenCalledWithEndpoint('login');
-            expect(mockApi.post).toHaveBeenCalledWithBody({ userId: 'james@gmail.com', password: 'testpassword' });
-            expect(mockApi.post).toHaveBeenCalledWithLoading(true);
-          });
+        serviceUnderTest.create({ userId: 'james@gmail.com', password: 'testpassword' });
+
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('login');
+        expect(mockApi.post).toHaveBeenCalledWithBody({ userId: 'james@gmail.com', password: 'testpassword' });
+        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
       });
     });
 
     describe('destroy()', () => {
       it('Calls the API correctly', () => {
-        serviceUnderTest.destroy()
-          .subscribe(() => {
-            expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
-            expect(mockApi.put).toHaveBeenCalledWithEndpoint('session/invalidate');
-          });
+        serviceUnderTest.destroy();
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('session/invalidate');
+      });
+    });
+
+    describe('validate()', () => {
+      it('calls the api service correctly', () => {
+        serviceUnderTest.validate('some-token');
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('session/validate/some-token');
       });
     });
   });

@@ -20,6 +20,7 @@ import { ApiConfig } from './shared/services/api.config';
 import { AppStore } from './app.store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { APP_ROUTES } from './app.routes';
+import { Authentication } from './shared/services/authentication.data.service';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ export class AppModule {
   constructor(
     private store: AppStore,
     private apiConfig: ApiConfig,
-    private currentUser: CurrentUserService
+    private currentUser: CurrentUserService,
+    private authentication: Authentication
   ) {
     let attrs = document.querySelector('wazee-digital-platform').attributes;
     Object.keys(attrs).forEach((key: any) => {
@@ -61,7 +63,19 @@ export class AppModule {
           break;
       }
     });
-    currentUser.set();
-    this.store.dispatch(factory => factory.uiConfig.initialize(apiConfig.portal));
+
+    const token: string = localStorage.getItem('token');
+    if (token) {
+      this.authentication.validate(token).subscribe(() => {
+        this.initialize();
+      });
+    } else {
+      this.initialize();
+    }
+  }
+
+  private initialize(): void {
+    this.currentUser.set();
+    this.store.dispatch(factory => factory.uiConfig.initialize(this.apiConfig.portal));
   }
 }
