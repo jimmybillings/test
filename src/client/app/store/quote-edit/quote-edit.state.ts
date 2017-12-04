@@ -56,6 +56,7 @@ export const initialState: State = {
     },
     invoiceContact: {
       contactEmail: null,
+      name: null,
       field: [{
         name: 'invoiceContact',
         options: [],
@@ -207,7 +208,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
 
     case UserActions.GetAllUsersByAccountIdSuccess.Type: {
       const clonedState = Common.clone(state);
-      let contactEmail: string = null;
+      let selectedUser: User;
       return {
         ...clonedState,
         sendDetails: {
@@ -220,11 +221,12 @@ export function reducer(state: State = initialState, action: AllowedActions): St
               item.value = item.options.find((option: Pojo) =>
                 option.id === clonedState.sendDetails.billingAccount.invoiceContactId) || '';
 
-              if (item.value !== '') contactEmail = item.value.emailAddress;
+              if (item.value !== '') selectedUser = item.value;
 
               return item;
             }),
-            contactEmail: contactEmail
+            contactEmail: (selectedUser) ? selectedUser.emailAddress : null,
+            name: (selectedUser) ? selectedUser.name : null
           }
         }
       };
