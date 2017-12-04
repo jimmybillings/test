@@ -6,9 +6,8 @@ import { OrdersResolver } from './orders.resolver';
 export function main() {
   describe('Orders Resolver', () => {
     // let mockUiConfig: any;
-    const mockObservable = Observable.of({});
     const mockOrdersService: any = {
-      getOrders: jasmine.createSpy('getOrders({d:true,n:20}) spy').and.returnValue(mockObservable)
+      getOrders: jasmine.createSpy('getOrders({d:true,n:20}) spy').and.returnValue(Observable.of({}))
     };
 
     const mockRoute: any = {
@@ -36,7 +35,7 @@ export function main() {
       });
 
       it('returns the Observable returned by getOrders()', () => {
-        expect(returnedObservable).toBe(mockObservable);
+        expect(returnedObservable).toEqual(Observable.of({}));
       });
     });
   });
