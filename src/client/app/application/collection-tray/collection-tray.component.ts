@@ -4,7 +4,7 @@ import { CollectionLinkComponent } from '../../+collection/components/collection
 import { CollectionFormComponent } from './components/collection-form.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Asset, WzEvent, UiConfigComponents } from '../../shared/interfaces/common.interface';
-import { Collection } from '../../shared/interfaces/collection.interface';
+import { Collection, CollectionFormEvent } from '../../shared/interfaces/collection.interface';
 import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 import { AppStore } from '../../app.store';
 import { Common } from '../../shared/utilities/common.functions';
@@ -92,9 +92,9 @@ export class CollectionTrayComponent implements OnInit, OnDestroy {
       },
       outputOptions: [{
         event: 'collectionSaved',
-        callback: (collection: Collection | undefined) => {
-          if (collection) {
-            this.store.dispatch(factory => factory.router.goToCollection(collection.id));
+        callback: (event: CollectionFormEvent) => {
+          if (event.type === 'NAVIGATE') {
+            this.store.dispatch(factory => factory.router.goToCollection(event.collectionId));
           }
         },
         closeOnEvent: true
