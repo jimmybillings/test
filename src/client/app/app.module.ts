@@ -46,12 +46,7 @@ import { Authentication } from './shared/services/authentication.data.service';
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(
-    private store: AppStore,
-    private apiConfig: ApiConfig,
-    private currentUser: CurrentUserService,
-    private authentication: Authentication
-  ) {
+  constructor(private store: AppStore, private apiConfig: ApiConfig, private currentUser: CurrentUserService) {
     let attrs = document.querySelector('wazee-digital-platform').attributes;
     Object.keys(attrs).forEach((key: any) => {
       switch (attrs[key].name) {
@@ -63,19 +58,7 @@ export class AppModule {
           break;
       }
     });
-
-    const token: string = localStorage.getItem('token');
-    if (token) {
-      this.authentication.validate(token).subscribe(() => {
-        this.initialize();
-      });
-    } else {
-      this.initialize();
-    }
-  }
-
-  private initialize(): void {
-    this.currentUser.set();
-    this.store.dispatch(factory => factory.uiConfig.initialize(this.apiConfig.portal));
+    currentUser.set();
+    store.dispatch(factory => factory.uiConfig.initialize(apiConfig.portal));
   }
 }

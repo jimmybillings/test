@@ -52,7 +52,15 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadConfig();
+    const token: string = localStorage.getItem('token');
+    if (token) {
+      this.authentication.validate(token).subscribe(() => {
+        this.loadConfig();
+      });
+    } else {
+      this.loadConfig();
+    }
+
     this.routerChanges();
     this.processUser();
     this.store.dispatch(factory => factory.multiLingual.setLanguage('en'));
