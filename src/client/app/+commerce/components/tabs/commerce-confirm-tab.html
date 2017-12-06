@@ -86,11 +86,6 @@
         {{ (data | async).total | currency:'USD':true:'1.2-2' }}
       </span>
     </div>
-    <div *ngIf="shouldShowLicenseDetailsBtn()" flex="100" class="license-agreement-ckbox">
-      <mat-checkbox [(ngModel)]="licensesAreAgreedTo" color="primary">
-        {{'CART.CONFIRM.AGREE_TO_LIC_PLEDGE_TXT' | translate}}
-      </mat-checkbox>
-    </div>
   </ng-container>
   <ng-container *ngIf="quoteIsTrial | async">
     <div flex="100" layout="row" layout-align="end center" class="trial mat-headline">
@@ -99,6 +94,11 @@
       </span>
     </div>
   </ng-container>
+  <div *ngIf="shouldShowLicenseDetailsBtn()" flex="100" class="license-agreement-ckbox">
+    <mat-checkbox [(ngModel)]="licensesAreAgreedTo" color="primary">
+      {{'CART.CONFIRM.AGREE_TO_LIC_PLEDGE_TXT' | translate}}
+    </mat-checkbox>
+  </div>
   <div flex="100">
     <button
       mat-button

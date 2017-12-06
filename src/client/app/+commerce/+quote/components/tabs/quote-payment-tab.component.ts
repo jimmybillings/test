@@ -27,6 +27,10 @@ export class QuotePaymentTabComponent extends CommercePaymentTab {
     return this.quoteService.paymentOptionsEqual(['Trial']);
   }
 
+  public get showDeliveryOnlyMessage(): Observable<boolean> {
+    return this.quoteService.paymentOptionsEqual(['DeliveryOnly']);
+  }
+
   public get showOfflineAgreementMessage(): Observable<boolean> {
     return this.quoteService.paymentOptions.map((options: PaymentOptions) => {
       return options && options.paymentOptions.every(o => o.includes('Offline'));

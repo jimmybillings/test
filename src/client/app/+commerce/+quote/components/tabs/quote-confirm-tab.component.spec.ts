@@ -74,39 +74,5 @@ export function main() {
         });
       });
     });
-
-    describe('canPurchase getter', () => {
-      describe('returns true', () => {
-        it('when the quote is of type \'Trial\'', () => {
-          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'Trial' } });
-          expect(componentUnderTest.canPurchase).toBe(true);
-        });
-
-        it('when the quote is of type \'DeliveryOnly\'', () => {
-          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'DeliveryOnly' } });
-          expect(componentUnderTest.canPurchase).toBe(true);
-        });
-
-        it('when the quote is not of type \'Trial\', but the other conditions are met', () => {
-          componentUnderTest.licensesAreAgreedTo = true;
-          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'NotTrial' } });
-          expect(componentUnderTest.canPurchase).toBe(true);
-        });
-      });
-
-      describe('returns false', () => {
-        it('when everything is false', () => {
-          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'NotTrial' } });
-          mockCapabilities = {
-            viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton').and.returnValue(false)
-          };
-
-          componentUnderTest = new QuoteConfirmTabComponent(null, mockQuoteService, null, mockCapabilities, mockStore);
-          componentUnderTest.licensesAreAgreedTo = false;
-
-          expect(componentUnderTest.canPurchase).toBe(false);
-        });
-      });
-    });
   });
 }
