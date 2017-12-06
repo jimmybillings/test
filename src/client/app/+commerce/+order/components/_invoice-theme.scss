@@ -58,7 +58,7 @@
       background-color: mat-color($foreground, base, .06);
       & > div {
         border-bottom-color:  mat-color($background, card, .9);
-        &.amount-due, &.due-date, {
+        &:nth-child(even), {
           background-color: mat-color($foreground, base, .06);
         }
       }

@@ -123,6 +123,7 @@ invoice-component {
     }
     &:last-child {
       padding-left: 8px;
+      margin-bottom: 20px;
       @media screen and (max-width: $layout-breakpoint-xs)  {
         padding-left: 0;
       }

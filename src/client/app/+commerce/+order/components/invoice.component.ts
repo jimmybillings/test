@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { Invoice } from '../../../shared/interfaces/commerce.interface';
 import { AppStore } from '../../../app.store';
+import { Pojo } from '../../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -18,4 +18,20 @@ export class InvoiceComponent {
     this.invoice = this.store.select(state => state.invoice.invoice);
   }
 
+  public hasProp(obj: Pojo, ...props: string[]): boolean {
+    if (props.length > 0) {
+      if (obj.hasOwnProperty(props[0])) {
+        if (obj[props[0]] === '' || obj[props[0]] === 0 || JSON.stringify(obj[props[0]]) === JSON.stringify({})) {
+          return false;
+        } else {
+          const prop = props.shift();
+          return this.hasProp(obj[prop], ...props);
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
 }
