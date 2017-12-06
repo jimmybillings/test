@@ -4,8 +4,8 @@ import { Invoice } from '../../shared/interfaces/commerce.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 
 export class ActionFactory {
-  public load(orderId: number): Load {
-    return new Load(orderId);
+  public load(orderId: number, shareKey?: string): Load {
+    return new Load(orderId, shareKey);
   }
 }
 
@@ -22,7 +22,7 @@ export class InternalActionFactory extends ActionFactory {
 export class Load implements Action {
   public static readonly Type = '[Invoice] Load';
   public readonly type = Load.Type;
-  constructor(public readonly orderId: number) { }
+  constructor(public readonly orderId: number, public readonly shareKey: string) { }
 }
 
 export class LoadSuccess implements Action {
