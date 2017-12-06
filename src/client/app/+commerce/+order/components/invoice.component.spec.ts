@@ -1,6 +1,7 @@
 import { InvoiceComponent } from './invoice.component';
 import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
 import { Observable } from 'rxjs/Observable';
+import { Pojo } from '../../../shared/interfaces/common.interface';
 
 export function main() {
 
@@ -27,6 +28,31 @@ export function main() {
         let isShared: boolean;
         componentUnderTest.isShared.take(1).subscribe(is => isShared = is);
         expect(isShared).toBe(true);
+      });
+    });
+    const mockObj: Pojo = { a: { b: { c: { d: 'e', f: '', g: 0, h: {} } } } };
+
+    describe('hasProp()', () => {
+      it('returns true when the object has the property', () => {
+        expect(componentUnderTest.hasProp(mockObj, 'a', 'b', 'c', 'd')).toBe(true);
+      });
+      it('returns false when the object does not have the property', () => {
+        expect(componentUnderTest.hasProp(mockObj, 'a', 'd')).toBe(false);
+      });
+      it('returns false when the object property is an empty string', () => {
+        expect(componentUnderTest.hasProp(mockObj, 'a', 'b', 'c', 'f')).toBe(false);
+      });
+      it('returns false when the object property is the number 0', () => {
+        expect(componentUnderTest.hasProp(mockObj, 'a', 'b', 'c', 'g')).toBe(false);
+      });
+      it('returns false when the object property is an empty object', () => {
+        expect(componentUnderTest.hasProp(mockObj, 'a', 'b', 'c', 'h')).toBe(false);
+      });
+      it('handles undefined objects', () => {
+        expect(componentUnderTest.hasProp(undefined, 'a', 'd')).toBe(false);
+      });
+      it('handles no props', () => {
+        expect(componentUnderTest.hasProp(mockObj)).toBe(true);
       });
     });
   });

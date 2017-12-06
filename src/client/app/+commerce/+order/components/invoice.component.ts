@@ -23,7 +23,7 @@ export class InvoiceComponent {
 
   public hasProp(obj: Pojo, ...props: string[]): boolean {
     if (props.length > 0) {
-      if (obj.hasOwnProperty(props[0])) {
+      if (obj && obj.hasOwnProperty(props[0])) {
         if (obj[props[0]] === '' || obj[props[0]] === 0 || JSON.stringify(obj[props[0]]) === JSON.stringify({})) {
           return false;
         } else {
