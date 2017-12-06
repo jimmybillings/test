@@ -19,7 +19,6 @@ export interface Collection extends Common {
 }
 
 export interface CollectionSummary {
-
   items: CollectionSummaryItem[];
   pagination?: Pagination;
 }
@@ -100,4 +99,9 @@ export interface CollectionShareMember {
   firstName: string;
   lastName: string;
   emailAddress: string;
+}
+
+export interface CollectionFormEvent {
+  type: 'NAVIGATE' | 'NOOP';
+  collectionId?: number;
 }

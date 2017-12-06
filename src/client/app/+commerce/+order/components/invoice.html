@@ -7,11 +7,19 @@
         layout-align="space-between end">
         <h2 flex="grow" class="mat-display-1">{{ 'ORDER.INVOICE.PAGE_TITLE' | translate }}</h2>
         <div class="tools" flex="auto">
-          <a [routerLink]="['/orders', invoice.order.id]" class="is-outlined mini" mat-button color="primary">
+          <a
+            *ngIf="!(isShared | async)"
+            [routerLink]="['/orders', invoice.order.id]"
+            class="is-outlined mini"
+            mat-button
+            color="primary">
             {{ 'ORDER.INVOICE.BACK_TO_ORDER_TITLE' | translate }}
           </a>
-          <a [routerLink]="['/orders']"
-            mat-icon-button color="primary"
+          <a
+            *ngIf="!(isShared | async)"
+            [routerLink]="['/orders']"
+            mat-icon-button
+            color="primary"
             title="{{ 'ORDER.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
             <mat-icon>description</mat-icon>
           </a>

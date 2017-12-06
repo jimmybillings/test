@@ -14,7 +14,7 @@ export class InvoiceEffects {
   @Effect()
   public load: Observable<Action> = this.actions.ofType(InvoiceActions.Load.Type)
     .switchMap((action: InvoiceActions.Load) =>
-      this.service.load(action.orderId)
+      this.service.load(action.orderId, action.shareKey)
         .map((invoice: Invoice) => this.store.create(factory => factory.invoice.loadSuccess(invoice)))
         .catch(error => Observable.of(this.store.create(factory => factory.invoice.loadFailure(error))))
     );
