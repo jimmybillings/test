@@ -2,7 +2,7 @@ import {
   Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Inject
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { Collection, CollectionActionType } from '../../shared/interfaces/collection.interface';
+import { Collection, CollectionActionType, CollectionFormEvent } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -272,7 +272,11 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       },
       outputOptions: [{
         event: 'collectionSaved',
-        callback: (event: WzEvent) => true,
+        callback: (event: CollectionFormEvent) => {
+          if (event.type === 'NAVIGATE') {
+            this.store.dispatch(factory => factory.router.goToCollection(event.collectionId));
+          }
+        },
         closeOnEvent: true
       }]
     };

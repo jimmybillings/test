@@ -35,16 +35,16 @@ export class CollectionsService {
       .do(response => this.collectionsStore.replaceAllCollectionsWith(response));
   }
 
-  public create(collection: Collection): Observable<any> {
+  public create(collection: Collection): Observable<Collection> {
     return this.api.post(Api.Assets, 'collectionSummary', { body: collection, loadingIndicator: true })
       .do(response => this.collectionsStore.add(response as Collection));
   }
 
-  public duplicate(collection: Collection): Observable<any> {
+  public duplicate(collection: Collection): Observable<Collection> {
     return this.api.post(Api.Identities, 'collection', { body: collection, loadingIndicator: true });
   }
 
-  public getByIdAndDuplicate(id: number) {
+  public getByIdAndDuplicate(id: number): Observable<Pojo> {
     return this.api.get(Api.Identities, `collection/${id}`, { loadingIndicator: true })
       .map(response => this.prepareForDuplication(response));
   }

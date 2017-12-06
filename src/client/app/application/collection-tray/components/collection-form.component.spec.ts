@@ -38,7 +38,6 @@ export function main() {
       activeCollectionLoadSpy = mockStore.createActionFactoryMethod('activeCollection', 'load');
       componentUnderTest =
         new CollectionFormComponent(mockCollections, mockDetector, mockCollectionContext, mockStore);
-      componentUnderTest.dialog = { close: () => { } };
     });
 
     describe('ngOnInit()', () => {
@@ -68,7 +67,7 @@ export function main() {
 
         it('Should create fields for editing an existing collection', () => {
           componentUnderTest.fields = collectionFormFields();
-          componentUnderTest.collection = { name: 'Test Collection', tags: ['test'] };
+          componentUnderTest.collection = { name: 'Test Collection', tags: ['test'] } as any;
           componentUnderTest.ngOnInit();
           expect(componentUnderTest.formItems).toEqual([{
             endPoint: 'collectionSummary/search',
@@ -92,7 +91,7 @@ export function main() {
 
         it('Should create fields for duplicating an existing collection', () => {
           componentUnderTest.fields = collectionFormFields();
-          componentUnderTest.collection = { name: 'Test Collection', tags: ['test'] };
+          componentUnderTest.collection = { name: 'Test Collection', tags: ['test'] } as any;
           componentUnderTest.collectionActionType = 'duplicate';
           componentUnderTest.ngOnInit();
           expect(componentUnderTest.formItems).toEqual([{
@@ -214,7 +213,6 @@ export function main() {
 
       describe('editCollection()', () => {
         describe('sucessful edit', () => {
-
           it('Should edit a new collection', () => {
             componentUnderTest.collectionActionType = 'edit';
             componentUnderTest.collection = mockCollection();
@@ -265,7 +263,6 @@ export function main() {
               requestCollection.tags = ['cat', 'dog', 'cow'];
               expect(activeCollectionLoadSpy).not.toHaveBeenCalled();
             });
-
         });
 
         describe('On error edit', () => {
@@ -279,9 +276,11 @@ export function main() {
               load: jasmine.createSpy('load').and.returnValue(Observable.of([mockCollection(), mockCollection()]))
             };
 
-            componentUnderTest =
-              new CollectionFormComponent(mockCollections, mockDetector, mockCollectionContext, mockStore);
+            componentUnderTest = new CollectionFormComponent(
+              mockCollections, mockDetector, mockCollectionContext, mockStore
+            );
             componentUnderTest.collectionActionType = 'edit';
+            componentUnderTest.collection = { id: 12 } as any;
           });
 
           it('Should assign a edit collection error response to the serverError variable', () => {
@@ -389,24 +388,24 @@ function mockCollectionDiff(): Collection {
 
 function collectionFormFields() {
   return {
-    'form': {
-      'items': [
+    form: {
+      items: [
         {
-          'endPoint': 'collectionSummary/search',
-          'queryParams': 'accessLevel, all, i, 0, n, 100',
-          'service': 'assets',
-          'suggestionHeading': 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING',
-          'name': 'name',
-          'label': 'COLLECTION.FORM.COLLECTION_NAME_LABEL',
-          'type': 'suggestions',
-          'value': '',
-          'validation': 'REQUIRED'
+          endPoint: 'collectionSummary/search',
+          queryParams: 'accessLevel, all, i, 0, n, 100',
+          service: 'assets',
+          suggestionHeading: 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING',
+          name: 'name',
+          label: 'COLLECTION.FORM.COLLECTION_NAME_LABEL',
+          type: 'suggestions',
+          value: '',
+          validation: 'REQUIRED'
         },
         {
-          'name': 'tags',
-          'label': 'COLLECTION.FORM.TAGS_LABEL',
-          'type': 'tags',
-          'value': ''
+          name: 'tags',
+          label: 'COLLECTION.FORM.TAGS_LABEL',
+          type: 'tags',
+          value: ''
         }
       ]
     }
