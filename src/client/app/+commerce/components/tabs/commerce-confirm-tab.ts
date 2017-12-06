@@ -83,4 +83,8 @@ export class CommerceConfirmTab extends Tab {
   public get isOfflineQuote(): Observable<boolean> {
     return this.store.select(state => state.checkout.selectedPaymentType).map(type => type && type.includes('Offline'));
   }
+
+  public get canPurchase(): boolean {
+    return this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn();
+  }
 }

@@ -58,9 +58,4 @@ export class QuoteConfirmTabComponent extends CommerceConfirmTab {
   public get showPricing(): Observable<boolean> {
     return this.store.select(state => !quotesWithoutPricing.includes(state.quoteShow.data.purchaseType));
   }
-
-  public get canPurchase(): boolean {
-    return (quotesWithoutPricing.includes(this.store.snapshot(state => state.quoteShow.data.purchaseType))) ||
-      (this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn());
-  }
 }

@@ -76,6 +76,30 @@
       </div>
     </section>
 
+    <!--Delivery Only-->
+    <section *ngIf="showDeliveryOnlyMessage | async"
+      layout="column"
+      layout-align="center center"
+      mat-scroll-y=""
+      flex="100">
+
+      <header flex="100" layout="column" layout-align="center center">
+        <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
+        <p class="instructions">{{ 'CHECKOUT.PAYMENT.DELIVERYONLY_MSG' | translate }}</p>
+      </header>
+
+      <div class="proceed" flex="100" layout="row" layout-align="end end">
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="goToNextTab()">
+              {{ 'CART.PAYMENT.FORWARD_BTN' | translate}}
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!--Credit card only-->
     <section *ngIf="showCreditCardForm | async"
       layout="column"
