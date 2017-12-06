@@ -6,6 +6,7 @@ export function main() {
     let actionsSpecHelper: ActionsSpecHelper = new ActionsSpecHelper();
 
     actionsSpecHelper.generateTestFor({
+      comment: 'without a share key',
       factoryMethod: {
         class: ActionFactory,
         name: 'load',
@@ -13,7 +14,22 @@ export function main() {
       },
       expectedAction: {
         type: '[Invoice] Load',
-        orderId: { some: 'orderId' }
+        orderId: { some: 'orderId' },
+        shareKey: undefined
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      comment: 'with a share key',
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'load',
+        parameters: [{ some: 'orderId' }, 'shareKey']
+      },
+      expectedAction: {
+        type: '[Invoice] Load',
+        orderId: { some: 'orderId' },
+        shareKey: 'shareKey'
       }
     });
 
