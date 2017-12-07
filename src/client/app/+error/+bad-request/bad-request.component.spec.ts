@@ -8,7 +8,7 @@ export function main() {
       componentUnderTest = new BadRequestComponent(null);
     });
 
-    it('***** HASN\'T BEEN TESTED YET! *****', () => {
+    it('***** DOESN\'T HAVE ANY TESTABLE FUNCTIONALITY! *****', () => {
       expect(true).toBe(true);
     });
   });
