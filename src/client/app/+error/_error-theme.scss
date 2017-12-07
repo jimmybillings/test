@@ -8,10 +8,16 @@
 
     .hero {
       .mat-display-4 {
-        color: mat-color($accent, 500, .8);
+        color: mat-color($accent, 500);
       }
       .mat-display-1 {
         color: mat-color($mat-grey, 300, .9);
+      }
+      .mat-title {
+        color: mat-color($mat-grey, 300, .9);
+        a {
+          color: mat-color($accent, 500);
+        }
       }
     }
   }
