@@ -46,6 +46,10 @@ export class ActionFactory {
   public addMarkersToUrl(assetId: number, timeStart: number, timeEnd: number): AddMarkersToUrl {
     return new AddMarkersToUrl(assetId, timeStart, timeEnd);
   }
+
+  public goToBadRequest(): GoToBadRequest {
+    return new GoToBadRequest();
+  }
 }
 
 export class InternalActionFactory extends ActionFactory { }
@@ -107,4 +111,9 @@ export class AddMarkersToUrl implements Action {
   public static readonly Type = '[Router] Add Markers To Url';
   public readonly type = AddMarkersToUrl.Type;
   constructor(public readonly assetId: number, public readonly timeStart: number, public readonly timeEnd: number) { }
+}
+
+export class GoToBadRequest implements Action {
+  public static readonly Type = '[Router] Go To Bad Request';
+  public readonly type = GoToBadRequest.Type;
 }

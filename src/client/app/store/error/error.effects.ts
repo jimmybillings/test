@@ -75,10 +75,8 @@ export class ErrorEffects {
   }
 
   private badRequest(): Action[] {
-    this.currentUserService.destroy();  // TODO: When AppStore has currentUser, this will be an action in the returned array.
-
     return [
-      this.createGoToLoginAction()
+      this.createBadRequestAction()
     ];
   }
 
@@ -144,5 +142,9 @@ export class ErrorEffects {
     return this.store.create(
       factory => factory.notifier.notify(options, () => this.awaitingPreviousNotificationDismissal = false)
     );
+  }
+
+  private createBadRequestAction(): Action {
+    return this.store.create(factory => factory.router.goToBadRequest());
   }
 }

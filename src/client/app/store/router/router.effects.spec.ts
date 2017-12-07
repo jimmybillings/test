@@ -201,9 +201,9 @@ export function main() {
       },
       customTests: [
         {
-          it: 'navigates to /404',
+          it: 'navigates to /error/404',
           expectation: () => {
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/404']);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/error/404']);
           }
         }
       ]
@@ -350,6 +350,20 @@ export function main() {
           expectation: () => {
             expect(mockLocation.go).toHaveBeenCalledWith('/search/asset/100;timeStart=1000;timeEnd=2000');
           }
+        }
+      ]
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToBadRequest',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToBadRequest.Type
+      },
+      customTests: [
+        {
+          it: 'calls navigate() on the router with the bad request path',
+          expectation: () => expect(mockRouter.navigate).toHaveBeenCalledWith(['/error/400'])
         }
       ]
     });

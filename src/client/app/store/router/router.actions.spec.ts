@@ -151,5 +151,30 @@ export function main() {
         quoteId: 1
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addMarkersToUrl',
+        parameters: [123, 100, 200]
+      },
+      expectedAction: {
+        type: '[Router] Add Markers To Url',
+        assetId: 123,
+        timeStart: 100,
+        timeEnd: 200
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'goToBadRequest',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Router] Go To Bad Request'
+      }
+    });
   });
 }

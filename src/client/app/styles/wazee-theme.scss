@@ -21,6 +21,8 @@
 @import '../+commerce/components/tabs/commerce-confirm-tab-theme';
 @import '../+commerce/components/license-agreement/license-agreement-theme';
 
+@import '../+error/error-theme';
+
 @import '../+gallery-view/gallery-view-theme';
 @import '../+gallery-view/components/one-level-view-theme';
 
@@ -45,7 +47,6 @@
 @import '../shared/components/wz-gallery-two-level/wz.gallery-two-level-theme';
 @import '../shared/components/wz-pagination/wz.pagination-theme';
 @import '../shared/components/wz-sort/wz.sort-theme';
-@import '../shared/components/wz-not-found/wz-not-found-theme';
 @import '../shared/components/wz-comment/wz.comment-theme';
 @import '../shared/components/wz-delivery-options/wz.delivery-options-theme';
 @import '../shared/components/wz-share-link/wz.share-link-theme';
@@ -79,6 +80,8 @@
   @include wz-collection-show-theme($theme);
   @include wz-collection-share-members-theme($theme);
   @include wz-comment-theme($theme);
+
+  @include wz-error-theme($theme);
 
   @include wz-cart-theme($theme);
   @include wz-invoice-theme($theme);
@@ -118,7 +121,6 @@
   @include wz-breadcrumb-theme($theme);
   @include wz-pagination-theme($theme);
   @include wz-sort-theme($theme);
-  @include wz-not-found-theme($theme);
   @include wz-asset-grid-theme($theme);
   @include wz-asset-list-theme($theme);
   @include wz-speedview-theme($theme);

@@ -17,7 +17,6 @@
 @import '../shared/components/wz-pagination/wz.pagination';
 @import '../shared/components/wz-pricing/wz.pricing';
 @import '../shared/components/wz-sort/wz.sort';
-@import '../shared/components/wz-not-found/wz-not-found';
 @import '../shared/components/wz-comment/wz.comment';
 @import '../shared/components/wz-delivery-options/wz.delivery-options';
 @import '../shared/components/wz-share/wz.share';
@@ -67,6 +66,8 @@
 @import '../+commerce/components/tabs/commerce-confirm-tab';
 @import '../+commerce/components/tabs/commerce-payment-tab';
 @import '../+commerce/components/license-agreement/license-agreement';
+
+@import '../+error/error';
 
 @import '../+gallery-view/gallery-view';
 @import '../+gallery-view/components/one-level-view';
