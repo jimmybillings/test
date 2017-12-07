@@ -55,10 +55,14 @@
             <ng-container *ngIf="a.billingInfo.address">
               <header>
                 <span>{{ 'QUOTE.EDIT.INVOICE_CONTACT_TITLE' | translate }}</span>
-                <span>{{ a.firstName }} {{ a.lastName }}</span><br>
+                <span>{{ a.firstName }} {{ a.lastName }}</span>
               </header>
+              <span class="email">
+                <a class="mailto" href="mailto:{{ a.email }}">
+                  {{ a.email }}
+                </a>
+              </span>
               <address>
-                <span>{{ a.email }}</span>
                 <span class="line-1">
                   {{ lineOneFor(a.billingInfo) }}
                 </span>
@@ -85,7 +89,7 @@
                 <button
                   mat-raised-button
                   color="primary"
-                  (click)="selectAddress(a.billingInfo)">
+                  (click)="formatAndSelectAddress(a)">
                   {{ 'CART.BILLING.SELECT_ADDRESS_BTN' | translate }}
                 </button>
               </div>

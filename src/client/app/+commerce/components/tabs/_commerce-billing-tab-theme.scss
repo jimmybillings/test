@@ -18,5 +18,8 @@
     .address-error {
       color: mat-color($warn, 700);
     }
+    .email > a.mailto {
+      color: mat-color($primary);
+    }
   }
 }

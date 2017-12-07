@@ -63,6 +63,7 @@
             font-size: 14px;
             line-height: 1.55;
             padding-top: 8px;
+            min-height: 20px;
             span {
               display: flex;
             }
@@ -82,6 +83,16 @@
           .divider {
             margin: 8px 0 7px 0;
             padding-bottom: 7px;
+          }
+        }
+        a.mailto {
+          font-size: 13.5px;
+          font-style: italic;
+          line-height: 1; 
+          margin-bottom: 3px;
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
           }
         }
       }

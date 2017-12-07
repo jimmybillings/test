@@ -9,13 +9,21 @@
         <h5 class="mat-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
         <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(1)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
       </div>
-      <address *ngIf="(orderInProgress | async).selectedAddress">
-        <span class="line-1">{{ (orderInProgress | async).selectedAddress.address.address }}</span>
-        <span class="line-2">{{ (orderInProgress | async).selectedAddress.address.city }},
-          {{ (orderInProgress | async).selectedAddress.address.state }} {{ (orderInProgress | async).selectedAddress.address.zipcode }},
-          {{ (orderInProgress | async).selectedAddress.address.country }}</span>
-        <span class="phone">{{ (orderInProgress | async).selectedAddress.address.phone }}</span>
-      </address>
+      <ng-container *ngIf="(orderInProgress | async).selectedAddress as selectedAddress">
+        <div class="name"><strong>{{selectedAddress.name}}</strong></div>
+        <address *ngIf="selectedAddress.address.address">
+          <span class="line-1">
+            {{ lineOneFor(selectedAddress) }}
+          </span>
+          <span class="line-2">
+            {{ cityFor(selectedAddress) }}
+            {{ stateFor(selectedAddress) }}
+            {{ zipcodeFor(selectedAddress) }}
+            {{ countryFor(selectedAddress) }}
+          </span>
+          <span class="phone">{{ phoneFor(selectedAddress) }}</span>
+        </address>
+      </ng-container>
     </section>
     <section *ngIf="showPricing | async" class="payment" flex="auto">
       <div layout="row" layout-align="space-between">

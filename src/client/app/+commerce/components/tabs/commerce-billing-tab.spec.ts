@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { CommerceBillingTab } from './commerce-billing-tab';
 import { Address, ViewAddress } from '../../../shared/interfaces/user.interface';
 import { MockAppStore } from '../../../store/spec-helpers/mock-app.store';
+import { Pojo } from '../../../shared/interfaces/common.interface';
 
 export function main() {
   describe('Billing Tab Class', () => {
@@ -46,6 +47,15 @@ export function main() {
         zipcode: '80202',
         phone: '5555555555'
       }
+    };
+
+    let mockInvoiceContact: Pojo = {
+      addressId: 2,
+      billingInfo: { address: {} },
+      email: 'invoice.contact@gmail.com',
+      firstName: 'Invoice',
+      lastName: 'Contact',
+      type: 'User'
     };
 
     beforeEach(() => {
@@ -191,6 +201,24 @@ export function main() {
         let newAddress: ViewAddress = Object.assign({}, mockAddressA, { address: mockAddressB.address });
 
         expect(mockUserService.addAccountBillingAddress).toHaveBeenCalledWith(newAddress);
+      });
+    });
+
+    describe('formatAndSelectAddress()', () => {
+
+      it('should call selectAddress() with a properly formatted invoice contact', () => {
+        spyOn(componentUnderTest, 'selectAddress');
+        componentUnderTest.formatAndSelectAddress(mockInvoiceContact);
+
+        let invoiceAddress: Pojo = { addressEntityId: 2, type: 'User', name: 'Invoice Contact', address: {} };
+
+        expect(componentUnderTest.selectAddress).toHaveBeenCalledWith(invoiceAddress);
+      });
+
+      it('should re-fetch the addresses', () => {
+        componentUnderTest.addUserAddress(mockAddressA.address);
+
+        expect(mockUserService.getAddresses).toHaveBeenCalled();
       });
     });
 
