@@ -35,7 +35,6 @@ import { WzSubclipEditorComponent } from './components/wz-subclip-editor/wz.subc
 import { WzGalleryTwoLevelComponent } from './components/wz-gallery-two-level/wz.gallery-two-level.component';
 import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
 import { WzSiteChangerComponent } from './components/wz-site-changer/wz-site-changer.component';
-import { WzNotFoundComponent } from './components/wz-not-found/wz-not-found.component';
 import { WzCommentComponent } from './components/wz-comment/wz.comment.component';
 import { WzShareComponent } from './components/wz-share/wz.share.component';
 import { WzShareLinkComponent } from './components/wz-share-link/wz.share-link.component';
@@ -335,7 +334,6 @@ export function createTranslateLoader(http: HttpClient) {
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
     WzSiteChangerComponent,
-    WzNotFoundComponent,
     WzCommentComponent,
     WzShareComponent,
     WzShareLinkComponent
@@ -370,7 +368,6 @@ export function createTranslateLoader(http: HttpClient) {
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
     WzSiteChangerComponent,
-    WzNotFoundComponent,
     WzCommentComponent,
     WzShareComponent,
     WzShareLinkComponent
