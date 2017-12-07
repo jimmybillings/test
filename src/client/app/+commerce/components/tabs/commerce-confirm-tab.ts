@@ -87,4 +87,48 @@ export class CommerceConfirmTab extends Tab {
   public get canPurchase(): boolean {
     return this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn();
   }
+
+
+  public lineOneFor(address: ViewAddress): string {
+    return this.addressJoinSegment(address, 'address', 'address2');
+  }
+
+  public cityFor(address: ViewAddress): string {
+    return this.addressSegmentWithComma(address, 'city');
+  }
+
+  public stateFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'state');
+  }
+
+  public zipcodeFor(address: ViewAddress): string {
+    return this.addressSegmentWithComma(address, 'zipcode');
+  }
+
+  public countryFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'country');
+  }
+
+  public phoneFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'phone');
+  }
+
+
+
+
+
+
+  private addressSegment(address: ViewAddress, segment: string): string | null {
+    return address.address && address.address[segment] ? address.address[segment] : null;
+  }
+
+  private addressSegmentWithComma(address: ViewAddress, segment: string): string {
+    return this.addressSegment(address, segment) ? this.addressSegment(address, segment) + ',' : '';
+  }
+
+  private addressJoinSegment(address: ViewAddress, segmentOne: string, segmentTwo: string): string {
+    return (address.address[segmentOne] ? address.address[segmentOne] : '') +
+      (address.address[segmentTwo] ? ', ' + address.address[segmentTwo] : '');
+  }
+
 }

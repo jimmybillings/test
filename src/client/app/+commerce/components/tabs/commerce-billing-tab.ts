@@ -81,6 +81,18 @@ export class CommerceBillingTab extends Tab {
       this.fetchAddresses().subscribe(this.determineNewSelectedAddress);
     });
   }
+  // Hopefully this can be removed at some point. (JH)
+  // Currently in a quote the invoiceContact data is not returned like most user Addresses (ViewAddress)
+  // We reformat it here so we still something to display in the confirmation, when a mail address is absent.
+  public formatAndSelectAddress(invoiceContact: Pojo): void {
+    let invoiceAddress: ViewAddress = Object.assign({
+      addressEntityId: invoiceContact.addressId,
+      type: invoiceContact.type,
+      name: `${invoiceContact.firstName} ${invoiceContact.lastName}`,
+      address: invoiceContact.billingInfo.address
+    });
+    this.selectAddress(invoiceAddress);
+  }
 
   public selectAddress(address: ViewAddress, nextTab: boolean = true): void {
     this.store.dispatch(factory => factory.checkout.setSelectedAddress(address));
