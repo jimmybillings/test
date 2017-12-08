@@ -164,6 +164,8 @@ export interface Order extends CommonCommerce {
   bulkOrderId?: string;
   createdUserId: number;
   ownerUserId: number;
+  ownerData?: OwnerData;
+  orderAddress?: OrderAddress;
   orderStatus: OrderStatus;
   orderType: PurchaseType;
   paymentType: PaymentType;
@@ -179,7 +181,9 @@ export interface Order extends CommonCommerce {
   paymentBalance: number;
   paymentDueDate?: Date;
   creditMemoForOrderId?: number;
-  projects: Project[];
+  subTotal?: number;
+  total?: number;
+  totalDiscountAmount?: number;
 }
 
 export interface Quote extends CommonCommerce {
@@ -381,6 +385,21 @@ export interface CreditCardAuthorization {
   };
   id?: string;
   type?: string;
+}
+export interface OwnerData {
+  accountName?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+}
+export interface OrderAddress {
+  accountId: number;
+  accountName?: string;
+  billingInfo?: { address: Address; };
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  type: 'User' | 'Account';
 }
 export interface Invoice {
   documents: Array<Document>;
