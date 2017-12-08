@@ -97,7 +97,9 @@ export class ApiService {
   }
 
   protected bodyJsonFrom(bodyObject: ApiBody): string {
-    return JSON.stringify({ ...bodyObject, siteName: this.apiConfig.portal });
+    return Array.isArray(bodyObject) ?
+      JSON.stringify(bodyObject) :
+      JSON.stringify({ ...bodyObject, siteName: this.apiConfig.portal });
   }
 
   protected searchParametersFrom(parameters: ApiParameters): URLSearchParams {

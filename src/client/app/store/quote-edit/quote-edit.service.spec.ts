@@ -167,260 +167,258 @@ export function main() {
             invoiceContactId: 7
           });
         });
+      });
 
-        describe('cloneQuote()', () => {
-          const mockState: any = { data: { id: 3, ownerUserId: 10, total: 90, subTotal: 100, projects: [{ name: 'Project A' }] } };
-          it(`Should call the deletePropertiesFromObject() method with a seperate cloned version
+      describe('cloneQuote()', () => {
+        const mockState: any = { data: { id: 3, ownerUserId: 10, total: 90, subTotal: 100, projects: [{ name: 'Project A' }] } };
+        it(`Should call the deletePropertiesFromObject() method with a seperate cloned version
         of the current quote`, () => {
-              spyOn(Common, 'deletePropertiesFromObject');
-              serviceUnderTest.cloneQuote(mockState);
-              expect(Common.deletePropertiesFromObject).toHaveBeenCalledWith(
-                mockState,
-                ['id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus']
-              );
-            });
-          it('calls the API service correctly', () => {
-            serviceUnderTest.cloneQuote(mockState).subscribe(() => {
-              expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Orders);
-              expect(mockApiService.post).toHaveBeenCalledWithEndpoint('quote');
-              expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
-              expect(mockApiService.post).toHaveBeenCalledWithBody({
-                data: {
-                  total: 90,
-                  subTotal: 100,
-                  projects: [{ name: 'Project A' }]
-                }
-              });
-            });
-          });
-        });
-
-        describe('createQuote()', () => {
-          it('calls the API service correctly', () => {
-            serviceUnderTest.createQuote().subscribe(() => {
-              expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Orders);
-              expect(mockApiService.post).toHaveBeenCalledWithEndpoint('quote');
-              expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
-            });
-          });
-        });
-
-        describe('updateQuoteField()', () => {
-          it('should call the API service correctly - add', () => {
-            serviceUnderTest.updateQuoteField(
-              { field: 'somefield' },
-              {
-                id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }]
-              } as any);
-
-            const expectedBody = Object.assign(
-              {
-                id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }],
-                field: 'somefield'
-              }
+            spyOn(Common, 'deletePropertiesFromObject');
+            serviceUnderTest.cloneQuote(mockState);
+            expect(Common.deletePropertiesFromObject).toHaveBeenCalledWith(
+              mockState,
+              ['id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus']
             );
-
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/3');
-            expect(mockApiService.put).toHaveBeenCalledWithBody(expectedBody);
           });
-
-          it('should call the API service correctly - remove', () => {
-            serviceUnderTest.updateQuoteField(
-              { bulkOrderId: '' },
-              {
-                id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }]
-              } as any);
-
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/3');
-            expect(mockApiService.put).toHaveBeenCalledWithBody({
-              id: 3, ownerUserId: 10, total: 90, subTotal: 100, projects: [{ name: 'Project A' }]
-            });
-          });
-        });
-
-        describe('addFeeTo()', () => {
-          it('calls the API service as expected', () => {
-            serviceUnderTest.addFeeTo(1, { some: 'project', name: 'projectName' } as any, { some: 'fee' } as any);
-
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/fee/lineItem');
-            expect(mockApiService.put).toHaveBeenCalledWithBody({ some: 'fee' });
-            expect(mockApiService.put).toHaveBeenCalledWithParameters({ projectName: 'projectName' });
-            expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
-          });
-        });
-
-        describe('removeFee()', () => {
-          it('calls the API service as expected', () => {
-            serviceUnderTest.removeFee(1, { some: 'fee', id: 47 } as any);
-
-            expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('quote/1/fee/47');
-            expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
-          });
-        });
-
-        describe('bulkImport', () => {
-          it('calls the api service correctly', () => {
-            serviceUnderTest.bulkImport(1, { lineItemAttributes: 'one\ntwo' }, 'abc-123');
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/asset/direct/lineItem');
-            expect(mockApiService.put).toHaveBeenCalledWithBody({ lineItemAttributes: 'one\ntwo' });
-            expect(mockApiService.put).toHaveBeenCalledWithParameters({ projectId: 'abc-123' });
-            expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
-          });
-        });
-
-        describe('editLineItem()', () => {
-          it('should call the API service correctly', () => {
-            serviceUnderTest.editLineItem(1, { id: '123' }, { pricingAttributes: { Distribution: 'Online Streaming' } });
-
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/update/lineItem/123');
-            expect(mockApiService.put).toHaveBeenCalledWithBody({
-              id: '123',
-              attributes: {
-                Distribution: 'Online Streaming'
-              }
-            });
-            expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
-            expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
-          });
-
-          it('should call the API service correctly without pricingAttributes', () => {
-            serviceUnderTest.editLineItem(1, { id: '123' }, { attributes: { Distribution: 'Online Streaming' } });
-
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/update/lineItem/123');
-            expect(mockApiService.put).toHaveBeenCalledWithBody({
-              id: '123',
-              attributes: {
-                Distribution: 'Online Streaming'
-              }
-            });
-            expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
-            expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
-          });
-        });
-
-        describe('addAssetToProjectInQuote()', () => {
-          let snackbarSpy: jasmine.Spy;
-
-
-          it('should call the API service correctly', () => {
-            serviceUnderTest.addAssetToProjectInQuote(1, ['project1', 'project2'], {
-              lineItem: { id: '123', asset: { assetId: 456 } }, attributes: { Distribution: 'Online Streaming' }
-            });
-
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/asset/lineItem');
-            expect(mockApiService.put).toHaveBeenCalledWithBody({
-              lineItem: { id: '123', asset: { assetId: 456, timeStart: -1, timeEnd: -2 } },
-              attributes: {
-                Distribution: 'Online Streaming'
-              }
-            });
-            expect(mockApiService.put).toHaveBeenCalledWithParameters({
-              projectName: 'project2',
-              region: 'AAA'
-            });
-            expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
-          });
-        });
-
-        describe('addProject()', () => {
-          it('calls the API service correctly', () => {
-            serviceUnderTest.addProject(1);
-
+        it('calls the API service correctly', () => {
+          serviceUnderTest.cloneQuote(mockState).subscribe(() => {
             expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.post).toHaveBeenCalledWithEndpoint('quote/1/project');
+            expect(mockApiService.post).toHaveBeenCalledWithEndpoint('quote');
+            expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
+            expect(mockApiService.post).toHaveBeenCalledWithBody({
+              data: {
+                total: 90,
+                subTotal: 100,
+                projects: [{ name: 'Project A' }]
+              }
+            });
+          });
+        });
+      });
+
+      describe('createQuote()', () => {
+        it('calls the API service correctly', () => {
+          serviceUnderTest.createQuote().subscribe(() => {
+            expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Orders);
+            expect(mockApiService.post).toHaveBeenCalledWithEndpoint('quote');
             expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
           });
         });
+      });
 
-        describe('removeProject()', () => {
-          it('should call the API service correctly', () => {
-            serviceUnderTest.removeProject(1, 123);
+      describe('updateQuoteField()', () => {
+        it('should call the API service correctly - add', () => {
+          serviceUnderTest.updateQuoteField(
+            { field: 'somefield' },
+            {
+              id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }]
+            } as any);
 
-            expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('quote/1/project/123');
-            expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
-          });
+          const expectedBody = Object.assign(
+            {
+              id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }],
+              field: 'somefield'
+            }
+          );
 
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/3');
+          expect(mockApiService.put).toHaveBeenCalledWithBody(expectedBody);
         });
 
-        describe('updateProject()', () => {
-          it('call the API service correctly', () => {
-            serviceUnderTest.updateProject(1, { name: 'New Project Name' } as any);
+        it('should call the API service correctly - remove', () => {
+          serviceUnderTest.updateQuoteField(
+            { bulkOrderId: '' },
+            {
+              id: 3, ownerUserId: 10, total: 90, subTotal: 100, bulkOrderId: 'abc-123', projects: [{ name: 'Project A' }]
+            } as any);
 
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/project');
-            expect(mockApiService.put).toHaveBeenCalledWithBody({ name: 'New Project Name' });
-            expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/3');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            id: 3, ownerUserId: 10, total: 90, subTotal: 100, projects: [{ name: 'Project A' }]
           });
         });
+      });
 
-        describe('moveLineItem()', () => {
-          it('call the API service correctly', () => {
-            serviceUnderTest.moveLineItem(1, { id: '123' } as any, { id: '456' } as any);
+      describe('addFeeTo()', () => {
+        it('calls the API service as expected', () => {
+          serviceUnderTest.addFeeTo(1, { some: 'project', name: 'projectName' } as any, { some: 'fee' } as any);
 
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/move/lineItem');
-            expect(mockApiService.put).toHaveBeenCalledWithParameters({ lineItemId: '456', projectId: '123' });
-            expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/fee/lineItem');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({ some: 'fee' });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ projectName: 'projectName' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('removeFee()', () => {
+        it('calls the API service as expected', () => {
+          serviceUnderTest.removeFee(1, { some: 'fee', id: 47 } as any);
+
+          expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('quote/1/fee/47');
+          expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('bulkImport', () => {
+        it('calls the api service correctly', () => {
+          serviceUnderTest.bulkImport(1, { lineItemAttributes: 'one\ntwo' }, 'abc-123');
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/asset/direct/lineItem');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({ lineItemAttributes: 'one\ntwo' });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ projectId: 'abc-123' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('editLineItem()', () => {
+        it('should call the API service correctly', () => {
+          serviceUnderTest.editLineItem(1, { id: '123' }, { pricingAttributes: { Distribution: 'Online Streaming' } });
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/update/lineItem/123');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            id: '123',
+            attributes: {
+              Distribution: 'Online Streaming'
+            }
           });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
 
-        describe('cloneLineItem()', () => {
-          it('should call the API service correctly', () => {
-            serviceUnderTest.cloneLineItem(1, { id: '123' });
+        it('should call the API service correctly without pricingAttributes', () => {
+          serviceUnderTest.editLineItem(1, { id: '123' }, { attributes: { Distribution: 'Online Streaming' } });
 
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/clone/lineItem');
-            expect(mockApiService.put).toHaveBeenCalledWithParameters({ lineItemId: '123' });
-            expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/update/lineItem/123');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            id: '123',
+            attributes: {
+              Distribution: 'Online Streaming'
+            }
           });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('addAssetToProjectInQuote()', () => {
+        let snackbarSpy: jasmine.Spy;
+
+
+        it('should call the API service correctly', () => {
+          serviceUnderTest.addAssetToProjectInQuote(1, ['project1', 'project2'], {
+            lineItem: { id: '123', asset: { assetId: 456 } }, attributes: { Distribution: 'Online Streaming' }
+          });
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/asset/lineItem');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            lineItem: { id: '123', asset: { assetId: 456, timeStart: -1, timeEnd: -2 } },
+            attributes: {
+              Distribution: 'Online Streaming'
+            }
+          });
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({
+            projectName: 'project2',
+            region: 'AAA'
+          });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('addProject()', () => {
+        it('calls the API service correctly', () => {
+          serviceUnderTest.addProject(1);
+
+          expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.post).toHaveBeenCalledWithEndpoint('quote/1/project');
+          expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('removeProject()', () => {
+        it('should call the API service correctly', () => {
+          serviceUnderTest.removeProject(1, 123);
+
+          expect(mockApiService.delete).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.delete).toHaveBeenCalledWithEndpoint('quote/1/project/123');
+          expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
         });
 
-        describe('editLineItemMarkers()', () => {
-          it('should call the API service correctly', () => {
-            serviceUnderTest.editLineItemMarkers(1,
-              { id: '123', asset: { test: 'asset' } } as any,
-              { in: new Frame(3), out: new Frame(25) }
-            );
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint(`quote/1/update/lineItem/123`);
-            expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
-            expect(mockApiService.put).toHaveBeenCalledWithBody({
-              id: '123',
-              asset: {
-                test: 'asset',
-                timeStart: null,
-                timeEnd: null
-              }
-            });
-            expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
-          });
+      });
+
+      describe('updateProject()', () => {
+        it('call the API service correctly', () => {
+          serviceUnderTest.updateProject(1, { name: 'New Project Name' } as any);
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/project');
+          expect(mockApiService.put).toHaveBeenCalledWithBody({ name: 'New Project Name' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
+      });
 
-        describe('updateProjectPriceAttributes()', () => {
-          it('should call the API service correctly', () => {
-            serviceUnderTest.updateProjectPriceAttributes(1,
-              [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }] as any,
-              { id: '123', name: 'Project A', clientName: 'Ross Edfort', subtotal: 100 }
-            );
+      describe('moveLineItem()', () => {
+        it('call the API service correctly', () => {
+          serviceUnderTest.moveLineItem(1, { id: '123' } as any, { id: '456' } as any);
 
-            expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/project/priceAttributes/123');
-            expect(mockApiService.put).toHaveBeenCalledWithBody(
-              {
-                Distribution: 'Online Streaming'
-              }
-            );
-            expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/move/lineItem');
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ lineItemId: '456', projectId: '123' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('cloneLineItem()', () => {
+        it('should call the API service correctly', () => {
+          serviceUnderTest.cloneLineItem(1, { id: '123' });
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/clone/lineItem');
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ lineItemId: '123' });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('editLineItemMarkers()', () => {
+        it('should call the API service correctly', () => {
+          serviceUnderTest.editLineItemMarkers(1,
+            { id: '123', asset: { test: 'asset' } } as any,
+            { in: new Frame(3), out: new Frame(25) }
+          );
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint(`quote/1/update/lineItem/123`);
+          expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+          expect(mockApiService.put).toHaveBeenCalledWithBody({
+            id: '123',
+            asset: {
+              test: 'asset',
+              timeStart: null,
+              timeEnd: null
+            }
           });
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+        });
+      });
+
+      describe('updateProjectPriceAttributes()', () => {
+        it('should call the API service correctly', () => {
+          serviceUnderTest.updateProjectPriceAttributes(1,
+            [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }] as any,
+            { id: '123', name: 'Project A', clientName: 'Ross Edfort', subtotal: 100 }
+          );
+
+          expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/1/project/priceAttributes/123');
+          expect(mockApiService.put).toHaveBeenCalledWithBody(
+            [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
+          );
+          expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
         });
       });
     });
