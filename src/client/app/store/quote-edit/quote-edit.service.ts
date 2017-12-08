@@ -15,7 +15,6 @@ import { Api, ApiParameters } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers, Duration, durationFrom, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AssetLineItem, Asset, QuoteOptions } from '../../shared/interfaces/commerce.interface';
 import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
-import { Body } from '@angular/http/src/body';
 
 @Injectable()
 export class FutureQuoteEditService {
@@ -144,11 +143,13 @@ export class FutureQuoteEditService {
     );
   }
 
-  public updateProjectPriceAttributes(quoteId: number, priceAttributes: SelectedPriceAttribute[], project: Project): Observable<Quote> {
+  public updateProjectPriceAttributes(
+    quoteId: number, priceAttributes: SelectedPriceAttribute[], project: Project
+  ): Observable<Quote> {
     return this.apiService.put(
       Api.Orders,
       `quote/${quoteId}/project/priceAttributes/${project.id}`,
-      { body: this.format(priceAttributes), loadingIndicator: true }
+      { body: priceAttributes, loadingIndicator: true }
     );
   }
 
@@ -243,13 +244,5 @@ export class FutureQuoteEditService {
       `quote/${quoteId}/update/lineItem/${lineItem.id}`,
       { body: lineItem, parameters: { region: 'AAA' }, loadingIndicator: true }
     );
-  }
-
-  // Should be able to deprecate this when the BE accepts all SelectedPriceAttribute props on project rights package updates
-  private format(attributes: SelectedPriceAttribute[]): Pojo {
-    return attributes.reduce((formatted: Pojo, attribute: SelectedPriceAttribute) => {
-      formatted[attribute.priceAttributeName] = attribute.selectedAttributeValue;
-      return formatted;
-    }, {});
   }
 }

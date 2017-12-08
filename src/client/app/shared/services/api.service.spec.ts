@@ -131,10 +131,16 @@ export function main() {
             expect(mostRecentRequest()._body).toEqual('{"siteName":"PORTAL"}');
           });
 
-          it('is the specified body plus the site name', () => {
+          it('is the specified body plus the site name - for an object', () => {
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: { a: 'b' } });
 
             expect(mostRecentRequest()._body).toEqual('{"a":"b","siteName":"PORTAL"}');
+          });
+
+          it('is the specified body plus the site name - for an array', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: [1, 2, 3] });
+
+            expect(mostRecentRequest()._body).toEqual('[1,2,3]');
           });
         });
 
