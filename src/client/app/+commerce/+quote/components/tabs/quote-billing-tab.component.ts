@@ -32,7 +32,7 @@ export class QuoteBillingTabComponent extends CommerceBillingTab implements OnIn
     this.quoteBillingAccountInfo = this.store.select(state => state.quoteShow.data.billingAccountData);
     this.quoteInvoiceContactInfo = this.store.select(state => state.quoteShow.data.invoiceContact);
     this.orderInProgress = this.store.select(state => state.checkout);
-    if (!this.store.snapshot(state => state.quoteShow.data.billingAccountId)) {
+    if (this.store.snapshot(state => !state.quoteShow.data.billingAccountId || !state.quoteShow.data.invoiceContact)) {
       this.fetchAddresses().subscribe();
     }
   }
