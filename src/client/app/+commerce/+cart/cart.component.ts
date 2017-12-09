@@ -30,6 +30,7 @@ export class CartComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.store.dispatch(factory => factory.checkout.reset());
     // We could initialize a subset of these instead, based on some condition.
     // For example, don't include 'billing' and 'payment' if the cart total is 0.
     // this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];

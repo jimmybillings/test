@@ -64,6 +64,10 @@ export function reducer(state: State = initialState, action: CheckoutActions.Any
       return { ...Common.clone(state), authorization: action.authorization };
     }
 
+    case CheckoutActions.Reset.Type: {
+      return { ...initialState };
+    }
+
     default: {
       return state;
     }

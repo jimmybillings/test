@@ -35,6 +35,8 @@ export class QuoteShowComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(factory => factory.checkout.reset());
+
     this.tabLabelKeys = ['quote', 'billing', 'payment', 'confirm'];
 
     // Enable the first tab and disable the rest.

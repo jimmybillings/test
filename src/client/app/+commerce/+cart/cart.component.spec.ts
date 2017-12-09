@@ -16,6 +16,7 @@ export function main() {
 
       mockAppStore = new MockAppStore();
       mockAppStore.createStateSection('uiConfig', { components: { cartComment: { config: { form: { items: ['config'] } } } } });
+      mockAppStore.createActionFactoryMethod('checkout', 'reset');
 
       mockCartService = { state: { data: { id: 77 } } };
       mockChangeDetectorRef = { markForCheck: () => { } };

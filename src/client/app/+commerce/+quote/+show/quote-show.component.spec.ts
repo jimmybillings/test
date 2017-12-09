@@ -18,6 +18,7 @@ export function main() {
 
       mockAppStore = new MockAppStore();
       mockAppStore.createStateSection('uiConfig', { components: { quoteComment: { config: { form: { items: ['wow'] } } } } });
+      mockAppStore.createActionFactoryMethod('checkout', 'reset');
 
       mockChangeDetectorRef = { markForCheck: () => { } };
 
