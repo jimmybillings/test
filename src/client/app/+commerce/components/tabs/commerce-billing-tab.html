@@ -99,9 +99,9 @@
       </ul>
     </ng-container>
 
-    <ng-container *ngIf="!(quoteBillingAccountInfo | async)">
+    <ng-container *ngIf="(orderInProgress | async).addresses as addresses">
       <ul layout="column" layout-align="start" layout-gt-xs="row">
-        <li *ngFor="let address of (orderInProgress | async).addresses" class="billing-address">
+        <li *ngFor="let address of addresses" class="billing-address">
           <section [ngClass]="{'active': address === (orderInProgress | async).selectedAddress}" layout="column">
             <header>
               <span class="{{address.type | lowercase}}">{{ typeFor(address) }}</span>
