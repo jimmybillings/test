@@ -246,7 +246,7 @@
             <div flex="100" flex-gt-sm="auto" layout="column" layout-align="end end">
               <div class="project-subtotal mat-caption">
                 <strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong>
-                <span>{{ project.subTotal | currency:'USD':true:'1.2-2' }}</span>
+                <span class="total-amount">{{ project.subTotal | currency:'USD':true:'1.2-2' }}</span>
               </div>
             </div>
           </header>
@@ -285,7 +285,7 @@
                   </div>
                 </div>
                 <div class="cost" flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
-                  <div class="mat-suheading-2">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</div>
+                  <div class="mat-suheading-2 total-amount">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</div>
                 </div>
               </li>
               <li
@@ -317,7 +317,7 @@
                   </div>
                 </div>
                 <div class="cost" flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
-                  <div class="mat-suheading-2">{{ feeLineItem.amount | currency:'USD':true:'1.2-2' }}</div>
+                  <div class="mat-suheading-2 total-amount">{{ feeLineItem.amount | currency:'USD':true:'1.2-2' }}</div>
                 </div>
               </li>
             </ul>
@@ -333,18 +333,21 @@
           </div>
           <div  class="totals-container" flex="100" flex-gt-xs="40" layout="column" layout-align="start end">
             <div class="mat-title">
-              <strong>{{ 'ORDER.INVOICE.SUBTOTAL_LABEL' | translate }}</strong>{{ invoice.order.subTotal | currency:'USD':true:'1.2-2' }}
+              <strong class="total-label">{{ 'ORDER.INVOICE.SUBTOTAL_LABEL' | translate }}</strong>
+              <span class="total-amount">{{ invoice.order.subTotal | currency:'USD':true:'1.2-2' }}</span>
             </div>
             <div class="mat-title" *ngIf="hasProp(invoice, 'order', 'discount')">
               <strong>{{ 'ORDER.INVOICE.DISCOUNT_LABEL' | translate }}</strong>{{ invoice.order.discount }}%
             </div>
             <div class="total mat-headline">
-              <strong>{{ 'ORDER.INVOICE.TOTAL_LABEL' | translate }}</strong>{{ invoice.order.total | currency:'USD':true:'1.2-2' }}
+              <strong class="total-label">{{ 'ORDER.INVOICE.TOTAL_LABEL' | translate }}</strong>
+              <span class="total-amount">{{ invoice.order.total | currency:'USD':true:'1.2-2' }}</span>
             </div>
 
             <ng-container *ngIf="hasProp(invoice, 'order', 'paymentBalance')">
               <div class="amount-due mat-headline">
-                <strong>{{ 'ORDER.INVOICE.AMOUNT_DUE_LABEL' | translate }}</strong>{{ invoice.order.paymentBalance | currency:'USD':true:'1.2-2' }}
+                <strong class="total-label">{{ 'ORDER.INVOICE.AMOUNT_DUE_LABEL' | translate }}</strong>
+                <span class="total-amount">{{ invoice.order.paymentBalance | currency:'USD':true:'1.2-2' }}</span>
               </div>
               <div class="mat-title" *ngIf="hasProp(invoice, 'order', 'paymentTerms')">
                 <strong>{{ 'ORDER.INVOICE.TERMS_LABEL' | translate }}</strong>{{ invoice.order.paymentTerms }}
