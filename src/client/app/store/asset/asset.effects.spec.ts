@@ -28,10 +28,11 @@ export function main() {
         type: AssetActions.LoadAssetAfterParentIsAvailable.Type,
         loadParameters: { some: 'loadParameters' },
         assetType: 'orderAsset',
+        parentId: 123
       },
       serviceMethod: {
         name: 'load',
-        expectedArguments: [{ some: 'loadParameters' }],
+        expectedArguments: [{ some: 'loadParameters' }, 'orderAsset', 123],
         returnsObservableOf: { some: 'asset' }
       },
       outputActionFactories: {
@@ -58,7 +59,7 @@ export function main() {
       },
       serviceMethod: {
         name: 'load',
-        expectedArguments: [{ some: 'loadParameters' }],
+        expectedArguments: [{ some: 'loadParameters' }, 'searchAsset', undefined],
         returnsObservableOf: { some: 'asset' }
       },
       outputActionFactories: {
@@ -111,7 +112,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'cartAsset']
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'cartAsset', undefined]
         }
       }
     });
@@ -197,7 +198,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'cartAsset']
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'cartAsset', undefined]
         }
       }
     });
@@ -225,7 +226,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'collectionAsset']
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'collectionAsset', 1]
         }
       }
     });
@@ -305,7 +306,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'collectionAsset']
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'collectionAsset', 1]
         }
       }
     });
@@ -339,7 +340,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'orderAsset']
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'orderAsset', 1]
         }
       }
     });
@@ -433,7 +434,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'orderAsset']
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'orderAsset', 47]
         }
       }
     });
@@ -468,7 +469,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteEditAsset']
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteEditAsset', 1]
         }
       }
     });
@@ -551,7 +552,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteEditAsset']
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteEditAsset', 1]
         }
       }
     });
@@ -585,7 +586,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteShowAsset']
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteShowAsset', 1]
         }
       }
     });
@@ -668,7 +669,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteShowAsset']
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteShowAsset', 47]
         }
       }
     });
@@ -684,7 +685,7 @@ export function main() {
       },
       serviceMethod: {
         name: 'load',
-        expectedArguments: [{ some: 'loadParameters', share_key: 'abc-123' }],
+        expectedArguments: [{ some: 'loadParameters', share_key: 'abc-123' }, undefined],
         returnsObservableOf: { some: 'asset' }
       },
       outputActionFactories: {

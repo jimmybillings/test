@@ -36,9 +36,10 @@ export class ActionFactory {
 
   public loadAssetAfterParentIsAvailable(
     params: Common.ChildAssetLoadParameters,
-    assetType: AssetType
+    assetType: AssetType,
+    parentId?: number
   ): LoadAssetAfterParentIsAvailable {
-    return new LoadAssetAfterParentIsAvailable(params, assetType);
+    return new LoadAssetAfterParentIsAvailable(params, assetType, parentId);
   }
 }
 
@@ -97,7 +98,11 @@ export class UpdateMarkersInUrl implements Action {
 export class LoadAssetAfterParentIsAvailable implements Action {
   public static readonly Type = '[Asset] Load Asset After Parent Is Available';
   public readonly type = LoadAssetAfterParentIsAvailable.Type;
-  constructor(public readonly loadParameters: Common.ChildAssetLoadParameters, public readonly assetType: AssetType) { }
+  constructor(
+    public readonly loadParameters: Common.ChildAssetLoadParameters,
+    public readonly assetType: AssetType,
+    public readonly parentId: number
+  ) { }
 }
 
 export class LoadSuccess implements Action {
