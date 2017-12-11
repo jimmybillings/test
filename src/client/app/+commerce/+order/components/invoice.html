@@ -1,4 +1,4 @@
-<ng-container *ngIf="invoice | async as invoice">
+<ng-container *ngIf="invoiceObservable | async as invoice">
   <section class="header" layout="row" layout-align="center center">
     <header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" >
       <div
@@ -257,13 +257,13 @@
                 flex="100"
                 layout="row"
                 hide-xs>
-                <div class="heading" flex="100" flex-gt-xs="40">
+                <div class="heading" flex="100" flex-gt-xs="50">
                   <h6 class="mat-subheading-2">{{ 'ORDER.INVOICE.PRODUCT_COLUMN_HEAD' | translate }}</h6>
                 </div>
-                <div class="heading" flex="100" flex-gt-xs="15">
+                <div class="heading" flex="100" flex-gt-xs="10">
                   <h6 class="mat-subheading-2">{{ 'ORDER.INVOICE.RIGHTS_COLUMN_HEAD' | translate }}</h6>
                 </div>
-                <div class="heading" flex="100" flex-gt-xs="35">
+                <div class="heading" flex="100" flex-gt-xs="30">
                   <h6 class="mat-subheading-2">{{ 'ORDER.INVOICE.USEAGE_COLUMN_HEAD' | translate }}</h6>
                 </div>
                 <div class="heading" flex="100" flex-gt-xs="10" layout="column" layout-align-gt-xs="end end">
@@ -275,14 +275,19 @@
                 flex="100"
                 layout="row"
                 layout-xs="column">
-                <cart-asset-component [asset]="lineItem.asset" flex="100" flex-gt-xs="40"></cart-asset-component>
-                <div flex="100" flex-gt-xs="15" layout="column" layout-padding>
+                <cart-asset-component [asset]="lineItem.asset" flex="100" flex-gt-xs="50"></cart-asset-component>
+                <div flex="100" flex-gt-xs="10" layout="column" layout-padding>
                   <div class="mat-caption">{{ lineItem.asset.rightsManaged }}</div>
                 </div>
-                <div flex="35" layout="column" layout-padding>
-                  <div *ngFor="let attribute of lineItem.attributes" class="mat-caption">
-                    <strong>{{ attribute.priceAttributeName }}: </strong>{{ attribute.selectedAttributeValue }}
-                  </div>
+                <div flex="30" layout="column" layout-padding>
+                  <line-item-rights-component
+                    class="invoice-items-rights"
+                    [readOnly]="true"
+                    [rights]="lineItem.attributes"
+                    [rightsManaged]="lineItem.rightsManaged"
+                    [hasAttributes]="!!lineItem.attributes"
+                    [isOrder]="true">
+                  </line-item-rights-component>
                 </div>
                 <div class="cost" flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
                   <div class="mat-suheading-2 total-amount">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</div>
