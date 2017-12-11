@@ -9,7 +9,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MaterialModule } from './modules/wz-design/wz.design.module';
 import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
 // Shared Wazee Modules
@@ -313,7 +313,7 @@ export function createTranslateLoader(http: HttpClient) {
     StoreModule.forRoot(WAZEE_STORES),  // Eventually this will be just the reducers object from app.store.ts
     // TODO: Get StoreDevtoolsModule out of production!!!  (Looks scary, though:
     // https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md)
-    StoreDevtoolsModule.instrument(),
+    // StoreDevtoolsModule.instrument(),
     WAZEE_EFFECTS
   ],
   declarations: [
