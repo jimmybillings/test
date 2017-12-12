@@ -26,7 +26,7 @@ export class AssetEffects {
   @Effect()
   public loadAfterParentIsAvailable: Observable<Action> = this.actions.ofType(AssetActions.LoadAssetAfterParentIsAvailable.Type)
     .switchMap((action: AssetActions.LoadAssetAfterParentIsAvailable) =>
-      this.service.load(action.loadParameters)
+      this.service.load(action.loadParameters, action.assetType, action.parentId)
         .mergeMap((asset: CommonInterface.Asset) => {
           const actions: Array<Action> = [
             this.store.create(factory => factory.asset.loadSuccess(asset))
@@ -137,7 +137,7 @@ export class AssetEffects {
   @Effect()
   public loadSearchAsset: Observable<Action> = this.actions.ofType(AssetActions.LoadSearchAsset.Type)
     .switchMap((action: AssetActions.LoadSearchAsset) =>
-      this.service.load(action.loadParameters)
+      this.service.load(action.loadParameters, action.assetType)
         .mergeMap((asset: CommonInterface.Asset) => [
           this.store.create(factory => factory.asset.loadSuccess(asset)),
           this.store.create(factory => factory.deliveryOptions.load(asset, action.loadParameters.share_key))
@@ -169,7 +169,7 @@ export class AssetEffects {
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'quoteShowAsset');
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'quoteShowAsset', quote.id);
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -185,7 +185,7 @@ export class AssetEffects {
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'quoteEditAsset');
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'quoteEditAsset', quote.id);
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -202,7 +202,7 @@ export class AssetEffects {
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'orderAsset');
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'orderAsset', order.id);
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -235,7 +235,7 @@ export class AssetEffects {
     const asset: CommonInterface.Asset = collection.assets.items.find(asset => asset.uuid === uuid);
 
     if (asset) {
-      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'collectionAsset');
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'collectionAsset', collection.id);
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -253,13 +253,14 @@ export class AssetEffects {
     uuid: string,
     timeStart: number,
     timeEnd: number,
-    assetType: AssetType
+    assetType: AssetType,
+    parentId?: number,
   ): InternalActionFactoryMapper {
     return factory => factory.asset.loadAssetAfterParentIsAvailable({
       id: String(id),
       uuid: uuid,
       timeStart: String(timeStart),
       timeEnd: String(timeEnd)
-    }, assetType);
+    }, assetType, parentId);
   }
 }
