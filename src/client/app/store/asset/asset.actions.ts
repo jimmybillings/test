@@ -33,7 +33,9 @@ export class ActionFactory {
   public updateMarkersInUrl(markers: SubclipMarkers, assetId: number) {
     return new UpdateMarkersInUrl(markers, assetId);
   }
+}
 
+export class InternalActionFactory extends ActionFactory {
   public loadAssetAfterParentIsAvailable(
     params: Common.ChildAssetLoadParameters,
     assetType: AssetType,
@@ -41,9 +43,7 @@ export class ActionFactory {
   ): LoadAssetAfterParentIsAvailable {
     return new LoadAssetAfterParentIsAvailable(params, assetType, parentId);
   }
-}
 
-export class InternalActionFactory extends ActionFactory {
   public loadSuccess(activeAsset: Common.Asset): LoadSuccess {
     return new LoadSuccess(activeAsset);
   }

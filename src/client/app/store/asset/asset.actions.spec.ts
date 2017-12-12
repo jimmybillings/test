@@ -100,7 +100,7 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
-        class: ActionFactory,
+        class: InternalActionFactory,
         name: 'loadAssetAfterParentIsAvailable',
         parameters: [{ some: 'loadParams' }, 'cartAsset', 123]
       },
