@@ -108,6 +108,14 @@ export function main() {
 
             expect(mostRecentRequest().url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL');
           });
+
+          it('properly encodes a \'+\' to a \' \'', () => {
+            methodUnderTest.call(
+              serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b+c' } }
+            );
+
+            expect(mostRecentRequest().url).toEqual('BASE/identities-api/v1/end/point?a=b%2Bc&siteName=PORTAL');
+          });
         });
 
         describe('headers', () => {
