@@ -109,9 +109,7 @@ export class ApiService {
 
     Object.keys(parameters)
       .filter(parameter => (parameter !== 'siteName'))
-      .forEach(parameter => {
-        search.set(parameter, parameters[parameter]);
-      });
+      .forEach(parameter => search.set(parameter, parameters[parameter]));
 
     search.set('siteName', this.apiConfig.portal);
 
