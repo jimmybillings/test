@@ -12,6 +12,7 @@ import { EnhancedAsset, AssetType } from '../../shared/interfaces/enhanced-asset
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { SearchState } from '../../shared/services/search-context.service';
+import { AssetShareDialogOptions } from '../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -45,7 +46,7 @@ export class AssetDetailComponent implements OnInit {
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
-  @Output() createShareDialog: EventEmitter<Pojo> = new EventEmitter();
+  @Output() createShareDialog: EventEmitter<AssetShareDialogOptions> = new EventEmitter();
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   public shareFormFields: FormFields[];
   public selectedTarget: string;
@@ -181,8 +182,8 @@ export class AssetDetailComponent implements OnInit {
 
   public onCreateShareDialog() {
     this.createShareDialog.emit({
-      asset: this._asset,
-      subClipMarkers: this.subclipMarkers,
+      enhancedAsset: this._asset,
+      subclipMarkers: this.subclipMarkers,
       formFields: this.shareFormFields
     });
   }

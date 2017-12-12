@@ -280,16 +280,16 @@ export function main() {
     describe('onCreateShareDialog()', () => {
       it('Should call the dialog service to open the asset sharing dialog', () => {
         let params = {
-          asset: 'some asset',
+          enhancedAsset: 'some asset',
           subclipMarkers: 'markers',
           formFields: ['field1', 'field2']
         };
-        componentUnderTest.onCreateShareDialog(params);
+        componentUnderTest.onCreateShareDialog(params as any);
         expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
           componentType: jasmine.any(Function),
           dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
           inputOptions: {
-            enhancedAsset: params.asset,
+            enhancedAsset: params.enhancedAsset,
             subclipMarkers: params.subclipMarkers,
             formFields: params.formFields
           },

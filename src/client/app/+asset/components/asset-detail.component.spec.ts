@@ -1095,10 +1095,10 @@ export function main() {
         componentUnderTest.onCreateShareDialog();
 
         expect(componentUnderTest.createShareDialog.emit).toHaveBeenCalledWith({
-          asset: {
+          enhancedAsset: {
             assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl', transcodeTargets: transcodeTargets
           },
-          subClipMarkers: 'some markers',
+          subclipMarkers: 'some markers',
           formFields: 'some form fields'
         });
       });
