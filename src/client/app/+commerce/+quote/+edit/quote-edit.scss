@@ -122,6 +122,11 @@ quote-edit-confirm-tab-component {
         strong  {
           padding-right: 5px;
         }
+        .offline-agreement {
+          font-style: italic;
+          line-height: 1.4;
+          opacity:.75;
+        }
       }
     }
     &.card {

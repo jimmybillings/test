@@ -74,7 +74,7 @@ order-show-component .project .project-info div {
 .order-summary {
   .details {
     opacity: .7;
-    margin: 18px 0 16px 4px;
+    margin: 11px 0 14px 4px;
   }
   .cart-total {
     opacity: .9;
@@ -108,8 +108,20 @@ order-show-component .project .project-info div {
     line-height: 1.4;
     & > span {
       display: flex;
+      margin: 2px 0;
       strong {
         padding-right: 5px;
+      }
+    }
+    & > span.offline-agreement-display {
+      display: block;
+      strong {
+        display: block;
+      }
+      span { 
+        display: block;
+        font-style: italic;
+        font-size: .94em;
       }
     }
     a.indicate-refund {

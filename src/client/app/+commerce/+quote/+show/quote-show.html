@@ -27,13 +27,10 @@
             {{ 'QUOTE.PURCHASE_HEADER' | translate }} 
             <span *ngIf="hasPurchaseType">- {{ trStringForPurchaseType | translate }}</span>
           </h2>
-          <div *ngIf="(offlineAgreementIds | async).length" class="offline-id">
-            <span>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }} {{ offlineAgreementIds | async }}</span>
-          </div>
         </div>
         <div 
           class="tools"
-          flex="auto" 
+          flex="none" 
           [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
           <a color="primary" [routerLink]="['/quotes']" mat-icon-button title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
             <mat-icon>inbox</mat-icon>
@@ -63,7 +60,7 @@
       flex-gt-lg="80"
       layout-align-gt-xs="space-between end">
       <div layout="column" layout-gt-xs="row" flex="100" layout-align-gt-xs="space-between end">
-        <div flex-gt-xs="55" flex="100" class="details">
+        <div flex-gt-xs="65" flex="100" class="details">
           <div class="mat-caption quote-info" flex-order-xs="2">
             <span class="quote-number">
               <strong>{{ 'QUOTE.SHOW.NUMBER_LABEL' | translate }}</strong>
@@ -72,17 +69,6 @@
             <span>
               <strong>{{ 'QUOTE.CREATED_ON_LABEL' | translate }} </strong>
               {{ (quote | async).createdOn | date:'short' }}
-            </span>
-            <span *ngIf="(quote | async).bulkOrderId">
-              <strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>
-              {{ (quote | async).bulkOrderId }}
-            </span>
-            <span>
-              <strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
-              {{ trStringForPurchaseType | translate }}
-            </span>
-            <span *ngIf="(offlineAgreementIds | async).length">
-              <strong>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }}</strong>{{ offlineAgreementIds | async }}
             </span>
             <ng-container *ngIf="shouldShowRecipientInfo">
               <span>
@@ -97,6 +83,18 @@
             <span [ngClass]="{expired: isExpired}">
               <strong>{{ ( isExpired ? 'QUOTE.EXPIRED_LABEL' : 'QUOTE.EXPIRATION_LABEL') | translate }} </strong>
               {{ (quote | async).expirationDate | date:'short' }}
+            </span>
+            <span *ngIf="(quote | async).bulkOrderId">
+              <strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>
+              {{ (quote | async).bulkOrderId }}
+            </span>
+            <span>
+              <strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
+              {{ trStringForPurchaseType | translate }}
+            </span>
+            <span class="offline-agreement-display" *ngIf="(offlineAgreementIds | async).length">
+              <strong>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }}</strong>
+              <span>{{ offlineAgreementIds | async }}</span>
             </span>
           </div>
         </div>
@@ -132,6 +130,24 @@
       </div>
     </div>
 	</div>
+</section>
+
+<section *ngIf="displayActiveOfflineAgreementToPurchaser" class="offline-agreement-section">
+  <div layout="row" flex="100" layout-align="center start">
+    <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
+      <div class="offline-agreement-display mat-caption"
+        layout="column"
+        layout-gt-xs="row" 
+        flex="100" 
+        flex-gt-xs="65"
+        flex-gt-md="55">
+        <div>
+          <strong>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }}</strong>
+          <span>{{ offlineAgreementIds | async }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="tabs-section">

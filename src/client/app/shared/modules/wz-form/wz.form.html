@@ -140,7 +140,8 @@
         formControlName="{{field.name}}"
         [required]="isRequiredField(field)"
         mdTextareaAutosize
-        id="{{field.name}}">
+        id="{{field.name}}"
+        (blur)="onBlur()">
       </textarea>
       <mat-hint
         *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart"

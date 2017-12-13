@@ -232,8 +232,17 @@
       <h4 class="mat-title">{{ 'ORDER.INVOICE.INVOICE_SUMMARY_TITLE' | translate }}</h4>
       <div class="invoice-divider"></div>
 
-      <ng-container *ngFor="let project of invoice.order.projects">
+      <ng-container *ngFor="let project of invoice.order.projects; let projIndex=index">
         <div class="project">
+          <!-- display offline agreement if it exists -->
+          <ng-container *ngFor="let lineItem of project.lineItems; let liIndex=index"> 
+            <div
+              *ngIf="(liIndex == 0 && projIndex == 0) && hasProp(lineItem, 'externalAgreementIds')"
+              class="offline-agreement">
+              <strong class="key">Offline agreement reference:</strong>
+              <div class="value">{{lineItem.externalAgreementIds}}</div>
+            </div>   
+          </ng-container> 
           <header class="project-info" layout-gt-xs="row" layout="column">
             <h5 class="mat-subheading-1" flex="100" flex-gt-sm="auto">
               <span class="project-label">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>

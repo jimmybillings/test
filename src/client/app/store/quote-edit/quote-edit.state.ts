@@ -87,7 +87,7 @@ export const initialState: State = {
       }, {
         name: 'offlineAgreementReference',
         label: 'QUOTE.EDIT.FORMS.OFFLINE_AGREEMENT_LABEL',
-        type: 'text',
+        type: 'textarea',
         value: '',
         validation: 'OPTIONAL'
       }]

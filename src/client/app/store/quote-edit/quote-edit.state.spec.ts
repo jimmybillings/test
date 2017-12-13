@@ -500,7 +500,7 @@ export function main() {
                 }, {
                   name: 'offlineAgreementReference',
                   label: 'QUOTE.EDIT.FORMS.OFFLINE_AGREEMENT_LABEL',
-                  type: 'text',
+                  type: 'textarea',
                   value: '',
                   validation: 'OPTIONAL'
                 }]
@@ -559,7 +559,7 @@ export function main() {
                   }, {
                     name: 'offlineAgreementReference',
                     label: 'QUOTE.EDIT.FORMS.OFFLINE_AGREEMENT_LABEL',
-                    type: 'text',
+                    type: 'textarea',
                     value: 'SD12FJ23GJ23',
                     validation: 'OPTIONAL'
                   }
