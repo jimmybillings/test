@@ -1,9 +1,12 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Invoice } from '../../../shared/interfaces/commerce.interface';
+import { Invoice, Project, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
+import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
+
 import { AppStore } from '../../../app.store';
 import { Pojo } from '../../../shared/interfaces/common.interface';
+import { Common } from '../../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -14,11 +17,25 @@ import { Pojo } from '../../../shared/interfaces/common.interface';
 
 export class InvoiceComponent {
   public isShared: Observable<boolean>;
-  public invoice: Observable<Invoice>;
+  public invoiceObservable: Observable<Invoice>;
 
   constructor(private store: AppStore, private route: ActivatedRoute) {
-    this.invoice = this.store.select(state => state.invoice.invoice);
     this.isShared = this.route.params.map(params => !!params['share_key']);
+    this.invoiceObservable = this.store.select(state => {
+      const invoice: Invoice = Common.clone(state.invoice.invoice);
+      invoice.order.projects = invoice.order.projects.map((project: Project) => {
+        if (project.lineItems) {
+          project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
+            lineItem.asset = enhanceAsset(
+              Object.assign(lineItem.asset, { uuid: lineItem.id }), 'orderAsset', invoice.order.id
+            );
+            return lineItem;
+          });
+        }
+        return project;
+      });
+      return invoice;
+    });
   }
 
   public hasProp(obj: Pojo, ...props: string[]): boolean {
