@@ -52,6 +52,7 @@ export function main() {
         'uiConfig',
         { components: { cart: { config: { extendQuote: { items: [{ some: 'config' }] } } } } }
       );
+      mockStore.createStateSection('quoteShow', { data: { purchaseType: 'Trial' } });
 
       return new QuoteTabComponent(
         mockQuoteService, mockUserCan, mockDialogService, mockRouter, mockStore

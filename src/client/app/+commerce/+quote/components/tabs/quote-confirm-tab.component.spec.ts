@@ -74,5 +74,21 @@ export function main() {
         });
       });
     });
+
+    describe('canPurchase() getter', () => {
+      describe('returns true', () => {
+        it('when the quote is of type \'RevenueOnly\'', () => {
+          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'RevenueOnly' } });
+
+          expect(componentUnderTest.canPurchase).toBe(true);
+        });
+
+        it('when the licenses are agreed to and the license button is showing', () => {
+          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'NotRevenueOnly' } });
+          componentUnderTest.licensesAreAgreedTo = true;
+          expect(componentUnderTest.canPurchase).toBe(true);
+        });
+      });
+    });
   });
 }
