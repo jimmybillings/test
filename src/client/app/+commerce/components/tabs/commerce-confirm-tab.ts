@@ -44,15 +44,11 @@ export class CommerceConfirmTab extends Tab {
   }
 
   public get showPurchaseBtn(): Observable<boolean> {
-    return this.store.select(state => state.checkout.selectedPaymentType).map((type: PaymentOption) => {
-      return type === 'CreditCard';
-    });
+    return this.store.select(state => state.checkout.selectedPaymentType === 'CreditCard');
   }
 
   public get showPurchaseOnCreditBtn(): Observable<boolean> {
-    return this.store.select(state => state.checkout.selectedPaymentType).map((type: PaymentOption) => {
-      return type === 'PurchaseOnCredit';
-    });
+    return this.store.select(state => state.checkout.selectedPaymentType === 'PurchaseOnCredit');
   }
 
   public purchase(): void {
@@ -75,19 +71,6 @@ export class CommerceConfirmTab extends Tab {
       return `There is no address on record for this ${address.type}`;
     }
   }
-
-  public shouldShowLicenseDetailsBtn(): boolean {
-    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
-  }
-
-  public get isOfflineQuote(): Observable<boolean> {
-    return this.store.select(state => state.checkout.selectedPaymentType).map(type => type && type.includes('Offline'));
-  }
-
-  public get canPurchase(): boolean {
-    return this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn();
-  }
-
 
   public lineOneFor(address: ViewAddress): string {
     return this.addressJoinSegment(address, 'address', 'address2');
@@ -113,11 +96,6 @@ export class CommerceConfirmTab extends Tab {
     return this.addressSegment(address, 'phone');
   }
 
-
-
-
-
-
   private addressSegment(address: ViewAddress, segment: string): string | null {
     return address.address && address.address[segment] ? address.address[segment] : null;
   }
@@ -130,5 +108,4 @@ export class CommerceConfirmTab extends Tab {
     return (address.address[segmentOne] ? address.address[segmentOne] : '') +
       (address.address[segmentTwo] ? ', ' + address.address[segmentTwo] : '');
   }
-
 }

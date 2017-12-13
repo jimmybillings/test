@@ -12,24 +12,42 @@ export function main() {
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      mockStore.createStateSection('invoice', { invoice: { some: 'invoice' } });
+      mockStore.createStateSection('invoice', { invoice: { some: 'invoice', order: { id: 42, projects: [] } } });
       mockActivatedRoute = { params: Observable.of({ share_key: 'abc-123' }) };
       componentUnderTest = new InvoiceComponent(mockStore, mockActivatedRoute);
     });
 
     describe('constructor()', () => {
-      it('sets up the invoice Observable', () => {
-        let invoice: any;
-        componentUnderTest.invoice.take(1).subscribe(i => invoice = i);
-        expect(invoice).toEqual({ some: 'invoice' });
-      });
 
       it('sets up the isShared Observable', () => {
         let isShared: boolean;
         componentUnderTest.isShared.take(1).subscribe(is => isShared = is);
         expect(isShared).toBe(true);
       });
+
+      it('contains enhanced assets', () => {
+        mockStore.createStateSection(
+          'invoice',
+          {
+            invoice: {
+              some: 'invoice',
+              order: {
+                id: 42,
+                projects: [{ lineItems: [{ asset: {} }] }]
+              }
+            }
+          }
+        );
+
+        new InvoiceComponent(mockStore, mockActivatedRoute).invoiceObservable.subscribe(invoice => {
+          const asset: any = invoice.order.projects[0].lineItems[0].asset;
+
+          expect(asset.type).toEqual('orderAsset');
+          expect(asset.parentId).toEqual(42);
+        });
+      });
     });
+
     const mockObj: Pojo = { a: { b: { c: { d: 'e', f: '', g: 0, h: {} } } } };
 
     describe('hasProp()', () => {

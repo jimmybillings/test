@@ -199,6 +199,7 @@ invoice-component {
           padding: 0 10px 0 0;
         }
       }
+
       .asset-list li.cart-asset,
       .asset-list li.fee-item {
         margin: 0;
@@ -212,6 +213,9 @@ invoice-component {
           @media screen and (max-width: $layout-breakpoint-xs)  {
             border-left-width: 0; 
           }
+          line-item-rights-component header.royalty-free {
+            display: none;
+          } 
           &.cost {
             .total-amount {
               display: inline-block;

@@ -58,4 +58,14 @@ export class QuoteConfirmTabComponent extends CommerceConfirmTab {
   public get showPricing(): Observable<boolean> {
     return this.store.select(state => !quotesWithoutPricing.includes(state.quoteShow.data.purchaseType));
   }
+
+  public get canPurchase(): boolean {
+    return this.store.snapshot(state => state.quoteShow.data.purchaseType === 'RevenueOnly') ||
+      (this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn());
+  }
+
+  public shouldShowLicenseDetailsBtn(): boolean {
+    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems) &&
+      this.store.snapshot(state => state.quoteShow.data.purchaseType !== 'RevenueOnly');
+  }
 }
