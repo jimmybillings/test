@@ -12,19 +12,12 @@ export type PurchaseType =
   'PrepayOfflineLicense' |
   'Trial' |
   'DeliveryOnly' |
-  'ChannelNoDelivery';
+  'ChannelNoDelivery' |
+  'RevenueOnly';
 
 export type PaymentOption =
-  'SystemLicense' |
-  'SystemLicenseNoDelivery' |
-  'OfflineLicense' |
-  'OfflineLicenseNoDelivery' |
-  'PrepaySystemLicense' |
-  'PrepayOfflineLicense' |
   'Trial' |
   'DeliveryOnly' |
-  'BadDebt' |
-  'ChannelNoDelivery' |
   'PurchaseOnCredit' |
   'CreditCard' |
   'Hold';

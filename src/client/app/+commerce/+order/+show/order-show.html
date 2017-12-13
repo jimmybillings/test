@@ -42,7 +42,7 @@
               <strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>{{ order.bulkOrderId }}
             </span>
             <span>
-              <strong>{{ 'ORDER.PURCHASE_TYPE_LABEL' | translate }} </strong>{{ order.orderType }}
+              <strong>{{ 'ORDER.PURCHASE_TYPE_LABEL' | translate }} </strong>{{ order.paymentType }}
             </span>
             <span *ngIf="offlineAgreementIdsFor(order).length">
               <strong>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }}</strong>{{ offlineAgreementIdsFor(order) }}

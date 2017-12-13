@@ -30,15 +30,4 @@ export class QuotePaymentTabComponent extends CommercePaymentTab {
   public get showDeliveryOnlyMessage(): Observable<boolean> {
     return this.quoteService.paymentOptionsEqual(['DeliveryOnly']);
   }
-
-  public get showOfflineAgreementMessage(): Observable<boolean> {
-    return this.quoteService.paymentOptions.map((options: PaymentOptions) => {
-      return options && options.paymentOptions.every(o => o.includes('Offline'));
-    });
-  }
-
-  public selectInvoiceLater() {
-    this.store.dispatch(factory => factory.checkout.setSelectedPaymentType(this.quoteService.state.data.purchaseType));
-    this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
-  }
 }
