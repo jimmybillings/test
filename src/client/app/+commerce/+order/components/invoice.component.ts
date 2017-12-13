@@ -15,34 +15,27 @@ import { Common } from '../../../shared/utilities/common.functions';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-
-
 export class InvoiceComponent {
   public isShared: Observable<boolean>;
   public invoiceObservable: Observable<Invoice>;
 
   constructor(private store: AppStore, private route: ActivatedRoute) {
     this.isShared = this.route.params.map(params => !!params['share_key']);
-
     this.invoiceObservable = this.store.select(state => {
       const invoice: Invoice = Common.clone(state.invoice.invoice);
-
-      invoice.order.projects.forEach((project: Project) => {
-        if (!project.lineItems) return;
-        project.lineItems.forEach((lineItem: AssetLineItem) => {
-          lineItem.asset = enhanceAsset(
-            Object.assign(lineItem.asset, { uuid: lineItem.id }), 'orderAsset', invoice.order.id
-          );
-        });
+      invoice.order.projects = invoice.order.projects.map((project: Project) => {
+        if (project.lineItems) {
+          project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
+            lineItem.asset = enhanceAsset(
+              Object.assign(lineItem.asset, { uuid: lineItem.id }), 'orderAsset', invoice.order.id
+            );
+            return lineItem;
+          });
+        }
+        return project;
       });
       return invoice;
     });
-
-
-
-
-
-
   }
 
   public hasProp(obj: Pojo, ...props: string[]): boolean {
