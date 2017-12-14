@@ -213,7 +213,7 @@
                 </span>
                 <address>
                   <span class="identification-number user-id" *ngIf="hasProp(invoice, 'order', 'ownerData', 'accountName')">
-                    <span class="key">Account name:</span>
+                    <span class="key">{{ 'ORDER.INVOICE.ACCOUNT_NAME_LABEL' | translate }}</span>
                     {{ invoice.order.ownerData.accountName }}
                   </span>
                   <span class="email" *ngIf="hasProp(invoice, 'order', 'ownerData', 'email')">
@@ -239,7 +239,7 @@
             <div
               *ngIf="(liIndex == 0 && projIndex == 0) && hasProp(lineItem, 'externalAgreementIds')"
               class="offline-agreement">
-              <strong class="key">Offline agreement reference:</strong>
+              <strong class="key">{{ 'ORDER.INVOICE.OFFLINE_AGREEMENT_REF_LABEL' | translate }}</strong>
               <div class="value">{{lineItem.externalAgreementIds}}</div>
             </div>   
           </ng-container> 
