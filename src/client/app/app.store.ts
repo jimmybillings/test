@@ -23,6 +23,10 @@ import * as CheckoutActions from './store/checkout/checkout.actions';
 import * as CheckoutState from './store/checkout/checkout.state';
 export type CheckoutState = CheckoutState.State;
 
+import * as CmsActions from './store/cms/cms.actions';
+import * as CmsState from './store/cms/cms.state';
+export type CmsState = CmsState.State;
+
 import * as CommentActions from './store/comment/comment.actions';
 import * as CommentState from './store/comment/comment.state';
 export type CommentState = CommentState.State;
@@ -109,6 +113,7 @@ export interface ActionFactory {
   readonly asset: AssetActions.ActionFactory;
   readonly cart: CartActions.ActionFactory;
   readonly checkout: CheckoutActions.ActionFactory;
+  readonly cms: CmsActions.ActionFactory;
   readonly comment: CommentActions.ActionFactory;
   readonly deliveryOptions: DeliveryOptionsActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
@@ -140,6 +145,7 @@ export interface InternalActionFactory {
   readonly asset: AssetActions.InternalActionFactory;
   readonly cart: CartActions.InternalActionFactory;
   readonly checkout: CheckoutActions.InternalActionFactory;
+  readonly cms: CmsActions.InternalActionFactory;
   readonly comment: CommentActions.InternalActionFactory;
   readonly deliveryOptions: DeliveryOptionsActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
@@ -169,6 +175,7 @@ export interface AppState {
   readonly asset: AssetState;
   readonly cart: CartState;
   readonly checkout: CheckoutState;
+  readonly cms: CmsState;
   readonly comment: CommentState;
   readonly deliveryOptions: DeliveryOptionsState;
   readonly feeConfig: FeeConfigState;
@@ -201,6 +208,7 @@ export const reducers: AppReducers = {
   asset: AssetState.reducer,
   cart: CartState.reducer,
   checkout: CheckoutState.reducer,
+  cms: CmsState.reducer,
   comment: CommentState.reducer,
   deliveryOptions: DeliveryOptionsState.reducer,
   feeConfig: FeeConfigState.reducer,
@@ -233,6 +241,7 @@ export class AppStore {
     asset: new AssetActions.ActionFactory(),
     cart: new CartActions.ActionFactory(),
     checkout: new CheckoutActions.ActionFactory(),
+    cms: new CmsActions.ActionFactory(),
     comment: new CommentActions.ActionFactory(),
     deliveryOptions: new DeliveryOptionsActions.ActionFactory(),
     dialog: new DialogActions.ActionFactory(),
@@ -264,6 +273,7 @@ export class AppStore {
     asset: new AssetActions.InternalActionFactory(),
     cart: new CartActions.InternalActionFactory(),
     checkout: new CheckoutActions.InternalActionFactory(),
+    cms: new CmsActions.InternalActionFactory(),
     comment: new CommentActions.InternalActionFactory(),
     deliveryOptions: new DeliveryOptionsActions.InternalActionFactory(),
     dialog: new DialogActions.InternalActionFactory(),

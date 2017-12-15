@@ -67,6 +67,7 @@ import { AccountService } from '../store/account/account.service';
 import { ActiveCollectionService } from '../store/active-collection/active-collection.service';
 import { ActivityService } from '../store/activity/activity.service';
 import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
+import { CmsService } from '../store/cms/cms.service';
 import { CommentService } from '../store/comment/comment.service';
 import { DeliveryOptionsService } from '../store/delivery-options/delivery-options.service';
 import { FeeConfigService } from '../store/fee-config/fee-config.service';
@@ -95,6 +96,7 @@ import * as ActiveCollectionState from '../store/active-collection/active-collec
 import * as AssetState from '../store/asset/asset.state';
 import * as CartState from '../store/cart/cart.state';
 import * as CheckoutState from '../store/checkout/checkout.state';
+import * as CmsState from '../store/cms/cms.state';
 import * as CommentState from '../store/comment/comment.state';
 import * as DeliveryOptionState from '../store/delivery-options/delivery-options.state';
 import * as FeeConfigState from '../store/fee-config/fee-config.state';
@@ -132,6 +134,7 @@ import { ActiveCollectionEffects } from '../store/active-collection/active-colle
 import { ActivityEffects } from '../store/activity/activity.effects';
 import { AssetEffects } from '../store/asset/asset.effects';
 import { CartEffects } from '../store/cart/cart.effects';
+import { CmsEffects } from '../store/cms/cms.effects';
 import { CommentEffects } from '../store/comment/comment.effects';
 import { DeliveryOptionsEffects } from '../store/delivery-options/delivery-options.effects';
 import { DialogEffects } from '../store/dialog/dialog.effects';
@@ -198,6 +201,7 @@ const WAZEE_SERVICES = [
   FutureUserService,
   PrivacyPolicyService,
   PageDataService,
+  CmsService,
   // Temporary legacy services accessed through AppStore
   LegacyAssetService
 ];
@@ -236,6 +240,7 @@ const WAZEE_STORES: any = {
   asset: AssetState.reducer,
   cart: CartState.reducer,
   checkout: CheckoutState.reducer,
+  cms: CmsState.reducer,
   comment: CommentState.reducer,
   deliveryOptions: DeliveryOptionState.reducer,
   headerDisplayOptions: HeaderDisplayOptions.reducer,
@@ -260,6 +265,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActivityEffects,
   AssetEffects,
   CartEffects,
+  CmsEffects,
   CommentEffects,
   DeliveryOptionsEffects,
   DialogEffects,

@@ -27,6 +27,10 @@ export class ProjectConfig extends SeedConfig {
 
     let additionalPackages: ExtendPackages[] = [
       {
+        name: 'contentful',
+        path: 'node_modules/contentful/dist/contentful.browser.js'
+      },
+      {
         name: '@ngrx/store',
         path: 'node_modules/@ngrx/store/bundles/store.umd.min.js'
       },
