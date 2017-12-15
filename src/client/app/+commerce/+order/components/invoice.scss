@@ -177,6 +177,15 @@ invoice-component {
         }
       }
     }
+    .offline-agreement {
+      margin-bottom: 22px;
+      font-size: .8em;
+      .value {
+        font-style: italic;
+        line-height: 1.4;
+        opacity:.75;
+      }
+    }
     .assets {
       padding: 0;
       .asset-list li.project-asset-heading {

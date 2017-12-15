@@ -11,8 +11,9 @@
       <li>
         <strong>{{'QUOTE.EDIT.SALES_MANAGER_KEY' | translate}}</strong>{{ sendDetails.salesManager.salesManager}}
       </li>
-      <li>
-        <strong>{{'QUOTE.EDIT.OFFLINE_AGREEMENT_KEY' | translate}}</strong>{{ sendDetails.salesManager.offlineAgreement}}
+      <li *ngIf="sendDetails.salesManager.offlineAgreement">
+        <strong class="offline-agreement-label">{{'QUOTE.EDIT.OFFLINE_AGREEMENT_KEY' | translate}}</strong>
+        <div class="offline-agreement">{{ sendDetails.salesManager.offlineAgreement}}</div>
       </li>
     </ul>
     <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(1)">

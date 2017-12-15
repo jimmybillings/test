@@ -213,7 +213,7 @@
                 </span>
                 <address>
                   <span class="identification-number user-id" *ngIf="hasProp(invoice, 'order', 'ownerData', 'accountName')">
-                    <span class="key">Account name:</span>
+                    <span class="key">{{ 'ORDER.INVOICE.ACCOUNT_NAME_LABEL' | translate }}</span>
                     {{ invoice.order.ownerData.accountName }}
                   </span>
                   <span class="email" *ngIf="hasProp(invoice, 'order', 'ownerData', 'email')">
@@ -232,8 +232,17 @@
       <h4 class="mat-title">{{ 'ORDER.INVOICE.INVOICE_SUMMARY_TITLE' | translate }}</h4>
       <div class="invoice-divider"></div>
 
-      <ng-container *ngFor="let project of invoice.order.projects">
+      <ng-container *ngFor="let project of invoice.order.projects; let projIndex=index">
         <div class="project">
+          <!-- display offline agreement if it exists -->
+          <ng-container *ngFor="let lineItem of project.lineItems; let liIndex=index"> 
+            <div
+              *ngIf="(liIndex == 0 && projIndex == 0) && hasProp(lineItem, 'externalAgreementIds')"
+              class="offline-agreement">
+              <strong class="key">{{ 'ORDER.INVOICE.OFFLINE_AGREEMENT_REF_LABEL' | translate }}</strong>
+              <div class="value">{{lineItem.externalAgreementIds}}</div>
+            </div>   
+          </ng-container> 
           <header class="project-info" layout-gt-xs="row" layout="column">
             <h5 class="mat-subheading-1" flex="100" flex-gt-sm="auto">
               <span class="project-label">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>

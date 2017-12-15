@@ -193,6 +193,72 @@ export function main() {
       });
     });
 
+    describe('displayActiveOfflineAgreementToPurchaser()', () => {
+      it('is true if the user cannot administer quotes and the quote status is active, and lineItems have externalAgreementIds ', () => {
+        mockCapabilities = { administerQuotes: () => false };
+        mockQuoteService = {
+          data: Observable.of({
+            data: {
+              projects: [
+                { lineItems: [{ externalAgreementIds: ['abc-123'] }] }
+              ]
+            }
+          }),
+          state: { data: { quoteStatus: 'ACTIVE' } }
+        };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, mockChangeDetectorRef);
+        expect(componentUnderTest.displayActiveOfflineAgreementToPurchaser).toBe(true);
+      });
+
+      it('is false if lineItems do NOT have externalAgreementIds ', () => {
+        mockCapabilities = { administerQuotes: () => false };
+        mockQuoteService = {
+          data: Observable.of({
+            data: {
+              projects: [
+                { lineItems: [{}] }
+              ]
+            }
+          }),
+          state: { data: { quoteStatus: 'ACTIVE' } }
+        };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, mockChangeDetectorRef);
+        expect(componentUnderTest.displayActiveOfflineAgreementToPurchaser).toBe(false);
+      });
+
+      it('is false if the user can administer quotes', () => {
+        mockCapabilities = { administerQuotes: () => true };
+        mockQuoteService = {
+          data: Observable.of({
+            data: {
+              projects: [
+                { lineItems: [{ externalAgreementIds: ['abc-123'] }] }
+              ]
+            }
+          }),
+          state: { data: { quoteStatus: 'ACTIVE' } }
+        };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, mockChangeDetectorRef);
+        expect(componentUnderTest.displayActiveOfflineAgreementToPurchaser).toBe(false);
+      });
+
+      it('is false if the quoteStaus is not ACTIVE', () => {
+        mockCapabilities = { administerQuotes: () => false };
+        mockQuoteService = {
+          data: Observable.of({
+            data: {
+              projects: [
+                { lineItems: [{ externalAgreementIds: ['abc-123'] }] }
+              ]
+            }
+          }),
+          state: { data: { quoteStatus: 'EXPIRED' } }
+        };
+        componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, mockChangeDetectorRef);
+        expect(componentUnderTest.displayActiveOfflineAgreementToPurchaser).toBe(false);
+      });
+    });
+
     describe('shouldShowRecipientInfo()', () => {
       it('is true if the user can administer quotes', () => {
         mockCapabilities = { administerQuotes: () => true };

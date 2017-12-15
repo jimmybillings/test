@@ -9,11 +9,14 @@ quote-show-component section.header {
     position: relative;
     .mat-display-1 {
       margin: 0;
-      width: calc(100% - 120px);
       font-size: 26px;
+      & > span {
+        font-size: .75em;
+      }
     }
     .tools {
       text-align: right;
+      max-width: 86px;
       span.comment-count {
         position: absolute;
         top:0;
@@ -47,8 +50,20 @@ quote-show-component .project .assets {
     line-height: 1.4;
     & > span {
       display: flex;
+      margin: 2px 0;
       strong {
         padding-right: 5px;
+      }
+    }
+    & > span.offline-agreement-display {
+      display: block;
+      strong {
+        display: block;
+      }
+      span { 
+        display: block;
+        font-style: italic;
+        font-size: .94em;
       }
     }
     a {
@@ -57,6 +72,24 @@ quote-show-component .project .assets {
         text-decoration: underline;
       }
     }    
+  }
+}
+quote-show-component .offline-agreement-section {
+  .offline-agreement-display {
+    margin: 10px 0;
+    opacity: .75;
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
+      margin: 10px 10px;
+    }
+    strong {
+      display: block;
+    }
+    span { 
+      display: block;
+      font-style: italic;
+      font-size: .94em;
+      line-height: 1.4;
+    }
   }
 }
 commerce-component wz-comment > section {
