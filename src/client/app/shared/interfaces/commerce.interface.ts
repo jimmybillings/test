@@ -235,6 +235,7 @@ export interface SendDetailsBillingAccount {
   licensingVertical?: string;
   invoiceContactId?: number;
   field?: Pojo[];
+  [index: string]: any;
 }
 
 export interface SendDetailsSalesManager {

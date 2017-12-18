@@ -12,7 +12,6 @@ import { WzFormBase } from '../../../../shared/modules/wz-form/wz.form-base';
   templateUrl: 'wz-form-autocomplete-view.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class WzFormAutoCompleteViewComponent extends WzFormBase {
   public labels: BehaviorSubject<Pojo[]>;
   @Input() title: string;
@@ -33,6 +32,7 @@ export class WzFormAutoCompleteViewComponent extends WzFormBase {
       });
     this.labels = new BehaviorSubject(tempLabels);
   }
+  @Output() editableFieldChange: EventEmitter<Pojo> = new EventEmitter();
 
   constructor(
     fb: FormBuilder,
@@ -41,7 +41,11 @@ export class WzFormAutoCompleteViewComponent extends WzFormBase {
     super(fb, formModel, element);
   }
 
-  public onSelectSuggestion(suggestion: Pojo) {
+  public onSelectSuggestion(suggestion: Pojo): void {
     this.formSubmit.emit(suggestion);
+  }
+
+  public onEditableFieldChange(form: Pojo): void {
+    this.editableFieldChange.emit(form);
   }
 }

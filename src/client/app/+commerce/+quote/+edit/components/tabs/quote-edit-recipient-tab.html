@@ -1,7 +1,6 @@
 <header flex="100" layout="row">
   <h2 class="commerce-heading">{{'QUOTE.EDIT.RECIPIENT_TAB_PG_TITLE' | translate}}</h2>
 </header>
-
 <div layout="column" layout-gt-xs="row">
   <section class="recipient-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form-autocomplete-view *ngIf="user | async as user" flex="100" 
@@ -23,6 +22,7 @@
       [matchOnProperty]="'name'"
       [displayProperties]="billingAccount"
       autocomplete="off"
+      (editableFieldChange)="onEditableFieldChange($event)"
       (formSubmit)="accountSelect($event)">
     </wz-form-autocomplete-view>
 
@@ -35,17 +35,21 @@
       autocomplete="off"
       (selectContact)="invoiceContactSelect($event)">
     </wz-form-picklist-component>
-
   </section>
+
   <section class="creator-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form *ngIf="(invoiceContact | async)"
       [items]="(salesManager | async).field" 
-      [disableUntilValid]="true"
-      [outSidePropertiesValid]="allBillingSelectionComplete | async"
-      submitLabel="{{'QUOTE.EDIT.TO_CONFIRM_TAB_BTN' | translate}}" 
-      (formSubmit)="goToNextTab()"
+      [includeSubmit]="false"
       (blur)=onBlur($event)>
     </wz-form>
+    <button
+      [disabled]="!(allBillingSelectionComplete | async)"
+      (click)="goToNextTab()"
+      mat-raised-button
+      color="primary">
+      {{ 'QUOTE.EDIT.TO_CONFIRM_TAB_BTN' | translate }}
+    </button>
   </section>
   <section class="col-spacer" flex="none" flex-md="10" flex-lg="30" flex-gt-lg="40" show-gt-sm></section>
 </div>

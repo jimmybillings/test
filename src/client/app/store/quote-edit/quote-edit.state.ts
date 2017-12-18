@@ -37,21 +37,33 @@ export const initialState: State = {
       }]
     },
     billingAccount: {
-      salesOwner: null,
       purchaseOnCredit: null,
       creditExemption: null,
-      paymentTermsDays: null,
       licensingVertical: null,
       field: [{
         endPoint: 'account/searchFields',
         queryParams: 'fields,name,values',
         service: 'identities',
         suggestionHeading: 'Matching accounts',
-        name: 'account',
+        name: 'name',
         label: 'QUOTE.EDIT.FORMS.ACCOUNT_NAME_LABEL',
         type: 'suggestions',
         value: '',
         validation: 'REQUIRED'
+      }, {
+        name: 'salesOwner',
+        label: 'QUOTE.EDIT.SALES_OWNER_KEY',
+        type: 'text',
+        value: '',
+        validation: 'REQUIRED'
+      }, {
+        name: 'paymentTermsDays',
+        label: 'QUOTE.EDIT.PAYMENT_TERMS_DAYS_KEY',
+        type: 'number',
+        value: '',
+        validation: 'REQUIRED',
+        min: 0,
+        max: 0
       }]
     },
     invoiceContact: {
@@ -171,7 +183,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           billingAccount: {
             ...action.account,
             field: clonedState.sendDetails.billingAccount.field.map(field => (
-              { ...field, value: action.account.name }
+              { ...field, value: action.account[field.name] }
             ))
           },
           invoiceContact: {
@@ -190,9 +202,12 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           ...clonedState.sendDetails,
           billingAccount: {
             ...action.account,
-            field: clonedState.sendDetails.billingAccount.field.map(field => (
-              { ...field, value: action.account.name }
-            ))
+            field: clonedState.sendDetails.billingAccount.field.map(field => {
+              if (field.hasOwnProperty('max')) {
+                field = { ...field, max: action.account.paymentTermsDays };
+              }
+              return { ...field, value: action.account[field.name] };
+            }),
           },
           invoiceContact: {
             ...clonedState.sendDetails.invoiceContact,
@@ -300,6 +315,24 @@ export function reducer(state: State = initialState, action: AllowedActions): St
       return {
         ...Common.clone(state),
         loading: false
+      };
+    }
+
+    case QuoteEditActions.UpdateBillingAccount.Type: {
+      // const clonedState: State = Common.clone(state);
+
+      return {
+        ...state,
+        sendDetails: {
+          ...state.sendDetails,
+          billingAccount: {
+            ...state.sendDetails.billingAccount,
+            ...action.form,
+            // field: state.sendDetails.billingAccount.field.map(field => (
+            //   { ...field, value: action.form[field.name] }
+            // ))
+          }
+        }
       };
     }
 

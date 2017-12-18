@@ -1,12 +1,12 @@
-import { WzFormComponent } from '../../../../../shared/modules/wz-form/wz.form.component';
-import { Common } from '../../../../../shared/utilities/common.functions';
+import { Component, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+
+import { WzFormComponent } from '../../../../../shared/modules/wz-form/wz.form.component';
+import { Common } from '../../../../../shared/utilities/common.functions';
 import { User } from '../../../../../shared/interfaces/user.interface';
 import { Account } from '../../../../../shared/interfaces/account.interface';
-
 import { Tab } from '../../../../components/tabs/tab';
-import { Component, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
 import { CurrentUserService } from '../../../../../shared/services/current-user.service';
 import {
   QuoteOptions,
@@ -67,23 +67,30 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
     this.store.dispatch(factory => factory.quoteEdit.updateSalesManagerFormOnQuote(form));
   }
 
-  public get allBillingSelectionComplete(): Observable<Boolean> {
-    return this.store.select(state => state.quoteEdit)
-      .filter(quoteEdit => (
-        this.userAccountMatchesBillingAccount(quoteEdit.sendDetails) ||
-        this.allBillingFieldsSelected(quoteEdit.sendDetails)
-      )).map(() => true);
+  public get allBillingSelectionComplete(): Observable<boolean> {
+    return this.store.select(state => {
+      return this.userAccountMatchesBillingAccount(state.quoteEdit.sendDetails) ||
+        this.allBillingFieldsSelected(state.quoteEdit.sendDetails);
+    });
+  }
+
+  public onEditableFieldChange(change: Pojo): void {
+    this.store.dispatch(factory => factory.quoteEdit.updateBillingAccount(change));
   }
 
   private userAccountMatchesBillingAccount(sendDetails: SendDetails): boolean {
     return (sendDetails.user.hasOwnProperty('accountName') && sendDetails.billingAccount.hasOwnProperty('name'))
-      && (sendDetails.user.accountName === sendDetails.billingAccount.name);
+      && sendDetails.user.accountName === sendDetails.billingAccount.name
+      && (sendDetails.billingAccount.salesOwner !== null && sendDetails.billingAccount.salesOwner !== '')
+      && (sendDetails.billingAccount.paymentTermsDays !== null && sendDetails.billingAccount.paymentTermsDays !== '');
   }
 
   private allBillingFieldsSelected(sendDetails: SendDetails): boolean {
     return sendDetails.user.hasOwnProperty('accountName') &&
       sendDetails.billingAccount.hasOwnProperty('id') &&
-      sendDetails.invoiceContact.hasOwnProperty('id');
+      sendDetails.invoiceContact.hasOwnProperty('id') &&
+      (sendDetails.billingAccount.salesOwner !== null && sendDetails.billingAccount.salesOwner !== '') &&
+      (sendDetails.billingAccount.paymentTermsDays !== null && sendDetails.billingAccount.paymentTermsDays !== '');
   }
 
   private initializeSalesManagerForm(): void {
@@ -112,5 +119,4 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
       }
     });
   }
-
 }

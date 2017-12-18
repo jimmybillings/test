@@ -9,14 +9,17 @@ export class WzFormBase implements OnInit, OnChanges {
   @Input() serverErrors: ServerErrors;
   @Input() submitLabel: string = 'Submit';
   @Input() includeCancel: boolean = false;
+  @Input() includeSubmit: boolean = true;
   @Input() cancelLabel: string = 'Cancel';
   @Input() autocomplete: string = 'on';
   @Input() disableUntilValid: boolean = false;
   @Input() outSidePropertiesValid: boolean = false;
+  @Input() suggestionsMatchOnProperty: string;
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
   @Output() onAction = new EventEmitter();
   @Output() blur = new EventEmitter();
+  @Output() newSuggestion = new EventEmitter<any>();
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
@@ -163,6 +166,10 @@ export class WzFormBase implements OnInit, OnChanges {
     }
   }
 
+  public onNewSuggestion(suggestion: any): void {
+    this.newSuggestion.emit(suggestion);
+  }
+
   public resetForm() {
     this.internalForm.resetForm();
     if (this.autosize) this.autosize.resizeToFitContent();
@@ -219,6 +226,22 @@ export class WzFormBase implements OnInit, OnChanges {
 
   public onBlur() {
     this.blur.emit(this.form.value);
+  }
+
+  public showDefaultInputFor(field: FormFields): boolean {
+    return (field.type === 'text' || field.type === 'password' || field.type === 'email' || field.type === 'date');
+  }
+
+  public get showSubmitAndCancel(): boolean {
+    return this.includeCancel && !this.disableUntilValid && this.includeSubmit;
+  }
+
+  public get showSubmit(): boolean {
+    return !this.includeCancel && !this.disableUntilValid && this.includeSubmit;
+  }
+
+  public get showDisabledSubmit(): boolean {
+    return !this.includeCancel && this.disableUntilValid && this.includeSubmit;
   }
 
   private dateToString(date: Date): string {
