@@ -1,16 +1,21 @@
+import { Common } from '../../shared/utilities/common.functions';
 import * as CmsActions from './cms.actions';
+import { Pojo } from '../../shared/interfaces/common.interface';
 
-export interface State { }
+export interface State {
+  footer: Pojo
+}
 
-export const initialState: State = {};
+export const initialState: State = {
+  footer: null
+};
 
 export function reducer(state: State = initialState, action: CmsActions.Any): State {
   if (state === null) state = initialState;
 
   switch (action.type) {
     case CmsActions.LoadFooterSuccess.Type: {
-      console.log(action.footer);
-      return state;
+      return { ...Common.clone(state), footer: action.footer }
     }
     default: {
       return state;
