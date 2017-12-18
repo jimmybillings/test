@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { AppStore } from '../../app.store';
 
 /**
  * site footer component - renders the footer information
@@ -13,6 +14,11 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 export class FooterComponent {
   @Input() config: any;
+  constructor(private store: AppStore) {
+    this.store.select(factory => factory.cms.footer)
+      .filter(footer => footer !== null)
+      .subscribe(footer => console.log(footer));
+  }
 
   public get privacyPolicyExists(): boolean {
     return this.config &&
