@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { FutureApiService } from '../api/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { createClient, Entry } from 'contentful';
+import { Pojo } from '../../shared/interfaces/common.interface';
 
 const CONFIG = {
   space: '9f7tranrpc7k',
@@ -22,7 +23,19 @@ export class CmsService {
 
   constructor(private apiService: FutureApiService) { }
 
-  public loadFooter(query?: object): Observable<any> {
-    return Observable.fromPromise(this.cdaClient.getEntry('5RhV22QxcAosk0y0sUqEuS'));
+  public loadFooter(query?: object): Observable<Pojo> {
+    return Observable.fromPromise(this.cdaClient.getEntries(
+      { content_type: CONFIG.contentTypeIds.product, include: 10 })
+      .then(res => this.normalizeFooter(res.toPlainObject().items[0].fields)));
+  }
+
+  public normalizeFooter(footer: Pojo) {
+    return {
+      columns: footer.column.map((column: Pojo) => {
+        return column.fields.footerLineItem.map((data: Pojo) => {
+          return { type: data.sys.contentType.sys.id, ...data.fields }
+        });
+      })
+    }
   }
 }
