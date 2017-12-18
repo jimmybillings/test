@@ -3,7 +3,7 @@ import * as CmsActions from './cms.actions';
 import { Pojo } from '../../shared/interfaces/common.interface';
 
 export interface State {
-  footer: Pojo
+  footer: Pojo;
 }
 
 export const initialState: State = {
@@ -15,7 +15,7 @@ export function reducer(state: State = initialState, action: CmsActions.Any): St
 
   switch (action.type) {
     case CmsActions.LoadFooterSuccess.Type: {
-      return { ...Common.clone(state), footer: action.footer }
+      return { ...Common.clone(state), footer: action.footer };
     }
     default: {
       return state;

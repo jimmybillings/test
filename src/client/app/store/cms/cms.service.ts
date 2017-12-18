@@ -12,7 +12,7 @@ const CONFIG = {
   contentTypeIds: {
     product: 'footer'
   }
-}
+};
 
 @Injectable()
 export class CmsService {
@@ -33,9 +33,9 @@ export class CmsService {
     return {
       columns: footer.column.map((column: Pojo) => {
         return column.fields.footerLineItem.map((data: Pojo) => {
-          return { type: data.sys.contentType.sys.id, ...data.fields }
+          return { type: data.sys.contentType.sys.id, ...data.fields };
         });
       })
-    }
+    };
   }
 }
