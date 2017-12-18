@@ -15,6 +15,7 @@ import { AppStore } from '../../app.store';
 export class FooterComponent {
   @Input() config: any;
   constructor(private store: AppStore) {
+    this.store.dispatch(factory => factory.cms.loadFooter());
     this.store.select(factory => factory.cms.footer)
       .filter(footer => footer !== null)
       .subscribe(footer => console.log(footer));

@@ -28,7 +28,6 @@ export class AppNavComponent {
   constructor(private store: AppStore) {
     this.headerCanBeFixed = this._headerCanBeFixed();
     this.headerIsFixed = this._headerIsFixed();
-    this.store.dispatch(factory => factory.cms.loadFooter());
   }
 
   public logOut(event: Event) {
