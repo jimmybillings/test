@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Invoice, Project, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
+import { Invoice, Project, AssetLineItem, quotesWithoutPricing } from '../../../shared/interfaces/commerce.interface';
 import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 
 import { AppStore } from '../../../app.store';
@@ -53,5 +53,9 @@ export class InvoiceComponent {
     } else {
       return true;
     }
+  }
+
+  public shouldDisplayRights(lineItem: AssetLineItem, invoice: Invoice): boolean {
+    return lineItem.rightsManaged === 'Rights Managed' && !quotesWithoutPricing.includes(invoice.order.orderType);
   }
 }

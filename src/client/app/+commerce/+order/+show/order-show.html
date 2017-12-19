@@ -111,9 +111,7 @@
         </div>
       </div>
     </div>
-
   </section>
-
   <section class="project">
     <div layout="row" flex="100" layout-align="center start">
       <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
@@ -157,8 +155,8 @@
                     [readOnly]="true"
                     [rights]="lineItem.attributes"
                     [rightsManaged]="lineItem.rightsManaged"
-                    [hasAttributes]="!!lineItem.attributes"
-                    [isOrder]="true">
+                    [displayRmAttributes]="shouldDisplayRights(lineItem, order)"
+                    [hasAttributes]="!!lineItem.attributes">
                   </line-item-rights-component>
                   <div flex-gt-xs="20" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
                     <div class="tools" flex="100" layout-padding>

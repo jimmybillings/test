@@ -213,7 +213,7 @@ invoice-component {
           @media screen and (max-width: $layout-breakpoint-xs)  {
             border-left-width: 0; 
           }
-          line-item-rights-component header.royalty-free {
+          line-item-rights-component header {
             display: none;
           } 
           &.cost {

@@ -294,8 +294,8 @@
                     [readOnly]="true"
                     [rights]="lineItem.attributes"
                     [rightsManaged]="lineItem.rightsManaged"
-                    [hasAttributes]="!!lineItem.attributes"
-                    [isOrder]="true">
+                    [displayRmAttributes]="shouldDisplayRights(lineItem, invoice)"
+                    [hasAttributes]="!!lineItem.attributes">
                   </line-item-rights-component>
                 </div>
                 <div class="cost" flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
