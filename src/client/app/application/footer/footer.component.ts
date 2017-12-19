@@ -8,17 +8,18 @@ import { AppStore } from '../../app.store';
 @Component({
   moduleId: module.id,
   selector: 'app-footer',
-  templateUrl: 'footer.html',
+  templateUrl: 'footer-cms.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class FooterComponent {
+  public footer: Observable<any>;
   @Input() config: any;
+
   constructor(private store: AppStore) {
     this.store.dispatch(factory => factory.cms.loadFooter());
-    this.store.select(factory => factory.cms.footer)
-      .filter(footer => footer !== null)
-      .subscribe(footer => console.log(footer));
+    this.footer = this.store.select(factory => factory.cms.footer);
+    // let f = this.footer.filter(f => f !== null).subscribe(f => console.log(f));
   }
 
   public get privacyPolicyExists(): boolean {

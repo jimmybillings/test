@@ -1,0 +1,52 @@
+<ng-container *ngIf="footer | async as footer">
+  <div layout="row" layout-align="center start" class="glb-cms">
+    <div 
+      flex-gt-lg="85" flex-lg="95" flex="100" 
+      layout="row"
+      layout-wrap=""
+      layout-padding="" 
+      layout-align="space-between start">
+      <div *ngFor="let column of footer.columns" flex="auto" layout="column">
+        <ng-container *ngFor="let item of column">
+          <a [routerLink]="[item.url]" class="logo-wrapper" *ngIf="item.type ==='imageLink'" title="{{item.title}}">
+            <div class="logo" [ngStyle]="{ 'background-image': 'url(' + item.imageUrl + ')'}"></div>
+          </a>
+          <h3 class="mat-title {{item.type}}" *ngIf="item.type ==='titleLink'">
+            <a href="{{item.url}}" title="{{item.title}}">
+              {{item.label}}
+            </a>
+          </h3>
+          <div class="mat-caption text-block" *ngIf="item.type ==='textBlock'">
+            {{item.textBlock}}
+          </div>
+          <address *ngIf="item.type ==='address'">
+            <h3 class="address-for" *ngIf="item.addressFor">
+              {{item.addressFor}}
+            </h3>  
+            <span class="phone" *ngIf="item.phoneUrl">
+              <mat-icon>phone_iphone</mat-icon>
+              {{ item.phoneNumber }}
+            </span>
+            <span class="email" *ngIf="item.emailMailto">
+              <a class="mailto" href="mailto:{{item.emailMailto}}">
+                <mat-icon>email</mat-icon>
+                {{ item.emailMailto }}
+              </a>
+            </span>
+            <span class="mat-caption address1" *ngIf="item.addressLine1">
+                {{ item.addressLine1 }}
+            </span>
+            <span class="mat-caption address2" *ngIf="item.addressLine2">
+                {{ item.addressLine2 }}
+            </span>
+          </address>
+          <div *ngIf="item.type ==='link'">
+            <a class="link" href="{{item.url}}" title="{{item.title}}">
+              {{item.label}}
+            </a>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ng-container>

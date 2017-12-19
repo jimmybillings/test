@@ -52,4 +52,22 @@
       background-color: mat-color($foreground, base, .12);
     }
   }
+
+
+
+
+
+
+  .glb-cms {
+    @include text-contrast(mat-color($primary, 900), mat-color($mat-grey, 700), mat-color($mat-grey, 400, .8));
+    a {
+      color: mat-color($mat-grey, 500);
+      &:hover {
+        color: mat-color($mat-grey, 200);
+      }
+    }
+
+
+
+  }
 }
