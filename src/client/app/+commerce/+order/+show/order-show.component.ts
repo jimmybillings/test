@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { WindowRef } from '../../../shared/services/window-ref.service';
-import { Order, AssetLineItem, Project } from '../../../shared/interfaces/commerce.interface';
+import { Order, AssetLineItem, Project, quotesWithoutPricing } from '../../../shared/interfaces/commerce.interface';
 import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 import { AppStore } from '../../../app.store';
 import { Common } from '../../../shared/utilities/common.functions';
@@ -75,5 +75,9 @@ export class OrderShowComponent {
       if (lineItem.externalAgreementIds) lineItem.externalAgreementIds.forEach(id => ids.push(id));
     }));
     return ids.filter((id: string, index: number, ids: string[]) => id !== ids[index - 1]).join(', ');
+  }
+
+  public shouldDisplayRights(lineItem: AssetLineItem, order: Order): boolean {
+    return lineItem.rightsManaged === 'Rights Managed' && !quotesWithoutPricing.includes(order.orderType);
   }
 }

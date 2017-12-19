@@ -189,5 +189,32 @@ export function main() {
         });
       });
     });
+
+    describe('shouldDisplayRights()', () => {
+      it('returns true when the line item is rights managed and order type is NOT a Trial', () => {
+        let lineItem: any = { rightsManaged: 'Rights Managed' };
+        mockOrder = {
+          orderType: 'Not Trial'
+        };
+        expect(componentUnderTest.shouldDisplayRights(lineItem, mockOrder))
+          .toBe(true);
+      });
+      it('returns false when the line item is royalty-free', () => {
+        let lineItem: any = { rightsManaged: 'Royalty Free' };
+        mockOrder = {
+          orderType: 'Trial'
+        };
+        expect(componentUnderTest.shouldDisplayRights(lineItem, mockOrder))
+          .toBe(false);
+      });
+      it('returns false when the order type is a Trial', () => {
+        let lineItem: any = { rightsManaged: 'Rights Managed' };
+        mockOrder = {
+          orderType: 'Trial'
+        };
+        expect(componentUnderTest.shouldDisplayRights(lineItem, mockOrder))
+          .toBe(false);
+      });
+    });
   });
 };
