@@ -6,7 +6,7 @@
     <wz-form-autocomplete-view *ngIf="user | async as user" flex="100" 
       class="recipient"
       [ngClass]="{ 'is-empty' : !(!!user.id) }"
-      [items]="user.field"
+      [items]="config.user"
       [title]="'QUOTE.EDIT.RECIPIENT_TITLE'"
       [matchOnProperty]="'emailAddress'"
       [displayProperties]="user"
@@ -17,7 +17,7 @@
     <wz-form-autocomplete-view *ngIf="billingAccount | async as billingAccount" flex="100"
       class="billing-account"
       [ngClass]="{ 'is-empty' : !(!!billingAccount.id) }"
-      [items]="billingAccount.field"
+      [items]="config.billingAccount"
       [title]="'QUOTE.EDIT.BILLING_ACCOUNT_TITLE'"
       [matchOnProperty]="'name'"
       [displayProperties]="billingAccount"
@@ -29,7 +29,7 @@
     <wz-form-picklist-component *ngIf="invoiceContact | async as invoiceContact" flex="100"
       #invoiceContactform
       class="invoice-contact"
-      [items]="invoiceContact.field"
+      [items]="config.invoiceContact"
       [title]="'QUOTE.EDIT.INVOICE_CONTACT_TITLE'"
       [displayProperties]="invoiceContact"
       autocomplete="off"
@@ -39,7 +39,7 @@
 
   <section class="creator-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form *ngIf="(invoiceContact | async)"
-      [items]="(salesManager | async).field" 
+      [items]="config.salesManager" 
       [includeSubmit]="false"
       (blur)=onBlur($event)>
     </wz-form>

@@ -1,7 +1,7 @@
 import { Common, Pagination, Pojo, SelectedPriceAttribute, Store, ViewAddress } from './common.interface';
 import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
-import { Address, Document, Payee } from './user.interface';
+import { Address, Document, Payee, User } from './user.interface';
 
 export type PurchaseType =
   'SystemLicense' |
@@ -222,7 +222,7 @@ export interface SendDetailsUser {
   accountName?: string;
   customerName?: string;
   email?: string;
-  field?: Pojo[];
+  [index: string]: any;
 }
 
 export interface SendDetailsBillingAccount {
@@ -234,7 +234,6 @@ export interface SendDetailsBillingAccount {
   paymentTermsDays?: string;
   licensingVertical?: string;
   invoiceContactId?: number;
-  field?: Pojo[];
   [index: string]: any;
 }
 
@@ -242,14 +241,15 @@ export interface SendDetailsSalesManager {
   expirationDate?: string;
   salesManager?: string;
   offlineAgreement?: string;
-  field?: Pojo[];
+  [index: string]: any;
 }
 
 export interface SendDetailsInvoiceContact {
   id?: number;
   name?: string;
   contactEmail?: string;
-  field?: Pojo[];
+  contacts?: SendDetailsBillingAccount[];
+  [index: string]: any;
 }
 
 export interface OrdersApiResponse extends Pagination {

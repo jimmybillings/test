@@ -4,7 +4,7 @@ import * as AccountActions from '../account/account.actions';
 import * as UserActions from '../user/user.actions';
 import { Pojo } from '../../shared/interfaces/common.interface';
 import { Common } from '../../shared/utilities/common.functions';
-import { Quote, SendDetails, SendDetailsUser } from '../../shared/interfaces/commerce.interface';
+import { Quote, SendDetails, SendDetailsUser, SendDetailsBillingAccount } from '../../shared/interfaces/commerce.interface';
 
 export interface State {
   data: Quote;
@@ -23,86 +23,24 @@ export const initialState: State = {
   sendDetails: {
     user: {
       customerName: null,
-      accountName: null,
-      field: [{
-        endPoint: 'user/searchFields',
-        queryParams: 'fields,emailAddress,values',
-        service: 'identities',
-        suggestionHeading: 'Matching users',
-        name: 'emailAddress',
-        label: 'QUOTE.EDIT.FORMS.RECIPIENT_EMAIL_LABEL',
-        type: 'suggestions',
-        value: '',
-        validation: 'REQUIRED'
-      }]
+      accountName: null
     },
     billingAccount: {
       purchaseOnCredit: null,
       creditExemption: null,
       licensingVertical: null,
-      field: [{
-        endPoint: 'account/searchFields',
-        queryParams: 'fields,name,values',
-        service: 'identities',
-        suggestionHeading: 'Matching accounts',
-        name: 'name',
-        label: 'QUOTE.EDIT.FORMS.ACCOUNT_NAME_LABEL',
-        type: 'suggestions',
-        value: '',
-        validation: 'REQUIRED'
-      }, {
-        name: 'salesOwner',
-        label: 'QUOTE.EDIT.SALES_OWNER_KEY',
-        type: 'text',
-        value: '',
-        validation: 'REQUIRED'
-      }, {
-        name: 'paymentTermsDays',
-        label: 'QUOTE.EDIT.PAYMENT_TERMS_DAYS_KEY',
-        type: 'number',
-        value: '',
-        validation: 'REQUIRED',
-        min: 0,
-        max: 0
-      }]
+      paymentTermsDays: null,
+      salesOwner: null
     },
     invoiceContact: {
       contactEmail: null,
       name: null,
-      field: [{
-        name: 'invoiceContact',
-        options: [],
-        label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
-        type: 'select',
-        value: '',
-        validation: 'REQUIRED'
-      }]
+      contacts: []
     },
     salesManager: {
       expirationDate: null,
       salesManager: null,
-      offlineAgreement: null,
-      field: [{
-        default: 'TODAY+15',
-        name: 'expirationDate',
-        label: 'QUOTE.EDIT.FORMS.EXPIRATION_DATE_LABEL',
-        type: 'wzdate',
-        minimum: 'TODAY',
-        validation: 'REQUIRED'
-      },
-      {
-        name: 'salesManager',
-        label: 'QUOTE.EDIT.FORMS.SALES_MANAGER_LABEL',
-        type: 'email',
-        value: '',
-        validation: 'EMAIL'
-      }, {
-        name: 'offlineAgreementReference',
-        label: 'QUOTE.EDIT.FORMS.OFFLINE_AGREEMENT_LABEL',
-        type: 'textarea',
-        value: '',
-        validation: 'OPTIONAL'
-      }]
+      offlineAgreement: null
     }
   },
   loading: false
@@ -165,10 +103,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           user: {
             id: action.user.id,
             customerName: `${action.user.firstName} ${action.user.lastName}`,
-            email: action.user.emailAddress,
-            field: clonedState.sendDetails.user.field.map(field => (
-              { ...field, value: action.user.emailAddress }
-            ))
+            email: action.user.emailAddress
           }
         }
       };
@@ -181,10 +116,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         sendDetails: {
           ...clonedState.sendDetails,
           billingAccount: {
-            ...action.account,
-            field: clonedState.sendDetails.billingAccount.field.map(field => (
-              { ...field, value: action.account[field.name] }
-            ))
+            ...action.account
           },
           invoiceContact: {
             ...clonedState.sendDetails.invoiceContact,
@@ -201,13 +133,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         sendDetails: {
           ...clonedState.sendDetails,
           billingAccount: {
-            ...action.account,
-            field: clonedState.sendDetails.billingAccount.field.map(field => {
-              if (field.hasOwnProperty('max')) {
-                field = { ...field, max: action.account.paymentTermsDays };
-              }
-              return { ...field, value: action.account[field.name] };
-            }),
+            ...action.account
           },
           invoiceContact: {
             ...clonedState.sendDetails.invoiceContact,
@@ -223,23 +149,16 @@ export function reducer(state: State = initialState, action: AllowedActions): St
 
     case UserActions.GetAllUsersByAccountIdSuccess.Type: {
       const clonedState = Common.clone(state);
-      let selectedUser: User;
+      const selectedUser: SendDetailsBillingAccount = action.users.find((user) => {
+        return user.id === clonedState.sendDetails.billingAccount.invoiceContactId;
+      });
       return {
         ...clonedState,
         sendDetails: {
           ...clonedState.sendDetails,
           invoiceContact: {
             ...clonedState.sendDetails.invoiceContact,
-            field: clonedState.sendDetails.invoiceContact.field.map(item => {
-              item.options = (action.users || []);
-
-              item.value = item.options.find((option: Pojo) =>
-                option.id === clonedState.sendDetails.billingAccount.invoiceContactId) || '';
-
-              if (item.value !== '') selectedUser = item.value;
-
-              return item;
-            }),
+            contacts: action.users,
             contactEmail: (selectedUser) ? selectedUser.emailAddress : null,
             name: (selectedUser) ? selectedUser.name : null
           }
@@ -249,7 +168,9 @@ export function reducer(state: State = initialState, action: AllowedActions): St
 
     case QuoteEditActions.AddInvoiceContactToQuote.Type: {
       const clonedState = Common.clone(state);
-      let selectedUser: User;
+      const selectedUser: SendDetailsBillingAccount = clonedState.sendDetails.invoiceContact.contacts.find((user) => {
+        return user.id === action.userId;
+      });
       return {
         ...clonedState,
         sendDetails: {
@@ -257,11 +178,6 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           invoiceContact: {
             ...clonedState.sendDetails.invoiceContact,
             id: action.userId,
-            field: clonedState.sendDetails.invoiceContact.field.map(field => {
-              selectedUser = field.options.find((option: Pojo) => option.id === action.userId);
-              field.value = selectedUser;
-              return field;
-            }),
             contactEmail: (selectedUser) ? selectedUser.emailAddress : null,
             name: (selectedUser) ? selectedUser.name : null
           }
@@ -277,10 +193,6 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           ...clonedState.sendDetails,
           salesManager: {
             ...clonedState.sendDetails.salesManager,
-            field: clonedState.sendDetails.salesManager.field.map(field => {
-              if (field.type === 'email') field.value = action.emailAddress;
-              return field;
-            }),
             expirationDate: action.defaultDate,
             salesManager: action.emailAddress
           }
@@ -295,11 +207,6 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         sendDetails: {
           ...clonedState.sendDetails,
           salesManager: {
-            field: clonedState.sendDetails.salesManager.field.map(field => {
-              return (field.type === 'wzdate') ?
-                { ...field, default: action.form[field.name], value: action.form[field.name] } :
-                { ...field, value: action.form[field.name] };
-            }),
             expirationDate: action.form.expirationDate,
             salesManager: action.form.salesManager,
             offlineAgreement: action.form.offlineAgreementReference,
@@ -327,10 +234,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           ...state.sendDetails,
           billingAccount: {
             ...state.sendDetails.billingAccount,
-            ...action.form,
-            // field: state.sendDetails.billingAccount.field.map(field => (
-            //   { ...field, value: action.form[field.name] }
-            // ))
+            ...action.form
           }
         }
       };

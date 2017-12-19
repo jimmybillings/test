@@ -1,4 +1,4 @@
-import { Input, Output, EventEmitter, OnInit, OnChanges, ElementRef, ViewChild } from '@angular/core';
+import { Input, Output, EventEmitter, OnInit, OnChanges, ElementRef, ViewChild, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, AbstractControl, FormGroupDirective } from '@angular/forms';
 import { MatTextareaAutosize } from '@angular/material';
 import { FormModel } from './wz.form.model';
@@ -19,6 +19,7 @@ export class WzFormBase implements OnInit, OnChanges {
   @Output() formCancel = new EventEmitter();
   @Output() onAction = new EventEmitter();
   @Output() blur = new EventEmitter();
+  @Output() keyUp = new EventEmitter();
   @Output() newSuggestion = new EventEmitter<any>();
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
@@ -31,7 +32,7 @@ export class WzFormBase implements OnInit, OnChanges {
     private formModel: FormModel,
     private element: ElementRef) { }
 
-  ngOnChanges(changes: any) {
+  ngOnChanges(changes: SimpleChanges) {
     if (changes.serverErrors && this.form) this.mergeErrors();
     if (changes.items && this.form) this.mergeNewValues();
   }
@@ -40,7 +41,7 @@ export class WzFormBase implements OnInit, OnChanges {
     this.form = this.fb.group(this.formModel.create(this.items));
   }
 
-  public mergeErrors() {
+  public mergeErrors(): void {
     this.serverErrors.fieldErrors.forEach((error) => {
       for (let control in this.form.controls) {
         if (control.toLowerCase() === error.field.toLowerCase()) {
@@ -50,7 +51,7 @@ export class WzFormBase implements OnInit, OnChanges {
     });
   }
 
-  public mergeNewValues(formFields: Array<FormFields> = this.items) {
+  public mergeNewValues(formFields: Array<FormFields> = this.items): void {
     formFields.forEach((field: any) => {
       for (let control in this.form.controls) {
         if (control === field.name) {
@@ -61,7 +62,7 @@ export class WzFormBase implements OnInit, OnChanges {
     });
   }
 
-  public disableForm() {
+  public disableForm(): void {
     this.items.forEach((field: any) => {
       for (let control in this.form.controls) {
         if (control === field.name) {
@@ -71,7 +72,7 @@ export class WzFormBase implements OnInit, OnChanges {
     });
   }
 
-  public getValueForField(field: string) {
+  public getValueForField(field: string): string {
     let fieldValue: string;
     for (let control in this.form.controls) {
       if (control === field) {
@@ -81,11 +82,11 @@ export class WzFormBase implements OnInit, OnChanges {
     return (fieldValue) ? fieldValue : '';
   }
 
-  public setValueForField(field: string, value: string) {
+  public setValueForField(field: string, value: string): void {
     (<FormControl>this.form.controls[field]).patchValue(value);
   }
 
-  public activateForm() {
+  public activateForm(): void {
     this.items.forEach((field: any) => {
       for (let control in this.form.controls) {
         if (control === field.name) {
@@ -95,19 +96,19 @@ export class WzFormBase implements OnInit, OnChanges {
     });
   }
 
-  public markFieldsAsDirty() {
+  public markFieldsAsDirty(): void {
     for (let control in this.form.controls) {
       (<FormControl>this.form.controls[control]).markAsDirty();
     }
   }
 
-  public markFieldsAsTouched() {
+  public markFieldsAsTouched(): void {
     for (let control in this.form.controls) {
       (<FormControl>this.form.controls[control]).markAsTouched();
     }
   }
 
-  public parseOptions(options: any) {
+  public parseOptions(options: any): any[] {
     return options.split(',');
   }
 
@@ -119,11 +120,11 @@ export class WzFormBase implements OnInit, OnChanges {
     }
   }
 
-  public radioSelect(fieldName: string, option: any) {
+  public radioSelect(fieldName: string, option: any): void {
     this.update(fieldName, option);
   }
 
-  public updateDateValueFor(fieldName: string, dateString: string) {
+  public updateDateValueFor(fieldName: string, dateString: string): void {
     this.update(fieldName, this.calculateDateFor(dateString));
   }
 
@@ -158,7 +159,7 @@ export class WzFormBase implements OnInit, OnChanges {
     return req.length > 0 ? true : false;
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     this.submitAttempt = true;
     this.markFieldsAsDirty();
     if (this.form.valid) {
@@ -170,7 +171,7 @@ export class WzFormBase implements OnInit, OnChanges {
     this.newSuggestion.emit(suggestion);
   }
 
-  public resetForm() {
+  public resetForm(): void {
     this.internalForm.resetForm();
     if (this.autosize) this.autosize.resizeToFitContent();
     this.submitAttempt = false;
@@ -211,21 +212,25 @@ export class WzFormBase implements OnInit, OnChanges {
     return this.dateToString(date);
   }
 
-  public shouldShowRequiredError(field: FormFields) {
+  public shouldShowRequiredError(field: FormFields): boolean {
     const control: AbstractControl = this.form.controls[field.name];
     return control.hasError('required') || (control.errors.pattern && control.errors.pattern.requiredPattern === String(/\S/));
   }
 
-  public shouldShowEmailError(field: FormFields) {
+  public shouldShowEmailError(field: FormFields): boolean {
     return this.form.controls[field.name].hasError('pattern') && field.validation === 'EMAIL';
   }
 
-  public get allPropertiesValid() {
+  public get allPropertiesValid(): boolean {
     return this.form.valid && this.outSidePropertiesValid;
   }
 
-  public onBlur() {
+  public onBlur(): void {
     this.blur.emit(this.form.value);
+  }
+
+  public onKeyUp(): void {
+    this.keyUp.emit(this.form.value);
   }
 
   public showDefaultInputFor(field: FormFields): boolean {

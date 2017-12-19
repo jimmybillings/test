@@ -19,7 +19,8 @@
         formControlName="{{field.name}}"
         [required]="isRequiredField(field)"
         id="{{field.name}}"
-        (keyup)="onBlur()">
+        (keyup)="onKeyUp()"
+        (blur)="onBlur()">
 
 			<!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
 			<mat-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
@@ -71,6 +72,7 @@
         placeholder="{{field.label | translate}}"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         [required]="isRequiredField(field)"
+        (change)="onKeyUp()"
         (blur)="onBlur()">
       <mat-error
         *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"

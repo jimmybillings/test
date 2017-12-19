@@ -17,31 +17,26 @@ export function main() {
       });
     });
 
+    describe('onEditableFieldChange()', () => {
+      it('Should emit a editableFieldChange event with a suggestion', () => {
+        spyOn(componentUnderTest.editableFieldChange, 'emit');
+        componentUnderTest.onEditableFieldChange({ some: 'change' });
+        expect(componentUnderTest.editableFieldChange.emit).toHaveBeenCalledWith({ some: 'change' });
+      });
+    });
+
     describe('set displayProperties()', () => {
       it('Should parse the properties into translation strings', () => {
         let mockProperties: Pojo = {
-          'id': 53,
-          'customerName': 'James Billings',
-          'email': 'james.billings@wazeedigital.com',
-          'field': [
-            {
-              'endPoint': 'user/searchFields',
-              'queryParams': 'fields,emailAddress,values',
-              'service': 'identities',
-              'suggestionHeading': 'Matching users',
-              'name': 'emailAddress',
-              'label': 'Recipient email address',
-              'type': 'suggestions',
-              'value': 'james.billings@wazeedigital.com',
-              'validation': 'REQUIRED'
-            }
-          ]
+          id: 53,
+          customerName: 'James Billings',
+          email: 'james.billings@wazeedigital.com'
         };
 
         componentUnderTest.displayProperties = mockProperties;
         let parsedProperties: Pojo;
         componentUnderTest.labels.subscribe(labels => parsedProperties = labels);
-        expect(parsedProperties).toEqual([{ 'label': 'QUOTE.EDIT.CUSTOMER_NAME_KEY', 'value': 'James Billings' }]);
+        expect(parsedProperties).toEqual([{ label: 'QUOTE.EDIT.CUSTOMER_NAME_KEY', value: 'James Billings' }]);
       });
 
       it('Should not error if an undefined input is passed to display properties', () => {
@@ -52,6 +47,5 @@ export function main() {
         expect(parsedProperties).toEqual([]);
       });
     });
-
   });
 }
