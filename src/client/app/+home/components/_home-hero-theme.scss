@@ -10,8 +10,8 @@
     background-image:
       linear-gradient( rgba(mat-color($foreground, text), .55), rgba(mat-color($foreground, text), .45));
     }
-    .hero-image {
-      background-image: url($bk-img-home);
-    }
+    // .hero-image {
+    //   background-image: url($bk-img-home);
+    // }
   }
 }

@@ -1,4 +1,7 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import { Component, Input, Output, EventEmitter, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Pojo } from '../../shared/interfaces/common.interface';
+import { AppStore } from '../../app.store';
 
 declare var jwplayer: any;
 
@@ -10,7 +13,7 @@ declare var jwplayer: any;
       <div id="hero-video"></div>
     </div>
     <div class="hero-image-container" *ngIf="!isVideo">
-      <div class="hero-image"></div>
+      <div class="hero-image" [style.background-image]="heroImage | async"></div>
     </div>
     <header class="hero">
       <div layout="row" mat-scroll-y="" layout-align="center start" layout-padding>
@@ -48,7 +51,16 @@ export class HomeHeroComponent {
 
   constructor(
     private _zone: NgZone,
-    private changeDetector: ChangeDetectorRef) {
+    private changeDetector: ChangeDetectorRef,
+    private store: AppStore,
+    private sanitizer: DomSanitizer) { }
+
+  public get heroImage() {
+    return this.store.select(factory => factory.cms.homeAssets)
+      .filter(homeAssets => homeAssets !== null)
+      .map(homeAssets => {
+        return this.sanitizer.bypassSecurityTrustStyle(`url(http:${homeAssets.hero.url})`)
+      });
   }
 
   private setUpVideo(video: any, elementId: string): void {
