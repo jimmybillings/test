@@ -28,7 +28,7 @@ export class CmsService {
   public loadHomeAssets() {
     return Observable.fromPromise(this.cdaClient.getEntries(
       { content_type: 'homePage', include: 10 })
-      .then(res => this.normalizeHomeAssets(res.toPlainObject().items[0].fields)))
+      .then(res => this.normalizeHomeAssets(res.toPlainObject().items[0].fields)));
   }
 
   private normalizeFooter(footer: Pojo): Pojo {
@@ -53,7 +53,7 @@ export class CmsService {
           label: highlight.fields.label,
           url: highlight.fields.media.fields.file.url,
           link: highlight.fields.url
-        }
+        };
       })
     };
   }

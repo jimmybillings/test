@@ -59,7 +59,7 @@ export class HomeHeroComponent {
     return this.store.select(factory => factory.cms.homeAssets)
       .filter(homeAssets => homeAssets !== null)
       .map(homeAssets => {
-        return this.sanitizer.bypassSecurityTrustStyle(`url(http:${homeAssets.hero.url})`)
+        return this.sanitizer.bypassSecurityTrustStyle(`url(http:${homeAssets.hero.url})`);
       });
   }
 

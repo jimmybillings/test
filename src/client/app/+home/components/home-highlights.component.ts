@@ -48,7 +48,7 @@ export class HomeHighlightsComponent {
             url: this.sanitizer.bypassSecurityTrustStyle(`url(http:${hightlight.url})`),
             label: hightlight.label,
             link: hightlight.link
-          }
+          };
         });
       });
   }
