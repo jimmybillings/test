@@ -17,6 +17,14 @@ export class CmsEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
+  @Effect()
+  public loadHomeAssets: Observable<Action> = this.actions.ofType(CmsActions.LoadHomeAssets.Type)
+    .switchMap((action: CmsActions.LoadHomeAssets) =>
+      this.service.loadHomeAssets()
+        .map((homeAssets: any) => this.store.create(factory => factory.cms.loadHomeAssetsSuccess(homeAssets)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
   constructor(private actions: Actions, private store: AppStore, private service: CmsService) { }
 
 
