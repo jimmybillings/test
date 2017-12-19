@@ -21,7 +21,8 @@ export class HomeResolver implements Resolve<any> {
     if (this.currentUser.loggedIn() && this.config.galleryView) {
       return this.galleryViewService.load([]);
     } else {
-      return Observable.of(true);
+      this.store.dispatch(factory => factory.cms.loadHomeAssets());
+      return this.store.blockUntil(state => state.cms.homeAssets !== null);
     }
   }
 }
