@@ -19,6 +19,8 @@ import {
 import { AppStore } from '../../../../../app.store';
 import { Pojo } from '../../../../../shared/interfaces/common.interface';
 import { FormFields } from '../../../../../shared/interfaces/forms.interface';
+import { WzFormPicklistComponent } from '../wz-form-picklist.component';
+import { WzFormAutoCompleteViewComponent } from '../wz-form-autocomplete-view.component';
 
 @Component({
   moduleId: module.id,
@@ -28,7 +30,10 @@ import { FormFields } from '../../../../../shared/interfaces/forms.interface';
 })
 
 export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
-  @ViewChild('invoiceContactform') public invoiceContactform: WzFormComponent;
+  @ViewChild('invoiceContactform') public invoiceContactform: WzFormPicklistComponent;
+  @ViewChild('billingAccountForm') public billingAccountForm: WzFormAutoCompleteViewComponent;
+  @ViewChild('salesManagerForm') public salesManagerForm: WzFormAutoCompleteViewComponent;
+
   public config: {
     user: FormFields[];
     billingAccount: FormFields[];
@@ -91,18 +96,16 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
   }
 
   private userAccountMatchesBillingAccount(sendDetails: SendDetails): boolean {
-    return (sendDetails.user.hasOwnProperty('accountName') && sendDetails.billingAccount.hasOwnProperty('name'))
-      && sendDetails.user.accountName === sendDetails.billingAccount.name
-      && (sendDetails.billingAccount.salesOwner !== null && sendDetails.billingAccount.salesOwner !== '')
-      && (sendDetails.billingAccount.paymentTermsDays !== null && sendDetails.billingAccount.paymentTermsDays !== '');
+    return (sendDetails.user.hasOwnProperty('accountName') && sendDetails.billingAccount.hasOwnProperty('name')) &&
+      sendDetails.user.accountName === sendDetails.billingAccount.name &&
+      this.formsAreValid;
   }
 
   private allBillingFieldsSelected(sendDetails: SendDetails): boolean {
     return sendDetails.user.hasOwnProperty('accountName') &&
       sendDetails.billingAccount.hasOwnProperty('id') &&
       sendDetails.invoiceContact.hasOwnProperty('id') &&
-      (sendDetails.billingAccount.salesOwner !== null && sendDetails.billingAccount.salesOwner !== '') &&
-      (sendDetails.billingAccount.paymentTermsDays !== null && sendDetails.billingAccount.paymentTermsDays !== '');
+      this.formsAreValid;
   }
 
   private initializeSalesManagerInState(): void {
@@ -112,6 +115,11 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
         this.defaultDate(15)
       )
     );
+  }
+
+  private get formsAreValid(): boolean {
+    return (this.billingAccountForm && this.billingAccountForm.form.valid) &&
+      (this.salesManagerForm && this.salesManagerForm.form.valid);
   }
 
   private defaultDate(days: number): string {
@@ -128,23 +136,30 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
   }
 
   private updateFormValidity(state: SendDetails): void {
-    if (!this.invoiceContactform) return;
+    if (!this.invoiceContactform || !this.billingAccountForm) return;
 
     if ((state.billingAccount.name === state.user.accountName) && !state.invoiceContact.hasOwnProperty('id')) {
+      this.billingAccountForm.resetForm();
       this.invoiceContactform.resetForm();
     }
 
     if ((state.billingAccount.name !== state.user.accountName) && !state.invoiceContact.hasOwnProperty('id')) {
+      this.billingAccountForm.markFieldsAsTouched();
       this.invoiceContactform.markFieldsAsTouched();
     }
   }
 
   private mergeFormValues(state: SendDetails): void {
+    if (state.user.email) {
+      this.config.user[0].value = state.user.email;
+    }
+
     if (state.billingAccount.id) {
       this.config.billingAccount = this.config.billingAccount.map(field => {
         field.value = state.billingAccount[field.name];
         if (field.hasOwnProperty('max') && state.billingAccount.hasOwnProperty('paymentTermsDays') && !this.maxTermsDaysSet) {
           field.max = state.billingAccount.paymentTermsDays;
+          if (this.billingAccountForm) this.billingAccountForm.updateValidatorsFor(field);
           this.maxTermsDaysSet = true;
         }
         return field;
@@ -153,7 +168,7 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
 
     if (state.invoiceContact.contacts) {
       const contact = state.invoiceContact.contacts.find(c => {
-        return c.id === state.billingAccount.invoiceContactId;
+        return state.invoiceContact.id ? c.id === state.invoiceContact.id : c.id === state.billingAccount.invoiceContactId;
       });
       this.config.invoiceContact[0].value = contact || '';
       this.config.invoiceContact[0].options = state.invoiceContact.contacts;
@@ -186,18 +201,20 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
           type: 'suggestions',
           value: '',
           validation: 'REQUIRED'
-        }, {
+        },
+        {
           name: 'salesOwner',
           label: 'QUOTE.EDIT.SALES_OWNER_KEY',
           type: 'text',
           value: '',
           validation: 'REQUIRED'
-        }, {
+        },
+        {
           name: 'paymentTermsDays',
           label: 'QUOTE.EDIT.PAYMENT_TERMS_DAYS_KEY',
           type: 'number',
           value: '',
-          validation: 'REQUIRED',
+          validation: 'LESS_THAN',
           min: 0,
           max: 0
         }
@@ -227,7 +244,8 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
           type: 'email',
           value: this.currentUserService.state.emailAddress,
           validation: 'EMAIL'
-        }, {
+        },
+        {
           name: 'offlineAgreementReference',
           label: 'QUOTE.EDIT.FORMS.OFFLINE_AGREEMENT_LABEL',
           type: 'textarea',

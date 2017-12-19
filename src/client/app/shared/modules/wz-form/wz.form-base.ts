@@ -12,15 +12,12 @@ export class WzFormBase implements OnInit, OnChanges {
   @Input() includeSubmit: boolean = true;
   @Input() cancelLabel: string = 'Cancel';
   @Input() autocomplete: string = 'on';
-  @Input() disableUntilValid: boolean = false;
-  @Input() outSidePropertiesValid: boolean = false;
-  @Input() suggestionsMatchOnProperty: string;
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
   @Output() onAction = new EventEmitter();
   @Output() blur = new EventEmitter();
   @Output() keyUp = new EventEmitter();
-  @Output() newSuggestion = new EventEmitter<any>();
+  @Output() valueChange = new EventEmitter();
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
@@ -140,7 +137,9 @@ export class WzFormBase implements OnInit, OnChanges {
       field.validation === 'PASSWORD' ||
       field.validation === 'TERMS' ||
       field.validation === 'GREATER_THAN' ||
-      field.validation === 'COLLECTION') ? true : false;
+      field.validation === 'LESS_THAN' ||
+      field.validation === 'COLLECTION'
+    ) ? true : false;
   }
 
   public hasErrorType(field: FormControl | AbstractControl): boolean {
@@ -165,10 +164,6 @@ export class WzFormBase implements OnInit, OnChanges {
     if (this.form.valid) {
       this.formSubmit.emit(this.form.value);
     }
-  }
-
-  public onNewSuggestion(suggestion: any): void {
-    this.newSuggestion.emit(suggestion);
   }
 
   public resetForm(): void {
@@ -221,8 +216,8 @@ export class WzFormBase implements OnInit, OnChanges {
     return this.form.controls[field.name].hasError('pattern') && field.validation === 'EMAIL';
   }
 
-  public get allPropertiesValid(): boolean {
-    return this.form.valid && this.outSidePropertiesValid;
+  public shouldShowLessThanError(field: FormFields): boolean {
+    return this.form.controls[field.name].hasError('tooHigh') && field.validation === 'LESS_THAN';
   }
 
   public onBlur(): void {
@@ -233,20 +228,37 @@ export class WzFormBase implements OnInit, OnChanges {
     this.keyUp.emit(this.form.value);
   }
 
+  public onChange(): void {
+    this.valueChange.emit(this.form.value);
+  }
+
   public showDefaultInputFor(field: FormFields): boolean {
-    return (field.type === 'text' || field.type === 'password' || field.type === 'email' || field.type === 'date');
+    return ['text', 'password', 'email', 'date'].includes(field.type);
   }
 
   public get showSubmitAndCancel(): boolean {
-    return this.includeCancel && !this.disableUntilValid && this.includeSubmit;
+    return this.includeCancel && this.includeSubmit;
   }
 
   public get showSubmit(): boolean {
-    return !this.includeCancel && !this.disableUntilValid && this.includeSubmit;
+    return this.includeSubmit && !this.includeCancel;
   }
 
-  public get showDisabledSubmit(): boolean {
-    return !this.includeCancel && this.disableUntilValid && this.includeSubmit;
+  public updateValidatorsFor(field: FormFields): void {
+    const control: AbstractControl = this.controlFrom(field);
+
+    this.formModel.updateValidatorsFor(control, field);
+  }
+
+  private controlFrom(field: FormFields): AbstractControl {
+    let control: AbstractControl;
+    for (let controlName in this.form.controls) {
+      if (controlName === field.name) {
+        control = this.form.controls[controlName];
+        break;
+      }
+    }
+    return control;
   }
 
   private dateToString(date: Date): string {

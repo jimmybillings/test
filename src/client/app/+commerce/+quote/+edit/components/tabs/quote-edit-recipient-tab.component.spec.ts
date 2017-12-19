@@ -23,6 +23,8 @@ export function main() {
     let updateSalesManagerFormOnQuoteDispatchSpy: jasmine.Spy;
     let initializeSalesManagerFormOnQuoteDispatchSpy: jasmine.Spy;
     let updateBillingAccountDispatchSpy: jasmine.Spy;
+    let mockForm: any;
+    let mockCurrentUserService: any;
     let mockStore: MockAppStore;
 
     beforeEach(() => {
@@ -69,8 +71,18 @@ export function main() {
         'initializeSalesManagerFormOnQuote'
       );
 
-      componentUnderTest =
-        new QuoteEditRecipientTabComponent(mockStore, { state: { emailAddress: 'test email' } } as any);
+      mockForm = {
+        resetForm: jasmine.createSpy('resetForm'),
+        markFieldsAsTouched: jasmine.createSpy('markFieldsAsTouched'),
+        form: { valid: true }
+      };
+
+      mockCurrentUserService = { state: { emailAddress: 'test email' } };
+
+      componentUnderTest = new QuoteEditRecipientTabComponent(
+        mockStore,
+        mockCurrentUserService
+      );
     });
 
     describe('ngOnInit()', () => {
@@ -83,13 +95,11 @@ export function main() {
 
       describe('updateFormValidity()', () => {
         beforeEach(() => {
-          componentUnderTest.invoiceContactform = {
-            resetForm: jasmine.createSpy('resetForm'),
-            markFieldsAsTouched: jasmine.createSpy('markFieldsAsTouched')
-          } as any;
+          componentUnderTest.invoiceContactform = mockForm;
+          componentUnderTest.billingAccountForm = mockForm;
         });
 
-        it('resets invoice contact form if the user account name matches the billing account', () => {
+        it('resets the forms if the user account name matches the billing account', () => {
           mockStore.createStateSection('quoteEdit', {
             sendDetails: {
               user: {
@@ -103,11 +113,14 @@ export function main() {
             }
           });
           componentUnderTest.ngOnInit();
+
           expect(componentUnderTest.invoiceContactform.resetForm).toHaveBeenCalled();
           expect(componentUnderTest.invoiceContactform.markFieldsAsTouched).not.toHaveBeenCalled();
+          expect(componentUnderTest.billingAccountForm.resetForm).toHaveBeenCalled();
+          expect(componentUnderTest.billingAccountForm.markFieldsAsTouched).not.toHaveBeenCalled();
         });
 
-        it(`marks invoice contact form as touched if the user account name does not matche the billing account`, () => {
+        it(`marks the forms as touched if the user account name does not match the billing account`, () => {
           mockStore.createStateSection('quoteEdit', {
             sendDetails: {
               user: {
@@ -121,17 +134,23 @@ export function main() {
             }
           });
           componentUnderTest.ngOnInit();
-          expect(componentUnderTest.invoiceContactform.markFieldsAsTouched).toHaveBeenCalled();
+
           expect(componentUnderTest.invoiceContactform.resetForm).not.toHaveBeenCalled();
+          expect(componentUnderTest.invoiceContactform.markFieldsAsTouched).toHaveBeenCalled();
+          expect(componentUnderTest.billingAccountForm.resetForm).not.toHaveBeenCalled();
+          expect(componentUnderTest.billingAccountForm.markFieldsAsTouched).toHaveBeenCalled();
         });
       });
 
       describe('mergeFormValues()', () => {
         it('updates the config when the billingAccount changes in the state', () => {
-          mockStore.createStateSection(
-            'quoteEdit',
-            { sendDetails: { billingAccount: { id: 1, paymentTermsDays: 30, salesOwner: 'Ross' }, invoiceContact: {} } }
-          );
+          mockStore.createStateSection('quoteEdit', {
+            sendDetails: {
+              billingAccount: { id: 1, paymentTermsDays: 30, salesOwner: 'Ross' },
+              user: { email: 'some-email' },
+              invoiceContact: {}
+            }
+          });
           componentUnderTest.ngOnInit();
 
           expect(componentUnderTest.config.billingAccount[1].value).toBe('Ross');
@@ -140,7 +159,11 @@ export function main() {
 
         it('updats the config when the invoiceContact changes in the state', () => {
           mockStore.createStateSection('quoteEdit', {
-            sendDetails: { billingAccount: { invoiceContactId: 13 }, invoiceContact: { contacts: [{ id: 13, some: 'user' }] } }
+            sendDetails: {
+              billingAccount: { invoiceContactId: 13 },
+              user: { email: 'some-email' },
+              invoiceContact: { contacts: [{ id: 13, some: 'user' }] }
+            }
           });
           componentUnderTest.ngOnInit();
 
@@ -226,6 +249,11 @@ export function main() {
     });
 
     describe('get allBillingSelectionComplete()', () => {
+      beforeEach(() => {
+        componentUnderTest.salesManagerForm = mockForm;
+        componentUnderTest.billingAccountForm = mockForm;
+      });
+
       it('returns true if the user account matches the selected billing account', () => {
         let billingSectionsComplete: Boolean;
         mockStore.createStateSection('quoteEdit', {

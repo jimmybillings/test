@@ -330,9 +330,7 @@
       *ngIf="field.type == 'suggestions'"
       #suggestions
       [fControl]="form.controls[field.name]"
-      [rawField]="field"
-      [matchOnProperty]="suggestionsMatchOnProperty"
-      (newSuggestion)="onNewSuggestion($event)">
+      [rawField]="field">
 			<mat-input-container>
         <input matInput placeholder="{{field.label | translate}}" 
 				(keydown)="suggestions.inputKeyDown($event)"
@@ -369,16 +367,5 @@
 
 	<mat-card-actions layout="row" layout-align="center center" *ngIf="showSubmit">
 		<button mat-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
-  </mat-card-actions>
-  
-  <mat-card-actions layout="row" layout-align="center center" *ngIf="showDisabledSubmit">
-    <button
-      mat-raised-button
-      [disabled]="!allPropertiesValid"
-      type="submit"
-      color="primary"
-      class="conversion">
-        {{submitLabel | translate}}
-    </button>
   </mat-card-actions>
 </form>

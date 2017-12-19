@@ -1,7 +1,7 @@
 import { Common, Pagination, Pojo, SelectedPriceAttribute, Store, ViewAddress } from './common.interface';
 import { SubclipMarkers } from './subclip-markers';
 import { EnhancedAsset } from './enhanced-asset';
-import { Address, Document, Payee, User } from './user.interface';
+import { Address, Document, Payee } from './user.interface';
 
 export type PurchaseType =
   'SystemLicense' |

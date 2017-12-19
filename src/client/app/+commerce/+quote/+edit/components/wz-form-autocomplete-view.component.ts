@@ -14,7 +14,7 @@ import { WzFormBase } from '../../../../shared/modules/wz-form/wz.form-base';
 })
 export class WzFormAutoCompleteViewComponent extends WzFormBase {
   public labels: BehaviorSubject<Pojo[]>;
-  public propertiesToIgnore: string[] = ['name', 'id', 'email', 'invoiceContactId'];
+  public propertiesToIgnore: string[] = ['name', 'id', 'email', 'invoiceContactId', 'salesOwner', 'paymentTermsDays'];
   @Input() title: string;
   @Input() matchOnProperty: string;
   @Input()
@@ -28,7 +28,6 @@ export class WzFormAutoCompleteViewComponent extends WzFormBase {
       });
     this.labels = new BehaviorSubject(tempLabels);
   }
-  @Output() editableFieldChange: EventEmitter<Pojo> = new EventEmitter();
 
   constructor(fb: FormBuilder, formModel: FormModel, element: ElementRef) {
     super(fb, formModel, element);
@@ -36,9 +35,5 @@ export class WzFormAutoCompleteViewComponent extends WzFormBase {
 
   public onSelectSuggestion(suggestion: Pojo): void {
     this.formSubmit.emit(suggestion);
-  }
-
-  public onEditableFieldChange(form: Pojo): void {
-    this.editableFieldChange.emit(form);
   }
 }

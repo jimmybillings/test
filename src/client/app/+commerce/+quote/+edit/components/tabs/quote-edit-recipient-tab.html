@@ -5,40 +5,43 @@
   <section class="recipient-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form-autocomplete-view *ngIf="user | async as user" flex="100" 
       class="recipient"
+      autocomplete="off"
       [ngClass]="{ 'is-empty' : !(!!user.id) }"
       [items]="config.user"
       [title]="'QUOTE.EDIT.RECIPIENT_TITLE'"
       [matchOnProperty]="'emailAddress'"
       [displayProperties]="user"
-      autocomplete="off"
       (formSubmit)="userSelect($event)">
     </wz-form-autocomplete-view>
     
     <wz-form-autocomplete-view *ngIf="billingAccount | async as billingAccount" flex="100"
+      #billingAccountForm
       class="billing-account"
+      autocomplete="off"
       [ngClass]="{ 'is-empty' : !(!!billingAccount.id) }"
       [items]="config.billingAccount"
       [title]="'QUOTE.EDIT.BILLING_ACCOUNT_TITLE'"
       [matchOnProperty]="'name'"
       [displayProperties]="billingAccount"
-      autocomplete="off"
-      (editableFieldChange)="onEditableFieldChange($event)"
+      (keyUp)="onEditableFieldChange($event)"
+      (valueChange)="onEditableFieldChange($event)"
       (formSubmit)="accountSelect($event)">
     </wz-form-autocomplete-view>
 
     <wz-form-picklist-component *ngIf="invoiceContact | async as invoiceContact" flex="100"
       #invoiceContactform
       class="invoice-contact"
+      autocomplete="off"
       [items]="config.invoiceContact"
       [title]="'QUOTE.EDIT.INVOICE_CONTACT_TITLE'"
       [displayProperties]="invoiceContact"
-      autocomplete="off"
       (selectContact)="invoiceContactSelect($event)">
     </wz-form-picklist-component>
   </section>
 
   <section class="creator-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
     <wz-form *ngIf="(invoiceContact | async)"
+      #salesManagerForm
       [items]="config.salesManager" 
       [includeSubmit]="false"
       (blur)=onBlur($event)>

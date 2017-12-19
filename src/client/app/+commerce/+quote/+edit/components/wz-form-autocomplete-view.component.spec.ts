@@ -17,14 +17,6 @@ export function main() {
       });
     });
 
-    describe('onEditableFieldChange()', () => {
-      it('Should emit a editableFieldChange event with a suggestion', () => {
-        spyOn(componentUnderTest.editableFieldChange, 'emit');
-        componentUnderTest.onEditableFieldChange({ some: 'change' });
-        expect(componentUnderTest.editableFieldChange.emit).toHaveBeenCalledWith({ some: 'change' });
-      });
-    });
-
     describe('set displayProperties()', () => {
       it('Should parse the properties into translation strings', () => {
         let mockProperties: Pojo = {
