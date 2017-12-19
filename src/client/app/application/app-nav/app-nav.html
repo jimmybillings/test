@@ -96,6 +96,12 @@
   </a>
 </mat-toolbar>
 
+<mat-toolbar color="primary" flex *ngIf="navBar | async as navBar">
+  <a *ngFor="let navBarItem of navBar.navBarItems" mat-raised-button color="accent"  class="cms-nav-item" [routerLink]="[navBarItem.url]">
+    {{navBarItem.label}}
+  </a>
+</mat-toolbar>
+
 <mat-menu x-position="before" #navigation="matMenu">
   <a
     data-pendo="user-menu_profile-link"

@@ -31,12 +31,26 @@ export class CmsService {
       .then(res => this.normalizeHomeAssets(res.toPlainObject().items[0].fields)));
   }
 
+  public loadNavBar() {
+    return Observable.fromPromise(this.cdaClient.getEntries(
+      { content_type: 'navBar', include: 10 })
+      .then(res => this.normalizeMenu(res.toPlainObject().items[0].fields)));
+  }
+
   private normalizeFooter(footer: Pojo): Pojo {
     return {
       columns: footer.column.map((column: Pojo) => {
         return column.fields.footerLineItem.map((data: Pojo) => {
           return { type: data.sys.contentType.sys.id, ...data.fields };
         });
+      })
+    };
+  }
+
+  private normalizeMenu(navBar: Pojo[any]): Pojo {
+    return {
+      navBarItems: navBar.navBarItem.map((item: Pojo) => {
+        return item.fields;
       })
     };
   }

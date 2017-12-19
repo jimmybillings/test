@@ -26,8 +26,14 @@ export class AppNavComponent {
   public headerIsFixed: Observable<boolean>;
 
   constructor(private store: AppStore) {
+    this.store.dispatch(factory => factory.cms.loadNavBar());
     this.headerCanBeFixed = this._headerCanBeFixed();
     this.headerIsFixed = this._headerIsFixed();
+  }
+
+  public get navBar(): Observable<any> {
+    return this.store.select(factory => factory.cms.navBar)
+      .filter(navBar => navBar !== null);
   }
 
   public logOut(event: Event) {

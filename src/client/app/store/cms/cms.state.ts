@@ -5,11 +5,13 @@ import { Pojo } from '../../shared/interfaces/common.interface';
 export interface State {
   footer: Pojo;
   homeAssets: Pojo;
+  navBar: Pojo;
 }
 
 export const initialState: State = {
   footer: null,
-  homeAssets: null
+  homeAssets: null,
+  navBar: null
 };
 
 export function reducer(state: State = initialState, action: CmsActions.Any): State {
@@ -22,6 +24,11 @@ export function reducer(state: State = initialState, action: CmsActions.Any): St
 
     case CmsActions.LoadHomeAssetsSuccess.Type: {
       return { ...Common.clone(state), homeAssets: action.homeAssets };
+    }
+
+    case CmsActions.LoadNavBarSuccess.Type: {
+      console.log(action.navBar);
+      return { ...Common.clone(state), navBar: action.navBar };
     }
 
     default: {

@@ -25,6 +25,14 @@ export class CmsEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
+  @Effect()
+  public loadNavBar: Observable<Action> = this.actions.ofType(CmsActions.LoadNavBar.Type)
+    .switchMap((action: CmsActions.LoadNavBar) =>
+      this.service.loadNavBar()
+        .map((navBar: any) => this.store.create(factory => factory.cms.loadNavBarSuccess(navBar)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
   constructor(private actions: Actions, private store: AppStore, private service: CmsService) { }
 
 
