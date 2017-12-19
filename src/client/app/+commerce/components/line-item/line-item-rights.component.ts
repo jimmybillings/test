@@ -7,13 +7,13 @@ import { SelectedPriceAttribute } from '../../../shared/interfaces/common.interf
   changeDetection: ChangeDetectionStrategy.OnPush,
   template:
     `
-  <ng-container *ngIf="rightsManaged == 'Rights Managed' && !displayRmAttributes">
+  <ng-container *ngIf="rightsManagedWithoutUsage">
     <section class="read-only">
       <header class="rights-managed">{{rightsManaged}}</header>
     </section>
   </ng-container>
 
-  <ng-container *ngIf="rightsManaged == 'Rights Managed' && displayRmAttributes">
+  <ng-container *ngIf="rightsManagedDisplayUsage">
     <section
       data-pendo="cart-lineitem_pricing-btn"
       [ngClass]="{'read-only': readOnly, 'needs-rights': !hasAttributes}"
@@ -31,7 +31,8 @@ import { SelectedPriceAttribute } from '../../../shared/interfaces/common.interf
       </ng-container>
     </section>
   </ng-container>
-  <ng-container *ngIf="rightsManaged == 'Royalty Free'">
+
+  <ng-container *ngIf="rightsRoyaltyFree">
     <section class="read-only">
       <header class="royalty-free">{{rightsManaged}}</header>
     </section>
@@ -53,5 +54,17 @@ export class LineItemRightsComponent {
 
   public attributeValue(attribute: SelectedPriceAttribute): string {
     return attribute.selectedAttributeName || attribute.selectedAttributeValue;
+  }
+
+  public get rightsManagedDisplayUsage(): boolean {
+    return this.rightsManaged === 'Rights Managed' && this.displayRmAttributes;
+  }
+
+  public get rightsManagedWithoutUsage(): boolean {
+    return this.rightsManaged === 'Rights Managed' && !this.displayRmAttributes;
+  }
+
+  public get rightsRoyaltyFree(): boolean {
+    return this.rightsManaged === 'Royalty Free';
   }
 }
