@@ -14,7 +14,9 @@ import { WzFormBase } from '../../../../shared/modules/wz-form/wz.form-base';
 })
 export class WzFormAutoCompleteViewComponent extends WzFormBase {
   public labels: BehaviorSubject<Pojo[]>;
-  public propertiesToIgnore: string[] = ['name', 'id', 'email', 'invoiceContactId', 'salesOwner', 'paymentTermsDays'];
+  public propertiesToIgnore: string[] = [
+    'name', 'id', 'email', 'invoiceContactId', 'salesOwner', 'paymentTermsDays', 'readonlyPaymentTermsDays'
+  ];
   @Input() title: string;
   @Input() matchOnProperty: string;
   @Input()

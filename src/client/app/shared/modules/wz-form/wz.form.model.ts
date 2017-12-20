@@ -58,6 +58,8 @@ export class FormModel {
         return this._getGreaterThanValidator(field.min);
       case 'LESS_THAN':
         return this._getLessThanValidator(field.max);
+      case 'BETWEEN':
+        return this._getBetweenValidator(field.min, field.max);
       case 'MIN_LENGTH':
         return this._getMinLengthValidator(field.min);
       case 'MAX_LENGTH':
@@ -112,13 +114,20 @@ export class FormModel {
   }
 
   private _getGreaterThanValidator(testValue: string): ValidatorFn {
-    return (control: FormControl) => (parseFloat(control.value) <= parseFloat(testValue)) ? { tooLow: 'number too low' } : null;
+    return (control: FormControl) => (parseFloat(control.value) < parseFloat(testValue)) ? { tooLow: 'number too low' } : null;
   }
 
   private _getLessThanValidator(testValue: string): ValidatorFn {
     return Validators.compose([
       (control: FormControl) => (parseFloat(control.value) > parseFloat(testValue)) ? { tooHigh: 'number too high' } : null,
       Validators.required
+    ]);
+  }
+
+  private _getBetweenValidator(min: string, max: string): ValidatorFn {
+    return Validators.compose([
+      this._getGreaterThanValidator(min),
+      this._getLessThanValidator(max)
     ]);
   }
 

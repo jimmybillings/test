@@ -40,9 +40,7 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
   @ViewChild('billingAccountForm') public billingAccountForm: WzFormAutoCompleteViewComponent;
   @ViewChild('salesManagerForm') public salesManagerForm: WzFormAutoCompleteViewComponent;
 
-
   public config: SendDetailsConfig;
-  private maxTermsDaysSet: boolean = false;
 
   constructor(private store: AppStore, private currentUserService: CurrentUserService) {
     super();
@@ -159,10 +157,9 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
     if (state.billingAccount.id) {
       this.config.billingAccount = this.config.billingAccount.map(field => {
         field.value = state.billingAccount[field.name];
-        if (field.hasOwnProperty('max') && state.billingAccount.hasOwnProperty('paymentTermsDays') && !this.maxTermsDaysSet) {
-          field.max = state.billingAccount.paymentTermsDays;
+        if (field.hasOwnProperty('max') && state.billingAccount.hasOwnProperty('readonlyPaymentTermsDays')) {
+          field.max = state.billingAccount.readonlyPaymentTermsDays;
           if (this.billingAccountForm) this.billingAccountForm.updateValidatorsFor(field);
-          this.maxTermsDaysSet = true;
         }
         return field;
       });
@@ -216,8 +213,8 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
           label: 'QUOTE.EDIT.PAYMENT_TERMS_DAYS_KEY',
           type: 'number',
           value: '',
-          validation: 'LESS_THAN',
-          min: '0',
+          validation: 'BETWEEN',
+          min: '1',
           max: '0'
         }
       ],

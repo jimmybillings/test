@@ -232,6 +232,7 @@ export interface SendDetailsBillingAccount {
   purchaseOnCredit?: number;
   creditExemption?: number;
   paymentTermsDays?: string;
+  readonly readonlyPaymentTermsDays?: string;
   licensingVertical?: string;
   invoiceContactId?: number;
   [index: string]: any;

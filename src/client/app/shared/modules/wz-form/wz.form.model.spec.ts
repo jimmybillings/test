@@ -29,7 +29,7 @@ export function main() {
           validation: 'GREATER_THAN',
           type: InputTypes.number,
           cases: [
-            { case: '1', validationResult: 'fail', error: 'tooLow' },
+            { case: '0', validationResult: 'fail', error: 'tooLow' },
             { case: '-1', validationResult: 'fail', error: 'tooLow' },
             { case: '0.999999', validationResult: 'fail', error: 'tooLow' },
             { case: '1.000001', validationResult: 'pass', error: 'tooLow' },
@@ -42,6 +42,16 @@ export function main() {
           cases: [
             { case: '11', validationResult: 'fail', error: 'tooHigh' },
             { case: '9', validationResult: 'pass', error: 'tooHigh' },
+          ]
+        },
+        {
+          validation: 'BETWEEN',
+          type: InputTypes.number,
+          cases: [
+            { case: '10', validationResult: 'pass', error: 'tooHigh' },
+            { case: '1', validationResult: 'pass', error: 'tooLow' },
+            { case: '11', validationResult: 'fail', error: 'tooHigh' },
+            { case: '0', validationResult: 'fail', error: 'tooLow' },
           ]
         },
         {

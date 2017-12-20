@@ -40,6 +40,7 @@
           class="mat-block"
           id="{{field.name}}"
           max="{{field.max}}"
+          min="{{field.min}}"
           type="{{field.type}}"
           placeholder="{{field.label | translate}}"
           formControlName="{{field.name}}"
@@ -48,9 +49,12 @@
           (change)="onChange()"
           (keyup)="onKeyUp()"
           (blur)="onBlur()">
-            <mat-error *ngIf="!form.controls[field.name].valid" align="start">
+            <mat-error *ngIf="!form.controls[field.name].valid" align="end">
               <span *ngIf="shouldShowLessThanError(field)">
                 {{ 'ERRORS.LESS_THAN' | translate:{max:field.max} }}
+              </span>
+              <span *ngIf="shouldShowGreaterThanError(field)">
+                {{ 'ERRORS.GREATER_THAN' | translate:{min:field.min} }}
               </span>
             </mat-error>
       </mat-input-container>

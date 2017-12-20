@@ -146,7 +146,7 @@ export function main() {
         it('updates the config when the billingAccount changes in the state', () => {
           mockStore.createStateSection('quoteEdit', {
             sendDetails: {
-              billingAccount: { id: 1, paymentTermsDays: 30, salesOwner: 'Ross' },
+              billingAccount: { id: 1, readonlyPaymentTermsDays: 30, salesOwner: 'Ross' },
               user: { email: 'some-email' },
               invoiceContact: {}
             }
