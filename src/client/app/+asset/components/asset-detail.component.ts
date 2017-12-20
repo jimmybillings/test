@@ -244,8 +244,6 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get priceIsRmStartingPrice(): boolean {
-    console.log(`_asset ${this._asset.price}`);
-    console.log(`details ${this.usagePrice}`);
     return this.isRightsManaged && !!this._asset.price && (this._asset.price === this.usagePrice);
   }
 
