@@ -7,7 +7,7 @@ import { MatMenuTrigger } from '@angular/material';
 import { SubclipMarkers, durationFrom } from '../../shared/interfaces/subclip-markers';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
-import { AppStore, ActionFactoryMapper } from '../../app.store';
+import { AppStore, ActionFactoryMapper, PricingState } from '../../app.store';
 import { EnhancedAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
@@ -24,7 +24,6 @@ import { AssetShareDialogOptions } from '../../shared/interfaces/asset.interface
 export class AssetDetailComponent implements OnInit {
   @Input() public set asset(asset: EnhancedAsset) {
     this._asset = asset;
-    this.usagePrice = null;
     if (asset.transcodeTargets) this.selectedTarget = asset.transcodeTargets[0];  // Is this what we want for all asset types?
     this.setAssetCollectionMembershipFlags();
   }
@@ -244,8 +243,8 @@ export class AssetDetailComponent implements OnInit {
     return this.isRoyaltyFree || this.isRightsManaged;
   }
 
-  public get priceIsStartingPrice(): boolean {
-    return !!this._asset.price && !this.usagePrice && this.isRightsManaged;
+  public get priceIsRmStartingPrice(): boolean {
+    return this.isRightsManaged && !!this._asset.price && (this._asset.price === this.usagePrice);
   }
 
   public get price(): number {
