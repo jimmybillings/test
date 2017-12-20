@@ -5,4 +5,4 @@
 # directly will maintain the correct exit code to stop the commit if there are lint errors
 # See https://github.com/palantir/tslint/issues/1057 for more info
 
-# ./node_modules/.bin/tslint "src/**/*.ts" -c tslint.json
+./node_modules/.bin/tslint "src/**/*.ts" -c tslint.json
