@@ -22,24 +22,26 @@ import { FormFields } from '../../../../../shared/interfaces/forms.interface';
 import { WzFormPicklistComponent } from '../wz-form-picklist.component';
 import { WzFormAutoCompleteViewComponent } from '../wz-form-autocomplete-view.component';
 
+interface SendDetailsConfig {
+  user: FormFields[];
+  billingAccount: FormFields[];
+  invoiceContact: Pojo[];
+  salesManager: FormFields[];
+};
+
 @Component({
   moduleId: module.id,
   selector: 'quote-edit-recipient-tab-component',
   templateUrl: 'quote-edit-recipient-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
   @ViewChild('invoiceContactform') public invoiceContactform: WzFormPicklistComponent;
   @ViewChild('billingAccountForm') public billingAccountForm: WzFormAutoCompleteViewComponent;
   @ViewChild('salesManagerForm') public salesManagerForm: WzFormAutoCompleteViewComponent;
 
-  public config: {
-    user: FormFields[];
-    billingAccount: FormFields[];
-    invoiceContact: Pojo[];
-    salesManager: FormFields[];
-  };
+
+  public config: SendDetailsConfig;
   private maxTermsDaysSet: boolean = false;
 
   constructor(private store: AppStore, private currentUserService: CurrentUserService) {
@@ -175,7 +177,7 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
     }
   }
 
-  private sendConfig(): any {
+  private sendConfig(): SendDetailsConfig {
     return {
       user: [
         {
@@ -215,8 +217,8 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
           type: 'number',
           value: '',
           validation: 'LESS_THAN',
-          min: 0,
-          max: 0
+          min: '0',
+          max: '0'
         }
       ],
       invoiceContact: [
@@ -236,7 +238,8 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
           label: 'QUOTE.EDIT.FORMS.EXPIRATION_DATE_LABEL',
           type: 'wzdate',
           minimum: 'TODAY',
-          validation: 'REQUIRED'
+          validation: 'REQUIRED',
+          value: ''
         },
         {
           name: 'salesManager',
