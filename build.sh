@@ -117,9 +117,6 @@ build_library() {
   return 0
 }
 
-# set node version to 8.9.3 (LTS)
-nvm use 8.9.3
-
 # debugging information
 print-build-environment.sh
 
