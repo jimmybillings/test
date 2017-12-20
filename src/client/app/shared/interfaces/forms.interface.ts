@@ -12,6 +12,13 @@ export interface FormFields {
   max?: string;
   addressType?: 'long_name' | 'short_name' | '';
   googleFields?: Array<String>;
+  maximum?: string;
+  minimum?: string;
+  default?: string;
+  endPoint?: string;
+  queryParams?: string;
+  service?: string;
+  suggestionHeading?: string;
   // Use the following to control an input from a select.
   // The number of options should equal the number
   // of slaveFieldValues.  When an option is
