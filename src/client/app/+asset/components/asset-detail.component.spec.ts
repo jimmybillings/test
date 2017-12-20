@@ -327,16 +327,17 @@ export function main() {
       });
     });
 
-    describe('priceIsStartingPrice getter', () => {
+    describe('priceIsRmStartingPrice getter', () => {
       beforeEach(() => {
+        componentUnderTest.usagePrice = 12.34;
         componentUnderTest.asset = enhanceAsset(
           { price: 12.34, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
           'searchAsset'
         );
       });
 
-      it('returns true if asset has a non-zero price AND usage price is not set AND asset is Rights Managed', () => {
-        expect(componentUnderTest.priceIsStartingPrice).toBe(true);
+      it('returns true if asset has a price AND usage price is the same as asset price AND asset is Rights Managed', () => {
+        expect(componentUnderTest.priceIsRmStartingPrice).toBe(true);
       });
 
       it('returns false if asset has no price', () => {
@@ -345,7 +346,7 @@ export function main() {
           'searchAsset'
         );
 
-        expect(componentUnderTest.priceIsStartingPrice).toBe(false);
+        expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
       });
 
       it('returns false if asset has a zero price', () => {
@@ -354,13 +355,17 @@ export function main() {
           'searchAsset'
         );
 
-        expect(componentUnderTest.priceIsStartingPrice).toBe(false);
+        expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
       });
 
-      it('returns false if usage price is set', () => {
+      it('returns false if usage price is not the same as asset price', () => {
         componentUnderTest.usagePrice = 56.78;
+        componentUnderTest.asset = enhanceAsset(
+          { price: 12.34, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
+          'searchAsset'
+        );
 
-        expect(componentUnderTest.priceIsStartingPrice).toBe(false);
+        expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
       });
 
       it('returns false if asset is not Rights Managed', () => {
@@ -369,7 +374,7 @@ export function main() {
           'searchAsset'
         );
 
-        expect(componentUnderTest.priceIsStartingPrice).toBe(false);
+        expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
       });
     });
 
