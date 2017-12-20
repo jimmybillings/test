@@ -39,6 +39,7 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
   @ViewChild('invoiceContactform') public invoiceContactform: WzFormPicklistComponent;
   @ViewChild('billingAccountForm') public billingAccountForm: WzFormAutoCompleteViewComponent;
   @ViewChild('salesManagerForm') public salesManagerForm: WzFormAutoCompleteViewComponent;
+  @ViewChild('recipientForm') public recipientForm: WzFormAutoCompleteViewComponent;
 
   public config: SendDetailsConfig;
 
@@ -119,7 +120,8 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
 
   private get formsAreValid(): boolean {
     return (this.billingAccountForm && this.billingAccountForm.form.valid) &&
-      (this.salesManagerForm && this.salesManagerForm.form.valid);
+      (this.salesManagerForm && this.salesManagerForm.form.valid) &&
+      (this.recipientForm && this.recipientForm.form.valid);
   }
 
   private defaultDate(days: number): string {

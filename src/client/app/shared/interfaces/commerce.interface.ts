@@ -13,7 +13,8 @@ export type PurchaseType =
   'Trial' |
   'DeliveryOnly' |
   'ChannelNoDelivery' |
-  'RevenueOnly';
+  'RevenueOnly' |
+  'PrepayAccess';
 
 export type PaymentOption =
   'Trial' |
@@ -37,6 +38,11 @@ export type EditableQuoteFields = 'bulkOrderId' | 'discount' | 'purchaseType';
 export const quotesWithoutPricing: PurchaseType[] = [
   'Trial',
   'DeliveryOnly'
+];
+
+export const quotesAllowedToHaveFeesOnly: PurchaseType[] = [
+  'RevenueOnly',
+  'PrepayAccess'
 ];
 
 // Base interfaces
