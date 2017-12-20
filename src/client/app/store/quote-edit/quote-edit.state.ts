@@ -30,6 +30,7 @@ export const initialState: State = {
       creditExemption: null,
       licensingVertical: null,
       paymentTermsDays: null,
+      readonlyPaymentTermsDays: null,
       salesOwner: null
     },
     invoiceContact: {
@@ -133,7 +134,8 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         sendDetails: {
           ...clonedState.sendDetails,
           billingAccount: {
-            ...action.account
+            ...action.account,
+            readonlyPaymentTermsDays: action.account.paymentTermsDays
           },
           invoiceContact: {
             ...clonedState.sendDetails.invoiceContact,

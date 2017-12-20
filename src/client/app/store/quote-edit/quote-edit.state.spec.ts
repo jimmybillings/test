@@ -315,6 +315,7 @@ export function main() {
                 purchaseOnCredit: 100,
                 creditExemption: 100,
                 paymentTermsDays: 20,
+                readonlyPaymentTermsDays: 20,
                 licensingVertical: 'yes',
                 invoiceContactId: 1
               },

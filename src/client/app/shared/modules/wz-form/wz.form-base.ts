@@ -138,6 +138,7 @@ export class WzFormBase implements OnInit, OnChanges {
       field.validation === 'TERMS' ||
       field.validation === 'GREATER_THAN' ||
       field.validation === 'LESS_THAN' ||
+      field.validation === 'BETWEEN' ||
       field.validation === 'COLLECTION'
     ) ? true : false;
   }
@@ -217,7 +218,11 @@ export class WzFormBase implements OnInit, OnChanges {
   }
 
   public shouldShowLessThanError(field: FormFields): boolean {
-    return this.form.controls[field.name].hasError('tooHigh') && field.validation === 'LESS_THAN';
+    return this.form.controls[field.name].hasError('tooHigh');
+  }
+
+  public shouldShowGreaterThanError(field: FormFields): boolean {
+    return this.form.controls[field.name].hasError('tooLow');
   }
 
   public onBlur(): void {
