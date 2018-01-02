@@ -227,7 +227,7 @@ export function main() {
           data: { id: 10 },
           sendDetails: {
             user: { email: 'ross.edfort@wazeedigital.com' },
-            billingAccount: { id: 20 },
+            billingAccount: { id: 20, salesOwner: 'ross', paymentTermsDays: '4' },
             invoiceContact: { id: 123 },
             salesManager: {
               salesManager: 'sven.peterson@wazeedigital.com',
@@ -245,7 +245,9 @@ export function main() {
           salesManager: 'sven.peterson@wazeedigital.com',
           billingAccountId: 20,
           invoiceContactType: 'User',
-          invoiceContactId: 123
+          invoiceContactId: 123,
+          paymentTermsDays: '4',
+          salesOwner: 'ross'
         }],
         returnsObservableOf: { some: 'quote' }
       },
