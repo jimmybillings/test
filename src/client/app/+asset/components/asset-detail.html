@@ -198,8 +198,9 @@
           </section>
           <section *ngIf="canShowPricingAndCartActions" layout="column" layout-align="center center">
             <div *ngIf="hasPrice" class="list-price">
-              <span *ngIf="priceIsStartingPrice" class="starting">{{ 'ASSET.DETAIL.BASE_PRICE' | translate }}</span>
-              <span class="price">{{ price | currency:'USD':true:'1.2-2' }}</span>
+              <span  *ngIf="!priceIsRmStartingPrice" class="price">
+                {{ price | currency:'USD':true:'1.2-2' }}
+              </span>
             </div>
 
             <div *ngIf="hasNoPrice" class="contact-us-pricing">
