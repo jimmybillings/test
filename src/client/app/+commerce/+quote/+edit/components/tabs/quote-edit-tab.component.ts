@@ -208,8 +208,7 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     return this.store.snapshot(state => state.quoteEdit.data.projects || [])
       .every((project: Project) => (project.lineItems || []).every((lineItem: Pojo) =>
         lineItem.rightsManaged !== 'Rights Managed' || lineItem.hasOwnProperty('attributes')
-      )
-      );
+      ));
   }
 
   private onOpenBulkImportDialog(projectId: string): void {
