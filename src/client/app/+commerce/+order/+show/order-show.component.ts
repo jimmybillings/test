@@ -14,7 +14,6 @@ import { Common } from '../../../shared/utilities/common.functions';
   templateUrl: 'order-show.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class OrderShowComponent {
   public orderObservable: Observable<Order>;
 
@@ -79,5 +78,9 @@ export class OrderShowComponent {
 
   public shouldDisplayRights(lineItem: AssetLineItem, order: Order): boolean {
     return lineItem.rightsManaged === 'Rights Managed' && !quotesWithoutPricing.includes(order.orderType);
+  }
+
+  public showDownloadButtonFor(lineItem: AssetLineItem): boolean {
+    return !!lineItem.asset.masterDownloadUrl;
   }
 }
