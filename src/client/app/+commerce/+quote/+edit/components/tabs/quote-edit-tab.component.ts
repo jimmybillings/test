@@ -27,7 +27,6 @@ import { MatDialogRef } from '@angular/material';
   templateUrl: 'quote-edit-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   public config: Pojo;
   public pricingPreferences: Pojo;
@@ -157,12 +156,21 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
 
   public get userCanProceed(): boolean {
     if (this.quoteOnlyHasFeeItems) return quotesAllowedToHaveFeesOnly.includes(this.quoteType);
-    if (quotesWithoutPricing.includes(this.quoteType)) return this.quoteContainsAssets;
-    return this.quoteContainsAssets && this.rmAssetsHaveRightsPackage;
+    if (quotesWithoutPricing.includes(this.quoteType)) return this.quoteHasItems;
+    return this.quoteHasItems && this.rmAssetsHaveRightsPackage;
+  }
+
+  public get quoteHasItems(): boolean {
+    return this.store.snapshot(state => state.quoteEdit.data.projects || [])
+      .every((project: Project) => {
+        return (project.hasOwnProperty('lineItems') && project.lineItems.length > 0) ||
+          (project.hasOwnProperty('feeLineItems') && project.feeLineItems.length > 0);
+      });
   }
 
   public get quoteContainsAssets(): boolean {
-    return (this.store.snapshot(state => state.quoteEdit.data.itemCount) > 0);
+    return this.store.snapshot(state => state.quoteEdit.data.projects || [])
+      .every((project: Project) => project.hasOwnProperty('lineItems'));
   }
 
   public get total(): Observable<number> {

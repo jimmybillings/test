@@ -541,14 +541,35 @@ export function main() {
       });
     });
 
-    describe('get cartContainsNoAssets()', () => {
-      it('Should return true if cart has no assets', () => {
-        mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
+    describe('quoteHasItems()', () => {
+      describe('returns true', () => {
+        it('when the project(s) in the quote contain(s) at least 1 lineItem or feeLineItem', () => {
+          mockStore.createStateSection('quoteEdit', { data: { projects: [{ lineItems: [{ id: 1 }] }] } });
+          expect(componentUnderTest.quoteHasItems).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the only project in the quote is empty', () => {
+          mockStore.createStateSection('quoteEdit', { data: { projects: [{ id: '123' }] } });
+          expect(componentUnderTest.quoteHasItems).toBe(false);
+        });
+
+        it('when 1 of the projects in the quote is empty', () => {
+          mockStore.createStateSection('quoteEdit', { data: { projects: [{}, { lineItems: [{ id: 1 }] }] } });
+          expect(componentUnderTest.quoteHasItems).toBe(false);
+        });
+      });
+    });
+
+    describe('get quoteContainsAssets()', () => {
+      it('returns false if the quote has no lineItems', () => {
+        mockStore.createStateSection('quoteEdit', { data: { projects: [{ id: '123' }, { id: '456' }] } });
         expect(componentUnderTest.quoteContainsAssets).toBe(false);
       });
 
-      it('Should return false if cart has assets', () => {
-        mockStore.createStateSection('quoteEdit', { data: { itemCount: 1 } });
+      it('returns true if the quote has lineItems', () => {
+        mockStore.createStateSection('quoteEdit', { data: { projects: [{ lineItems: [] }] } });
         expect(componentUnderTest.quoteContainsAssets).toBe(true);
       });
     });
