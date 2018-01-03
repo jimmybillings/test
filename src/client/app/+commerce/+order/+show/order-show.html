@@ -185,8 +185,9 @@
                         </button>
                       </ng-template>
                       <button 
-                        title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
+                        *ngIf="showAsperaButtonFor(lineItem)"
                         wzAsperaDownload 
+                        title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
                         [disabled]="!lineItem.asperaSpec" 
                         [asperaSpec]="lineItem.asperaSpec" 
                         mat-button>

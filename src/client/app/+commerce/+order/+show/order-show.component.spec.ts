@@ -230,5 +230,23 @@ export function main() {
         });
       });
     });
+
+    describe('showAsperaButtonFor()', () => {
+      describe('returns true', () => {
+        it('when the transcode status on the lineItem is \'Completed\' and there is an asperaSpec', () => {
+          expect(componentUnderTest.showAsperaButtonFor({ transcodeStatus: 'Completed', asperaSpec: 'some-spec' })).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('if the transcode status is not \'Completed\'', () => {
+          expect(componentUnderTest.showAsperaButtonFor({ transcodeStatus: 'Submitted' })).toBe(false);
+        });
+
+        it('if the transcode status is \'Completed\', but there is no asperaSpec', () => {
+          expect(componentUnderTest.showAsperaButtonFor({ transcodeStatus: 'Completed' })).toBe(false);
+        });
+      });
+    });
   });
 };
