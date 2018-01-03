@@ -108,6 +108,7 @@ export interface Asset {
   clipUrl?: string;
   uuid?: string;
   price?: number;
+  masterDownloadUrl?: string;
 }
 
 export interface Metadatum {

@@ -216,5 +216,19 @@ export function main() {
           .toBe(false);
       });
     });
+
+    describe('showDownloadButtonFor()', () => {
+      describe('returns true', () => {
+        it('when the asset on the lineItem has a masterDownloadUrl', () => {
+          expect(componentUnderTest.showDownloadButtonFor({ asset: { masterDownloadUrl: 'some-url' } })).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the asset on the lineItem does not have a masterDownloadUrl', () => {
+          expect(componentUnderTest.showDownloadButtonFor({ asset: { assetId: 123 } })).toBe(false);
+        });
+      });
+    });
   });
 };
