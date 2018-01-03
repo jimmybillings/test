@@ -83,4 +83,8 @@ export class OrderShowComponent {
   public showDownloadButtonFor(lineItem: AssetLineItem): boolean {
     return !!lineItem.asset.masterDownloadUrl;
   }
+
+  public showAsperaButtonFor(lineItem: AssetLineItem): boolean {
+    return lineItem.transcodeStatus === 'Completed' && !!lineItem.asperaSpec;
+  }
 }
