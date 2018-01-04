@@ -3,7 +3,8 @@
 </header>
 <div layout="column" layout-gt-xs="row">
   <section class="recipient-options-select" layout="column" flex="40" flex-lg="35" flex-gt-lg="30">
-    <wz-form-autocomplete-view *ngIf="user | async as user" flex="100" 
+    <wz-form-autocomplete-view *ngIf="user | async as user" flex="100"
+      #recipientForm
       class="recipient"
       autocomplete="off"
       [ngClass]="{ 'is-empty' : !(!!user.id) }"

@@ -252,6 +252,7 @@ export function main() {
       beforeEach(() => {
         componentUnderTest.salesManagerForm = mockForm;
         componentUnderTest.billingAccountForm = mockForm;
+        componentUnderTest.recipientForm = mockForm;
       });
 
       it('returns true if the user account matches the selected billing account', () => {

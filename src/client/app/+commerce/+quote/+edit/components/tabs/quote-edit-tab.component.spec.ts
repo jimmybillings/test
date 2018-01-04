@@ -2,6 +2,20 @@ import { Pojo } from '../../../../../shared/interfaces/common.interface';
 import { Observable } from 'rxjs/Observable';
 import { MockAppStore } from '../../../../../store/spec-helpers/mock-app.store';
 import { QuoteEditTabComponent } from './quote-edit-tab.component';
+import { PurchaseType, AssetLineItem, FeeLineItem } from '../../../../../shared/interfaces/commerce.interface';
+
+interface CanProceedTest {
+  description: string;
+  expectedResult: boolean;
+  purchaseType: PurchaseType;
+  lineItems?: AssetLineItem[];
+  feeLineItems?: FeeLineItem[];
+}
+
+const mockRmLineItemWithRights: any = { rightsManaged: 'Rights Managed', attributes: ['a', 'b', 'c'] };
+const mockRmLineItemWithoutRights: any = { rightsManaged: 'Rights Managed' };
+const mockRfLineItem: any = { rightsManaged: 'Royalty Free' };
+const mockFeeLineItem: any = { some: 'feeLineItem' };
 
 export function main() {
   describe('Quote Edit Tab Component', () => {
@@ -420,108 +434,83 @@ export function main() {
     });
 
     describe('get userCanProceed()', () => {
-      it('Should return true if component quoteType is Trial', () => {
-        mockStore.createStateSection('quoteEdit', { data: { purchaseType: 'Trial' } });
-        expect(componentUnderTest.userCanProceed).toBe(true);
-      });
+      const tests: CanProceedTest[] = [
+        {
+          expectedResult: false,
+          description: 'feeLineItems only',
+          purchaseType: 'SystemLicense',
+          feeLineItems: [mockFeeLineItem]
+        },
+        {
+          expectedResult: true,
+          description: 'feeLineItems only',
+          purchaseType: 'RevenueOnly',
+          feeLineItems: [mockFeeLineItem]
+        },
+        {
+          expectedResult: true,
+          description: 'feeLineItems only',
+          purchaseType: 'PrepayAccess',
+          feeLineItems: [mockFeeLineItem]
+        },
+        {
+          expectedResult: true,
+          description: 'RM lineItems that don\'t have rights',
+          purchaseType: 'Trial',
+          lineItems: [mockRmLineItemWithoutRights]
+        },
+        {
+          expectedResult: true,
+          description: 'RM lineItems that don\'t have rights',
+          purchaseType: 'DeliveryOnly',
+          lineItems: [mockRmLineItemWithoutRights]
+        },
+        {
+          expectedResult: false,
+          description: 'RM lineItems that don\'t have rights',
+          purchaseType: 'SystemLicense',
+          lineItems: [mockRmLineItemWithoutRights]
+        },
+        {
+          expectedResult: true,
+          description: 'RF lineItems',
+          purchaseType: 'SystemLicense',
+          lineItems: [mockRfLineItem]
+        },
+        {
+          expectedResult: false,
+          description: 'RF lineItems and RM lineItems without rights',
+          purchaseType: 'SystemLicense',
+          lineItems: [mockRfLineItem, mockRmLineItemWithoutRights]
+        },
+        {
+          expectedResult: true,
+          description: 'RF lineItems and RM lineItems with rights',
+          purchaseType: 'SystemLicense',
+          lineItems: [mockRfLineItem, mockRmLineItemWithRights]
+        },
+        {
+          expectedResult: false,
+          description: 'RM lineItems that don\'t have rights',
+          purchaseType: 'SystemLicense'
+        },
+      ];
 
-      it(`Should return true if component quoteType is not Trial but 
-      the cart has assets and all right managed assets have rights packages`, () => {
-          mockStore.createStateSection('quoteEdit', {
-            data: {
-              purchaseType: 'SystemLicense',
-              itemCount: 1,
-              projects: [{
-                lineItems: [
-                  { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
-                  { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
-                  { id: '3', price: 59, rightsManaged: 'Royalty Free' }
-                ]
-              }, {}]
-            }
-          });
-          expect(componentUnderTest.userCanProceed).toBe(true);
+      tests.forEach((test: CanProceedTest) => {
+        let mockQuote: any = {
+          purchaseType: test.purchaseType,
+          projects: [],
+          itemCount: test.lineItems ? test.lineItems.length : 0
+        };
+
+        if (test.lineItems) mockQuote.projects.push({ lineItems: test.lineItems });
+        if (test.feeLineItems) mockQuote.projects.push({ feeLineItems: test.feeLineItems });
+
+        it(`returns ${test.expectedResult} for ${test.description} - ${test.purchaseType}`, () => {
+          mockStore.createStateSection('quoteEdit', { data: mockQuote });
+
+          expect(componentUnderTest.userCanProceed).toBe(test.expectedResult);
         });
-
-      it(`Should return true if component quoteType is not Trial but 
-        the cart has assets and none are rights managed`, () => {
-          mockStore.createStateSection('quoteEdit', {
-            data: {
-              purchaseType: 'SystemLicense',
-              itemCount: 1,
-              projects: [{
-                lineItems: [
-                  { id: '1', price: 100, rightsManaged: 'Royalty Free' },
-                  { id: '2', price: 100, rightsManaged: 'Royalty Free' },
-                  { id: '3', price: 59, rightsManaged: 'Royalty Free' }
-                ]
-              }, {}]
-            }
-          });
-          expect(componentUnderTest.userCanProceed).toBe(true);
-        });
-
-      it(`Should return false if component quoteType is not Trial and 
-        the cart has assets but not all right managed assets have rights packages`, () => {
-          mockStore.createStateSection('quoteEdit', {
-            data: {
-              purchaseType: 'SystemLicense',
-              itemCount: 1,
-              projects: [{
-                lineItems: [
-                  { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
-                  { id: '2', price: 100, rightsManaged: 'Rights Managed' },
-                  { id: '3', price: 59, rightsManaged: 'Royalty Free' }
-                ]
-              }, {}]
-            }
-          });
-          expect(componentUnderTest.userCanProceed).toBe(false);
-        });
-
-      it('Should return false if component quoteType is not Trial and the cart has no assets', () => {
-        mockStore.createStateSection('quoteEdit', { data: { itemCount: 0, purchaseType: 'SystemLicense' } });
-        expect(componentUnderTest.userCanProceed).toBe(false);
-      });
-
-      it('Should return true if there are no projects with line items', () => {
-        mockStore.createStateSection('quoteEdit', {
-          data: {
-            purchaseType: 'SystemLicense',
-            itemCount: 1,
-            projects: [{
-              feeLineItems: { some: 'feeLineItem' }
-            }]
-          }
-        });
-        expect(componentUnderTest.userCanProceed).toBe(true);
-      });
-
-      it('Should return true if there are no projects at all', () => {
-        mockStore.createStateSection('quoteEdit', {
-          data: {
-            purchaseType: 'SystemLicense',
-            itemCount: 1
-          }
-        });
-        expect(componentUnderTest.userCanProceed).toBe(true);
-      });
-
-      it('Should return false if component quoteType is not Trial and the cart has rights managed assets with no attributes', () => {
-        mockStore.createStateSection('quoteEdit', {
-          data: {
-            purchaseType: 'SystemLicense',
-            itemCount: 3,
-            projects: [{
-              lineItems: [
-                { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
-                { id: '2', price: 100, rightsManaged: 'Rights Managed' },
-                { id: '3', price: 59, rightsManaged: 'Royalty Free' }
-              ]
-            }]
-          }
-        });
-        expect(componentUnderTest.userCanProceed).toBe(false);
       });
     });
 
@@ -552,15 +541,36 @@ export function main() {
       });
     });
 
-    describe('get cartContainsNoAssets()', () => {
-      it('Should return true if cart has no assets', () => {
-        mockStore.createStateSection('quoteEdit', { data: { itemCount: 0 } });
-        expect(componentUnderTest.cartContainsAssets).toBe(false);
+    describe('quoteHasItems()', () => {
+      describe('returns true', () => {
+        it('when the project(s) in the quote contain(s) at least 1 lineItem or feeLineItem', () => {
+          mockStore.createStateSection('quoteEdit', { data: { projects: [{ lineItems: [{ id: 1 }] }] } });
+          expect(componentUnderTest.quoteHasItems).toBe(true);
+        });
       });
 
-      it('Should return false if cart has assets', () => {
-        mockStore.createStateSection('quoteEdit', { data: { itemCount: 1 } });
-        expect(componentUnderTest.cartContainsAssets).toBe(true);
+      describe('returns false', () => {
+        it('when the only project in the quote is empty', () => {
+          mockStore.createStateSection('quoteEdit', { data: { projects: [{ id: '123' }] } });
+          expect(componentUnderTest.quoteHasItems).toBe(false);
+        });
+
+        it('when 1 of the projects in the quote is empty', () => {
+          mockStore.createStateSection('quoteEdit', { data: { projects: [{}, { lineItems: [{ id: 1 }] }] } });
+          expect(componentUnderTest.quoteHasItems).toBe(false);
+        });
+      });
+    });
+
+    describe('get quoteContainsAssets()', () => {
+      it('returns false if the quote has no lineItems', () => {
+        mockStore.createStateSection('quoteEdit', { data: { projects: [{ id: '123' }, { id: '456' }] } });
+        expect(componentUnderTest.quoteContainsAssets).toBe(false);
+      });
+
+      it('returns true if the quote has lineItems', () => {
+        mockStore.createStateSection('quoteEdit', { data: { projects: [{ lineItems: [] }] } });
+        expect(componentUnderTest.quoteContainsAssets).toBe(true);
       });
     });
 
@@ -638,3 +648,4 @@ export function main() {
     });
   });
 }
+
