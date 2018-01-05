@@ -235,6 +235,20 @@ export function main() {
         });
       });
     });
+
+    describe('isEmpty', () => {
+      describe('returns true', () => {
+        it('when the object is empty', () => {
+          expect(Common.isEmpty({})).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the object is not empty', () => {
+          expect(Common.isEmpty({ a: 'b' })).toBe(false);
+        });
+      });
+    });
   });
 }
 

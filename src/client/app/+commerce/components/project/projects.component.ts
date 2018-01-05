@@ -21,6 +21,7 @@ export class ProjectsComponent {
   @Input() projects: Array<Project>;
   @Input() userCan: Capabilities;
   @Input() quoteType: PurchaseType;
+  @Input() allRMAssetsHaveAttributes: boolean = true;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
 
@@ -106,7 +107,7 @@ export class ProjectsComponent {
   }
 
   public get showPricing(): boolean {
-    return !quotesWithoutPricing.includes(this.quoteType);
+    return !quotesWithoutPricing.includes(this.quoteType) && this.allRMAssetsHaveAttributes;
   }
 
   private initializeQuoteFeeFieldsFrom(feeConfig: FeeConfig): FormFields[] {

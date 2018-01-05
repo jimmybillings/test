@@ -6,6 +6,7 @@ import { PriceAttribute, PriceOption } from '../../interfaces/commerce.interface
 import { FormFields } from '../../interfaces/forms.interface';
 import { AppStore } from '../../../app.store';
 import { Pojo, WzEvent, SelectedPriceAttribute } from '../../interfaces/common.interface';
+import { Common } from '../../utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -13,7 +14,6 @@ import { Pojo, WzEvent, SelectedPriceAttribute } from '../../interfaces/common.i
   templateUrl: 'wz.pricing.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class WzPricingComponent implements OnDestroy {
   public form: FormGroup;
   public customForm: FormGroup;
@@ -34,8 +34,8 @@ export class WzPricingComponent implements OnDestroy {
     if (!this.form) {
       this.buildForm();
     }
-    if (this.pricingPreferences !== {} && !this.priceBookChanged) {
-      setTimeout(() => { this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: this._pricingPreferences }); }, 0);
+    if (!Common.isEmpty(preferences) && !this.priceBookChanged) {
+      setTimeout(() => { this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: preferences }); }, 0);
     }
   }
   private formSubscription: Subscription;

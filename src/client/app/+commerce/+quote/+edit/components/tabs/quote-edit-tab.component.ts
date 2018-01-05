@@ -186,11 +186,15 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public get showTotal(): boolean {
-    return this.store.snapshot(factory => factory.quoteEdit.data.total > 0) && !quotesWithoutPricing.includes(this.quoteType);
+    return this.store.snapshot(factory => factory.quoteEdit.data.total > 0) &&
+      !quotesWithoutPricing.includes(this.quoteType) &&
+      this.rmAssetsHaveRightsPackage;
   }
 
   public get showDiscount(): boolean {
-    return this.store.snapshot(factory => factory.quoteEdit.data.discount > 0) && !quotesWithoutPricing.includes(this.quoteType);
+    return this.store.snapshot(factory => factory.quoteEdit.data.discount > 0) &&
+      !quotesWithoutPricing.includes(this.quoteType) &&
+      this.rmAssetsHaveRightsPackage;
   }
 
   public get shouldShowCloneButton(): Observable<boolean> {
@@ -205,18 +209,18 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     this.store.dispatch(factory => factory.quoteEdit.updateQuoteField(event));
   }
 
+  public get rmAssetsHaveRightsPackage(): boolean {
+    return this.store.snapshot(state => state.quoteEdit.data.projects || [])
+      .every((project: Project) => (project.lineItems || []).every((lineItem: Pojo) =>
+        lineItem.rightsManaged !== 'Rights Managed' || lineItem.hasOwnProperty('attributes')
+      ));
+  }
+
   private get quoteOnlyHasFeeItems(): boolean {
     return this.store.snapshot(state => state.quoteEdit.data.projects || [])
       .every((project: Project) =>
         project.hasOwnProperty('feeLineItems') && !project.hasOwnProperty('lineItems')
       );
-  }
-
-  private get rmAssetsHaveRightsPackage(): boolean {
-    return this.store.snapshot(state => state.quoteEdit.data.projects || [])
-      .every((project: Project) => (project.lineItems || []).every((lineItem: Pojo) =>
-        lineItem.rightsManaged !== 'Rights Managed' || lineItem.hasOwnProperty('attributes')
-      ));
   }
 
   private onOpenBulkImportDialog(projectId: string): void {

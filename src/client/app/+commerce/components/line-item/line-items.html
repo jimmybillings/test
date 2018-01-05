@@ -51,6 +51,7 @@
 				[rightsManaged]="lineItem.rightsManaged"
 				[hasAttributes]="!!lineItem.attributes"
 				[userCanAdministerQuotes]="userCan.administerQuotes()"
+				[readonly]="readOnly"
 				(addCustomPrice)="onAddCustomPrice(lineItem)">
 			</line-item-price-component>
 		</div>
