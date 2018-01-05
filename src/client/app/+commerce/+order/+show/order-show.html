@@ -196,10 +196,10 @@
                       </button>
                     </div>
                     <div *ngIf="isRefundedLineItem(lineItem)" class="price indicate-refund" >
-                      {{ lineItem.price | currency:'USD':true:'1.2-2' | slice:1 }}
+                      {{ lineItem.grossAssetPrice | currency:'USD':true:'1.2-2' | slice:1 }}
                     </div>
                     <div *ngIf="!isRefundedLineItem(lineItem)" class="price" >
-                      {{ lineItem.price | currency:'USD':true:'1.2-2' }}
+                      {{ lineItem.grossAssetPrice | currency:'USD':true:'1.2-2' }}
                     </div>
                   </div>
                 </li>
