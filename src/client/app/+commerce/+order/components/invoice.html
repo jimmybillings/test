@@ -143,14 +143,14 @@
                     <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.paymentType }}</p>
                   </div>
                 </div>
-                <div class="row" *ngIf="hasProp(invoice,'order','paymentTerms')">
+                <div class="row" *ngIf="hasProp(invoice,'order', 'billingAccountData', 'paymentTermsDays')">
                   <div class="cell">
                     <h5 class="mat-subheading-1">
                       {{ 'ORDER.INVOICE.PAYMENT_TERMS_LABEL' | translate }}
                     </h5>
                   </div>
                   <div class="cell">
-                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.paymentTerms }}</p>
+                    <p class="mat-subheading-1 invoice-detail-value">Net {{ invoice.order.billingAccountData.paymentTermsDays }}</p>
                   </div>
                 </div>
               </div>
@@ -299,7 +299,7 @@
                   </line-item-rights-component>
                 </div>
                 <div class="cost" flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
-                  <div class="mat-suheading-2 total-amount">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</div>
+                  <div class="mat-suheading-2 total-amount">{{ lineItem.grossAssetPrice | currency:'USD':true:'1.2-2' }}</div>
                 </div>
               </li>
               <li
@@ -346,29 +346,29 @@
             <div class="mat-caption invoice-notes"></div>
           </div>
           <div  class="totals-container" flex="100" flex-gt-xs="40" layout="column" layout-align="start end">
-            <div class="mat-title">
+            <div>
               <strong class="total-label">{{ 'ORDER.INVOICE.SUBTOTAL_LABEL' | translate }}</strong>
               <span class="total-amount">{{ invoice.order.subTotal | currency:'USD':true:'1.2-2' }}</span>
             </div>
-            <div class="mat-title" *ngIf="hasProp(invoice, 'order', 'discount')">
+            <div *ngIf="hasProp(invoice, 'order', 'discount')">
               <strong>{{ 'ORDER.INVOICE.DISCOUNT_LABEL' | translate }}</strong>{{ invoice.order.discount }}%
             </div>
-            <div class="total mat-headline">
+            <div class="total">
               <strong class="total-label">{{ 'ORDER.INVOICE.TOTAL_LABEL' | translate }}</strong>
               <span class="total-amount">{{ invoice.order.total | currency:'USD':true:'1.2-2' }}</span>
             </div>
 
             <ng-container *ngIf="hasProp(invoice, 'order', 'paymentBalance')">
-              <div class="amount-due mat-headline">
-                <strong class="total-label">{{ 'ORDER.INVOICE.AMOUNT_DUE_LABEL' | translate }}</strong>
-                <span class="total-amount">{{ invoice.order.paymentBalance | currency:'USD':true:'1.2-2' }}</span>
+              <div *ngIf="hasProp(invoice, 'order', 'billingAccountData', 'paymentTermsDays')">
+                <strong>{{ 'ORDER.INVOICE.PAYMENT_TERMS_LABEL' | translate }}</strong>Net {{ invoice.order.billingAccountData.paymentTermsDays }}
               </div>
-              <div class="mat-title" *ngIf="hasProp(invoice, 'order', 'paymentTerms')">
-                <strong>{{ 'ORDER.INVOICE.TERMS_LABEL' | translate }}</strong>{{ invoice.order.paymentTerms }}
-              </div>
-              <div class="mat-title due-date" *ngIf="hasProp(invoice, 'order', 'paymentDueDate')">
+              <div class="due-date" *ngIf="hasProp(invoice, 'order', 'paymentDueDate')">
                 <strong>{{ 'ORDER.INVOICE.DUE_DATE_LABEL' | translate }}</strong>
                 {{ invoice.order.paymentDueDate | date:'MM/dd/yyyy' }}
+              </div>
+              <div class="mat-headline amount-due">
+                <strong class="total-label">{{ 'ORDER.INVOICE.AMOUNT_DUE_LABEL' | translate }}</strong>
+                <span class="total-amount">{{ invoice.order.paymentBalance | currency:'USD':true:'1.2-2' }}</span>
               </div>
             </ng-container>  
 
