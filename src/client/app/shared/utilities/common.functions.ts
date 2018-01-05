@@ -71,6 +71,14 @@ export class Common {
     return url.includes('/collections/') && !url.includes('/asset/');
   }
 
+  public static isEmpty(obj: Object): boolean {
+    for (var prop in obj) {
+      if (obj.hasOwnProperty(prop)) return false;
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+  }
+
   private static isObject(item: any): boolean {
     return Common.isDefined(item) && typeof item === 'object' && !Array.isArray(item);
   }

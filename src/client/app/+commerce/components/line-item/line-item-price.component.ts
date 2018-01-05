@@ -56,6 +56,7 @@ export class LineItemPriceComponent {
   @Input() userCanAdministerQuotes: boolean;
   @Input() rightsManaged: string;
   @Input() hasAttributes: boolean;
+  @Input() readonly: boolean;
   @Output() addCustomPrice: EventEmitter<null> = new EventEmitter();
 
   public get needsAttributes(): boolean {
@@ -76,7 +77,7 @@ export class LineItemPriceComponent {
   }
 
   public get showAdminPrice(): boolean {
-    return this.userCanAdministerQuotes && !this.needsAttributes;
+    return this.userCanAdministerQuotes && !this.needsAttributes && !this.readonly;
   }
   public get showPreDiscountPrice(): boolean {
     return this.userCanAdministerQuotes && (this.grossAssetPrice !== this.price);

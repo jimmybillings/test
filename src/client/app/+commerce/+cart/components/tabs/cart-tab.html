@@ -2,12 +2,13 @@
   [projects]="projects" 
   [config]="config" 
   [userCan]="userCan" 
+  [allRMAssetsHaveAttributes]="rmAssetsHaveAttributes"
   (projectsNotify)="onNotification($event)">
 </projects-component>
 
 <section class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
-    <div *ngIf="total | async" flex="100" layout="row" layout-align="end center" class="total mat-headline">
+    <div *ngIf="rmAssetsHaveAttributes" flex="100" layout="row" layout-align="end center" class="total mat-headline">
       <span class="total-label">
         {{ 'CART.CART_TOTAL' | translate }} 
       </span>

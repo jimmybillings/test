@@ -17,6 +17,12 @@ export function main() {
       mockStore.createStateSection('pricing', { attributes: mockPriceAttributes() });
       componentUnderTest = new WzPricingComponent(mockFormBuilder, mockStore);
       componentUnderTest.pricingEvent = new EventEmitter();
+      jasmine.clock().uninstall();
+      jasmine.clock().install();
+    });
+
+    afterEach(() => {
+      jasmine.clock().uninstall();
     });
 
     describe('pricingPreferences setter', () => {
@@ -42,6 +48,27 @@ export function main() {
           invalid: 'preference'
         };
         expect(componentUnderTest.form.value).toEqual({ a: '' });
+      });
+
+      it('emits the pricing event to calculate the price if preferences exist and the price config hasn\'t changed', () => {
+        spyOn(componentUnderTest.pricingEvent, 'emit');
+
+        let mockPrefs: any = {
+          a: 's',
+          b: 'm',
+          c: 'x',
+          d: 's'
+        };
+        componentUnderTest.pricingPreferences = mockPrefs;
+        jasmine.clock().tick(1);
+        expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({ type: 'CALCULATE_PRICE', payload: mockPrefs });
+      });
+
+      it('doesn\'t emit the pricing event when the preferences are empty', () => {
+        spyOn(componentUnderTest.pricingEvent, 'emit');
+        componentUnderTest.pricingPreferences = {};
+
+        expect(componentUnderTest.pricingEvent.emit).not.toHaveBeenCalled();
       });
     });
 

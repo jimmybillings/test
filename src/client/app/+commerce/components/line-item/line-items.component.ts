@@ -21,6 +21,7 @@ export class LineItemsComponent {
   @Input() otherProjects: Project[];
   @Input() userCan: Capabilities;
   @Input() readOnly: boolean = false;
+  @Input() rmAssetsHaveAttributes: boolean;
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   public selectedLineItem: AssetLineItem;
 
@@ -58,7 +59,7 @@ export class LineItemsComponent {
     if (currentlySelected !== newTarget) {
       this.lineItemsNotify.emit({
         type: 'EDIT_LINE_ITEM', payload:
-        { lineItem, fieldToEdit: { selectedTranscodeTarget: newTarget } }
+          { lineItem, fieldToEdit: { selectedTranscodeTarget: newTarget } }
       });
     }
   }
@@ -72,7 +73,7 @@ export class LineItemsComponent {
   }
 
   public get shouldDisplayPricing(): boolean {
-    return !quotesWithoutPricing.includes(this.quoteType);
+    return !quotesWithoutPricing.includes(this.quoteType) && this.rmAssetsHaveAttributes;
   }
 
   public onOpenCostMultiplierForm(lineItem: AssetLineItem): void {
