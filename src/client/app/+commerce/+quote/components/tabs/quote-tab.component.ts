@@ -67,7 +67,8 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
   }
 
   public get shouldShowLicenseDetailsBtn(): boolean {
-    return this.userCan.viewLicenseAgreementsButton(this.quoteService.hasAssetLineItems);
+    return this.userCan.viewLicenseAgreementsButton(this.quoteService.hasAssetLineItems) &&
+      this.store.snapshot(state => state.quoteShow.data.purchaseType !== 'RevenueOnly');
   }
 
   public get shouldShowExpireQuoteButton(): boolean {

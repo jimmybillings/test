@@ -11,7 +11,7 @@ import { Capabilities } from '../../../../../shared/services/capabilities.servic
 import { UserPreferenceService } from '../../../../../shared/services/user-preference.service';
 import { WindowRef } from '../../../../../shared/services/window-ref.service';
 import {
-  AssetLineItem, PurchaseType, PriceAttribute, Project, quotesWithoutPricing
+  AssetLineItem, PurchaseType, PriceAttribute, Project, quotesWithoutPricing, quotesAllowedToHaveFeesOnly
 } from '../../../../../shared/interfaces/commerce.interface';
 import { Pojo, SelectedPriceAttribute, WzEvent } from '../../../../../shared/interfaces/common.interface';
 import { FormFields, MdSelectOption } from '../../../../../shared/interfaces/forms.interface';
@@ -27,7 +27,6 @@ import { MatDialogRef } from '@angular/material';
   templateUrl: 'quote-edit-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   public config: Pojo;
   public pricingPreferences: Pojo;
@@ -152,15 +151,26 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public get showUsageWarning(): boolean {
-    return (!quotesWithoutPricing.includes(this.quoteType)) && (this.cartContainsAssets && !this.rmAssetsHaveRightsPackage);
+    return !quotesWithoutPricing.includes(this.quoteType) && (this.quoteContainsAssets && !this.rmAssetsHaveRightsPackage);
   }
 
   public get userCanProceed(): boolean {
-    return (quotesWithoutPricing.includes(this.quoteType)) || (this.cartContainsAssets && this.rmAssetsHaveRightsPackage);
+    if (this.quoteOnlyHasFeeItems) return quotesAllowedToHaveFeesOnly.includes(this.quoteType);
+    if (quotesWithoutPricing.includes(this.quoteType)) return this.quoteHasItems;
+    return this.quoteHasItems && this.rmAssetsHaveRightsPackage;
   }
 
-  public get cartContainsAssets(): boolean {
-    return (this.store.snapshot(state => state.quoteEdit.data.itemCount) > 0);
+  public get quoteHasItems(): boolean {
+    return this.store.snapshot(state => state.quoteEdit.data.projects || [])
+      .every((project: Project) => {
+        return (project.hasOwnProperty('lineItems') && project.lineItems.length > 0) ||
+          (project.hasOwnProperty('feeLineItems') && project.feeLineItems.length > 0);
+      });
+  }
+
+  public get quoteContainsAssets(): boolean {
+    return this.store.snapshot(state => state.quoteEdit.data.projects || [])
+      .every((project: Project) => project.hasOwnProperty('lineItems'));
   }
 
   public get total(): Observable<number> {
@@ -176,11 +186,15 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public get showTotal(): boolean {
-    return this.store.snapshot(factory => factory.quoteEdit.data.total > 0) && !quotesWithoutPricing.includes(this.quoteType);
+    return this.store.snapshot(factory => factory.quoteEdit.data.total > 0) &&
+      !quotesWithoutPricing.includes(this.quoteType) &&
+      this.rmAssetsHaveRightsPackage;
   }
 
   public get showDiscount(): boolean {
-    return this.store.snapshot(factory => factory.quoteEdit.data.discount > 0) && !quotesWithoutPricing.includes(this.quoteType);
+    return this.store.snapshot(factory => factory.quoteEdit.data.discount > 0) &&
+      !quotesWithoutPricing.includes(this.quoteType) &&
+      this.rmAssetsHaveRightsPackage;
   }
 
   public get shouldShowCloneButton(): Observable<boolean> {
@@ -195,12 +209,17 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     this.store.dispatch(factory => factory.quoteEdit.updateQuoteField(event));
   }
 
-  private get rmAssetsHaveRightsPackage(): boolean {
+  public get rmAssetsHaveRightsPackage(): boolean {
+    return this.store.snapshot(state => state.quoteEdit.data.projects || [])
+      .every((project: Project) => (project.lineItems || []).every((lineItem: Pojo) =>
+        lineItem.rightsManaged !== 'Rights Managed' || lineItem.hasOwnProperty('attributes')
+      ));
+  }
+
+  private get quoteOnlyHasFeeItems(): boolean {
     return this.store.snapshot(state => state.quoteEdit.data.projects || [])
       .every((project: Project) =>
-        (project.lineItems || []).every((lineItem: Pojo) =>
-          lineItem.rightsManaged !== 'Rights Managed' || lineItem.hasOwnProperty('attributes')
-        )
+        project.hasOwnProperty('feeLineItems') && !project.hasOwnProperty('lineItems')
       );
   }
 

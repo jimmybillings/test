@@ -189,5 +189,64 @@ export function main() {
         });
       });
     });
+
+    describe('shouldDisplayRights()', () => {
+      it('returns true when the line item is rights managed and order type is NOT a Trial', () => {
+        let lineItem: any = { rightsManaged: 'Rights Managed' };
+        mockOrder = {
+          orderType: 'Not Trial'
+        };
+        expect(componentUnderTest.shouldDisplayRights(lineItem, mockOrder))
+          .toBe(true);
+      });
+      it('returns false when the line item is royalty-free', () => {
+        let lineItem: any = { rightsManaged: 'Royalty Free' };
+        mockOrder = {
+          orderType: 'Trial'
+        };
+        expect(componentUnderTest.shouldDisplayRights(lineItem, mockOrder))
+          .toBe(false);
+      });
+      it('returns false when the order type is a Trial', () => {
+        let lineItem: any = { rightsManaged: 'Rights Managed' };
+        mockOrder = {
+          orderType: 'Trial'
+        };
+        expect(componentUnderTest.shouldDisplayRights(lineItem, mockOrder))
+          .toBe(false);
+      });
+    });
+
+    describe('showDownloadButtonFor()', () => {
+      describe('returns true', () => {
+        it('when the asset on the lineItem has a masterDownloadUrl', () => {
+          expect(componentUnderTest.showDownloadButtonFor({ asset: { masterDownloadUrl: 'some-url' } })).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the asset on the lineItem does not have a masterDownloadUrl', () => {
+          expect(componentUnderTest.showDownloadButtonFor({ asset: { assetId: 123 } })).toBe(false);
+        });
+      });
+    });
+
+    describe('showAsperaButtonFor()', () => {
+      describe('returns true', () => {
+        it('when the transcode status on the lineItem is \'Completed\' and there is an asperaSpec', () => {
+          expect(componentUnderTest.showAsperaButtonFor({ transcodeStatus: 'Completed', asperaSpec: 'some-spec' })).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('if the transcode status is not \'Completed\'', () => {
+          expect(componentUnderTest.showAsperaButtonFor({ transcodeStatus: 'Submitted' })).toBe(false);
+        });
+
+        it('if the transcode status is \'Completed\', but there is no asperaSpec', () => {
+          expect(componentUnderTest.showAsperaButtonFor({ transcodeStatus: 'Completed' })).toBe(false);
+        });
+      });
+    });
   });
 };

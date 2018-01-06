@@ -1,12 +1,13 @@
 import { UserManagementComponent } from './+user-management/user-management.component';
 import { HomeComponent } from './+home/home.component';
 import { CollectionsComponent } from './+collection/+index/collections.component';
-import { WzNotFoundComponent } from './shared/components/wz-not-found/wz-not-found.component';
 import { GalleryViewComponent } from './+gallery-view/gallery-view.component';
 import { GalleryViewResolver } from './+gallery-view/services/gallery-view.resolver';
 import { HomeResolver } from './+home/services/home.resolver';
 
 import { Routes } from '@angular/router';
+import { ErrorComponent } from './+error/error.component';
+import { NotFoundComponent } from './+error/+not-found/not-found.component';
 
 export const APP_ROUTES: Routes = [
   {
@@ -30,13 +31,11 @@ export const APP_ROUTES: Routes = [
     data: { title: 'PAGE_TITLE.GALLERY_VIEW' }
   },
   {
-    path: '404',
-    component: WzNotFoundComponent,
-    data: { title: 'PAGE_TITLE.NOT_FOUND' }
+    path: 'error',
+    component: ErrorComponent
   },
   {
     path: '**',
-    component: WzNotFoundComponent,
-    data: { title: 'PAGE_TITLE.NOT_FOUND' }
+    redirectTo: '/error/404'
   }
 ];

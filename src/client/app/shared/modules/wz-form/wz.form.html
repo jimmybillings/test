@@ -1,13 +1,17 @@
-<form layout="column" [formGroup]="form" novalidate class="mat-inline-form" autocomplete="{{autocomplete}}" (ngSubmit)="onSubmit()">
-
+<form
+  layout="column"
+  [formGroup]="form"
+  novalidate
+  class="mat-inline-form"
+  autocomplete="{{autocomplete}}"
+  (ngSubmit)="onSubmit()">
 	<div *ngFor="let field of items; let i=index">
-
 		<!--
         START: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
-      <mat-input-container
-        *ngIf="(field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')">
-        <input matInput
+    <mat-input-container *ngIf="showDefaultInputFor(field)">
+      <input
+        matInput
         class="mat-block"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
@@ -15,6 +19,7 @@
         formControlName="{{field.name}}"
         [required]="isRequiredField(field)"
         id="{{field.name}}"
+        (keyup)="onKeyUp()"
         (blur)="onBlur()">
 
 			<!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
@@ -66,7 +71,9 @@
         formControlName="{{field.name}}"
         placeholder="{{field.label | translate}}"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
-        [required]="isRequiredField(field)">
+        [required]="isRequiredField(field)"
+        (change)="onKeyUp()"
+        (blur)="onBlur()">
       <mat-error
         *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
         [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
@@ -140,7 +147,8 @@
         formControlName="{{field.name}}"
         [required]="isRequiredField(field)"
         mdTextareaAutosize
-        id="{{field.name}}">
+        id="{{field.name}}"
+        (blur)="onBlur()">
       </textarea>
       <mat-hint
         *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart"
@@ -319,7 +327,10 @@
         START: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
       -->
 		<wz-input-suggestions
-      *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [rawField]="field">
+      *ngIf="field.type == 'suggestions'"
+      #suggestions
+      [fControl]="form.controls[field.name]"
+      [rawField]="field">
 			<mat-input-container>
         <input matInput placeholder="{{field.label | translate}}" 
 				(keydown)="suggestions.inputKeyDown($event)"
@@ -345,20 +356,16 @@
 	<!--
       SHOW THE REQUIRED LEGEND IF FORM HAS AT LEAST ONE REQUIRED FIELD.
     -->
-	<div class="indicate-required" *ngIf="hasRequiredFields(items)">
+	<div class="indicate-required" *ngIf="hasRequiredFields(items) && includeSubmit">
 		<span>{{ 'ERRORS.INDICATES_REQUIRED_FIELD' | translate }}</span>
 	</div>
 
-	<mat-card-actions layout="row" layout-align="end center" *ngIf="includeCancel && !disableUntilValid">
+	<mat-card-actions layout="row" layout-align="end center" *ngIf="showSubmitAndCancel">
 		<button mat-button type="reset" color="primary" (click)="formCancel.emit($event)">{{cancelLabel | translate}}</button>
 		<button mat-button type="submit" color="primary">{{submitLabel | translate}}</button>
 	</mat-card-actions>
 
-	<mat-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel && !disableUntilValid">
+	<mat-card-actions layout="row" layout-align="center center" *ngIf="showSubmit">
 		<button mat-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
   </mat-card-actions>
-  
-  <mat-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel && disableUntilValid">
-      <button mat-raised-button [disabled]="!allPropertiesValid" type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
-    </mat-card-actions>
 </form>

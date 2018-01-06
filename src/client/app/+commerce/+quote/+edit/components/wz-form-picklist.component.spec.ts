@@ -20,28 +20,10 @@ export function main() {
     describe('set displayProperties()', () => {
       it('Should parse the properties into translation strings', () => {
         let mockProperties: Pojo = {
-          'contactEmail': 'mjustus.wazee+invoice1@gmail.com',
-          'field': [
-            {
-              'name': 'invoiceContact',
-              'options': [
-                {
-                  'id': 7845,
-                  'name': 'El contacto de la factura es Jane',
-                  'emailAddress': 'mjustus.wazee+invoice1@gmail.com'
-                }
-              ],
-              'label': 'Invoice contact name',
-              'type': 'select',
-              'value': {
-                'id': 7845,
-                'name': 'El contacto de la factura es Jane',
-                'emailAddress': 'mjustus.wazee+invoice1@gmail.com'
-              },
-              'validation': 'REQUIRED'
-            }
-          ],
-          'id': 7845
+          contactEmail: 'mjustus.wazee+invoice1@gmail.com',
+          contacts: [{ some: 'contact' }],
+          name: 'JUSTUS',
+          id: 7845
         };
 
         componentUnderTest.displayProperties = mockProperties;

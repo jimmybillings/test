@@ -33,16 +33,17 @@ export class ActionFactory {
   public updateMarkersInUrl(markers: SubclipMarkers, assetId: number) {
     return new UpdateMarkersInUrl(markers, assetId);
   }
-
-  public loadAssetAfterParentIsAvailable(
-    params: Common.ChildAssetLoadParameters,
-    assetType: AssetType
-  ): LoadAssetAfterParentIsAvailable {
-    return new LoadAssetAfterParentIsAvailable(params, assetType);
-  }
 }
 
 export class InternalActionFactory extends ActionFactory {
+  public loadAssetAfterParentIsAvailable(
+    params: Common.ChildAssetLoadParameters,
+    assetType: AssetType,
+    parentId?: number
+  ): LoadAssetAfterParentIsAvailable {
+    return new LoadAssetAfterParentIsAvailable(params, assetType, parentId);
+  }
+
   public loadSuccess(activeAsset: Common.Asset): LoadSuccess {
     return new LoadSuccess(activeAsset);
   }
@@ -97,7 +98,11 @@ export class UpdateMarkersInUrl implements Action {
 export class LoadAssetAfterParentIsAvailable implements Action {
   public static readonly Type = '[Asset] Load Asset After Parent Is Available';
   public readonly type = LoadAssetAfterParentIsAvailable.Type;
-  constructor(public readonly loadParameters: Common.ChildAssetLoadParameters, public readonly assetType: AssetType) { }
+  constructor(
+    public readonly loadParameters: Common.ChildAssetLoadParameters,
+    public readonly assetType: AssetType,
+    public readonly parentId: number
+  ) { }
 }
 
 export class LoadSuccess implements Action {

@@ -5,7 +5,12 @@ import { QuoteService } from '../../../../shared/services/quote.service';
 import { Router } from '@angular/router';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { LicenseAgreements, PurchaseType, quotesWithoutPricing } from '../../../../shared/interfaces/commerce.interface';
+import {
+  LicenseAgreements,
+  PurchaseType,
+  quotesWithoutPricing,
+  quotesAllowedToHaveFeesOnly
+} from '../../../../shared/interfaces/commerce.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 import { Common } from '../../../../shared/utilities/common.functions';
 import { AppStore } from '../../../../app.store';
@@ -60,7 +65,12 @@ export class QuoteConfirmTabComponent extends CommerceConfirmTab {
   }
 
   public get canPurchase(): boolean {
-    return (quotesWithoutPricing.includes(this.store.snapshot(state => state.quoteShow.data.purchaseType))) ||
+    return this.store.snapshot(state => quotesAllowedToHaveFeesOnly.includes(state.quoteShow.data.purchaseType)) ||
       (this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn());
+  }
+
+  public shouldShowLicenseDetailsBtn(): boolean {
+    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems) &&
+      this.store.snapshot(state => !quotesAllowedToHaveFeesOnly.includes(state.quoteShow.data.purchaseType));
   }
 }

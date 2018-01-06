@@ -16,7 +16,7 @@ export function main() {
 
     describe('load()', () => {
       it('calls the API correctly with just an asset ID', () => {
-        serviceUnderTest.load({ id: '47' });
+        serviceUnderTest.load({ id: '47' }, 'searchAsset');
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('clip/47/clipDetail');
@@ -25,7 +25,7 @@ export function main() {
       });
 
       it('calls the API correctly with a share key', () => {
-        serviceUnderTest.load({ id: '47', share_key: 'some_key' });
+        serviceUnderTest.load({ id: '47', share_key: 'some_key' }, 'searchAsset');
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('clip/47/clipDetail');
@@ -33,52 +33,85 @@ export function main() {
         expect(mockApiService.get).toHaveBeenCalledWithOverridingToken('some_key');
       });
 
+      it('calls the API service correctly with a collectionAsset', () => {
+        serviceUnderTest.load({ id: '123' }, 'collectionAsset', 321);
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('clip/123/collection/321/clipDetail');
+        expect(mockApiService.get).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('calls the API service correctly with a orderAsset', () => {
+        serviceUnderTest.load({ id: '123' }, 'orderAsset', 321);
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('clip/123/order/321/clipDetail');
+        expect(mockApiService.get).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('calls the API service correctly with a quoteShowAsset', () => {
+        serviceUnderTest.load({ id: '123' }, 'quoteShowAsset', 321);
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('clip/123/quote/321/clipDetail');
+        expect(mockApiService.get).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('calls the API service correctly with a quoteEditAsset', () => {
+        serviceUnderTest.load({ id: '123' }, 'quoteEditAsset', 321);
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('clip/123/quote/321/clipDetail');
+        expect(mockApiService.get).toHaveBeenCalledWithLoading(true);
+      });
+
       it('returns the expected Observable with just an asset ID', () => {
-        serviceUnderTest.load({ id: '47' }).subscribe(asset => {
+        let returnedAsset: any;
+        serviceUnderTest.load({ id: '47' }, 'searchAsset').subscribe(asset => {
           expect(asset).toEqual({ some: 'asset', uuid: null, timeStart: null, timeEnd: null });
         });
       });
 
       it('returns the expected Observable with a UUID', () => {
-        serviceUnderTest.load({ id: '47', uuid: 'ABCDEFG' }).subscribe(asset => {
-          expect(asset).toEqual({ some: 'asset', uuid: 'ABCDEFG', timeStart: null, timeEnd: null });
-        });
+        let returnedAsset: any;
+        serviceUnderTest.load({ id: '47', uuid: 'ABCDEFG' }, 'searchAsset').subscribe(asset => returnedAsset = asset);
+        expect(returnedAsset).toEqual({ some: 'asset', uuid: 'ABCDEFG', timeStart: null, timeEnd: null });
       });
 
       it('returns the expected Observable with a negative timeStart', () => {
-        serviceUnderTest.load({ id: '47', timeStart: '-1' }).subscribe(asset => {
-          expect(asset).toEqual({ some: 'asset', uuid: null, timeStart: null, timeEnd: null });
-        });
+        let returnedAsset: any;
+        serviceUnderTest.load({ id: '47', timeStart: '-1' }, 'searchAsset').subscribe(asset => returnedAsset = asset);
+        expect(returnedAsset).toEqual({ some: 'asset', uuid: null, timeStart: null, timeEnd: null });
       });
 
       it('returns the expected Observable with a zero timeStart', () => {
-        serviceUnderTest.load({ id: '47', timeStart: '0' }).subscribe(asset => {
-          expect(asset).toEqual({ some: 'asset', uuid: null, timeStart: 0, timeEnd: null });
-        });
+        let returnedAsset: any;
+        serviceUnderTest.load({ id: '47', timeStart: '0' }, 'searchAsset').subscribe(asset => returnedAsset = asset);
+        expect(returnedAsset).toEqual({ some: 'asset', uuid: null, timeStart: 0, timeEnd: null });
       });
 
       it('returns the expected Observable with a positive timeStart', () => {
-        serviceUnderTest.load({ id: '47', timeStart: '1' }).subscribe(asset => {
-          expect(asset).toEqual({ some: 'asset', uuid: null, timeStart: 1, timeEnd: null });
-        });
+        let returnedAsset: any;
+        serviceUnderTest.load({ id: '47', timeStart: '1' }, 'searchAsset').subscribe(asset => returnedAsset = asset);
+        expect(returnedAsset).toEqual({ some: 'asset', uuid: null, timeStart: 1, timeEnd: null });
       });
 
       it('returns the expected Observable with a negative timeEnd', () => {
-        serviceUnderTest.load({ id: '47', timeEnd: '-1' }).subscribe(asset => {
-          expect(asset).toEqual({ some: 'asset', uuid: null, timeStart: null, timeEnd: null });
-        });
+        let returnedAsset: any;
+        serviceUnderTest.load({ id: '47', timeEnd: '-1' }, 'searchAsset').subscribe(asset => returnedAsset = asset);
+        expect(returnedAsset).toEqual({ some: 'asset', uuid: null, timeStart: null, timeEnd: null });
       });
 
       it('returns the expected Observable with a zero timeEnd', () => {
-        serviceUnderTest.load({ id: '47', timeEnd: '0' }).subscribe(asset => {
-          expect(asset).toEqual({ some: 'asset', uuid: null, timeStart: null, timeEnd: 0 });
-        });
+        let returnedAsset: any;
+        serviceUnderTest.load({ id: '47', timeEnd: '0' }, 'searchAsset').subscribe(asset => returnedAsset = asset);
+        expect(returnedAsset).toEqual({ some: 'asset', uuid: null, timeStart: null, timeEnd: 0 });
       });
 
       it('returns the expected Observable with a positive timeEnd', () => {
-        serviceUnderTest.load({ id: '47', timeEnd: '1' }).subscribe(asset => {
-          expect(asset).toEqual({ some: 'asset', uuid: null, timeStart: null, timeEnd: 1 });
-        });
+        let returnedAsset: any;
+        serviceUnderTest.load({ id: '47', timeEnd: '1' }, 'searchAsset').subscribe(asset => returnedAsset = asset);
+        expect(returnedAsset).toEqual({ some: 'asset', uuid: null, timeStart: null, timeEnd: 1 });
       });
     });
   });

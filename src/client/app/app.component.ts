@@ -118,8 +118,8 @@ export class AppComponent implements OnInit {
     this.router.events
       .filter((event: Event) => event instanceof NavigationEnd)
       .do((event: NavigationEnd) => {
-        this.store.dispatch(factory => factory.headerDisplayOptions.checkIfHeaderCanBeFixed(event.url));
-        this.store.dispatch(factory => factory.headerDisplayOptions.checkIfFiltersAreAvailable(event.url));
+        this.store.dispatch(factory => factory.headerDisplayOptions.checkIfHeaderCanBeFixed(event.urlAfterRedirects));
+        this.store.dispatch(factory => factory.headerDisplayOptions.checkIfFiltersAreAvailable(event.urlAfterRedirects));
         this.state = event.url;
         this.window.nativeWindow.scrollTo(0, 0);
         return event;

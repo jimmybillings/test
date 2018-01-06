@@ -44,15 +44,11 @@ export class CommerceConfirmTab extends Tab {
   }
 
   public get showPurchaseBtn(): Observable<boolean> {
-    return this.store.select(state => state.checkout.selectedPaymentType).map((type: PaymentOption) => {
-      return type === 'CreditCard';
-    });
+    return this.store.select(state => state.checkout.selectedPaymentType === 'CreditCard');
   }
 
   public get showPurchaseOnCreditBtn(): Observable<boolean> {
-    return this.store.select(state => state.checkout.selectedPaymentType).map((type: PaymentOption) => {
-      return type === 'PurchaseOnCredit';
-    });
+    return this.store.select(state => state.checkout.selectedPaymentType === 'PurchaseOnCredit');
   }
 
   public purchase(): void {
@@ -76,11 +72,40 @@ export class CommerceConfirmTab extends Tab {
     }
   }
 
-  public shouldShowLicenseDetailsBtn(): boolean {
-    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
+  public lineOneFor(address: ViewAddress): string {
+    return this.addressJoinSegment(address, 'address', 'address2');
   }
 
-  public get isOfflineQuote(): Observable<boolean> {
-    return this.store.select(state => state.checkout.selectedPaymentType).map(type => type && type.includes('Offline'));
+  public cityFor(address: ViewAddress): string {
+    return this.addressSegmentWithComma(address, 'city');
+  }
+
+  public stateFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'state');
+  }
+
+  public zipcodeFor(address: ViewAddress): string {
+    return this.addressSegmentWithComma(address, 'zipcode');
+  }
+
+  public countryFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'country');
+  }
+
+  public phoneFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'phone');
+  }
+
+  private addressSegment(address: ViewAddress, segment: string): string | null {
+    return address.address && address.address[segment] ? address.address[segment] : null;
+  }
+
+  private addressSegmentWithComma(address: ViewAddress, segment: string): string {
+    return this.addressSegment(address, segment) ? this.addressSegment(address, segment) + ',' : '';
+  }
+
+  private addressJoinSegment(address: ViewAddress, segmentOne: string, segmentTwo: string): string {
+    return (address.address[segmentOne] ? address.address[segmentOne] : '') +
+      (address.address[segmentTwo] ? ', ' + address.address[segmentTwo] : '');
   }
 }

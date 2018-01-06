@@ -6,7 +6,7 @@
 		</cart-asset-component>
 		<div flex-gt-xs="30" flex-gt-sm="25" flex="auto" layout-padding>
 			<line-item-rights-component
-				*ngIf="shouldDisplayRights(lineItem)"
+				[displayRmAttributes]="shouldDisplayRights(lineItem)"
 				[readOnly]="readOnly"
 				[rightsManaged]="lineItem.rightsManaged"
 				[rights]="lineItem.attributes"
@@ -51,6 +51,7 @@
 				[rightsManaged]="lineItem.rightsManaged"
 				[hasAttributes]="!!lineItem.attributes"
 				[userCanAdministerQuotes]="userCan.administerQuotes()"
+				[readonly]="readOnly"
 				(addCustomPrice)="onAddCustomPrice(lineItem)">
 			</line-item-price-component>
 		</div>

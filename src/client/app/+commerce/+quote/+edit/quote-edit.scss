@@ -50,6 +50,10 @@ quote-edit-recipient-tab-component {
     }
     wz-form-autocomplete-view {
       position: relative;
+      wz-form form .mat-form-field {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
       .suggestions-menu {
         width: 100%;
         top: 94px;
@@ -121,6 +125,11 @@ quote-edit-confirm-tab-component {
       li {
         strong  {
           padding-right: 5px;
+        }
+        .offline-agreement {
+          font-style: italic;
+          line-height: 1.4;
+          opacity:.75;
         }
       }
     }

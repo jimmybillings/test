@@ -48,7 +48,9 @@ export class HeaderDisplayOptionsEffects {
     '/user/forgot-password',
     '/user/register',
     '/user/login',
-    '/user/reset-password'
+    '/user/reset-password',
+    '/error/404',
+    '/error/400'
   ];
 
   constructor(private actions: Actions, private store: AppStore) { }

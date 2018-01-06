@@ -1,10 +1,10 @@
 import { FormModel } from './wz.form.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-type ValidationError = 'required' | 'minlength' | 'pattern' | 'tooLow' | 'maxlength';
+type ValidationError = 'required' | 'minlength' | 'pattern' | 'tooLow' | 'tooHigh' | 'maxlength';
 
 const InputTypes = {
-  number: { name: 'control', type: 'number', value: '', min: '1' },
+  number: { name: 'control', type: 'number', value: '', min: '1', max: '10' },
   generic: { name: 'control', type: 'text', value: '', min: '5', max: '10' },
 };
 
@@ -29,11 +29,29 @@ export function main() {
           validation: 'GREATER_THAN',
           type: InputTypes.number,
           cases: [
-            { case: '1', validationResult: 'fail', error: 'tooLow' },
+            { case: '0', validationResult: 'fail', error: 'tooLow' },
             { case: '-1', validationResult: 'fail', error: 'tooLow' },
             { case: '0.999999', validationResult: 'fail', error: 'tooLow' },
             { case: '1.000001', validationResult: 'pass', error: 'tooLow' },
             { case: '100', validationResult: 'pass', error: 'tooLow' }
+          ]
+        },
+        {
+          validation: 'LESS_THAN',
+          type: InputTypes.number,
+          cases: [
+            { case: '11', validationResult: 'fail', error: 'tooHigh' },
+            { case: '9', validationResult: 'pass', error: 'tooHigh' },
+          ]
+        },
+        {
+          validation: 'BETWEEN',
+          type: InputTypes.number,
+          cases: [
+            { case: '10', validationResult: 'pass', error: 'tooHigh' },
+            { case: '1', validationResult: 'pass', error: 'tooLow' },
+            { case: '11', validationResult: 'fail', error: 'tooHigh' },
+            { case: '0', validationResult: 'fail', error: 'tooLow' },
           ]
         },
         {

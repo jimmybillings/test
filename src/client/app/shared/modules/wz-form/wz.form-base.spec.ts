@@ -9,6 +9,7 @@ export function main() {
 
     beforeEach(() => {
       mockForm = {
+        value: { some: 'value' },
         controls: {
           blankField: {
             hasError: (error: string) => error === 'required',
@@ -111,6 +112,94 @@ export function main() {
         it('does not show error if only the field validation is "EMAIL"', () => {
           const field = { name: 'blankField', type: '', value: '', label: '', validation: 'EMAIL' };
           expect(classUnderTest.shouldShowEmailError(field)).toBe(false);
+        });
+      });
+    });
+
+    describe('onKeyUp()', () => {
+      it('emits the keyUp event', () => {
+        spyOn(classUnderTest.keyUp, 'emit');
+        classUnderTest.items = [{ some: 'item' }] as any;
+        classUnderTest.ngOnInit();
+        classUnderTest.onKeyUp();
+        expect(classUnderTest.keyUp.emit).toHaveBeenCalledWith({ some: 'value' });
+      });
+    });
+
+    describe('showDefaultInputFor()', () => {
+      describe('returns true', () => {
+        it('when the field is one of type \'text\'', () => {
+          expect(classUnderTest.showDefaultInputFor({ type: 'text' } as any)).toBe(true);
+        });
+
+        it('when the field is one of type \'date\'', () => {
+          expect(classUnderTest.showDefaultInputFor({ type: 'date' } as any)).toBe(true);
+        });
+
+        it('when the field is one of type \'password\'', () => {
+          expect(classUnderTest.showDefaultInputFor({ type: 'password' } as any)).toBe(true);
+        });
+
+        it('when the field is one of type \'email\'', () => {
+          expect(classUnderTest.showDefaultInputFor({ type: 'email' } as any)).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the field is not of type \'text\', \'email\', \'date\', or \'password\'', () => {
+          expect(classUnderTest.showDefaultInputFor({ type: 'blah' } as any)).toBe(false);
+        });
+      });
+    });
+
+    describe('get showSubmitAndCancel()', () => {
+      describe('returns true', () => {
+        it('when includeCancel is true, includeSubmit is true', () => {
+          classUnderTest.includeCancel = true;
+          classUnderTest.includeSubmit = true;
+
+          expect(classUnderTest.showSubmitAndCancel).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when includeCancel is false', () => {
+          classUnderTest.includeCancel = false;
+
+          expect(classUnderTest.showSubmitAndCancel).toBe(false);
+        });
+
+        it('when includeSubmit is false', () => {
+          classUnderTest.includeCancel = true;
+          classUnderTest.includeSubmit = false;
+
+          expect(classUnderTest.showSubmitAndCancel).toBe(false);
+        });
+      });
+    });
+
+    describe('get showSubmit()', () => {
+      describe('returns true', () => {
+        it('when includeSubmit is true, includeCancel is false', () => {
+          classUnderTest.includeSubmit = true;
+          classUnderTest.includeCancel = false;
+
+          expect(classUnderTest.showSubmit).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when includeSubmit is false', () => {
+          classUnderTest.includeSubmit = false;
+
+          expect(classUnderTest.showSubmit).toBe(false);
+        });
+
+        it('when includeCancel is true', () => {
+          classUnderTest.includeSubmit = true;
+          classUnderTest.includeCancel = true;
+
+          expect(classUnderTest.showSubmit).toBe(false);
         });
       });
     });

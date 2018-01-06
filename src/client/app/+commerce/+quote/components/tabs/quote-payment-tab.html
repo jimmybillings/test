@@ -14,44 +14,6 @@
       </header>
     </section>
 
-    <!--Offline Agreement-->
-    <div *ngIf="showOfflineAgreementMessage | async"
-      layout-align="center start"
-      layout="column"
-      layout-gt-xs="row">
-      <section flex-gt-md="30" flex-md="40" flex="100">
-        <header layout="column" layout-align="start">
-          <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
-          <p class="instructions">{{ ((paymentOptions | async).explanation)+'_MSG' | translate }}</p>
-        </header>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="selectInvoiceLater()">
-            Pay Later
-        </button>
-      </section>
-      <section        
-        mat-scroll-y=""
-        flex-gt-lg="35"
-        flex-gt-md="35"
-        flex-md="40"
-        flex="100">
-        <mat-card class="wz-form-card cc-form">
-          <mat-card-content *ngIf="fields | async as items">
-            <wz-cc-form
-              [items]="items" 
-              [serverErrors]="serverErrors"
-              [successfullyVerified]="successfullyVerified | async"
-              submitLabel="{{'CART.PAYMENT.VERIFY' | translate}}"
-              (onEdit)="editCreditCard()"
-              (formSubmit)="preAuthorize($event)"></wz-cc-form>
-          </mat-card-content>
-        </mat-card>
-      </section>
-      <section flex-lg="35" flex="30" hide-sm hide-xs></section>
-    </div>
-
     <!--Trial-->
     <section *ngIf="showTrialMessage | async"
       layout="column"
@@ -62,6 +24,30 @@
       <header flex="100" layout="column" layout-align="center center">
         <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
         <p class="instructions">{{ 'CHECKOUT.PAYMENT.TRIAL_MSG' | translate }}</p>
+      </header>
+
+      <div class="proceed" flex="100" layout="row" layout-align="end end">
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="goToNextTab()">
+              {{ 'CART.PAYMENT.FORWARD_BTN' | translate}}
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!--Delivery Only-->
+    <section *ngIf="showDeliveryOnlyMessage | async"
+      layout="column"
+      layout-align="center center"
+      mat-scroll-y=""
+      flex="100">
+
+      <header flex="100" layout="column" layout-align="center center">
+        <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
+        <p class="instructions">{{ 'CHECKOUT.PAYMENT.DELIVERYONLY_MSG' | translate }}</p>
       </header>
 
       <div class="proceed" flex="100" layout="row" layout-align="end end">

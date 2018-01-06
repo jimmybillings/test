@@ -3,55 +3,44 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Collection, CollectionActionType } from '../../../shared/interfaces/collection.interface';
-import { FormFields } from '../../../shared/interfaces/forms.interface';
-import { Asset } from '../../../shared/interfaces/common.interface';
+import { Collection, CollectionActionType, CollectionFormEvent } from '../../../shared/interfaces/collection.interface';
+import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
+import { Asset, Pojo } from '../../../shared/interfaces/common.interface';
 
 import { CollectionsService } from '../../../shared/services/collections.service';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { AppStore } from '../../../app.store';
 import { Common } from '../../../shared/utilities/common.functions';
 
-/**
- * Directive that renders a list of collections
- */
 @Component({
   moduleId: module.id,
   selector: 'collection-form',
   templateUrl: 'collection-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class CollectionFormComponent implements OnInit {
-  @Input() collection: any = false;
-  @Input() newCollectionFormIsOpen: boolean;
-  @Input() dialog: any;
-  @Input() fields: any;
-  @Input() collectionActionType: CollectionActionType = 'create';
-  @Output() collectionSaved = new EventEmitter();
-
-  // public originalName: string;
-  public assetForNewCollection: Asset;
-  public collectionsList: Subscription;
-  public formItems: Array<any> = [];
-  public serverErrors: any;
-  public tr: any;
-  private defaultCollectionParams: any = {
-    'q': '',
-    'accessLevel': 'all',
-    's': '',
-    'd': '',
-    'i': 0,
-    'n': 200
+  @Input() public fields: { form: { items: FormFields[] } };
+  @Input() public collection: Collection = null;
+  @Input() public collectionActionType: CollectionActionType = 'create';
+  @Output() public collectionSaved = new EventEmitter<CollectionFormEvent>();
+  public formItems: FormFields[] = [];
+  public serverErrors: ServerErrors;
+  public tr: { title: string; submitLabel: string, close?: string };
+  private defaultCollectionParams: Pojo = {
+    q: '',
+    accessLevel: 'all',
+    s: '',
+    d: '',
+    i: 0,
+    n: 200
   };
 
   constructor(
-    public collections: CollectionsService,
+    public collectionsService: CollectionsService,
     private detector: ChangeDetectorRef,
     private collectionContext: CollectionContextService,
     private store: AppStore
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     this.formItems = this.setForm();
@@ -96,20 +85,21 @@ export class CollectionFormComponent implements OnInit {
 
   private createCollection(collection: Collection): void {
     collection.tags = collection.tags.split(/\s*,\s*/).filter((tag: string) => tag !== '');
-    this.collections.create(collection).subscribe(collection => {
-      this.collectionSaved.emit(collection);
+    this.collectionsService.create(collection).subscribe(collection => {
+      this.collectionSaved.emit({ type: 'NAVIGATE', collectionId: collection.id });
       this.refreshCollections();
     }, this.error.bind(this));
   }
 
-  private editCollection(collectionUpdates: Collection) {
+  private editCollection(collectionUpdates: Collection): void {
     const backEndReadyCollectionUpdates: Collection = {
       ...collectionUpdates,
       tags: collectionUpdates.tags.split(/\s*,\s*/).filter((tag: string) => tag !== '')
     };
 
-    this.collections.update(this.collection.id, backEndReadyCollectionUpdates)
+    this.collectionsService.update(this.collection.id, backEndReadyCollectionUpdates)
       .subscribe(() => {
+        this.collectionSaved.emit({ type: 'NOOP' });
         this.loadCollections();
         if (this.store.match(this.collection.id, state => state.activeCollection.collection.id)) {
           this.getActiveCollection();
@@ -117,38 +107,38 @@ export class CollectionFormComponent implements OnInit {
       }, this.error.bind(this));
   }
 
-  private duplicateCollection(collection: Collection) {
+  private duplicateCollection(collection: Collection): void {
     collection = Object.assign(
       {}, this.collection, collection, {
         tags: collection.tags.split(/\s*,\s*/).filter((tag: string) => tag !== '')
       });
-    this.collections.duplicate(collection)
-      .subscribe(() => {
+    this.collectionsService.duplicate(collection)
+      .subscribe((collection: Collection) => {
         this.refreshCollections();
+        this.collectionSaved.emit({ type: 'NAVIGATE', collectionId: collection.id });
       }, this.error.bind(this));
   }
 
-  private loadCollections() {
-    this.collections.load(this.defaultCollectionParams)
-      .subscribe(() => this.collectionSaved.emit());
+  private loadCollections(): void {
+    this.collectionsService.load(this.defaultCollectionParams).subscribe();
   }
 
-  private getActiveCollection() {
+  private getActiveCollection(): void {
     this.store.dispatch(factory => factory.activeCollection.load());
   }
 
-  private error(error: any) {
+  private error(error: any): void {
     this.serverErrors = error.json();
     this.detector.markForCheck();
   }
 
-  private refreshCollections() {
+  private refreshCollections(): void {
     this.collectionContext.resetCollectionOptions();
     this.getActiveCollection();
     this.loadCollections();
   }
 
-  private setForm() {
+  private setForm(): FormFields[] {
     this.fields = Common.clone(this.fields);
     return this.fields.form.items.map((item: any) => {
       if (item.name === 'name' && this.collection) {

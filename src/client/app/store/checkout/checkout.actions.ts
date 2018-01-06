@@ -22,6 +22,10 @@ export class ActionFactory {
   public setCreditCardAuthorization(authorization: CreditCardAuthorization): SetCreditCardAuthorization {
     return new SetCreditCardAuthorization(authorization);
   }
+
+  public reset(): Reset {
+    return new Reset();
+  }
 }
 
 export class InternalActionFactory extends ActionFactory { }
@@ -56,5 +60,10 @@ export class SetCreditCardAuthorization implements Action {
   constructor(public readonly authorization: CreditCardAuthorization) { }
 }
 
+export class Reset implements Action {
+  public static readonly Type = '[Checkout] Reset';
+  public readonly type = Reset.Type;
+}
+
 export type Any = SetSelectedPaymentType | SetSelectedAddress | SetAvailableAddresses | SetCreditCardAuthorization
-  | SetAvailablePaymentOptions;
+  | SetAvailablePaymentOptions | Reset;

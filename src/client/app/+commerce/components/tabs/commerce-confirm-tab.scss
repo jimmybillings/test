@@ -46,6 +46,9 @@ cart-confirm-tab-component, quote-confirm-tab {
     .mat-title {
       margin-top: 0;
     }
+    .name strong {
+      font-size: 14px;
+    }
     .payment-info,
     address {
       font-size: 14px;

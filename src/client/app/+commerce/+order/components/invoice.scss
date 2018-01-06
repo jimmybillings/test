@@ -123,6 +123,7 @@ invoice-component {
     }
     &:last-child {
       padding-left: 8px;
+      margin-bottom: 20px;
       @media screen and (max-width: $layout-breakpoint-xs)  {
         padding-left: 0;
       }
@@ -164,7 +165,25 @@ invoice-component {
         padding: 0;
         span {
           padding: 0;
+          &.total-amount {
+            display: inline-block;
+            &::first-letter {
+              font-size: .7em;
+              line-height: 1.4;
+              vertical-align: top;
+              letter-spacing: 0;
+            }
+          }
         }
+      }
+    }
+    .offline-agreement {
+      margin-bottom: 22px;
+      font-size: .8em;
+      .value {
+        font-style: italic;
+        line-height: 1.4;
+        opacity:.75;
       }
     }
     .assets {
@@ -180,6 +199,7 @@ invoice-component {
           padding: 0 10px 0 0;
         }
       }
+
       .asset-list li.cart-asset,
       .asset-list li.fee-item {
         margin: 0;
@@ -192,6 +212,20 @@ invoice-component {
           border-left-style: solid; 
           @media screen and (max-width: $layout-breakpoint-xs)  {
             border-left-width: 0; 
+          }
+          line-item-rights-component header {
+            display: none;
+          } 
+          &.cost {
+            .total-amount {
+              display: inline-block;
+              &::first-letter {
+                font-size: .75em;
+                line-height: 1.4;
+                vertical-align: top;
+                letter-spacing: 0;
+              }
+            }
           }
         }
         &:nth-child(2) {
@@ -236,9 +270,19 @@ invoice-component {
           font-weight: 500;
           padding-right: 10px; 
         }
+        .total-amount {
+          display: inline-block;
+          &::first-letter {
+            font-size: .7em;
+            line-height: 1.9;
+            vertical-align: top;
+            letter-spacing: 0;
+          }
+        }
       }
     }
   }
+
   .remit-payment .details {
     margin-right: 16px;
     &:last-child {

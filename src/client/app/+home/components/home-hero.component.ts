@@ -70,7 +70,7 @@ export class HomeHeroComponent {
       playlist: video,
       androidhls: false,
       mute: true,
-      repeat: true,
+      repeat: false,
       stretching: 'fill',
       height: '100%',
       width: '100%'

@@ -124,7 +124,6 @@ header.app-header.search-closed app-nav button.open-search {
 // there are a few different styles of pages.
 // Also the current mdToolbar does not change height for mobile. This could change, that is what the media queries are for.
 header.app-header + div.main-content gallery-view-component,
-header.app-header + div.main-content not-found-component,
 header.app-header + div.main-content profile-component,
 header.app-header + div.main-content collection-show,
 header.app-header + div.main-content collections-component,
@@ -148,7 +147,6 @@ header.app-header + div.main-content quote-show-component {
 }
 
 header.app-header.collection-tray-closed + div.main-content gallery-view-component,
-header.app-header.collection-tray-closed + div.main-content not-found-component,
 header.app-header.collection-tray-closed + div.main-content profile-component,
 header.app-header.collection-tray-closed + div.main-content collection-show,
 header.app-header.collection-tray-closed + div.main-content collections-component,
@@ -171,7 +169,6 @@ header.app-header.collection-tray-closed + div.main-content quote-show-component
 }
 
 header.app-header.collection-tray-closed.search-closed + div.main-content gallery-view-component,
-header.app-header.collection-tray-closed.search-closed + div.main-content not-found-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content profile-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content collection-show,
 header.app-header.collection-tray-closed.search-closed + div.main-content collections-component,
@@ -194,7 +191,6 @@ header.app-header.collection-tray-closed.search-closed + div.main-content quote-
 }
 
 header.app-header.search-closed + div.main-content gallery-view-component,
-header.app-header.search-closed + div.main-content not-found-component,
 header.app-header.search-closed + div.main-content profile-component,
 header.app-header.search-closed + div.main-content collection-show,
 header.app-header.search-closed + div.main-content collections-component,
@@ -218,7 +214,8 @@ header.app-header.search-closed + div.main-content quote-show-component {
 
 // pages that do not have options to open and close search and bins with a bk hero image or video (user, home)
 // currently the latest material header toolbar does not change sizes for mobile. If it does, then used the media query
-header.app-header + div.main-content user-component .hero {
+header.app-header + div.main-content user-component .hero,
+header.app-header + div.main-content error-component .hero {
   padding-top: 64px;
   @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
     border-top-width: 48px;

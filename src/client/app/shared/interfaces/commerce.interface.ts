@@ -12,19 +12,13 @@ export type PurchaseType =
   'PrepayOfflineLicense' |
   'Trial' |
   'DeliveryOnly' |
-  'ChannelNoDelivery';
+  'ChannelNoDelivery' |
+  'RevenueOnly' |
+  'PrepayAccess';
 
 export type PaymentOption =
-  'SystemLicense' |
-  'SystemLicenseNoDelivery' |
-  'OfflineLicense' |
-  'OfflineLicenseNoDelivery' |
-  'PrepaySystemLicense' |
-  'PrepayOfflineLicense' |
   'Trial' |
   'DeliveryOnly' |
-  'BadDebt' |
-  'ChannelNoDelivery' |
   'PurchaseOnCredit' |
   'CreditCard' |
   'Hold';
@@ -44,6 +38,11 @@ export type EditableQuoteFields = 'bulkOrderId' | 'discount' | 'purchaseType';
 export const quotesWithoutPricing: PurchaseType[] = [
   'Trial',
   'DeliveryOnly'
+];
+
+export const quotesAllowedToHaveFeesOnly: PurchaseType[] = [
+  'RevenueOnly',
+  'PrepayAccess'
 ];
 
 // Base interfaces
@@ -109,6 +108,7 @@ export interface Asset {
   clipUrl?: string;
   uuid?: string;
   price?: number;
+  masterDownloadUrl?: string;
 }
 
 export interface Metadatum {
@@ -164,6 +164,8 @@ export interface Order extends CommonCommerce {
   bulkOrderId?: string;
   createdUserId: number;
   ownerUserId: number;
+  ownerData?: OwnerData;
+  orderAddress?: OrderAddress;
   orderStatus: OrderStatus;
   orderType: PurchaseType;
   paymentType: PaymentType;
@@ -179,7 +181,9 @@ export interface Order extends CommonCommerce {
   paymentBalance: number;
   paymentDueDate?: Date;
   creditMemoForOrderId?: number;
-  projects: Project[];
+  subTotal?: number;
+  total?: number;
+  totalDiscountAmount?: number;
 }
 
 export interface Quote extends CommonCommerce {
@@ -225,7 +229,7 @@ export interface SendDetailsUser {
   accountName?: string;
   customerName?: string;
   email?: string;
-  field?: Pojo[];
+  [index: string]: any;
 }
 
 export interface SendDetailsBillingAccount {
@@ -235,23 +239,25 @@ export interface SendDetailsBillingAccount {
   purchaseOnCredit?: number;
   creditExemption?: number;
   paymentTermsDays?: string;
+  readonly readonlyPaymentTermsDays?: string;
   licensingVertical?: string;
   invoiceContactId?: number;
-  field?: Pojo[];
+  [index: string]: any;
 }
 
 export interface SendDetailsSalesManager {
   expirationDate?: string;
   salesManager?: string;
   offlineAgreement?: string;
-  field?: Pojo[];
+  [index: string]: any;
 }
 
 export interface SendDetailsInvoiceContact {
   id?: number;
   name?: string;
   contactEmail?: string;
-  field?: Pojo[];
+  contacts?: SendDetailsBillingAccount[];
+  [index: string]: any;
 }
 
 export interface OrdersApiResponse extends Pagination {
@@ -381,6 +387,21 @@ export interface CreditCardAuthorization {
   };
   id?: string;
   type?: string;
+}
+export interface OwnerData {
+  accountName?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+}
+export interface OrderAddress {
+  accountId: number;
+  accountName?: string;
+  billingInfo?: { address: Address; };
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  type: 'User' | 'Account';
 }
 export interface Invoice {
   documents: Array<Document>;

@@ -1,4 +1,7 @@
 import { Asset, Pagination, Pojo, Coords } from './common.interface';
+import { EnhancedAsset } from './enhanced-asset';
+import { SubclipMarkers } from './subclip-markers';
+import { FormFields } from './forms.interface';
 
 export interface SearchResult extends Pagination {
   items?: Array<Asset>;
@@ -42,4 +45,10 @@ export type DeliveryOptions = Array<DeliveryOptionGroup>;
 
 export interface ApiDeliveryOptions {
   list?: Array<DeliveryOption>;
+}
+
+export interface AssetShareDialogOptions {
+  enhancedAsset: EnhancedAsset;
+  subclipMarkers: SubclipMarkers;
+  formFields: FormFields[];
 }

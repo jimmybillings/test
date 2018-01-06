@@ -8,6 +8,7 @@ import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/w
 import { AppStore } from '../../../../app.store';
 import { ViewAddress } from '../../../../shared/interfaces/user.interface';
 import { Common } from '../../../../shared/utilities/common.functions';
+import { Quote } from '../../../../shared/interfaces/commerce.interface';
 
 @Component({
   moduleId: module.id,
@@ -29,10 +30,12 @@ export class QuoteBillingTabComponent extends CommerceBillingTab implements OnIn
   }
 
   ngOnInit() {
+    const quote: Quote = this.store.snapshot(state => state.quoteShow.data);
+
     this.quoteBillingAccountInfo = this.store.select(state => state.quoteShow.data.billingAccountData);
     this.quoteInvoiceContactInfo = this.store.select(state => state.quoteShow.data.invoiceContact);
     this.orderInProgress = this.store.select(state => state.checkout);
-    if (!this.store.snapshot(state => state.quoteShow.data.billingAccountId)) {
+    if (!quote.billingAccountId || !quote.invoiceContact) {
       this.fetchAddresses().subscribe();
     }
   }

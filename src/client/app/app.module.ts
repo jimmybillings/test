@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { CommerceModule } from './+commerce/commerce.module';
 import { GalleryViewModule } from './+gallery-view/gallery-view.module';
 import { PrivacyPolicyModule } from './+privacy-policy/privacy-policy.module';
+import { ErrorModule } from './+error/error.module';
 
 import { CurrentUserService } from './shared/services/current-user.service';
 import { ApiConfig } from './shared/services/api.config';
@@ -36,7 +37,8 @@ import { Authentication } from './shared/services/authentication.data.service';
     CommerceModule,
     ApplicationModule,
     GalleryViewModule,
-    PrivacyPolicyModule
+    PrivacyPolicyModule,
+    ErrorModule
   ],
   providers: [{
     provide: APP_BASE_HREF,

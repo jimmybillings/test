@@ -13,6 +13,7 @@ export function main() {
     }
 
     effectsSpecHelper.generateTestsFor({
+      comment: 'without a shareKey',
       effectName: 'load',
       effectsInstantiator: instantiator,
       inputAction: {
@@ -21,7 +22,34 @@ export function main() {
       },
       serviceMethod: {
         name: 'load',
-        expectedArguments: [47],
+        expectedArguments: [47, undefined],
+        returnsObservableOf: { some: 'invoice' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'invoice',
+          methodName: 'loadSuccess',
+          expectedArguments: [{ some: 'invoice' }]
+        },
+        failure: {
+          sectionName: 'invoice',
+          methodName: 'loadFailure'
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      comment: 'with a shareKey',
+      effectName: 'load',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: InvoiceActions.Load.Type,
+        orderId: 47,
+        shareKey: 'abc-123'
+      },
+      serviceMethod: {
+        name: 'load',
+        expectedArguments: [47, 'abc-123'],
         returnsObservableOf: { some: 'invoice' }
       },
       outputActionFactories: {

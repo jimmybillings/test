@@ -76,18 +76,7 @@ export function main() {
               user: {
                 id: 1,
                 customerName: 'test user',
-                email: 'test@email.com',
-                field: [{
-                  endPoint: 'user/searchFields',
-                  queryParams: 'fields,emailAddress,values',
-                  service: 'identities',
-                  suggestionHeading: 'Matching users',
-                  name: 'emailAddress',
-                  label: 'QUOTE.EDIT.FORMS.RECIPIENT_EMAIL_LABEL',
-                  type: 'suggestions',
-                  value: 'test@email.com',
-                  validation: 'REQUIRED'
-                }]
+                email: 'test@email.com'
               }
             }
           }
@@ -109,7 +98,7 @@ export function main() {
       },
       customTests: [
         {
-          it: 'Adds a list of matching users to a drop down and selects the user id that matches the invoiceId as active',
+          it: 'adds the users and the selectedUser to the invoiceContact',
           previousState: {
             ...QuoteState.initialState,
             sendDetails: {
@@ -119,15 +108,7 @@ export function main() {
                 invoiceContactId: 2
               },
               invoiceContact: {
-                ...QuoteState.initialState.sendDetails.invoiceContact,
-                field: [{
-                  name: 'invoiceContact',
-                  options: '',
-                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
-                  type: 'select',
-                  value: null,
-                  validation: 'REQUIRED'
-                }]
+                ...QuoteState.initialState.sendDetails.invoiceContact
               }
             }
           },
@@ -149,113 +130,11 @@ export function main() {
               invoiceContact: {
                 contactEmail: 'email2@test.com',
                 name: 'test2',
-                field: [{
-                  name: 'invoiceContact',
-                  options: [
-                    { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
-                    { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
-                    { id: 3, user: 'test 3', name: 'test3', emailAddress: 'email3@test.com' }
-                  ],
-                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
-                  type: 'select',
-                  value: { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
-                  validation: 'REQUIRED'
-                }]
-              }
-            }
-          }
-        },
-        {
-          it: 'Sets form element value to an empty string if there is no invoiceContactId and subsquently no matching user',
-          previousState: {
-            ...QuoteState.initialState,
-            sendDetails: {
-              ...QuoteState.initialState.sendDetails,
-              invoiceContact: {
-                ...QuoteState.initialState.sendDetails.invoiceContact,
-                field: [{
-                  name: 'invoiceContact',
-                  options: '',
-                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
-                  type: 'select',
-                  value: null,
-                  validation: 'REQUIRED'
-                }]
-              }
-            }
-          },
-          expectedNextState: {
-            ...QuoteState.initialState,
-            sendDetails: {
-              ...QuoteState.initialState.sendDetails,
-              invoiceContact: {
-                contactEmail: null,
-                name: null,
-                field: [{
-                  name: 'invoiceContact',
-                  options: [],
-                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
-                  type: 'select',
-                  value: '',
-                  validation: 'REQUIRED'
-                }]
-              }
-            }
-          }
-        },
-        {
-          it: 'Sets form element value to an empty string if there is no user that matches the invoiceContactId',
-          previousState: {
-            ...QuoteState.initialState,
-            sendDetails: {
-              ...QuoteState.initialState.sendDetails,
-              billingAccount: {
-                ...QuoteState.initialState.sendDetails.billingAccount,
-                invoiceContactId: 4
-              },
-              invoiceContact: {
-                ...QuoteState.initialState.sendDetails.invoiceContact,
-                field: [{
-                  name: 'invoiceContact',
-                  options: '',
-                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
-                  type: 'select',
-                  value: null,
-                  validation: 'REQUIRED'
-                }]
-              }
-            }
-          },
-          actionParameters: {
-            users: [
-              { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
-              { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
-              { id: 3, user: 'test 3', name: 'test3', emailAddress: 'email3@test.com' }
-            ]
-          },
-          expectedNextState: {
-            ...QuoteState.initialState,
-            sendDetails: {
-              ...QuoteState.initialState.sendDetails,
-              billingAccount: {
-                ...QuoteState.initialState.sendDetails.billingAccount,
-                invoiceContactId: 4
-              },
-              invoiceContact: {
-                contactEmail: null,
-                name: null,
-                field: [{
-                  name: 'invoiceContact',
-                  options: [
-                    { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
-                    { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
-                    { id: 3, user: 'test 3', name: 'test3', emailAddress: 'email3@test.com' }
-                  ],
-                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
-                  type: 'select',
-                  value: '',
-                  validation: 'REQUIRED'
-                }]
+                contacts: [
+                  { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
+                  { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
+                  { id: 3, user: 'test 3', name: 'test3', emailAddress: 'email3@test.com' }
+                ]
               }
             }
           }
@@ -266,29 +145,28 @@ export function main() {
     stateSpecHelper.generateTestsFor({
       actionClassName: ['AddInvoiceContactToQuote'],
       mutationTestData: {
-        actionParameters: { userId: 1 }
+        actionParameters: { userId: 1 },
+        previousState: {
+          ...QuoteState.initialState,
+          sendDetails: {
+            ...QuoteState.initialState.sendDetails,
+            invoiceContact: {
+              ...QuoteState.initialState.sendDetails.invoiceContact,
+              contacts: [{ id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' }]
+            }
+          }
+        }
       },
       customTests: [
         {
-          it: 'Adds the selected user as the invoiceContactId on the quote as well as updating the corresponding form field value',
+          it: 'Adds the selected user as the invoiceContactId on the quote',
           previousState: {
             ...QuoteState.initialState,
             sendDetails: {
               ...QuoteState.initialState.sendDetails,
               invoiceContact: {
                 ...QuoteState.initialState.sendDetails.invoiceContact,
-                field: [{
-                  name: 'invoiceContact',
-                  options: [
-                    { id: 1, name: 'test', emailAddress: 'email1@test.com' },
-                    { id: 2, name: 'test 2', emailAddress: 'email2@test.com' },
-                    { id: 3, name: 'test 3', emailAddress: 'email3@test.com' }
-                  ],
-                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
-                  type: 'select',
-                  value: '',
-                  validation: 'REQUIRED'
-                }]
+                contacts: [{ id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' }]
               }
             }
           },
@@ -299,21 +177,35 @@ export function main() {
               ...QuoteState.initialState.sendDetails,
               invoiceContact: {
                 ...QuoteState.initialState.sendDetails.invoiceContact,
-                field: [{
-                  name: 'invoiceContact',
-                  options: [
-                    { id: 1, name: 'test', emailAddress: 'email1@test.com' },
-                    { id: 2, name: 'test 2', emailAddress: 'email2@test.com' },
-                    { id: 3, name: 'test 3', emailAddress: 'email3@test.com' }
-                  ],
-                  label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
-                  type: 'select',
-                  value: { id: 1, name: 'test', emailAddress: 'email1@test.com' },
-                  validation: 'REQUIRED'
-                }],
+                contacts: [{ id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' }],
                 id: 1,
                 contactEmail: 'email1@test.com',
                 name: 'test'
+              }
+            }
+          }
+        },
+        {
+          it: 'does nothing if there is no matching user',
+          previousState: {
+            ...QuoteState.initialState,
+            sendDetails: {
+              ...QuoteState.initialState.sendDetails,
+              invoiceContact: {
+                ...QuoteState.initialState.sendDetails.invoiceContact,
+                contacts: [{ id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' }]
+              }
+            }
+          },
+          actionParameters: { userId: 10 },
+          expectedNextState: {
+            ...QuoteState.initialState,
+            sendDetails: {
+              ...QuoteState.initialState.sendDetails,
+              invoiceContact: {
+                ...QuoteState.initialState.sendDetails.invoiceContact,
+                id: 10,
+                contacts: [{ id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' }]
               }
             }
           }
@@ -366,18 +258,7 @@ export function main() {
                 creditExemption: 100,
                 paymentTermsDays: 20,
                 licensingVertical: 'yes',
-                invoiceContactId: 1,
-                field: [{
-                  endPoint: 'account/searchFields',
-                  queryParams: 'fields,name,values',
-                  service: 'identities',
-                  suggestionHeading: 'Matching accounts',
-                  name: 'account',
-                  label: 'QUOTE.EDIT.FORMS.ACCOUNT_NAME_LABEL',
-                  type: 'suggestions',
-                  value: 'Wazee Account',
-                  validation: 'REQUIRED'
-                }]
+                invoiceContactId: 1
               },
               invoiceContact: {
                 ...QuoteState.initialState.sendDetails.invoiceContact,
@@ -434,19 +315,9 @@ export function main() {
                 purchaseOnCredit: 100,
                 creditExemption: 100,
                 paymentTermsDays: 20,
+                readonlyPaymentTermsDays: 20,
                 licensingVertical: 'yes',
-                invoiceContactId: 1,
-                field: [{
-                  endPoint: 'account/searchFields',
-                  queryParams: 'fields,name,values',
-                  service: 'identities',
-                  suggestionHeading: 'Matching accounts',
-                  name: 'account',
-                  label: 'QUOTE.EDIT.FORMS.ACCOUNT_NAME_LABEL',
-                  type: 'suggestions',
-                  value: 'Wazee Account',
-                  validation: 'REQUIRED'
-                }]
+                invoiceContactId: 1
               },
               invoiceContact: {
                 ...QuoteState.initialState.sendDetails.invoiceContact,
@@ -482,28 +353,7 @@ export function main() {
               salesManager: {
                 expirationDate: '2018/12/12',
                 salesManager: 'email@test.com',
-                offlineAgreement: null,
-                field: [{
-                  default: 'TODAY+15',
-                  name: 'expirationDate',
-                  label: 'QUOTE.EDIT.FORMS.EXPIRATION_DATE_LABEL',
-                  type: 'wzdate',
-                  minimum: 'TODAY',
-                  validation: 'REQUIRED'
-                },
-                {
-                  name: 'salesManager',
-                  label: 'QUOTE.EDIT.FORMS.SALES_MANAGER_LABEL',
-                  type: 'email',
-                  value: 'email@test.com',
-                  validation: 'EMAIL'
-                }, {
-                  name: 'offlineAgreementReference',
-                  label: 'QUOTE.EDIT.FORMS.OFFLINE_AGREEMENT_LABEL',
-                  type: 'text',
-                  value: '',
-                  validation: 'OPTIONAL'
-                }]
+                offlineAgreement: null
               }
             }
           }
@@ -540,30 +390,6 @@ export function main() {
             sendDetails: {
               ...QuoteState.initialState.sendDetails,
               salesManager: {
-                field: [
-                  {
-                    name: 'expirationDate',
-                    label: 'QUOTE.EDIT.FORMS.EXPIRATION_DATE_LABEL',
-                    type: 'wzdate',
-                    minimum: 'TODAY',
-                    validation: 'REQUIRED',
-                    value: '2018/12/12',
-                    default: '2018/12/12'
-                  },
-                  {
-                    name: 'salesManager',
-                    label: 'QUOTE.EDIT.FORMS.SALES_MANAGER_LABEL',
-                    type: 'email',
-                    value: 'email@test.com',
-                    validation: 'EMAIL'
-                  }, {
-                    name: 'offlineAgreementReference',
-                    label: 'QUOTE.EDIT.FORMS.OFFLINE_AGREEMENT_LABEL',
-                    type: 'text',
-                    value: 'SD12FJ23GJ23',
-                    validation: 'OPTIONAL'
-                  }
-                ],
                 expirationDate: '2018/12/12',
                 salesManager: 'email@test.com',
                 offlineAgreement: 'SD12FJ23GJ23'
@@ -573,5 +399,33 @@ export function main() {
         }
       ]
     });
+
+    // stateSpecHelper.generateTestsFor({
+    //   actionClassName: ['UpdateBillingAccount'],
+    //   mutationTestData: {
+    //     actionParameters: { form: { salesOwner: 'Ross' } }
+    //   },
+    //   customTests: [
+    //     {
+    //       it: 'overrides any properties on the billingAccount',
+    //       previousState: {
+    //         ...QuoteState.initialState
+    //       },
+    //       actionParameters: {
+    //         form: { salesOwner: 'Ross' }
+    //       },
+    //       expectedNextState: {
+    //         ...QuoteState.initialState,
+    //         sendDetails: {
+    //           ...QuoteState.initialState.sendDetails,
+    //           billingAccount: {
+    //             ...QuoteState.initialState.sendDetails.billingAccount,
+    //             salesOwner: 'Ross'
+    //           }
+    //         }
+    //       }
+    //     }
+    //   ]
+    // });
   });
 }

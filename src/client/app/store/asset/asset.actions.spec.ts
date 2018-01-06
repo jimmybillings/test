@@ -100,14 +100,15 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
-        class: ActionFactory,
+        class: InternalActionFactory,
         name: 'loadAssetAfterParentIsAvailable',
-        parameters: [{ some: 'loadParams' }, 'cartAsset']
+        parameters: [{ some: 'loadParams' }, 'cartAsset', 123]
       },
       expectedAction: {
         type: '[Asset] Load Asset After Parent Is Available',
         loadParameters: { some: 'loadParams' },
-        assetType: 'cartAsset'
+        assetType: 'cartAsset',
+        parentId: 123
       }
     });
 

@@ -152,27 +152,33 @@ export function main() {
     });
 
     describe('shouldDisplayPricing()', () => {
-      it('returns true when quote is NOT a Trial', () => {
+      it('returns true when quote is NOT a Trial and all rights managed assets have selected rights packages', () => {
         classUnderTest.quoteType = 'NoTrial' as any;
-        expect(classUnderTest.shouldDisplayPricing)
-          .toBe(true);
+        classUnderTest.rmAssetsHaveAttributes = true;
+        expect(classUnderTest.shouldDisplayPricing).toBe(true);
       });
+
       it('returns false when the quote is a Trial', () => {
         classUnderTest.quoteType = 'Trial';
-        expect(classUnderTest.shouldDisplayPricing)
-          .toBe(false);
+        expect(classUnderTest.shouldDisplayPricing).toBe(false);
+      });
+
+      it('returns false when the quote is a Trial, but not all rights managed assets have rights packages', () => {
+        classUnderTest.quoteType = 'Trial';
+        classUnderTest.rmAssetsHaveAttributes = false;
+        expect(classUnderTest.shouldDisplayPricing).toBe(false);
       });
     });
+
     describe('shouldShowTargets()', () => {
       it('returns true when transcodeTargets exist and have a length greater than 0', () => {
         let lineItem: any = { transcodeTargets: ['native', '10mbH264', 'xconvert_prores_hd'] };
-        expect(classUnderTest.shouldShowTargets(lineItem))
-          .toBe(true);
+        expect(classUnderTest.shouldShowTargets(lineItem)).toBe(true);
       });
+
       it('returns false when transcodeTargets exist, but have a zero length', () => {
         let lineItem: any = { transcodeTargets: [] };
-        expect(classUnderTest.shouldShowTargets(lineItem))
-          .toBe(false);
+        expect(classUnderTest.shouldShowTargets(lineItem)).toBe(false);
       });
     });
 
@@ -180,19 +186,18 @@ export function main() {
       it('returns true when the line item is rights managed and quote is NOT a Trial', () => {
         let lineItem: any = { rightsManaged: 'Rights Managed' };
         classUnderTest.quoteType = 'Not Trial' as any;
-        expect(classUnderTest.shouldDisplayRights(lineItem))
-          .toBe(true);
+        expect(classUnderTest.shouldDisplayRights(lineItem)).toBe(true);
       });
+
       it('returns false when the line item is royalty-free', () => {
         let lineItem: any = { rightsManaged: 'Royalty Free' };
-        expect(classUnderTest.shouldDisplayRights(lineItem))
-          .toBe(false);
+        expect(classUnderTest.shouldDisplayRights(lineItem)).toBe(false);
       });
+
       it('returns false when the quote is a Trial', () => {
         let lineItem: any = { rightsManaged: 'Rights Managed' };
         classUnderTest.quoteType = 'Trial';
-        expect(classUnderTest.shouldDisplayRights(lineItem))
-          .toBe(false);
+        expect(classUnderTest.shouldDisplayRights(lineItem)).toBe(false);
       });
     });
 

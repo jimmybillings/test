@@ -50,6 +50,7 @@ export const AddressKeys: Array<string> = ['address', 'state', 'city', 'country'
 export interface Address {
   address: string;
   address2?: string;
+  address3?: string;
   state: string;
   city: string;
   country: string;

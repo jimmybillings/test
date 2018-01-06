@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { FormFields } from '../../interfaces/forms.interface';
+import { ValidatorFn, ValidationErrors } from '@angular/forms/src/directives/validators';
 
 /**
  * Service that creates a dynamic model to drive a form.
@@ -34,7 +35,12 @@ export class FormModel {
     }
   }
 
-  private _getValidator(field: FormFields): Validators {
+  public updateValidatorsFor(control: AbstractControl, field: FormFields): void {
+    control.clearValidators();
+    control.setValidators(this._getValidator(field));
+  }
+
+  private _getValidator(field: FormFields): ValidatorFn {
     switch (field.validation) {
       case 'REQUIRED':
         return this._getRequiredValidator();
@@ -50,6 +56,10 @@ export class FormModel {
         return this._getTermsValidator();
       case 'GREATER_THAN':
         return this._getGreaterThanValidator(field.min);
+      case 'LESS_THAN':
+        return this._getLessThanValidator(field.max);
+      case 'BETWEEN':
+        return this._getBetweenValidator(field.min, field.max);
       case 'MIN_LENGTH':
         return this._getMinLengthValidator(field.min);
       case 'MAX_LENGTH':
@@ -59,18 +69,18 @@ export class FormModel {
     }
   }
 
-  private _getOptionalValidator(): Validators {
+  private _getOptionalValidator(): ValidationErrors {
     return Validators.nullValidator;
   }
 
-  private _getRequiredValidator(): Validators {
+  private _getRequiredValidator(): ValidatorFn {
     return Validators.compose([
       Validators.required,
       Validators.pattern(/\S/)
     ]);
   }
 
-  private _getEmailValidator(): Validators {
+  private _getEmailValidator(): ValidatorFn {
     return Validators.compose([
       Validators.required,
       Validators.minLength(5),
@@ -79,7 +89,7 @@ export class FormModel {
     ]);
   }
 
-  private _getMultiEmailValidator(): Validators {
+  private _getMultiEmailValidator(): ValidatorFn {
     return Validators.compose([
       Validators.required,
       Validators.pattern(
@@ -88,38 +98,48 @@ export class FormModel {
     ]);
   }
 
-  private _getPasswordValidator(): Validators {
+  private _getPasswordValidator(): ValidatorFn {
     return Validators.compose([
       Validators.required,
       Validators.minLength(8)
     ]);
   }
 
-  private _getCollectionValidator(): Validators {
-    return Validators.required;
+  private _getCollectionValidator(): ValidatorFn {
+    return Validators.compose([Validators.required]);
   }
 
-  private _getTermsValidator(): Validators {
+  private _getTermsValidator(): ValidatorFn {
     return this.checkboxRequired;
   }
 
-  private _getGreaterThanValidator(testValue: string): Validators {
-    return (control: FormControl) => (parseFloat(control.value) <= parseFloat(testValue)) ? { tooLow: 'number too low' } : null;
+  private _getGreaterThanValidator(testValue: string): ValidatorFn {
+    return (control: FormControl) => (parseFloat(control.value) < parseFloat(testValue)) ? { tooLow: 'number too low' } : null;
   }
 
-  private _getMinLengthValidator(length: string): Validators {
+  private _getLessThanValidator(testValue: string): ValidatorFn {
+    return Validators.compose([
+      (control: FormControl) => (parseFloat(control.value) > parseFloat(testValue)) ? { tooHigh: 'number too high' } : null,
+      Validators.required
+    ]);
+  }
+
+  private _getBetweenValidator(min: string, max: string): ValidatorFn {
+    return Validators.compose([
+      this._getGreaterThanValidator(min),
+      this._getLessThanValidator(max)
+    ]);
+  }
+
+  private _getMinLengthValidator(length: string): ValidatorFn {
     return Validators.minLength(parseInt(length));
   }
 
-  private _getMaxLengthValidator(length: string): Validators {
+  private _getMaxLengthValidator(length: string): ValidatorFn {
     return Validators.maxLength(parseInt(length));
   }
 
-  private checkboxRequired(control: FormGroup) {
-    if (!control.value) {
-      return { mustBeCheckedError: 'Must be checked' };
-    } else {
-      return null;
-    }
+  private checkboxRequired(control: FormGroup): ValidatorFn {
+    return (control: FormControl) => control.value ? null : { mustBeCheckedError: 'Must be Checked' };
   }
 }

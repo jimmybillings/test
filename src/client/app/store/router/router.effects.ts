@@ -91,8 +91,13 @@ export class RouterEffects {
       this.location.go(`${this.SearchAssetDetailsPath}/${action.assetId}${Common.urlParamsObjectToUrlStringParams(params)}`);
     });
 
+  @Effect({ dispatch: false })
+  public goToBadRequest: Observable<Action> = this.actions.ofType(RouterActions.GoToBadRequest.Type)
+    .do(() => this.router.navigate([this.BadRequestPath]));
+
   private readonly LoginPath: string = '/user/login';
-  private readonly PageNotFoundPath: string = '/404';
+  private readonly PageNotFoundPath: string = '/error/404';
+  private readonly BadRequestPath: string = '/error/400';
   private readonly QuotesPath: string = '/quotes';
   private readonly RootPath: string = '/';
   private readonly RedirectUrlKey: string = 'RouterEffects.RedirectUrl';

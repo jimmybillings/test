@@ -75,36 +75,18 @@ export function main() {
       });
     });
 
-    describe('canPurchase getter', () => {
+    describe('canPurchase() getter', () => {
       describe('returns true', () => {
-        it('when the quote is of type \'Trial\'', () => {
-          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'Trial' } });
+        it('when the quote is of type \'RevenueOnly\'', () => {
+          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'RevenueOnly' } });
+
           expect(componentUnderTest.canPurchase).toBe(true);
         });
 
-        it('when the quote is of type \'DeliveryOnly\'', () => {
-          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'DeliveryOnly' } });
-          expect(componentUnderTest.canPurchase).toBe(true);
-        });
-
-        it('when the quote is not of type \'Trial\', but the other conditions are met', () => {
+        it('when the licenses are agreed to and the license button is showing', () => {
+          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'NotRevenueOnly' } });
           componentUnderTest.licensesAreAgreedTo = true;
-          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'NotTrial' } });
           expect(componentUnderTest.canPurchase).toBe(true);
-        });
-      });
-
-      describe('returns false', () => {
-        it('when everything is false', () => {
-          mockStore.createStateSection('quoteShow', { data: { purchaseType: 'NotTrial' } });
-          mockCapabilities = {
-            viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton').and.returnValue(false)
-          };
-
-          componentUnderTest = new QuoteConfirmTabComponent(null, mockQuoteService, null, mockCapabilities, mockStore);
-          componentUnderTest.licensesAreAgreedTo = false;
-
-          expect(componentUnderTest.canPurchase).toBe(false);
         });
       });
     });

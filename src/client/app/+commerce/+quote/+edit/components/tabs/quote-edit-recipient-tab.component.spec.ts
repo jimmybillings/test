@@ -22,6 +22,9 @@ export function main() {
     let addInvoiceContactToQuoteDispatchSpy: jasmine.Spy;
     let updateSalesManagerFormOnQuoteDispatchSpy: jasmine.Spy;
     let initializeSalesManagerFormOnQuoteDispatchSpy: jasmine.Spy;
+    let updateBillingAccountDispatchSpy: jasmine.Spy;
+    let mockForm: any;
+    let mockCurrentUserService: any;
     let mockStore: MockAppStore;
 
     beforeEach(() => {
@@ -32,73 +35,22 @@ export function main() {
         sendDetails: {
           user: {
             customerName: null,
-            accountName: null,
-            field: [{
-              endPoint: 'user/searchFields',
-              queryParams: 'fields,emailAddress,values',
-              service: 'identities',
-              suggestionHeading: 'Matching users',
-              name: 'emailAddress',
-              label: 'Recipient email address',
-              type: 'suggestions',
-              value: '',
-              validation: 'REQUIRED'
-            }]
+            accountName: null
           },
           billingAccount: {
             salesOwner: null,
             purchaseOnCredit: null,
             creditExemption: null,
             paymentTermsDays: null,
-            licensingVertical: null,
-            field: [{
-              endPoint: 'account/searchFields',
-              queryParams: 'fields,name,values',
-              service: 'identities',
-              suggestionHeading: 'Matching accounts',
-              name: 'account',
-              label: 'Account name',
-              type: 'suggestions',
-              value: '',
-              validation: 'REQUIRED'
-            }]
+            licensingVertical: null
           },
           invoiceContact: {
-            contactEmail: null,
-            field: [{
-              name: 'invoiceContact',
-              options: [],
-              label: 'Invoice contact name',
-              type: 'select',
-              value: '',
-              validation: 'REQUIRED'
-            }]
+            contactEmail: null
           },
           salesManager: {
             expirationDate: null,
             salesManager: null,
-            offlineAgreement: null,
-            field: [{
-              default: 'TODAY+15',
-              name: 'expirationDate',
-              label: 'Expiration date',
-              type: 'wzdate',
-              minimum: 'TODAY',
-              validation: 'REQUIRED'
-            },
-            {
-              name: 'salesManager',
-              label: 'Sales manager',
-              type: 'email',
-              value: '',
-              validation: 'EMAIL'
-            }, {
-              name: 'offlineAgreementReference',
-              label: 'Offline agreement reference',
-              type: 'text',
-              value: '',
-              validation: 'OPTIONAL'
-            }]
+            offlineAgreement: null
           }
         },
         loading: false
@@ -107,30 +59,47 @@ export function main() {
       addUserToQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addUserToQuote');
       addBillingAccountToQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addBillingAccountToQuote');
       addInvoiceContactToQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addInvoiceContactToQuote');
-      updateSalesManagerFormOnQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'updateSalesManagerFormOnQuote');
-      initializeSalesManagerFormOnQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'initializeSalesManagerFormOnQuote');
+      updateBillingAccountDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'updateBillingAccount');
 
-      componentUnderTest =
-        new QuoteEditRecipientTabComponent(mockStore, { state: { emailAddress: 'test email' } } as any);
+      updateSalesManagerFormOnQuoteDispatchSpy = mockStore.createActionFactoryMethod(
+        'quoteEdit',
+        'updateSalesManagerFormOnQuote'
+      );
+
+      initializeSalesManagerFormOnQuoteDispatchSpy = mockStore.createActionFactoryMethod(
+        'quoteEdit',
+        'initializeSalesManagerFormOnQuote'
+      );
+
+      mockForm = {
+        resetForm: jasmine.createSpy('resetForm'),
+        markFieldsAsTouched: jasmine.createSpy('markFieldsAsTouched'),
+        form: { valid: true }
+      };
+
+      mockCurrentUserService = { state: { emailAddress: 'test email' } };
+
+      componentUnderTest = new QuoteEditRecipientTabComponent(
+        mockStore,
+        mockCurrentUserService
+      );
     });
 
     describe('ngOnInit()', () => {
-      describe('initializeSalesManagerForm()', () => {
-        it('Should initialize the sales manager form with the current user and a default date', () => {
+      describe('initializeSalesManagerInState()', () => {
+        it('dispatches the proper action', () => {
           componentUnderTest.ngOnInit();
           expect(initializeSalesManagerFormOnQuoteDispatchSpy).toHaveBeenCalledWith('test email', defaultDate(15));
         });
       });
 
-      describe('monitorAndUpdateFormValidity()', () => {
+      describe('updateFormValidity()', () => {
         beforeEach(() => {
-          componentUnderTest.invoiceContactform = {
-            resetForm: jasmine.createSpy('resetForm'),
-            markFieldsAsTouched: jasmine.createSpy('markFieldsAsTouched')
-          } as any;
+          componentUnderTest.invoiceContactform = mockForm;
+          componentUnderTest.billingAccountForm = mockForm;
         });
 
-        it('Should reset invoice contact form if the user account name matches the billing account', () => {
+        it('resets the forms if the user account name matches the billing account', () => {
           mockStore.createStateSection('quoteEdit', {
             sendDetails: {
               user: {
@@ -144,55 +113,79 @@ export function main() {
             }
           });
           componentUnderTest.ngOnInit();
+
           expect(componentUnderTest.invoiceContactform.resetForm).toHaveBeenCalled();
           expect(componentUnderTest.invoiceContactform.markFieldsAsTouched).not.toHaveBeenCalled();
+          expect(componentUnderTest.billingAccountForm.resetForm).toHaveBeenCalled();
+          expect(componentUnderTest.billingAccountForm.markFieldsAsTouched).not.toHaveBeenCalled();
         });
 
-        it(`Should mark invoice contact form as touched if the user account 
-        name does not matche the billing account`, () => {
-            mockStore.createStateSection('quoteEdit', {
-              sendDetails: {
-                user: {
-                  accountName: 'Test 2 Account',
-                },
-                billingAccount: {
-                  name: 'Test Account',
-                  id: 1
-                },
-                invoiceContact: {}
-              }
-            });
-            componentUnderTest.ngOnInit();
-            expect(componentUnderTest.invoiceContactform.markFieldsAsTouched).toHaveBeenCalled();
-            expect(componentUnderTest.invoiceContactform.resetForm).not.toHaveBeenCalled();
+        it(`marks the forms as touched if the user account name does not match the billing account`, () => {
+          mockStore.createStateSection('quoteEdit', {
+            sendDetails: {
+              user: {
+                accountName: 'Test 2 Account',
+              },
+              billingAccount: {
+                name: 'Test Account',
+                id: 1
+              },
+              invoiceContact: {}
+            }
           });
+          componentUnderTest.ngOnInit();
+
+          expect(componentUnderTest.invoiceContactform.resetForm).not.toHaveBeenCalled();
+          expect(componentUnderTest.invoiceContactform.markFieldsAsTouched).toHaveBeenCalled();
+          expect(componentUnderTest.billingAccountForm.resetForm).not.toHaveBeenCalled();
+          expect(componentUnderTest.billingAccountForm.markFieldsAsTouched).toHaveBeenCalled();
+        });
+      });
+
+      describe('mergeFormValues()', () => {
+        it('updates the config when the billingAccount changes in the state', () => {
+          mockStore.createStateSection('quoteEdit', {
+            sendDetails: {
+              billingAccount: { id: 1, readonlyPaymentTermsDays: 30, salesOwner: 'Ross' },
+              user: { email: 'some-email' },
+              invoiceContact: {}
+            }
+          });
+          componentUnderTest.ngOnInit();
+
+          expect(componentUnderTest.config.billingAccount[1].value).toBe('Ross');
+          expect(componentUnderTest.config.billingAccount[2].max).toBe(30);
+        });
+
+        it('updats the config when the invoiceContact changes in the state', () => {
+          mockStore.createStateSection('quoteEdit', {
+            sendDetails: {
+              billingAccount: { invoiceContactId: 13 },
+              user: { email: 'some-email' },
+              invoiceContact: { contacts: [{ id: 13, some: 'user' }] }
+            }
+          });
+          componentUnderTest.ngOnInit();
+
+          expect(componentUnderTest.config.invoiceContact[0].value).toEqual({ id: 13, some: 'user' });
+          expect(componentUnderTest.config.invoiceContact[0].options).toEqual([{ id: 13, some: 'user' }]);
+        });
       });
     });
 
     describe('get user()', () => {
-      it('Should return an observable of the send details user', () => {
+      it('returns an observable of the send details user', () => {
         let user: SendDetailsUser;
         componentUnderTest.user.subscribe(returnedUser => user = returnedUser);
         expect(user).toEqual({
           customerName: null,
-          accountName: null,
-          field: [{
-            endPoint: 'user/searchFields',
-            queryParams: 'fields,emailAddress,values',
-            service: 'identities',
-            suggestionHeading: 'Matching users',
-            name: 'emailAddress',
-            label: 'Recipient email address',
-            type: 'suggestions',
-            value: '',
-            validation: 'REQUIRED'
-          }]
+          accountName: null
         });
       });
     });
 
     describe('get billingAccount()', () => {
-      it('Should return an observable of the send details user', () => {
+      it('returns an observable of the send details user', () => {
         let billingAccount: SendDetailsBillingAccount;
         componentUnderTest.billingAccount.subscribe(returnedBillingAccount => billingAccount = returnedBillingAccount);
         expect(billingAccount).toEqual({
@@ -200,103 +193,69 @@ export function main() {
           purchaseOnCredit: null,
           creditExemption: null,
           paymentTermsDays: null,
-          licensingVertical: null,
-          field: [{
-            endPoint: 'account/searchFields',
-            queryParams: 'fields,name,values',
-            service: 'identities',
-            suggestionHeading: 'Matching accounts',
-            name: 'account',
-            label: 'Account name',
-            type: 'suggestions',
-            value: '',
-            validation: 'REQUIRED'
-          }]
+          licensingVertical: null
         });
       });
     });
 
     describe('get invoiceContact()', () => {
-      it('Should return an observable of the send details user', () => {
+      it('returns an observable of the send details user', () => {
         let invoiceContact: SendDetailsInvoiceContact;
         componentUnderTest.invoiceContact.subscribe(returnedInvoiceContact => invoiceContact = returnedInvoiceContact);
         expect(invoiceContact).toEqual({
-          contactEmail: null,
-          field: [{
-            name: 'invoiceContact',
-            options: [],
-            label: 'Invoice contact name',
-            type: 'select',
-            value: '',
-            validation: 'REQUIRED'
-          }]
+          contactEmail: null
         });
       });
     });
 
     describe('get salesManager()', () => {
-      it('Should return an observable of the send details user', () => {
+      it('returns an observable of the send details user', () => {
         let salesManager: SendDetailsSalesManager;
         componentUnderTest.salesManager.subscribe(returnedSalesManager => salesManager = returnedSalesManager);
         expect(salesManager).toEqual({
           expirationDate: null,
           salesManager: null,
-          offlineAgreement: null,
-          field: [{
-            default: 'TODAY+15',
-            name: 'expirationDate',
-            label: 'Expiration date',
-            type: 'wzdate',
-            minimum: 'TODAY',
-            validation: 'REQUIRED'
-          },
-          {
-            name: 'salesManager',
-            label: 'Sales manager',
-            type: 'email',
-            value: '',
-            validation: 'EMAIL'
-          }, {
-            name: 'offlineAgreementReference',
-            label: 'Offline agreement reference',
-            type: 'text',
-            value: '',
-            validation: 'OPTIONAL'
-          }]
+          offlineAgreement: null
         });
       });
     });
 
     describe('userSelect()', () => {
-      it('Should dispatch addUserToQuote with a User', () => {
+      it('dispatches addUserToQuote with a User', () => {
         componentUnderTest.userSelect({ user: 'some user' } as any);
         expect(addUserToQuoteDispatchSpy).toHaveBeenCalledWith({ user: 'some user' });
       });
     });
 
     describe('accountSelect()', () => {
-      it('Should dispatch addBillingAccountToQuote with an Account', () => {
+      it('dispatches addBillingAccountToQuote with an Account', () => {
         componentUnderTest.accountSelect({ account: 'some account' } as any);
         expect(addBillingAccountToQuoteDispatchSpy).toHaveBeenCalledWith({ account: 'some account' });
       });
     });
 
     describe('invoiceContactSelect()', () => {
-      it('Should dispatch addInvoiceContactToQuote with a value from event', () => {
+      it('dispatches addInvoiceContactToQuote with a value from event', () => {
         componentUnderTest.invoiceContactSelect({ value: 'some contact' } as any);
         expect(addInvoiceContactToQuoteDispatchSpy).toHaveBeenCalledWith('some contact');
       });
     });
 
     describe('onBlur()', () => {
-      it('Should dispatch updateSalesManagerFormOnQuote with the sales manager form', () => {
+      it('dispatchs updateSalesManagerFormOnQuote with the sales manager form', () => {
         componentUnderTest.onBlur({ salesManger: 'some sales manager' } as any);
         expect(updateSalesManagerFormOnQuoteDispatchSpy).toHaveBeenCalledWith({ salesManger: 'some sales manager' });
       });
     });
 
     describe('get allBillingSelectionComplete()', () => {
-      it('Should return true if the user account matches the selected billing account', () => {
+      beforeEach(() => {
+        componentUnderTest.salesManagerForm = mockForm;
+        componentUnderTest.billingAccountForm = mockForm;
+        componentUnderTest.recipientForm = mockForm;
+      });
+
+      it('returns true if the user account matches the selected billing account', () => {
         let billingSectionsComplete: Boolean;
         mockStore.createStateSection('quoteEdit', {
           sendDetails: {
@@ -312,7 +271,7 @@ export function main() {
         expect(billingSectionsComplete).toEqual(true);
       });
 
-      it('Should return true when invoice contact is selected and the user account doesnt match billing account', () => {
+      it('returns true when invoice contact is selected and the user account doesnt match billing account', () => {
         let billingSectionsComplete: Boolean;
         mockStore.createStateSection('quoteEdit', {
           sendDetails: {
@@ -332,7 +291,7 @@ export function main() {
         expect(billingSectionsComplete).toEqual(true);
       });
 
-      it('Should return false if the user account does not match the selected billing account and there is no invoice contact', () => {
+      it('returns false if the user account does not match the selected billing account and there is no invoice contact', () => {
         let billingSectionsComplete: Boolean = false;
         mockStore.createStateSection('quoteEdit', {
           sendDetails: {
@@ -349,5 +308,11 @@ export function main() {
       });
     });
 
+    describe('onEditableFeldChange()', () => {
+      it('dispatches the proper action', () => {
+        componentUnderTest.onEditableFieldChange({ some: 'change' });
+        mockStore.expectDispatchFor(updateBillingAccountDispatchSpy, { some: 'change' });
+      });
+    });
   });
 }

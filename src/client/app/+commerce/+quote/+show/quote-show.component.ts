@@ -8,6 +8,7 @@ import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
 import { AppStore } from '../../../app.store';
+import { Common } from '../../../shared/utilities/common.functions';
 
 @Component({
   moduleId: module.id,
@@ -35,6 +36,8 @@ export class QuoteShowComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(factory => factory.checkout.reset());
+
     this.tabLabelKeys = ['quote', 'billing', 'payment', 'confirm'];
 
     // Enable the first tab and disable the rest.
@@ -65,6 +68,16 @@ export class QuoteShowComponent implements OnInit {
 
   public get shouldDisplayPurchaseHeader(): boolean {
     return !this.userCan.administerQuotes() && this.quoteService.state.data.quoteStatus === 'ACTIVE';
+  }
+
+  public get displayActiveOfflineAgreementToPurchaser(): boolean {
+    let offlineLicense: string;
+    this.offlineAgreementIds.take(1).subscribe((data: string) => {
+      offlineLicense = data;
+    });
+    return !this.userCan.administerQuotes() &&
+      this.quoteService.state.data.quoteStatus === 'ACTIVE' &&
+      offlineLicense.length !== 0;
   }
 
   public get shouldShowRecipientInfo(): boolean {

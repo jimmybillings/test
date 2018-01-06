@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Http, Request, RequestMethod, RequestOptions, URLSearchParams } from '@angular/http';
+import { Http, Request, RequestMethod, RequestOptions, URLSearchParams, QueryEncoder } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { ApiConfig } from './api.config';
@@ -97,11 +97,13 @@ export class ApiService {
   }
 
   protected bodyJsonFrom(bodyObject: ApiBody): string {
-    return JSON.stringify({ ...bodyObject, siteName: this.apiConfig.portal });
+    return Array.isArray(bodyObject) ?
+      JSON.stringify(bodyObject) :
+      JSON.stringify({ ...bodyObject, siteName: this.apiConfig.portal });
   }
 
   protected searchParametersFrom(parameters: ApiParameters): URLSearchParams {
-    const search: URLSearchParams = new URLSearchParams();
+    const search: URLSearchParams = new URLSearchParams('', new CustomQueryEncoder());
 
     if (parameters['siteName']) console.error('Cannot set siteName externally.');
 
@@ -112,5 +114,21 @@ export class ApiService {
     search.set('siteName', this.apiConfig.portal);
 
     return search;
+  }
+}
+
+/*
+ * CustomQueryEncoder
+ * Fix plus sign (+) not encoding, so sent as blank space
+ * See: https://github.com/angular/angular/issues/11058#issuecomment-247367318
+ */
+export class CustomQueryEncoder extends QueryEncoder {
+  encodeKey(k: string): string {
+    k = super.encodeKey(k);
+    return k.replace(/\+/gi, '%2B');
+  }
+  encodeValue(v: string): string {
+    v = super.encodeValue(v);
+    return v.replace(/\+/gi, '%2B');
   }
 }

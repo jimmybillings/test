@@ -108,6 +108,14 @@ export function main() {
 
             expect(mostRecentRequest().url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL');
           });
+
+          it('properly encodes a \'+\' to a \' \'', () => {
+            methodUnderTest.call(
+              serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b+c' } }
+            );
+
+            expect(mostRecentRequest().url).toEqual('BASE/identities-api/v1/end/point?a=b%2Bc&siteName=PORTAL');
+          });
         });
 
         describe('headers', () => {
@@ -131,10 +139,16 @@ export function main() {
             expect(mostRecentRequest()._body).toEqual('{"siteName":"PORTAL"}');
           });
 
-          it('is the specified body plus the site name', () => {
+          it('is the specified body plus the site name - for an object', () => {
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: { a: 'b' } });
 
             expect(mostRecentRequest()._body).toEqual('{"a":"b","siteName":"PORTAL"}');
+          });
+
+          it('is the specified body plus the site name - for an array', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: [1, 2, 3] });
+
+            expect(mostRecentRequest()._body).toEqual('[1,2,3]');
           });
         });
 

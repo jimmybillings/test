@@ -27,16 +27,11 @@ export function main() {
         type: 'whatever',
         error: { status: 400 }
       },
-      helperServiceMethods: [{
-        name: 'destroy',
-        expectedArguments: [],
-        returns: null
-      }],
       outputActionFactories: {
         success: [
           {
             sectionName: 'router',
-            methodName: 'goToLoginWithRedirect',
+            methodName: 'goToBadRequest',
             expectedArguments: []
           }
         ]

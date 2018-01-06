@@ -126,6 +126,9 @@ export class ActionFactory {
     return new UpdateSalesManagerFormOnQuote(form);
   }
 
+  public updateBillingAccount(form: Pojo): UpdateBillingAccount {
+    return new UpdateBillingAccount(form);
+  }
 }
 
 export class InternalActionFactory extends ActionFactory {
@@ -439,6 +442,12 @@ export class UpdateSalesManagerFormOnQuote implements Action {
   constructor(public readonly form: Pojo) { }
 }
 
+export class UpdateBillingAccount implements Action {
+  public static readonly Type = '[Quote Edit] Update Billing Account';
+  public readonly type = UpdateBillingAccount.Type;
+  constructor(public readonly form: Pojo) { }
+}
+
 export type Any =
   Load | LoadSuccess | LoadFailure |
   Delete | DeleteSuccess | DeleteFailure |
@@ -450,4 +459,5 @@ export type Any =
   AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject |
   UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
   UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | AddInvoiceContactToQuote |
-  InitializeSalesManagerFormOnQuote | UpdateSalesManagerFormOnQuote;
+  InitializeSalesManagerFormOnQuote | UpdateSalesManagerFormOnQuote |
+  UpdateBillingAccount;

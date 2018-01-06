@@ -119,7 +119,7 @@ export function main() {
       });
 
       it('dispatches the proper action when the callback is called', () => {
-        mockDialogService.onSubmitCallback({ id: 123 });
+        mockDialogService.onSubmitCallback({ type: 'NAVIGATE', collectionId: 123 });
 
         mockAppStore.expectDispatchFor(navigateDispatchSpy, 123);
       });

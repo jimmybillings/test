@@ -22,6 +22,7 @@ import { FormFields } from '../shared/interfaces/forms.interface';
 import { Common } from '../shared/utilities/common.functions';
 import { SearchContext, SearchState } from '../shared/services/search-context.service';
 import { AssetShareComponent } from './components/asset-share.component';
+import { AssetShareDialogOptions } from '../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -163,13 +164,13 @@ export class AssetComponent implements OnInit, OnDestroy {
       ));
   }
 
-  public onCreateShareDialog(params: Pojo) {
+  public onCreateShareDialog(params: AssetShareDialogOptions) {
     this.dialogService.openComponentInDialog(
       {
         componentType: AssetShareComponent,
         dialogConfig: { position: { top: '3%' }, panelClass: 'wz-share-dialog' },
         inputOptions: {
-          enhancedAsset: params.asset,
+          enhancedAsset: params.enhancedAsset,
           subclipMarkers: params.subclipMarkers,
           formFields: params.formFields
         },

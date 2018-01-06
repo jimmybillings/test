@@ -61,4 +61,8 @@ export class CartConfirmTabComponent extends CommerceConfirmTab {
   public get canPurchase(): boolean {
     return this.licensesAreAgreedTo && this.shouldShowLicenseDetailsBtn();
   }
+
+  public shouldShowLicenseDetailsBtn(): boolean {
+    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
+  }
 }

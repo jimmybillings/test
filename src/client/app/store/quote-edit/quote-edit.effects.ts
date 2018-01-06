@@ -87,6 +87,8 @@ export class QuoteEditEffects {
         expirationDate: new Date(quoteEdit.sendDetails.salesManager.expirationDate),
         agreementId: quoteEdit.sendDetails.salesManager.offlineAgreement || undefined,
         salesManager: quoteEdit.sendDetails.salesManager.salesManager,
+        salesOwner: quoteEdit.sendDetails.billingAccount.salesOwner,
+        paymentTermsDays: quoteEdit.sendDetails.billingAccount.paymentTermsDays,
         billingAccountId: quoteEdit.sendDetails.billingAccount.id,
         invoiceContactType: invoiceContactType,
         invoiceContactId: quoteEdit.sendDetails.invoiceContact.id
