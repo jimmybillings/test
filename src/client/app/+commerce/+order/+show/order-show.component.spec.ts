@@ -50,9 +50,9 @@ export function main() {
       });
     });
 
-    describe('downloadMaster()', () => {
+    describe('download()', () => {
       it('changes the window\'s location', () => {
-        componentUnderTest.downloadMaster('https://this-is-a-url.com');
+        componentUnderTest.download('https://this-is-a-url.com');
         expect(mockWindow.nativeWindow.location.href).toBe('https://this-is-a-url.com');
       });
     });
@@ -219,14 +219,14 @@ export function main() {
 
     describe('showDownloadButtonFor()', () => {
       describe('returns true', () => {
-        it('when the asset on the lineItem has a masterDownloadUrl', () => {
-          expect(componentUnderTest.showDownloadButtonFor({ asset: { masterDownloadUrl: 'some-url' } })).toBe(true);
+        it('when the asset on the lineItem has a downloadUrl', () => {
+          expect(componentUnderTest.showDownloadButtonFor({ downloadUrl: 'some-url' })).toBe(true);
         });
       });
 
       describe('returns false', () => {
-        it('when the asset on the lineItem does not have a masterDownloadUrl', () => {
-          expect(componentUnderTest.showDownloadButtonFor({ asset: { assetId: 123 } })).toBe(false);
+        it('when the asset on the lineItem does not have a downloadUrl', () => {
+          expect(componentUnderTest.showDownloadButtonFor({ downloadUrl: null })).toBe(false);
         });
       });
     });

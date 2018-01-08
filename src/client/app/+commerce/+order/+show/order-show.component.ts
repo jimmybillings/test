@@ -36,8 +36,8 @@ export class OrderShowComponent {
     });
   }
 
-  public downloadMaster(masterUrl: string): void {
-    this.window.nativeWindow.location.href = masterUrl;
+  public download(url: string): void {
+    this.window.nativeWindow.location.href = url;
   }
 
   public assetCountLabelKeyFor(count: number): string {
@@ -81,7 +81,7 @@ export class OrderShowComponent {
   }
 
   public showDownloadButtonFor(lineItem: AssetLineItem): boolean {
-    return !!lineItem.asset.masterDownloadUrl;
+    return !!lineItem.downloadUrl;
   }
 
   public showAsperaButtonFor(lineItem: AssetLineItem): boolean {
