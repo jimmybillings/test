@@ -162,8 +162,8 @@
                     <div class="tools" flex="100" layout-padding>
                       <button
                         *ngIf="showDownloadButtonFor(lineItem); else noDownloadAvailable"
-                        [disabled]="!lineItem.asset.masterDownloadUrl"
-                        (click)="downloadMaster(lineItem.asset.masterDownloadUrl)"
+                        [disabled]="!lineItem.downloadUrl"
+                        (click)="download(lineItem.downloadUrl)"
                         mat-button
                         color="primary"
                         class="is-outlined download">
