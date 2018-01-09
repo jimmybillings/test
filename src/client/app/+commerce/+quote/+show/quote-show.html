@@ -15,7 +15,6 @@
   <section layout="row" layout-align="center start">
     <header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
       <div flex="100" layout="row" layout-align="space-between end">
-
         <div *ngIf="shouldDisplayReview" flex="grow">
           <h2 class="mat-display-1">
             {{ 'QUOTE.REVIEW_HEADER' | translate }} 
@@ -32,7 +31,10 @@
           class="tools"
           flex="none" 
           [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
-          <a color="primary" [routerLink]="['/quotes']" mat-icon-button title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
+          <a color="primary"
+            [routerLink]="['/quotes']"
+            mat-icon-button
+            title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
             <mat-icon>inbox</mat-icon>
           </a>
           <button
@@ -52,84 +54,71 @@
 <section *ngIf="shouldDisplayReview" class="quote-summary">
 	<div layout="row" flex="100" layout-align="center center">
     <div
+      class="details"
       layout="column"
       layout-gt-xs="row"
       flex="100"
       flex-gt-sm="95"
       flex-gt-md="85"
       flex-gt-lg="80"
-      layout-align-gt-xs="space-between end">
-      <div layout="column" layout-gt-xs="row" flex="100" layout-align-gt-xs="space-between end">
-        <div flex-gt-xs="65" flex="100" class="details">
-          <div class="mat-caption quote-info" flex-order-xs="2">
-            <span class="quote-number">
-              <strong>{{ 'QUOTE.SHOW.NUMBER_LABEL' | translate }}</strong>
-              <span class="number">{{ (quote | async).id }}</span>
-            </span>
-            <span>
-              <strong>{{ 'QUOTE.CREATED_ON_LABEL' | translate }} </strong>
-              {{ (quote | async).createdOn | date:'short' }}
-            </span>
-            <ng-container *ngIf="shouldShowRecipientInfo">
-              <span>
-                <strong>{{ 'QUOTE.RECIPIENT_NAME' | translate }} </strong>
-                {{ (quote | async).createdUserFullName || 'N/A' }}
-              </span>
-              <span>
-                <strong>{{ 'QUOTE.RECIPIENT_EMAIL' | translate }} </strong>
-                <a href="mailto: {{ (quote | async).createdUserEmailAddress }}">{{ (quote | async).createdUserEmailAddress}}</a> 
-              </span>
-            </ng-container>
-            <span [ngClass]="{expired: isExpired}">
-              <strong>{{ ( isExpired ? 'QUOTE.EXPIRED_LABEL' : 'QUOTE.EXPIRATION_LABEL') | translate }} </strong>
-              {{ (quote | async).expirationDate | date:'short' }}
-            </span>
-            <span *ngIf="(quote | async).bulkOrderId">
-              <strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>
-              {{ (quote | async).bulkOrderId }}
-            </span>
-            <span>
-              <strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
-              {{ trStringForPurchaseType | translate }}
-            </span>
-            <span class="offline-agreement-display" *ngIf="(offlineAgreementIds | async).length">
-              <strong>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }}</strong>
-              <span>{{ offlineAgreementIds | async }}</span>
-            </span>
-          </div>
-        </div>
-        <div class="cart-total" flex-gt-xs="60" flex="100" class="cart-total" flex-order-xs="-1">
-          <h5 class="mat-subhead status {{ (quote | async).quoteStatus.toLowerCase() }}">
+      layout-align-gt-xs="stretch">
+      <div flex="90" layout-padding>
+        <quote-info-component
+          [salesManager]="salesManager | async"
+          [user]="quoteRecipient | async"
+          [invoiceContact]="invoiceContact | async"
+          [billingAccount]="(quote | async).billingAccountData">
+        </quote-info-component>
+      </div>
+      <div
+        class="cart-total"
+        flex-gt-xs="10"
+        flex="100"
+        flex-order-xs="-1"
+        layout-padding
+        layout="column"
+        layout-align="space-between end">
+        <div flex="60">
+          <h3 class="mat-subhead status {{ (quote | async).quoteStatus.toLowerCase() }}">
             {{ (quote | async).quoteStatus }}
-          </h5>
-          <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal mat-headline">
-            <span class="total-label" flex="100">
-              {{ 'CART.CART_SUBTOTAL' | translate }} 
+          </h3>
+          <ng-container *ngIf="(quote | async).orderId as orderId">
+            <span class="mat-body">
+              <strong>{{ 'ORDER.SHOW.ORDER_NUMBER_LABEL' | translate }}</strong>
+              <a [routerLink]="['/orders', orderId]">{{ orderId }}</a>
             </span>
-            <span class="total-amount" flex="nogrow">
-              {{ (quote | async).subTotal | currency:'USD':true:'1.2-2' }}
-            </span>
-          </div>
-          <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount mat-headline">
-            <span class="total-label" flex="100">
-              {{ 'CART.CART_DISCOUNT' | translate }} 
-            </span>
-            <span class="total-amount" flex="nogrow">{{ (quote | async).discount }}</span>
-          </div> 
-          <div>
-            <div class="total mat-headline" flex="auto" layout="row" layout-align="end center">
-              <span class="total-label">
-                  {{ 'QUOTE.INDEX.TOTAL_LABEL' | translate }}
+          </ng-container>
+        </div>
+        <div flex layout="column" layout-align="end">
+          <ng-container *ngIf="hasDiscount">
+            <div flex="auto" layout="row" layout-align="end center" class="subtotal mat-headline">
+              <span class="total-label" flex="100">
+                {{ 'CART.CART_SUBTOTAL' | translate }} 
               </span>
-              <span class="total-amount">
-                  {{ (quote | async).total | currency:'USD':true:'1.2-2' }}
+              <span class="total-amount" flex="nogrow">
+                {{ (quote | async).subTotal | currency:'USD':true:'1.2-2' }}
               </span>
             </div>
+            <div flex="auto" layout="row" layout-align="end center" class="discount mat-headline">
+              <span class="total-label" flex="100">
+                {{ 'CART.CART_DISCOUNT' | translate }} 
+              </span>
+              <span class="total-amount" flex="nogrow">{{ (quote | async).discount }}</span>
+            </div> 
+            <mat-divider></mat-divider>
+          </ng-container>
+          <div class="total mat-headline" flex="auto" layout="row" layout-align="end end">
+            <span class="total-label">
+              {{ 'QUOTE.INDEX.TOTAL_LABEL' | translate }}
+            </span>
+            <span class="total-amount">
+              {{ (quote | async).total | currency:'USD':true:'1.2-2' }}
+            </span>
           </div>
         </div>
       </div>
     </div>
-	</div>
+  </div>
 </section>
 
 <section *ngIf="displayActiveOfflineAgreementToPurchaser" class="offline-agreement-section">
@@ -143,7 +132,7 @@
         flex-gt-md="55">
         <div>
           <strong>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }}</strong>
-          <span>{{ offlineAgreementIds | async }}</span>
+          <span>{{ offlineAgreementIds }}</span>
         </div>
       </div>
     </div>

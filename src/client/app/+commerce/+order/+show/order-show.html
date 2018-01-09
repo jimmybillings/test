@@ -29,7 +29,7 @@
     <div layout="row" flex="100" layout-align="center center">
       <div layout="column" layout-gt-xs="row" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" 
           layout-align-gt-xs="space-between end">
-        <div flex-gt-xs="40" flex="100" class="details">
+        <div flex-gt-xs="auto" flex="100" class="details">
           <div class="mat-caption order-info">
             <span class="order-number">
               <strong>{{ 'ORDER.SHOW.ORDER_NUMBER_LABEL' | translate }}</strong>
@@ -53,7 +53,7 @@
             </a>
           </div>
         </div>
-        <div class="cart-total" flex-gt-xs="60" flex="100">
+        <div class="cart-total" flex-gt-xs="30" flex="100">
           <div 
             *ngIf="isRefundedOrder(order)" 
             class="total mat-headline indicate-refund" 

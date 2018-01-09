@@ -56,7 +56,6 @@ cart-component section.header, quote-edit-component section.header {
 }
 .commerce-total,
 .cart-total {
-  padding: 2px 1px 0 0;
   .select-usage-warn {
     margin-top: 2px;
     font-size: 15px;
@@ -68,10 +67,8 @@ cart-component section.header, quote-edit-component section.header {
   .total {
     text-align: right;
     letter-spacing: -.02em;
-    line-height: 48px;
     margin: 0;
     .total-label {
-      line-height: 40px;
       font-weight: 300;
       letter-spacing: 0;
       opacity: .7;
@@ -81,7 +78,6 @@ cart-component section.header, quote-edit-component section.header {
       min-width: 130px;
       &::first-letter {
         font-size: .68em;
-        line-height: 2.8;
         vertical-align: top;
         letter-spacing: 0;
       }

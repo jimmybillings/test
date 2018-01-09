@@ -2,72 +2,12 @@
   <h2 class="commerce-heading">{{'QUOTE.EDIT.CONFIRM_TAB_PG_TITLE' | translate}}</h2>
 </header>
 <div *ngIf="sendDetails | async as sendDetails">
-<section class="contact-data overview" flex="100" layout="row">
-  <div class="contact-data" flex="33" flex-xs="100" layout="row" layout-align="space-between start">
-    <ul class="mat-caption">
-      <li>
-        <strong>{{'QUOTE.EDIT.EXPIRATION_DATE_KEY' | translate}}</strong>{{ sendDetails.salesManager.expirationDate}}
-      </li>
-      <li>
-        <strong>{{'QUOTE.EDIT.SALES_MANAGER_KEY' | translate}}</strong>{{ sendDetails.salesManager.salesManager}}
-      </li>
-      <li *ngIf="sendDetails.salesManager.offlineAgreement">
-        <strong class="offline-agreement-label">{{'QUOTE.EDIT.OFFLINE_AGREEMENT_KEY' | translate}}</strong>
-        <div class="offline-agreement">{{ sendDetails.salesManager.offlineAgreement}}</div>
-      </li>
-    </ul>
-    <button mat-button class="mini is-outlined" color="primary" (click)="goToTab(1)">
-      {{ 'CART.CONFIRM.EDIT' | translate }}
-    </button>
-  </div>
-</section>
-<section class="recipient" flex="100" layout="column" layout-gt-xs="row" layout-align="space-between">
-  <div flex="33" class="contact-data card">
-    <h5 class="mat-title">{{ 'QUOTE.EDIT.RECIPIENT_TITLE' | translate }}</h5>
-    <ul class="mat-caption">
-      <li>
-        <strong>{{'QUOTE.EDIT.CUSTOMER_NAME_KEY' | translate}}</strong>{{ sendDetails.user.customerName}}
-      </li>
-      <li>
-        <strong>{{'QUOTE.EDIT.CUSTOMER_EMAIL_KEY' | translate}}</strong>{{ sendDetails.user.email}}
-      </li>
-      <li>
-        <strong>{{'QUOTE.EDIT.ACCOUNT_KEY' | translate}}</strong>{{ sendDetails.user.accountName}}
-      </li>
-    </ul>
-  </div>
-  <div flex="33" class="contact-data card">
-    <h5 class="mat-title">{{ 'QUOTE.EDIT.BILLING_ACCOUNT_TITLE' | translate }}</h5>
-    <ul class="mat-caption">
-      <li>
-        <strong>{{'QUOTE.EDIT.ACCOUNT_NAME_KEY' | translate}}</strong>{{ sendDetails.billingAccount.name}}
-      </li>
-      <li>
-        <strong>{{'QUOTE.EDIT.SALES_OWNER_KEY' | translate}}</strong>{{ sendDetails.billingAccount.salesOwner}}
-      </li>
-      <li>
-        <strong>{{'QUOTE.EDIT.PURCHASE_ON_CREDIT_KEY' | translate}}</strong>{{ sendDetails.billingAccount.purchaseOnCredit}}
-      </li>
-      <li>
-        <strong>{{'QUOTE.EDIT.CREDIT_EXEMPTION_KEY' | translate}}</strong>{{ sendDetails.billingAccount.creditExemption}}
-      </li>
-      <li>
-        <strong>{{'QUOTE.EDIT.PAYMENT_TERMS_DAYS_KEY' | translate}}</strong>{{ sendDetails.billingAccount.paymentTermsDays}}
-      </li>
-    </ul>
-  </div>
-  <div flex="33" class="contact-data card">
-    <h5 class="mat-title">{{ 'QUOTE.EDIT.INVOICE_CONTACT_TITLE' | translate }}</h5>
-    <ul class="mat-caption">
-      <li>
-        <strong>{{'QUOTE.EDIT.CONTACT_NAME_KEY' | translate}}</strong>{{ sendDetails.invoiceContact.name}}
-      </li>
-      <li>
-        <strong>{{'QUOTE.EDIT.CONTACT_EMAIL_KEY' | translate}}</strong>{{ sendDetails.invoiceContact.contactEmail}}
-      </li>
-    </ul>
-  </div>
-</section>
+  <quote-info-component
+    [salesManager]="sendDetails.salesManager"
+    [user]="sendDetails.user"
+    [invoiceContact]="sendDetails.invoiceContact"
+    [billingAccount]="sendDetails.billingAccount">
+  </quote-info-component>
 </div>
 <section class="contact-data summary-heading" flex="100" layout="row">
   <div flex="33"  flex-xs="100" layout="row" layout-align="space-between start">

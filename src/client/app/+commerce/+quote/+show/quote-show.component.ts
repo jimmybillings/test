@@ -3,7 +3,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { QuoteService } from '../../../shared/services/quote.service';
-import { Quote, QuoteState, AssetLineItem, PurchaseType } from '../../../shared/interfaces/commerce.interface';
+import {
+  Quote, QuoteState, AssetLineItem, PurchaseType, SendDetailsSalesManager, SendDetailsUser, SendDetailsInvoiceContact
+} from '../../../shared/interfaces/commerce.interface';
 import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { CommentParentObject } from '../../../shared/interfaces/comment.interface';
@@ -58,10 +60,6 @@ export class QuoteShowComponent implements OnInit {
     return !!this.quoteService.state.data.discount;
   }
 
-  public get isExpired(): boolean {
-    return this.quoteService.state.data.quoteStatus === 'EXPIRED';
-  }
-
   public get shouldDisplayReview(): boolean {
     return this.userCan.administerQuotes() || this.quoteService.state.data.quoteStatus !== 'ACTIVE';
   }
@@ -71,13 +69,9 @@ export class QuoteShowComponent implements OnInit {
   }
 
   public get displayActiveOfflineAgreementToPurchaser(): boolean {
-    let offlineLicense: string;
-    this.offlineAgreementIds.take(1).subscribe((data: string) => {
-      offlineLicense = data;
-    });
     return !this.userCan.administerQuotes() &&
       this.quoteService.state.data.quoteStatus === 'ACTIVE' &&
-      offlineLicense.length !== 0;
+      this.offlineAgreementIds.length !== 0;
   }
 
   public get shouldShowRecipientInfo(): boolean {
@@ -116,15 +110,42 @@ export class QuoteShowComponent implements OnInit {
     return this.store.select(state => state.comment.quote.pagination.totalCount);
   }
 
-  public get offlineAgreementIds(): Observable<string> {
-    return this.quoteService.data.map((data: QuoteState) => {
-      let ids: string[] = [];
-      data.data.projects.forEach(project => {
-        if (project.lineItems) project.lineItems.forEach((lineItem: AssetLineItem) => {
-          if (lineItem.externalAgreementIds) lineItem.externalAgreementIds.forEach(id => ids.push(id));
-        });
+  public get offlineAgreementIds(): string {
+    let ids: string[] = [];
+    this.quoteService.state.data.projects.forEach(project => {
+      if (project.lineItems) project.lineItems.forEach((lineItem: AssetLineItem) => {
+        if (lineItem.externalAgreementIds) lineItem.externalAgreementIds.forEach(id => ids.push(id));
       });
-      return ids.filter((id: string, index: number, ids: string[]) => id !== ids[index - 1]).join(', ');
+    });
+    return ids.filter((id: string, index: number, ids: string[]) => id !== ids[index - 1]).join(', ');
+  }
+
+  public get salesManager(): Observable<SendDetailsSalesManager> {
+    return this.quote.map((quote: Quote) => {
+      return {
+        salesManager: quote.salesManager,
+        expirationDate: quote.expirationDate,
+        offlineAgreement: this.offlineAgreementIds
+      };
+    });
+  }
+
+  public get quoteRecipient(): Observable<SendDetailsUser> {
+    return this.quote.map((quote: Quote) => {
+      return {
+        customerName: quote.createdUserFullName,
+        email: quote.createdUserEmailAddress,
+        accountName: quote.ownerData.accountName
+      };
+    });
+  }
+
+  public get invoiceContact(): Observable<SendDetailsInvoiceContact> {
+    return this.quote.map((quote: Quote) => {
+      return quote.invoiceContact ? {
+        name: `${quote.invoiceContact.firstName} ${quote.invoiceContact.lastName}`,
+        contactEmail: quote.invoiceContact.email
+      } : null;
     });
   }
 
