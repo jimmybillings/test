@@ -209,6 +209,9 @@ export interface Quote extends CommonCommerce {
   billingAccountId?: number;
   invoiceContact?: ViewAddress;
   billingAccountData?: SendDetailsBillingAccount;
+  salesManager?: string;
+  orderId?: number;
+  ownerData?: any;
 }
 
 export interface QuoteEdit {
@@ -236,6 +239,7 @@ export interface SendDetailsBillingAccount {
   id?: number;
   name?: string;
   salesOwner?: string;
+  salesManager?: string;
   purchaseOnCredit?: number;
   creditExemption?: number;
   paymentTermsDays?: string;

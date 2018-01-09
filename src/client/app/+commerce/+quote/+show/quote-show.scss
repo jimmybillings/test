@@ -39,41 +39,6 @@ quote-show-component .project .assets {
   padding: 0 12px 12px 12px;
   display: flex;
 }
-.quote-summary {
-  padding-left: 4px;
-  padding-right: 4px;
-  .details {
-    opacity: .7;
-    margin: 12px 0 13px 0;
-  }
-  .quote-info {
-    line-height: 1.4;
-    & > span {
-      display: flex;
-      margin: 2px 0;
-      strong {
-        padding-right: 5px;
-      }
-    }
-    & > span.offline-agreement-display {
-      display: block;
-      strong {
-        display: block;
-      }
-      span { 
-        display: block;
-        font-style: italic;
-        font-size: .94em;
-      }
-    }
-    a {
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }    
-  }
-}
 quote-show-component .offline-agreement-section {
   .offline-agreement-display {
     margin: 10px 0;

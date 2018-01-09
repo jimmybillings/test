@@ -43,6 +43,7 @@ import { QuotePurchaseTypeComponent } from './+quote/components/quote-purchase-t
 import { QuoteEditAssetComponent } from './+quote/components/quote-edit-asset.component';
 import { QuoteShowAssetComponent } from './+quote/components/quote-show-asset.component';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
+import { QuoteInfoComponent } from './+quote/components/quote-info.component';
 
 // Quote Edit Tabs
 import { QuoteEditTabComponent } from './+quote/+edit/components/tabs/quote-edit-tab.component';
@@ -129,7 +130,8 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuoteEditRecipientTabComponent,
     QuoteEditConfirmTabComponent,
     WzFormAutoCompleteViewComponent,
-    WzFormPicklistComponent
+    WzFormPicklistComponent,
+    QuoteInfoComponent
   ],
   exports: [CartComponent, OrderShowComponent, OrdersComponent],
   providers: [

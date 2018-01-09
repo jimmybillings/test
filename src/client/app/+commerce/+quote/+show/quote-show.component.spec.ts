@@ -133,20 +133,6 @@ export function main() {
       });
     });
 
-    describe('isExpired()', () => {
-      it('is true when quote status is expired', () => {
-        mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'EXPIRED' } } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-        expect(componentUnderTest.isExpired).toBe(true);
-      });
-
-      it('is false when quote status is not expired', () => {
-        mockQuoteService = { data: Observable.of({}), state: { data: { quoteStatus: 'ACTIVE' } } };
-        componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-        expect(componentUnderTest.isExpired).toBe(false);
-      });
-    });
-
     describe('shouldDisplayReview()', () => {
       it('is true if the user can administer quotes', () => {
         mockCapabilities = { administerQuotes: () => true };
@@ -197,14 +183,15 @@ export function main() {
       it('is true if the user cannot administer quotes and the quote status is active, and lineItems have externalAgreementIds ', () => {
         mockCapabilities = { administerQuotes: () => false };
         mockQuoteService = {
-          data: Observable.of({
+          data: Observable.of({ data: {} }),
+          state: {
             data: {
+              quoteStatus: 'ACTIVE',
               projects: [
                 { lineItems: [{ externalAgreementIds: ['abc-123'] }] }
               ]
             }
-          }),
-          state: { data: { quoteStatus: 'ACTIVE' } }
+          }
         };
         componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, mockChangeDetectorRef);
         expect(componentUnderTest.displayActiveOfflineAgreementToPurchaser).toBe(true);
@@ -213,14 +200,15 @@ export function main() {
       it('is false if lineItems do NOT have externalAgreementIds ', () => {
         mockCapabilities = { administerQuotes: () => false };
         mockQuoteService = {
-          data: Observable.of({
+          data: Observable.of({ data: {} }),
+          state: {
             data: {
+              quoteStatus: 'ACTIVE',
               projects: [
                 { lineItems: [{}] }
               ]
             }
-          }),
-          state: { data: { quoteStatus: 'ACTIVE' } }
+          }
         };
         componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, mockChangeDetectorRef);
         expect(componentUnderTest.displayActiveOfflineAgreementToPurchaser).toBe(false);
@@ -229,14 +217,15 @@ export function main() {
       it('is false if the user can administer quotes', () => {
         mockCapabilities = { administerQuotes: () => true };
         mockQuoteService = {
-          data: Observable.of({
+          data: Observable.of({ data: {} }),
+          state: {
             data: {
+              quoteStatus: 'ACTIVE',
               projects: [
                 { lineItems: [{ externalAgreementIds: ['abc-123'] }] }
               ]
             }
-          }),
-          state: { data: { quoteStatus: 'ACTIVE' } }
+          }
         };
         componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, mockChangeDetectorRef);
         expect(componentUnderTest.displayActiveOfflineAgreementToPurchaser).toBe(false);
@@ -245,14 +234,15 @@ export function main() {
       it('is false if the quoteStaus is not ACTIVE', () => {
         mockCapabilities = { administerQuotes: () => false };
         mockQuoteService = {
-          data: Observable.of({
+          data: Observable.of({ data: {} }),
+          state: {
             data: {
+              quoteStatus: 'EXPIRED',
               projects: [
                 { lineItems: [{ externalAgreementIds: ['abc-123'] }] }
               ]
             }
-          }),
-          state: { data: { quoteStatus: 'EXPIRED' } }
+          }
         };
         componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService, null, mockChangeDetectorRef);
         expect(componentUnderTest.displayActiveOfflineAgreementToPurchaser).toBe(false);
@@ -303,101 +293,94 @@ export function main() {
       describe('should return any externalAgreementIds from the quote\'s lineItems', () => {
         it('for 1 lineItem in 1 project', () => {
           mockQuoteService = {
-            data: Observable.of({ data: { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }] }] } })
+            data: Observable.of({ data: {} }),
+            state: { data: { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }] }] } }
           };
           componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-          let actualIds: string;
-          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
-          expect(actualIds).toEqual('abc-123');
+          expect(componentUnderTest.offlineAgreementIds).toEqual('abc-123');
         });
 
         it('for 1 lineItem in many projects', () => {
           mockQuoteService = {
-            data: Observable.of({
+            data: Observable.of({ data: {} }),
+            state: {
               data: {
                 projects: [
                   { lineItems: [{ externalAgreementIds: ['abc-123'] }] },
                   { lineItems: [{ externalAgreementIds: ['def-456'] }] }
                 ]
               }
-            })
+            }
           };
           componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-          let actualIds: string;
-          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
-          expect(actualIds).toEqual('abc-123, def-456');
+          expect(componentUnderTest.offlineAgreementIds).toEqual('abc-123, def-456');
         });
 
         it('for many lineItems in 1 project', () => {
           mockQuoteService = {
-            data: Observable.of({
+            data: Observable.of({ data: {} }),
+            state: {
               data: { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['def-456'] }] }] }
-            })
+            }
           };
           componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-          let actualIds: string;
-          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
-          expect(actualIds).toEqual('abc-123, def-456');
+          expect(componentUnderTest.offlineAgreementIds).toEqual('abc-123, def-456');
         });
 
         it('for many lineItems in many projects', () => {
           mockQuoteService = {
-            data: Observable.of({
+            data: Observable.of({ data: {} }),
+            state: {
               data: {
                 projects: [
                   { lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['def-456'] }] },
                   { lineItems: [{ externalAgreementIds: ['fgh-789'] }, { externalAgreementIds: ['ijk-012'] }] }
                 ]
               }
-            })
+            }
           };
           componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-          let actualIds: string;
-          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
-          expect(actualIds).toEqual('abc-123, def-456, fgh-789, ijk-012');
+          expect(componentUnderTest.offlineAgreementIds).toEqual('abc-123, def-456, fgh-789, ijk-012');
         });
 
         it('with duplicate identifiers', () => {
           mockQuoteService = {
-            data: Observable.of({
+            data: Observable.of({ data: {} }),
+            state: {
               data: { projects: [{ lineItems: [{ externalAgreementIds: ['abc-123'] }, { externalAgreementIds: ['abc-123'] }] }] }
-            })
+            }
           };
           componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-          let actualIds: string;
-          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
-          expect(actualIds).toEqual('abc-123');
+          expect(componentUnderTest.offlineAgreementIds).toEqual('abc-123');
         });
 
         it('with no identifiers', () => {
           mockQuoteService = {
-            data: Observable.of({
+            data: Observable.of({ data: {} }),
+            state: {
               data: { projects: [{ lineItems: [{ some: 'lineItem' }, { some: 'lineItem' }] }] }
-            })
+            }
           };
           componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-          let actualIds: string;
-          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
-          expect(actualIds).toEqual('');
+          expect(componentUnderTest.offlineAgreementIds).toEqual('');
         });
 
         it('with no lineItems', () => {
           mockQuoteService = {
-            data: Observable.of({
+            data: Observable.of({ data: {} }),
+            state: {
               data: { projects: [{ feeLineItems: [{ some: 'feeLineItem' }] }] }
-            })
+            }
           };
           componentUnderTest = new QuoteShowComponent(null, mockQuoteService, null, mockChangeDetectorRef);
-          let actualIds: string;
-          componentUnderTest.offlineAgreementIds.take(1).subscribe(ids => actualIds = ids);
 
-          expect(actualIds).toEqual('');
+          expect(componentUnderTest.offlineAgreementIds).toEqual('');
         });
       });
     });

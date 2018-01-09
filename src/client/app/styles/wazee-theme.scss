@@ -12,6 +12,7 @@
 @import '../+commerce/+order/components/invoice-theme';
 @import '../+commerce/+quote/+show/quote-show-theme';
 @import '../+commerce/+quote/+edit/quote-edit-theme';
+@import '../+commerce/+quote/components/quote-info-theme';
 @import '../+commerce/components/commerce-header/commerce-header-theme';
 @import '../+commerce/components/commerce-list/commerce-list-theme';
 @import '../+commerce/components/line-item/fee-line-items-theme';
@@ -88,6 +89,7 @@
   @include wz-order-show-theme($theme);
   @include wz-quote-show-theme($theme);
   @include wz-quote-edit-theme($theme);
+  @include wz-quote-info-theme($theme);
   @include wz-commerce-header-theme($theme);
   @include wz-commerce-list-theme($theme);
   @include wz-fee-line-items-theme($theme);

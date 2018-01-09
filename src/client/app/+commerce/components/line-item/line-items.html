@@ -27,7 +27,7 @@
 				[rightsReproduction]="lineItem.rightsManaged"
 				[hasAttributes]="!!lineItem.attributes"
 				[otherProjects]="otherProjects"
-				[userCanCreateSubclips]="userCan.createSubclips(lineItem)"
+				[userCanCreateSubclips]="userCan.createSubclips(lineItem.asset)"
 				[userCanAdministerQuotes]="userCan.administerQuotes()"
 				[assetIsSubclipped]="isSubclipped(lineItem.asset)"
 				[quoteType]="quoteType"
