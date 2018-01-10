@@ -295,6 +295,10 @@ export class AssetComponent implements OnInit, OnDestroy {
         return 'quote';
       }
 
+      case 'orderAsset': {
+        return 'order';
+      }
+
       default: {
         return 'cart';
       }

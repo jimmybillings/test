@@ -1,6 +1,6 @@
 import { Common, Pagination } from './common.interface';
 
-export type ObjectType = 'collection' | 'cart' | 'quote' | 'lineItem';
+export type ObjectType = 'collection' | 'cart' | 'quote' | 'order' | 'lineItem';
 
 export type CommentAccess = 'Commenter' | 'Viewer' | 'Editor';
 

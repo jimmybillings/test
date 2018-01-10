@@ -88,7 +88,6 @@
           </button>
           <button
             mat-icon-button
-            [disabled]="!(userCanEditCollection | async)"
             title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}"
             (click)="toggleCommentsVisibility()">
               <mat-icon>mode_comment</mat-icon>

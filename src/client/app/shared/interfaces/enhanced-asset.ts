@@ -8,6 +8,7 @@ interface InternalCache {
 }
 
 export type AssetType = 'collectionAsset' | 'quoteEditAsset' | 'searchAsset' | 'quoteShowAsset' | 'orderAsset' | 'cartAsset';
+export type AccessPath = 'ContentFilter' | 'ParentObject' | 'ShareUser';
 
 export function enhanceAsset(asset: commerce.Asset | common.Asset, type: AssetType, parentId?: Number | string): EnhancedAsset {
   return Object.assign(new EnhancedAsset(), asset, { type, parentId }).normalize();
@@ -26,6 +27,7 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
   public readonly name: string;  // clip name in common.Asset, something else in clip API response
   public readonly primary?: Array<{ value: string }> | commerce.Metadatum[];
   public readonly transcodeTargets?: string[];
+  public readonly accessPath: AccessPath;
 
   // defined in commerce.Asset only
   public readonly assetName?: string;
@@ -168,6 +170,14 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
 
   public get routerLink(): any[] {
     return this.getCached('routerLink');
+  }
+
+  public get isViewable(): boolean {
+    return this.accessPath === 'ContentFilter';
+  }
+
+  public get isChildOfViewableObject(): boolean {
+    return this.accessPath === 'ParentObject';
   }
 
   //// for initialization -- merges differently defined asset properties into a normalized set
