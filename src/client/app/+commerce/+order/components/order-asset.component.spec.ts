@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: OrderAssetComponent;
 
     beforeEach(() => {
-      componentUnderTest = new OrderAssetComponent();
+      componentUnderTest = new OrderAssetComponent(null);
     });
 
     it('has no testable functionality', () => {
