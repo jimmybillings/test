@@ -118,19 +118,19 @@ export function main() {
         rangeUnderTest.start = '2007-05-22';
         rangeUnderTest.end = '2007-05-22';
 
-        expect(rangeUnderTest.toHumanString()).toEqual('2007-05-22 - 2007-05-22');
+        expect(rangeUnderTest.toHumanString()).toEqual('5/22/2007 - 5/22/2007');
       });
 
       it('returns the right string when only start is set', () => {
         rangeUnderTest.start = '2009-04-23';
 
-        expect(rangeUnderTest.toHumanString()).toEqual('On or after 2009-04-23');
+        expect(rangeUnderTest.toHumanString()).toEqual('On or after 4/23/2009');
       });
 
       it('returns the right string when only end is set', () => {
         rangeUnderTest.end = '1998-09-27';
 
-        expect(rangeUnderTest.toHumanString()).toEqual('On or before 1998-09-27');
+        expect(rangeUnderTest.toHumanString()).toEqual('On or before 9/27/1998');
       });
 
       it('returns the right string when neither start nor end is set', () => {

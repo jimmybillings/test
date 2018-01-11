@@ -12,7 +12,11 @@ export class FormModel {
   create(form: FormFields[]): FormGroup {
     let newForm: any = {};
     form.forEach((field: FormFields) => {
-      newForm[field.name] = [field.value];
+      if (field.type === 'wzdate') {
+        newForm[field.name] = [this.calculateDateFor(field.default)];
+      } else {
+        newForm[field.name] = [field.value];
+      }
       newForm[field.name].push(this._getValidator(field));
     });
     return newForm;
@@ -141,5 +145,31 @@ export class FormModel {
 
   private checkboxRequired(control: FormGroup): ValidatorFn {
     return (control: FormControl) => control.value ? null : { mustBeCheckedError: 'Must be Checked' };
+  }
+
+  private calculateDateFor(dateSpec: string): string {
+    if (!dateSpec) return null;
+
+    const upperDateSpec = dateSpec.toUpperCase().replace(/ /g, '');
+
+    if (upperDateSpec === 'TODAY') return new Date().toISOString();
+
+    if (upperDateSpec.match(/^TODAY[+-][0-9]+$/)) {
+      const numberOfDaysToAdd: number = parseInt(upperDateSpec.replace('TODAY', ''));
+      const date: Date = new Date();
+      date.setDate(date.getDate() + numberOfDaysToAdd);
+
+      return date.toISOString();
+    }
+
+    let date: Date;
+
+    try {
+      date = new Date(dateSpec);
+    } catch (error) {
+      throw new Error(`Could not parse date specification '${dateSpec}'`);
+    }
+
+    return date.toISOString();
   }
 }

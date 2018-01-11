@@ -187,14 +187,14 @@ export class WzFormBase implements OnInit, OnChanges {
 
     const upperDateSpec = dateSpec.toUpperCase().replace(/ /g, '');
 
-    if (upperDateSpec === 'TODAY') return this.dateToString(new Date());
+    if (upperDateSpec === 'TODAY') return new Date().toISOString();
 
     if (upperDateSpec.match(/^TODAY[+-][0-9]+$/)) {
       const numberOfDaysToAdd: number = parseInt(upperDateSpec.replace('TODAY', ''));
       const date: Date = new Date();
       date.setDate(date.getDate() + numberOfDaysToAdd);
 
-      return this.dateToString(date);
+      return date.toISOString();
     }
 
     let date: Date;
@@ -205,7 +205,7 @@ export class WzFormBase implements OnInit, OnChanges {
       throw new Error(`Could not parse date specification '${dateSpec}'`);
     }
 
-    return this.dateToString(date);
+    return date.toISOString();
   }
 
   public shouldShowRequiredError(field: FormFields): boolean {
