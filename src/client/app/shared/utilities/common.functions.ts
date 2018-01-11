@@ -79,6 +79,14 @@ export class Common {
     return JSON.stringify(obj) === JSON.stringify({});
   }
 
+  public static convertToDateInstance(dateString: string): Date {
+    const utcDate = new Date(dateString);
+    const offsetInMinutes = utcDate.getTimezoneOffset();
+    const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
+    const fudgeFactor = 500;
+    return new Date(utcDate.getTime() + offsetInMilliseconds + fudgeFactor);
+  }
+
   private static isObject(item: any): boolean {
     return Common.isDefined(item) && typeof item === 'object' && !Array.isArray(item);
   }
