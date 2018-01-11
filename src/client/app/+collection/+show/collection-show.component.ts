@@ -273,9 +273,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       outputOptions: [{
         event: 'collectionSaved',
         callback: (event: CollectionFormEvent) => {
-          if (event.type === 'NAVIGATE') {
-            this.store.dispatch(factory => factory.router.goToCollection(event.collectionId));
-          }
+          this.store.dispatch(factory => factory.router.goToCollection(event.collectionId));
         },
         closeOnEvent: true
       }]

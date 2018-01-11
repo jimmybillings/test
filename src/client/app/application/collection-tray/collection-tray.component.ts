@@ -19,12 +19,16 @@ import { CollectionListDdComponent } from './components/collections-list-dd.comp
 
 export class CollectionTrayComponent implements OnInit, OnDestroy {
   @Input() userPreference: any;
+  @Input() urlPath: string;
   public pageSize: string;
   public collection: Collection;
   public collectionFormConfig: any;
   private enhancedAssets: { [uuid: string]: EnhancedAsset } = {};
   private collectionSubscription: Subscription;
-  constructor(private dialogService: WzDialogService, private store: AppStore, private detector: ChangeDetectorRef) { }
+  constructor(
+    private dialogService: WzDialogService,
+    private store: AppStore,
+    private detector: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.store.dispatch(factory => factory.activeCollection.loadIfNeeded());
@@ -93,8 +97,11 @@ export class CollectionTrayComponent implements OnInit, OnDestroy {
       outputOptions: [{
         event: 'collectionSaved',
         callback: (event: CollectionFormEvent) => {
-          if (event.type === 'NAVIGATE') {
+          // Only redirects if on the collection show page.
+          if (this.urlPath.includes('/collections/')) {
             this.store.dispatch(factory => factory.router.goToCollection(event.collectionId));
+          } else {
+            this.store.dispatch(factory => factory.snackbar.display('COLLECTION.COLLECTION_CREATED'));
           }
         },
         closeOnEvent: true

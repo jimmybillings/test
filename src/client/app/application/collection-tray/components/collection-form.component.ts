@@ -86,7 +86,7 @@ export class CollectionFormComponent implements OnInit {
   private createCollection(collection: Collection): void {
     collection.tags = collection.tags.split(/\s*,\s*/).filter((tag: string) => tag !== '');
     this.collectionsService.create(collection).subscribe(collection => {
-      this.collectionSaved.emit({ type: 'NAVIGATE', collectionId: collection.id });
+      this.collectionSaved.emit({ collectionId: collection.id });
       this.refreshCollections();
     }, this.error.bind(this));
   }
@@ -99,7 +99,7 @@ export class CollectionFormComponent implements OnInit {
 
     this.collectionsService.update(this.collection.id, backEndReadyCollectionUpdates)
       .subscribe(() => {
-        this.collectionSaved.emit({ type: 'NOOP' });
+        this.collectionSaved.emit();
         this.loadCollections();
         if (this.store.match(this.collection.id, state => state.activeCollection.collection.id)) {
           this.getActiveCollection();
@@ -115,7 +115,7 @@ export class CollectionFormComponent implements OnInit {
     this.collectionsService.duplicate(collection)
       .subscribe((collection: Collection) => {
         this.refreshCollections();
-        this.collectionSaved.emit({ type: 'NAVIGATE', collectionId: collection.id });
+        this.collectionSaved.emit({ collectionId: collection.id });
       }, this.error.bind(this));
   }
 
