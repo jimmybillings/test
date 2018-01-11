@@ -1,5 +1,5 @@
 // Currently, this stuff is used only by FilterComponent, but it can be genericized if needed.
-
+import { Common } from './common.functions';
 export type DateRangeKey = 'start' | 'end';
 
 export class DateRange {
@@ -22,7 +22,7 @@ export class DateRange {
   // or a string range of dates ("<date> - <date>").
   // Either way, only the part of the range specified by "key" will be set.
   public set(key: DateRangeKey, value: string): void {
-    if (value.indexOf(this.delimiter) !== -1) {
+    if (value && value.indexOf(this.delimiter) !== -1) {
       const [start, end]: string[] = value.split(this.delimiter);
       this.set(key, key === 'start' ? start : end);
       return;
@@ -54,7 +54,7 @@ export class DateRange {
 
   public toHumanString(): string {
     if (this.start && this.end) {
-      return this.toString();
+      return `${this.humanFormat(this.start)}${this.delimiter}${this.humanFormat(this.end)}`;
     }
 
     if (!this.start && !this.end) {
@@ -62,13 +62,18 @@ export class DateRange {
     }
 
     if (!this.start) {
-      return `On or before ${this.format(this.end)}`;
+      return `On or before ${this.humanFormat(this.end)}`;
     }
 
-    return `On or after ${this.format(this.start)}`;
+    return `On or after ${this.humanFormat(this.start)}`;
   }
 
   private format(date: any): string {
     return new Date(date).toJSON().slice(0, 10);
+  }
+
+  private humanFormat(date: any) {
+    const value = Common.convertToDateInstance(date);
+    return value.getMonth() + 1 + "/" + value.getDate() + "/" + value.getFullYear();
   }
 }
