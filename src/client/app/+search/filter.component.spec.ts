@@ -27,42 +27,34 @@ export function main() {
       let mockFilter: any;
 
       beforeEach(() => {
-        mockEvent = { target: {} };
+        mockEvent = { target: {}, targetElement: {} };
         mockFilter = { some: 'filter' };
       });
 
-      it('sets event target\'s "event" property to a formatted version of "value" property', () => {
-        mockEvent.target = { value: 'Thu Dec 1 2016', name: 'start' };
-
-        componentUnderTest.applyDateRange(mockEvent, mockFilter);
-
-        expect(mockEvent.target.event).toEqual('2016-12-01');
-      });
-
       it('sets dateRange start value to a formatted version of "value" property', () => {
-        mockEvent.target = { value: 'Thu Dec 1 2016', name: 'start' };
-
+        mockEvent.target = { value: new Date('Thu Dec 1 2016') };
+        mockEvent.targetElement = { name: 'start' };
         componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
         expect(componentUnderTest.dateRange.start).toEqual('2016-12-01');
       });
 
       it('sets dateRange end value to a formatted version of "value" property', () => {
-        mockEvent.target = { value: 'Thu Dec 15 2016', name: 'end' };
-
+        mockEvent.target = { value: new Date('Thu Dec 15 2016') };
+        mockEvent.targetElement = { name: 'end' };
         componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
         expect(componentUnderTest.dateRange.end).toEqual('2016-12-15');
       });
 
       it('throws an exception for an unknown "name" property', () => {
-        mockEvent.target = { name: 'whatever' };
+        mockEvent.targetElement = { name: 'whatever' };
 
         expect(() => componentUnderTest.applyDateRange(mockEvent, mockFilter)).toThrowError(TypeError);
       });
 
       it('throws an exception when event target\'s "value" property is not a date', () => {
-        mockEvent.target = { value: 'blah' };
+        mockEvent.target = { value: new Date('blah') };
 
         expect(() => componentUnderTest.applyDateRange(mockEvent, mockFilter)).toThrowError(TypeError);
       });
@@ -72,8 +64,8 @@ export function main() {
       });
 
       it('applies the search filter with the end of time when only the start date is present', () => {
-        mockEvent.target = { value: 'Sat Dec 3 2016', name: 'start' };
-
+        mockEvent.target = { value: new Date('Sat Dec 3 2016') };
+        mockEvent.targetElement = { name: 'start' };
         componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
         expect(componentUnderTest.onFilterEvent.emit).toHaveBeenCalledWith({
@@ -84,8 +76,8 @@ export function main() {
       });
 
       it('applies the search filter with the beginning of time when only the end date is present', () => {
-        mockEvent.target = { value: 'Sun Dec 4 2016', name: 'end' };
-
+        mockEvent.target = { value: new Date('Sun Dec 4 2016') };
+        mockEvent.targetElement = { name: 'end' };
         componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
         expect(componentUnderTest.onFilterEvent.emit).toHaveBeenCalledWith({
@@ -96,7 +88,8 @@ export function main() {
       });
 
       it('applies proper search filters twice as both dates are selected', () => {
-        mockEvent.target = { value: 'Mon Dec 5 2016', name: 'start' };
+        mockEvent.target = { value: new Date('Mon Dec 5 2016') };
+        mockEvent.targetElement = { name: 'start' };
         componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
         expect(componentUnderTest.onFilterEvent.emit).toHaveBeenCalledWith({
@@ -105,7 +98,8 @@ export function main() {
           customValue: '2016-12-05 - 3000-01-01'
         });
 
-        mockEvent.target = { value: 'Fri Dec 23 2016', name: 'end' };
+        mockEvent.target = { value: new Date('Fri Dec 23 2016') };
+        mockEvent.targetElement = { name: 'end' };
         componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
         expect(componentUnderTest.onFilterEvent.emit).toHaveBeenCalledWith({
@@ -116,44 +110,72 @@ export function main() {
       });
     });
 
-    describe('defaultDate()', () => {
+    describe('preselectDate()', () => {
       describe('with a filter value', () => {
-        const mockFilter: any = { filterValue: '2016-01-01 - 2016-12-31' };
+        let mockFilter: any = {
+          name: 'Date and Duration',
+          subFilters: [{
+            type: 'DateRange',
+            filterValue: '2016-01-01 - 2016-12-31'
+          }]
+        };
+        it('Sets the start date instance variables with the correct date for the date picker', () => {
+          mockFilter.subFilters[0].filterValue = '2016-01-01 - 2016-12-31';
+          componentUnderTest.newFilters = mockFilter;
 
-        it('returns the start value from the filter', () => {
-          expect(componentUnderTest.defaultDate(mockFilter, 'start'))
-            .toEqual('2016-01-01');
+          expect(componentUnderTest.startDate.value.toString()).toEqual('Fri Jan 01 2016 00:00:00 GMT-0700 (MST)');
         });
 
         it('returns null if the start value from the filter is the beginning of time', () => {
-          expect(componentUnderTest.defaultDate({ filterValue: '1000-01-01 - 2016-12-31' }, 'start'))
-            .toBeNull();
+          mockFilter.subFilters[0].filterValue = '1000-01-01 - 2016-12-31';
+          componentUnderTest.newFilters = mockFilter;
+
+          expect(componentUnderTest.startDate.value).toBeNull();
         });
 
         it('sets the dateRange start value from the filter (SIDE EFFECT!)', () => {
-          componentUnderTest.defaultDate(mockFilter, 'start');
+          mockFilter.subFilters[0].filterValue = '2016-01-01 - 2016-12-31';
+          componentUnderTest.newFilters = mockFilter;
 
           expect(componentUnderTest.dateRange.start).toEqual('2016-01-01');
         });
 
-        it('returns the end value from the filter', () => {
-          expect(componentUnderTest.defaultDate(mockFilter, 'end'))
-            .toEqual('2016-12-31');
+        it('Sets the end date instance variables with the correct date for the date picker', () => {
+          mockFilter.subFilters[0].filterValue = '2016-01-01 - 2016-12-31';
+          componentUnderTest.newFilters = mockFilter;
+
+          expect(componentUnderTest.endDate.value.toString()).toEqual('Sat Dec 31 2016 00:00:00 GMT-0700 (MST)');
         });
 
-        it('returns null if the end value from the filter is the end of time', () => {
-          expect(componentUnderTest.defaultDate({ filterValue: '2016-01-01 - 3000-01-01' }, 'end'))
-            .toBeNull();
+        it('returns null if the end value from the filter is the beginning of time', () => {
+          mockFilter.subFilters[0].filterValue = '2016-01-01 - 3000-01-01';
+          componentUnderTest.newFilters = mockFilter;
+
+          expect(componentUnderTest.endDate.value).toBeNull();
         });
 
         it('sets the dateRange end value from the filter (SIDE EFFECT!)', () => {
-          componentUnderTest.defaultDate(mockFilter, 'end');
+          mockFilter.subFilters[0].filterValue = '2016-01-01 - 2016-12-31';
+          componentUnderTest.newFilters = mockFilter;
 
           expect(componentUnderTest.dateRange.end).toEqual('2016-12-31');
         });
       });
 
-      for (const badFilter of [{}, null, undefined]) {
+      for (const badFilter of [
+        {
+          name: 'Date and Duration'
+        },
+        {
+          name: 'Date and Duration',
+          subFilters: []
+        },
+        {
+          name: 'Date and Duration',
+          subFilters: [{
+            type: 'DateRange',
+          }]
+        }]) {
         describe(`without a filter value (filter argument = ${JSON.stringify(badFilter)})`, () => {
           describe('with an existing dateRange value', () => {
             beforeEach(() => {
@@ -161,51 +183,16 @@ export function main() {
               componentUnderTest.dateRange.end = '2017-06-30';
             });
 
-            it('returns the existing dateRange start value', () => {
-              expect(componentUnderTest.defaultDate(badFilter, 'start')).toEqual('2017-06-01');
-            });
-
-            it('preserves the existing dateRange start value', () => {
-              componentUnderTest.defaultDate(badFilter, 'start');
-
+            it('Produces no error if the date filter is bad and preserves the existing dateRange start value', () => {
+              componentUnderTest.newFilters = badFilter;
               expect(componentUnderTest.dateRange.start).toEqual('2017-06-01');
             });
 
-            it('returns the existing dateRange end value', () => {
-              expect(componentUnderTest.defaultDate(badFilter, 'end')).toEqual('2017-06-30');
-            });
-
-            it('preserves the existing dateRange end value', () => {
-              componentUnderTest.defaultDate(badFilter, 'end');
-
+            it('Produces no error if the date filter is bad and preserves the existing dateRange end value', () => {
+              componentUnderTest.newFilters = badFilter;
               expect(componentUnderTest.dateRange.end).toEqual('2017-06-30');
             });
-          });
 
-          describe('without an existing dateRange value', () => {
-            it('returns null as the start value', () => {
-              expect(componentUnderTest.defaultDate(badFilter, 'start')).toBeNull();
-            });
-
-            it('preserves the existing null dateRange start value', () => {
-              componentUnderTest.dateRange.start = null;
-
-              componentUnderTest.defaultDate(badFilter, 'start');
-
-              expect(componentUnderTest.dateRange.start).toBeNull();
-            });
-
-            it('returns null as the end value', () => {
-              expect(componentUnderTest.defaultDate(badFilter, 'end')).toBeNull();
-            });
-
-            it('preserves the existing null dateRange end value', () => {
-              componentUnderTest.dateRange.end = null;
-
-              componentUnderTest.defaultDate(badFilter, 'end');
-
-              expect(componentUnderTest.dateRange.end).toBeNull();
-            });
           });
         });
       }

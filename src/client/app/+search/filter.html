@@ -30,7 +30,7 @@
           </div>
         </div>
 
-        <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [filters]="filter" [counted]="counted"></filter-component>
+        <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [newFilters]="filter" [counted]="counted"></filter-component>
 
         <mat-divider></mat-divider>
       </span>
@@ -44,7 +44,7 @@
           </div>
         </div>
 
-        <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [filters]="filter" [counted]="counted"></filter-component>
+        <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [newFilters]="filter" [counted]="counted"></filter-component>
       </span>
 
       <span *ngSwitchCase="'DateRange'" class="date-range">
@@ -56,17 +56,19 @@
           </div>
         </div>
 
-        <div class="input-container">
-          <input wzPikaday name="start" type="text" readonly="true" placeholder="Beginning of time" value="{{defaultDate(filter, 'start')}}"
-            (change)="applyDateRange($event, filter)" [maxDate]="defaultDate(filter, 'end')" />
-        </div>
-
-        <span class="connector">through</span>
-
-        <div class="input-container">
-          <input wzPikaday name="end" type="text" readonly="true" placeholder="End of time" value="{{defaultDate(filter, 'end')}}"
-            (change)="applyDateRange($event, filter)" [minDate]="defaultDate(filter, 'start')" />
-        </div>
+        <mat-form-field>
+          <input matInput name="start" [max]="endDate.value" [matDatepicker]="startDatePicker" placeholder="Start Date" (dateChange)="applyDateRange($event, filter)" [formControl]="startDate">
+          <mat-hint align="start">MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #startDatePicker></mat-datepicker>
+        </mat-form-field>
+                
+        <mat-form-field> 
+          <input matInput name="end" [min]="startDate.value" [matDatepicker]="endDatePicker" placeholder="End Date" (dateChange)="applyDateRange($event, filter)" [formControl]="endDate">
+          <mat-hint align="start">MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #endDatePicker></mat-datepicker>
+        </mat-form-field>    
       </span>
 
       <span *ngSwitchCase="'Text'" class="text">
@@ -79,7 +81,7 @@
             (keypress)="applyCustomValue($event, filter)">
         </mat-form-field>
 
-        <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [filters]="filter" [counted]="counted"></filter-component>
+        <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [newFilters]="filter" [counted]="counted"></filter-component>
       </span>
 
       <span *ngSwitchDefault>
@@ -94,7 +96,7 @@
            </span>
         </mat-checkbox>
 
-        <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [filters]="filter" [counted]="counted"></filter-component>
+        <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [newFilters]="filter" [counted]="counted"></filter-component>
       </span>
     </div>
   </li>
