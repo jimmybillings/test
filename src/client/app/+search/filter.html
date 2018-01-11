@@ -57,15 +57,15 @@
         </div>
 
         <mat-form-field>
-          <input matInput name="start" [max]="endDate.value" [matDatepicker]="startDatePicker" placeholder="Start Date" (dateChange)="applyDateRange($event, filter)" [formControl]="startDate">
-          <mat-hint align="start">MM/DD/YYYY</mat-hint>
+          <input matInput name="start" [max]="endDate.value" [matDatepicker]="startDatePicker" placeholder="{{'SEARCH.FILTERS.DATE_RANGE_START_PLACEHOLDER' | translate}}" (dateChange)="applyDateRange($event, filter)" [formControl]="startDate">
+          <mat-hint align="start">{{'SEARCH.FILTERS.DATE_RANGE_FORMAT' | translate}}</mat-hint>
           <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #startDatePicker></mat-datepicker>
         </mat-form-field>
                 
         <mat-form-field> 
-          <input matInput name="end" [min]="startDate.value" [matDatepicker]="endDatePicker" placeholder="End Date" (dateChange)="applyDateRange($event, filter)" [formControl]="endDate">
-          <mat-hint align="start">MM/DD/YYYY</mat-hint>
+          <input matInput name="end" [min]="startDate.value" [matDatepicker]="endDatePicker" placeholder="{{'SEARCH.FILTERS.DATE_RANGE_END_PLACEHOLDER' | translate}}" (dateChange)="applyDateRange($event, filter)" [formControl]="endDate">
+          <mat-hint align="start">{{'SEARCH.FILTERS.DATE_RANGE_FORMAT' | translate}}</mat-hint>
           <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #endDatePicker></mat-datepicker>
         </mat-form-field>    
