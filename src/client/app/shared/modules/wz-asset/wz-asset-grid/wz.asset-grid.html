@@ -11,9 +11,18 @@
         <span *ngIf="hasTitle(asset)" class="mdata-0">
           <span>{{ titleOf(asset) }}</span>
         </span>
-        <span *ngIf="commentCountFor(asset) | async" class="comment-count">
-          <span class="count">{{ commentCountFor(asset) | async }}</span>
+
+        <span class="asset-attribute-overlays">
+
+          <span *ngIf="commentCountFor(asset) | async" class="comment-count">
+            <span class="count">{{ commentCountFor(asset) | async }}</span>
+          </span>
+
+          <span *ngIf="nameOf(asset) == '1FL009_019' || nameOf(asset) == '1AX014_020'" class="asset-restricted-banner">
+            <span class="label" [ngStyle]="{'border-color':'#FFC107','background-color':'#FFC107', 'color':'#000'}">Private</span>
+          </span>
         </span>
+  
         <span *ngIf="hasFormatType(asset)" class="mdata-2">
           <span [ngClass]="formatClassNameFor(asset)" class="sd-hd">{{ formatTypeOf(asset) }}</span>
         </span>
