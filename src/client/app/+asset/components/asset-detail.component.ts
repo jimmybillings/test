@@ -129,7 +129,9 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canAddToActiveCollection(): boolean {
-    return !this.activeCollectionContainsAssetId && this.assetTypeIsOneOf('collectionAsset', 'searchAsset');
+    return this.userCan.editCollections() &&
+      !this.activeCollectionContainsAssetId &&
+      this.assetTypeIsOneOf('collectionAsset', 'searchAsset');
   }
 
   public get canRemoveFromActiveCollection(): boolean {
@@ -220,7 +222,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canComment(): boolean {
-    return !!this.commentFormConfig;
+    return this.assetTypeIsOneOf('cartAsset', 'quoteEditAsset', 'quoteShowAsset', 'collectionAsset', 'orderAsset');
   }
 
   public get canShare(): boolean {
@@ -319,7 +321,8 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canGoToSearchAssetDetails(): boolean {
-    return this.assetTypeIsOneOf('cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset');
+    return this.assetTypeIsOneOf('cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset') &&
+      this.asset.isViewable;
   }
 
   public goToSearchAssetDetails(): void {
@@ -357,7 +360,8 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get showDownloadButton(): boolean {
-    return this.asset.type !== 'orderAsset';
+    return this.assetTypeIsOneOf('quoteEditAsset', 'quoteShowAsset', 'searchAsset', 'collectionAsset', 'cartAsset') &&
+      this.asset.isViewable;
   }
 
   public get assetName(): string {

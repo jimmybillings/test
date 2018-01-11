@@ -16,6 +16,7 @@ export interface State {
   readonly cart?: Comments;
   readonly collection?: Comments;
   readonly quote?: Comments;
+  readonly order?: Comments;
   readonly lineItem?: Comments;
   readonly counts?: CommentCounts;
 }

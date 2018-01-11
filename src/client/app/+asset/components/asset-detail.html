@@ -95,7 +95,6 @@
           <button mat-icon-button
             (click)="toggleCommentsVisibility()"
             *ngIf="canComment"
-            [disabled]="!(userCanAddComments | async)"
             title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}">
               <mat-icon>mode_comment</mat-icon>
               <span *ngIf="(commentCount | async) > 0" class="comment-count">{{commentCount| async}}</span>

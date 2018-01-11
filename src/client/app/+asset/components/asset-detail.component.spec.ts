@@ -63,7 +63,7 @@ export function main() {
 
       componentUnderTest.window = window;
       componentUnderTest.subclipMarkers = undefined;
-      componentUnderTest.userCan = { administerQuotes: () => false } as any;
+      componentUnderTest.userCan = { administerQuotes: () => false, editCollections: () => true } as any;
     });
 
     describe('asset setter', () => {
@@ -233,13 +233,16 @@ export function main() {
     });
 
     describe('canComment getter', () => {
-      it('returns false when comment form config does not exist', () => {
+      it('returns false when the asset is a searchAsset', () => {
+        componentUnderTest.asset = { type: 'searchAsset' } as any;
         expect(componentUnderTest.canComment).toBe(false);
       });
 
       it('returns true when comment form config does exist', () => {
-        componentUnderTest.commentFormConfig = [{ some: 'item' }] as any;
-        expect(componentUnderTest.canComment).toBe(true);
+        ['cartAsset', 'quoteEditAsset', 'quoteShowAsset', 'collectionAsset', 'orderAsset'].forEach(type => {
+          componentUnderTest.asset = { type } as any;
+          expect(componentUnderTest.canComment).toBe(true);
+        });
       });
     });
 
@@ -712,18 +715,23 @@ export function main() {
 
 
     describe('canGoToSearchAssetDetails getter', () => {
-      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
-        { assetType: 'cartAsset', expectedResult: true },
-        { assetType: 'collectionAsset', expectedResult: true },
-        { assetType: 'orderAsset', expectedResult: true },
-        { assetType: 'quoteEditAsset', expectedResult: true },
-        { assetType: 'quoteShowAsset', expectedResult: true },
+      const tests: { assetType: AssetType, accessPath?: string, expectedResult: boolean }[] = [
+        { assetType: 'cartAsset', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'cartAsset', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'collectionAsset', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'collectionAsset', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'orderAsset', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'orderAsset', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'quoteEditAsset', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'quoteEditAsset', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'quoteShowAsset', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'quoteShowAsset', expectedResult: false, accessPath: 'SomethingElse' },
         { assetType: 'searchAsset', expectedResult: false },
       ];
 
       tests.forEach(test => {
-        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
-          componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}' and access path '${test.accessPath}'`, () => {
+          componentUnderTest.asset = enhanceAsset({ accessPath: test.accessPath } as any, test.assetType);
 
           expect(componentUnderTest.canGoToSearchAssetDetails).toBe(test.expectedResult);
         });
@@ -1075,18 +1083,22 @@ export function main() {
     });
 
     describe('showDownloadButton()', () => {
-      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
-        { assetType: 'cartAsset', expectedResult: true },
-        { assetType: 'collectionAsset', expectedResult: true },
-        { assetType: 'orderAsset', expectedResult: false },
-        { assetType: 'quoteEditAsset', expectedResult: true },
-        { assetType: 'quoteShowAsset', expectedResult: true },
-        { assetType: 'searchAsset', expectedResult: true },
+      const tests: { assetType: AssetType, expectedResult: boolean, accessPath: string }[] = [
+        { assetType: 'cartAsset', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'cartAsset', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'collectionAsset', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'collectionAsset', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'quoteEditAsset', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'quoteEditAsset', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'quoteShowAsset', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'searchAsset', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'searchAsset', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'orderAsset', expectedResult: false, accessPath: 'ContentFilter' }
       ];
 
       tests.forEach(test => {
-        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
-          componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}' and access path '${test.accessPath}'`, () => {
+          componentUnderTest.asset = enhanceAsset({ accessPath: test.accessPath } as any, test.assetType);
           expect(componentUnderTest.showDownloadButton).toBe(test.expectedResult);
         });
       });

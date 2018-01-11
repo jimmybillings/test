@@ -677,6 +677,34 @@ export function main() {
           expect(assetUnderTest.metadata).toEqual('some other metadata');
         });
       });
+
+      describe('isViewable getter', () => {
+        it('is true when the asset\'s accessPath value is \'ContentFilter\'', () => {
+          Object.assign(assetUnderTest, { accessPath: 'ContentFilter' });
+
+          expect(assetUnderTest.isViewable).toBe(true);
+        });
+
+        it('is false when the asset\'s accessPath value is not \'ContentFilter\'', () => {
+          Object.assign(assetUnderTest, { accessPath: 'NotContentFilter' });
+
+          expect(assetUnderTest.isViewable).toBe(false);
+        });
+      });
+
+      describe('isChildOfViewableObject getter', () => {
+        it('is true when the asset\'s accessPath value is \'ParentObject\'', () => {
+          Object.assign(assetUnderTest, { accessPath: 'ParentObject' });
+
+          expect(assetUnderTest.isChildOfViewableObject).toBe(true);
+        });
+
+        it('is false when the asset\'s accessPath value is not \'ParentObject\'', () => {
+          Object.assign(assetUnderTest, { accessPath: 'NotParentObject' });
+
+          expect(assetUnderTest.isChildOfViewableObject).toBe(false);
+        });
+      });
     });
   });
 }
