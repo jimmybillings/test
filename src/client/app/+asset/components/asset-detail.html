@@ -45,7 +45,7 @@
           {{ breadcrumbLabel[0] | uppercase | translate:{id: breadcrumbLabel[1]} }}
         </a>
         <span class="breadcrumb-separator"></span>
-        <span class="breadcrumb-current">{{asset.common[5].value}}</span>
+        <span class="breadcrumb-current">{{assetName}}</span>
         <ng-container *ngIf="asset.timeStart">
           <span class="breadcrumb-timecode-separator"></span>
           <span class="breadcrumb-current timecode">{{asset.inMarkerFrame | timecode }} - {{asset.outMarkerFrame | timecode }}</span>
@@ -57,6 +57,15 @@
         flex="auto" flex-order-xs="-1"
         [ngClass]="{ 'hide-for-comments': showComments, 'comments-closed': showComments === false }">
         <nav class="asset-options" flex layout-align="end stretch">
+          <!-- OPEN METADATA IN CORE -->
+          <a mat-icon-button
+            class="core-link"
+            *ngIf="userCan.editClips()" 
+            href="https://core.wazeedigital.com/video/edit/{{ assetName }}.do" 
+            target="_blank"
+            title="{{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_IN_CORE' | translate }}">
+            <mat-icon>domain</mat-icon>
+          </a>
           <button
             *ngIf="showDownloadButton"
             data-pendo='asset-detail_download-btn'

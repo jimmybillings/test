@@ -360,6 +360,10 @@ export class AssetDetailComponent implements OnInit {
     return this.asset.type !== 'orderAsset';
   }
 
+  public get assetName(): string {
+    return this._asset.common[5].value;
+  }
+
   private canBePurchased(asset: EnhancedAsset): boolean {
     const rights: string = asset.getMetadataValueFor('Rights.Reproduction');
     if (!rights) return false;

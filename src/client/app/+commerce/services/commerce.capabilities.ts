@@ -47,6 +47,10 @@ export class CommerceCapabilities {
     return this.userHas('AdministerQuotes');
   }
 
+  public editClips(): boolean {
+    return this.userHas('EditClips');
+  }
+
   public cloneQuote(quoteObservable: Observable<QuoteState>): Observable<boolean> {
     return quoteObservable.map((quoteState: QuoteState) => {
       const quote: Quote = quoteState.data;

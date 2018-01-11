@@ -63,6 +63,15 @@
     </a>
     <div flex-gt-xs="25" layout-sm="100" flex="auto" class="actions" layout-align="end start">
       <div class="tools">
+        <!-- OPEN METADATA IN CORE -->
+        <a mat-icon-button
+          class="core-link"
+          *ngIf="userCan.editClips()" 
+          href="https://core.wazeedigital.com/video/edit/{{ nameOf(asset) }}.do" 
+          target="_blank"
+          title="{{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_IN_CORE' | translate }}">
+          <mat-icon>domain</mat-icon>
+        </a>
         <!-- ADD TO CART -->
         <button
           data-pendo="asset-result_add-to-cart-btn"

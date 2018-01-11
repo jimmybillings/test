@@ -139,7 +139,7 @@ wz-asset-grid ul.asset-grid-view {
         max-height: 100%;
         padding-left: 6px;
         padding-right: 6px;
-        button[mat-icon-button] {
+        button[mat-icon-button], a[mat-icon-button] {
           height: 36px;
           width: 36px;
           padding: 6px;
