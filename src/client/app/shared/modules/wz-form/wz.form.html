@@ -93,24 +93,26 @@
 		<!--
         START: FORM INPUT FOR wzdate
       -->
-    <mat-input-container *ngIf="(field.type == 'wzdate')">
-      <input matInput
-      wzPikaday
-      [readonly]="true"
-      [minDate]="calculateDateFor(field.minimum)"
-      [maxDate]="calculateDateFor(field.maximum)"
-      [defaultDate]="calculateDateFor(field.default)"
-      (pikadayChange)="updateDateValueFor(field.name, $event.value)"
-      (blur)="onBlur()"
-      class="mat-block"
-      name="{{field.name}}"
-      [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
-      placeholder="{{field.label | translate}}"
-      type="{{field.type}}"
-      formControlName="{{field.name}}"
-      [required]="isRequiredField(field)"
-      id="{{field.name}}">
-    </mat-input-container>
+    <mat-form-field *ngIf="(field.type == 'wzdate')"> 
+      <input 
+        matInput 
+        id="{{field.name}}"
+        type="{{field.type}}"
+        name="{{field.name}}" 
+        placeholder="{{field.label | translate}}"
+        formControlName="{{field.name}}"
+        [required]="isRequiredField(field)"
+        [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+        [min]="calculateDateFor(field.minimum)" 
+        [max]="calculateDateFor(field.maximum)"
+        [matDatepicker]="datePicker" 
+        readonly="true" 
+        (click)="datePicker.open()" 
+        (blur)="onBlur()"
+        >
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+      <mat-datepicker #datePicker></mat-datepicker>
+    </mat-form-field>
 		<!--
         END: FORM INPUT FOR wzdate
       -->

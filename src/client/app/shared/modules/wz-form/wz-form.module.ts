@@ -10,7 +10,6 @@ import { WzInputTagsComponent } from './components/wz-input-tags/wz-input-tags.c
 import { WzInputSuggestionsComponent } from './components/wz-input-suggestions/wz-input-suggestions.component';
 import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-search/wz-autocomplete-search.component';
 import { EqualValidatorDirective } from './wz-validators/wz-equal-validator.directive';
-import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
 import { FormModel } from './wz.form.model';
 
 import { GooglePlacesService } from './services/google-places.service';
@@ -31,13 +30,11 @@ import { WzAddressFormComponent } from './components/wz-address-form/wz.address-
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
     EqualValidatorDirective,
-    WzPikaDayDirective,
     WzAutocompleteSearchComponent
   ],
   exports: [
     WzFormComponent,
     WzCcFormComponent,
-    WzPikaDayDirective,
     WzAutocompleteSearchComponent,
     WzAddressFormComponent,
     WzInputSuggestionsComponent

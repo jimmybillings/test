@@ -15,7 +15,6 @@ export class ProjectConfig extends SeedConfig {
     super();
     this.NPM_DEPENDENCIES = [
       ...this.NPM_DEPENDENCIES,
-      { src: 'pikaday/pikaday.js', inject: 'libs' },
       { src: 'clipboard/dist/clipboard.min.js', inject: 'libs' },
       { src: 'hammerjs/hammer.js', inject: 'libs' }
     ];

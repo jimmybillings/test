@@ -17,7 +17,7 @@
 			(onFilterEvent)="filterEvent($event)"
 			class="filter"
 			[counted]="(userPreferences.data | async).displayFilterCounts"
-			[filters]="filter.data | async">
+			[newFilters]="filter.data | async">
 		</filter-component>
 	</mat-sidenav>
 
