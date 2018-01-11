@@ -99,7 +99,7 @@ export class CollectionFormComponent implements OnInit {
 
     this.collectionsService.update(this.collection.id, backEndReadyCollectionUpdates)
       .subscribe(() => {
-        this.collectionSaved.emit();
+        this.collectionSaved.emit({ collectionId: this.collection.id });
         this.loadCollections();
         if (this.store.match(this.collection.id, state => state.activeCollection.collection.id)) {
           this.getActiveCollection();
