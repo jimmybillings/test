@@ -74,6 +74,6 @@ export class DateRange {
 
   private humanFormat(date: any) {
     const value = Common.convertToDateInstance(date);
-    return value.getMonth() + 1 + "/" + value.getDate() + "/" + value.getFullYear();
+    return value.getMonth() + 1 + '/' + value.getDate() + '/' + value.getFullYear();
   }
 }
