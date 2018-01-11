@@ -24,7 +24,7 @@
       .asset section.actions {
         nav.asset-options {
           background-color: rgba(mat-color($foreground, base), .6);
-          button[mat-icon-button] {
+          button[mat-icon-button], a[mat-icon-button] {
             @include text-contrast(mat-color($foreground, base));
             &:hover {
               background-color: rgba(mat-color($foreground, base), .18);

@@ -364,6 +364,10 @@ export class AssetDetailComponent implements OnInit {
       this.asset.isViewable;
   }
 
+  public get assetName(): string {
+    return this._asset.common[5].value;
+  }
+
   private canBePurchased(asset: EnhancedAsset): boolean {
     const rights: string = asset.getMetadataValueFor('Rights.Reproduction');
     if (!rights) return false;

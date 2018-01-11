@@ -1104,6 +1104,25 @@ export function main() {
       });
     });
 
+    describe('assetName getter', () => {
+      it('returns the name for an asset', () => {
+        componentUnderTest.asset = enhanceAsset(
+          {
+            common: [
+              { name: 'id', value: '33323666' },
+              { name: 'family', value: 'website' },
+              { name: 'ingested', value: '2014-01-30 00:00:00.0' },
+              { name: 'liveDate', value: '2014-02-03 00:00:00.0' },
+              { name: 'modified', value: '2016-08-30 07:14:07.0' },
+              { name: 'name', value: '1FL001_033' }]
+          } as any,
+          'searchAsset'
+        );
+
+        expect(componentUnderTest.assetName).toBe('1FL001_033');
+      });
+    });
+
     describe('onCreateShareDialog()', () => {
       it('emits the right event', () => {
         spyOn(componentUnderTest.createShareDialog, 'emit');

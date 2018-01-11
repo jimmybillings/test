@@ -33,7 +33,7 @@
     }
     .toolbar-actions {
       nav.asset-options {
-        button[mat-icon-button] {
+        button[mat-icon-button], a[mat-icon-button] {
           @include text-contrast(mat-color($foreground, base));
           &:disabled {
             mat-icon {

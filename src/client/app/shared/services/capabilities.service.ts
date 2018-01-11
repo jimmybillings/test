@@ -39,6 +39,7 @@ export class Capabilities implements CommerceCapabilities, CollectionCapabilitie
   editAccountAddress: () => boolean;
   addAccountAddress: () => boolean;
   administerQuotes: () => boolean;
+  editClips: () => boolean;
   cloneQuote: (quoteObservable: Observable<QuoteState>) => Observable<boolean>;
   viewLicenseAgreementsButton: () => boolean;
   calculatePrice: () => boolean;
