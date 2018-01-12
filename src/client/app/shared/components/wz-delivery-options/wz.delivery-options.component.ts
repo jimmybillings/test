@@ -16,6 +16,7 @@ export class WzDeliveryOptionsComponent implements OnInit {
   public deliveryOptions: Observable<DeliveryOptions>;
   public showMissingOptionsMessage: Observable<boolean>;
   public showLoadingSpinner: Observable<boolean>;
+  public showLoadingMessage: Observable<boolean>;
 
   constructor(private store: AppStore) { }
 
@@ -25,6 +26,7 @@ export class WzDeliveryOptionsComponent implements OnInit {
       return !state.deliveryOptions.loading && !state.deliveryOptions.hasDeliveryOptions;
     });
     this.showLoadingSpinner = this.store.select(state => state.deliveryOptions.loading);
+    this.showLoadingMessage = this.store.select(state => state.deliveryOptions.showLoadingMessage);
   }
 
   public iconStringFor(option: DeliveryOption): string {

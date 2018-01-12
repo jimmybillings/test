@@ -56,16 +56,28 @@ export function main() {
           it: 'returns the right state when there are delivery options',
           previousState: { hasDeliveryOptions: false, options: [], loading: true },
           actionParameters: { options: [{ some: 'options' }] },
-          expectedNextState: { hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false }
+          expectedNextState: {
+            hasDeliveryOptions: true, options: [{ some: 'options' }], loading: false, showLoadingMessage: false
+          }
         },
         {
           it: 'returns the right state when there are NO delivery options',
           previousState: { hasDeliveryOptions: false, options: [], loading: true },
           actionParameters: { options: [] },
-          expectedNextState: { hasDeliveryOptions: false, options: [], loading: false }
+          expectedNextState: { hasDeliveryOptions: false, options: [], loading: false, showLoadingMessage: false }
         }
       ]
     });
 
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'SetLoadingMessageFlag',
+      customTests: [
+        {
+          it: 'sets the showLoadingMessage in the state to true',
+          previousState: DeliveryOptionsState.initialState,
+          expectedNextState: { ...DeliveryOptionsState.initialState, showLoadingMessage: true }
+        }
+      ]
+    });
   });
 }
