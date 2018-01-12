@@ -38,8 +38,10 @@
     .notes {
       @include text-contrast(mat-color($mat-grey, 200));
       background-color: mat-color($mat-grey, 200, .75);
-      &:hover {
-        background-color: mat-color($mat-grey, 300);
+      &.editable {
+        &:hover {
+          background-color: mat-color($mat-grey, 300);
+        }
       }
     }
   }
