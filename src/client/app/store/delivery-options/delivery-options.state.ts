@@ -8,10 +8,12 @@ export interface State {
   hasDeliveryOptions: boolean;
   activeAssetId: number;
   options: DeliveryOptions;
+  showLoadingMessage: boolean;
 };
 
 export const initialState: State = {
   loading: false,
+  showLoadingMessage: false,
   hasDeliveryOptions: false,
   activeAssetId: null,
   options: []
@@ -43,8 +45,13 @@ export function reducer(state: State = initialState, action: AllowedActions): St
         ...Common.clone(state),
         loading: false,
         hasDeliveryOptions,
-        options: action.options
+        options: action.options,
+        showLoadingMessage: false
       };
+    }
+
+    case DeliveryOptionsActions.SetLoadingMessageFlag.Type: {
+      return { ...Common.clone(state), showLoadingMessage: true };
     }
 
     default: {

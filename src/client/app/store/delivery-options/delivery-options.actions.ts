@@ -38,6 +38,10 @@ export class InternalActionFactory extends ActionFactory {
   public deliveryFailure(error: ApiErrorResponse): DeliveryFailure {
     return new DeliveryFailure(error);
   }
+
+  public setLoadingMessageFlag(): SetLoadingMessageFlag {
+    return new SetLoadingMessageFlag();
+  }
 }
 
 export class Load implements Action {
@@ -92,4 +96,10 @@ export class DeliveryFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
-export type Any = Load | LoadSuccess | LoadFailure | Download | Deliver | DeliverySuccess | DeliveryFailure | DownloadViaAspera;
+export class SetLoadingMessageFlag implements Action {
+  public static readonly Type = '[Delivery Options] Set Loading Message Flag';
+  public readonly type = SetLoadingMessageFlag.Type;
+}
+
+export type Any = Load | LoadSuccess | LoadFailure | Download | Deliver | DeliverySuccess | DeliveryFailure | DownloadViaAspera |
+  SetLoadingMessageFlag;

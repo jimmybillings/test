@@ -1,14 +1,13 @@
-<ng-container *ngIf="showLoadingSpinner | async">
-  <div layout="row" layout-align="center center">
-    <mat-progress-spinner [diameter]="40" [strokeWidth]="4" color="accent" mode="indeterminate"></mat-progress-spinner>
-  </div>
-</ng-container>
 <mat-list class="aspera-download-options">
-  <div layout="row" layout-align="center center">
-    <ng-container *ngIf="showMissingOptionsMessage | async">
-      <h3 class="mat-body">{{ 'ASSET.DELIVERY_OPTIONS.MISSING' | translate }}</h3>
-    </ng-container>
-  </div>
+  <mat-list-item disabled *ngIf="showLoadingSpinner | async">
+    <span flex [ngClass]="{'visible': showLoadingMessage | async}" class="loading-msg">
+      {{ 'ASSET.DELIVERY_OPTIONS.LOADING_MSG' | translate }}
+    </span>
+    <mat-progress-spinner [diameter]="32" [strokeWidth]="3" color="accent" mode="indeterminate"></mat-progress-spinner>
+  </mat-list-item>
+  <mat-list-item disabled *ngIf="showMissingOptionsMessage | async">
+    <span class="error-msg">{{ 'ASSET.DELIVERY_OPTIONS.MISSING' | translate }}</span>
+  </mat-list-item>
   <ng-container *ngIf="deliveryOptions | async as groups">
     <mat-list-item *ngFor="let group of groups">
       <span mat-menu-item disabled flex>{{ trStringFor(group) | translate }}</span>
