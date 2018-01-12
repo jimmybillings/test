@@ -29,12 +29,15 @@ import { AssetLineItem, PurchaseType, quotesWithoutPricing } from '../../../shar
       <button mat-menu-item (click)="onEditButtonClick()">
         <mat-icon>edit</mat-icon>{{ 'CART.PROJECTS.EDIT_PROJECT_BTN_TITLE' | translate }}
       </button>
+      <button mat-menu-item (click)="onAddLicenseStartDateClick()">
+        <mat-icon>access_time</mat-icon>{{ 'CART.PROJECTS.ADD_LICENSE_START_DATE' | translate }}
+      </button>
       <ng-container *ngIf="allowQuoteAdministration">
         <button mat-menu-item (click)="onAddFeeButtonClick()">
           <mat-icon>note_add</mat-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}
         </button>
         <button mat-menu-item (click)="onBulkImportClick()">
-          <mat-icon>library_add</mat-icon>{{ 'QUOTE.BULK_IMPORT.TITLE' | translate }}
+          <mat-icon>library_add</mat-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}
         </button>
         <div class="divider"></div>
       </ng-container>
@@ -55,6 +58,7 @@ export class ProjectActionsComponent {
   @Output() edit: EventEmitter<null> = new EventEmitter();
   @Output() addFee: EventEmitter<null> = new EventEmitter();
   @Output() bulkImport: EventEmitter<null> = new EventEmitter();
+  @Output() addLicenseStartDate: EventEmitter<null> = new EventEmitter();
   @Output() projectActionsNotify: EventEmitter<Object> = new EventEmitter<Object>();
 
   public onEditButtonClick(): void {
@@ -79,5 +83,9 @@ export class ProjectActionsComponent {
 
   public onBulkImportClick(): void {
     this.bulkImport.emit();
+  }
+
+  public onAddLicenseStartDateClick(): void {
+    this.addLicenseStartDate.emit();
   }
 }

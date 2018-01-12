@@ -60,7 +60,10 @@ export function main() {
 
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' })),
-        openFormDialog: jasmine.createSpy('openFormDialog').and.returnValue(Observable.of({ data: 'Test data' }))
+        openFormDialog: jasmine.createSpy('openFormDialog').and.callFake((_: any, __: any, onSubmitCallback: Function) => {
+          mockDialogService.onSubmitCallback = onSubmitCallback;
+        }),
+
       };
 
       mockWindow = { nativeWindow: { location: { href: {} } } };
@@ -73,7 +76,15 @@ export function main() {
       initPricingSpy = mockAppStore.createActionFactoryMethod('pricing', 'initializePricing');
       setPriceSpy = mockAppStore.createActionFactoryMethod('pricing', 'setPriceForDialog');
       mockAppStore.createStateSection('uiConfig', {
-        components: { cart: { config: { form: 'SOME_CONFIG', createQuote: { items: [] } } } }
+        components: {
+          cart: {
+            config: {
+              form: 'SOME_CONFIG',
+              createQuote: { items: [] },
+              licenseStartDate: { items: [{ some: 'license-start-date' }] }
+            }
+          }
+        }
       });
 
       mockUserCan = {
@@ -93,7 +104,11 @@ export function main() {
       it('caches the cart UI config', () => {
         componentUnderTest.ngOnInit();
 
-        expect(componentUnderTest.config).toEqual({ form: 'SOME_CONFIG', createQuote: { items: [] } });
+        expect(componentUnderTest.config).toEqual({
+          form: 'SOME_CONFIG',
+          createQuote: { items: [] },
+          licenseStartDate: { items: [{ some: 'license-start-date' }] }
+        });
       });
     });
 
@@ -388,5 +403,30 @@ export function main() {
         expect(mockCartService.retrieveLicenseAgreements).toHaveBeenCalled();
       });
     });
+
+    describe('onOpenLicenseStartDateDialog()', () => {
+      let licenseStartDateSpy: jasmine.Spy;
+      beforeEach(() => {
+        componentUnderTest.ngOnInit();
+        componentUnderTest.onNotification({ type: 'OPEN_LICENSE_START_DATE_DIALOG', payload: 'some-project-id' });
+        licenseStartDateSpy = mockAppStore.createActionFactoryMethod('cart', 'addLicenseStartDate');
+      });
+
+      it('opens a form dialog', () => {
+        expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+          [{ some: 'license-start-date' }],
+          { title: 'CART.LICENSE_START_DATE.TITLE', submitLabel: 'CART.LICENSE_START_DATE.SUBMIT_BTN', autocomplete: 'off' },
+          jasmine.any(Function)
+        );
+      });
+
+      it('calls the addLicenseStartDate() on the cart edit service in the callback', () => {
+        mockDialogService.onSubmitCallback({ licenseStartDate: '01/01/2018' });
+        const formattedDate = new Date('01/01/2018').toISOString();
+
+        expect(licenseStartDateSpy).toHaveBeenCalledWith(formattedDate, 'some-project-id');
+      });
+    });
+
   });
 }

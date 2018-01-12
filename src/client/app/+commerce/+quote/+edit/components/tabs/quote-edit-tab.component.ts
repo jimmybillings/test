@@ -86,6 +86,10 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         this.onOpenBulkImportDialog(message.payload);
         break;
 
+      case 'OPEN_LICENSE_START_DATE_DIALOG':
+        this.onOpenLicenseStartDateDialog(message.payload);
+        break;
+
       case 'ADD_CUSTOM_PRICE':
         this.onAddCustomPriceTo(message.payload);
         break;
@@ -232,6 +236,19 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
       }
     );
   }
+
+  private onOpenLicenseStartDateDialog(projectId: string): void {
+    this.dialogService.openFormDialog(
+      this.config.licenseStartDate.items,
+      { title: 'QUOTE.LICENSE_START_DATE.TITLE', submitLabel: 'QUOTE.LICENSE_START_DATE.SUBMIT_BTN', autocomplete: 'off' },
+      (data: any) => {
+        const licenseStartDate = new Date(data.licenseStartDate).toISOString();
+        this.store.dispatch(factory => factory.quoteEdit.addLicenseStartDate(licenseStartDate, projectId));
+      }
+    );
+  }
+
+
 
   private onAddCustomPriceTo(lineItem: AssetLineItem): void {
     this.dialogService.openFormDialog(

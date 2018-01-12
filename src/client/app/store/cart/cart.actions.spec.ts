@@ -92,6 +92,19 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
+        class: ActionFactory,
+        name: 'addLicenseStartDate',
+        parameters: ['Some License Start Date', 'Some Project ID']
+      },
+      expectedAction: {
+        type: '[Cart] Add License Start Date',
+        licenseStartDate: 'Some License Start Date',
+        projectId: 'Some Project ID'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
         class: InternalActionFactory,
         name: 'removeAssetSuccess',
         parameters: [{ some: 'cart' }]

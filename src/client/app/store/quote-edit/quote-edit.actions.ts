@@ -129,6 +129,10 @@ export class ActionFactory {
   public updateBillingAccount(form: Pojo): UpdateBillingAccount {
     return new UpdateBillingAccount(form);
   }
+
+  public addLicenseStartDate(licenseStartDate: string, projectId: string): AddLicenseStartDate {
+    return new AddLicenseStartDate(licenseStartDate, projectId);
+  }
 }
 
 export class InternalActionFactory extends ActionFactory {
@@ -349,6 +353,12 @@ export class BulkImportSuccess implements Action {
   constructor(public readonly quote: Quote, public readonly rawAssets: { lineItemAttributes: string }) { }
 }
 
+export class AddLicenseStartDate implements Action {
+  public static readonly Type = '[Quote Edit] Add License Start Date';
+  public readonly type = AddLicenseStartDate.Type;
+  constructor(public readonly licenseStartDate: string, public readonly projectId: string) { }
+}
+
 export class EditLineItem implements Action {
   public static readonly Type = '[Quote Edit] Edit Line Item';
   public readonly type = EditLineItem.Type;
@@ -457,6 +467,7 @@ export type Any =
   SendQuote | SaveRecipientInformationOnQuote | CloneQuote | CloneQuoteSuccess | CreateQuote |
   UpdateQuoteFields | AddFeeTo | RemoveFee | BulkImport | BulkImportSuccess | EditLineItem |
   AddAssetToProjectInQuote | AddAssetToProjectInQuoteSuccess | AddProject | RemoveProject |
+  AddLicenseStartDate |
   UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
   UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | AddInvoiceContactToQuote |
   InitializeSalesManagerFormOnQuote | UpdateSalesManagerFormOnQuote |

@@ -27,6 +27,10 @@ export class ActionFactory {
   public loadSuccess(cart: Cart): LoadSuccess {
     return new LoadSuccess(cart);
   }
+
+  public addLicenseStartDate(licenseStartDate: string, projectId: string): AddLicenseStartDate {
+    return new AddLicenseStartDate(licenseStartDate, projectId);
+  }
 }
 
 export class InternalActionFactory extends ActionFactory {
@@ -108,8 +112,15 @@ export class RemoveAssetFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
+export class AddLicenseStartDate implements Action {
+  public static readonly Type = '[Cart] Add License Start Date';
+  public readonly type = AddLicenseStartDate.Type;
+  constructor(public readonly licenseStartDate: string, public readonly projectId: string) { }
+}
+
 
 export type Any =
   Load | LoadSuccess | LoadFailure |
   EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
+  AddLicenseStartDate |
   RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure;

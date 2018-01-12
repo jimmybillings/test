@@ -728,6 +728,32 @@ export function main() {
     });
 
     effectsSpecHelper.generateTestsFor({
+      effectName: 'addLicenseStartDate',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: QuoteEditActions.AddLicenseStartDate.Type,
+        licenseStartDate: 'Some License Start Date',
+        projectId: 'Some Project ID'
+      },
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 1 } }
+      },
+      serviceMethod: {
+        name: 'addLicenseStartDate',
+        returnsObservableOf: { some: 'quote' },
+        expectedArguments: [1, 'Some Project ID', 'Some License Start Date'],
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
       effectName: 'addUserToQuote',
       effectsInstantiator: instantiator,
       inputAction: {

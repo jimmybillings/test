@@ -38,6 +38,26 @@ export class FutureCartService {
     return this.apiService.delete(Api.Orders, `cart/asset/${asset.uuid}`, { loadingIndicator: true });
   }
 
+  // public addLicenseStartDate(quoteId: number, projectId: string, licenseStartDate: string) {
+  //   return this.apiService.put(
+  //     Api.Orders,
+  //     `quote/${quoteId}/project/${projectId}/licenseStartDate`,
+  //     {
+  //       body: { licenseStartDate: licenseStartDate }
+  //     }
+  //   );
+  // }
+
+  public addLicenseStartDate(cartId: number, projectId: string, licenseStartDate: string) {
+    return this.apiService.put(
+      Api.Orders,
+      `cart/project/${projectId}/licenseStartDate/${licenseStartDate}`,
+      {
+        loadingIndicator: true,
+        parameters: { region: 'AAA' }
+      }
+    );
+  }
 
   private durationFrom(lineItem: AssetLineItem, markers: SubclipMarkers): Duration {
     return bothMarkersAreSet(markers) ?

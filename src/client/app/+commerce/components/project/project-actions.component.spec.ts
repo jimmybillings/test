@@ -62,12 +62,30 @@ export function main() {
       });
     });
 
+    describe('editProjectPricing', () => {
+      it('emits the \'projectActionsNotify\' event with the EDIT_PROJECT_PRICING type', () => {
+        spyOn(componentUnderTest.projectActionsNotify, 'emit');
+        componentUnderTest.editProjectPricing();
+
+        expect(componentUnderTest.projectActionsNotify.emit).toHaveBeenCalledWith({ type: 'EDIT_PROJECT_PRICING' });
+      });
+    });
+
     describe('onBulkImportClick', () => {
       it('emits the \'bulkImport\' event', () => {
         spyOn(componentUnderTest.bulkImport, 'emit');
         componentUnderTest.onBulkImportClick();
 
         expect(componentUnderTest.bulkImport.emit).toHaveBeenCalled();
+      });
+    });
+
+    describe('onAddLicenseStartDateClick', () => {
+      it('emits the \'addLicenseStartDate\' event', () => {
+        spyOn(componentUnderTest.addLicenseStartDate, 'emit');
+        componentUnderTest.onAddLicenseStartDateClick();
+
+        expect(componentUnderTest.addLicenseStartDate.emit).toHaveBeenCalled();
       });
     });
   });

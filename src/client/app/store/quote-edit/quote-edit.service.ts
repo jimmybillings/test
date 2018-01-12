@@ -189,6 +189,27 @@ export class FutureQuoteEditService {
     );
   }
 
+  // public addLicenseStartDate(quoteId: number, projectId: string, licenseStartDate: string) {
+  //   return this.apiService.put(
+  //     Api.Orders,
+  //     `quote/${quoteId}/project/${projectId}/licenseStartDate`,
+  //     {
+  //       body: { licenseStartDate: licenseStartDate }
+  //     }
+  //   );
+  // }
+
+  public addLicenseStartDate(quoteId: number, projectId: string, licenseStartDate: string): Observable<Quote> {
+    return this.apiService.put(
+      Api.Orders,
+      `quote/${quoteId}/project/${projectId}/licenseStartDate/${licenseStartDate}`,
+      {
+        loadingIndicator: true,
+        parameters: { region: 'AAA' }
+      }
+    );
+  }
+
   public addAssetToProjectInQuote(
     quoteId: number,
     existingProjectNames: Array<string>,
@@ -203,6 +224,7 @@ export class FutureQuoteEditService {
       }
     );
   }
+
 
   private formatAssetBody(parameters: AddAssetParameters): any {
     let formatted = {};

@@ -291,6 +291,18 @@ export class QuoteEditEffects {
     );
 
   @Effect()
+  public addLicenseStartDate: Observable<Action> = this.actions
+    .ofType(QuoteEditActions.AddLicenseStartDate.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.AddLicenseStartDate, number]) =>
+      this.service.addLicenseStartDate(quoteId, action.projectId, action.licenseStartDate)
+        .map((quote) => this.store.create(factory =>
+          factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
+        )
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
+  @Effect()
   public moveLineItem: Observable<Action> = this.actions
     .ofType(QuoteEditActions.MoveLineItem.Type)
     .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))

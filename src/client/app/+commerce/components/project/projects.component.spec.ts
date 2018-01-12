@@ -283,5 +283,12 @@ export function main() {
         expect(classUnderTest.projectsNotify.emit).toHaveBeenCalledWith({ type: 'OPEN_BULK_IMPORT_DIALOG', payload: 'abc-123' });
       });
     });
+
+    describe('onClickAddLicenseStartDateButton', () => {
+      it('emits the projectNotify event with the right type and payload', () => {
+        classUnderTest.onClickAddLicenseStartDateButton({ id: 'abc-123' } as any);
+        expect(classUnderTest.projectsNotify.emit).toHaveBeenCalledWith({ type: 'OPEN_LICENSE_START_DATE_DIALOG', payload: 'abc-123' });
+      });
+    });
   });
 }

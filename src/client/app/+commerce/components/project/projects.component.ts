@@ -106,6 +106,10 @@ export class ProjectsComponent {
     this.projectsNotify.emit({ type: 'OPEN_BULK_IMPORT_DIALOG', payload: project.id });
   }
 
+  public onClickAddLicenseStartDateButton(project: Project): void {
+    this.projectsNotify.emit({ type: 'OPEN_LICENSE_START_DATE_DIALOG', payload: project.id });
+  }
+
   public get showPricing(): boolean {
     return !quotesWithoutPricing.includes(this.quoteType) && this.allRMAssetsHaveAttributes;
   }

@@ -96,7 +96,7 @@ module.exports = function (config) {
     colors: true,
 
     mochaReporter: {
-      output: 'minimal'
+      // output: 'minimal'
     },
 
     // level of logging

@@ -79,7 +79,8 @@ export function main() {
               addDiscount: { items: [{ some: 'discount' }] },
               addCostMultiplier: { items: [{ some: 'multiplier' }] },
               bulkImport: { items: [{ some: 'import' }] },
-              quotePurchaseType: { items: [{ value: 'SystemLicense', viewValue: 'System License' }] }
+              quotePurchaseType: { items: [{ value: 'SystemLicense', viewValue: 'System License' }] },
+              licenseStartDate: { items: [{ some: 'license-start-date' }] }
             }
           }
         }
@@ -120,7 +121,8 @@ export function main() {
           addDiscount: { items: [{ some: 'discount' }] },
           addCostMultiplier: { items: [{ some: 'multiplier' }] },
           bulkImport: { items: [{ some: 'import' }] },
-          quotePurchaseType: { items: [{ value: 'SystemLicense', viewValue: 'System License' }] }
+          quotePurchaseType: { items: [{ value: 'SystemLicense', viewValue: 'System License' }] },
+          licenseStartDate: { items: [{ some: 'license-start-date' }] }
         });
       });
     });
@@ -644,6 +646,30 @@ export function main() {
         mockDialogService.onSubmitCallback({ lineItemAttributes: 'one\ntwo' });
 
         expect(bulkImportSpy).toHaveBeenCalledWith({ lineItemAttributes: 'one\ntwo' }, 'abcd-1234');
+      });
+    });
+
+    describe('onOpenLicenseStartDateDialog()', () => {
+      let licenseStartDateSpy: jasmine.Spy;
+      beforeEach(() => {
+        componentUnderTest.ngOnInit();
+        componentUnderTest.onNotification({ type: 'OPEN_LICENSE_START_DATE_DIALOG', payload: 'some-project-id' });
+        licenseStartDateSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addLicenseStartDate');
+      });
+
+      it('opens a form dialog', () => {
+        expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+          [{ some: 'license-start-date' }],
+          { title: 'QUOTE.LICENSE_START_DATE.TITLE', submitLabel: 'QUOTE.LICENSE_START_DATE.SUBMIT_BTN', autocomplete: 'off' },
+          jasmine.any(Function)
+        );
+      });
+
+      it('calls the addLicenseStartDate() on the quote edit service in the callback', () => {
+        mockDialogService.onSubmitCallback({ licenseStartDate: '01/01/2018' });
+        const formattedDate = new Date('01/01/2018').toISOString();
+
+        expect(licenseStartDateSpy).toHaveBeenCalledWith(formattedDate, 'some-project-id');
       });
     });
   });

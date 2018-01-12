@@ -105,6 +105,11 @@ export class CartTabComponent extends Tab implements OnDestroy, OnInit {
         this.showPricingDialog(message.payload);
         break;
       }
+
+      case 'OPEN_LICENSE_START_DATE_DIALOG':
+        this.onOpenLicenseStartDateDialog(message.payload);
+        break;
+
       case 'EDIT_PROJECT_PRICING': {
         this.editProjectPricing(message.payload);
         break;
@@ -172,6 +177,17 @@ export class CartTabComponent extends Tab implements OnDestroy, OnInit {
 
   public get showUsageWarning(): boolean {
     return !this.cartContainsNoAssets && !this.rmAssetsHaveAttributes;
+  }
+
+  private onOpenLicenseStartDateDialog(projectId: string): void {
+    this.dialogService.openFormDialog(
+      this.config.licenseStartDate.items,
+      { title: 'CART.LICENSE_START_DATE.TITLE', submitLabel: 'CART.LICENSE_START_DATE.SUBMIT_BTN', autocomplete: 'off' },
+      (data: any) => {
+        const licenseStartDate = new Date(data.licenseStartDate).toISOString();
+        this.store.dispatch(factory => factory.cart.addLicenseStartDate(licenseStartDate, projectId));
+      }
+    );
   }
 
   private editProjectPricing(project: Project) {
