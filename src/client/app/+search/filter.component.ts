@@ -16,19 +16,13 @@ export class FilterComponent {
   public endDate: FormControl;
 
   @Input()
-  set newFilters(filters: any) {
-    this.filters = filters;
-    switch (filters.name) {
-      case 'Date and Duration': {
-        const dateRange = (filters.subFilters) ? filters.subFilters.find((filter: any) => filter.type === 'DateRange') : null;
-        this.startDate = (dateRange) ? this.preselectDate(dateRange, 'start') : null;
-        this.endDate = (dateRange) ? this.preselectDate(dateRange, 'end') : null;
-        break;
-      }
-      default: {
-        break;
-      }
+  set newFilters(filter: any) {
+    if (filter.subFilters) {
+      const dateRangeFilter = filter.subFilters.find((filter: any) => filter.type === 'DateRange');
+      if (dateRangeFilter) this.setDateRange(dateRangeFilter);
     }
+
+    this.filters = filter;
   }
 
   @Input() counted: boolean;
@@ -73,6 +67,11 @@ export class FilterComponent {
       filter: filter,
       customValue: this.dateRange.toString()
     });
+  }
+
+  private setDateRange(dateRangeFilter: any) {
+    this.startDate = this.preselectDate(dateRangeFilter, 'start');
+    this.endDate = this.preselectDate(dateRangeFilter, 'end');
   }
 
   private preselectDate(filter: any, key: DateRangeKey): FormControl {

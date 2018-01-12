@@ -102,6 +102,5 @@ export interface CollectionShareMember {
 }
 
 export interface CollectionFormEvent {
-  type: 'NAVIGATE' | 'NOOP';
   collectionId?: number;
 }

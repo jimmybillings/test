@@ -15,7 +15,8 @@
     </app-nav>
     <collection-tray
       *ngIf="userCan.viewCollectionTray()"
-      [userPreference]="userPreference">
+      [userPreference]="userPreference"
+      [urlPath]="state">
     </collection-tray>
      <wz-autocomplete-search
       *ngIf="headerCanBeFixed | async"

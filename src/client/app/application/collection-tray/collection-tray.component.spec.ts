@@ -13,6 +13,7 @@ export function main() {
     let mockAppStore: MockAppStore;
     let mockDialogService: any;
     let navigateDispatchSpy: jasmine.Spy;
+    let snackBarDispatchSpy: jasmine.Spy;
 
     beforeEach(() => {
       mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset');
@@ -25,6 +26,7 @@ export function main() {
         }
       });
       navigateDispatchSpy = mockAppStore.createActionFactoryMethod('router', 'goToCollection');
+      snackBarDispatchSpy = mockAppStore.createActionFactoryMethod('snackbar', 'display');
       mockAppStore.createActionFactoryMethod('activeCollection', 'loadIfNeeded');
 
       mockDialogService = {
@@ -36,6 +38,7 @@ export function main() {
       componentUnderTest = new CollectionTrayComponent(mockDialogService, mockAppStore, null);
 
       componentUnderTest.collection = { assets: { items: [EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset')] } } as any;
+      componentUnderTest.urlPath = '/collections/';
     });
 
     describe('hasId()', () => {
@@ -118,10 +121,19 @@ export function main() {
         });
       });
 
-      it('dispatches the proper action when the callback is called', () => {
-        mockDialogService.onSubmitCallback({ type: 'NAVIGATE', collectionId: 123 });
+      describe('dispatches the proper action when the callback is called', () => {
+        it('Should redirect to the collection show if currently on the collection show page.', () => {
+          componentUnderTest.urlPath = '/collections/';
+          mockDialogService.onSubmitCallback({ collectionId: 123 });
 
-        mockAppStore.expectDispatchFor(navigateDispatchSpy, 123);
+          mockAppStore.expectDispatchFor(navigateDispatchSpy, 123);
+        });
+        it('Should just display a snackbar if on any other page.', () => {
+          componentUnderTest.urlPath = '/collections';
+          mockDialogService.onSubmitCallback({ collectionId: 123 });
+
+          mockAppStore.expectDispatchFor(snackBarDispatchSpy, 'COLLECTION.COLLECTION_CREATED');
+        });
       });
     });
   });
