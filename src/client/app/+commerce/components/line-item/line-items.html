@@ -9,9 +9,9 @@
               <button
                 mat-button
                 title="{{ 'QUOTE.SHOW_NOTES' | translate }}"
-                (click)="toggleNotesFor(lineItem)">
-                <mat-icon>{{ toggleBtnIconFor(lineItem) }}</mat-icon>
+                (click)="toggleNotesVisibilityFor(lineItem)">
                 <span>{{ 'QUOTE.SHOW_NOTES' | translate }}</span>
+                <mat-icon>{{ iconForNotesButton(lineItem) }}</mat-icon>
               </button>
             </div>
           </ng-container>
@@ -75,7 +75,7 @@
         [ngClass]="{'editable': !readOnly }"
         layout="row"
         (click)="onAddNote(lineItem)"
-        *ngIf="showNoteFor(lineItem)">
+        *ngIf="shouldShowNoteFor(lineItem)">
         <span class="mat-caption">{{ lineItem.notes[0].notes[0] }}</span>
       </div>
     </li>

@@ -29,7 +29,7 @@ export class LineItemsComponent {
   @Input() rmAssetsHaveAttributes: boolean;
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   public selectedLineItem: AssetLineItem;
-  private noteVisibilityMap: { [index: string]: boolean } = {};
+  public noteVisibilityMap: { [index: string]: boolean } = {};
 
   public onMoveTo(otherProject: Project, lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({
@@ -98,11 +98,11 @@ export class LineItemsComponent {
     this.lineItemsNotify.emit({ type: 'ADD_CUSTOM_PRICE', payload: lineItem });
   }
 
-  public toggleBtnIconFor(lineItem: AssetLineItem): string {
+  public iconForNotesButton(lineItem: AssetLineItem): string {
     return this.noteVisibilityMap[lineItem.id] ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
   }
 
-  public toggleNotesFor(lineItem: AssetLineItem): void {
+  public toggleNotesVisibilityFor(lineItem: AssetLineItem): void {
     this.noteVisibilityMap[lineItem.id] = !this.noteVisibilityMap[lineItem.id];
   }
 
@@ -113,8 +113,8 @@ export class LineItemsComponent {
       lineItem.notes[0].notes.length > 0;
   }
 
-  public showNoteFor(lineItem: AssetLineItem): boolean {
-    return this.hasNotes(lineItem) && this.noteVisibilityMap[lineItem.id];
+  public shouldShowNoteFor(lineItem: AssetLineItem): boolean {
+    return this.hasNotes(lineItem) && !!this.noteVisibilityMap[lineItem.id];
   }
 
   public onAddNote(lineItem: AssetLineItem): void {
