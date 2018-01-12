@@ -17,7 +17,6 @@ export class FilterComponent {
 
   @Input()
   set newFilters(filters: any) {
-    this.filters = filters;
     switch (filters.name) {
       case 'Date and Duration': {
         const dateRange = (filters.subFilters) ? filters.subFilters.find((filter: any) => filter.type === 'DateRange') : null;
@@ -29,6 +28,7 @@ export class FilterComponent {
         break;
       }
     }
+    this.filters = filters;
   }
 
   @Input() counted: boolean;
