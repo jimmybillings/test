@@ -43,6 +43,13 @@ import { PurchaseType, quotesWithoutPricing } from '../../../shared/interfaces/c
         <mat-icon>assignment</mat-icon>
         <span>{{ trStringForRightsPackage | translate }}</span>
       </button>
+      <button
+        *ngIf="userCanAdministerQuotes"
+        mat-menu-item
+        (click)="openNotesForm()">
+        <mat-icon>note_add</mat-icon>
+        <span>{{ trStringForNoteButton | translate }}</span>
+      </button>
       <div class="divider"></div>
       <button mat-menu-item (click)="openCostMultiplierForm.emit()" *ngIf="userCanAdministerQuotes">
         <mat-icon>attach_money</mat-icon>
@@ -68,6 +75,7 @@ export class LineItemActionsComponent {
   @Input() assetIsSubclipped: boolean;
   @Input() quoteType: PurchaseType;
   @Input() hasMultiplier: boolean;
+  @Input() hasNote: boolean;
   @Output() showPricingDialog: EventEmitter<any> = new EventEmitter();
   @Output() remove: EventEmitter<any> = new EventEmitter();
   @Output() clone: EventEmitter<any> = new EventEmitter();
@@ -76,6 +84,7 @@ export class LineItemActionsComponent {
   @Output() openCostMultiplierForm: EventEmitter<null> = new EventEmitter();
   @Output() removeCostMultiplier: EventEmitter<null> = new EventEmitter();
   @Output() addCustomPrice: EventEmitter<null> = new EventEmitter();
+  @Output() addNote: EventEmitter<null> = new EventEmitter();
 
   public get displayPriceButton(): boolean {
     return this.rightsReproduction === 'Rights Managed' && !quotesWithoutPricing.includes(this.quoteType);
@@ -117,5 +126,13 @@ export class LineItemActionsComponent {
 
   public onClickAddCustomPrice(): void {
     this.addCustomPrice.emit();
+  }
+
+  public get trStringForNoteButton(): string {
+    return this.hasNote ? 'QUOTE.EDIT_NOTE' : 'QUOTE.ADD_NOTE';
+  }
+
+  public openNotesForm(): void {
+    this.addNote.emit();
   }
 }

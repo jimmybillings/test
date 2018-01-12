@@ -361,6 +361,15 @@ export class QuoteEditEffects {
       this.store.create(factory => factory.account.getAccountForQuoteAdmin(action.account.id)),
   );
 
+  @Effect()
+  public addNote: Observable<Action> = this.actions.ofType(QuoteEditActions.AddNote.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.AddNote, number]) =>
+      this.service.addNote(quoteId, action.note, action.lineItem).map(quote =>
+        this.store.create(factory => factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED'))
+      )
+    );
+
   constructor(
     private actions: Actions,
     private store: AppStore,

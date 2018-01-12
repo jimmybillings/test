@@ -63,10 +63,14 @@ export interface Project {
   [index: string]: any;
 }
 
+export interface LineItemNote {
+  notes: string[];
+}
+
 export interface AssetLineItem {
   id?: string;
   asset?: Asset;
-  notes?: Array<any>;
+  notes?: Array<LineItemNote>;
   itemPrice?: number;
   multiplier?: number;
   transcodeStatus?: TranscodeStatus;

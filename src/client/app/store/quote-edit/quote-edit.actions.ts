@@ -129,6 +129,10 @@ export class ActionFactory {
   public updateBillingAccount(form: Pojo): UpdateBillingAccount {
     return new UpdateBillingAccount(form);
   }
+
+  public addNote(note: string, lineItem: AssetLineItem): AddNote {
+    return new AddNote(note, lineItem);
+  }
 }
 
 export class InternalActionFactory extends ActionFactory {
@@ -448,6 +452,12 @@ export class UpdateBillingAccount implements Action {
   constructor(public readonly form: Pojo) { }
 }
 
+export class AddNote implements Action {
+  public static readonly Type = '[Quote Edit] Add Note';
+  public readonly type = AddNote.Type;
+  constructor(public readonly note: string, public readonly lineItem: AssetLineItem) { }
+}
+
 export type Any =
   Load | LoadSuccess | LoadFailure |
   Delete | DeleteSuccess | DeleteFailure |
@@ -460,4 +470,4 @@ export type Any =
   UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
   UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | AddInvoiceContactToQuote |
   InitializeSalesManagerFormOnQuote | UpdateSalesManagerFormOnQuote |
-  UpdateBillingAccount;
+  UpdateBillingAccount | AddNote;
