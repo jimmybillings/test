@@ -527,8 +527,17 @@ export function main() {
       }
     });
 
-
-
-
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addNote',
+        parameters: ['some note', { some: 'lineItem' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Add Note',
+        note: 'some note',
+        lineItem: { some: 'lineItem' }
+      }
+    });
   });
 }

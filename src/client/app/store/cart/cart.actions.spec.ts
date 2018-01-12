@@ -113,5 +113,30 @@ export function main() {
         error: { some: 'error' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addNote',
+        parameters: ['some note', { some: 'lineItem' }]
+      },
+      expectedAction: {
+        type: '[Cart] Add Note',
+        note: 'some note',
+        lineItem: { some: 'lineItem' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'addNoteSuccess',
+        parameters: [{ some: 'cart' }]
+      },
+      expectedAction: {
+        type: '[Cart] Add Note Success',
+        cart: { some: 'cart' }
+      }
+    });
   });
 }

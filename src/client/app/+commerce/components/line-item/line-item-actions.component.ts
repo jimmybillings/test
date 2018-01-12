@@ -43,14 +43,13 @@ import { PurchaseType, quotesWithoutPricing } from '../../../shared/interfaces/c
         <mat-icon>assignment</mat-icon>
         <span>{{ trStringForRightsPackage | translate }}</span>
       </button>
+      <div *ngIf="userCanAdministerQuotes" class="divider"></div>
       <button
-        *ngIf="userCanAdministerQuotes"
         mat-menu-item
         (click)="openNotesForm()">
         <mat-icon>note_add</mat-icon>
         <span>{{ trStringForNoteButton | translate }}</span>
       </button>
-      <div class="divider"></div>
       <button mat-menu-item (click)="openCostMultiplierForm.emit()" *ngIf="userCanAdministerQuotes">
         <mat-icon>attach_money</mat-icon>
         <span>{{ trStringForCostMultiplier | translate }}</span>

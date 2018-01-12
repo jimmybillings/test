@@ -109,6 +109,10 @@ export class CartTabComponent extends Tab implements OnDestroy, OnInit {
         this.editProjectPricing(message.payload);
         break;
       }
+      case 'ADD_NOTE': {
+        this.openNoteDialog(message.payload);
+        break;
+      }
     };
   }
 
@@ -346,5 +350,22 @@ export class CartTabComponent extends Tab implements OnDestroy, OnInit {
       in: asset.inMarkerFrame,
       out: asset.outMarkerFrame
     } : null;
+  }
+
+  private openNoteDialog(lineItem: AssetLineItem): void {
+    const hasNote: boolean = lineItem.hasOwnProperty('notes') &&
+      lineItem.notes.length > 0 &&
+      lineItem.notes[0].hasOwnProperty('notes') &&
+      lineItem.notes[0].notes.length > 0;
+
+    const title: string = hasNote ? 'QUOTE.EDIT_NOTE' : 'QUOTE.ADD_NOTE';
+    const label: string = hasNote ? 'QUOTE.EDIT_NOTE' : 'QUOTE.ADD_NOTE';
+    const value: string = hasNote ? lineItem.notes[0].notes[0] : '';
+
+    this.dialogService.openFormDialog(
+      [{ name: 'note', type: 'textarea', validation: 'REQUIRED', label, value }],
+      { title },
+      (form) => this.store.dispatch(factory => factory.cart.addNote(form.note, lineItem))
+    );
   }
 }

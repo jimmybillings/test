@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Cart } from '../../shared/interfaces/commerce.interface';
+import { AssetLineItem, Cart } from '../../shared/interfaces/commerce.interface';
 import { Asset } from '../../shared/interfaces/common.interface';
 import { ApiErrorResponse } from '../../shared/interfaces/api.interface';
 import { SubclipMarkers } from '../../shared/interfaces/subclip-markers';
@@ -21,6 +21,10 @@ export class ActionFactory {
 
   public removeAsset(asset: Asset): RemoveAsset {
     return new RemoveAsset(asset);
+  }
+
+  public addNote(note: string, lineItem: AssetLineItem): AddNote {
+    return new AddNote(note, lineItem);
   }
 
   // Move this to internal action factory when cart is fully "effected"
@@ -48,6 +52,10 @@ export class InternalActionFactory extends ActionFactory {
 
   public removeAssetFailure(error: ApiErrorResponse): RemoveAssetFailure {
     return new RemoveAssetFailure(error);
+  }
+
+  public addNoteSuccess(cart: Cart): AddNoteSuccess {
+    return new AddNoteSuccess(cart);
   }
 }
 
@@ -108,8 +116,19 @@ export class RemoveAssetFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
+export class AddNote implements Action {
+  public static readonly Type = '[Cart] Add Note';
+  public readonly type = AddNote.Type;
+  constructor(public readonly note: string, public readonly lineItem: AssetLineItem) { }
+}
+
+export class AddNoteSuccess implements Action {
+  public static readonly Type = '[Cart] Add Note Success';
+  public readonly type = AddNoteSuccess.Type;
+  constructor(public readonly cart: Cart) { }
+}
 
 export type Any =
   Load | LoadSuccess | LoadFailure |
   EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
-  RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure;
+  RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure | AddNote | AddNoteSuccess;

@@ -38,6 +38,15 @@ export class FutureCartService {
     return this.apiService.delete(Api.Orders, `cart/asset/${asset.uuid}`, { loadingIndicator: true });
   }
 
+  public addNote(note: string, lineItem: AssetLineItem): Observable<Cart> {
+    if (lineItem.hasOwnProperty('notes') && Array.isArray(lineItem.notes)) {
+      lineItem.notes[0] = { notes: [note] };
+    } else {
+      lineItem.notes = [{ notes: [note] }];
+    }
+
+    return this.makeEditLineItemRequest(lineItem);
+  }
 
   private durationFrom(lineItem: AssetLineItem, markers: SubclipMarkers): Duration {
     return bothMarkersAreSet(markers) ?
