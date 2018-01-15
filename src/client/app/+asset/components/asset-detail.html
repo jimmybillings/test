@@ -173,11 +173,12 @@
         <wz-player [window]="window" [asset]="asset"></wz-player>
       </div>
       <div *ngIf="!hasRendition" flex-gt-xs="66" flex="100" class="responsive-video">
-        Does not have a rendition
+        <div class="no-rendition">
+          <div class="no-rendition-message">{{'ASSET.DETAIL.NO_RENDITION_AVAILABLE' | translate}}</div>
+        </div>
       </div>
 
       <div flex-gt-xs="33" flex="100">
-
         <div flex="" layout="column" class="primary-info {{ asset.type }}">
           <div class="metadata" layout="column" layout-align="start start">
             <ng-container *ngFor="let field of primaryAssetFields">

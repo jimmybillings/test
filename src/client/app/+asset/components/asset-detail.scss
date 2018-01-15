@@ -207,7 +207,7 @@ section.preview-bk {
   background-color:  transparent;
   position: relative;
 	height: auto;
-  & > div.jw-error {
+  & > div.jw-error, & > div.no-rendition {
     @media screen and (min-width: $layout-breakpoint-lg)  {
       min-height: 540px;
     }
@@ -219,6 +219,28 @@ section.preview-bk {
     }
     @media screen and (max-width: $layout-breakpoint-sm)  {
       min-height: 320px;
+    }
+  }
+  & > div.no-rendition {
+    .no-rendition-message {
+      text-align: center;
+      padding: 28% 0 0 0;
+      margin: 0 20px;
+      font-size: 18px;
+      position: relative;
+      @media screen and (min-width: $layout-breakpoint-lg)  {
+        padding: 22% 0 0 0;
+      }
+      &::before {
+        content: "\e2c1";
+        font-family: 'Material Icons';
+        position: absolute;
+        font-size: 10em;
+        top: 6%;
+        right: 0;
+        width: 100%;
+        opacity: .08;
+      }
     }
   }
   .photo-container {
