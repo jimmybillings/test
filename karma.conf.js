@@ -49,7 +49,6 @@ module.exports = function (config) {
 
       { pattern: 'node_modules/@ngx-translate/**/*.js', included: false, watched: false },
       { pattern: 'node_modules/@ngrx/**/*.js', included: false, watched: false },
-      { pattern: 'node_modules/pikaday/pikaday.js', included: false, watched: false },
       { pattern: 'node_modules/clipboard/dist/clipboard.min.js', included: false, watched: false },
       { pattern: 'node_modules/@angular/material/**/*.js', included: false, watched: false },
 
