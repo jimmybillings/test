@@ -11,9 +11,30 @@
         <span *ngIf="hasTitle(asset)" class="mdata-0">
           <span>{{ titleOf(asset) }}</span>
         </span>
-        <span *ngIf="commentCountFor(asset) | async" class="comment-count">
-          <span class="count">{{ commentCountFor(asset) | async }}</span>
-        </span>
+        <ng-container *ngIf="commentCountFor(asset) | async">
+          <span class="asset-attribute-overlays">
+            <span *ngIf="commentCountFor(asset) | async" class="comment-count">
+              <span class="count">{{ commentCountFor(asset) | async }}</span>
+            </span>
+          </span>
+        </ng-container>
+        <!-- CRUX-3173 JH -->
+        <!-- Once we have banners coming back with the asset response use the following -->
+        <!-- css is all in place asset.banners maybe be a boolean getter (assetHasBanners)-->
+        <!-- This mark-up block will replace the ng-container above -->
+        <!-- same code will need to be put in wz.asset-list.html-->
+        <!-- <ng-container *ngIf="(commentCountFor(asset) | async) || asset.banners">
+          <span class="asset-attribute-overlays">
+            <span *ngIf="commentCountFor(asset) | async" class="comment-count">
+              <span class="count">{{ commentCountFor(asset) | async }}</span>
+            </span>
+            <ng-container *ngIf="asset.banners">
+              <span *ngFor="let banner of asset.banners" class="asset-restricted-banner">
+                <span class="label" [ngStyle]="{'border-color':'#'+ banner.backgroundColor,'background-color':'#'+ banner.backgroundColor, 'color':'#'+ banner.txtColor}">{{ 'COLLECTION.BANNER'+'_'+banner.value | uppercase | translate }}</span>
+              </span>
+            </ng-container>
+          </span>
+        </ng-container> -->
         <span *ngIf="hasFormatType(asset)" class="mdata-2">
           <span [ngClass]="formatClassNameFor(asset)" class="sd-hd">{{ formatTypeOf(asset) }}</span>
         </span>

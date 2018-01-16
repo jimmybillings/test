@@ -144,7 +144,6 @@ export class QuoteService {
     );
 
     return this.update(this.state.data.id, newQuote)
-      .switchMap(quote => this.updateOwnerInformationIn(quote))
       .do(quote => this.store.dispatch(factory => factory.quoteShow.loadSuccess(quote)));
   }
 
@@ -158,15 +157,6 @@ export class QuoteService {
 
   private update(id: number, quote: Quote): Observable<Quote> {
     return this.api.put(Api.Orders, `quote/${id}`, { body: quote, loadingIndicator: 'onBeforeRequest' });
-  }
-
-  private updateOwnerInformationIn(quote: Quote): Observable<Quote> {
-    return this.userService.getById(quote.ownerUserId)
-      .map((quoteOwner: User) => ({
-        ...quote,
-        createdUserEmailAddress: quoteOwner.emailAddress,
-        createdUserFullName: `${quoteOwner.firstName} ${quoteOwner.lastName}`
-      }));
   }
 
   private purchaseWithCreditCard(): Observable<number> {

@@ -83,6 +83,10 @@ export class AssetDetailComponent implements OnInit {
     this.onPreviousPage.emit();
   }
 
+  public get hasRendition() {
+    return !!this._asset.clipUrl;
+  }
+
   public get routerLinkForAssetParent(): any[] {
     switch (this._asset.type) {
       case 'collectionAsset': {

@@ -174,21 +174,6 @@ export function main() {
         });
         expect(mockApi.put).toHaveBeenCalledWithLoading('onBeforeRequest');
       });
-
-      it('Should call the user service getById() with the createdUserId', () => {
-        serviceUnderTest.extendExpirationDate('2017-01-01').subscribe();
-        expect(mockUserService.getById).toHaveBeenCalledWith(2);
-      });
-
-      it('should set the quote in the quote store with the user added to the quote response', () => {
-        serviceUnderTest.extendExpirationDate('2017-01-01').subscribe();
-        let testResponse: Quote = Common.clone(mockQuoteResponse) as any;
-        testResponse = Object.assign(testResponse, {
-          createdUserFullName: 'best tester',
-          createdUserEmailAddress: 'test@gmail.com'
-        });
-        expect(quoteLoadSuccessSpy).toHaveBeenCalledWith(testResponse);
-      });
     });
   });
 }

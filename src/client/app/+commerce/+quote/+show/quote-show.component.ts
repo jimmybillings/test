@@ -133,8 +133,8 @@ export class QuoteShowComponent implements OnInit {
   public get quoteRecipient(): Observable<SendDetailsUser> {
     return this.quote.map((quote: Quote) => {
       return {
-        customerName: quote.createdUserFullName,
-        email: quote.createdUserEmailAddress,
+        customerName: `${quote.ownerData.firstName} ${quote.ownerData.lastName}`,
+        email: quote.ownerData.email,
         accountName: quote.ownerData.accountName
       };
     });

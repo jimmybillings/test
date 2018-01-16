@@ -96,4 +96,10 @@
       }
     }
   }
+  .responsive-video div.no-rendition {
+    background-image: linear-gradient(mat-color($foreground, base, .57), mat-color($foreground, base, .36));
+    .no-rendition-message {
+      color:mat-color($background, background, .72);
+    }
+  }
 }
