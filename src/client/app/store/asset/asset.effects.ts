@@ -146,6 +146,13 @@ export class AssetEffects {
     );
 
   @Effect()
+  public load500Failure: Observable<Action> = this.actions.ofType(AssetActions.LoadFailure.Type)
+    .filter((action: AssetActions.LoadFailure) => action.error.status === 500)
+    .map((action: AssetActions.LoadFailure) =>
+      this.store.create(factory => factory.error.handle(action.error))
+    );
+
+  @Effect()
   public updateMarkersInUrl: Observable<Action> = this.actions.ofType(AssetActions.UpdateMarkersInUrl.Type)
     .map((action: AssetActions.UpdateMarkersInUrl) => {
       const duration: SubclipMarkersInterface.Duration = SubclipMarkersInterface.durationFrom(action.markers);
@@ -174,6 +181,7 @@ export class AssetEffects {
 
     return factory => factory.asset.loadFailure({ status: 404 });
   }
+
   private createNextQuoteEditActionFor(quote: Commerce.Quote, assetUuid: string): Action {
     return this.store.create(this.nextQuoteEditActionMapperFor(quote, assetUuid));
   }
