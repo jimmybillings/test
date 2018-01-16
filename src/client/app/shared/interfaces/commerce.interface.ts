@@ -188,8 +188,6 @@ export interface Order extends CommonCommerce {
 
 export interface Quote extends CommonCommerce {
   createdUserId: number;
-  createdUserEmailAddress?: string;
-  createdUserFullName?: string;
   ownerUserId: number;
   total: number;
   subTotal?: number;
