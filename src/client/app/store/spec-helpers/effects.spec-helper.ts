@@ -132,6 +132,7 @@ export class EffectsSpecHelper {
             expect(this.effectSubscriptionCallback).not.toHaveBeenCalled();
           });
         } else if (parameters.outputActionFactories) {
+
           describe('for success', () => {
             it(`calls the expected action factory method(s) with the expected arguments`, () => {
               this.simulateInputAction(parameters.inputAction);
@@ -249,16 +250,20 @@ export class EffectsSpecHelper {
       const factories = activeParameters.outputActionFactories;
       const successFactories = Array.isArray(factories.success) ? factories.success : [factories.success];
       const failureFactory = factories.failure;
+      const successFactoryExpectsAnError = successFactories.some(factory =>
+        factory.sectionName === 'error' && factory.methodName === 'handle');
 
       this.successActionFactoryMethods =
         successFactories.map(successFactory =>
           this.mockStore.createInternalActionFactoryMethod(successFactory.sectionName, successFactory.methodName)
         );
 
-      this.failureActionFactoryMethod = this.mockStore.createInternalActionFactoryMethod(
-        failureFactory ? failureFactory.sectionName : 'error',
-        failureFactory ? failureFactory.methodName : 'handle'
-      );
+      if (!successFactoryExpectsAnError) {
+        this.failureActionFactoryMethod = this.mockStore.createInternalActionFactoryMethod(
+          failureFactory ? failureFactory.sectionName : 'error',
+          failureFactory ? failureFactory.methodName : 'handle'
+        );
+      }
     }
 
     this.subscribeTo(originalParameters.effectsInstantiator, originalParameters.effectName);
