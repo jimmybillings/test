@@ -41,7 +41,8 @@ export class ErrorEffects {
     404: this.notFound,
     412: this.preConditionFailed,
     419: this.sessionExpired,
-    451: this.registrationDisallowed
+    451: this.registrationDisallowed,
+    500: this.serverErrorRequest
   };
 
   constructor(
@@ -77,6 +78,12 @@ export class ErrorEffects {
   private badRequest(): Action[] {
     return [
       this.createBadRequestAction()
+    ];
+  }
+
+  private serverErrorRequest(): Action[] {
+    return [
+      this.createServerErrorRequestAction()
     ];
   }
 
@@ -147,4 +154,9 @@ export class ErrorEffects {
   private createBadRequestAction(): Action {
     return this.store.create(factory => factory.router.goToBadRequest());
   }
+
+  private createServerErrorRequestAction(): Action {
+    return this.store.create(factory => factory.router.goToServerErrorRequest());
+  }
+
 }
