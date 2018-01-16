@@ -42,7 +42,7 @@ export class ErrorEffects {
     412: this.preConditionFailed,
     419: this.sessionExpired,
     451: this.registrationDisallowed,
-    500: this.serverErrorRequest
+    500: this.serverError
   };
 
   constructor(
@@ -81,9 +81,9 @@ export class ErrorEffects {
     ];
   }
 
-  private serverErrorRequest(): Action[] {
+  private serverError(): Action[] {
     return [
-      this.createServerErrorRequestAction()
+      this.createServerErrorAction()
     ];
   }
 
@@ -155,8 +155,8 @@ export class ErrorEffects {
     return this.store.create(factory => factory.router.goToBadRequest());
   }
 
-  private createServerErrorRequestAction(): Action {
-    return this.store.create(factory => factory.router.goToServerErrorRequest());
+  private createServerErrorAction(): Action {
+    return this.store.create(factory => factory.router.goToServerError());
   }
 
 }

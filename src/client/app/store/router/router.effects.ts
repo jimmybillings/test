@@ -96,13 +96,13 @@ export class RouterEffects {
     .do(() => this.router.navigate([this.BadRequestPath]));
 
   @Effect({ dispatch: false })
-  public goToServerErrorRequest: Observable<Action> = this.actions.ofType(RouterActions.GoToServerErrorRequest.Type)
-    .do(() => this.router.navigate([this.ServerErrorRequestPath]));
+  public goToServerError: Observable<Action> = this.actions.ofType(RouterActions.GoToServerError.Type)
+    .do(() => this.router.navigate([this.ServerErrorPath]));
 
   private readonly LoginPath: string = '/user/login';
   private readonly PageNotFoundPath: string = '/error/404';
   private readonly BadRequestPath: string = '/error/400';
-  private readonly ServerErrorRequestPath: string = '/error/500';
+  private readonly ServerErrorPath: string = '/error/500';
   private readonly QuotesPath: string = '/quotes';
   private readonly RootPath: string = '/';
   private readonly RedirectUrlKey: string = 'RouterEffects.RedirectUrl';

@@ -1,11 +1,11 @@
-import { BadServerRequestComponent } from './bad-server-request.component';
+import { ServerErrorComponent } from './server-error.component';
 
 export function main() {
   describe('Not Found Component', () => {
-    let componentUnderTest: BadServerRequestComponent;
+    let componentUnderTest: ServerErrorComponent;
 
     beforeEach(() => {
-      componentUnderTest = new BadServerRequestComponent(null);
+      componentUnderTest = new ServerErrorComponent(null);
     });
 
     it('***** DOESN\'T HAVE ANY TESTABLE FUNCTIONALITY! *****', () => {

@@ -180,11 +180,11 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
-        name: 'goToServerErrorRequest',
+        name: 'goToServerError',
         parameters: []
       },
       expectedAction: {
-        type: '[Router] Go To Server Error Request'
+        type: '[Router] Go To Server Error'
       }
     });
   });

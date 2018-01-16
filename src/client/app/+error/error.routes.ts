@@ -1,5 +1,5 @@
 import { BadRequestComponent } from './+bad-request/bad-request.component';
-import { BadServerRequestComponent } from './+bad-server-request/bad-server-request.component';
+import { ServerErrorComponent } from './+server-error/server-error.component';
 import { ErrorComponent } from './error.component';
 import { Routes } from '@angular/router';
 import { NotFoundComponent } from './+not-found/not-found.component';
@@ -21,8 +21,8 @@ export const ERROR_ROUTES: Routes = [
       },
       {
         path: '500',
-        component: BadServerRequestComponent,
-        data: { title: 'PAGE_TITLE.BAD_REQUEST' }
+        component: ServerErrorComponent,
+        data: { title: 'PAGE_TITLE.SERVER_ERROR' }
       }
     ]
   }

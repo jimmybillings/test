@@ -50,7 +50,7 @@ export function main() {
         success: [
           {
             sectionName: 'router',
-            methodName: 'goToServerErrorRequest',
+            methodName: 'goToServerError',
             expectedArguments: []
           }
         ]

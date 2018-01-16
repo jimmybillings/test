@@ -51,8 +51,8 @@ export class ActionFactory {
     return new GoToBadRequest();
   }
 
-  public goToServerErrorRequest(): GoToServerErrorRequest {
-    return new GoToServerErrorRequest();
+  public goToServerError(): GoToServerError {
+    return new GoToServerError();
   }
 }
 
@@ -122,7 +122,7 @@ export class GoToBadRequest implements Action {
   public readonly type = GoToBadRequest.Type;
 }
 
-export class GoToServerErrorRequest implements Action {
-  public static readonly Type = '[Router] Go To Server Error Request';
-  public readonly type = GoToServerErrorRequest.Type;
+export class GoToServerError implements Action {
+  public static readonly Type = '[Router] Go To Server Error';
+  public readonly type = GoToServerError.Type;
 }

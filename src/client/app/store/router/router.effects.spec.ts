@@ -369,10 +369,10 @@ export function main() {
     });
 
     effectsSpecHelper.generateTestsFor({
-      effectName: 'goToServerErrorRequest',
+      effectName: 'goToServerError',
       effectsInstantiator: instantiator,
       inputAction: {
-        type: RouterActions.GoToServerErrorRequest.Type
+        type: RouterActions.GoToServerError.Type
       },
       customTests: [
         {
