@@ -71,6 +71,11 @@ export class DeliveryOptionsEffects {
       this.store.create(factory => factory.activity.record(this.activityOptions(action.option, assetId)))
     );
 
+  @Effect()
+  public setLoadingMessageOnLoad: Observable<Action> = this.actions.ofType(DeliveryOptionsActions.Load.Type)
+    .delay(2000)
+    .map(() => this.store.create(factory => factory.deliveryOptions.setLoadingMessageFlag()));
+
   constructor(
     private actions: Actions,
     private store: AppStore,
