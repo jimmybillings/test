@@ -278,28 +278,33 @@
                 <div class="heading" flex="100" flex-gt-xs="10" layout="column" layout-align-gt-xs="end end">
                   <h6 class="mat-subheading-2">{{ 'ORDER.INVOICE.PRICE_COLUMN_HEAD' | translate }}</h6>
                 </div>
+              </li>
               <li
                 *ngFor="let lineItem of project.lineItems"
                 class="cart-asset"
                 flex="100"
-                layout="row"
-                layout-xs="column">
-                <cart-asset-component [asset]="lineItem.asset" flex="100" flex-gt-xs="50"></cart-asset-component>
-                <div flex="100" flex-gt-xs="10" layout="column" layout-padding>
-                  <div class="mat-caption">{{ lineItem.asset.rightsManaged }}</div>
+                layout="column">
+                <div flex layout="column" layout-gt-xs="row">
+                  <cart-asset-component [asset]="lineItem.asset" flex="100" flex-gt-xs="50"></cart-asset-component>
+                  <div flex="100" flex-gt-xs="10" layout="column" layout-padding>
+                    <div class="mat-caption">{{ lineItem.asset.rightsManaged }}</div>
+                  </div>
+                  <div flex="30" layout="column" layout-padding>
+                    <line-item-rights-component
+                      class="invoice-items-rights"
+                      [readOnly]="true"
+                      [rights]="lineItem.attributes"
+                      [rightsManaged]="lineItem.rightsManaged"
+                      [displayRmAttributes]="shouldDisplayRights(lineItem, invoice)"
+                      [hasAttributes]="!!lineItem.attributes">
+                    </line-item-rights-component>
+                  </div>
+                  <div class="cost" flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
+                    <div class="mat-suheading-2 total-amount">{{ lineItem.grossAssetPrice | currency:'USD':true:'1.2-2' }}</div>
+                  </div>
                 </div>
-                <div flex="30" layout="column" layout-padding>
-                  <line-item-rights-component
-                    class="invoice-items-rights"
-                    [readOnly]="true"
-                    [rights]="lineItem.attributes"
-                    [rightsManaged]="lineItem.rightsManaged"
-                    [displayRmAttributes]="shouldDisplayRights(lineItem, invoice)"
-                    [hasAttributes]="!!lineItem.attributes">
-                  </line-item-rights-component>
-                </div>
-                <div class="cost" flex="100" flex-gt-xs="10" layout="column" layout-padding layout-align='end end'>
-                  <div class="mat-suheading-2 total-amount">{{ lineItem.grossAssetPrice | currency:'USD':true:'1.2-2' }}</div>
+                <div class="notes" flex="100" layout="row" *ngIf="hasProp(lineItem, 'notes')">
+                  <span class="mat-caption">{{ lineItem.notes[0].notes[0] }}</span>
                 </div>
               </li>
               <li
