@@ -176,5 +176,16 @@ export function main() {
         type: '[Router] Go To Bad Request'
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'goToServerErrorRequest',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Router] Go To Server Error Request'
+      }
+    });
   });
 }
