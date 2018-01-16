@@ -303,8 +303,13 @@
                     <div class="mat-suheading-2 total-amount">{{ lineItem.grossAssetPrice | currency:'USD':true:'1.2-2' }}</div>
                   </div>
                 </div>
-                <div class="notes" flex="100" layout="row" *ngIf="hasProp(lineItem, 'notes')">
-                  <span class="mat-caption">{{ lineItem.notes[0].notes[0] }}</span>
+                <div flex="100" layout="row" layout-align="end center" *ngIf="hasProp(lineItem, 'notes')">
+                  <div class="invoice-notes" flex-gt-sm="85" flex="100">
+                    <span class="mat-caption">
+                      <strong>{{ 'QUOTE.SHOW_NOTES' | translate }}: </strong>
+                      {{ lineItem.notes[0].notes[0] }}
+                    </span>
+                  </div>
                 </div>
               </li>
               <li

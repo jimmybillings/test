@@ -241,6 +241,14 @@ invoice-component {
           margin-bottom: 0;
           min-height: unset;
         }
+        .invoice-notes {
+          margin: 0;
+          border-left: none;
+          padding: 8px;
+          & > span {
+            font-style: italic;
+          }
+        }
       }
     }
   }

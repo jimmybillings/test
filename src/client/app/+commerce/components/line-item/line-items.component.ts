@@ -18,7 +18,7 @@ export class LineItemsComponent {
     if (items) {
       this.items = items;
       items.forEach(item => {
-        this.noteVisibilityMap[item.id] = false;
+        this.noteVisibilityMap[item.id] = this.hasNotes(item);
       });
     }
   };
