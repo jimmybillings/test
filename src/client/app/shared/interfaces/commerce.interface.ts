@@ -211,7 +211,12 @@ export interface Quote extends CommonCommerce {
   billingAccountData?: SendDetailsBillingAccount;
   salesManager?: string;
   orderId?: number;
-  ownerData?: any;
+  ownerData?: {
+    accountName: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+  };
 }
 
 export interface QuoteEdit {
