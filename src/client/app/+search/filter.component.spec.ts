@@ -1,5 +1,5 @@
+import { Common } from '../shared/utilities/common.functions';
 import { FilterComponent } from './filter.component';
-
 export function main() {
   describe('Filter Component', () => {
     let mockSearchComponent: any;
@@ -123,7 +123,7 @@ export function main() {
           mockFilter.subFilters[0].filterValue = '2016-01-01 - 2016-12-31';
           componentUnderTest.newFilters = mockFilter;
 
-          expect(componentUnderTest.startDate.value.toString()).toEqual('Fri Jan 01 2016 00:00:00 GMT-0700 (MST)');
+          expect(componentUnderTest.startDate.value.toString()).toEqual(Common.convertToDateInstance('2016-01-01').toString());
         });
 
         it('returns null if the start value from the filter is the beginning of time', () => {
@@ -144,7 +144,7 @@ export function main() {
           mockFilter.subFilters[0].filterValue = '2016-01-01 - 2016-12-31';
           componentUnderTest.newFilters = mockFilter;
 
-          expect(componentUnderTest.endDate.value.toString()).toEqual('Sat Dec 31 2016 00:00:00 GMT-0700 (MST)');
+          expect(componentUnderTest.endDate.value.toString()).toEqual(Common.convertToDateInstance('2016-12-31').toString());
         });
 
         it('returns null if the end value from the filter is the beginning of time', () => {
