@@ -38,6 +38,25 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'handle',
+      comment: 'with a 500 error status',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: 'whatever',
+        error: { status: 500 }
+      },
+      outputActionFactories: {
+        success: [
+          {
+            sectionName: 'router',
+            methodName: 'goToServerError',
+            expectedArguments: []
+          }
+        ]
+      }
+    });
+
     describe('handle - when user is NOT on /user/login', () => {
       beforeEach(() => {
         mockCurrentPath = 'SOME URL';

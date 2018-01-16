@@ -745,5 +745,22 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'load500Failure',
+      comment: 'With a status of 500',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: AssetActions.LoadFailure.Type,
+        error: { status: 500 },
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'error',
+          methodName: 'handle',
+          expectedArguments: [{ status: 500 }]
+        }
+      }
+    });
   });
 }
