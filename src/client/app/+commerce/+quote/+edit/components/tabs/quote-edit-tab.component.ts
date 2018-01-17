@@ -140,6 +140,10 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         this.editProjectPricing(message.payload);
         break;
 
+      case 'ADD_NOTE':
+        this.openNoteDialog(message.payload);
+        break;
+
       case 'GO_TO_NEXT_TAB':
         this.goToNextTab();
         break;
@@ -471,5 +475,22 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   private calculatePrice(attributes: Pojo, lineItem: AssetLineItem): void {
     const markers: SubclipMarkersInterface.SubclipMarkers = this.markersFrom(lineItem.asset as EnhancedAsset);
     this.store.dispatch(factory => factory.pricing.calculatePrice(attributes, lineItem.asset.assetId, markers));
+  }
+
+  private openNoteDialog(lineItem: AssetLineItem): void {
+    const hasNote: boolean = lineItem.hasOwnProperty('notes') &&
+      lineItem.notes.length > 0 &&
+      lineItem.notes[0].hasOwnProperty('notes') &&
+      lineItem.notes[0].notes.length > 0;
+
+    const title: string = hasNote ? 'QUOTE.EDIT_NOTE' : 'QUOTE.ADD_NOTE';
+    const label: string = hasNote ? 'QUOTE.EDIT_NOTE' : 'QUOTE.ADD_NOTE';
+    const value: string = hasNote ? lineItem.notes[0].notes[0] : '';
+
+    this.dialogService.openFormDialog(
+      [{ name: 'note', type: 'textarea', validation: 'REQUIRED', label, value }],
+      { title },
+      (form) => this.store.dispatch(factory => factory.quoteEdit.addNote(form.note, lineItem))
+    );
   }
 }

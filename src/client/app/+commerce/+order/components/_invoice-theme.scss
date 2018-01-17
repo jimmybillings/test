@@ -35,7 +35,7 @@
           }
           li.cart-asset, li.fee-item {
             border-color: mat-color($foreground, base, .15);
-            & > div[layout-padding] {
+            & > div > div[layout-padding] {
               border-left-color:  mat-color($foreground, base, .15); 
             }
             // &:nth-child(odd) {

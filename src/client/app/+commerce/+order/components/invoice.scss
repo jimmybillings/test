@@ -207,7 +207,7 @@ invoice-component {
         border-style: solid;
         border-radius: 0;
         border-width: 0 1px 1px 1px;
-        & > div[layout-padding] {
+        & > div > div[layout-padding] {
           border-left-width: 1px; 
           border-left-style: solid; 
           @media screen and (max-width: $layout-breakpoint-xs)  {
@@ -240,6 +240,14 @@ invoice-component {
           font-size: 12px;
           margin-bottom: 0;
           min-height: unset;
+        }
+        .invoice-notes {
+          margin: 0;
+          border-left: none;
+          padding: 8px;
+          & > span {
+            font-style: italic;
+          }
         }
       }
     }

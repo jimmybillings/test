@@ -16,6 +16,7 @@ import { Common } from '../../../shared/utilities/common.functions';
 })
 export class OrderShowComponent {
   public orderObservable: Observable<Order>;
+  public noteVisibilityMap: { [index: string]: boolean } = {};
 
   constructor(private window: WindowRef, private store: AppStore) {
     this.orderObservable = this.store.select(state => {
@@ -86,5 +87,24 @@ export class OrderShowComponent {
 
   public showAsperaButtonFor(lineItem: AssetLineItem): boolean {
     return lineItem.transcodeStatus === 'Completed' && !!lineItem.asperaSpec;
+  }
+
+  public iconForNotesButton(lineItem: AssetLineItem): string {
+    return this.noteVisibilityMap[lineItem.id] ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+  }
+
+  public toggleNotesVisibilityFor(lineItem: AssetLineItem): void {
+    this.noteVisibilityMap[lineItem.id] = !this.noteVisibilityMap[lineItem.id];
+  }
+
+  public hasNotes(lineItem: AssetLineItem): boolean {
+    return lineItem.hasOwnProperty('notes') &&
+      lineItem.notes.length > 0 &&
+      lineItem.notes[0].hasOwnProperty('notes') &&
+      lineItem.notes[0].notes.length > 0;
+  }
+
+  public shouldShowNoteFor(lineItem: AssetLineItem): boolean {
+    return this.hasNotes(lineItem) && !!this.noteVisibilityMap[lineItem.id];
   }
 }
