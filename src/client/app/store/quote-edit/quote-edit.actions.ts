@@ -133,6 +133,10 @@ export class ActionFactory {
   public addNote(note: string, lineItem: AssetLineItem): AddNote {
     return new AddNote(note, lineItem);
   }
+
+  public removeNoteFrom(lineItem: AssetLineItem): RemoveNote {
+    return new RemoveNote(lineItem);
+  }
 }
 
 export class InternalActionFactory extends ActionFactory {
@@ -458,6 +462,12 @@ export class AddNote implements Action {
   constructor(public readonly note: string, public readonly lineItem: AssetLineItem) { }
 }
 
+export class RemoveNote implements Action {
+  public static readonly Type = '[Quote Edit] Remove Note';
+  public readonly type = RemoveNote.Type;
+  constructor(public readonly lineItem: AssetLineItem) { }
+}
+
 export type Any =
   Load | LoadSuccess | LoadFailure |
   Delete | DeleteSuccess | DeleteFailure |
@@ -470,4 +480,4 @@ export type Any =
   UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
   UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | AddInvoiceContactToQuote |
   InitializeSalesManagerFormOnQuote | UpdateSalesManagerFormOnQuote |
-  UpdateBillingAccount | AddNote;
+  UpdateBillingAccount | AddNote | RemoveNote;

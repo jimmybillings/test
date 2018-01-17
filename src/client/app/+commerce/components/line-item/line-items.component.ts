@@ -120,4 +120,8 @@ export class LineItemsComponent {
   public onAddNote(lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({ type: 'ADD_NOTE', payload: lineItem });
   }
+
+  public removeNotesFrom(lineItem: AssetLineItem): void {
+    this.lineItemsNotify.emit({ type: 'REMOVE_NOTE', payload: lineItem });
+  }
 }

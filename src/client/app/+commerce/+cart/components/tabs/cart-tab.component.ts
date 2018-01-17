@@ -113,6 +113,10 @@ export class CartTabComponent extends Tab implements OnDestroy, OnInit {
         this.openNoteDialog(message.payload);
         break;
       }
+      case 'REMOVE_NOTE': {
+        this.removeNoteFrom(message.payload);
+        break;
+      }
     };
   }
 
@@ -367,5 +371,14 @@ export class CartTabComponent extends Tab implements OnDestroy, OnInit {
       { title },
       (form) => this.store.dispatch(factory => factory.cart.addNote(form.note, lineItem))
     );
+  }
+
+  private removeNoteFrom(lineItem: AssetLineItem): void {
+    this.dialogService.openConfirmationDialog({
+      title: 'CART.DELETE_NOTES.TITLE',
+      message: 'CART.DELETE_NOTES.MESSAGE',
+      accept: 'CART.DELETE_NOTES.ACCEPT',
+      decline: 'CART.DELETE_NOTES.DECLINE'
+    }, () => this.store.dispatch(factory => factory.cart.removeNoteFrom(lineItem)));
   }
 }

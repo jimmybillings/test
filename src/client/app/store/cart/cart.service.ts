@@ -7,6 +7,7 @@ import { Cart } from '../../shared/interfaces/commerce.interface';
 import { SubclipMarkers, Duration, durationFrom, bothMarkersAreSet } from '../../shared/interfaces/subclip-markers';
 import { AssetLineItem, Asset } from '../../shared/interfaces/commerce.interface';
 import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
+import { Common } from '../../shared/utilities/common.functions';
 
 @Injectable()
 export class FutureCartService {
@@ -46,6 +47,13 @@ export class FutureCartService {
     }
 
     return this.makeEditLineItemRequest(lineItem);
+  }
+
+  public removeNoteFrom(lineItem: AssetLineItem): Observable<Cart> {
+    let clonedLineItem: AssetLineItem = Common.clone(lineItem);
+    delete clonedLineItem.notes;
+
+    return this.makeEditLineItemRequest(clonedLineItem);
   }
 
   private durationFrom(lineItem: AssetLineItem, markers: SubclipMarkers): Duration {

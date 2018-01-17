@@ -144,6 +144,10 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         this.openNoteDialog(message.payload);
         break;
 
+      case 'REMOVE_NOTE':
+        this.removeNoteFrom(message.payload);
+        break;
+
       case 'GO_TO_NEXT_TAB':
         this.goToNextTab();
         break;
@@ -492,5 +496,14 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
       { title },
       (form) => this.store.dispatch(factory => factory.quoteEdit.addNote(form.note, lineItem))
     );
+  }
+
+  private removeNoteFrom(lineItem: AssetLineItem): void {
+    this.dialogService.openConfirmationDialog({
+      title: 'QUOTE.DELETE_NOTES.TITLE',
+      message: 'QUOTE.DELETE_NOTES.MESSAGE',
+      accept: 'QUOTE.DELETE_NOTES.ACCEPT',
+      decline: 'QUOTE.DELETE_NOTES.DECLINE'
+    }, () => this.store.dispatch(factory => factory.quoteEdit.removeNoteFrom(lineItem)));
   }
 }
