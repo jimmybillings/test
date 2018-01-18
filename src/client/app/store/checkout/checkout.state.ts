@@ -13,7 +13,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  purchaseOrderId: null,
+  purchaseOrderId: '',
   paymentOptions: null,
   selectedPaymentType: null,
   addresses: [],
