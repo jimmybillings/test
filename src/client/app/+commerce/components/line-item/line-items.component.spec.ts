@@ -210,5 +210,80 @@ export function main() {
         });
       });
     });
+
+
+    describe('iconForNotesButton()', () => {
+      it('returns \'keyboard_arrow_down\' when the note is not visble', () => {
+        const mockLineItem: any = { id: 'abc' };
+        expect(classUnderTest.iconForNotesButton(mockLineItem)).toBe('keyboard_arrow_down');
+      });
+
+      it('returns \'keyboard_arrow_up\' when the note is visble', () => {
+        const mockLineItem: any = { id: 'abc' };
+        classUnderTest.toggleNotesVisibilityFor(mockLineItem);
+        expect(classUnderTest.iconForNotesButton(mockLineItem)).toBe('keyboard_arrow_up');
+      });
+    });
+
+    describe('toggleNotesVisibilityFor()', () => {
+      it('toggles the boolean for the given lineItem', () => {
+        const mockLineItem: any = { id: 'xyz-789', notes: [{ notes: ['a note'] }] };
+
+        expect(classUnderTest.noteVisibilityMap[mockLineItem.id]).toBeFalsy(); // starts as undefined
+        classUnderTest.toggleNotesVisibilityFor(mockLineItem);
+        expect(classUnderTest.noteVisibilityMap[mockLineItem.id]).toBe(true);
+        classUnderTest.toggleNotesVisibilityFor(mockLineItem);
+        expect(classUnderTest.noteVisibilityMap[mockLineItem.id]).toBe(false);
+      });
+    });
+
+    describe('hasNotes()', () => {
+      describe('returns true', () => {
+        it('when the lineItem has at least 1 note', () => {
+          expect(classUnderTest.hasNotes({ notes: [{ notes: ['a note'] }] })).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the lineItem does not have a note', () => {
+          expect(classUnderTest.hasNotes({ notes: [{ notes: [] }] })).toBe(false);
+        });
+
+        it('when the lineItem does not have a notes property in the notes', () => {
+          expect(classUnderTest.hasNotes({ notes: [{}] } as any)).toBe(false);
+        });
+
+        it('when the notes property on the lineItem is empty', () => {
+          expect(classUnderTest.hasNotes({ notes: [] } as any)).toBe(false);
+        });
+
+        it('when there is no notes property on the lineItem', () => {
+          expect(classUnderTest.hasNotes({})).toBe(false);
+        });
+      });
+    });
+
+    describe('shouldShowNoteFor()', () => {
+      describe('returns true', () => {
+        it('when the lineItem has notes and the toggle is true', () => {
+          const mockLineItem: any = { id: 'abc-123', notes: [{ notes: ['a note'] }] };
+          classUnderTest.toggleNotesVisibilityFor(mockLineItem); // toggle to true, because it starts as undefined
+
+          expect(classUnderTest.shouldShowNoteFor(mockLineItem)).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the lineItem doesn\'t have notes', () => {
+          const mockLineItem: any = { id: 'def-456' };
+          expect(classUnderTest.shouldShowNoteFor(mockLineItem)).toBe(false);
+        });
+
+        it('when the lineItem does have notes, but the toggle is false', () => {
+          const mockLineItem: any = { id: 'abc-123', notes: [{ notes: ['a note'] }] };
+          expect(classUnderTest.shouldShowNoteFor(mockLineItem)).toBe(false);
+        });
+      });
+    });
   });
 }

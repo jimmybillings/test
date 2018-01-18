@@ -140,5 +140,31 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addNote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: CartActions.AddNote.Type,
+        note: 'some note',
+        lineItem: { some: 'lineItem' }
+      },
+      serviceMethod: {
+        name: 'addNote',
+        expectedArguments: ['some note', { some: 'lineItem' }],
+        returnsObservableOf: { some: 'cart' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'cart',
+          methodName: 'addNoteSuccess',
+          expectedArguments: [{ some: 'cart' }]
+        },
+        failure: {
+          sectionName: 'error',
+          methodName: 'handle'
+        }
+      }
+    });
   });
 }

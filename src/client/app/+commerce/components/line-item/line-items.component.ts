@@ -15,7 +15,12 @@ export class LineItemsComponent {
   public items: AssetLineItem[];
 
   @Input() set lineItems(items: AssetLineItem[]) {
-    if (items) this.items = items;
+    if (items) {
+      this.items = items;
+      items.forEach(item => {
+        this.noteVisibilityMap[item.id] = this.hasNotes(item);
+      });
+    }
   };
   @Input() quoteType: PurchaseType;
   @Input() otherProjects: Project[];
@@ -24,6 +29,7 @@ export class LineItemsComponent {
   @Input() rmAssetsHaveAttributes: boolean;
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   public selectedLineItem: AssetLineItem;
+  public noteVisibilityMap: { [index: string]: boolean } = {};
 
   public onMoveTo(otherProject: Project, lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({
@@ -90,5 +96,28 @@ export class LineItemsComponent {
 
   public onAddCustomPrice(lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({ type: 'ADD_CUSTOM_PRICE', payload: lineItem });
+  }
+
+  public iconForNotesButton(lineItem: AssetLineItem): string {
+    return this.noteVisibilityMap[lineItem.id] ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+  }
+
+  public toggleNotesVisibilityFor(lineItem: AssetLineItem): void {
+    this.noteVisibilityMap[lineItem.id] = !this.noteVisibilityMap[lineItem.id];
+  }
+
+  public hasNotes(lineItem: AssetLineItem): boolean {
+    return lineItem.hasOwnProperty('notes') &&
+      lineItem.notes.length > 0 &&
+      lineItem.notes[0].hasOwnProperty('notes') &&
+      lineItem.notes[0].notes.length > 0;
+  }
+
+  public shouldShowNoteFor(lineItem: AssetLineItem): boolean {
+    return this.hasNotes(lineItem) && !!this.noteVisibilityMap[lineItem.id];
+  }
+
+  public onAddNote(lineItem: AssetLineItem): void {
+    this.lineItemsNotify.emit({ type: 'ADD_NOTE', payload: lineItem });
   }
 }

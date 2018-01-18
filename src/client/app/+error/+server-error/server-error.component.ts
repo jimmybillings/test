@@ -4,11 +4,11 @@ import { ErrorBase } from '../error.base';
 
 @Component({
   moduleId: module.id,
-  selector: 'bad-server-request-component',
-  templateUrl: './bad-server-request.html',
+  selector: 'server-error-component',
+  templateUrl: './server-error.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BadServerRequestComponent extends ErrorBase {
+export class ServerErrorComponent extends ErrorBase {
   constructor(protected userCan: Capabilities) {
     super(userCan);
   }

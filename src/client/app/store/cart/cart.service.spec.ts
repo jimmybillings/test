@@ -97,5 +97,25 @@ export function main() {
         expect(mockApiService.delete).toHaveBeenCalledWithLoading(true);
       });
     });
+
+    describe('addNote()', () => {
+      it('replaces the first note if the field already exists', () => {
+        serviceUnderTest.addNote('some note', { id: 'abc-123', notes: [{ notes: ['note'] }] });
+
+        expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApiService.put).toHaveBeenCalledWithEndpoint('cart/update/lineItem/abc-123');
+        expect(mockApiService.put).toHaveBeenCalledWithBody({ id: 'abc-123', notes: [{ notes: ['some note'] }] });
+        expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('adds the \'notes\' if the field doesn\'t exists', () => {
+        serviceUnderTest.addNote('some note', { id: 'abc-123' });
+
+        expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApiService.put).toHaveBeenCalledWithEndpoint('cart/update/lineItem/abc-123');
+        expect(mockApiService.put).toHaveBeenCalledWithBody({ id: 'abc-123', notes: [{ notes: ['some note'] }] });
+        expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+      });
+    });
   });
 }

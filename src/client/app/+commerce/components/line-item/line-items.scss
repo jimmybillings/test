@@ -15,6 +15,11 @@ li.cart-asset {
   padding: 2px;
   border-radius: 2px;
   transition: $swift-ease-out;
+  .toggle-notes-btn {
+    button {
+      font-size: 12px;
+    }
+  }
   .actions {
     min-height: 45px;
     position: relative;
@@ -156,6 +161,38 @@ li.cart-asset {
       position: absolute;
       bottom: 32px;
       width: calc(100% - 16px);
+    }
+  }
+  .notes {
+    margin: 2px 8px 8px;
+    &.editable {
+      transition: all .25s ease-in-out;
+      &::before {
+        transition: all .2s ease-in-out;
+        content: "\e150";
+        font-family: 'Material Icons';
+        position: absolute;
+        right: 24px;
+        font-size: 20px;
+        opacity: 0;
+      }
+      &:hover {
+        padding: 0 4px;
+        cursor: pointer;
+        &::before {
+          right: 10px;
+          opacity: .4;
+        }
+      }
+      span {
+        padding: 2px 4px;
+        margin: 0 16px 0 0;
+        font-style: italic;
+      }
+    }
+    span {
+      padding: 2px 4px;
+      font-style: italic;
     }
   }
 }

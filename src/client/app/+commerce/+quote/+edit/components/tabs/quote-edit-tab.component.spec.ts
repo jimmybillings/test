@@ -396,6 +396,28 @@ export function main() {
           });
         });
       });
+
+      describe('ADD_NOTE', () => {
+        it('opens a dialog with the correct config for a lineItem that has a note', () => {
+          componentUnderTest.onNotification({ type: 'ADD_NOTE', payload: { notes: [{ notes: ['some note'] }] } });
+
+          expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+            [{ name: 'note', type: 'textarea', validation: 'REQUIRED', label: 'QUOTE.EDIT_NOTE', value: 'some note' }],
+            { title: 'QUOTE.EDIT_NOTE' },
+            jasmine.any(Function)
+          );
+        });
+
+        it('opens a dialog with the correct config for a lineItem that doesn\'t have a note', () => {
+          componentUnderTest.onNotification({ type: 'ADD_NOTE', payload: { some: 'lineItem' } });
+
+          expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+            [{ name: 'note', type: 'textarea', validation: 'REQUIRED', label: 'QUOTE.ADD_NOTE', value: '' }],
+            { title: 'QUOTE.ADD_NOTE' },
+            jasmine.any(Function)
+          );
+        });
+      });
     });
 
     describe('get showUsageWarning()', () => {

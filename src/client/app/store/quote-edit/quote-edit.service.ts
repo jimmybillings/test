@@ -204,6 +204,16 @@ export class FutureQuoteEditService {
     );
   }
 
+  public addNote(quoteId: number, note: string, lineItem: AssetLineItem): Observable<Quote> {
+    if (lineItem.hasOwnProperty('notes') && Array.isArray(lineItem.notes)) {
+      lineItem.notes[0] = { notes: [note] };
+    } else {
+      lineItem.notes = [{ notes: [note] }];
+    }
+
+    return this.makeEditLineItemRequest(quoteId, lineItem);
+  }
+
   private formatAssetBody(parameters: AddAssetParameters): any {
     let formatted = {};
     Object.assign(formatted, { lineItem: this.formatLineItem(parameters.lineItem, parameters.markers) });

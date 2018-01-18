@@ -35,6 +35,15 @@
     .divider {
       box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
     }
+    .notes {
+      @include text-contrast(mat-color($mat-grey, 200));
+      background-color: mat-color($mat-grey, 200, .75);
+      &.editable {
+        &:hover {
+          background-color: mat-color($mat-grey, 300);
+        }
+      }
+    }
   }
   line-item-rights-component {
     section {

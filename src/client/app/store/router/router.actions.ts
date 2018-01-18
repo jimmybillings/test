@@ -50,6 +50,10 @@ export class ActionFactory {
   public goToBadRequest(): GoToBadRequest {
     return new GoToBadRequest();
   }
+
+  public goToServerError(): GoToServerError {
+    return new GoToServerError();
+  }
 }
 
 export class InternalActionFactory extends ActionFactory { }
@@ -116,4 +120,9 @@ export class AddMarkersToUrl implements Action {
 export class GoToBadRequest implements Action {
   public static readonly Type = '[Router] Go To Bad Request';
   public readonly type = GoToBadRequest.Type;
+}
+
+export class GoToServerError implements Action {
+  public static readonly Type = '[Router] Go To Server Error';
+  public readonly type = GoToServerError.Type;
 }

@@ -759,5 +759,34 @@ export function main() {
       }
     });
 
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addNote',
+      effectsInstantiator: instantiator,
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 111 } }
+      },
+      inputAction: {
+        type: QuoteEditActions.AddNote.Type,
+        note: 'some note',
+        lineItem: { some: 'lineItem' }
+      },
+      serviceMethod: {
+        name: 'addNote',
+        expectedArguments: [111, 'some note', { some: 'lineItem' }],
+        returnsObservableOf: { some: 'quote' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        },
+        failure: {
+          sectionName: 'error',
+          methodName: 'handle'
+        }
+      }
+    });
   });
 }

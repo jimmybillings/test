@@ -92,8 +92,6 @@
           </div>
         </div>
       </div>
-      
-      
     </div>
 
     <div layout="row" flex="100" layout-align="center center" class="balance-amount" *ngIf="shouldShowPaymentBalanceFor(order)">
@@ -106,7 +104,7 @@
           </div>
           <div>
             <strong>{{ 'ORDER.BALANCE_DUE_DATE_LABEL' | translate }}</strong>
-            <span>{{order.paymentDueDate | date: 'MM/dd/yyyy'}}</span>
+            <span>{{order.paymentDueDate | date:'MM/dd/yyyy'}}</span>
           </div>
         </div>
       </div>
@@ -147,60 +145,80 @@
                   *ngFor="let lineItem of project.lineItems"
                   class="cart-asset" 
                   flex="100" 
-                  layout="row" 
-                  layout-xs="column">
-                  <cart-asset-component [asset]="lineItem.asset" flex="100" flex-gt-xs="60"></cart-asset-component>
-                  <line-item-rights-component
-                    flex="100" flex-gt-xs="20"
-                    [readOnly]="true"
-                    [rights]="lineItem.attributes"
-                    [rightsManaged]="lineItem.rightsManaged"
-                    [displayRmAttributes]="shouldDisplayRights(lineItem, order)"
-                    [hasAttributes]="!!lineItem.attributes">
-                  </line-item-rights-component>
-                  <div flex-gt-xs="20" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
-                    <div class="tools" flex="100" layout-padding>
-                      <button
-                        *ngIf="showDownloadButtonFor(lineItem); else noDownloadAvailable"
-                        [disabled]="!lineItem.downloadUrl"
-                        (click)="download(lineItem.downloadUrl)"
-                        mat-button
-                        color="primary"
-                        class="is-outlined download">
-                        <mat-icon class="transcode-icon" [ngClass]="{'spinner': lineItem.transcodeStatus === 'Submitted'}">
-                          {{ 'ORDER.SHOW.TRANSCODE_ICON.' + lineItem.transcodeStatus | translate }}
-                        </mat-icon>
-                        <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.' +  lineItem.transcodeStatus | translate }}</span>
-                      </button>
-                      <ng-template #noDownloadAvailable>
+                  layout="column">
+                  <div layout="row" layout-xs="column">
+                    <div flex="100" flex-gt-xs="60" layout="column" layout-align="space-between">
+                      <cart-asset-component [asset]="lineItem.asset"></cart-asset-component>
+                      <ng-container *ngIf="hasNotes(lineItem)">
+                        <div layout-padding class="toggle-notes-btn">			
+                          <button
+                            mat-button
+                            title="{{ 'QUOTE.SHOW_NOTES' | translate }}"
+                            (click)="toggleNotesVisibilityFor(lineItem)">
+                            <span>{{ 'QUOTE.SHOW_NOTES' | translate }}</span>
+                            <mat-icon>{{ iconForNotesButton(lineItem) }}</mat-icon>
+                          </button>
+                        </div>
+                      </ng-container>
+                    </div>
+                    <line-item-rights-component
+                      flex="100" flex-gt-xs="20"
+                      [readOnly]="true"
+                      [rights]="lineItem.attributes"
+                      [rightsManaged]="lineItem.rightsManaged"
+                      [displayRmAttributes]="shouldDisplayRights(lineItem, order)"
+                      [hasAttributes]="!!lineItem.attributes">
+                    </line-item-rights-component>
+                    <div flex-gt-xs="20" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
+                      <div class="tools" flex="100" layout-padding>
                         <button
-                          disabled="true"
+                          *ngIf="showDownloadButtonFor(lineItem); else noDownloadAvailable"
+                          [disabled]="!lineItem.downloadUrl"
+                          (click)="download(lineItem.downloadUrl)"
                           mat-button
                           color="primary"
                           class="is-outlined download">
-                          <mat-icon class="transcode-icon spinner">
-                            {{ 'ORDER.SHOW.TRANSCODE_ICON.Submitted' | translate }}
+                          <mat-icon class="transcode-icon" [ngClass]="{'spinner': lineItem.transcodeStatus === 'Submitted'}">
+                            {{ 'ORDER.SHOW.TRANSCODE_ICON.' + lineItem.transcodeStatus | translate }}
                           </mat-icon>
-                          <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.Submitted' | translate }}</span>
+                          <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.' +  lineItem.transcodeStatus | translate }}</span>
                         </button>
-                      </ng-template>
-                      <button 
-                        *ngIf="showAsperaButtonFor(lineItem)"
-                        wzAsperaDownload 
-                        title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
-                        [disabled]="!lineItem.asperaSpec" 
-                        [asperaSpec]="lineItem.asperaSpec" 
-                        mat-button>
-                        <mat-icon>whatshot</mat-icon>
-                        {{ 'ORDER.SHOW.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}
-                      </button>
+                        <ng-template #noDownloadAvailable>
+                          <button
+                            disabled="true"
+                            mat-button
+                            color="primary"
+                            class="is-outlined download">
+                            <mat-icon class="transcode-icon spinner">
+                              {{ 'ORDER.SHOW.TRANSCODE_ICON.Submitted' | translate }}
+                            </mat-icon>
+                            <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.Submitted' | translate }}</span>
+                          </button>
+                        </ng-template>
+                        <button 
+                          *ngIf="showAsperaButtonFor(lineItem)"
+                          wzAsperaDownload 
+                          title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
+                          [disabled]="!lineItem.asperaSpec" 
+                          [asperaSpec]="lineItem.asperaSpec" 
+                          mat-button>
+                          <mat-icon>whatshot</mat-icon>
+                          {{ 'ORDER.SHOW.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}
+                        </button>
+                      </div>
+                      <div *ngIf="isRefundedLineItem(lineItem)" class="price indicate-refund" >
+                        {{ lineItem.grossAssetPrice | currency:'USD':true:'1.2-2' | slice:1 }}
+                      </div>
+                      <div *ngIf="!isRefundedLineItem(lineItem)" class="price" >
+                        {{ lineItem.grossAssetPrice | currency:'USD':true:'1.2-2' }}
+                      </div>
                     </div>
-                    <div *ngIf="isRefundedLineItem(lineItem)" class="price indicate-refund" >
-                      {{ lineItem.grossAssetPrice | currency:'USD':true:'1.2-2' | slice:1 }}
-                    </div>
-                    <div *ngIf="!isRefundedLineItem(lineItem)" class="price" >
-                      {{ lineItem.grossAssetPrice | currency:'USD':true:'1.2-2' }}
-                    </div>
+                  </div>
+                  <div
+                    class="notes"
+                    layout="row"
+                    *ngIf="shouldShowNoteFor(lineItem)">
+                    <span class="mat-caption">{{ lineItem.notes[0].notes[0] }}</span>
                   </div>
                 </li>
               </ul>

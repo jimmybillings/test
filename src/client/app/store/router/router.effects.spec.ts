@@ -367,5 +367,19 @@ export function main() {
         }
       ]
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'goToServerError',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: RouterActions.GoToServerError.Type
+      },
+      customTests: [
+        {
+          it: 'calls navigate() on the router with the server error request path',
+          expectation: () => expect(mockRouter.navigate).toHaveBeenCalledWith(['/error/500'])
+        }
+      ]
+    });
   });
 }
