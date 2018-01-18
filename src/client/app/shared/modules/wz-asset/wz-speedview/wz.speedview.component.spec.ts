@@ -36,14 +36,8 @@ export function main() {
     });
 
     describe('merge()', () => {
-      it('Should accept a partial/full peice of the SpeedviewData type and merge into the current', () => {
-        expect(componentUnderTest.speedviewAssetInfo).toEqual({
-          values: [],
-          url: '',
-          pricingType: '',
-          price: 0,
-          imageQuickView: false
-        });
+
+      it('Should set only the posterUrl regardless of the other properties', () => {
         componentUnderTest.merge({ posterUrl: 'testPosterUrl' });
         expect(componentUnderTest.speedviewAssetInfo).toEqual({
           values: [],
@@ -52,6 +46,76 @@ export function main() {
           price: 0,
           imageQuickView: false,
           posterUrl: 'testPosterUrl'
+        });
+      });
+
+      it('Should set the noData property and remove everything else except for the posterUrl', () => {
+        componentUnderTest.speedviewAssetInfo = {
+          values: [],
+          url: '',
+          pricingType: '',
+          price: 0,
+          imageQuickView: false,
+          posterUrl: 'testPosterUrl'
+        };
+        componentUnderTest.merge({ noData: true });
+        expect(componentUnderTest.speedviewAssetInfo).toEqual({
+          noData: true,
+          posterUrl: 'testPosterUrl'
+        });
+      });
+
+      it('Should set the noData property and remove everything else except for the posterUrl', () => {
+        componentUnderTest.speedviewAssetInfo = {
+          values: [],
+          url: '',
+          pricingType: '',
+          price: 0,
+          imageQuickView: false,
+          posterUrl: 'testPosterUrl'
+        };
+        componentUnderTest.merge({ noData: true });
+        expect(componentUnderTest.speedviewAssetInfo).toEqual({
+          noData: true,
+          posterUrl: 'testPosterUrl'
+        });
+      });
+
+      it('Should set complete speedview data and remove the noData property if defined', () => {
+        componentUnderTest.speedviewAssetInfo = {
+          noData: true
+        };
+        componentUnderTest.merge({
+          values: [],
+          url: '',
+          pricingType: '',
+          price: 0,
+          imageQuickView: false
+        });
+        expect(componentUnderTest.speedviewAssetInfo).toEqual({
+          values: [],
+          url: '',
+          pricingType: '',
+          price: 0,
+          imageQuickView: false
+        });
+      });
+
+      it('Should set complete speedview data and not attempt to remove the noData property if its undefined', () => {
+        componentUnderTest.speedviewAssetInfo = {};
+        componentUnderTest.merge({
+          values: [],
+          url: '',
+          pricingType: '',
+          price: 0,
+          imageQuickView: false
+        });
+        expect(componentUnderTest.speedviewAssetInfo).toEqual({
+          values: [],
+          url: '',
+          pricingType: '',
+          price: 0,
+          imageQuickView: false
         });
       });
 

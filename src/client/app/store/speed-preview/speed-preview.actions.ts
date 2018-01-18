@@ -12,6 +12,10 @@ export class InternalActionFactory extends ActionFactory {
   public loadSuccess(speedViewData: SpeedviewData): LoadSuccess {
     return new LoadSuccess(speedViewData);
   }
+
+  public loadFailure(): LoadFailure {
+    return new LoadFailure();
+  }
 }
 
 export class Load implements Action {
@@ -26,4 +30,9 @@ export class LoadSuccess implements Action {
   constructor(public readonly speedViewData: SpeedviewData) { }
 }
 
-export type Any = Load | LoadSuccess;
+export class LoadFailure implements Action {
+  public static readonly Type = '[SpeedPreview] Load Failure';
+  public readonly type = LoadFailure.Type;
+}
+
+export type Any = Load | LoadSuccess | LoadFailure;
