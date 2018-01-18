@@ -3,6 +3,10 @@ import { PaymentOption, PaymentOptions, CreditCardAuthorization } from '../../sh
 import { ViewAddress } from '../../shared/interfaces/user.interface';
 
 export class ActionFactory {
+  public setPurchaseOrderId(purchaseOrderId: string): SetPurchaseOrderId {
+    return new SetPurchaseOrderId(purchaseOrderId);
+  }
+
   public setAvailablePaymentOptions(paymentOptions: PaymentOptions): SetAvailablePaymentOptions {
     return new SetAvailablePaymentOptions(paymentOptions);
   }
@@ -29,6 +33,12 @@ export class ActionFactory {
 }
 
 export class InternalActionFactory extends ActionFactory { }
+
+export class SetPurchaseOrderId implements Action {
+  public static readonly Type = '[Checkout] Set purchase order id';
+  public readonly type = SetPurchaseOrderId.Type;
+  constructor(public readonly purchaseOrderId: string) { }
+}
 
 export class SetAvailablePaymentOptions implements Action {
   public static readonly Type = '[Checkout] Set Available Payment Options';
@@ -65,5 +75,5 @@ export class Reset implements Action {
   public readonly type = Reset.Type;
 }
 
-export type Any = SetSelectedPaymentType | SetSelectedAddress | SetAvailableAddresses | SetCreditCardAuthorization
-  | SetAvailablePaymentOptions | Reset;
+export type Any = SetPurchaseOrderId | SetSelectedPaymentType | SetSelectedAddress | SetAvailableAddresses |
+  SetCreditCardAuthorization | SetAvailablePaymentOptions | Reset;
