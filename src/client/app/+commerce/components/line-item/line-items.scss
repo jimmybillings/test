@@ -186,6 +186,16 @@ li.cart-asset {
             opacity: .4;
           }
         }
+        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+          &:hover {
+            padding-left: 4px;
+            cursor: pointer;
+            &::before {
+              right: 16px;
+              opacity: .4;
+            }
+          }        
+        }
       }
       span {
         padding: 2px 4px;
