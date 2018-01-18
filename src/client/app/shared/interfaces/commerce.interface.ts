@@ -339,21 +339,12 @@ export interface PricingState {
   priceForDialog: number;
 }
 
-export interface AddressPurchaseOptions {
-  orderAddressId: number;
-  orderAddressType: string;
-}
-
-export interface CreditCardPurchaseOptions {
-  stripeToken: string;
-  stripeTokenType: string;
-}
-
 export interface PurchaseOptions {
-  orderAddressId: number;
-  orderAddressType: string;
-  stripeToken: string;
-  stripeTokenType: string;
+  poNumber?: string;
+  orderAddressId?: number;
+  orderAddressType?: string;
+  stripeToken?: string;
+  stripeTokenType?: string;
 }
 
 export interface PaymentOptions {

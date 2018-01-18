@@ -17,8 +17,6 @@ import {
   PaymentType,
   PaymentOptions,
   PaymentOption,
-  AddressPurchaseOptions,
-  CreditCardPurchaseOptions,
   PurchaseOptions,
   LicenseAgreements
 } from '../interfaces/commerce.interface';
@@ -225,7 +223,7 @@ export class CartService {
   }
 
   private purchaseOnCredit(): Observable<number> {
-    const options: AddressPurchaseOptions = this.addressPurchaseOptions;
+    const options: PurchaseOptions = this.addressPurchaseOptions;
     return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { body: { options }, loadingIndicator: true })
       .do(() => this.store.dispatch(factory => factory.order.setCheckoutState(true)))
       .map((order: Order) => order.id);
@@ -287,14 +285,15 @@ export class CartService {
     return Object.assign({}, this.addressPurchaseOptions, this.creditCardPurchaseOptions) as PurchaseOptions;
   }
 
-  private get addressPurchaseOptions(): AddressPurchaseOptions {
+  private get addressPurchaseOptions(): PurchaseOptions {
     return {
       orderAddressId: this.checkoutState.selectedAddress.addressEntityId,
-      orderAddressType: this.checkoutState.selectedAddress.type
+      orderAddressType: this.checkoutState.selectedAddress.type,
+      poNumber: this.checkoutState.purchaseOrderId
     };
   }
 
-  private get creditCardPurchaseOptions(): CreditCardPurchaseOptions {
+  private get creditCardPurchaseOptions(): PurchaseOptions {
     return {
       stripeToken: this.checkoutState.authorization.id,
       stripeTokenType: this.checkoutState.authorization.type
