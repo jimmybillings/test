@@ -27,7 +27,7 @@ export class InvoiceComponent {
         if (project.lineItems) {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
             lineItem.asset = enhanceAsset(
-              Object.assign(lineItem.asset, { uuid: lineItem.id }), 'orderAsset', invoice.order.id
+              Object.assign(lineItem.asset, { uuid: lineItem.id }), 'order', invoice.order.id
             );
             return lineItem;
           });

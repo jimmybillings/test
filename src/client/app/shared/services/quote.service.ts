@@ -52,7 +52,7 @@ export class QuoteService {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
             lineItem.asset = enhanceAsset(Object.assign(
               lineItem.asset, { uuid: lineItem.id }),
-              'quoteShowAsset', data.id
+              'quoteShow', data.id
             );
             return lineItem;
           });

@@ -447,7 +447,7 @@ export function main() {
           {
             assetId: 47,
             uuid: 'aabb-ccdd-eeff-gghh',
-            type: 'collectionAsset',
+            type: 'collection',
             parentId: 1
           }
         );
@@ -460,7 +460,7 @@ export function main() {
           {
             assetId: 47,
             uuid: 'aabb-ccdd-eeff-gghh',
-            type: 'quoteEditAsset'
+            type: 'quoteEdit'
           }
         );
         expect(assetUnderTest.routerLink).toEqual([`/active-quote/asset/aabb-ccdd-eeff-gghh`]);
@@ -469,7 +469,7 @@ export function main() {
       it('Returns correct path for a search asset', () => {
         Object.assign(
           assetUnderTest,
-          { assetId: 47, type: 'searchAsset' }
+          { assetId: 47, type: 'search' }
         );
         expect(assetUnderTest.routerLink).toEqual([`/search/asset/47`]);
       });
@@ -480,7 +480,7 @@ export function main() {
           {
             assetId: 47,
             uuid: 'aabb-ccdd-eeff-gghh',
-            type: 'quoteShowAsset',
+            type: 'quoteShow',
             parentId: 1
           }
         );
@@ -493,7 +493,7 @@ export function main() {
           {
             assetId: 47,
             uuid: 'aabb-ccdd-eeff-gghh',
-            type: 'orderAsset',
+            type: 'order',
             parentId: 1
           }
         );
@@ -506,7 +506,7 @@ export function main() {
           {
             assetId: 47,
             uuid: 'aabb-ccdd-eeff-gghh',
-            type: 'cartAsset'
+            type: 'cart'
           }
         );
         expect(assetUnderTest.routerLink).toEqual([`/cart/asset/aabb-ccdd-eeff-gghh`]);

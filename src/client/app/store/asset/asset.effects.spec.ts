@@ -27,12 +27,12 @@ export function main() {
       inputAction: {
         type: AssetActions.LoadAssetAfterParentIsAvailable.Type,
         loadParameters: { some: 'loadParameters' },
-        assetType: 'orderAsset',
+        assetType: 'order',
         parentId: 123
       },
       serviceMethod: {
         name: 'load',
-        expectedArguments: [{ some: 'loadParameters' }, 'orderAsset', 123],
+        expectedArguments: [{ some: 'loadParameters' }, 'order', 123],
         returnsObservableOf: { some: 'asset' }
       },
       outputActionFactories: {
@@ -55,11 +55,11 @@ export function main() {
       inputAction: {
         type: AssetActions.LoadAssetAfterParentIsAvailable.Type,
         loadParameters: { some: 'loadParameters' },
-        assetType: 'searchAsset',
+        assetType: 'search',
       },
       serviceMethod: {
         name: 'load',
-        expectedArguments: [{ some: 'loadParameters' }, 'searchAsset', undefined],
+        expectedArguments: [{ some: 'loadParameters' }, 'search', undefined],
         returnsObservableOf: { some: 'asset' }
       },
       outputActionFactories: {
@@ -91,7 +91,7 @@ export function main() {
       state: [
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'abc-123', activeAssetType: 'cartAsset' }
+          value: { loadingUuid: 'abc-123', activeAssetType: 'cart' }
         },
         {
           storeSectionName: 'cart',
@@ -112,7 +112,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'cartAsset', undefined]
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'cart', undefined]
         }
       }
     });
@@ -124,7 +124,7 @@ export function main() {
       state: [
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'xyz-not-present', activeAssetType: 'cartAsset' }
+          value: { loadingUuid: 'xyz-not-present', activeAssetType: 'cart' }
         },
         {
           storeSectionName: 'cart',
@@ -198,7 +198,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'cartAsset', undefined]
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'cart', undefined]
         }
       }
     });
@@ -212,7 +212,7 @@ export function main() {
       state: [
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'abc-123', activeAssetType: 'collectionAsset' }
+          value: { loadingUuid: 'abc-123', activeAssetType: 'collection' }
         },
         {
           storeSectionName: 'activeCollection',
@@ -226,7 +226,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'collectionAsset', 1]
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'collection', 1]
         }
       }
     });
@@ -238,7 +238,7 @@ export function main() {
       state: [
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'xyz-not-present', activeAssetType: 'collectionAsset' }
+          value: { loadingUuid: 'xyz-not-present', activeAssetType: 'collection' }
         },
         {
           storeSectionName: 'activeCollection',
@@ -268,7 +268,7 @@ export function main() {
         },
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'abc-123', activeAssetType: 'collectionAsset' }
+          value: { loadingUuid: 'abc-123', activeAssetType: 'collection' }
         }
       ],
       inputAction: {
@@ -295,7 +295,7 @@ export function main() {
         },
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'abc-123', activeAssetType: 'collectionAsset' }
+          value: { loadingUuid: 'abc-123', activeAssetType: 'collection' }
         }
       ],
       inputAction: {
@@ -306,7 +306,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'collectionAsset', 1]
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'collection', 1]
         }
       }
     });
@@ -320,7 +320,7 @@ export function main() {
       state: [
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'abc-123', activeAssetType: 'orderAsset' }
+          value: { loadingUuid: 'abc-123', activeAssetType: 'order' }
         },
         {
           storeSectionName: 'order',
@@ -340,7 +340,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'orderAsset', 1]
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'order', 1]
         }
       }
     });
@@ -352,7 +352,7 @@ export function main() {
       state: [
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'xyz-not-present', activeAssetType: 'orderAsset' }
+          value: { loadingUuid: 'xyz-not-present', activeAssetType: 'order' }
         },
         {
           storeSectionName: 'order',
@@ -388,7 +388,7 @@ export function main() {
         },
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'abc-123', activeAssetType: 'orderAsset' }
+          value: { loadingUuid: 'abc-123', activeAssetType: 'order' }
         }
       ],
       inputAction: {
@@ -422,7 +422,7 @@ export function main() {
         },
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'abc-123', activeAssetType: 'orderAsset' }
+          value: { loadingUuid: 'abc-123', activeAssetType: 'order' }
         }
       ],
       inputAction: {
@@ -434,7 +434,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'orderAsset', 47]
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'order', 47]
         }
       }
     });
@@ -448,7 +448,7 @@ export function main() {
       state: [
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'abc-123', activeAssetType: 'quoteEditAsset' }
+          value: { loadingUuid: 'abc-123', activeAssetType: 'quoteEdit' }
         },
         {
           storeSectionName: 'quoteEdit',
@@ -469,7 +469,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteEditAsset', 1]
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteEdit', 1]
         }
       }
     });
@@ -481,7 +481,7 @@ export function main() {
       state: [
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'xyz-not-present', activeAssetType: 'quoteEditAsset' }
+          value: { loadingUuid: 'xyz-not-present', activeAssetType: 'quoteEdit' }
         },
         {
           storeSectionName: 'quoteEdit',
@@ -552,7 +552,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteEditAsset', 1]
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteEdit', 1]
         }
       }
     });
@@ -566,7 +566,7 @@ export function main() {
       state: [
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'abc-123', activeAssetType: 'quoteShowAsset' }
+          value: { loadingUuid: 'abc-123', activeAssetType: 'quoteShow' }
         },
         {
           storeSectionName: 'quoteShow',
@@ -586,7 +586,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteShowAsset', 1]
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteShow', 1]
         }
       }
     });
@@ -598,7 +598,7 @@ export function main() {
       state: [
         {
           storeSectionName: 'asset',
-          value: { loadingUuid: 'xyz-not-present', activeAssetType: 'quoteShowAsset' }
+          value: { loadingUuid: 'xyz-not-present', activeAssetType: 'quoteShow' }
         },
         {
           storeSectionName: 'quoteShow',
@@ -669,7 +669,7 @@ export function main() {
         success: {
           sectionName: 'asset',
           methodName: 'loadAssetAfterParentIsAvailable',
-          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteShowAsset', 47]
+          expectedArguments: [{ id: '50', uuid: 'abc-123', timeStart: '500', timeEnd: '5000' }, 'quoteShow', 47]
         }
       }
     });

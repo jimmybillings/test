@@ -43,14 +43,15 @@ export class WzSpeedviewComponent {
   }
 
   public merge(data: SpeedviewData) {
+
     if (Object.keys(data).length === 1 && data.noData) {
-      let tempData = { posterUrl: this.speedviewAssetInfo.posterUrl }
+      let tempData = { posterUrl: this.speedviewAssetInfo.posterUrl };
       this.speedviewAssetInfo = { ...tempData, ...data };
-    }
-    else if (Object.keys(data).length === 1 && data.posterUrl) {
+
+    } else if (Object.keys(data).length === 1 && data.posterUrl) {
       this.speedviewAssetInfo.posterUrl = data.posterUrl;
-    }
-    else {
+
+    } else {
       if (this.speedviewAssetInfo.noData) delete this.speedviewAssetInfo.noData;
       this.speedviewAssetInfo = { ...this.speedviewAssetInfo, ...data };
     }

@@ -6,7 +6,7 @@ import { Asset } from '../shared/interfaces/common.interface';
 @Component({
   moduleId: module.id,
   selector: 'search-asset',
-  template: `<asset-component [assetType]="'searchAsset'"></asset-component>`,
+  template: `<asset-component [assetType]="'search'"></asset-component>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchAssetComponent { }

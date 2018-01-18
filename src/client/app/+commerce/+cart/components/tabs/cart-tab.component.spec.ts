@@ -289,9 +289,9 @@ export function main() {
 
       it('removes a line item when notified with REMOVE_LINE_ITEM', () => {
         const spy = mockAppStore.createActionFactoryMethod('cart', 'removeAsset');
-        const mockLineItem = { asset: { id: 123, type: 'cartAsset' } };
+        const mockLineItem = { asset: { id: 123, type: 'cart' } };
         componentUnderTest.onNotification({ type: 'REMOVE_LINE_ITEM', payload: mockLineItem });
-        mockAppStore.expectDispatchFor(spy, { id: 123, type: 'cartAsset' });
+        mockAppStore.expectDispatchFor(spy, { id: 123, type: 'cart' });
       });
 
       it('edits a line item when notified with EDIT_LINE_ITEM', () => {

@@ -94,7 +94,7 @@ export class QuoteTabComponent extends Tab implements OnDestroy {
           componentType: LicenseAgreementComponent,
           dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
           inputOptions: {
-            assetType: 'quoteShowAsset',
+            assetType: 'quoteShow',
             parentId: this.quoteService.state.data.id,
             licenses: Common.clone(agreements)
           },

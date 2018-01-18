@@ -89,27 +89,27 @@ export class AssetDetailComponent implements OnInit {
 
   public get routerLinkForAssetParent(): any[] {
     switch (this._asset.type) {
-      case 'collectionAsset': {
+      case 'collection': {
         return ['/collections', this._asset.parentId, { i: 1, n: this.pageSize }];
       }
 
-      case 'searchAsset': {
+      case 'search': {
         return ['/search', this.searchContext];
       }
 
-      case 'quoteEditAsset': {
+      case 'quoteEdit': {
         return ['/active-quote'];
       }
 
-      case 'quoteShowAsset': {
+      case 'quoteShow': {
         return ['/quotes', this._asset.parentId];
       }
 
-      case 'orderAsset': {
+      case 'order': {
         return ['/orders', this._asset.parentId];
       }
 
-      case 'cartAsset': {
+      case 'cart': {
         return ['/cart'];
       }
     }
@@ -117,12 +117,12 @@ export class AssetDetailComponent implements OnInit {
 
   public get breadcrumbLabel(): Array<string> {
     switch (this._asset.type) {
-      case 'collectionAsset': {
+      case 'collection': {
         return [this.activeCollectionName, ''];
       }
 
-      case 'orderAsset':
-      case 'quoteShowAsset': {
+      case 'order':
+      case 'quoteShow': {
         return [`asset.detail.breadcrumb_${this._asset.type}`, String(this._asset.parentId)];
       }
 
@@ -135,11 +135,11 @@ export class AssetDetailComponent implements OnInit {
   public get canAddToActiveCollection(): boolean {
     return this.userCan.editCollections() &&
       !this.activeCollectionContainsAssetId &&
-      this.assetTypeIsOneOf('collectionAsset', 'searchAsset');
+      this.assetTypeIsOneOf('collection', 'search');
   }
 
   public get canRemoveFromActiveCollection(): boolean {
-    return this._asset.type === 'collectionAsset' && this.activeCollectionContainsAssetUuid;
+    return this._asset.type === 'collection' && this.activeCollectionContainsAssetUuid;
   }
 
   public get userCanEditCollection(): Observable<boolean> {
@@ -147,12 +147,12 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canAddAgainToActiveCollection(): boolean {
-    return (this._asset.type === 'searchAsset' && this.activeCollectionContainsAssetId) ||
-      (this._asset.type === 'collectionAsset' && (this.activeCollectionContainsAssetId || this.showAssetSaveSubclip));
+    return (this._asset.type === 'search' && this.activeCollectionContainsAssetId) ||
+      (this._asset.type === 'collection' && (this.activeCollectionContainsAssetId || this.showAssetSaveSubclip));
   }
 
   public get canUpdateInActiveCollection(): boolean {
-    return this._asset.type === 'collectionAsset' && this.showAssetSaveSubclip && this.activeCollectionContainsAssetUuid &&
+    return this._asset.type === 'collection' && this.showAssetSaveSubclip && this.activeCollectionContainsAssetUuid &&
       !this._activeCollection.assets.items.some((collectionAsset: Asset) => {
         const duration = durationFrom(this.subclipMarkers);
         return collectionAsset.timeStart === duration.timeStart && collectionAsset.timeEnd === duration.timeEnd;
@@ -168,7 +168,7 @@ export class AssetDetailComponent implements OnInit {
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
     this.subclipMarkers = newMarkers;
     this.showAssetSaveSubclip = this.markersAreDefined;
-    if (this.markersAreDefined && this._asset.type === 'searchAsset') {
+    if (this.markersAreDefined && this._asset.type === 'search') {
       this.store.dispatch((factory) => factory.asset.updateMarkersInUrl(this.subclipMarkers, this._asset.assetId));
     }
     this.markersChange.emit(newMarkers);
@@ -226,11 +226,11 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canComment(): boolean {
-    return this.assetTypeIsOneOf('cartAsset', 'quoteEditAsset', 'quoteShowAsset', 'collectionAsset', 'orderAsset');
+    return this.assetTypeIsOneOf('cart', 'quoteEdit', 'quoteShow', 'collection', 'order');
   }
 
   public get canShare(): boolean {
-    return this.assetTypeIsOneOf('searchAsset') && this.userCan.createAccessInfo();
+    return this.assetTypeIsOneOf('search') && this.userCan.createAccessInfo();
   }
 
   public get showAdvancedPlayer(): boolean {
@@ -282,7 +282,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canUpdateCartAsset(): boolean {
-    return this.assetTypeIsOneOf('cartAsset', 'quoteEditAsset');
+    return this.assetTypeIsOneOf('cart', 'quoteEdit');
   }
 
   public get updateCartAssetButtonLabelKey(): string {
@@ -309,7 +309,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get addToCartOrQuoteButtonLabelKey(): string {
-    const onMatchingPage: boolean = this.isQuoteUser ? this._asset.type === 'quoteEditAsset' : this._asset.type === 'cartAsset';
+    const onMatchingPage: boolean = this.isQuoteUser ? this._asset.type === 'quoteEdit' : this._asset.type === 'cart';
     const operation: string = onMatchingPage ? 'ADD_NEW' : 'ADD';
     const subclipOrAsset: string = this.markersAreDefined ? 'SUBCLIP' : 'ASSET';
     const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
@@ -325,7 +325,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canGoToSearchAssetDetails(): boolean {
-    return this.assetTypeIsOneOf('cartAsset', 'collectionAsset', 'orderAsset', 'quoteEditAsset', 'quoteShowAsset') &&
+    return this.assetTypeIsOneOf('cart', 'collection', 'order', 'quoteEdit', 'quoteShow') &&
       this.asset.isViewable;
   }
 
@@ -351,20 +351,20 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public removeAssetFromCartOrQuote(): void {
-    const type: string = this._asset.type === 'quoteEditAsset' ? 'QUOTE' : 'CART';
+    const type: string = this._asset.type === 'quoteEdit' ? 'QUOTE' : 'CART';
     this.store.dispatch(factory => factory.dialog.showConfirmation({
       title: `${type}.REMOVE_ASSET.TITLE`,
       message: `${type}.REMOVE_ASSET.MESSAGE`,
       accept: `${type}.REMOVE_ASSET.ACCEPT`,
       decline: `${type}.REMOVE_ASSET.DECLINE`
-    }, () => this.store.dispatch(factory => this._asset.type === 'quoteEditAsset'
+    }, () => this.store.dispatch(factory => this._asset.type === 'quoteEdit'
       ? factory.quoteEdit.removeAsset(this._asset)
       : factory.cart.removeAsset(this._asset))
     ));
   }
 
   public get showDownloadButton(): boolean {
-    return this.assetTypeIsOneOf('quoteEditAsset', 'quoteShowAsset', 'searchAsset', 'collectionAsset', 'cartAsset') &&
+    return this.assetTypeIsOneOf('quoteEdit', 'quoteShow', 'search', 'collection', 'cart') &&
       this.asset.isViewable;
   }
 

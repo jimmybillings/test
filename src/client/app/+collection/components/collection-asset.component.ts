@@ -11,7 +11,7 @@ import { CommentParentObject } from '../../shared/interfaces/comment.interface';
   selector: 'collection-asset',
   template: `
     <asset-component
-      [assetType]="'collectionAsset'"
+      [assetType]="'collection'"
       [commentFormConfig]="commentFormConfig">
     </asset-component>`,
   changeDetection: ChangeDetectionStrategy.OnPush

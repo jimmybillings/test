@@ -13,6 +13,7 @@ export interface SpeedviewEvent {
 }
 
 export interface SpeedviewData {
+  noData?: boolean;
   imageQuickView?: boolean;
   price?: number;
   pricingType?: 'Royalty Free' | 'Rights Managed' | '';
