@@ -15,7 +15,7 @@ export class SpeedPreviewService {
     let path: string;
     // If the asset belongs to a user based collection, cart, quote, etc...
     if (asset.parentId && asset.type) {
-      path = `assetInfo/view/SpeedView/clip/${asset.assetId}/${asset.type}/${asset.parentId}`;
+      path = `assetInfo/view/SpeedView/clip/${asset.assetId}/${asset.type}`;
 
       // If the asset is an item in the search results page response.
     } else {

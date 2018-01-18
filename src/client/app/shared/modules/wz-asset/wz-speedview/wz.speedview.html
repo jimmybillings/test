@@ -1,4 +1,4 @@
-<div class="wz-speedview" [@state]="visibility">
+<div class="wz-speedview" [@state]="visibility | async" *ngIf="speedviewAssetInfo | async as speedviewAssetInfo">
   <div layout="column" flex="none" *ngIf="speedviewAssetInfo.imageQuickView">
     <div class="image-bg">
       <img class="image-speedview" [src]="speedviewAssetInfo.url">
@@ -19,6 +19,6 @@
     </div>
   </section>
   <section *ngIf="speedviewAssetInfo.noData" class="info" layout="row" layout-align="space-between none">
-      <span class="no-data">No Preview data currently available for this asset.</span>
+      <span class="no-data">{{'ERRORS.NO_SPEED_PREVIEW_DATA' | translate}}</span>
   </section>
 </div>

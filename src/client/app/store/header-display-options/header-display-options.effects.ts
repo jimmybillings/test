@@ -50,7 +50,8 @@ export class HeaderDisplayOptionsEffects {
     '/user/login',
     '/user/reset-password',
     '/error/404',
-    '/error/400'
+    '/error/400',
+    '/error/500'
   ];
 
   constructor(private actions: Actions, private store: AppStore) { }
