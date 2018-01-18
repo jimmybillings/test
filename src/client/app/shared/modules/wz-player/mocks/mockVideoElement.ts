@@ -8,6 +8,7 @@ export type MockVideoEventName =
 export class MockVideoElement {
   public paused: boolean = false;
   public ended: boolean = false;
+  public oncontextmenu: Function;
   private _currentTime: number = 0;
   private _duration: number = 0;
   private _playbackRate: number = 1;

@@ -206,7 +206,9 @@ export class WzPlayerComponent implements OnDestroy {
           // that doesn't seem to work, so we'll resort to this for now.
           // ASSUMPTION:  There is one <video> element in the document!
           this.videoElement = this.window.document.querySelector('video');
-
+          // make it harder for users to download the video by disabling the context menu, taken from
+          // https://stackoverflow.com/questions/9756837/prevent-html5-video-from-being-downloaded-right-click-saved
+          this.videoElement.oncontextmenu = () => false;
           this.startVideoEventListeners();
 
           this.emitStateChangeRequestWith({
