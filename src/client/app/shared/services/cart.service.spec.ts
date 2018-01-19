@@ -65,6 +65,16 @@ export function main() {
       });
     });
 
+    describe('checkoutState() getter', () => {
+      it('should return the checkout state', () => {
+        mockStore.createStateSection('checkout', {
+          purchaseOrderId: '1234-56',
+          selectedPaymentType: 'CreditCard'
+        });
+        expect(serviceUnderTest.checkoutState).toEqual({ purchaseOrderId: '1234-56', selectedPaymentType: 'CreditCard' });
+      });
+    });
+
     describe('cart getter', () => {
       it('returns the data from the cart store', () => {
         serviceUnderTest.cart.subscribe(cart => expect(cart).toEqual({ some: 'data' }));
