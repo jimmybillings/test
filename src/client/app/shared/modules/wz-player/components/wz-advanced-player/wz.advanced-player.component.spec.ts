@@ -4,11 +4,13 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { WzAdvancedPlayerComponent } from './wz.advanced-player.component';
 import { Frame } from '../../../wazee-frame-formatter/index';
 import { PlayerStateChanges } from '../../interfaces/player.interface';
+import { PlayerStateService } from '../../services/player-state.service';
 
 export function main() {
   describe('Wazee Advanced Player Component', () => {
     let componentUnderTest: WzAdvancedPlayerComponent;
     let mockPlayerStateService: any;
+    let mockAsset: any;
     let simulatedStateSubject: BehaviorSubject<any>;
     let simulatedStateObservable: Observable<any>;
 
@@ -20,6 +22,11 @@ export function main() {
         reset: jasmine.createSpy('reset'),
         updateWith: jasmine.createSpy('updateWith'),
         state: simulatedStateObservable
+      };
+
+      mockAsset = {
+        some: 'asset',
+        getMetadataValueFor: jasmine.createSpy('getMetadataValueFor').and.returnValue('01:02:03:04')
       };
 
       componentUnderTest = new WzAdvancedPlayerComponent(mockPlayerStateService);
@@ -46,27 +53,39 @@ export function main() {
 
     describe('asset setter', () => {
       it('sets the current asset', () => {
-        componentUnderTest.asset = { some: 'asset' };
+        componentUnderTest.asset = mockAsset;
 
-        expect(componentUnderTest.asset).toEqual({ some: 'asset' });
+        expect(componentUnderTest.asset).toEqual(mockAsset);
+      });
+
+      it('gets the Format.TimeStart metadata from the asset', () => {
+        componentUnderTest.asset = mockAsset;
+
+        expect(mockAsset.getMetadataValueFor).toHaveBeenCalledWith('Format.TimeStart');
+      });
+
+      it('updates the player state with the source-based offset', () => {
+        componentUnderTest.asset = mockAsset;
+
+        expect(mockPlayerStateService.updateWith).toHaveBeenCalledWith({ sourceBasedOffset: '01:02:03:04' });
       });
     });
 
     describe('assetIsVideo()', () => {
       it('returns true if the asset\'s resource type is anything but \'Image\'', () => {
-        componentUnderTest.asset = { resourceClass: 'whatever' };
+        componentUnderTest.asset = { ...mockAsset, resourceClass: 'whatever' };
 
         expect(componentUnderTest.assetIsVideo()).toBe(true);
       });
 
       it('returns true if the asset has no resourceClass property', () => {
-        componentUnderTest.asset = {};
+        componentUnderTest.asset = mockAsset;
 
         expect(componentUnderTest.assetIsVideo()).toBe(true);
       });
 
       it('returns false if the asset\'s resource type is \'Image\'', () => {
-        componentUnderTest.asset = { resourceClass: 'Image' };
+        componentUnderTest.asset = { ...mockAsset, resourceClass: 'Image' };
 
         expect(componentUnderTest.assetIsVideo()).toBe(false);
       });
@@ -76,10 +95,16 @@ export function main() {
       });
     });
 
+    describe('playerState getter', () => {
+      it('returns the state from the PlayerStateService', () => {
+        expect(componentUnderTest.playerState).toBe(mockPlayerStateService.state);
+      });
+    });
+
     describe('markersInitialization output', () => {
       describe('when an asset is loaded', () => {
         beforeEach(() => {
-          componentUnderTest.asset = { some: 'asset' };
+          componentUnderTest.asset = mockAsset;
         });
 
         describe('before the player is ready', () => {
@@ -117,7 +142,7 @@ export function main() {
 
           describe('and a different asset is loaded', () => {
             beforeEach(() => {
-              componentUnderTest.asset = { some: 'other asset' };
+              componentUnderTest.asset = { ...mockAsset, some: 'other asset' };
             });
 
             describe('and when the player is not ready yet', () => {
@@ -148,7 +173,7 @@ export function main() {
       describe('markerChange output', () => {
         describe('when an asset is loaded', () => {
           beforeEach(() => {
-            componentUnderTest.asset = { some: 'asset' };
+            componentUnderTest.asset = mockAsset;
           });
 
           describe('before the player is ready', () => {
@@ -368,6 +393,15 @@ export function main() {
           componentUnderTest.handle({ type: 'TOGGLE_PLAYBACK' });
 
           expect(componentUnderTest.player.togglePlayback).toHaveBeenCalled();
+        });
+      });
+
+      describe('CHANGE_TIMECODE_DISPLAY', () => {
+        it('updates the timecode format and base in the player state', () => {
+          componentUnderTest.handle({ type: 'CHANGE_TIMECODE_DISPLAY', format: 'some format' as any, base: 'some base' as any });
+
+          expect(mockPlayerStateService.updateWith)
+            .toHaveBeenCalledWith({ timecodeFormat: 'some format', timecodeBase: 'some base' });
         });
       });
     });

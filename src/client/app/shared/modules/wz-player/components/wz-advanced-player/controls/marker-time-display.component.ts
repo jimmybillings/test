@@ -8,7 +8,7 @@ import { MarkerType, PlayerState } from '../../../interfaces/player.interface';
   selector: 'wz-marker-time-display',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span class="timecode">{{ frame | timecode }}</span>
+    <span class="timecode">{{ frame | playerTimecode:playerState }}</span>
   `
 })
 

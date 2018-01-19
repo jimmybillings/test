@@ -287,6 +287,12 @@ export function main() {
 
         expect(assetUnderTest.getMetadataValueFor('Some.Name')).toEqual('some value');
       });
+
+      it('is not confused by unexpected properties in the metadata object', () => {
+        assetUnderTest.metadata[42] = { name: 'Some.Name', value: 'some value', other: 'junk', and: 'things' } as any;
+
+        expect(assetUnderTest.getMetadataValueFor('Some.Name')).toEqual('some value');
+      });
     });
 
     describe('convertMetadataValueFor()', () => {
