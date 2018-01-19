@@ -481,6 +481,11 @@ export function main() {
                   }]]);
                 });
 
+                it('sets the \'oncontextmenu\' property on the videoElement', () => {
+                  expect(mockVideoElement.oncontextmenu).toBeDefined();
+                  expect(mockVideoElement.oncontextmenu()).toBe(false);
+                });
+
                 describe('after reporting canSupportCustomControls', () => {
                   beforeEach(() => {
                     // Don't want initialization calls to affect future verifications.
