@@ -31,3 +31,12 @@
     <strong>{{property.label | translate}}</strong>{{property.value}}
   </li>
 </ul>
+
+<div flex>
+  <mat-checkbox
+    color="primary"
+    (change)="onCheckboxChange($event)"
+    [checked]="false">
+      {{ 'QUOTE.EDIT.OVERRIDE_INVOICE_CONTACT_CHECKBOX' | translate }}
+  </mat-checkbox>
+</div>

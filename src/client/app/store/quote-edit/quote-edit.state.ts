@@ -36,6 +36,7 @@ export const initialState: State = {
     invoiceContact: {
       contactEmail: null,
       name: null,
+      id: null,
       contacts: []
     },
     salesManager: {
@@ -237,6 +238,19 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           billingAccount: {
             ...state.sendDetails.billingAccount,
             ...action.form
+          }
+        }
+      };
+    }
+
+    case QuoteEditActions.OverrideInvoiceContact.Type: {
+      return {
+        ...state,
+        sendDetails: {
+          ...state.sendDetails,
+          invoiceContact: {
+            ...state.sendDetails.invoiceContact,
+            ...action.contact
           }
         }
       };

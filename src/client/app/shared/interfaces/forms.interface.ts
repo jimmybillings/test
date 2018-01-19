@@ -18,6 +18,7 @@ export interface FormFields {
   endPoint?: string;
   queryParams?: string;
   service?: string;
+  defaultChecked?: boolean;
   suggestionHeading?: string;
   // Use the following to control an input from a select.
   // The number of options should equal the number

@@ -5,7 +5,8 @@ import {
   Project,
   Quote,
   QuoteOptions,
-  SendDetails
+  SendDetails,
+  SendDetailsInvoiceContact
 } from '../../shared/interfaces/commerce.interface';
 import { Asset, SelectedPriceAttribute, Pojo } from '../../shared/interfaces/common.interface';
 import { Account } from '../../shared/interfaces/account.interface';
@@ -136,6 +137,10 @@ export class ActionFactory {
 
   public removeNoteFrom(lineItem: AssetLineItem): RemoveNote {
     return new RemoveNote(lineItem);
+  }
+
+  public overrideInvoiceContact(contact: SendDetailsInvoiceContact): OverrideInvoiceContact {
+    return new OverrideInvoiceContact(contact);
   }
 }
 
@@ -468,6 +473,12 @@ export class RemoveNote implements Action {
   constructor(public readonly lineItem: AssetLineItem) { }
 }
 
+export class OverrideInvoiceContact implements Action {
+  public static readonly Type = '[Quote Edit] Override Invoice Contact';
+  public readonly type = OverrideInvoiceContact.Type;
+  constructor(public readonly contact: SendDetailsInvoiceContact) { }
+}
+
 export type Any =
   Load | LoadSuccess | LoadFailure |
   Delete | DeleteSuccess | DeleteFailure |
@@ -480,4 +491,4 @@ export type Any =
   UpdateProject | MoveLineItem | CloneLineItem | RefreshAndNotify | EditLineItemMarkers |
   UpdateProjectPriceAttributes | AddUserToQuote | AddBillingAccountToQuote | AddInvoiceContactToQuote |
   InitializeSalesManagerFormOnQuote | UpdateSalesManagerFormOnQuote |
-  UpdateBillingAccount | AddNote | RemoveNote;
+  UpdateBillingAccount | AddNote | RemoveNote | OverrideInvoiceContact;
