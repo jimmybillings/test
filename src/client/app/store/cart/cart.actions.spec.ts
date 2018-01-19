@@ -129,12 +129,36 @@ export function main() {
 
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
+        class: ActionFactory,
+        name: 'removeNoteFrom',
+        parameters: [{ some: 'lineItem' }]
+      },
+      expectedAction: {
+        type: '[Cart] Remove Note',
+        lineItem: { some: 'lineItem' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
         class: InternalActionFactory,
         name: 'addNoteSuccess',
         parameters: [{ some: 'cart' }]
       },
       expectedAction: {
         type: '[Cart] Add Note Success',
+        cart: { some: 'cart' }
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'removeNoteSuccess',
+        parameters: [{ some: 'cart' }]
+      },
+      expectedAction: {
+        type: '[Cart] Remove Note Success',
         cart: { some: 'cart' }
       }
     });

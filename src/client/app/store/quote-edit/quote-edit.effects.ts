@@ -370,6 +370,15 @@ export class QuoteEditEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
+  @Effect()
+  public removeNote: Observable<Action> = this.actions.ofType(QuoteEditActions.RemoveNote.Type)
+    .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
+    .switchMap(([action, quoteId]: [QuoteEditActions.RemoveNote, number]) =>
+      this.service.removeNote(quoteId, action.lineItem)
+        .map(quote => this.store.create(factory => factory.quoteEdit.refreshAndNotify(quote, 'QUOTE.UPDATED')))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
   constructor(
     private actions: Actions,
     private store: AppStore,

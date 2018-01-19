@@ -216,9 +216,16 @@
                   </div>
                   <div
                     class="notes"
-                    layout="row"
+                    layout="column"
+                    layout-gt-xs="row"
                     *ngIf="shouldShowNoteFor(lineItem)">
-                    <span class="mat-caption">{{ lineItem.notes[0].notes[0] }}</span>
+                    <div
+                      class="note"
+                      layout="row"
+                      layout-align="start center"
+                      flex="100">
+                      <span class="mat-caption">{{ lineItem.notes[0].notes[0] }}</span>
+                    </div>
                   </div>
                 </li>
               </ul>

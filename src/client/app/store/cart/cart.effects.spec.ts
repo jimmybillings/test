@@ -166,5 +166,30 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'removeNote',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: CartActions.RemoveNote.Type,
+        lineItem: { some: 'lineItem' }
+      },
+      serviceMethod: {
+        name: 'removeNoteFrom',
+        expectedArguments: [{ some: 'lineItem' }],
+        returnsObservableOf: { some: 'cart' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'cart',
+          methodName: 'removeNoteSuccess',
+          expectedArguments: [{ some: 'cart' }]
+        },
+        failure: {
+          sectionName: 'error',
+          methodName: 'handle'
+        }
+      }
+    });
   });
 }

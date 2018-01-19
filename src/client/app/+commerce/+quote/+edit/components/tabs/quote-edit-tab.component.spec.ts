@@ -418,6 +418,17 @@ export function main() {
           );
         });
       });
+
+      it('calls openConfirmationDialog with REMOVE_NOTE', () => {
+        componentUnderTest.onNotification({ type: 'REMOVE_NOTE', payload: { some: 'lineItem' } });
+
+        expect(mockDialogService.openConfirmationDialog).toHaveBeenCalledWith({
+          title: 'QUOTE.DELETE_NOTES.TITLE',
+          message: 'QUOTE.DELETE_NOTES.MESSAGE',
+          accept: 'QUOTE.DELETE_NOTES.ACCEPT',
+          decline: 'QUOTE.DELETE_NOTES.DECLINE'
+        }, jasmine.any(Function));
+      });
     });
 
     describe('get showUsageWarning()', () => {

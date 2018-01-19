@@ -539,5 +539,17 @@ export function main() {
         lineItem: { some: 'lineItem' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'removeNoteFrom',
+        parameters: [{ some: 'lineItem' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Remove Note',
+        lineItem: { some: 'lineItem' }
+      }
+    });
   });
 }

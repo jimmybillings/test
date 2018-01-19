@@ -442,6 +442,17 @@ export function main() {
         expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
       });
     });
+
+    describe('removeNoteFrom()', () => {
+      it('calls the apiService correctly', () => {
+        serviceUnderTest.removeNote(111, { id: 'abc-123', some: 'lineItem', notes: [{ notes: ['some note'] }] } as any);
+
+        expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/111/update/lineItem/abc-123');
+        expect(mockApiService.put).toHaveBeenCalledWithBody({ id: 'abc-123', some: 'lineItem' });
+        expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+      });
+    });
   });
 }
 

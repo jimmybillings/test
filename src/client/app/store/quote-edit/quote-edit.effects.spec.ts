@@ -788,5 +788,34 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'removeNote',
+      effectsInstantiator: instantiator,
+      state: {
+        storeSectionName: 'quoteEdit',
+        value: { data: { id: 111 } }
+      },
+      inputAction: {
+        type: QuoteEditActions.RemoveNote.Type,
+        lineItem: { some: 'lineItem' }
+      },
+      serviceMethod: {
+        name: 'removeNote',
+        expectedArguments: [111, { some: 'lineItem' }],
+        returnsObservableOf: { some: 'quote' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'quoteEdit',
+          methodName: 'refreshAndNotify',
+          expectedArguments: [{ some: 'quote' }, 'QUOTE.UPDATED']
+        },
+        failure: {
+          sectionName: 'error',
+          methodName: 'handle'
+        }
+      }
+    });
   });
 }

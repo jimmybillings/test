@@ -27,6 +27,10 @@ export class ActionFactory {
     return new AddNote(note, lineItem);
   }
 
+  public removeNoteFrom(lineItem: AssetLineItem): RemoveNote {
+    return new RemoveNote(lineItem);
+  }
+
   // Move this to internal action factory when cart is fully "effected"
   public loadSuccess(cart: Cart): LoadSuccess {
     return new LoadSuccess(cart);
@@ -56,6 +60,10 @@ export class InternalActionFactory extends ActionFactory {
 
   public addNoteSuccess(cart: Cart): AddNoteSuccess {
     return new AddNoteSuccess(cart);
+  }
+
+  public removeNoteSuccess(cart: Cart): RemoveNoteSuccess {
+    return new RemoveNoteSuccess(cart);
   }
 }
 
@@ -122,13 +130,25 @@ export class AddNote implements Action {
   constructor(public readonly note: string, public readonly lineItem: AssetLineItem) { }
 }
 
+export class RemoveNote implements Action {
+  public static readonly Type = '[Cart] Remove Note';
+  public readonly type = RemoveNote.Type;
+  constructor(public readonly lineItem: AssetLineItem) { }
+}
+
 export class AddNoteSuccess implements Action {
   public static readonly Type = '[Cart] Add Note Success';
   public readonly type = AddNoteSuccess.Type;
   constructor(public readonly cart: Cart) { }
 }
 
+export class RemoveNoteSuccess implements Action {
+  public static readonly Type = '[Cart] Remove Note Success';
+  public readonly type = RemoveNoteSuccess.Type;
+  constructor(public readonly cart: Cart) { }
+}
+
 export type Any =
   Load | LoadSuccess | LoadFailure |
   EditLineItemFromDetails | EditLineItemFromDetailsSuccess | EditLineItemFromDetailsFailure |
-  RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure | AddNote | AddNoteSuccess;
+  RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure | AddNote | AddNoteSuccess | RemoveNote | RemoveNoteSuccess;
