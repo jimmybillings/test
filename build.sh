@@ -20,7 +20,7 @@
 
 sourceHome=/home/video/src
 gitHome=git@github.com:t3mediacorp
-PATH=/home/video/bin/tools/jenkins:$PATH
+PATH=/opt/app/wazee/build-support/tools/jenkins:$PATH
 
 baseDir=$( dirname "$0" )
 
@@ -33,7 +33,7 @@ siteName=poc19
 
 if [ -n "$JENKINS_HOME" ]; then
   # add jenkins tools to the path
-  export PATH=/home/video/bin/tools/jenkins:$PATH
+  export PATH=/opt/app/wazee/build-support/tools/jenkins:$PATH
 
   # Special PhantomJS build that works with Centos
   # JWILLIAMS 10/25/16 - commment out to see if current phantom works
@@ -131,8 +131,8 @@ packageJson=$(pwd)
 cd "$TMPDIR/wazee-crux-version-control"
 git checkout --force develop
 git pull origin develop
-python /home/video/bin/tools/jenkins/incrementUIPortalVersionFile.py ${project} $(git rev-parse HEAD) ${packageJson}/package.json
-buildVersion=$(python /home/video/bin/tools/jenkins/currentVersion.py $TMPDIR/wazee-crux-version-control/${project}.version)
+python /opt/app/wazee/build-support/tools/jenkins/incrementUIPortalVersionFile.py ${project} $(git rev-parse HEAD) ${packageJson}/package.json
+buildVersion=$(python /opt/app/wazee/build-support/tools/jenkins/currentVersion.py $TMPDIR/wazee-crux-version-control/${project}.version)
 cd -
 
 # Install modules
@@ -155,5 +155,5 @@ build_prod
 
 cd "$TMPDIR/wazee-crux-version-control"
 git pull origin develop
-eval $(python /home/video/bin/tools/jenkins/commitVersionChange.py ${project})
+eval $(python /opt/app/wazee/build-support/tools/jenkins/commitVersionChange.py ${project})
 git push
