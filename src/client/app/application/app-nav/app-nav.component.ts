@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material';
-
+import { Router } from '@angular/router';
 import { AppStore } from '../../app.store';
 
 @Component({
@@ -25,7 +25,7 @@ export class AppNavComponent {
   public headerCanBeFixed: Observable<boolean>;
   public headerIsFixed: Observable<boolean>;
 
-  constructor(private store: AppStore) {
+  constructor(private store: AppStore, private router: Router) {
     this.headerCanBeFixed = this._headerCanBeFixed();
     this.headerIsFixed = this._headerIsFixed();
   }
@@ -33,6 +33,7 @@ export class AppNavComponent {
   public logOut(event: Event) {
     this.onLogOut.emit(event);
     this.trigger.closeMenu();
+    this.router.navigate(['/']);
   }
 
   public toggleSearch() {
@@ -45,6 +46,10 @@ export class AppNavComponent {
 
   public formatBadgeNumber(size: any): string {
     return (size > 99) ? '99+' : size.toString();
+  }
+
+  public navigateTo(path: string): void {
+    this.router.navigate([path]);
   }
 
   private _headerIsFixed(): Observable<boolean> {

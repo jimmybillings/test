@@ -101,7 +101,7 @@
     data-pendo="user-menu_profile-link"
     mat-menu-item
     *ngIf="currentUser.loggedInState() | async"
-    [routerLink]="['/user']">
+    (click)="navigateTo('/user')">
     <mat-icon>person</mat-icon>{{ 'HEADER.USER_DD_MENU.PROFILE_LINK' | translate }}
   </a>
 
@@ -109,7 +109,7 @@
     data-pendo="user-menu_collections-link"
     mat-menu-item
     *ngIf="userCan.viewCollections()"
-    [routerLink]="['/collections']">
+    (click)="navigateTo('/collections')">
     <mat-icon>folder_open</mat-icon>{{ 'HEADER.USER_DD_MENU.COLLECTIONS_LINK' | translate }}
   </a>
 
@@ -117,7 +117,7 @@
     data-pendo="user-menu_cart-link"
     mat-menu-item
     *ngIf="userCan.addToCart() && !userCan.administerQuotes()"
-    [routerLink]="['/cart']">
+    (click)="navigateTo('/cart')">
     <mat-icon>shopping_cart</mat-icon>{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}
   </a>
   
@@ -125,7 +125,7 @@
     data-pendo="user-menu_active-quote-link"
     mat-menu-item
     *ngIf="userCan.addToCart() && userCan.administerQuotes()"
-    [routerLink]="['/active-quote']">
+    (click)="navigateTo('/active-quote')">
     <mat-icon>work</mat-icon>{{ 'HEADER.USER_DD_MENU.QUOTE_LINK' | translate}}
   </a>
 
@@ -133,7 +133,7 @@
     data-pendo="user-menu_quotes-link"
     mat-menu-item
     *ngIf="userCan.addToCart()"
-    [routerLink]="['/quotes']">
+    (click)="navigateTo('/quotes')">
     <mat-icon>inbox</mat-icon>{{ 'HEADER.USER_DD_MENU.QUOTES_SAVED_LINK' | translate }}
   </a>
 
@@ -141,7 +141,7 @@
     data-pendo="user-menu_orders-link"
     mat-menu-item
     *ngIf="userCan.addToCart()"
-    [routerLink]="['/orders']">
+    (click)="navigateTo('/orders')">
     <mat-icon>description</mat-icon>{{ 'HEADER.USER_DD_MENU.ORDERS_LINK' | translate }}
   </a>
 
@@ -151,8 +151,7 @@
     data-pendo="user-menu_logout-link"
     mat-menu-item
     *ngIf="currentUser.loggedInState() | async"
-    (click)="logOut()"
-    [routerLink]="['/']">
+    (click)="logOut()">
     <mat-icon>power_settings_new</mat-icon>{{ 'HEADER.LOGOUT_LABEL' | translate}}
   </a>
 </mat-menu>

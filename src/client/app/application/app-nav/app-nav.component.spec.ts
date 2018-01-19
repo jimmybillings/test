@@ -5,10 +5,12 @@ export function main() {
   describe('App Nav Component', () => {
     let componentUnderTest: AppNavComponent;
     let mockStore: MockAppStore;
+    let mockRouter: any;
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      componentUnderTest = new AppNavComponent(mockStore);
+      mockRouter = { navigate: jasmine.createSpy('navigate') };
+      componentUnderTest = new AppNavComponent(mockStore, mockRouter);
       componentUnderTest.trigger = { closeMenu: jasmine.createSpy('closeMenu') } as any;
       componentUnderTest.userPreference = {
         toggleSearch: jasmine.createSpy('toggleSearch'),
@@ -20,7 +22,7 @@ export function main() {
       describe('sets the headerIsFixed instance variable', () => {
         it('to observable of true when the \'isFixed\' value is true in the store', () => {
           mockStore.createStateSection('headerDisplayOptions', { isFixed: true });
-          componentUnderTest = new AppNavComponent(mockStore);
+          componentUnderTest = new AppNavComponent(mockStore, mockRouter);
           let isFixed: boolean;
           componentUnderTest.headerIsFixed.take(1).subscribe(fixed => isFixed = fixed);
           expect(isFixed).toBe(true);
@@ -28,7 +30,7 @@ export function main() {
 
         it('to observable of false when the \'isFixed\' value is false in the store', () => {
           mockStore.createStateSection('headerDisplayOptions', { isFixed: false });
-          componentUnderTest = new AppNavComponent(mockStore);
+          componentUnderTest = new AppNavComponent(mockStore, mockRouter);
           let isFixed: boolean;
           componentUnderTest.headerIsFixed.take(1).subscribe(fixed => isFixed = fixed);
           expect(isFixed).toBe(false);
@@ -38,7 +40,7 @@ export function main() {
       describe('sets the headerCanBeFixed instance variable', () => {
         it('to observable of true when the \'canBeFixed\' value is true in the store', () => {
           mockStore.createStateSection('headerDisplayOptions', { canBeFixed: true });
-          componentUnderTest = new AppNavComponent(mockStore);
+          componentUnderTest = new AppNavComponent(mockStore, mockRouter);
           let canBeFixed: boolean;
           componentUnderTest.headerCanBeFixed.take(1).subscribe(fixed => canBeFixed = fixed);
           expect(canBeFixed).toBe(true);
@@ -46,7 +48,7 @@ export function main() {
 
         it('to observable of false when the \'canBeFixed\' value is false in the store', () => {
           mockStore.createStateSection('headerDisplayOptions', { canBeFixed: false });
-          componentUnderTest = new AppNavComponent(mockStore);
+          componentUnderTest = new AppNavComponent(mockStore, mockRouter);
           let canBeFixed: boolean;
           componentUnderTest.headerCanBeFixed.take(1).subscribe(fixed => canBeFixed = fixed);
           expect(canBeFixed).toBe(false);
@@ -64,6 +66,11 @@ export function main() {
       it('close the menu', () => {
         componentUnderTest.logOut(event);
         expect(componentUnderTest.trigger.closeMenu).toHaveBeenCalled();
+      });
+
+      it('navigates to the root route', () => {
+        componentUnderTest.logOut(event);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
       });
     });
 
@@ -92,6 +99,13 @@ export function main() {
 
       it('should return "99+" if the number is larger than 99', () => {
         expect(componentUnderTest.formatBadgeNumber(100)).toBe('99+');
+      });
+    });
+
+    describe('navigateTo()', () => {
+      it('calls navigate() on the router service', () => {
+        componentUnderTest.navigateTo('some-path');
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['some-path']);
       });
     });
   });
