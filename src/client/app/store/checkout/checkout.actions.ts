@@ -35,7 +35,7 @@ export class ActionFactory {
 export class InternalActionFactory extends ActionFactory { }
 
 export class SetPurchaseOrderId implements Action {
-  public static readonly Type = '[Checkout] Set purchase order id';
+  public static readonly Type = '[Checkout] Set Purchase Order Id';
   public readonly type = SetPurchaseOrderId.Type;
   constructor(public readonly purchaseOrderId: string) { }
 }
