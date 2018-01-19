@@ -12,6 +12,7 @@ quote-show-component section.header {
       font-size: 26px;
       & > span {
         font-size: .75em;
+        line-height: 1;
       }
     }
     .tools {
@@ -34,7 +35,14 @@ quote-show-component section.header {
     }
   }
 }
-
+.quote-summary .details {
+  .cart-total {
+    padding: 0 0 5px 10px;
+  }
+  @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) {
+    padding: 0 10px;
+  }
+}
 quote-show-component .project .assets {
   padding: 0 12px 12px 12px;
   display: flex;

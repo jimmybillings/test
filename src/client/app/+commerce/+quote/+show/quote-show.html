@@ -62,7 +62,7 @@
       flex-gt-md="85"
       flex-gt-lg="80"
       layout-align-gt-xs="stretch">
-      <div flex="90" layout-padding>
+      <div flex="90">
         <quote-info-component
           [salesManager]="salesManager | async"
           [user]="quoteRecipient | async"
@@ -75,7 +75,6 @@
         flex-gt-xs="10"
         flex="100"
         flex-order-xs="-1"
-        layout-padding
         layout="column"
         layout-align="space-between end">
         <div flex="60">
@@ -139,7 +138,7 @@
   </div>
 </section>
 
-<section class="tabs-section">
+<section class="tabs-section" [ngClass]="{'quote-review': shouldDisplayReview}">
   <div layout="row" flex="100" layout-align="center start">
      <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
       <div *ngIf="userCan.administerQuotes()">
