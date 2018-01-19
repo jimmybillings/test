@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from '../../../wazee-frame-formatter/index';
 import { PlayerState, PlayerStateChanges, PlayerRequest } from '../../interfaces/player.interface';
+import { EnhancedAsset } from '../../../../interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -20,8 +21,9 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   @Input() window: any;
   @Input() displayAllControls: boolean = true;
   @Input()
-  public set asset(newAsset: any) {
+  public set asset(newAsset: EnhancedAsset) {
     this.playerStateService.reset();
+    this.playerStateService.updateWith({ sourceBasedOffset: newAsset.getMetadataValueFor('Format.TimeStart') });
     this.currentState = null;
     this.playerReady = false;
     this.currentAsset = newAsset;
@@ -33,11 +35,11 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
   private playerStateSubscription: Subscription;
-  private currentAsset: any = null;
+  private currentAsset: EnhancedAsset = null;
   private currentState: PlayerState = null;
   private playerReady: boolean = false;
 
-  public get asset(): any {
+  public get asset(): EnhancedAsset {
     return this.currentAsset;
   }
 
@@ -91,6 +93,9 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
         break;
       case 'TOGGLE_PLAYBACK':
         this.player.togglePlayback();
+        break;
+      case 'CHANGE_TIMECODE_DISPLAY':
+        this.playerStateService.updateWith({ timecodeFormat: request.format, timecodeBase: request.base });
         break;
     }
   }

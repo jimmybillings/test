@@ -329,14 +329,9 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
 
   private findMetadataValueFor(metadataName: string, object: any = this): string {
     if (object !== Object(object)) return undefined;
+    if (object.name === metadataName && object.hasOwnProperty('value')) return object.value;
 
-    const keys: string[] = Object.keys(object);
-
-    if (keys.length === 2 && keys.sort().join('|') === 'name|value' && object.name === metadataName) {
-      return object.value;
-    }
-
-    for (var key of keys) {
+    for (var key of Object.keys(object)) {
       if (object[key]) {
         const value: string = this.findMetadataValueFor(metadataName, object[key]);
         if (value) return value;
