@@ -2,7 +2,7 @@ import { PlayerTimecodePipe } from './player-timecode.pipe';
 import { Frame, TimecodeFormat, TimecodeBase } from '../../wazee-frame-formatter/index';
 
 export function main() {
-  fdescribe('Player Timecode Pipe', () => {
+  describe('Player Timecode Pipe', () => {
     let pipeUnderTest: PlayerTimecodePipe;
 
     beforeEach(() => {
