@@ -71,6 +71,12 @@ order-show-component .project li.cart-asset .tools {
 order-show-component .project .project-info div {
   padding: 8px;
 }
+order-show-component .project .project-info div:nth-child(2n) {
+  padding: 0;
+  .project-subtotal {
+    padding: 0;
+  }
+}
 .order-summary {
   .details {
     opacity: .7;
@@ -139,5 +145,8 @@ order-show-component .project .project-info div {
 order-show-component .project line-item-rights-component {
   section.read-only {
     margin: 2px 0 0 0;
+    @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
+      padding: 8px;
+    }
   }
 }

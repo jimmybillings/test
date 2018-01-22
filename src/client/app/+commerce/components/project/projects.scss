@@ -34,10 +34,10 @@ div.project {
       }
     }
     .project-client {
-      line-height: 1.6;
+      line-height: 1;
     }
     project-info-component {
-      margin: 8px 0 8px 8px;
+      margin: 6px 0 6px 7px;
       padding: 0 0 0 2px;
       position: relative;
       transition: all .2s ease-in-out;
@@ -51,7 +51,7 @@ div.project {
         opacity: 0;
       }
       &:hover {
-        padding: 0 40px 0 6px;
+        padding: 0 40px 0 3px;
         cursor: pointer;
         &::before {
           opacity: .55;
@@ -68,7 +68,7 @@ div.project {
       }
     }
     div:nth-child(2n) {
-      padding: 2px 2px 4px 0;
+      // padding: 0 0 0 0;
       text-align: right;
     }
     div.project-asset-count {
@@ -76,13 +76,11 @@ div.project {
       padding: 3px 9px 0 0;
     }
     div.project-subtotal {
-      bottom: 3px;
-      right: 2px;
-      padding: 2px 2px 2px 0;
+      margin-top: 5px;
       span {
         font-size: 18px;
         display: inline-block;
-        padding: 1px 6px 0 0;
+        padding: 1px 8px 0 0;
         &::first-letter {
           font-size: .83em;
           vertical-align: top;
