@@ -130,6 +130,7 @@ export function main() {
               invoiceContact: {
                 contactEmail: 'email2@test.com',
                 name: 'test2',
+                id: null,
                 contacts: [
                   { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
                   { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
