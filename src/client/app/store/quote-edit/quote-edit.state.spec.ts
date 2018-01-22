@@ -401,6 +401,36 @@ export function main() {
       ]
     });
 
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'OverrideInvoiceContact',
+      mutationTestData: {
+        previousState: QuoteState.initialState,
+        actionParameters: { contact: { name: 'Ross Edfort', id: 1 } }
+      },
+      customTests: [
+        {
+          it: 'Overrides the existing invoice contact',
+          previousState: {
+            ...QuoteState.initialState,
+            sendDetails: {
+              ...QuoteState.initialState.sendDetails,
+              invoiceContact: { name: 'Some Contact', id: 999 }
+            }
+          },
+          actionParameters: {
+            contact: { name: 'Ross Edfort', id: 1 }
+          },
+          expectedNextState: {
+            ...QuoteState.initialState,
+            sendDetails: {
+              ...QuoteState.initialState.sendDetails,
+              invoiceContact: { name: 'Ross Edfort', id: 1 }
+            }
+          }
+        }
+      ]
+    });
+
     // stateSpecHelper.generateTestsFor({
     //   actionClassName: ['UpdateBillingAccount'],
     //   mutationTestData: {

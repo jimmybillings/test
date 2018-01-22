@@ -244,12 +244,14 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     }
 
     case QuoteEditActions.OverrideInvoiceContact.Type: {
+      const clonedState: State = Common.clone(state);
+
       return {
-        ...state,
+        ...clonedState,
         sendDetails: {
-          ...state.sendDetails,
+          ...clonedState.sendDetails,
           invoiceContact: {
-            ...state.sendDetails.invoiceContact,
+            ...clonedState.sendDetails.invoiceContact,
             ...action.contact
           }
         }
