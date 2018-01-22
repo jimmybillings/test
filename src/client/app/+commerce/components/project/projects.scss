@@ -26,11 +26,15 @@ div.project {
   margin-bottom: 0;
   header.project-info {
     h5[mat-display-1] {
-      margin: 0 0 2px 0;
+      margin: 0 0 0 0;
       white-space: nowrap;
+      line-height: 1;
+      .project-label {
+        font-weight: bolder;
+      }
       .project-name {
-        font-size: 18px;
-        font-weight: 400;
+        font-size: 17px;
+        font-weight: 300;
       }
     }
     .project-client {
@@ -76,7 +80,7 @@ div.project {
       padding: 3px 9px 0 0;
     }
     div.project-subtotal {
-      margin-top: 5px;
+      margin-top: 1px;
       span {
         font-size: 18px;
         display: inline-block;
