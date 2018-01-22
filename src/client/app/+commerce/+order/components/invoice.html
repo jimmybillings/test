@@ -252,6 +252,12 @@
               <span class="project-label">{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</span>
               <span class="project-name">{{ project.clientName }}</span>
             </h5>
+            <h5 class="mat-subheading-1" flex="100" flex-gt-sm="auto">
+              <span class="project-label">{{ 'CART.PROJECTS.LICENSE_START_DATE' | translate }}</span>
+              <span class="project-name">{{ 
+                (project.licenseStartDate | date:'yyyy-MM-dd') || ('CART.PROJECTS.DEFAULT_LICENSE_START_DATE' | translate)
+              }}</span>
+            </h5>
             <div flex="100" flex-gt-sm="auto" layout="column" layout-align="end end">
               <div class="project-subtotal mat-caption">
                 <strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong>

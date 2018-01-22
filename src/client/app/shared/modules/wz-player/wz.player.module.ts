@@ -4,6 +4,7 @@ import { MaterialModule } from '../wz-design/wz.design.module';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { TimecodePipe } from './pipes/timecode.pipe';
+import { PlayerTimecodePipe } from './pipes/player-timecode.pipe';
 import { WzPlayerComponent } from './components/wz-player/wz.player.component';
 import { WzAdvancedPlayerComponent } from './components/wz-advanced-player/wz.advanced-player.component';
 import { PlayerControlbarComponent } from './components/wz-advanced-player/controlbars/player-controlbar.component';
@@ -19,6 +20,7 @@ import { ScrubberComponent } from './components/wz-advanced-player/controls/scru
 import { StepButtonComponent } from './components/wz-advanced-player/controls/step-button.component';
 import { TimeDisplayComponent } from './components/wz-advanced-player/controls/time-display.component';
 import { VolumeControlComponent } from './components/wz-advanced-player/controls/volume-control.component';
+import { TimecodeFormatButtonComponent } from './components/wz-advanced-player/controls/timecode-format-button.component';
 
 @NgModule({
   imports: [
@@ -28,6 +30,7 @@ import { VolumeControlComponent } from './components/wz-advanced-player/controls
   ],
   declarations: [
     TimecodePipe,
+    PlayerTimecodePipe,
     WzPlayerComponent,
     WzAdvancedPlayerComponent,
     PlayerControlbarComponent,
@@ -42,7 +45,8 @@ import { VolumeControlComponent } from './components/wz-advanced-player/controls
     ScrubberComponent,
     StepButtonComponent,
     TimeDisplayComponent,
-    VolumeControlComponent
+    VolumeControlComponent,
+    TimecodeFormatButtonComponent
   ],
   exports: [
     TimecodePipe,

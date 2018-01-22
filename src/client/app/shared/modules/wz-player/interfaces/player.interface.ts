@@ -1,4 +1,4 @@
-import { Frame } from '../../wazee-frame-formatter/index';
+import { Frame, TimecodeFormat, TimecodeBase } from '../../wazee-frame-formatter/index';
 
 export type PlayerMode = 'basic' | 'advanced';
 
@@ -13,6 +13,9 @@ export interface PlayerState {
   readonly durationFrame: Frame;
   readonly inMarkerFrame: Frame;
   readonly outMarkerFrame: Frame;
+  readonly sourceBasedOffset: string;
+  readonly timecodeFormat: TimecodeFormat;
+  readonly timecodeBase: TimecodeBase;
   readonly volume: number;
 
   // This enables Angular change detection by making it clear that *something*
@@ -32,6 +35,9 @@ export interface PlayerStateChanges {
   durationFrame?: Frame;
   inMarkerFrame?: Frame;
   outMarkerFrame?: Frame;
+  sourceBasedOffset?: string;
+  timecodeFormat?: TimecodeFormat;
+  timecodeBase?: TimecodeBase;
   volume?: number;
 
   // These properties are used to introduce Frame changes
@@ -91,6 +97,12 @@ export type TogglePlaybackRequest = {
   type: 'TOGGLE_PLAYBACK'
 };
 
+export type ChangeTimecodeDisplayRequest = {
+  type: 'CHANGE_TIMECODE_DISPLAY',
+  format: TimecodeFormat,
+  base: TimecodeBase
+};
+
 export type PlayerSeekRequest = SeekToFrameRequest | SeekToMarkerRequest;
 export type PlayerVolumeRequest = SetVolumeRequest | ToggleMuteRequest;
 
@@ -101,4 +113,5 @@ export type PlayerRequest =
   PlayAtSpeedRequest |
   SetMarkerToCurrentFrameRequest |
   ToggleMarkersPlaybackRequest |
-  TogglePlaybackRequest;
+  TogglePlaybackRequest |
+  ChangeTimecodeDisplayRequest;

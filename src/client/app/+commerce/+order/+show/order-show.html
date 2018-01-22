@@ -124,6 +124,11 @@
                 <span class="project-client mat-caption">
                   <strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> 
                   {{ project.clientName }}
+                </span><br/>
+                <span class="project-client mat-caption">
+                  <strong>{{ 'CART.PROJECTS.LICENSE_START_DATE' | translate }}</strong> {{ 
+                    (project.licenseStartDate | date:'yyyy-MM-dd') || ('CART.PROJECTS.DEFAULT_LICENSE_START_DATE' | translate)
+                  }}
                 </span>
               </div>
               <div flex="100" flex-gt-sm="30" flex-order-xs="-1" layout-padding>
@@ -216,9 +221,16 @@
                   </div>
                   <div
                     class="notes"
-                    layout="row"
+                    layout="column"
+                    layout-gt-xs="row"
                     *ngIf="shouldShowNoteFor(lineItem)">
-                    <span class="mat-caption">{{ lineItem.notes[0].notes[0] }}</span>
+                    <div
+                      class="note"
+                      layout="row"
+                      layout-align="start center"
+                      flex="100">
+                      <span class="mat-caption">{{ lineItem.notes[0].notes[0] }}</span>
+                    </div>
                   </div>
                 </li>
               </ul>

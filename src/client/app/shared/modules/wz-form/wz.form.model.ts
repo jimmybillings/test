@@ -13,7 +13,7 @@ export class FormModel {
     let newForm: any = {};
     form.forEach((field: FormFields) => {
       if (field.type === 'wzdate') {
-        newForm[field.name] = [this.calculateDateFor(field.default)];
+        newForm[field.name] = [field.value || this.calculateDateFor(field.default)];
       } else {
         newForm[field.name] = [field.value];
       }

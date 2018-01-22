@@ -214,6 +214,13 @@ export class FutureQuoteEditService {
     return this.makeEditLineItemRequest(quoteId, lineItem);
   }
 
+  public removeNote(quoteId: number, lineItem: AssetLineItem): Observable<Quote> {
+    let clonedLineItem: AssetLineItem = Common.clone(lineItem);
+    delete clonedLineItem.notes;
+
+    return this.makeEditLineItemRequest(quoteId, clonedLineItem);
+  }
+
   private formatAssetBody(parameters: AddAssetParameters): any {
     let formatted = {};
     Object.assign(formatted, { lineItem: this.formatLineItem(parameters.lineItem, parameters.markers) });

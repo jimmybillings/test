@@ -147,7 +147,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   public get assetMatchesCartAsset(): boolean {
     return this.cartAsset
       ? this.subclipMarkersMatchCartAsset
-      : true; // We populate this.cartAsset for 'cartAsset' and 'quoteEditAsset' types only.
+      : true; // We populate this.cartAsset for 'cart' and 'quoteEdit' types only.
   }
 
   public onUpdateAssetLineItem(): void {
@@ -188,7 +188,7 @@ export class AssetComponent implements OnInit, OnDestroy {
       componentType: WzPricingComponent,
       inputOptions: {
         pricingPreferences: this.userPreference.state.pricingPreferences,
-        userCanCustomizeRights: this.userCan.administerQuotes() && this.assetType === 'quoteEditAsset'
+        userCanCustomizeRights: this.userCan.administerQuotes() && this.assetType === 'quoteEdit'
       },
       outputOptions: [
         {
@@ -217,14 +217,14 @@ export class AssetComponent implements OnInit, OnDestroy {
         dialogRef.close();
         this.store.dispatch(factory => factory.pricing.setPriceForDetails(event.payload.price));
         this.store.dispatch(factory => factory.pricing.setAppliedAttributes(event.payload.attributes));
-        if (this.assetType === 'quoteEditAsset') {
+        if (this.assetType === 'quoteEdit') {
           this.store.dispatch(factory => factory.quoteEdit.editLineItemFromDetails(
             this.asset.uuid,
             this.subclipMarkers,
             event.payload.attributes
           ));
         }
-        if (this.assetType === 'cartAsset') {
+        if (this.assetType === 'cart') {
           this.store.dispatch(factory => factory.cart.editLineItemFromDetails(
             this.asset.uuid,
             this.subclipMarkers,
@@ -245,10 +245,10 @@ export class AssetComponent implements OnInit, OnDestroy {
     let projects: Project[];
 
     switch (this.assetType) {
-      case 'cartAsset':
+      case 'cart':
         projects = this.store.snapshotCloned(state => state.cart.data.projects);
         break;
-      case 'quoteEditAsset':
+      case 'quoteEdit':
         projects = this.store.snapshotCloned(state => state.quoteEdit.data.projects);
         break;
       default: return;
@@ -279,23 +279,23 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   private parentIdIn(routeParams: CommonInterface.Pojo): number {
-    return (this.assetType === 'quoteEditAsset') ?
+    return (this.assetType === 'quoteEdit') ?
       this.store.snapshot(state => state.quoteEdit.data.id) :
       Number(routeParams.id) || 0;
   }
 
   private commentObjectTypeFrom(assetType: AssetType): ObjectType {
     switch (assetType) {
-      case 'collectionAsset': {
+      case 'collection': {
         return 'collection';
       }
 
-      case 'quoteEditAsset':
-      case 'quoteShowAsset': {
+      case 'quoteEdit':
+      case 'quoteShow': {
         return 'quote';
       }
 
-      case 'orderAsset': {
+      case 'order': {
         return 'order';
       }
 

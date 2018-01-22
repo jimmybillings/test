@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { MockAppStore } from './mock-app.store';
 import { Common } from '../../shared/utilities/common.functions';
+import { Pojo } from '../../shared/interfaces/common.interface';
 
 export interface ParameterizedAction extends Action {
   [parameterName: string]: any;
@@ -39,6 +40,7 @@ export interface SuccessActionFactory {
 export interface FailureActionFactory {
   sectionName: string;
   methodName: string;
+  expectedArgument?: Pojo;
 }
 
 export interface OutputActionFactories {
@@ -67,6 +69,7 @@ export interface EffectTestParameters {
   outputActionFactories?: OutputActionFactories;
   expectToEmitAction?: boolean;
   customTests?: CustomTest[];
+
 }
 
 export class EffectsSpecHelper {
@@ -156,15 +159,25 @@ export class EffectsSpecHelper {
 
           if (parameters.serviceMethod && parameters.serviceMethod.callsApiService !== false) {
             describe('for failure', () => {
+              let expectedArgument: Pojo;
               beforeEach(() => {
-                this.createMockServiceMethod(parameters.serviceMethod.name, () => Observable.throw({ some: 'error' }));
+                expectedArgument = (
+                  parameters.outputActionFactories &&
+                  parameters.outputActionFactories.failure &&
+                  parameters.outputActionFactories.failure.hasOwnProperty('expectedArgument')) ?
+                  parameters.outputActionFactories.failure.expectedArgument : { some: 'error' };
+                this.createMockServiceMethod(parameters.serviceMethod.name, () => Observable.throw(expectedArgument));
               });
 
               it('calls the expected action factory method with the expected arguments', () => {
                 this.simulateInputAction(parameters.inputAction);
-
-                expect(this.failureActionFactoryMethod)
-                  .toHaveBeenCalledWith({ some: 'error' });
+                if (expectedArgument === null) {
+                  expect(this.failureActionFactoryMethod)
+                    .toHaveBeenCalledWith();
+                } else {
+                  expect(this.failureActionFactoryMethod)
+                    .toHaveBeenCalledWith(expectedArgument);
+                }
               });
 
               it('emits the expected action', () => {

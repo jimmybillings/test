@@ -36,12 +36,12 @@ export class AssetService {
 
   private requestUrlFor(parameters: AssetLoadParameters, assetType: AssetType, parentId: number): string {
     switch (assetType) {
-      case 'collectionAsset':
+      case 'collection':
         return `clip/${parameters.id}/collection/${parentId}/clipDetail`;
-      case 'orderAsset':
+      case 'order':
         return `clip/${parameters.id}/order/${parentId}/clipDetail`;
-      case 'quoteEditAsset':
-      case 'quoteShowAsset':
+      case 'quoteEdit':
+      case 'quoteShow':
         return `clip/${parameters.id}/quote/${parentId}/clipDetail`;
       default:
         return `clip/${parameters.id}/clipDetail`;

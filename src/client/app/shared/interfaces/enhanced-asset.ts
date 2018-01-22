@@ -7,7 +7,7 @@ interface InternalCache {
   [index: string]: any;
 }
 
-export type AssetType = 'collectionAsset' | 'quoteEditAsset' | 'searchAsset' | 'quoteShowAsset' | 'orderAsset' | 'cartAsset';
+export type AssetType = 'collection' | 'quoteEdit' | 'search' | 'quoteShow' | 'order' | 'cart';
 export type AccessPath = 'ContentFilter' | 'ParentObject' | 'ShareUser';
 
 export function enhanceAsset(asset: commerce.Asset | common.Asset, type: AssetType, parentId?: Number | string): EnhancedAsset {
@@ -291,22 +291,22 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
 
   private createRouterLink(): any[] {
     switch (this.type) {
-      case 'collectionAsset':
+      case 'collection':
         return [`/collections/${this.parentId}/asset/${this.uuid}`];
 
-      case 'quoteEditAsset':
+      case 'quoteEdit':
         return [`/active-quote/asset/${this.uuid}`];
 
-      case 'searchAsset':
+      case 'search':
         return [`/search/asset/${this.assetId}`];
 
-      case 'quoteShowAsset':
+      case 'quoteShow':
         return [`/quotes/${this.parentId}/asset/${this.uuid}`];
 
-      case 'orderAsset':
+      case 'order':
         return [`/orders/${this.parentId}/asset/${this.uuid}`];
 
-      case 'cartAsset':
+      case 'cart':
         return [`/cart/asset/${this.uuid}`];
     }
   }
@@ -329,14 +329,9 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
 
   private findMetadataValueFor(metadataName: string, object: any = this): string {
     if (object !== Object(object)) return undefined;
+    if (object.name === metadataName && object.hasOwnProperty('value')) return object.value;
 
-    const keys: string[] = Object.keys(object);
-
-    if (keys.length === 2 && keys.sort().join('|') === 'name|value' && object.name === metadataName) {
-      return object.value;
-    }
-
-    for (var key of keys) {
+    for (var key of Object.keys(object)) {
       if (object[key]) {
         const value: string = this.findMetadataValueFor(metadataName, object[key]);
         if (value) return value;

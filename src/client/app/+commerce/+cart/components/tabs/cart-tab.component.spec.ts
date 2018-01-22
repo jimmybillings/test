@@ -60,7 +60,8 @@ export function main() {
 
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' })),
-        openFormDialog: jasmine.createSpy('openFormDialog').and.returnValue(Observable.of({ data: 'Test data' }))
+        openFormDialog: jasmine.createSpy('openFormDialog').and.returnValue(Observable.of({ data: 'Test data' })),
+        openConfirmationDialog: jasmine.createSpy('openConfirmationDialog')
       };
 
       mockWindow = { nativeWindow: { location: { href: {} } } };
@@ -143,8 +144,6 @@ export function main() {
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
       });
     });
-
-
 
     describe('cartContainsNoAssets()', () => {
       it('should return true if the cart is empty', () => {
@@ -289,9 +288,9 @@ export function main() {
 
       it('removes a line item when notified with REMOVE_LINE_ITEM', () => {
         const spy = mockAppStore.createActionFactoryMethod('cart', 'removeAsset');
-        const mockLineItem = { asset: { id: 123, type: 'cartAsset' } };
+        const mockLineItem = { asset: { id: 123, type: 'cart' } };
         componentUnderTest.onNotification({ type: 'REMOVE_LINE_ITEM', payload: mockLineItem });
-        mockAppStore.expectDispatchFor(spy, { id: 123, type: 'cartAsset' });
+        mockAppStore.expectDispatchFor(spy, { id: 123, type: 'cart' });
       });
 
       it('edits a line item when notified with EDIT_LINE_ITEM', () => {
@@ -355,6 +354,39 @@ export function main() {
             }
           ]
         });
+      });
+
+      describe('ADD_NOTE', () => {
+        it('opens a dialog with the correct config for a lineItem that has a note', () => {
+          componentUnderTest.onNotification({ type: 'ADD_NOTE', payload: { notes: [{ notes: ['some note'] }] } });
+
+          expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+            [{ name: 'note', type: 'textarea', validation: 'REQUIRED', label: 'QUOTE.EDIT_NOTE', value: 'some note' }],
+            { title: 'QUOTE.EDIT_NOTE' },
+            jasmine.any(Function)
+          );
+        });
+
+        it('opens a dialog with the correct config for a lineItem that doesn\'t have a note', () => {
+          componentUnderTest.onNotification({ type: 'ADD_NOTE', payload: { some: 'lineItem' } });
+
+          expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+            [{ name: 'note', type: 'textarea', validation: 'REQUIRED', label: 'QUOTE.ADD_NOTE', value: '' }],
+            { title: 'QUOTE.ADD_NOTE' },
+            jasmine.any(Function)
+          );
+        });
+      });
+
+      it('calls openConfirmationDialog with REMOVE_NOTE', () => {
+        componentUnderTest.onNotification({ type: 'REMOVE_NOTE', payload: { some: 'lineItem' } });
+
+        expect(mockDialogService.openConfirmationDialog).toHaveBeenCalledWith({
+          title: 'CART.DELETE_NOTES.TITLE',
+          message: 'CART.DELETE_NOTES.MESSAGE',
+          accept: 'CART.DELETE_NOTES.ACCEPT',
+          decline: 'CART.DELETE_NOTES.DECLINE'
+        }, jasmine.any(Function));
       });
     });
 

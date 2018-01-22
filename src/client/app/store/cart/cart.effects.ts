@@ -60,6 +60,14 @@ export class CartEffects {
         .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
+  @Effect()
+  public removeNote: Observable<Action> = this.actions.ofType(CartActions.RemoveNote.Type)
+    .switchMap((action: CartActions.RemoveNote) =>
+      this.service.removeNoteFrom(action.lineItem)
+        .map((cart) => this.store.create(factory => factory.cart.removeNoteSuccess(cart)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+    );
+
   constructor(private actions: Actions, private store: AppStore, private service: FutureCartService) { }
 
   private findLineItemBy(assetLineItemUuid: string, cart: Cart): AssetLineItem {

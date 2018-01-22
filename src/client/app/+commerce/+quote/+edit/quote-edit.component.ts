@@ -179,7 +179,7 @@ export class QuoteEditComponent implements OnInit, OnDestroy {
     return clonedProjects.map((project: Project) => {
       if (project.lineItems) {
         project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
-          lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'quoteEditAsset');
+          lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'quoteEdit');
           return lineItem;
         });
       }

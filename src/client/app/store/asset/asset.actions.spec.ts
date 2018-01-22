@@ -15,7 +15,7 @@ export function main() {
         type: '[Asset] Load Order Asset',
         orderId: 1,
         uuid: 'abc-123',
-        assetType: 'orderAsset'
+        assetType: 'order'
       }
     });
 
@@ -29,7 +29,7 @@ export function main() {
         type: '[Asset] Load Quote Show Asset',
         quoteId: 1,
         uuid: 'abc-123',
-        assetType: 'quoteShowAsset'
+        assetType: 'quoteShow'
       }
     });
 
@@ -42,7 +42,7 @@ export function main() {
       expectedAction: {
         type: '[Asset] Load Quote Edit Asset',
         uuid: 'abc-123',
-        assetType: 'quoteEditAsset'
+        assetType: 'quoteEdit'
       }
     });
 
@@ -55,7 +55,7 @@ export function main() {
       expectedAction: {
         type: '[Asset] Load Cart Asset',
         uuid: 'abc-123',
-        assetType: 'cartAsset'
+        assetType: 'cart'
       }
     });
 
@@ -68,7 +68,7 @@ export function main() {
       expectedAction: {
         type: '[Asset] Load Active Collection Asset',
         uuid: 'abc-123',
-        assetType: 'collectionAsset'
+        assetType: 'collection'
       }
     });
 
@@ -81,7 +81,7 @@ export function main() {
       expectedAction: {
         type: '[Asset] Load Search Asset',
         loadParameters: { some: 'loadParams' },
-        assetType: 'searchAsset'
+        assetType: 'search'
       }
     });
 
@@ -102,12 +102,12 @@ export function main() {
       factoryMethod: {
         class: InternalActionFactory,
         name: 'loadAssetAfterParentIsAvailable',
-        parameters: [{ some: 'loadParams' }, 'cartAsset', 123]
+        parameters: [{ some: 'loadParams' }, 'cart', 123]
       },
       expectedAction: {
         type: '[Asset] Load Asset After Parent Is Available',
         loadParameters: { some: 'loadParams' },
-        assetType: 'cartAsset',
+        assetType: 'cart',
         parentId: 123
       }
     });

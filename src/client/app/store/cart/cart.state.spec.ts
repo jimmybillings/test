@@ -23,7 +23,9 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: ['LoadSuccess', 'EditLineItemFromDetailsSuccess', 'RemoveAssetSuccess', 'AddNoteSuccess'],
+      actionClassName: [
+        'LoadSuccess', 'EditLineItemFromDetailsSuccess', 'RemoveAssetSuccess', 'AddNoteSuccess', 'RemoveNoteSuccess'
+      ],
       customTests: [
         {
           it: 'returns a the cart with the loading flag as false',

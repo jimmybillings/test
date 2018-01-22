@@ -32,7 +32,7 @@ export class AssetEffects {
             this.store.create(factory => factory.asset.loadSuccess(asset))
           ];
 
-          if (action.assetType !== 'orderAsset') {
+          if (action.assetType !== 'order') {
             actions.push(this.store.create(factory => factory.deliveryOptions.load(asset)));
           }
 
@@ -46,7 +46,7 @@ export class AssetEffects {
   @Effect() loadAssetOnCartLoadSuccess: Observable<Action> = this.actions.ofType(CartActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
     .filter(([action, state]: [CartActions.LoadSuccess, AppState]) => {
-      return !!state.asset.loadingUuid && state.asset.activeAssetType === 'cartAsset';
+      return !!state.asset.loadingUuid && state.asset.activeAssetType === 'cart';
     })
     .map(([action, state]: [CartActions.LoadSuccess, AppState]) =>
       this.createNextCartActionFor(state.cart.data, state.asset.loadingUuid)
@@ -65,7 +65,7 @@ export class AssetEffects {
   public loadAssetOnCollectionLoadSuccess: Observable<Action> = this.actions.ofType(ActiveCollectionActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
     .filter(([action, state]: [ActiveCollectionActions.LoadSuccess, AppState]) => {
-      return !!state.asset.loadingUuid && state.asset.activeAssetType === 'collectionAsset';
+      return !!state.asset.loadingUuid && state.asset.activeAssetType === 'collection';
     })
     .map(([action, state]: [ActiveCollectionActions.LoadSuccess, AppState]) =>
       this.createNextCollectionActionFor(state.activeCollection.collection, state.asset.loadingUuid)
@@ -83,7 +83,7 @@ export class AssetEffects {
   @Effect() loadAssetOnOrderLoadSuccess: Observable<Action> = this.actions.ofType(OrderActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
     .filter(([action, state]: [OrderActions.LoadSuccess, AppState]) => {
-      return !!state.asset.loadingUuid && state.asset.activeAssetType === 'orderAsset';
+      return !!state.asset.loadingUuid && state.asset.activeAssetType === 'order';
     })
     .map(([action, state]: [OrderActions.LoadSuccess, AppState]) =>
       this.createNextOrderActionFor(state.order.activeOrder, state.order.activeOrder.id, state.asset.loadingUuid)
@@ -101,7 +101,7 @@ export class AssetEffects {
   @Effect() loadAssetOnQuoteLoadSuccess: Observable<Action> = this.actions.ofType(QuoteEditActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
     .filter(([action, state]: [QuoteEditActions.LoadSuccess, AppState]) => {
-      return !!state.asset.loadingUuid && state.asset.activeAssetType === 'quoteEditAsset';
+      return !!state.asset.loadingUuid && state.asset.activeAssetType === 'quoteEdit';
     })
     .map(([action, state]: [QuoteEditActions.LoadSuccess, AppState]) =>
       this.createNextQuoteEditActionFor(state.quoteEdit.data, state.asset.loadingUuid)
@@ -119,7 +119,7 @@ export class AssetEffects {
   @Effect() loadAssetOnQuoteShowLoadSuccess: Observable<Action> = this.actions.ofType(QuoteShowActions.LoadSuccess.Type)
     .withLatestFrom(this.store.select(state => state))
     .filter(([action, state]: [QuoteShowActions.LoadSuccess, AppState]) => {
-      return !!state.asset.loadingUuid && state.asset.activeAssetType === 'quoteShowAsset';
+      return !!state.asset.loadingUuid && state.asset.activeAssetType === 'quoteShow';
     })
     .map(([action, state]: [QuoteShowActions.LoadSuccess, AppState]) =>
       this.createNextQuoteShowActionFor(state.quoteShow.data, state.quoteShow.data.id, state.asset.loadingUuid)
@@ -176,7 +176,7 @@ export class AssetEffects {
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'quoteShowAsset', quote.id);
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'quoteShow', quote.id);
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -193,7 +193,7 @@ export class AssetEffects {
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'quoteEditAsset', quote.id);
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'quoteEdit', quote.id);
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -210,7 +210,7 @@ export class AssetEffects {
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'orderAsset', order.id);
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'order', order.id);
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -227,7 +227,7 @@ export class AssetEffects {
 
     if (lineItem) {
       const asset: Commerce.Asset = lineItem.asset;
-      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'cartAsset');
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'cart');
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });
@@ -243,7 +243,7 @@ export class AssetEffects {
     const asset: CommonInterface.Asset = collection.assets.items.find(asset => asset.uuid === uuid);
 
     if (asset) {
-      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'collectionAsset', collection.id);
+      return this.loadAssetActionGenerator(asset.assetId, uuid, asset.timeStart, asset.timeEnd, 'collection', collection.id);
     }
 
     return factory => factory.asset.loadFailure({ status: 404 });

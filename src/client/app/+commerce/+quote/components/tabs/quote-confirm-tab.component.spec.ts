@@ -48,7 +48,7 @@ export function main() {
           componentType: jasmine.any(Function),
           dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
           inputOptions: {
-            assetType: 'quoteShowAsset',
+            assetType: 'quoteShow',
             parentId: 1,
             licenses: { some: 'licenses' }
           },
