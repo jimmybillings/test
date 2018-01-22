@@ -21,6 +21,7 @@ import { Pojo } from '../../../../../shared/interfaces/common.interface';
 import { FormFields } from '../../../../../shared/interfaces/forms.interface';
 import { WzFormPicklistComponent } from '../wz-form-picklist.component';
 import { WzFormAutoCompleteViewComponent } from '../wz-form-autocomplete-view.component';
+import { MatCheckboxChange } from '@angular/material';
 
 interface SendDetailsConfig {
   user: FormFields[];
@@ -94,6 +95,24 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
 
   public onEditableFieldChange(change: Pojo): void {
     this.store.dispatch(factory => factory.quoteEdit.updateBillingAccount(change));
+  }
+
+  public onCheckboxChange(event: MatCheckboxChange): void {
+    for (let controlName in this.invoiceContactform.form.controls) {
+      if (event.checked) {
+        this.invoiceContactform.form.controls[controlName].disable();
+        this.store.dispatch(factory => factory.quoteEdit.overrideInvoiceContact({
+          id: this.currentUserService.state.id,
+          contactEmail: this.currentUserService.state.emailAddress,
+          name: `${this.currentUserService.state.firstName} ${this.currentUserService.state.lastName}`
+        }));
+      } else {
+        this.invoiceContactform.form.controls[controlName].enable();
+        this.store.dispatch(factory => factory.quoteEdit.addInvoiceContactToQuote(
+          this.invoiceContactform.form.value.invoiceContact
+        ));
+      }
+    }
   }
 
   private userAccountMatchesBillingAccount(sendDetails: SendDetails): boolean {

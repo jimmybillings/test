@@ -1,9 +1,12 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Pojo } from '../../../../shared/interfaces/common.interface';
+import { MatCheckboxChange } from '@angular/material';
 import { Component, ChangeDetectionStrategy, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+
+import { Pojo } from '../../../../shared/interfaces/common.interface';
 import { FormModel } from '../../../../shared/modules/wz-form/wz.form.model';
 import { WzFormBase } from '../../../../shared/modules/wz-form/wz.form-base';
+import { FormFields } from '../../../../shared/interfaces/forms.interface';
 
 @Component({
   moduleId: module.id,
@@ -27,6 +30,7 @@ export class WzFormPicklistComponent extends WzFormBase {
     this.labels = new BehaviorSubject(tempLabels);
   }
   @Output() selectContact: EventEmitter<Pojo> = new EventEmitter();
+  @Output() checkboxChange: EventEmitter<MatCheckboxChange> = new EventEmitter();
 
   constructor(fb: FormBuilder, formModel: FormModel, element: ElementRef) {
     super(fb, formModel, element);
@@ -34,5 +38,9 @@ export class WzFormPicklistComponent extends WzFormBase {
 
   public onSelectChange(suggestion: Pojo) {
     this.selectContact.emit(suggestion);
+  }
+
+  public onCheckboxChange(event: MatCheckboxChange): void {
+    this.checkboxChange.emit(event);
   }
 }

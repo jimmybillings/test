@@ -551,5 +551,17 @@ export function main() {
         lineItem: { some: 'lineItem' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'overrideInvoiceContact',
+        parameters: [{ some: 'contact' }]
+      },
+      expectedAction: {
+        type: '[Quote Edit] Override Invoice Contact',
+        contact: { some: 'contact' }
+      }
+    });
   });
 }
