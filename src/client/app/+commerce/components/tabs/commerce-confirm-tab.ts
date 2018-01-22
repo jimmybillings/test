@@ -43,6 +43,10 @@ export class CommerceConfirmTab extends Tab {
     return this.store.select(state => state.checkout.selectedPaymentType);
   }
 
+  public get purchaseOrderId(): Observable<string> {
+    return this.store.select(state => state.checkout.purchaseOrderId);
+  }
+
   public get showPurchaseBtn(): Observable<boolean> {
     return this.store.select(state => state.checkout.selectedPaymentType === 'CreditCard');
   }

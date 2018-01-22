@@ -39,13 +39,19 @@
             ending in {{ (orderInProgress | async).authorization.card.last4 }}
           </span>
           <span class="expires">
-            <strong>Expires:</strong>
+            <strong>{{ 'CART.CONFIRM.EXPIRES' | translate }}</strong>
             {{ (orderInProgress | async).authorization.card.exp_month }}/{{ (orderInProgress | async).authorization.card.exp_year }}
           </span>
         </div>
         <div class="purchase-on-credit" *ngIf="(paymentType | async) === 'PurchaseOnCredit'">
           <span class="indicate-credit">
-            <strong>Purchase on credit</strong>
+            <strong>{{ 'CART.CONFIRM.PURCHASE_ON_CREDIT' | translate }}</strong>
+          </span>
+        </div>
+        <div class="purchase-order-id" *ngIf="purchaseOrderId | async">
+          <span>
+            <strong>{{ 'CART.CONFIRM.PURCHASE_ORDER_ID' | translate }}</strong>
+            {{purchaseOrderId | async}}
           </span>
         </div>
       </div>

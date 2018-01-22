@@ -4,6 +4,7 @@ import { ViewAddress } from '../../shared/interfaces/user.interface';
 import { Common } from '../../shared/utilities/common.functions';
 
 export interface State {
+  purchaseOrderId: string;
   paymentOptions: PaymentOptions;
   selectedPaymentType: PaymentOption;
   addresses: ViewAddress[];
@@ -12,6 +13,7 @@ export interface State {
 }
 
 export const initialState: State = {
+  purchaseOrderId: '',
   paymentOptions: null,
   selectedPaymentType: null,
   addresses: [],
@@ -43,6 +45,10 @@ export function reducer(state: State = initialState, action: CheckoutActions.Any
   if (state === null) state = initialState;
 
   switch (action.type) {
+
+    case CheckoutActions.SetPurchaseOrderId.Type: {
+      return { ...Common.clone(state), purchaseOrderId: action.purchaseOrderId };
+    }
 
     case CheckoutActions.SetAvailablePaymentOptions.Type: {
       return { ...Common.clone(state), paymentOptions: action.paymentOptions };
