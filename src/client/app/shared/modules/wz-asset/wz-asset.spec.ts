@@ -22,7 +22,7 @@ export function main() {
         }
       };
 
-      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'searchAsset');
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'search');
       mockStore = new MockAppStore();
       mockStore.createStateSection('speedPreview', { 1234: { price: 100 } });
       mockStore.createStateElement('comment', 'counts', { 'abc-123': 3 });
@@ -30,7 +30,7 @@ export function main() {
         components: { search: { config: { showAssetNameGridView: { value: 'true' } } } }
       });
       componentUnderTest = new WzAsset(mockStore, null);
-      componentUnderTest.assets = [EnhancedMock.enhanceAsset(mockAsset, 'searchAsset')];
+      componentUnderTest.assets = [EnhancedMock.enhanceAsset(mockAsset, 'search')];
     });
 
     describe('ngOnInit()', () => {

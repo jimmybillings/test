@@ -44,7 +44,7 @@ export function main() {
         new OrderShowComponent(mockWindow, mockAppStore).orderObservable.subscribe(order => {
           const asset: any = order.projects[0].lineItems[0].asset;
 
-          expect(asset.type).toEqual('orderAsset');
+          expect(asset.type).toEqual('order');
           expect(asset.parentId).toEqual(42);
         });
       });

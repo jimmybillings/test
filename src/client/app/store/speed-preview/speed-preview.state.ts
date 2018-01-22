@@ -21,6 +21,10 @@ export function reducer(state: State = initialState, action: SpeedPreviewActions
       return Object.assign({}, state, { [state.loadingAssetId]: action.speedViewData, loadingAssetId: undefined });
     }
 
+    case SpeedPreviewActions.LoadFailure.Type: {
+      return Object.assign({}, state, { [state.loadingAssetId]: { noData: true }, loadingAssetId: undefined });
+    }
+
     default: {
       return state;
     }

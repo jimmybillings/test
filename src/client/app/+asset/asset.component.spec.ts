@@ -89,15 +89,15 @@ export function main() {
     describe('ngOnInit()', () => {
       it('sets up an asset instance variable', () => {
         mockStore.createStateSection('asset', { activeAsset: mockAsset });
-        componentUnderTest.assetType = 'collectionAsset';
+        componentUnderTest.assetType = 'collection';
         componentUnderTest.ngOnInit();
-        const expectedAsset: EnhancedMock.EnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset', 100);
+        const expectedAsset: EnhancedMock.EnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collection', 100);
         expect(componentUnderTest.asset).toEqual(expectedAsset);
       });
 
       describe('sets up the commentParentObject', () => {
         it('for a collection asset', () => {
-          componentUnderTest.assetType = 'collectionAsset';
+          componentUnderTest.assetType = 'collection';
           componentUnderTest.ngOnInit();
 
           expect(componentUnderTest.commentParentObject).toEqual({
@@ -108,8 +108,8 @@ export function main() {
           });
         });
 
-        it('for a quoteEditAsset', () => {
-          componentUnderTest.assetType = 'quoteEditAsset';
+        it('for a quoteEdit Asset', () => {
+          componentUnderTest.assetType = 'quoteEdit';
           componentUnderTest.ngOnInit();
 
           expect(componentUnderTest.commentParentObject).toEqual({
@@ -120,8 +120,8 @@ export function main() {
           });
         });
 
-        it('for a quoteShowAsset', () => {
-          componentUnderTest.assetType = 'quoteShowAsset';
+        it('for a quoteShow Asset', () => {
+          componentUnderTest.assetType = 'quoteShow';
           componentUnderTest.ngOnInit();
 
           expect(componentUnderTest.commentParentObject).toEqual({
@@ -133,7 +133,7 @@ export function main() {
         });
 
         it('for a cart asset', () => {
-          componentUnderTest.assetType = 'cartAsset';
+          componentUnderTest.assetType = 'cart';
           componentUnderTest.ngOnInit();
 
           expect(componentUnderTest.commentParentObject).toEqual({
@@ -206,7 +206,7 @@ export function main() {
     });
 
     describe('assetMatchesCartAsset()', () => {
-      ['collectionAsset', 'orderAsset', 'quoteShowAsset', 'searchAsset'].forEach((assetType: EnhancedMock.AssetType) => {
+      ['collection', 'order', 'quoteShow', 'search'].forEach((assetType: EnhancedMock.AssetType) => {
         it(`returns true (somewhat pointlessly) for an asset with type '${assetType}'`, () => {
           mockStore.createStateSection(assetType, { activeAsset: mockAsset });
           componentUnderTest.assetType = assetType;
@@ -216,7 +216,7 @@ export function main() {
         });
       });
 
-      ['cartAsset', 'quoteEditAsset'].forEach((assetType: EnhancedMock.AssetType) => {
+      ['cart', 'quoteEdit'].forEach((assetType: EnhancedMock.AssetType) => {
         describe(`when asset has type '${assetType}'`, () => {
           let localMockAsset: any;
           let storeType: string;
@@ -259,7 +259,7 @@ export function main() {
     describe('onUpdateAssetLineItem()', () => {
       it('dispatches the proper action for a user that can\'t administer quotes', () => {
         mockStore.createActionFactoryMethod('cart', 'editLineItemFromDetails');
-        componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'cartAsset');
+        componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'cart');
         componentUnderTest.onUpdateAssetLineItem();
 
         expect(mockStore.dispatch).toHaveBeenCalled();
@@ -270,7 +270,7 @@ export function main() {
         mockStore.createActionFactoryMethod('quoteEdit', 'editLineItemFromDetails');
 
         componentUnderTest = new AssetComponent(mockCapabilities, null, null, null, mockStore, null, null, null, null);
-        componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEditAsset');
+        componentUnderTest.asset = EnhancedMock.enhanceAsset(mockAsset, 'quoteEdit');
         componentUnderTest.onUpdateAssetLineItem();
 
         expect(mockStore.dispatch).toHaveBeenCalled();

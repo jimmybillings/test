@@ -7,7 +7,7 @@ interface InternalCache {
   [index: string]: any;
 }
 
-export type AssetType = 'collectionAsset' | 'quoteEditAsset' | 'searchAsset' | 'quoteShowAsset' | 'orderAsset' | 'cartAsset';
+export type AssetType = 'collection' | 'quoteEdit' | 'search' | 'quoteShow' | 'order' | 'cart';
 export type AccessPath = 'ContentFilter' | 'ParentObject' | 'ShareUser';
 
 export function enhanceAsset(asset: commerce.Asset | common.Asset, type: AssetType, parentId?: Number | string): EnhancedAsset {
@@ -291,22 +291,22 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
 
   private createRouterLink(): any[] {
     switch (this.type) {
-      case 'collectionAsset':
+      case 'collection':
         return [`/collections/${this.parentId}/asset/${this.uuid}`];
 
-      case 'quoteEditAsset':
+      case 'quoteEdit':
         return [`/active-quote/asset/${this.uuid}`];
 
-      case 'searchAsset':
+      case 'search':
         return [`/search/asset/${this.assetId}`];
 
-      case 'quoteShowAsset':
+      case 'quoteShow':
         return [`/quotes/${this.parentId}/asset/${this.uuid}`];
 
-      case 'orderAsset':
+      case 'order':
         return [`/orders/${this.parentId}/asset/${this.uuid}`];
 
-      case 'cartAsset':
+      case 'cart':
         return [`/cart/asset/${this.uuid}`];
     }
   }

@@ -35,7 +35,7 @@ export class CartConfirmTabComponent extends CommerceConfirmTab {
           componentType: LicenseAgreementComponent,
           dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
           inputOptions: {
-            assetType: 'cartAsset',
+            assetType: 'cart',
             licenses: Common.clone(agreements)
           },
           outputOptions: [

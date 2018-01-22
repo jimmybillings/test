@@ -16,7 +16,7 @@ export function main() {
     let snackBarDispatchSpy: jasmine.Spy;
 
     beforeEach(() => {
-      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset');
+      mockEnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collection');
 
       mockAppStore = new MockAppStore();
       mockAppStore.createStateSection('uiConfig', {
@@ -37,7 +37,7 @@ export function main() {
 
       componentUnderTest = new CollectionTrayComponent(mockDialogService, mockAppStore, null);
 
-      componentUnderTest.collection = { assets: { items: [EnhancedMock.enhanceAsset(mockAsset, 'collectionAsset')] } } as any;
+      componentUnderTest.collection = { assets: { items: [EnhancedMock.enhanceAsset(mockAsset, 'collection')] } } as any;
       componentUnderTest.urlPath = '/collections/';
     });
 

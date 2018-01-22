@@ -12,13 +12,16 @@ export interface SpeedviewEvent {
   position: Coords;
 }
 
+export type PricingType = 'Royalty Free' | 'Rights Managed' | '';
 export interface SpeedviewData {
+  noData?: boolean;
   imageQuickView?: boolean;
   price?: number;
-  pricingType?: 'Royalty Free' | 'Rights Managed' | '';
+  pricingType?: PricingType;
   url?: string;
   posterUrl?: string;
   values?: Array<Pojo>;
+  value?: any;
 }
 
 export interface RenditionUrl {

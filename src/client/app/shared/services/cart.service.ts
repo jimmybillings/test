@@ -61,7 +61,7 @@ export class CartService {
       return data.projects.map((project: Project) => {
         if (project.lineItems) {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
-            lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'cartAsset');
+            lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'cart');
             return lineItem;
           });
         }

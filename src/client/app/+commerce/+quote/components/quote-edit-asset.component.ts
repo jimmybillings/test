@@ -8,7 +8,7 @@ import { Asset } from '../../../shared/interfaces/common.interface';
   selector: 'quote-asset',
   template: `
     <asset-component 
-      [assetType]="'quoteEditAsset'"
+      [assetType]="'quoteEdit'"
       [commentFormConfig]="commentFormConfig">
     </asset-component>`,
   changeDetection: ChangeDetectionStrategy.OnPush

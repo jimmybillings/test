@@ -8,7 +8,7 @@ import { Asset } from '../../../shared/interfaces/common.interface';
   selector: 'quote-show-asset',
   template: `
   <asset-component 
-    [assetType]="'quoteShowAsset'"
+    [assetType]="'quoteShow'"
     [commentFormConfig]="commentFormConfig">
   </asset-component>
   `,

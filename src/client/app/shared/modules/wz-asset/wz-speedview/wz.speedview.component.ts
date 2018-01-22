@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { SpeedviewData } from '../../../interfaces/asset.interface';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { PricingType, SpeedviewData } from '../../../interfaces/asset.interface';
 import {
   style,
   trigger,
@@ -8,6 +8,7 @@ import {
   animate,
   AnimationEvent,
 } from '@angular/animations';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 export type SpeedPreviewVisibility = 'visible' | 'hidden';
 
@@ -33,24 +34,46 @@ export type SpeedPreviewVisibility = 'visible' | 'hidden';
 })
 
 export class WzSpeedviewComponent {
-  public speedviewAssetInfo: SpeedviewData = { values: [], url: '', pricingType: '', price: 0, imageQuickView: false };
-  public visibility: SpeedPreviewVisibility = 'hidden';
 
-  constructor(private detector: ChangeDetectorRef) { }
+  public speedviewAssetInfo: BehaviorSubject<SpeedviewData> = new BehaviorSubject({
+    values: [],
+    url: '',
+    price: 0,
+    imageQuickView: false,
+    pricingType: '' as PricingType
+  });
+
+  public visibility: BehaviorSubject<SpeedPreviewVisibility> = new BehaviorSubject('hidden' as SpeedPreviewVisibility);
 
   public translationReady(field: string) {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
   public merge(data: SpeedviewData) {
-    this.speedviewAssetInfo = { ...this.speedviewAssetInfo, ...data };
-    this.detector.markForCheck();
+    let speedviewAssetInfo: SpeedviewData;
+    this.speedviewAssetInfo.take(1).subscribe(currentData => {
+      speedviewAssetInfo = currentData;
+    });
+    // Fall back if the asset has no data
+    if (data.noData) {
+      let tempData = { posterUrl: speedviewAssetInfo.posterUrl };
+      speedviewAssetInfo = { ...tempData, ...data };
+
+      // First hover using the cached image from the result thumbnail
+    } else if (data.posterUrl) {
+      speedviewAssetInfo.posterUrl = data.posterUrl;
+
+      // main meta data coming from server or cache
+    } else {
+      if (speedviewAssetInfo.noData) delete speedviewAssetInfo.noData;
+      speedviewAssetInfo = { ...speedviewAssetInfo, ...data };
+    }
+    this.speedviewAssetInfo.next(speedviewAssetInfo);
   }
 
   public show() {
     setTimeout(() => {
-      this.visibility = 'visible';
-      this.detector.markForCheck();
+      this.visibility.next('visible');
     }, 300);
   }
 }

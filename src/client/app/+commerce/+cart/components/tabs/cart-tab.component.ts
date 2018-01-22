@@ -140,7 +140,7 @@ export class CartTabComponent extends Tab implements OnDestroy, OnInit {
           componentType: LicenseAgreementComponent,
           dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
           inputOptions: {
-            assetType: 'cartAsset',
+            assetType: 'cart',
             licenses: Common.clone(agreements)
           },
           outputOptions: [

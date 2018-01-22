@@ -61,5 +61,32 @@ export function main() {
         }
       ]
     });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'LoadFailure',
+      mutationTestData: {
+        actionParameters: { speedViewData: {} }
+      },
+      customTests: [
+        {
+          it: 'returns new state with the noData property set to true',
+
+          previousState: {
+            222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
+            333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
+            loadingAssetId: 444444
+          },
+
+          actionParameters: { speedViewData: {} },
+
+          expectedNextState: {
+            222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
+            333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
+            444444: { noData: true },
+            loadingAssetId: undefined
+          }
+        }
+      ]
+    });
   });
 }

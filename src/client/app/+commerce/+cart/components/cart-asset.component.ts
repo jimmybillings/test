@@ -10,7 +10,7 @@ import { AppStore } from '../../../app.store';
   selector: 'cart-asset',
   template: `
     <asset-component
-      [assetType]="'cartAsset'"
+      [assetType]="'cart'"
       [commentFormConfig]="commentFormConfig">
     </asset-component>
   `,
