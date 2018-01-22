@@ -24,7 +24,6 @@ export class PurchaseOrderInputComponent implements OnInit {
     this.PurchaseOrderFormConfig = this.store.snapshotCloned(state => state.uiConfig.components.cart.config.addPurchaseOrderId.items);
   }
   public onBlur(form: Pojo): void {
-    console.log(form);
     this.store.dispatch(factory => factory.checkout.setPurchaseOrderId(form.purchaseOrderId));
   }
 }

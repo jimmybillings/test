@@ -15,16 +15,6 @@
     <div class="purchase-order-input" layout="column" flex="25" flex-xs="100">
       <purchase-order-input-component></purchase-order-input-component>
     </div>
-<!-- 
-    <div class="purchase-order-input" layout="column" flex="25" flex-xs="100">
-      <wz-form 
-        [includeSubmit]="false"
-        [includeCancel]="false"
-        [items]="PurchaseOrderFormConfig"
-        (blur)=onBlur($event)>
-      </wz-form>
-    </div> -->
-
     <!--Credit Card only-->
     <section *ngIf="showCreditCardForm | async"
       layout="column"
