@@ -148,6 +148,18 @@ export function main() {
         });
       });
 
+      describe('Updating with inMarker and outMarker undefined', () => {
+        it('causes inMarkerFrame and outMarkerFrame to be cleared', () => {
+          serviceUnderTest.updateWith({ inMarker: 1.23 });
+          serviceUnderTest.updateWith({ outMarker: 4.56 });
+
+          serviceUnderTest.updateWith({ inMarker: undefined, outMarker: undefined });
+
+          expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
+          expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
+        });
+      });
+
       describe('Updating with inMarkerFrameNumber', () => {
         it('causes inMarkerFrame to be updated', () => {
           serviceUnderTest.updateWith({ inMarkerFrameNumber: 6.78 });
