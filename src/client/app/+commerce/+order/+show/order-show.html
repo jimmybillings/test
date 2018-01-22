@@ -44,6 +44,9 @@
             <span>
               <strong>{{ 'ORDER.PURCHASE_TYPE_LABEL' | translate }} </strong>{{ order.paymentType }}
             </span>
+            <span *ngIf="order.poNumber">
+              <strong>{{ 'ORDER.PURCHASE_ORDER_LABEL' | translate }} </strong>{{ order.poNumber }}
+            </span>
             <span class="offline-agreement-display" *ngIf="offlineAgreementIdsFor(order).length">
               <strong>{{ 'QUOTE.OFFLINE_ID_HEADER' | translate }}</strong>
               <span>{{ offlineAgreementIdsFor(order) }}</span>
