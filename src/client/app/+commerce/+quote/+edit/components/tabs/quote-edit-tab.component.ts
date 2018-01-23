@@ -240,18 +240,37 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   private onAddCustomPriceTo(lineItem: AssetLineItem): void {
-    this.dialogService.openFormDialog(
-      [{
+    let formFields: any = [
+      {
         name: 'price',
         label: 'Price',
-        value: String(lineItem.grossAssetPrice),
         type: 'number',
         min: '0',
         validation: 'GREATER_THAN'
-      }],
+      }, {
+        name: 'priceLock',
+        label: 'Price Lock',
+        type: 'slideToggle',
+        value: ''
+      }];
+    if (lineItem.overridePreDiscountPrice && !lineItem.systemPreDiscountPrice) {
+      formFields[1].value = 'true';
+      formFields[0].value = String(lineItem.overridePreDiscountPrice);
+    }
+    if (!lineItem.overridePreDiscountPrice && lineItem.systemPreDiscountPrice) {
+      formFields[1].value = '';
+      formFields[0].value = String(lineItem.systemPreDiscountPrice);
+    }
+    if ((!lineItem.overridePreDiscountPrice && !lineItem.systemPreDiscountPrice)) {
+      formFields[1].value = 'true';
+      formFields[0].value = '';
+    }
+    this.dialogService.openFormDialog(
+      formFields,
       { title: 'QUOTE.ADD_CUSTOM_PRICE_TITLE', submitLabel: 'QUOTE.ADD_CUSTOM_PRICE_SUBMIT', autocomplete: 'off' },
       (form: { price: number }) => {
-        this.store.dispatch(factory => factory.quoteEdit.addCustomPriceToLineItem(lineItem, form.price));
+        console.log(form);
+        // this.store.dispatch(factory => factory.quoteEdit.addCustomPriceToLineItem(lineItem, form.price));
       });
   }
 

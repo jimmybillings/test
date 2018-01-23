@@ -64,6 +64,7 @@
             [multiplier]="lineItem.multiplier"
             [rightsManaged]="lineItem.rightsManaged"
             [hasAttributes]="!!lineItem.attributes"
+            [overridePreDiscountPrice]="lineItem.overridePreDiscountPrice"
             [userCanAdministerQuotes]="userCan.administerQuotes()"
             [readonly]="readOnly"
             (addCustomPrice)="onAddCustomPrice(lineItem)">

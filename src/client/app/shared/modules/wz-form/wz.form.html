@@ -302,15 +302,21 @@
         END: FORM CHECKBOX
       -->
 
-      <!--
-        START: CUSTOM ELEMENT FOR DOUBLE PASSWORD INPUTS
-      -->
-      <!--<wz-password-confirm *ngIf="field.type == 'passwords'" [fControl]="form.controls[field.name]">
-        {{field | json}}
-      </wz-password-confirm>-->
-      <!--
-        END: CUSTOM ELEMENT FOR DOUBLE PASSWORD INPUTS
-      -->
+    <!-- 
+      START: FORM SLIDE TOGGLE
+    -->
+    <span *ngIf="field.type == 'slideToggle'" layout="row" layout-align="start center">
+      <mat-slide-toggle 
+        layout="row" 
+        formControlName="{{field.name}}" 
+        color="primary" 
+        [required]="isRequiredField(field)">
+        {{ field.label | translate }}
+      </mat-slide-toggle>
+    </span>
+    <!--
+        END: FORM SLIDE TOGGLE
+    -->
 
       <!--
         START: CUSTOM FOR ELEMENT FOR CREATING TAGS

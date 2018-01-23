@@ -40,7 +40,14 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
             {{ price | currency:'USD':true:'1.2-2' }}
         </div>
         <div
-          *ngIf="!showAdminPrice"
+          *ngIf="showAdminOveridePrice"
+          (click)="onClickPrice()"
+          class="admin-price"
+          [ngClass]="{'select-usage': needsAttributes }">
+            <mat-icon>lock</mat-icon>{{ overridePreDiscountPrice | currency:'USD':true:'1.2-2' }}
+        </div>
+        <div
+          *ngIf="!showAdminPrice && !showAdminOveridePrice"
           class="non-admin-price"
           [ngClass]="{'select-usage': needsAttributes }">
           {{ price | currency:'USD':true:'1.2-2' }}
@@ -53,6 +60,7 @@ export class LineItemPriceComponent {
   @Input() itemPrice: number;
   @Input() grossAssetPrice: number;
   @Input() multiplier: number;
+  @Input() overridePreDiscountPrice: number;
   @Input() userCanAdministerQuotes: boolean;
   @Input() rightsManaged: string;
   @Input() hasAttributes: boolean;
@@ -76,9 +84,14 @@ export class LineItemPriceComponent {
     }
   }
 
-  public get showAdminPrice(): boolean {
-    return this.userCanAdministerQuotes && !this.needsAttributes && !this.readonly;
+  public get showAdminOveridePrice(): boolean {
+    return this.userCanAdministerQuotes && !this.readonly && !!this.overridePreDiscountPrice;
   }
+
+  public get showAdminPrice(): boolean {
+    return this.userCanAdministerQuotes && !this.needsAttributes && !this.readonly && !this.overridePreDiscountPrice;
+  }
+
   public get showPreDiscountPrice(): boolean {
     return this.userCanAdministerQuotes && (this.grossAssetPrice !== this.price);
   }

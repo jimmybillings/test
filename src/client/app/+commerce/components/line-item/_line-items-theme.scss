@@ -25,6 +25,9 @@
       &:hover {
         background-color: rgba(mat-color($primary, darker), .075);
       }
+      mat-icon {
+        color: mat-color($warn, darker);
+      }
     }
     .non-admin-price.select-usage {
       color: lighten(mat-color($warn, darker), 30%);
