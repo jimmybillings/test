@@ -18,6 +18,9 @@
 # For a full list, see http://build.thoughtequity.com:8080/jenkins/env-vars.html/
 # set -x
 
+# allow the 'jenkins' user to use 'video' user's ssh credentials for git
+export GIT_SSH=/opt/app/wazee/build-support/tools/git/git-wrapper.sh
+
 tools=/opt/app/wazee/build-support/tools/jenkins
 tempHome=/opt/data/tmp
 sourceHome=/home/video/src
