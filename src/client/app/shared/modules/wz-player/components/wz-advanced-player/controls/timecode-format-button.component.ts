@@ -10,7 +10,7 @@ import { Frame, TimecodeFormat, TimecodeBase } from '../../../../wazee-frame-for
   template: `
     <button mat-icon-button title="{{ 'ASSET.ADV_PLAYER.TIMECODE_FORMAT_BTN_TITLE' | translate }}" [matMenuTriggerFor]="menu">
       <mat-icon>access_time</mat-icon>
-      {{ currentTimecodeBaseTranslationKey | translate }}
+      {{ currentTimecodeFormatBaseTranslationKey | translate }}
     </button>
 
     <mat-menu class="timecode-format-menu" #menu="matMenu">
@@ -41,9 +41,10 @@ export class TimecodeFormatButtonComponent {
   public readonly streamBased: TimecodeBase = TimecodeBase.STREAM_BASED;
   public readonly sourceBased: TimecodeBase = TimecodeBase.SOURCE_BASED;
 
-  public get currentTimecodeBaseTranslationKey(): string {
+  public get currentTimecodeFormatBaseTranslationKey(): string {
     const base: string = this.playerState.timecodeBase === TimecodeBase.STREAM_BASED ? 'STREAM' : 'SOURCE';
-    return `ASSET.ADV_PLAYER.TIMECODE_FORMAT_BASE_DISPLAY.${base}_BASED`;
+    const format: string = this.playerState.timecodeFormat === TimecodeFormat.SIMPLE_TIME_CONVERSION ? 'TIMECODE' : 'SECONDS';
+    return `ASSET.ADV_PLAYER.TIMECODE_FORMAT_BASE_DISPLAY.${base}_BASED_${format}`;
   }
 
   public get currentFrame(): Frame {

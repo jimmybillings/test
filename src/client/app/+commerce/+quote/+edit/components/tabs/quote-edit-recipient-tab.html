@@ -36,7 +36,8 @@
       [items]="config.invoiceContact"
       [title]="'QUOTE.EDIT.INVOICE_CONTACT_TITLE'"
       [displayProperties]="invoiceContact"
-      (selectContact)="invoiceContactSelect($event)">
+      (selectContact)="invoiceContactSelect($event)"
+      (checkboxChange)="onCheckboxChange($event)">
     </wz-form-picklist-component>
   </section>
 

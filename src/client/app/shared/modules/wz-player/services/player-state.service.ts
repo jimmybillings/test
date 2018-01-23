@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Frame, TimecodeFormat, TimecodeBase } from '../../wazee-frame-formatter/index';
 import { PlayerState, PlayerStateChanges } from '../interfaces/player.interface';
-import { Common } from '../../../utilities/common.functions';
 
 @Injectable()
 export class PlayerStateService {
@@ -48,7 +47,11 @@ export class PlayerStateService {
   }
 
   private createNewStateWith(requestedChanges: PlayerStateChanges): PlayerState {
-    this.changesToApply = Common.clone(requestedChanges);
+    // It's tempting to use Common.clone() here, but that doesn't preserve properties with explicit undefined values.
+    // (And we need inMarker and outMarker to come in as undefined because this is how markers are cleared.)
+    this.changesToApply = {};
+    Object.keys(requestedChanges).forEach((key: string) => (this.changesToApply as any)[key] = (requestedChanges as any)[key]);
+
     this.handleChangeInterdependencies();
 
     return {

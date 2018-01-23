@@ -22,6 +22,7 @@ export function main() {
     let addInvoiceContactToQuoteDispatchSpy: jasmine.Spy;
     let updateSalesManagerFormOnQuoteDispatchSpy: jasmine.Spy;
     let initializeSalesManagerFormOnQuoteDispatchSpy: jasmine.Spy;
+    let overrideInvoiceContactDispatchSpy: jasmine.Spy;
     let updateBillingAccountDispatchSpy: jasmine.Spy;
     let mockForm: any;
     let mockCurrentUserService: any;
@@ -60,6 +61,7 @@ export function main() {
       addBillingAccountToQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addBillingAccountToQuote');
       addInvoiceContactToQuoteDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'addInvoiceContactToQuote');
       updateBillingAccountDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'updateBillingAccount');
+      overrideInvoiceContactDispatchSpy = mockStore.createActionFactoryMethod('quoteEdit', 'overrideInvoiceContact');
 
       updateSalesManagerFormOnQuoteDispatchSpy = mockStore.createActionFactoryMethod(
         'quoteEdit',
@@ -74,10 +76,14 @@ export function main() {
       mockForm = {
         resetForm: jasmine.createSpy('resetForm'),
         markFieldsAsTouched: jasmine.createSpy('markFieldsAsTouched'),
-        form: { valid: true }
+        form: {
+          valid: true,
+          value: { invoiceContact: { name: 'Ross Edfort', contactEmail: 'ross@ross.com' } },
+          controls: { someControl: { disable: jasmine.createSpy('disable'), enable: jasmine.createSpy('enable') } }
+        }
       };
 
-      mockCurrentUserService = { state: { emailAddress: 'test email' } };
+      mockCurrentUserService = { state: { id: 10, emailAddress: 'test email', firstName: 'test', lastName: 'user' } };
 
       componentUnderTest = new QuoteEditRecipientTabComponent(
         mockStore,
@@ -312,6 +318,44 @@ export function main() {
       it('dispatches the proper action', () => {
         componentUnderTest.onEditableFieldChange({ some: 'change' });
         mockStore.expectDispatchFor(updateBillingAccountDispatchSpy, { some: 'change' });
+      });
+    });
+
+    describe('onCheckboxChange()', () => {
+      describe('when the checkbox has been checked', () => {
+        beforeEach(() => {
+          componentUnderTest.invoiceContactform = mockForm;
+          componentUnderTest.onCheckboxChange({ checked: true } as any);
+        });
+
+        it('disables the form\s controls', () => {
+          expect(mockForm.form.controls['someControl'].disable).toHaveBeenCalled();
+        });
+
+        it('dispatches the proper action', () => {
+          mockStore.expectDispatchFor(
+            overrideInvoiceContactDispatchSpy,
+            { id: 10, contactEmail: 'test email', name: 'test user' }
+          );
+        });
+      });
+
+      describe('when the checkbox has been un-checked', () => {
+        beforeEach(() => {
+          componentUnderTest.invoiceContactform = mockForm;
+          componentUnderTest.onCheckboxChange({ checked: false } as any);
+        });
+
+        it('enables the form\s controls', () => {
+          expect(mockForm.form.controls['someControl'].enable).toHaveBeenCalled();
+        });
+
+        it('dispatches the proper action', () => {
+          mockStore.expectDispatchFor(
+            addInvoiceContactToQuoteDispatchSpy,
+            { name: 'Ross Edfort', contactEmail: 'ross@ross.com' }
+          );
+        });
       });
     });
   });

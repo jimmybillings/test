@@ -10,19 +10,42 @@ export function main() {
       componentUnderTest.request.emit = jasmine.createSpy('request emitter');
     });
 
-    describe('currentTimecodeBaseTranslationKey getter', () => {
-      it('returns the correct key for stream-based', () => {
-        componentUnderTest.playerState = { timecodeBase: TimecodeBase.STREAM_BASED } as any;
+    describe('currentTimecodeFormatBaseTranslationKey getter', () => {
+      it('returns the correct key for stream-based timecode', () => {
+        componentUnderTest.playerState = {
+          timecodeBase: TimecodeBase.STREAM_BASED, timecodeFormat: TimecodeFormat.SIMPLE_TIME_CONVERSION
+        } as any;
 
-        expect(componentUnderTest.currentTimecodeBaseTranslationKey)
-          .toBe('ASSET.ADV_PLAYER.TIMECODE_FORMAT_BASE_DISPLAY.STREAM_BASED');
+        expect(componentUnderTest.currentTimecodeFormatBaseTranslationKey)
+          .toBe('ASSET.ADV_PLAYER.TIMECODE_FORMAT_BASE_DISPLAY.STREAM_BASED_TIMECODE');
       });
 
-      it('returns the correct key for source-based', () => {
-        componentUnderTest.playerState = { timecodeBase: TimecodeBase.SOURCE_BASED } as any;
+      it('returns the correct key for source-based timecode', () => {
+        componentUnderTest.playerState = {
+          timecodeBase: TimecodeBase.SOURCE_BASED, timecodeFormat: TimecodeFormat.SIMPLE_TIME_CONVERSION
+        } as any;
 
-        expect(componentUnderTest.currentTimecodeBaseTranslationKey)
-          .toBe('ASSET.ADV_PLAYER.TIMECODE_FORMAT_BASE_DISPLAY.SOURCE_BASED');
+        expect(componentUnderTest.currentTimecodeFormatBaseTranslationKey)
+          .toBe('ASSET.ADV_PLAYER.TIMECODE_FORMAT_BASE_DISPLAY.SOURCE_BASED_TIMECODE');
+      });
+
+      it('returns the correct key for stream-based seconds', () => {
+        componentUnderTest.playerState = {
+          timecodeBase: TimecodeBase.STREAM_BASED, timecodeFormat: TimecodeFormat.SECONDS
+        } as any;
+
+        expect(componentUnderTest.currentTimecodeFormatBaseTranslationKey)
+          .toBe('ASSET.ADV_PLAYER.TIMECODE_FORMAT_BASE_DISPLAY.STREAM_BASED_SECONDS');
+      });
+
+      it('returns the correct key for source-based seconds', () => {
+        // Even though we don't currently allow the user to select this.
+        componentUnderTest.playerState = {
+          timecodeBase: TimecodeBase.SOURCE_BASED, timecodeFormat: TimecodeFormat.SECONDS
+        } as any;
+
+        expect(componentUnderTest.currentTimecodeFormatBaseTranslationKey)
+          .toBe('ASSET.ADV_PLAYER.TIMECODE_FORMAT_BASE_DISPLAY.SOURCE_BASED_SECONDS');
       });
     });
 

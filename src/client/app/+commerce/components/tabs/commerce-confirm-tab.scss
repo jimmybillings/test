@@ -60,6 +60,7 @@ cart-confirm-tab-component, quote-confirm-tab {
         font-style: normal;
         line-height: 2.4;
       }
+      .purchase-order-id,
       .purchase-on-credit,
       .offline-agreement,
       .credit-card {
@@ -96,6 +97,15 @@ cart-confirm-tab-component, quote-confirm-tab {
       }
       .offline-agreement .indicate-offline strong::before {
         content: "\e8e8";
+      }
+      .purchase-order-id {
+        margin-top: 16px;
+        & > span {
+          padding-left: 2px;
+          strong {
+            padding-right: 4px;
+          }
+        }
       }
     }
   }

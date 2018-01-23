@@ -8,6 +8,18 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
+        name: 'setPurchaseOrderId',
+        parameters: ['123-purchase-order-id']
+      },
+      expectedAction: {
+        type: '[Checkout] Set Purchase Order Id',
+        purchaseOrderId: '123-purchase-order-id'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
         name: 'setAvailablePaymentOptions',
         parameters: [{ some: 'options' }]
       },

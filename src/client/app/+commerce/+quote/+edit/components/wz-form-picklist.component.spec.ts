@@ -40,5 +40,13 @@ export function main() {
         expect(parsedProperties).toEqual([]);
       });
     });
+
+    describe('onCheckboxChange()', () => {
+      it('emits the checkboxChange event', () => {
+        spyOn(componentUnderTest.checkboxChange, 'emit');
+        componentUnderTest.onCheckboxChange({ some: 'event' } as any);
+        expect(componentUnderTest.checkboxChange.emit).toHaveBeenCalledWith({ some: 'event' });
+      });
+    });
   });
 }

@@ -12,7 +12,9 @@
         <a mat-button color="primary" href="{{'mailto:'+('CHECKOUT.PAYMENT.SALES_SUPPORT_EMAIL' | translate)}}">{{ 'CHECKOUT.PAYMENT.SALES_SUPPORT_EMAIL' | translate }}</a>
       </header>
     </section>
-
+    <div class="purchase-order-input" layout="column" flex="25" flex-xs="100">
+      <purchase-order-input-component></purchase-order-input-component>
+    </div>
     <!--Credit Card only-->
     <section *ngIf="showCreditCardForm | async"
       layout="column"

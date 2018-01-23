@@ -16,8 +16,11 @@ quote-edit-component .tabs-section {
     }
   }
 }
-quote-show-component .tabs-section mat-tab-group > div {
-  margin-top: 22px;
+quote-show-component .tabs-section quote-tab > projects-component section.projects {
+  margin-top: 32px;
+}
+quote-show-component .tabs-section.quote-review quote-tab > projects-component section.projects {
+  margin-top: 0;
 }
 cart-component section.header, quote-edit-component section.header {
   header {

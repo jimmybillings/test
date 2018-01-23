@@ -88,6 +88,16 @@ export function main() {
       });
     });
 
+    describe('checkoutState() getter', () => {
+      it('should return the checkout state', () => {
+        mockStore.createStateSection('checkout', {
+          purchaseOrderId: '1234-56',
+          selectedPaymentType: 'CreditCard'
+        });
+        expect(serviceUnderTest.checkoutState).toEqual({ purchaseOrderId: '1234-56', selectedPaymentType: 'CreditCard' });
+      });
+    });
+
     describe('get hasAssets', () => {
       it('should return true if there are assets in the quote', () => {
         serviceUnderTest.hasAssets.take(1).subscribe((has: boolean) => expect(has).toBe(true));
