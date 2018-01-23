@@ -240,7 +240,7 @@ export function main() {
       serviceMethod: {
         name: 'sendQuote',
         expectedArguments: [10, 'ross.edfort@wazeedigital.com', {
-          expirationDate: new Date('2017/03/22'),
+          expirationDate: jasmine.any(Date), // TODO: Move this to the new Date service
           agreementId: 'OFFL-1234',
           salesManager: 'sven.peterson@wazeedigital.com',
           billingAccountId: 20,

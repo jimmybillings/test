@@ -84,7 +84,7 @@ export class QuoteEditEffects {
     .switchMap(([action, quoteEdit]: [QuoteEditActions.SendQuote, QuoteEdit]) => {
       let invoiceContactType: string = quoteEdit.sendDetails.invoiceContact.id ? 'User' : undefined;
       let details = {
-        expirationDate: new Date(quoteEdit.sendDetails.salesManager.expirationDate),
+        expirationDate: new Date(quoteEdit.sendDetails.salesManager.expirationDate), // TODO: Move this to the new Date service
         agreementId: quoteEdit.sendDetails.salesManager.offlineAgreement || undefined,
         salesManager: quoteEdit.sendDetails.salesManager.salesManager,
         salesOwner: quoteEdit.sendDetails.billingAccount.salesOwner,

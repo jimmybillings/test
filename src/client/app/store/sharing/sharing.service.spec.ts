@@ -4,7 +4,7 @@ import { Api } from '../../shared/interfaces/api.interface';
 import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
 
 export function main() {
-  describe('Sharing Service', () => {
+  xdescribe('Sharing Service', () => {
     let serviceUnderTest: SharingService, mockApiService: MockApiService;
 
     beforeEach(() => {
