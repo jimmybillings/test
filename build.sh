@@ -1,10 +1,10 @@
-# Source the common build script - contains all relevent build steps
-  # eventually this will just be executed from jenkins with siteName and project as args
-source /opt/app/wazee/build-support/tools/jenkins/crux-ui-build.sh
-
 # Set unique project and siteName variables used in crux-ui-build.sh
 project=wazee-ui
 siteName=poc19
+
+# Source the common build script - contains all relevent build steps
+  # eventually this will just be executed from jenkins with siteName and project as args
+source /opt/app/wazee/build-support/tools/jenkins/crux-ui-build.sh
 
 bump_version
 
