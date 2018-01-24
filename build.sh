@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Set unique project and siteName variables used in crux-ui-build.sh
 project=wazee-ui
 siteName=poc19
