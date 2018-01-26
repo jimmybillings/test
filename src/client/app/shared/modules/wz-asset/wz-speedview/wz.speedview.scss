@@ -70,3 +70,23 @@
     }
   }
 }
+
+.wz-speedview.no-data > div > video {
+  opacity: .25
+}
+
+.wz-speedview.no-data section.info .no-data {
+  opacity: .75;
+  position: relative;
+  padding: 6px 0 0 30px;
+  margin-top: 8px;
+  line-height: 1;
+  &::before {
+    content: "\e001";
+    font-family: 'Material Icons';
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 25px;
+  }
+}

@@ -38,15 +38,15 @@ export function main() {
     stateSpecHelper.generateTestsFor({
       actionClassName: 'LoadSearchAsset',
       mutationTestData: {
-        actionParameters: { assetType: 'searchAsset' }
+        actionParameters: { assetType: 'search' }
       },
       customTests: [
         {
           it: 'sets loading to true, and sets the activeAssetType',
           previousState: AssetState.initialState,
-          actionParameters: { assetType: 'searchAsset' },
+          actionParameters: { assetType: 'search' },
           expectedNextState: {
-            activeAssetType: 'searchAsset',
+            activeAssetType: 'search',
             loading: true,
             loadingUuid: null,
             activeAsset: { assetId: 0, name: '' }
@@ -65,13 +65,13 @@ export function main() {
           it: 'sets loading to false, activeAsset to the asset, and sets the loadingUuid to null',
           previousState: {
             loading: true,
-            activeAssetType: 'searchAsset',
+            activeAssetType: 'search',
             loadingUuid: 'abc-123',
             activeAsset: { assetId: 0, name: '' }
           },
           actionParameters: { activeAsset: { some: 'asset' } },
           expectedNextState: {
-            activeAssetType: 'searchAsset',
+            activeAssetType: 'search',
             loading: false,
             loadingUuid: null,
             activeAsset: { some: 'asset' }
@@ -85,7 +85,7 @@ export function main() {
       mutationTestData: {
         previousState: {
           loading: true,
-          activeAssetType: 'searchAsset',
+          activeAssetType: 'search',
           loadingUuid: 'abc-123',
           activeAsset: { assetId: 0, name: '' }
         },
@@ -96,14 +96,14 @@ export function main() {
           it: 'resets to the initial state',
           previousState: {
             loading: true,
-            activeAssetType: 'searchAsset',
+            activeAssetType: 'search',
             loadingUuid: 'abc-123',
             activeAsset: { assetId: 0, name: '' }
           },
           actionParameters: { error: { some: 'error' } },
           expectedNextState: {
             loading: false,
-            activeAssetType: 'searchAsset',
+            activeAssetType: 'search',
             loadingUuid: 'abc-123',
             activeAsset: { assetId: 0, name: '' }
           }

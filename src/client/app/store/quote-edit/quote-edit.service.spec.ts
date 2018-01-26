@@ -178,7 +178,12 @@ export function main() {
           serviceUnderTest.cloneQuote(mockState);
           expect(Common.deletePropertiesFromObject).toHaveBeenCalledWith(
             mockState,
-            ['id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus']
+            [
+              'id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus',
+              'paymentTerms', 'poNumber', 'bulkOrderId', 'poReference', 'campaignReference', 'orderId', 'billingAccountId',
+              'invoiceContact', 'salesManager', 'ownerData', 'billingAccountData', 'userId', 'externalLicenseIds', 'internalLicenseIds',
+              'externalAgreementIds', 'internalAgreementIds'
+            ]
           );
         });
       it('calls the API service correctly', () => {

@@ -28,6 +28,18 @@ export function main() {
         speedViewData: { 'speedViewData': 'test speed view data' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'loadFailure',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[SpeedPreview] Load Failure'
+      }
+    });
   });
+
 }
 

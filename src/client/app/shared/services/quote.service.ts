@@ -10,8 +10,6 @@ import {
   Order,
   QuoteOptions,
   PaymentType,
-  AddressPurchaseOptions,
-  CreditCardPurchaseOptions,
   PurchaseOptions,
   PaymentOptions,
   PaymentOption,
@@ -52,7 +50,7 @@ export class QuoteService {
           project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
             lineItem.asset = enhanceAsset(Object.assign(
               lineItem.asset, { uuid: lineItem.id }),
-              'quoteShowAsset', data.id
+              'quoteShow', data.id
             );
             return lineItem;
           });
@@ -169,7 +167,7 @@ export class QuoteService {
   }
 
   private purchaseOnCredit(): Observable<number> {
-    const options: AddressPurchaseOptions = this.addressPurchaseOptions;
+    const options: PurchaseOptions = this.addressPurchaseOptions;
     return this.api.post(
       Api.Orders,
       `quote/${this.state.data.id}/checkout/convertToOrder`,
@@ -178,7 +176,7 @@ export class QuoteService {
   }
 
   private purchaseQuoteType(): Observable<number> {
-    const options: AddressPurchaseOptions = Object.assign(
+    const options: PurchaseOptions = Object.assign(
       {}, { orderType: this.state.data.purchaseType },
       this.addressPurchaseOptions
     );
@@ -193,14 +191,15 @@ export class QuoteService {
     return Object.assign({}, this.addressPurchaseOptions, this.creditCardPurchaseOptions) as PurchaseOptions;
   }
 
-  private get addressPurchaseOptions(): AddressPurchaseOptions {
+  private get addressPurchaseOptions(): PurchaseOptions {
     return {
       orderAddressId: this.checkoutState.selectedAddress.addressEntityId,
-      orderAddressType: this.checkoutState.selectedAddress.type
+      orderAddressType: this.checkoutState.selectedAddress.type,
+      poNumber: this.checkoutState.purchaseOrderId
     };
   }
 
-  private get creditCardPurchaseOptions(): CreditCardPurchaseOptions {
+  private get creditCardPurchaseOptions(): PurchaseOptions {
     return {
       stripeToken: this.checkoutState.authorization.id,
       stripeTokenType: this.checkoutState.authorization.type

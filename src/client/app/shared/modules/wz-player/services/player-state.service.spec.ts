@@ -1,5 +1,5 @@
 import { PlayerStateService } from './player-state.service';
-import { Frame } from '../../wazee-frame-formatter/index';
+import { Frame, TimecodeFormat, TimecodeBase } from '../../wazee-frame-formatter/index';
 import { PlayerState, PlayerStateChanges } from '../interfaces/player.interface';
 
 export function main() {
@@ -15,6 +15,9 @@ export function main() {
       durationFrame: undefined,
       inMarkerFrame: undefined,
       outMarkerFrame: undefined,
+      sourceBasedOffset: '00:00:00:00',
+      timecodeFormat: TimecodeFormat.SIMPLE_TIME_CONVERSION,
+      timecodeBase: TimecodeBase.STREAM_BASED,
       volume: 100,
       changeDetectionEnabler: 0
     };
@@ -57,6 +60,10 @@ export function main() {
         { key: 'durationFrame', value: new Frame(29.97).setFromFrameNumber(21) },
         { key: 'inMarkerFrame', value: new Frame(29.97).setFromFrameNumber(22) },
         { key: 'outMarkerFrame', value: new Frame(29.97).setFromFrameNumber(23) },
+        { key: 'sourceBasedOffset', value: '01:02:03:04' },
+        { key: 'sourceBasedOffset', value: undefined, expected: '00:00:00:00' },
+        { key: 'timecodeFormat', value: TimecodeFormat.SECONDS },
+        { key: 'timecodeBase', value: TimecodeBase.SOURCE_BASED },
         { key: 'volume', value: 11 }
       ];
 
@@ -65,19 +72,25 @@ export function main() {
           const updateObject: any = {};
           updateObject[update.key] = update.value;
 
+          const expectedNewState: any = {
+            ...initialState(),
+            ...updateObject,
+            changeDetectionEnabler: 1
+          };
+          expectedNewState[update.key] = update.expected || update.value;
+
           it('updates the current state Observable', () => {
             serviceUnderTest.updateWith(updateObject);
 
-            serviceUnderTest.state.subscribe((state: PlayerState) => {
-              expect(state).toEqual(Object.assign(initialState(), updateObject, { changeDetectionEnabler: 1 }));
-            });
+            let returnedState: PlayerState;
+            serviceUnderTest.state.subscribe((state: PlayerState) => returnedState = state);
+            expect(returnedState).toEqual(expectedNewState);
           });
 
           it('updates the snapshot', () => {
             serviceUnderTest.updateWith(updateObject);
 
-            expect(serviceUnderTest.snapshot)
-              .toEqual(Object.assign(initialState(), updateObject, { changeDetectionEnabler: 1 }));
+            expect(serviceUnderTest.snapshot).toEqual(expectedNewState);
           });
         });
       });
@@ -135,6 +148,18 @@ export function main() {
         });
       });
 
+      describe('Updating with inMarker and outMarker undefined', () => {
+        it('causes inMarkerFrame and outMarkerFrame to be cleared', () => {
+          serviceUnderTest.updateWith({ inMarker: 1.23 });
+          serviceUnderTest.updateWith({ outMarker: 4.56 });
+
+          serviceUnderTest.updateWith({ inMarker: undefined, outMarker: undefined });
+
+          expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
+          expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
+        });
+      });
+
       describe('Updating with inMarkerFrameNumber', () => {
         it('causes inMarkerFrame to be updated', () => {
           serviceUnderTest.updateWith({ inMarkerFrameNumber: 6.78 });
@@ -174,6 +199,20 @@ export function main() {
           expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(frameNumberFor(5));
           expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(5));
         });
+      });
+    });
+
+    describe('Source-based offset', () => {
+      it('defaults as expected when not specified', () => {
+        serviceUnderTest.updateWith({ currentTime: 42.43 });
+
+        expect(serviceUnderTest.snapshot.currentFrame.sourceBasedOffsetFrames).toBe(0);
+      });
+
+      it('is used as expected when specified', () => {
+        serviceUnderTest.updateWith({ currentTime: 42.43, sourceBasedOffset: '00:00:01:00' });
+
+        expect(serviceUnderTest.snapshot.currentFrame.sourceBasedOffsetFrames).toBe(30);
       });
     });
   });

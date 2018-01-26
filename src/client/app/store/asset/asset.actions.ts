@@ -7,27 +7,27 @@ import { AssetType } from '../../shared/interfaces/enhanced-asset';
 
 export class ActionFactory {
   public loadOrderAsset(orderId: number, uuid: string): LoadOrderAsset {
-    return new LoadOrderAsset(orderId, uuid, 'orderAsset');
+    return new LoadOrderAsset(orderId, uuid, 'order');
   }
 
   public loadQuoteShowAsset(quoteId: number, uuid: string): LoadQuoteShowAsset {
-    return new LoadQuoteShowAsset(quoteId, uuid, 'quoteShowAsset');
+    return new LoadQuoteShowAsset(quoteId, uuid, 'quoteShow');
   }
 
   public loadQuoteEditAsset(uuid: string): LoadQuoteEditAsset {
-    return new LoadQuoteEditAsset(uuid, 'quoteEditAsset');
+    return new LoadQuoteEditAsset(uuid, 'quoteEdit');
   }
 
   public loadCartAsset(uuid: string): LoadCartAsset {
-    return new LoadCartAsset(uuid, 'cartAsset');
+    return new LoadCartAsset(uuid, 'cart');
   }
 
   public loadActiveCollectionAsset(uuid: string): LoadActiveCollectionAsset {
-    return new LoadActiveCollectionAsset(uuid, 'collectionAsset');
+    return new LoadActiveCollectionAsset(uuid, 'collection');
   }
 
   public loadSearchAsset(params: Common.SearchAssetLoadParameters): LoadSearchAsset {
-    return new LoadSearchAsset(params, 'searchAsset');
+    return new LoadSearchAsset(params, 'search');
   }
 
   public updateMarkersInUrl(markers: SubclipMarkers, assetId: number) {

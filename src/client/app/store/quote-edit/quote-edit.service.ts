@@ -104,7 +104,12 @@ export class FutureQuoteEditService {
   public cloneQuote(quote: Quote): Observable<Quote> {
     Common.deletePropertiesFromObject(
       quote,
-      ['id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus']
+      [
+        'id', 'createdUserId', 'ownerUserId', 'createdOn', 'lastUpdated', 'expirationDate', 'quoteStatus',
+        'paymentTerms', 'poNumber', 'bulkOrderId', 'poReference', 'campaignReference', 'orderId', 'billingAccountId',
+        'invoiceContact', 'salesManager', 'ownerData', 'billingAccountData', 'userId', 'externalLicenseIds', 'internalLicenseIds',
+        'externalAgreementIds', 'internalAgreementIds'
+      ]
     );
     return this.apiService.post(Api.Orders, 'quote',
       {

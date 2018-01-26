@@ -42,7 +42,7 @@ export function main() {
         new InvoiceComponent(mockStore, mockActivatedRoute).invoiceObservable.subscribe(invoice => {
           const asset: any = invoice.order.projects[0].lineItems[0].asset;
 
-          expect(asset.type).toEqual('orderAsset');
+          expect(asset.type).toEqual('order');
           expect(asset.parentId).toEqual(42);
         });
       });

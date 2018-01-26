@@ -154,7 +154,7 @@ export function main() {
     describe('removeAssetFromCartOrQuote()', () => {
       describe('for cart', () => {
         beforeEach(() => {
-          asset.type = 'cartAsset';
+          asset.type = 'cart';
           componentUnderTest.asset = asset;
         });
 
@@ -183,7 +183,7 @@ export function main() {
 
       describe('for quote', () => {
         beforeEach(() => {
-          asset.type = 'quoteEditAsset';
+          asset.type = 'quoteEdit';
           componentUnderTest.asset = asset;
         });
         it('dispatches the confirmation prompt', () => {
@@ -233,13 +233,13 @@ export function main() {
     });
 
     describe('canComment getter', () => {
-      it('returns false when the asset is a searchAsset', () => {
-        componentUnderTest.asset = { type: 'searchAsset' } as any;
+      it('returns false when the asset is a search', () => {
+        componentUnderTest.asset = { type: 'search' } as any;
         expect(componentUnderTest.canComment).toBe(false);
       });
 
       it('returns true when comment form config does exist', () => {
-        ['cartAsset', 'quoteEditAsset', 'quoteShowAsset', 'collectionAsset', 'orderAsset'].forEach(type => {
+        ['cart', 'quoteEdit', 'quoteShow', 'collection', 'order'].forEach(type => {
           componentUnderTest.asset = { type } as any;
           expect(componentUnderTest.canComment).toBe(true);
         });
@@ -248,12 +248,12 @@ export function main() {
 
     describe('canShare getter', () => {
       const tests: { assetType: AssetType, userCanShare: boolean, expectedResult: boolean }[] = [
-        { assetType: 'cartAsset', userCanShare: true, expectedResult: false },
-        { assetType: 'collectionAsset', userCanShare: true, expectedResult: false },
-        { assetType: 'orderAsset', userCanShare: true, expectedResult: false },
-        { assetType: 'quoteEditAsset', userCanShare: true, expectedResult: false },
-        { assetType: 'quoteShowAsset', userCanShare: true, expectedResult: false },
-        { assetType: 'searchAsset', userCanShare: true, expectedResult: true }
+        { assetType: 'cart', userCanShare: true, expectedResult: false },
+        { assetType: 'collection', userCanShare: true, expectedResult: false },
+        { assetType: 'order', userCanShare: true, expectedResult: false },
+        { assetType: 'quoteEdit', userCanShare: true, expectedResult: false },
+        { assetType: 'quoteShow', userCanShare: true, expectedResult: false },
+        { assetType: 'search', userCanShare: true, expectedResult: true }
       ];
 
       tests.forEach(test => {
@@ -301,7 +301,7 @@ export function main() {
     describe('rights getter', () => {
       it('returns the value of Rights.Reproduction metadata in the asset', () => {
         componentUnderTest.asset =
-          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'some value' }] } as any, 'searchAsset');
+          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'some value' }] } as any, 'search');
 
         expect(componentUnderTest.rights).toEqual('some value');
       });
@@ -310,21 +310,21 @@ export function main() {
     describe('canShowPricingAndCartActions getter', () => {
       it('returns true when the asset has Rights.Reproduction = Royalty Free', () => {
         componentUnderTest.asset =
-          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any, 'searchAsset');
+          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any, 'search');
 
         expect(componentUnderTest.canShowPricingAndCartActions).toBe(true);
       });
 
       it('returns true when the asset has Rights.Reproduction = Rights Managed', () => {
         componentUnderTest.asset =
-          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any, 'searchAsset');
+          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any, 'search');
 
         expect(componentUnderTest.canShowPricingAndCartActions).toBe(true);
       });
 
       it('returns false when the asset has Rights.Reproduction = something else', () => {
         componentUnderTest.asset =
-          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'something else' }] } as any, 'searchAsset');
+          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'something else' }] } as any, 'search');
 
         expect(componentUnderTest.canShowPricingAndCartActions).toBe(false);
       });
@@ -335,7 +335,7 @@ export function main() {
         componentUnderTest.usagePrice = 12.34;
         componentUnderTest.asset = enhanceAsset(
           { price: 12.34, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
-          'searchAsset'
+          'search'
         );
       });
 
@@ -346,7 +346,7 @@ export function main() {
       it('returns false if asset has no price', () => {
         componentUnderTest.asset = enhanceAsset(
           { primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
-          'searchAsset'
+          'search'
         );
 
         expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
@@ -355,7 +355,7 @@ export function main() {
       it('returns false if asset has a zero price', () => {
         componentUnderTest.asset = enhanceAsset(
           { price: 0, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
-          'searchAsset'
+          'search'
         );
 
         expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
@@ -365,7 +365,7 @@ export function main() {
         componentUnderTest.usagePrice = 56.78;
         componentUnderTest.asset = enhanceAsset(
           { price: 12.34, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
-          'searchAsset'
+          'search'
         );
 
         expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
@@ -374,7 +374,7 @@ export function main() {
       it('returns false if asset is not Rights Managed', () => {
         componentUnderTest.asset = enhanceAsset(
           { price: 12.34, primary: [{ name: 'Rights.Reproduction', value: 'Not Rights Managed' }] } as any,
-          'searchAsset'
+          'search'
         );
 
         expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
@@ -418,7 +418,7 @@ export function main() {
           it(`returns ${test.expectedResult} for ${price} and ${usagePrice}`, () => {
             componentUnderTest.asset = enhanceAsset(
               { price: test.price, primary: [{ name: 'Rights.Reproduction', value: test.rights }] } as any,
-              'searchAsset'
+              'search'
             );
             componentUnderTest.usagePrice = test.usagePrice;
 
@@ -431,19 +431,19 @@ export function main() {
 
     describe('hasNoPrice getter', () => {
       it('returns false if asset has a price', () => {
-        componentUnderTest.asset = enhanceAsset({ price: 12.34 } as any, 'searchAsset');
+        componentUnderTest.asset = enhanceAsset({ price: 12.34 } as any, 'search');
 
         expect(componentUnderTest.hasNoPrice).toBe(false);
       });
 
       it('returns true if asset has no price', () => {
-        componentUnderTest.asset = enhanceAsset({} as any, 'searchAsset');
+        componentUnderTest.asset = enhanceAsset({} as any, 'search');
 
         expect(componentUnderTest.hasNoPrice).toBe(true);
       });
 
       it('returns true if asset has a zero price', () => {
-        componentUnderTest.asset = enhanceAsset({ price: 0 } as any, 'searchAsset');
+        componentUnderTest.asset = enhanceAsset({ price: 0 } as any, 'search');
 
         expect(componentUnderTest.hasNoPrice).toBe(true);
       });
@@ -485,7 +485,7 @@ export function main() {
           componentUnderTest.userCan = { haveCart: () => test.haveCart } as any;
           componentUnderTest.asset = enhanceAsset(
             { price: test.price, primary: [{ name: 'Rights.Reproduction', value: test.rights }] } as any,
-            'searchAsset'
+            'search'
           );
 
           expect(componentUnderTest.canPerformCartActions).toBe(test.expectedResult);
@@ -498,7 +498,7 @@ export function main() {
         componentUnderTest.userCan = { addToCart: () => true } as any;
         componentUnderTest.asset = enhanceAsset(
           { transcodeTargets: { some: 'targets' }, primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any,
-          'searchAsset'
+          'search'
         );
       });
 
@@ -509,7 +509,7 @@ export function main() {
       it('returns false for a non-royalty free asset', () => {
         componentUnderTest.asset = enhanceAsset(
           { transcodeTargets: { some: 'targets' }, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
-          'searchAsset'
+          'search'
         );
 
         expect(componentUnderTest.canSelectTranscodeTarget).toBe(false);
@@ -518,7 +518,7 @@ export function main() {
       it('returns false for an asset without transcode targets', () => {
         componentUnderTest.asset = enhanceAsset(
           { primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
-          'searchAsset'
+          'search'
         );
 
         expect(componentUnderTest.canSelectTranscodeTarget).toBe(false);
@@ -536,7 +536,7 @@ export function main() {
         componentUnderTest.userCan = { calculatePrice: () => true } as any;
         componentUnderTest.asset = enhanceAsset(
           { primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
-          'searchAsset'
+          'search'
         );
       });
 
@@ -547,7 +547,7 @@ export function main() {
       it('returns false for a non-rights managed asset', () => {
         componentUnderTest.asset = enhanceAsset(
           { primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any,
-          'searchAsset'
+          'search'
         );
 
         expect(componentUnderTest.canCalculatePrice).toBe(false);
@@ -560,14 +560,14 @@ export function main() {
       });
     });
 
-    describe('canUpdateCartAsset getter', () => {
+    describe('canUpdateCart getter', () => {
       const tests: { assetType: AssetType, expectedResult: boolean }[] = [
-        { assetType: 'cartAsset', expectedResult: true },
-        { assetType: 'collectionAsset', expectedResult: false },
-        { assetType: 'orderAsset', expectedResult: false },
-        { assetType: 'quoteEditAsset', expectedResult: true },
-        { assetType: 'quoteShowAsset', expectedResult: false },
-        { assetType: 'searchAsset', expectedResult: false },
+        { assetType: 'cart', expectedResult: true },
+        { assetType: 'collection', expectedResult: false },
+        { assetType: 'order', expectedResult: false },
+        { assetType: 'quoteEdit', expectedResult: true },
+        { assetType: 'quoteShow', expectedResult: false },
+        { assetType: 'search', expectedResult: false },
       ];
 
       tests.forEach(test => {
@@ -579,7 +579,7 @@ export function main() {
       });
     });
 
-    describe('updateCartAssetButtonLabelKey getter', () => {
+    describe('updateCartButtonLabelKey getter', () => {
       const tests: { quoteUser: boolean, markers: boolean, expectedKey: string }[] = [
         { quoteUser: false, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.ASSET.CART' },
         { quoteUser: false, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.CART' },
@@ -606,7 +606,7 @@ export function main() {
       });
     });
 
-    describe('updateCartAsset()', () => {
+    describe('updateCart()', () => {
       it('is not yet implemented', () => {
         expect(true).toBe(true);
       });
@@ -621,7 +621,7 @@ export function main() {
       it('returns false for an asset without Rights.Reproduction', () => {
         componentUnderTest.userCan = { addToCart: () => true } as any;
         componentUnderTest.asset = enhanceAsset(
-          { primary: [{ name: 'some-name', value: 'some value' }] } as any, 'searchAsset'
+          { primary: [{ name: 'some-name', value: 'some value' }] } as any, 'search'
         );
         expect(componentUnderTest.canAddToCart).toBe(false);
       });
@@ -629,7 +629,7 @@ export function main() {
       it('returns false for an asset with a non-acceptable Rights.Reproduction value', () => {
         componentUnderTest.userCan = { addToCart: () => true } as any;
         componentUnderTest.asset = enhanceAsset(
-          { primary: [{ name: 'Rights.Reproduction', value: 'some value' }] } as any, 'searchAsset'
+          { primary: [{ name: 'Rights.Reproduction', value: 'some value' }] } as any, 'search'
         );
         expect(componentUnderTest.canAddToCart).toBe(false);
       });
@@ -637,7 +637,7 @@ export function main() {
       it('returns true for an asset with a Rights.Reproduction field of "Royalty Free" that has a price', () => {
         componentUnderTest.userCan = { addToCart: () => true } as any;
         componentUnderTest.asset = enhanceAsset(
-          { assetId: 1234, primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any, 'searchAsset'
+          { assetId: 1234, primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any, 'search'
         );
         expect(componentUnderTest.canAddToCart).toBe(true);
       });
@@ -645,7 +645,7 @@ export function main() {
       it('returns true for an asset with a Rights.Reproduction field of "Rights Managed" that has a price', () => {
         componentUnderTest.userCan = { addToCart: () => true } as any;
         componentUnderTest.asset = enhanceAsset(
-          { assetId: 1234, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any, 'searchAsset'
+          { assetId: 1234, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any, 'search'
         );
         expect(componentUnderTest.canAddToCart).toBe(true);
       });
@@ -654,7 +654,7 @@ export function main() {
         mockStore.createStateSection('asset', { activeAsset: { assetId: 1235 } });
         componentUnderTest.userCan = { addToCart: () => true } as any;
         componentUnderTest.asset = enhanceAsset(
-          { assetId: 1235, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any, 'searchAsset'
+          { assetId: 1235, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any, 'search'
         );
         expect(componentUnderTest.canAddToCart).toBe(false);
       });
@@ -662,19 +662,19 @@ export function main() {
 
     describe('addToCartOrQuoteButtonLabelKey getter', () => {
       const tests: { quoteUser: boolean, type: AssetType, markers: boolean, expectedKey: string }[] = [
-        { quoteUser: false, type: 'searchAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.CART' },
-        { quoteUser: false, type: 'searchAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.CART' },
-        { quoteUser: false, type: 'cartAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.ASSET.CART' },
-        { quoteUser: false, type: 'cartAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.CART' },
-        { quoteUser: false, type: 'quoteEditAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.CART' },
-        { quoteUser: false, type: 'quoteEditAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.CART' },
+        { quoteUser: false, type: 'search', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.CART' },
+        { quoteUser: false, type: 'search', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.CART' },
+        { quoteUser: false, type: 'cart', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.ASSET.CART' },
+        { quoteUser: false, type: 'cart', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.CART' },
+        { quoteUser: false, type: 'quoteEdit', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.CART' },
+        { quoteUser: false, type: 'quoteEdit', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.CART' },
 
-        { quoteUser: true, type: 'searchAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.QUOTE' },
-        { quoteUser: true, type: 'searchAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.QUOTE' },
-        { quoteUser: true, type: 'cartAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.QUOTE' },
-        { quoteUser: true, type: 'cartAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.QUOTE' },
-        { quoteUser: true, type: 'quoteEditAsset', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.ASSET.QUOTE' },
-        { quoteUser: true, type: 'quoteEditAsset', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.QUOTE' }
+        { quoteUser: true, type: 'search', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.QUOTE' },
+        { quoteUser: true, type: 'search', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.QUOTE' },
+        { quoteUser: true, type: 'cart', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.ASSET.QUOTE' },
+        { quoteUser: true, type: 'cart', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD.SUBCLIP.QUOTE' },
+        { quoteUser: true, type: 'quoteEdit', markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.ASSET.QUOTE' },
+        { quoteUser: true, type: 'quoteEdit', markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.QUOTE' }
       ];
 
       tests.forEach(test => {
@@ -714,19 +714,19 @@ export function main() {
     });
 
 
-    describe('canGoToSearchAssetDetails getter', () => {
+    describe('canGoToSearchDetails getter', () => {
       const tests: { assetType: AssetType, accessPath?: string, expectedResult: boolean }[] = [
-        { assetType: 'cartAsset', expectedResult: true, accessPath: 'ContentFilter' },
-        { assetType: 'cartAsset', expectedResult: false, accessPath: 'SomethingElse' },
-        { assetType: 'collectionAsset', expectedResult: true, accessPath: 'ContentFilter' },
-        { assetType: 'collectionAsset', expectedResult: false, accessPath: 'SomethingElse' },
-        { assetType: 'orderAsset', expectedResult: true, accessPath: 'ContentFilter' },
-        { assetType: 'orderAsset', expectedResult: false, accessPath: 'SomethingElse' },
-        { assetType: 'quoteEditAsset', expectedResult: true, accessPath: 'ContentFilter' },
-        { assetType: 'quoteEditAsset', expectedResult: false, accessPath: 'SomethingElse' },
-        { assetType: 'quoteShowAsset', expectedResult: true, accessPath: 'ContentFilter' },
-        { assetType: 'quoteShowAsset', expectedResult: false, accessPath: 'SomethingElse' },
-        { assetType: 'searchAsset', expectedResult: false },
+        { assetType: 'cart', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'cart', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'collection', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'collection', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'order', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'order', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'quoteEdit', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'quoteEdit', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'quoteShow', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'quoteShow', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'search', expectedResult: false },
       ];
 
       tests.forEach(test => {
@@ -738,7 +738,7 @@ export function main() {
       });
     });
 
-    describe('goToSearchAssetDetails', () => {
+    describe('goToSearchDetails', () => {
       it('dispatches the expected action when subclipMarkers are not set', () => {
         const spy = mockStore.createActionFactoryMethod('router', 'goToSearchAssetDetails');
 
@@ -763,19 +763,19 @@ export function main() {
 
     describe('canAddToActiveCollection getter', () => {
       const tests: { assetType: AssetType, assetIdInCollection: boolean, expectedResult: boolean }[] = [
-        { assetType: 'cartAsset', assetIdInCollection: true, expectedResult: false },
-        { assetType: 'collectionAsset', assetIdInCollection: true, expectedResult: false },
-        { assetType: 'orderAsset', assetIdInCollection: true, expectedResult: false },
-        { assetType: 'quoteEditAsset', assetIdInCollection: true, expectedResult: false },
-        { assetType: 'quoteShowAsset', assetIdInCollection: true, expectedResult: false },
-        { assetType: 'searchAsset', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'cart', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'collection', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'order', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'quoteEdit', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'quoteShow', assetIdInCollection: true, expectedResult: false },
+        { assetType: 'search', assetIdInCollection: true, expectedResult: false },
 
-        { assetType: 'cartAsset', assetIdInCollection: false, expectedResult: false },
-        { assetType: 'collectionAsset', assetIdInCollection: false, expectedResult: true },
-        { assetType: 'orderAsset', assetIdInCollection: false, expectedResult: false },
-        { assetType: 'quoteEditAsset', assetIdInCollection: false, expectedResult: false },
-        { assetType: 'quoteShowAsset', assetIdInCollection: false, expectedResult: false },
-        { assetType: 'searchAsset', assetIdInCollection: false, expectedResult: true }
+        { assetType: 'cart', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'collection', assetIdInCollection: false, expectedResult: true },
+        { assetType: 'order', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'quoteEdit', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'quoteShow', assetIdInCollection: false, expectedResult: false },
+        { assetType: 'search', assetIdInCollection: false, expectedResult: true }
       ];
 
       tests.forEach(test => {
@@ -791,19 +791,19 @@ export function main() {
 
     describe('canAddAgainToActiveCollection getter', () => {
       const tests: { assetType: AssetType, matchingSubclipMarkers: boolean, expectedResult: boolean }[] = [
-        { assetType: 'cartAsset', matchingSubclipMarkers: false, expectedResult: false },
-        { assetType: 'collectionAsset', matchingSubclipMarkers: false, expectedResult: true },
-        { assetType: 'orderAsset', matchingSubclipMarkers: false, expectedResult: false },
-        { assetType: 'quoteEditAsset', matchingSubclipMarkers: false, expectedResult: false },
-        { assetType: 'quoteShowAsset', matchingSubclipMarkers: false, expectedResult: false },
-        { assetType: 'searchAsset', matchingSubclipMarkers: false, expectedResult: true },
+        { assetType: 'cart', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'collection', matchingSubclipMarkers: false, expectedResult: true },
+        { assetType: 'order', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'quoteEdit', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'quoteShow', matchingSubclipMarkers: false, expectedResult: false },
+        { assetType: 'search', matchingSubclipMarkers: false, expectedResult: true },
 
-        { assetType: 'cartAsset', matchingSubclipMarkers: true, expectedResult: false },
-        { assetType: 'collectionAsset', matchingSubclipMarkers: true, expectedResult: true },
-        { assetType: 'orderAsset', matchingSubclipMarkers: true, expectedResult: false },
-        { assetType: 'quoteEditAsset', matchingSubclipMarkers: true, expectedResult: false },
-        { assetType: 'quoteShowAsset', matchingSubclipMarkers: true, expectedResult: false },
-        { assetType: 'searchAsset', matchingSubclipMarkers: true, expectedResult: true }
+        { assetType: 'cart', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'collection', matchingSubclipMarkers: true, expectedResult: true },
+        { assetType: 'order', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'quoteEdit', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'quoteShow', matchingSubclipMarkers: true, expectedResult: false },
+        { assetType: 'search', matchingSubclipMarkers: true, expectedResult: true }
       ];
 
       tests.forEach(test => {
@@ -820,13 +820,13 @@ export function main() {
       });
 
       it('returns false when the collection does not have a version of that asset', () => {
-        componentUnderTest.asset = enhanceAsset({ ...asset, assetId: 9999 }, 'collectionAsset');
+        componentUnderTest.asset = enhanceAsset({ ...asset, assetId: 9999 }, 'collection');
 
         expect(componentUnderTest.canAddAgainToActiveCollection).toBe(false);
       });
 
       it('returns true if the collection does not have that asset but the type is collection & subclip markers were set', () => {
-        componentUnderTest.asset = enhanceAsset({ ...asset, assetId: 9999 }, 'collectionAsset');
+        componentUnderTest.asset = enhanceAsset({ ...asset, assetId: 9999 }, 'collection');
 
         const startFrame = new Frame(25).setFromFrameNumber(1);
         const endFrame = new Frame(25).setFromFrameNumber(2);
@@ -838,19 +838,19 @@ export function main() {
 
     describe('canRemoveFromActiveCollection getter', () => {
       const tests: { assetType: AssetType, matchingUuid: boolean, expectedResult: boolean }[] = [
-        { assetType: 'cartAsset', matchingUuid: true, expectedResult: false },
-        { assetType: 'collectionAsset', matchingUuid: true, expectedResult: true },
-        { assetType: 'orderAsset', matchingUuid: true, expectedResult: false },
-        { assetType: 'quoteEditAsset', matchingUuid: true, expectedResult: false },
-        { assetType: 'quoteShowAsset', matchingUuid: true, expectedResult: false },
-        { assetType: 'searchAsset', matchingUuid: true, expectedResult: false },
+        { assetType: 'cart', matchingUuid: true, expectedResult: false },
+        { assetType: 'collection', matchingUuid: true, expectedResult: true },
+        { assetType: 'order', matchingUuid: true, expectedResult: false },
+        { assetType: 'quoteEdit', matchingUuid: true, expectedResult: false },
+        { assetType: 'quoteShow', matchingUuid: true, expectedResult: false },
+        { assetType: 'search', matchingUuid: true, expectedResult: false },
 
-        { assetType: 'cartAsset', matchingUuid: false, expectedResult: false },
-        { assetType: 'collectionAsset', matchingUuid: false, expectedResult: false },
-        { assetType: 'orderAsset', matchingUuid: false, expectedResult: false },
-        { assetType: 'quoteEditAsset', matchingUuid: false, expectedResult: false },
-        { assetType: 'quoteShowAsset', matchingUuid: false, expectedResult: false },
-        { assetType: 'searchAsset', matchingUuid: false, expectedResult: false }
+        { assetType: 'cart', matchingUuid: false, expectedResult: false },
+        { assetType: 'collection', matchingUuid: false, expectedResult: false },
+        { assetType: 'order', matchingUuid: false, expectedResult: false },
+        { assetType: 'quoteEdit', matchingUuid: false, expectedResult: false },
+        { assetType: 'quoteShow', matchingUuid: false, expectedResult: false },
+        { assetType: 'search', matchingUuid: false, expectedResult: false }
       ];
 
       tests.forEach(test => {
@@ -888,14 +888,14 @@ export function main() {
       const tests: {
         assetType: AssetType, matchingUuid: boolean, subclipsSet: boolean, subclipsExact: boolean, expectedResult: boolean
       }[] = [
-          { assetType: 'cartAsset', matchingUuid: true, subclipsSet: true, subclipsExact: false, expectedResult: false },
-          { assetType: 'orderAsset', matchingUuid: true, subclipsSet: false, subclipsExact: false, expectedResult: false },
-          { assetType: 'quoteEditAsset', matchingUuid: false, subclipsSet: true, subclipsExact: false, expectedResult: false },
-          { assetType: 'searchAsset', matchingUuid: false, subclipsSet: false, subclipsExact: false, expectedResult: false },
-          { assetType: 'collectionAsset', matchingUuid: false, subclipsSet: true, subclipsExact: false, expectedResult: false },
-          { assetType: 'collectionAsset', matchingUuid: true, subclipsSet: false, subclipsExact: false, expectedResult: false },
-          { assetType: 'collectionAsset', matchingUuid: true, subclipsSet: true, subclipsExact: false, expectedResult: true },
-          { assetType: 'collectionAsset', matchingUuid: true, subclipsSet: true, subclipsExact: true, expectedResult: false }
+          { assetType: 'cart', matchingUuid: true, subclipsSet: true, subclipsExact: false, expectedResult: false },
+          { assetType: 'order', matchingUuid: true, subclipsSet: false, subclipsExact: false, expectedResult: false },
+          { assetType: 'quoteEdit', matchingUuid: false, subclipsSet: true, subclipsExact: false, expectedResult: false },
+          { assetType: 'search', matchingUuid: false, subclipsSet: false, subclipsExact: false, expectedResult: false },
+          { assetType: 'collection', matchingUuid: false, subclipsSet: true, subclipsExact: false, expectedResult: false },
+          { assetType: 'collection', matchingUuid: true, subclipsSet: false, subclipsExact: false, expectedResult: false },
+          { assetType: 'collection', matchingUuid: true, subclipsSet: true, subclipsExact: false, expectedResult: true },
+          { assetType: 'collection', matchingUuid: true, subclipsSet: true, subclipsExact: true, expectedResult: false }
         ];
 
       tests.forEach(test => {
@@ -927,38 +927,38 @@ export function main() {
         });
 
         it('for a collection asset', () => {
-          componentUnderTest.asset = enhanceAsset(mockAsset, 'collectionAsset', 100);
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'collection', 100);
 
           expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/collections', 100, { i: 1, n: 50 }]);
         });
 
         it('for a quote edit asset', () => {
-          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteEditAsset');
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteEdit');
 
           expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/active-quote']);
         });
 
         it('for a quote show asset', () => {
-          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteShowAsset', 999);
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteShow', 999);
 
           expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/quotes', 999]);
         });
 
         it('for an order asset', () => {
-          componentUnderTest.asset = enhanceAsset(mockAsset, 'orderAsset', 111);
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'order', 111);
 
           expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/orders', 111]);
         });
 
         it('for a cart asset', () => {
-          componentUnderTest.asset = enhanceAsset(mockAsset, 'cartAsset');
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'cart');
 
           expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/cart']);
         });
 
         it('for a search asset', () => {
           componentUnderTest.searchContext = { q: 'cat', i: 1, n: 100, sortId: 10 };
-          componentUnderTest.asset = enhanceAsset(mockAsset, 'searchAsset');
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'search');
 
           expect(componentUnderTest.routerLinkForAssetParent).toEqual(['/search', { q: 'cat', i: 1, n: 100, sortId: 10 }]);
         });
@@ -967,30 +967,30 @@ export function main() {
 
     describe('breadcrumbLabel getter', () => {
       describe('returns the correct translatable string', () => {
-        it('for a collectionAsset', () => {
+        it('for a collection', () => {
           componentUnderTest.activeCollection = { ...collection, name: 'some collection' };
-          componentUnderTest.asset = enhanceAsset(mockAsset, 'collectionAsset', 100);
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'collection', 100);
 
           expect(componentUnderTest.breadcrumbLabel).toEqual(['some collection', '']);
         });
 
-        it('for a quoteShowAsset', () => {
-          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteShowAsset', 111);
+        it('for a quoteShow', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'quoteShow', 111);
 
-          expect(componentUnderTest.breadcrumbLabel).toEqual(['asset.detail.breadcrumb_quoteShowAsset', '111']);
+          expect(componentUnderTest.breadcrumbLabel).toEqual(['asset.detail.breadcrumb_quoteShow', '111']);
         });
 
-        it('for a orderAsset', () => {
-          componentUnderTest.asset = enhanceAsset(mockAsset, 'orderAsset', 333);
+        it('for a order', () => {
+          componentUnderTest.asset = enhanceAsset(mockAsset, 'order', 333);
 
-          expect(componentUnderTest.breadcrumbLabel).toEqual(['asset.detail.breadcrumb_orderAsset', '333']);
+          expect(componentUnderTest.breadcrumbLabel).toEqual(['asset.detail.breadcrumb_order', '333']);
         });
 
         describe('for any other type of asset - ', () => {
           const tests: { assetType: AssetType; expected: string[] }[] = [
-            { assetType: 'searchAsset', expected: ['asset.detail.breadcrumb_searchAsset', ''] },
-            { assetType: 'quoteEditAsset', expected: ['asset.detail.breadcrumb_quoteEditAsset', ''] },
-            { assetType: 'cartAsset', expected: ['asset.detail.breadcrumb_cartAsset', ''] }
+            { assetType: 'search', expected: ['asset.detail.breadcrumb_search', ''] },
+            { assetType: 'quoteEdit', expected: ['asset.detail.breadcrumb_quoteEdit', ''] },
+            { assetType: 'cart', expected: ['asset.detail.breadcrumb_cart', ''] }
           ];
 
           tests.forEach((test: { assetType: AssetType; expected: string[] }) => {
@@ -1073,7 +1073,7 @@ export function main() {
       });
     });
 
-    describe('updateCartAsset()', () => {
+    describe('updateCart()', () => {
       it('emits the right event', () => {
         spyOn(componentUnderTest.updateAssetLineItem, 'emit');
         componentUnderTest.updateCartAsset();
@@ -1084,16 +1084,16 @@ export function main() {
 
     describe('showDownloadButton()', () => {
       const tests: { assetType: AssetType, expectedResult: boolean, accessPath: string }[] = [
-        { assetType: 'cartAsset', expectedResult: true, accessPath: 'ContentFilter' },
-        { assetType: 'cartAsset', expectedResult: false, accessPath: 'SomethingElse' },
-        { assetType: 'collectionAsset', expectedResult: true, accessPath: 'ContentFilter' },
-        { assetType: 'collectionAsset', expectedResult: false, accessPath: 'SomethingElse' },
-        { assetType: 'quoteEditAsset', expectedResult: true, accessPath: 'ContentFilter' },
-        { assetType: 'quoteEditAsset', expectedResult: false, accessPath: 'SomethingElse' },
-        { assetType: 'quoteShowAsset', expectedResult: true, accessPath: 'ContentFilter' },
-        { assetType: 'searchAsset', expectedResult: true, accessPath: 'ContentFilter' },
-        { assetType: 'searchAsset', expectedResult: false, accessPath: 'SomethingElse' },
-        { assetType: 'orderAsset', expectedResult: false, accessPath: 'ContentFilter' }
+        { assetType: 'cart', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'cart', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'collection', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'collection', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'quoteEdit', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'quoteEdit', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'quoteShow', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'search', expectedResult: true, accessPath: 'ContentFilter' },
+        { assetType: 'search', expectedResult: false, accessPath: 'SomethingElse' },
+        { assetType: 'order', expectedResult: false, accessPath: 'ContentFilter' }
       ];
 
       tests.forEach(test => {
@@ -1116,7 +1116,7 @@ export function main() {
               { name: 'modified', value: '2016-08-30 07:14:07.0' },
               { name: 'name', value: '1FL001_033' }]
           } as any,
-          'searchAsset'
+          'search'
         );
 
         expect(componentUnderTest.assetName).toBe('1FL001_033');

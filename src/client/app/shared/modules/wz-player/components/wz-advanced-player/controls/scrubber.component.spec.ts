@@ -312,6 +312,20 @@ export function main() {
         expect(componentUnderTest.hoverFrame).toEqual(new Frame(29.97).setFromFrameNumber(durationInFrames));
       });
 
+      it('sets the hover frame\'s source based offset if the playerState has one', () => {
+        (componentUnderTest.playerState as any).sourceBasedOffset = '00:00:01:00';
+        mockRenderer.trigger('mousemove', { pageX: scrubberOffset + 300 });
+
+        expect(componentUnderTest.hoverFrame.sourceBasedOffsetFrames).toEqual(30);
+      });
+
+      it('sets the hover frame\'s source based offset if the playerState doesn\'t have one', () => {
+        (componentUnderTest.playerState as any).sourceBasedOffset = '00:00:00:00';
+        mockRenderer.trigger('mousemove', { pageX: scrubberOffset + 300 });
+
+        expect(componentUnderTest.hoverFrame.sourceBasedOffsetFrames).toEqual(0);
+      });
+
       it('sets the hover frame display position to center above the cursor', () => {
         mockRenderer.trigger('mousemove', { pageX: scrubberOffset + 300 });
 

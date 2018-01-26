@@ -130,6 +130,7 @@ export function main() {
               invoiceContact: {
                 contactEmail: 'email2@test.com',
                 name: 'test2',
+                id: null,
                 contacts: [
                   { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
                   { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
@@ -394,6 +395,36 @@ export function main() {
                 salesManager: 'email@test.com',
                 offlineAgreement: 'SD12FJ23GJ23'
               }
+            }
+          }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'OverrideInvoiceContact',
+      mutationTestData: {
+        previousState: QuoteState.initialState,
+        actionParameters: { contact: { name: 'Ross Edfort', id: 1 } }
+      },
+      customTests: [
+        {
+          it: 'Overrides the existing invoice contact',
+          previousState: {
+            ...QuoteState.initialState,
+            sendDetails: {
+              ...QuoteState.initialState.sendDetails,
+              invoiceContact: { name: 'Some Contact', id: 999 }
+            }
+          },
+          actionParameters: {
+            contact: { name: 'Ross Edfort', id: 1 }
+          },
+          expectedNextState: {
+            ...QuoteState.initialState,
+            sendDetails: {
+              ...QuoteState.initialState.sendDetails,
+              invoiceContact: { name: 'Ross Edfort', id: 1 }
             }
           }
         }

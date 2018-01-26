@@ -14,6 +14,18 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
+      actionClassName: ['SetPurchaseOrderId'],
+      customTests: [
+        {
+          it: 'returns the state with purchase order id',
+          actionParameters: { purchaseOrderId: '123-purchase-order-id' },
+          previousState: CheckoutState.initialState,
+          expectedNextState: { ...CheckoutState.initialState, purchaseOrderId: '123-purchase-order-id' }
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
       actionClassName: ['SetAvailablePaymentOptions'],
       customTests: [
         {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { Frame } from '../../wazee-frame-formatter/index';
+import { Frame, TimecodeFormat, TimecodeBase } from '../../wazee-frame-formatter/index';
 import { PlayerState, PlayerStateChanges } from '../interfaces/player.interface';
 
 @Injectable()
@@ -39,13 +39,19 @@ export class PlayerStateService {
       inMarkerFrame: undefined,
       outMarkerFrame: undefined,
       volume: 100,
+      sourceBasedOffset: '00:00:00:00',
+      timecodeFormat: TimecodeFormat.SIMPLE_TIME_CONVERSION,
+      timecodeBase: TimecodeBase.STREAM_BASED,
       changeDetectionEnabler: 0
     };
   }
 
   private createNewStateWith(requestedChanges: PlayerStateChanges): PlayerState {
+    // It's tempting to use Common.clone() here, but that doesn't preserve properties with explicit undefined values.
+    // (And we need inMarker and outMarker to come in as undefined because this is how markers are cleared.)
     this.changesToApply = {};
     Object.keys(requestedChanges).forEach((key: string) => (this.changesToApply as any)[key] = (requestedChanges as any)[key]);
+
     this.handleChangeInterdependencies();
 
     return {
@@ -60,6 +66,9 @@ export class PlayerStateService {
       inMarkerFrame: this.newFrameFrom(this.latest('inMarkerFrame')),
       outMarkerFrame: this.newFrameFrom(this.latest('outMarkerFrame')),
       volume: this.latest('volume'),
+      sourceBasedOffset: this.latest('sourceBasedOffset') || this.initialValue.sourceBasedOffset,
+      timecodeFormat: this.latest('timecodeFormat'),
+      timecodeBase: this.latest('timecodeBase'),
       changeDetectionEnabler: this.snapshot.changeDetectionEnabler + 1
     };
   }
@@ -155,6 +164,6 @@ export class PlayerStateService {
   }
 
   private get newFrame(): Frame {
-    return new Frame(this.latest('framesPerSecond'));
+    return new Frame(this.latest('framesPerSecond'), this.latest('sourceBasedOffset'));
   }
 }

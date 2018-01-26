@@ -116,7 +116,7 @@ export class CollectionTrayComponent implements OnInit, OnDestroy {
         let collection: Collection = Common.clone(state.collection);
         if (collection.assets && collection.assets.items) {
           collection.assets.items = collection.assets.items
-            .map(item => enhanceAsset(item, 'collectionAsset', collection.id));
+            .map(item => enhanceAsset(item, 'collection', collection.id));
         }
         return collection;
       }).subscribe((collection) => {

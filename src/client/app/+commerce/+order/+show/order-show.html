@@ -38,6 +38,9 @@
             <span>
               <strong>{{ 'ORDER.CREATED_ON_LABEL' | translate }} </strong>{{ order.createdOn | date:'short' }}
             </span>
+            <span *ngIf="order.poNumber">
+              <strong>{{ 'ORDER.PURCHASE_ORDER_LABEL' | translate }} </strong>{{ order.poNumber }}
+            </span>
             <span *ngIf="order.bulkOrderId">
               <strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>{{ order.bulkOrderId }}
             </span>
@@ -131,7 +134,7 @@
                   }}
                 </span>
               </div>
-              <div flex="100" flex-gt-sm="30" flex-order-xs="-1" layout-padding>
+              <div flex="100" flex-gt-sm="30" flex-order-xs="-1">
                 <div class="project-subtotal mat-caption">
                   <strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
                   <span>{{ project.subTotal | currency:'USD':true:'1.2-2' }}</span>

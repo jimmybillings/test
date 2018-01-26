@@ -47,7 +47,7 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
       </mat-slider>
 
       <span *ngIf="hoverFrameDisplayIsVisible" class="hover-frame-display" [style.left.px]="hoverFrameDisplayPosition">
-        {{ hoverFrame | timecode }}
+        {{ hoverFrame | playerTimecode:playerState }}
       </span>
     </ng-container>
   `
@@ -196,7 +196,8 @@ export class ScrubberComponent implements OnInit, OnDestroy {
     let newFrameNumber: number = Math.round(relativeMouseX * this.playerState.durationFrame.frameNumber / scrubberTrackWidth);
     newFrameNumber = this.constrainTo(0, this.playerState.durationFrame.frameNumber, newFrameNumber);
 
-    this._hoverFrame = new Frame(this.playerState.framesPerSecond).setFromFrameNumber(newFrameNumber);
+    this._hoverFrame =
+      new Frame(this.playerState.framesPerSecond, this.playerState.sourceBasedOffset).setFromFrameNumber(newFrameNumber);
   }
 
   private updateHoverFrameDisplayPositionWith(relativeMouseX: number, scrubber: any, frameDisplay: any): void {

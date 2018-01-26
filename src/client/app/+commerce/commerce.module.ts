@@ -57,6 +57,7 @@ import { QuotePaymentTabComponent } from './+quote/components/tabs/quote-payment
 import { QuoteConfirmTabComponent } from './+quote/components/tabs/quote-confirm-tab.component';
 
 // SHARED STUFF
+import { PurchaseOrderInputComponent } from './components/purchase-order-input/purchase-order-input.component';
 import { CommerceListComponent } from './components/commerce-list/commerce-list.component';
 import { CommerceHeaderComponent } from './components/commerce-header/commerce-header.component';
 import { LicenseAgreementComponent } from './components/license-agreement/license-agreement.component';
@@ -112,6 +113,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     OrdersComponent,
     OrderAssetComponent,
     InvoiceComponent,
+    PurchaseOrderInputComponent,
     CommerceListComponent,
     CommerceHeaderComponent,
     LicenseAgreementComponent,
