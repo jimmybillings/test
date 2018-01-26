@@ -38,6 +38,9 @@
             <span>
               <strong>{{ 'ORDER.CREATED_ON_LABEL' | translate }} </strong>{{ order.createdOn | date:'short' }}
             </span>
+            <span *ngIf="order.poNumber">
+              <strong>{{ 'ORDER.PURCHASE_ORDER_LABEL' | translate }} </strong>{{ order.poNumber }}
+            </span>
             <span *ngIf="order.bulkOrderId">
               <strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>{{ order.bulkOrderId }}
             </span>

@@ -113,16 +113,6 @@
                     <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.createdOn | date:'short' }}</p>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="cell">
-                    <h5 class="mat-subheading-1">
-                      {{ 'ORDER.INVOICE.ORDER_TYPE_LABEL' | translate }}
-                    </h5>
-                  </div>
-                  <div class="cell">
-                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.orderType }}</p>
-                  </div>
-                </div>
                 <div class="row" *ngIf="hasProp(invoice,'order','poNumber')">
                   <div class="cell">
                     <h5 class="mat-subheading-1">
@@ -131,6 +121,16 @@
                   </div>
                   <div class="cell">
                     <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.poNumber }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="cell">
+                    <h5 class="mat-subheading-1">
+                      {{ 'ORDER.INVOICE.ORDER_TYPE_LABEL' | translate }}
+                    </h5>
+                  </div>
+                  <div class="cell">
+                    <p class="mat-subheading-1 invoice-detail-value">{{ invoice.order.orderType }}</p>
                   </div>
                 </div>
                 <div class="row" *ngIf="hasProp(invoice,'order','paymentType')">
