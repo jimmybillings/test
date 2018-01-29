@@ -103,6 +103,12 @@ export function main() {
         });
       });
 
+      describe('pause()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.pause()).toThrowError();
+        });
+      });
+
       describe('seekTo()', () => {
         it('is not supported', () => {
           expect(() => componentUnderTest.seekTo(6.867)).toThrowError();
@@ -214,6 +220,12 @@ export function main() {
         describe('playAtSpeed()', () => {
           it('is not supported', () => {
             expect(() => componentUnderTest.playAtSpeed(2.5)).toThrowError();
+          });
+        });
+
+        describe('pause()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.pause()).toThrowError();
           });
         });
 
@@ -393,6 +405,12 @@ export function main() {
                 describe('playAtSpeed()', () => {
                   it('is not supported', () => {
                     expect(() => componentUnderTest.playAtSpeed(2.5)).toThrowError();
+                  });
+                });
+
+                describe('pause()', () => {
+                  it('is not supported', () => {
+                    expect(() => componentUnderTest.pause()).toThrowError();
                   });
                 });
 
@@ -684,6 +702,44 @@ export function main() {
                       });
                     });
 
+                    describe('pause()', () => {
+                      describe('when playback was playing', () => {
+                        it('is still playing', () => {
+                          componentUnderTest.pause();
+
+                          expect(mockVideoElement.paused).toBe(true);
+                        });
+
+                        it('reports playing: false', () => {
+                          componentUnderTest.pause();
+
+                          expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
+                          expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                        });
+                      });
+
+                      describe('when playback was paused', () => {
+                        beforeEach(() => {
+                          componentUnderTest.togglePlayback();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('pauses', () => {
+                          componentUnderTest.pause();
+
+                          expect(mockVideoElement.paused).toBe(true);
+                        });
+
+                        it('reports nothing', () => {
+                          componentUnderTest.pause();
+
+                          expect(stateChangeRequestEmitter).not.toHaveBeenCalled();
+                        });
+                      });
+                    });
+
                     describe('toggleMute()', () => {
                       describe('when not muted', () => {
                         it('mutes', () => {
@@ -777,6 +833,25 @@ export function main() {
                         componentUnderTest.seekTo(1234.567);
                         mockVideoElement.simulateSeekCompletion();
 
+                        expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
+                        expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1234.567 }]);
+                      });
+
+                      it('reports current time immediately when seeking to the current time', () => {
+                        let seekingEventTriggerCount: number = 0;
+                        mockVideoElement.on('seeking', () => seekingEventTriggerCount += 1);
+
+                        componentUnderTest.seekTo(1234.567);
+                        expect(seekingEventTriggerCount).toBe(1);
+                        mockVideoElement.simulateSeekCompletion();
+
+                        // Don't want initialization calls to affect future verifications.
+                        (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
+
+                        // Seek to current time.
+                        componentUnderTest.seekTo(1234.567);
+
+                        expect(seekingEventTriggerCount).toBe(1);  // Should not have requested another seek.
                         expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
                         expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1234.567 }]);
                       });

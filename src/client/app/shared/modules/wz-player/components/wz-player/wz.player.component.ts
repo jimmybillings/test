@@ -70,6 +70,12 @@ export class WzPlayerComponent implements OnDestroy {
     if (this.videoElement.paused) this.videoElement.play();
   }
 
+  public pause(): void {
+    this.verifyCustomControlsSupport();
+
+    if (!this.videoElement.paused) this.videoElement.pause();
+  }
+
   public seekTo(timeInSeconds: number): void {
     this.verifyCustomControlsSupport();
 
@@ -409,6 +415,12 @@ export class WzPlayerComponent implements OnDestroy {
       // just the most recent request (throwing away all others), and seek there as soon as the current
       // seek is done.  This lets us repeatedly seek just as fast as the browser can handle it.
       this.pendingSeekRequest = timeInSeconds;
+
+    } else if (this.videoElement.currentTime === timeInSeconds) {
+      // We're already where we want to be, so we don't need to actually seek.  But let's send a state update
+      // in case consumers of this component need to be updated with the current time.
+      this.emitStateChangeRequestWith({ currentTime: timeInSeconds });
+
     } else {
       this.waitingForSeek = true;
       this.videoElement.currentTime = timeInSeconds;
