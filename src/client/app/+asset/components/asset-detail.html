@@ -118,13 +118,6 @@
               <mat-icon>library_add</mat-icon>
             </button>
             <button mat-icon-button 
-              *ngIf="canUpdateInActiveCollection"  
-              [disabled]="!(userCanEditCollection | async)"
-              title="{{ 'COLLECTION.UPDATE_IN_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
-              (click)="updateAssetInActiveCollection()">
-              <mat-icon>update</mat-icon>
-            </button>
-            <button mat-icon-button 
               *ngIf="canRemoveFromActiveCollection"  
               [disabled]="!(userCanEditCollection | async)"
               title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
@@ -201,7 +194,7 @@
               </mat-select>
             </mat-form-field>
             <button
-              *ngIf="canCalculatePrice"
+              *ngIf="canEditOrApplyRights"
               (click)="getPricingAttributes()"
               class="rights-pkg is-outlined"
               mat-button>
@@ -236,11 +229,6 @@
         layout="column" 
         layout-gt-xs="row"
         layout-align="end end">
-        <div *ngIf="canUpdateCartAsset" class="delete-from-cart" flex-order-xs="3" flex="auto" flex-gt-xs="100">
-          <button mat-button (click)="removeAssetFromCartOrQuote()" color="primary">
-            <mat-icon>delete</mat-icon>{{ removeFromCartOrQuoteButtonLabelKey | translate }}
-          </button>
-        </div>
         <button *ngIf="canUpdateCartAsset"
           [disabled]="assetMatchesCartAsset"
           mat-raised-button
@@ -248,6 +236,15 @@
           flex-order-xs="2"
           color="primary">
           {{ updateCartAssetButtonLabelKey | translate }}
+        </button>
+        <button *ngIf="canUpdateInActiveCollection"
+          [disabled]="!(userCanEditCollection | async)"
+          title="{{ 'COLLECTION.UPDATE_IN_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
+          mat-raised-button
+          (click)="updateAssetInActiveCollection()"
+          flex-order-xs="2"
+          color="primary">
+          {{ 'COLLECTION.UPDATE_IN_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}
         </button>
         <button mat-raised-button
           class="add-to-cart"
