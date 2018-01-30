@@ -18,15 +18,15 @@ export function main() {
         'LoadCartAsset', 'LoadQuoteEditAsset', 'LoadActiveCollectionAsset'
       ],
       mutationTestData: {
-        actionParameters: { uuid: 'abc-123', assetType: 'orderAsset' }
+        actionParameters: { uuid: 'abc-123', assetType: 'order' }
       },
       customTests: [
         {
           it: 'sets loading to true, sets the loadingUuid, and sets the activeAssetType',
           previousState: AssetState.initialState,
-          actionParameters: { uuid: 'abc-123', assetType: 'orderAsset' },
+          actionParameters: { uuid: 'abc-123', assetType: 'order' },
           expectedNextState: {
-            activeAssetType: 'orderAsset',
+            activeAssetType: 'order',
             loading: true,
             loadingUuid: 'abc-123',
             activeAsset: { assetId: 0, name: '' }
