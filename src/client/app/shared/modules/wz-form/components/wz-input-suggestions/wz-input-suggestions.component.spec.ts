@@ -8,9 +8,9 @@ export function main() {
     let componentUnderTest: WzInputSuggestionsComponent, mockApi: MockApiService, mockRenderer: any, mockDetector: any;
     mockRenderer = {
       listenGlobal:
-      jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => {
-        c(); return () => { return true; };
-      })
+        jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => {
+          c(); return () => { return true; };
+        })
     };
     mockDetector = { markForCheck: jasmine.createSpy('markForCheck') };
     beforeEach(() => {
@@ -95,14 +95,6 @@ export function main() {
         expect(componentUnderTest.suggestions).toEqual(['dog', 'test', 'testing', 'testing 123']);
       });
 
-      it('removes a suggestion if it\'s a direct match with what the user typed in', () => {
-        mockApi.getResponse = { list: ['dog', 'test', 'testing', 'testing 123'] };
-        componentUnderTest.suggestionChangeListener();
-        componentUnderTest.activeSuggestion = 'cat';
-        componentUnderTest.fControl.setValue('dog');
-        expect(componentUnderTest.suggestions).toEqual(['dog', 'test', 'testing', 'testing 123']);
-      });
-
       it('Do not hide suggestions that match the user search if it\s being used for collections', () => {
         mockApi.getResponse = { list: ['test', 'testing', 'testing 123'] };
         componentUnderTest.rawField.endPoint = 'collection/search';
@@ -162,7 +154,7 @@ export function main() {
       it('set\'s the field value to the selected suggestion', () => {
         spyOn(componentUnderTest.fControl, 'setValue');
         componentUnderTest.selectSuggestion('dogs');
-        expect(componentUnderTest.fControl.setValue).toHaveBeenCalledWith('dogs');
+        expect(componentUnderTest.fControl.setValue).toHaveBeenCalledWith('dogs', { emitEvent: false });
       });
 
       it('emits an output event with selected suggestion', () => {
