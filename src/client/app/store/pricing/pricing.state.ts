@@ -2,7 +2,6 @@ import * as PricingActions from './pricing.actions';
 import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { Common } from '../../shared/utilities/common.functions';
 import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
-import { initDomAdapter } from '@angular/platform-browser/src/browser';
 
 export interface State {
   priceForDetails: number;
