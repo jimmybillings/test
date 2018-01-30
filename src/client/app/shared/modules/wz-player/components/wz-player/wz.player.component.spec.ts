@@ -3,6 +3,7 @@ import { ElementRef } from '@angular/core';
 import { WzPlayerComponent } from './wz.player.component';
 import { MockJwPlayer } from '../../mocks/mockJwPlayer';
 import { MockVideoEventName, MockVideoElement } from '../../mocks/mockVideoElement';
+import { MockAppStore } from '../../../../../store/spec-helpers/mock-app.store';
 
 export function main() {
   describe('Wz Player Component', () => {
@@ -13,6 +14,7 @@ export function main() {
     let mockZone: any;
     let mockJwPlayer: MockJwPlayer;
     let mockVideoElement: MockVideoElement;
+    let mockStore: MockAppStore;
 
     const expectResetFor = (assetType: string) => {
       if (assetType === 'video' || assetType === 'html5Video') {
@@ -40,7 +42,12 @@ export function main() {
 
       mockZone = { run: jasmine.createSpy('zone').and.callFake((wrappedFunction: Function) => wrappedFunction()) };
 
-      componentUnderTest = new WzPlayerComponent(mockElementRef, mockRenderer, mockZone);
+      mockStore = new MockAppStore();
+      mockStore.createStateElement('uiConfig', 'components', {});
+
+      spyOn(console, 'log');  // Suppress temporary console.log messages in test output.
+
+      componentUnderTest = new WzPlayerComponent(mockElementRef, mockRenderer, mockZone, mockStore);
 
       componentUnderTest.window = {
         jwplayer: jasmine.createSpy('jwplayer creator').and.returnValue(mockJwPlayer = new MockJwPlayer()),
