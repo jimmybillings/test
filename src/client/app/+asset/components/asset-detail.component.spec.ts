@@ -307,112 +307,108 @@ export function main() {
       });
     });
 
-    describe('canShowPricingAndCartActions getter', () => {
-      it('returns true when the asset has Rights.Reproduction = Royalty Free', () => {
-        componentUnderTest.asset =
-          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any, 'search');
-
-        expect(componentUnderTest.canShowPricingAndCartActions).toBe(true);
-      });
-
-      it('returns true when the asset has Rights.Reproduction = Rights Managed', () => {
-        componentUnderTest.asset =
-          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any, 'search');
-
-        expect(componentUnderTest.canShowPricingAndCartActions).toBe(true);
-      });
-
-      it('returns false when the asset has Rights.Reproduction = something else', () => {
-        componentUnderTest.asset =
-          enhanceAsset({ primary: [{ name: 'Rights.Reproduction', value: 'something else' }] } as any, 'search');
-
-        expect(componentUnderTest.canShowPricingAndCartActions).toBe(false);
-      });
-    });
-
-    describe('priceIsRmStartingPrice getter', () => {
-      beforeEach(() => {
-        componentUnderTest.usagePrice = 12.34;
+    describe('canShowPrice()', () => {
+      it('Returns true if its a rights managed asset with a valid price', () => {
         componentUnderTest.asset = enhanceAsset(
-          { price: 12.34, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
+          { price: 100, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
           'search'
         );
+        componentUnderTest.usagePrice = 100;
+        expect(componentUnderTest.canShowPrice).toBe(true);
       });
 
-      it('returns true if asset has a price AND usage price is the same as asset price AND asset is Rights Managed', () => {
-        expect(componentUnderTest.priceIsRmStartingPrice).toBe(true);
+      it('Returns true if its a royalty free asset with a valid price', () => {
+        componentUnderTest.asset = enhanceAsset(
+          { price: 100, primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any,
+          'search'
+        );
+        expect(componentUnderTest.canShowPrice).toBe(true);
       });
 
-      it('returns false if asset has no price', () => {
+      it('Returns false if its a rights managed asset with no price', () => {
         componentUnderTest.asset = enhanceAsset(
           { primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
           'search'
         );
-
-        expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
+        componentUnderTest.usagePrice = undefined;
+        expect(componentUnderTest.canShowPrice).toBe(false);
       });
 
-      it('returns false if asset has a zero price', () => {
+      it('Returns false if its a royalty free asset with no price', () => {
         componentUnderTest.asset = enhanceAsset(
-          { price: 0, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
+          { primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any,
           'search'
         );
-
-        expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
-      });
-
-      it('returns false if usage price is not the same as asset price', () => {
-        componentUnderTest.usagePrice = 56.78;
-        componentUnderTest.asset = enhanceAsset(
-          { price: 12.34, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
-          'search'
-        );
-
-        expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
-      });
-
-      it('returns false if asset is not Rights Managed', () => {
-        componentUnderTest.asset = enhanceAsset(
-          { price: 12.34, primary: [{ name: 'Rights.Reproduction', value: 'Not Rights Managed' }] } as any,
-          'search'
-        );
-
-        expect(componentUnderTest.priceIsRmStartingPrice).toBe(false);
+        expect(componentUnderTest.canShowPrice).toBe(false);
       });
     });
 
-    describe('price and hasPrice getters', () => {
+    describe('canShowNoPricingAvailableNotice()', () => {
+      it('Returns true if its a rights managed asset with no price property', () => {
+        componentUnderTest.asset = enhanceAsset(
+          { primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
+          'search'
+        );
+        expect(componentUnderTest.canShowNoPricingAvailableNotice).toBe(true);
+      });
+
+      it('Returns false if its a rights managed asset with a price property', () => {
+        componentUnderTest.asset = enhanceAsset(
+          { price: 100, primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
+          'search'
+        );
+        expect(componentUnderTest.canShowNoPricingAvailableNotice).toBe(false);
+      });
+
+      it('Returns true if its a Royalty Free asset with no price property', () => {
+        componentUnderTest.asset = enhanceAsset(
+          { primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any,
+          'search'
+        );
+        expect(componentUnderTest.canShowNoPricingAvailableNotice).toBe(true);
+      });
+
+      it('Returns false if its a Royalty Free asset with no price property', () => {
+        componentUnderTest.asset = enhanceAsset(
+          { price: 100, primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }] } as any,
+          'search'
+        );
+        expect(componentUnderTest.canShowNoPricingAvailableNotice).toBe(false);
+      });
+    });
+
+    describe('price getters', () => {
       const tests = [
-        { rights: 'Royalty Free', price: 12.34, usagePrice: null, expectedResult: 12.34, hasPrice: true },
-        { rights: 'Royalty Free', price: null, usagePrice: null, expectedResult: null, hasPrice: false },
-        { rights: 'Royalty Free', price: 0, usagePrice: null, expectedResult: null, hasPrice: false },
+        { rights: 'Royalty Free', price: 12.34, usagePrice: null as any, expectedResult: 12.34 },
+        { rights: 'Royalty Free', price: null, usagePrice: null, expectedResult: null },
+        { rights: 'Royalty Free', price: 0, usagePrice: null, expectedResult: null },
 
-        { rights: 'Royalty Free', price: 12.34, usagePrice: 56.78, expectedResult: 12.34, hasPrice: true },
-        { rights: 'Royalty Free', price: null, usagePrice: 56.78, expectedResult: null, hasPrice: false },
-        { rights: 'Royalty Free', price: 0, usagePrice: 56.78, expectedResult: null, hasPrice: false },
+        { rights: 'Royalty Free', price: 12.34, usagePrice: 56.78, expectedResult: 12.34 },
+        { rights: 'Royalty Free', price: null, usagePrice: 56.78, expectedResult: null },
+        { rights: 'Royalty Free', price: 0, usagePrice: 56.78, expectedResult: null },
 
-        { rights: 'Rights Managed', price: 12.34, usagePrice: null, expectedResult: 12.34, hasPrice: true },
-        { rights: 'Rights Managed', price: null, usagePrice: null, expectedResult: null, hasPrice: false },
-        { rights: 'Rights Managed', price: 0, usagePrice: null, expectedResult: null, hasPrice: false },
+        { rights: 'Rights Managed', price: 12.34, usagePrice: null as any, expectedResult: null as any, hasAttributes: true },
+        { rights: 'Rights Managed', price: null, usagePrice: null, expectedResult: null },
+        { rights: 'Rights Managed', price: 0, usagePrice: null, expectedResult: null },
 
-        { rights: 'Rights Managed', price: 12.34, usagePrice: 56.78, expectedResult: 56.78, hasPrice: true },
-        { rights: 'Rights Managed', price: null, usagePrice: 56.78, expectedResult: 56.78, hasPrice: true },
-        { rights: 'Rights Managed', price: 0, usagePrice: 56.78, expectedResult: 56.78, hasPrice: true },
+        { rights: 'Rights Managed', price: 12.34, usagePrice: 56.78, expectedResult: 56.78 },
+        { rights: 'Rights Managed', price: null, usagePrice: 56.78, expectedResult: 56.78 },
+        { rights: 'Rights Managed', price: 0, usagePrice: 56.78, expectedResult: 56.78 },
 
-        { rights: null, price: 12.34, usagePrice: null, expectedResult: null, hasPrice: false },
-        { rights: null, price: null, usagePrice: null, expectedResult: null, hasPrice: false },
-        { rights: null, price: 0, usagePrice: null, expectedResult: null, hasPrice: false },
+        { rights: null, price: 12.34, usagePrice: null, expectedResult: null },
+        { rights: null, price: null, usagePrice: null, expectedResult: null },
+        { rights: null, price: 0, usagePrice: null, expectedResult: null },
 
-        { rights: null, price: 12.34, usagePrice: 56.78, expectedResult: null, hasPrice: false },
-        { rights: null, price: null, usagePrice: 56.78, expectedResult: null, hasPrice: false },
-        { rights: null, price: 0, usagePrice: 56.78, expectedResult: null, hasPrice: false }
+        { rights: null, price: 12.34, usagePrice: 56.78, expectedResult: null },
+        { rights: null, price: null, usagePrice: 56.78, expectedResult: null },
+        { rights: null, price: 0, usagePrice: 56.78, expectedResult: null }
       ];
 
       tests.forEach(test => {
         const rights: string = `${test.rights ? test.rights : 'no rights'}`;
 
         describe(`for a ${rights} asset`, () => {
-          const price: string = (test.price === 0 || !!test.price) ? `price = ${test.price}` : 'no price';
+          const price: string = (test.hasOwnProperty('price') && test.price > 0) ? `price = ${test.price}` : 'no price';
           const usagePrice: string = test.usagePrice ? `usage price = ${test.usagePrice}` : 'no usage price';
 
           it(`returns ${test.expectedResult} for ${price} and ${usagePrice}`, () => {
@@ -423,29 +419,8 @@ export function main() {
             componentUnderTest.usagePrice = test.usagePrice;
 
             expect(componentUnderTest.price).toBe(test.expectedResult);
-            expect(componentUnderTest.hasPrice).toBe(test.hasPrice);
           });
         });
-      });
-    });
-
-    describe('hasNoPrice getter', () => {
-      it('returns false if asset has a price', () => {
-        componentUnderTest.asset = enhanceAsset({ price: 12.34 } as any, 'search');
-
-        expect(componentUnderTest.hasNoPrice).toBe(false);
-      });
-
-      it('returns true if asset has no price', () => {
-        componentUnderTest.asset = enhanceAsset({} as any, 'search');
-
-        expect(componentUnderTest.hasNoPrice).toBe(true);
-      });
-
-      it('returns true if asset has a zero price', () => {
-        componentUnderTest.asset = enhanceAsset({ price: 0 } as any, 'search');
-
-        expect(componentUnderTest.hasNoPrice).toBe(true);
       });
     });
 
@@ -453,11 +428,11 @@ export function main() {
       const tests = [
         { haveCart: true, rights: 'Royalty Free', price: 12.34, expectedResult: true },
         { haveCart: true, rights: 'Royalty Free', price: 0, expectedResult: true },
-        { haveCart: true, rights: 'Royalty Free', price: null, expectedResult: true },
+        { haveCart: true, rights: 'Royalty Free', price: 'NotAProperty', expectedResult: false },
 
         { haveCart: true, rights: 'Rights Managed', price: 12.34, expectedResult: true },
-        { haveCart: true, rights: 'Rights Managed', price: 0, expectedResult: false },
-        { haveCart: true, rights: 'Rights Managed', price: null, expectedResult: false },
+        { haveCart: true, rights: 'Rights Managed', price: 0, expectedResult: true },
+        { haveCart: true, rights: 'Rights Managed', price: 'NotAProperty', expectedResult: false },
 
         { haveCart: true, rights: null, price: 12.34, expectedResult: false },
         { haveCart: true, rights: null, price: 0, expectedResult: false },
@@ -479,15 +454,21 @@ export function main() {
       tests.forEach(test => {
         const withWithout: string = test.haveCart ? 'with' : 'without';
         const rights: string = test.rights ? test.rights : 'no rights';
-        const price: string = (test.price === 0 || !!test.price) ? `price = ${test.price}` : 'no price';
-
+        let price: string = (test.price === 0 || !!test.price) ? `price = ${test.price}` : 'no price';
+        price = (test.price !== 'NotAProperty') ? price : 'No price property';
         it(`returns ${test.expectedResult} ${withWithout} haveCart capability and a ${rights} asset with ${price}`, () => {
           componentUnderTest.userCan = { haveCart: () => test.haveCart } as any;
-          componentUnderTest.asset = enhanceAsset(
-            { price: test.price, primary: [{ name: 'Rights.Reproduction', value: test.rights }] } as any,
-            'search'
-          );
-
+          if (test.price === 'NotAProperty') {
+            componentUnderTest.asset = enhanceAsset(
+              { primary: [{ name: 'Rights.Reproduction', value: test.rights }] } as any,
+              'search'
+            );
+          } else {
+            componentUnderTest.asset = enhanceAsset(
+              { price: test.price, primary: [{ name: 'Rights.Reproduction', value: test.rights }] } as any,
+              'search'
+            );
+          }
           expect(componentUnderTest.canPerformCartActions).toBe(test.expectedResult);
         });
       });
