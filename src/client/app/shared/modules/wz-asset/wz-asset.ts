@@ -168,10 +168,14 @@ export class WzAsset implements OnInit {
   }
 
   public canBePurchased(asset: EnhancedAsset): boolean {
-    const rights: Metadatum = asset.metaData.find((metadatum: Metadatum) => metadatum.name === 'Rights.Reproduction');
+    const rights: Metadatum = asset.metaData.find((metadatum: Metadatum) =>
+      metadatum.name === 'Rights.Reproduction');
+
     if (!rights) return false;
+
     return ['Rights Managed', 'Royalty Free'].includes(rights.value) &&
-      this.store.snapshot(state => state.speedPreview[asset.assetId] ? state.speedPreview[asset.assetId].price : 0) > 0;
+      this.store.snapshot(state => state.speedPreview[asset.assetId] &&
+        state.speedPreview[asset.assetId].hasOwnProperty('price'));
   }
 
   public commentCountFor(asset: EnhancedAsset): Observable<number> {
