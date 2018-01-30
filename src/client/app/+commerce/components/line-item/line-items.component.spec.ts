@@ -155,7 +155,11 @@ export function main() {
       it('returns true when quote is NOT a Trial and all rights managed assets have selected rights packages', () => {
         classUnderTest.quoteType = 'NoTrial' as any;
         classUnderTest.rmAssetsHaveAttributes = true;
-        expect(classUnderTest.shouldDisplayPricing({ rightsManaged: 'Rights Managed', attributes: [{ some: 'attributes' } as any] })).toBe(true);
+        expect(classUnderTest.shouldDisplayPricing(
+          {
+            rightsManaged: 'Rights Managed',
+            attributes: [{ some: 'attributes' } as any]
+          })).toBe(true);
       });
 
       it('returns false when the quote is a Trial', () => {

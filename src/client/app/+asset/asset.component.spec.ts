@@ -242,7 +242,7 @@ export function main() {
           expect(setPriceForDetailsSpy).not.toHaveBeenCalled();
           expect(setAppliedAttributesSpy).not.toHaveBeenCalled();
         });
-      })
+      });
     });
 
     describe('addAssetToCart()', () => {

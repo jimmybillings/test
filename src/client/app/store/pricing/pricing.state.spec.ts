@@ -12,6 +12,32 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
+      actionClassName: 'ResetPricing',
+      mutationTestData: {
+        previousState: {
+          priceForDetails: null,
+          priceForDialog: null,
+          attributes: null,
+          appliedAttributes: null,
+          selectedAttributes: { some: 'attributes' }
+        }
+      },
+      customTests: [
+        {
+          it: 'returns the inital state',
+          previousState: {
+            priceForDetails: null,
+            priceForDialog: null,
+            attributes: null,
+            appliedAttributes: null,
+            selectedAttributes: { some: 'attributes' }
+          },
+          expectedNextState: PricingState.initialState
+        }
+      ]
+    });
+
+    stateSpecHelper.generateTestsFor({
       actionClassName: 'CalculatePrice',
       customTests: [
         {

@@ -2,6 +2,7 @@ import * as PricingActions from './pricing.actions';
 import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { Common } from '../../shared/utilities/common.functions';
 import { Pojo, SelectedPriceAttribute } from '../../shared/interfaces/common.interface';
+import { initDomAdapter } from '@angular/platform-browser/src/browser';
 
 export interface State {
   priceForDetails: number;
@@ -23,6 +24,10 @@ export function reducer(state: State = initialState, action: PricingActions.Any)
   if (state === null) state = initialState;
 
   switch (action.type) {
+
+    case PricingActions.ResetPricing.Type: {
+      return Common.clone(initialState);
+    }
 
     case PricingActions.CalculatePrice.Type: {
       return { ...Common.clone(state), selectedAttributes: action.selectedAttributes };

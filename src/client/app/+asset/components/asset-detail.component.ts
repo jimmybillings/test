@@ -403,7 +403,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   private get isRightsManagedWithValidPrice(): boolean {
-    return this.isRightsManaged && ((this.usagePrice !== null && this.usagePrice !== undefined && this.usagePrice > 0))
+    return this.isRightsManaged && ((this.usagePrice !== null && this.usagePrice !== undefined && this.usagePrice > 0));
   }
 
   private get isRoyaltyFreeWithValidPrice(): boolean {

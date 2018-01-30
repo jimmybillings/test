@@ -8,6 +8,17 @@ export function main() {
     actionsSpecHelper.generateTestFor({
       factoryMethod: {
         class: ActionFactory,
+        name: 'resetPricing',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Pricing] Reset Pricing'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
         name: 'setPriceForDetails',
         parameters: [100]
       },
