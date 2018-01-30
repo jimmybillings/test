@@ -63,7 +63,7 @@ export const COMMERCE_ROUTES: Routes = [
   {
     path: 'orders/:id/asset/:uuid',
     component: OrderAssetComponent,
-    resolve: { orderAsset: OrderAssetResolver },
+    resolve: { order: OrderAssetResolver },
     data: { title: 'PAGE_TITLE.ORDER_ASSET' }
   },
   {

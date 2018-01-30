@@ -245,32 +245,22 @@ export class AssetDetailComponent implements OnInit {
     return this._asset.getMetadataValueFor('Rights.Reproduction');
   }
 
-  public get canShowPricingAndCartActions(): boolean {
-    return this.isRoyaltyFree || this.isRightsManaged;
+  public get canShowPrice(): boolean {
+    return (this.isRoyaltyFreeWithValidPrice || this.isRightsManagedWithValidPrice);
   }
 
-  public get priceIsRmStartingPrice(): boolean {
-    return this.isRightsManaged && !!this._asset.price && (this._asset.price === this.usagePrice);
+  public get canShowNoPricingAvailableNotice(): boolean {
+    return (this.isRoyaltyFree || this.isRightsManaged) && !this._asset.hasOwnProperty('price');
   }
 
   public get price(): number {
-    if (!this.isRightsManaged && !this.isRoyaltyFree) return null;
-    if (this.isRightsManaged && !!this.usagePrice) return this.usagePrice;
-    if (this._asset.price) return this._asset.price;
-
+    if (this.isRoyaltyFreeWithValidPrice) return this._asset.price;
+    if (this.isRightsManagedWithValidPrice) return this.usagePrice;
     return null;
   }
 
-  public get hasPrice(): boolean {
-    return !!this.price;
-  }
-
-  public get hasNoPrice(): boolean {
-    return !this._asset.price;
-  }
-
   public get canPerformCartActions(): boolean {
-    return this.userCan.haveCart() && (this.isRoyaltyFree || (this.isRightsManaged && !!this._asset.price));
+    return this.userCan.haveCart() && (this.isRoyaltyFree || this.isRightsManaged) && this._asset.hasOwnProperty('price');
   }
 
   public get canSelectTranscodeTarget(): boolean {
@@ -375,8 +365,10 @@ export class AssetDetailComponent implements OnInit {
   private canBePurchased(asset: EnhancedAsset): boolean {
     const rights: string = asset.getMetadataValueFor('Rights.Reproduction');
     if (!rights) return false;
-    const price: number = this.store.snapshot(state => state.asset.activeAsset.assetId ? state.asset.activeAsset.price : 0);
-    return ['Rights Managed', 'Royalty Free'].includes(rights) && price > 0;
+
+    return ['Rights Managed', 'Royalty Free'].includes(rights) &&
+      this.store.snapshot(state => state.asset.activeAsset.assetId &&
+        state.asset.activeAsset.hasOwnProperty('price'));
   }
 
   private assetTypeIsOneOf(...assetTypes: AssetType[]) {
@@ -408,6 +400,14 @@ export class AssetDetailComponent implements OnInit {
 
   private get isRightsManaged(): boolean {
     return this.rights === 'Rights Managed';
+  }
+
+  private get isRightsManagedWithValidPrice(): boolean {
+    return this.isRightsManaged && ((this.usagePrice !== null && this.usagePrice !== undefined && this.usagePrice > 0));
+  }
+
+  private get isRoyaltyFreeWithValidPrice(): boolean {
+    return this.isRoyaltyFree && this._asset.hasOwnProperty('price') && this._asset.price > 0;
   }
 
   private get markersAreDefined(): boolean {

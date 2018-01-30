@@ -19,8 +19,11 @@ export function main() {
     let mockEnhancedAsset: EnhancedMock.EnhancedAsset;
     let mockStore: MockAppStore;
     let initPricingSpy: jasmine.Spy;
+    let setPriceForDetailsSpy: jasmine.Spy;
+    let resetPricingSpy: jasmine.Spy;
+    let setAppliedAttributesSpy: jasmine.Spy;
     let componentUnderTest: AssetComponent;
-
+    let data: any;
     beforeEach(() => {
       mockCapabilities = { administerQuotes: () => false };
       mockUserPreference = {
@@ -41,57 +44,63 @@ export function main() {
       mockStore = new MockAppStore();
       initPricingSpy = mockStore.createActionFactoryMethod('pricing', 'initializePricing');
       mockStore.createActionFactoryMethod('pricing', 'calculatePrice');
-      mockStore.createActionFactoryMethod('pricing', 'setPriceForDetails');
-      mockStore.createActionFactoryMethod('pricing', 'setAppliedAttributes');
-
-      ['quoteEdit', 'cart'].forEach((storeType) => mockStore.createStateSection(storeType, {
-        data: {
-          id: 1,
-          projects: [
-            {
-              lineItems: [
-                { id: 'ABCD', asset: { timeStart: 1000, timeEnd: 2000 } },
-                { id: 'EFGH' }
-              ]
-            },
-            {
-              lineItems: [
-                {
-                  id: 'IJKL', asset: {}, attributes: [
-                    { priceAttributeName: 'a', selectedAttributeValue: '1' },
-                    { priceAttributeName: 'b', selectedAttributeValue: '2' },
-                    { priceAttributeName: 'c', selectedAttributeValue: '3' }
-                  ]
-                },
-                {
-                  id: 'MNOP', asset: {}, attributes: [
-                    { priceAttributeName: 'a', selectedAttributeValue: '1' },
-                    { priceAttributeName: 'b', selectedAttributeValue: '2' },
-                    { priceAttributeName: 'c', selectedAttributeValue: 'NOT 3' }
-                  ]
-                },
-                {
-                  id: 'QRST', asset: {}, attributes: [
-                    { priceAttributeName: 'a', selectedAttributeValue: '1' },
-                    { priceAttributeName: 'b', selectedAttributeValue: '2' }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+      setPriceForDetailsSpy = mockStore.createActionFactoryMethod('pricing', 'setPriceForDetails');
+      resetPricingSpy = mockStore.createActionFactoryMethod('pricing', 'resetPricing');
+      setAppliedAttributesSpy = mockStore.createActionFactoryMethod('pricing', 'setAppliedAttributes');
+      data = {
+        id: 1,
+        projects: [
+          {
+            lineItems: [
+              { id: 'ABCD', asset: { timeStart: 1000, timeEnd: 2000 } },
+              { id: 'EFGH' }
+            ]
+          },
+          {
+            lineItems: [
+              {
+                id: 'IJKL', asset: {}, attributes: [
+                  { priceAttributeName: 'a', selectedAttributeValue: '1' },
+                  { priceAttributeName: 'b', selectedAttributeValue: '2' },
+                  { priceAttributeName: 'c', selectedAttributeValue: '3' }
+                ]
+              },
+              {
+                id: 'MNOP', asset: {}, attributes: [
+                  { priceAttributeName: 'a', selectedAttributeValue: '1' },
+                  { priceAttributeName: 'b', selectedAttributeValue: '2' },
+                  { priceAttributeName: 'c', selectedAttributeValue: 'NOT 3' }
+                ]
+              },
+              {
+                id: 'QRST', asset: {}, attributes: [
+                  { priceAttributeName: 'a', selectedAttributeValue: '1' },
+                  { priceAttributeName: 'b', selectedAttributeValue: '2' }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+      ['quoteEdit', 'cart', 'quoteShow'].forEach((storeType) => mockStore.createStateSection(storeType, {
+        data: data
       }));
+      ['order'].forEach((storeType) => mockStore.createStateSection(storeType, {
+        activeOrder: data
+      }));
+
       componentUnderTest = new AssetComponent(
         mockCapabilities, mockWindow, mockRouter, mockRoute, mockStore, mockUserPreference, mockCartService, mockDialogService, null
       );
     });
 
     describe('ngOnInit()', () => {
+
       it('sets up an asset instance variable', () => {
         mockStore.createStateSection('asset', { activeAsset: mockAsset });
+        let expectedAsset: EnhancedMock.EnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collection', 100);
         componentUnderTest.assetType = 'collection';
         componentUnderTest.ngOnInit();
-        const expectedAsset: EnhancedMock.EnhancedAsset = EnhancedMock.enhanceAsset(mockAsset, 'collection', 100);
         expect(componentUnderTest.asset).toEqual(expectedAsset);
       });
 
@@ -142,6 +151,96 @@ export function main() {
             nestedObjectId: 'abc-123',
             nestedObjectType: 'lineItem'
           });
+        });
+      });
+
+      describe('Sets up the pricing correctly', () => {
+        beforeEach(() => {
+          mockStore.createStateSection('asset',
+            {
+              activeAsset: {
+                uuid: 'matching-uuid',
+                primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }]
+              }, activeAssetType: 'quoteShow'
+            });
+          componentUnderTest.assetType = 'quoteShow';
+        });
+
+        it('for a Rights Managed asset with a parent asset that has a price AND rights attributes', () => {
+
+          mockStore.createStateSection('quoteShow', {
+            data: {
+              id: 1,
+              projects: [{ lineItems: [{ id: 'matching-uuid', attributes: true, price: 10.00 }] }]
+            }
+          });
+          componentUnderTest.ngOnInit();
+          mockStore.expectDispatchFor(setPriceForDetailsSpy, 10.00);
+          mockStore.expectDispatchFor(setAppliedAttributesSpy, true);
+        });
+
+        it('for Rights Managed asset with a parent asset that has no price AND no rights attributes', () => {
+          mockStore.createStateSection('quoteShow', {
+            data: {
+              id: 1,
+              projects: [{ lineItems: [{ id: 'matching-uuid' }] }]
+            }
+          });
+          componentUnderTest.ngOnInit();
+          mockStore.expectDispatchFor(resetPricingSpy);
+        });
+
+        it('for Rights Managed asset with a parent asset that has a price BUT no rights attributes', () => {
+          mockStore.createStateSection('quoteShow', {
+            data: {
+              id: 1,
+              projects: [{ lineItems: [{ id: 'matching-uuid', price: 10.00 }] }]
+            }
+          });
+          componentUnderTest.ngOnInit();
+          mockStore.expectDispatchFor(resetPricingSpy);
+        });
+
+        it('for Rights Managed asset with a parent asset that has no price BUT has rights attributes', () => {
+          mockStore.createStateSection('quoteShow', {
+            data: {
+              id: 1,
+              projects: [{ lineItems: [{ id: 'matching-uuid', attrubtues: true }] }]
+            }
+          });
+          componentUnderTest.ngOnInit();
+          mockStore.expectDispatchFor(resetPricingSpy);
+        });
+
+        it('for Rights Managed asset with no parent asset', () => {
+          mockStore.createStateSection('quoteShow', {
+            data: {
+              id: 1,
+              projects: [{ lineItems: [{ id: 'non-matching-uuid', attrubtues: true }] }]
+            }
+          });
+          componentUnderTest.ngOnInit();
+          mockStore.expectDispatchFor(resetPricingSpy);
+        });
+
+        it('for a non Rights Managed asset', () => {
+          mockStore.createStateSection('asset',
+            {
+              activeAsset: {
+                uuid: 'matching-uuid',
+                primary: [{ name: 'Rights.Reproduction', value: 'Royalty Free' }]
+              }, activeAssetType: 'quoteShow'
+            });
+          mockStore.createStateSection('quoteShow', {
+            data: {
+              id: 1,
+              projects: [{ lineItems: [{ id: 'non-matching-uuid', attrubtues: true }] }]
+            }
+          });
+          componentUnderTest.ngOnInit();
+          expect(resetPricingSpy).not.toHaveBeenCalled();
+          expect(setPriceForDetailsSpy).not.toHaveBeenCalled();
+          expect(setAppliedAttributesSpy).not.toHaveBeenCalled();
         });
       });
     });
@@ -208,7 +307,7 @@ export function main() {
     describe('assetMatchesCartAsset()', () => {
       ['collection', 'order', 'quoteShow', 'search'].forEach((assetType: EnhancedMock.AssetType) => {
         it(`returns true (somewhat pointlessly) for an asset with type '${assetType}'`, () => {
-          mockStore.createStateSection(assetType, { activeAsset: mockAsset });
+          mockStore.createStateSection('asset', { activeAsset: mockAsset, activeAssetType: assetType });
           componentUnderTest.assetType = assetType;
           componentUnderTest.ngOnInit();
 

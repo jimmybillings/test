@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AddAssetParameters, Cart, PriceAttribute, Project } from '../shared/interfaces/commerce.interface';
+import { AddAssetParameters, Cart, PriceAttribute, Project, AssetLineItem } from '../shared/interfaces/commerce.interface';
 import { Pojo, SelectedPriceAttribute, WzEvent } from '../shared/interfaces/common.interface';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { CartService } from '../shared/services/cart.service';
@@ -42,9 +42,8 @@ export class AssetComponent implements OnInit, OnDestroy {
   private selectedAttributes: CommonInterface.Pojo;
   private appliedAttributes: SelectedPriceAttribute[];
   private subclipMarkers: SubclipMarkersInterface.SubclipMarkers = null;
-  private cartAsset: EnhancedAsset;
-  private cartAssetPriceAttributes: SelectedPriceAttribute[];
-
+  private parentAsset: EnhancedAsset;
+  private parentLineItem: AssetLineItem;
   constructor(
     public userCan: Capabilities,
     public window: WindowRef,
@@ -69,8 +68,8 @@ export class AssetComponent implements OnInit, OnDestroy {
         return enhanceAsset(clonedAsset, this.assetType, this.parentIdIn(this.route.snapshot.params));
       }).subscribe(asset => {
         this.asset = asset;
-        this.store.dispatch(factory => factory.pricing.setPriceForDetails(this.asset.price));
-        this.loadCorrespondingCartAsset();
+        this.loadCorrespondingParentAsset();
+        this.initializeRightsManagedPricing();
       });
 
     this.routeSubscription = this.route.params.subscribe((params: any) => {
@@ -145,9 +144,9 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   public get assetMatchesCartAsset(): boolean {
-    return this.cartAsset
+    return this.parentAsset
       ? this.subclipMarkersMatchCartAsset
-      : true; // We populate this.cartAsset for 'cart' and 'quoteEdit' types only.
+      : true; // We populate this.parentAsset for 'cart', 'quoteEdit' types only.
   }
 
   public onUpdateAssetLineItem(): void {
@@ -201,6 +200,18 @@ export class AssetComponent implements OnInit, OnDestroy {
     };
   }
 
+  private initializeRightsManagedPricing() {
+    // For a rights managed clip that has attributes and a price, set it in the price store.
+    if (this.asset.getMetadataValueFor('Rights.Reproduction') === 'Rights Managed') {
+      if (this.parentLineItem && this.parentLineItem.attributes && this.parentLineItem.price) {
+        this.setAllPricing(this.parentLineItem.price, this.parentLineItem.attributes);
+      } else {
+        // If the clip doesn't have the above then be sure to reset the price and rights.
+        this.store.dispatch(factory => factory.pricing.resetPricing());
+      }
+    }
+  }
+
   private dispatchActionForPricingEvent(event: WzEvent, dialogRef: MatDialogRef<WzPricingComponent>): void {
     switch (event.type) {
       case 'CALCULATE_PRICE':
@@ -215,8 +226,7 @@ export class AssetComponent implements OnInit, OnDestroy {
           this.userPreference.updatePricingPreferences(event.payload.preferences);
         }
         dialogRef.close();
-        this.store.dispatch(factory => factory.pricing.setPriceForDetails(event.payload.price));
-        this.store.dispatch(factory => factory.pricing.setAppliedAttributes(event.payload.attributes));
+        this.setAllPricing(event.payload.price, event.payload.attributes);
         if (this.assetType === 'quoteEdit') {
           this.store.dispatch(factory => factory.quoteEdit.editLineItemFromDetails(
             this.asset.uuid,
@@ -238,18 +248,24 @@ export class AssetComponent implements OnInit, OnDestroy {
     }
   }
 
-  private loadCorrespondingCartAsset(): void {
-    this.cartAsset = null;
-    this.cartAssetPriceAttributes = null;
+  private setAllPricing(price: number, attributes: SelectedPriceAttribute[]) {
+    this.store.dispatch(factory => factory.pricing.setPriceForDetails(price));
+    this.store.dispatch(factory => factory.pricing.setAppliedAttributes(attributes));
+  }
+
+  private loadCorrespondingParentAsset(): void {
+    this.parentAsset = null;
+    this.parentLineItem = null;
 
     let projects: Project[];
-
     switch (this.assetType) {
       case 'cart':
-        projects = this.store.snapshotCloned(state => state.cart.data.projects);
-        break;
       case 'quoteEdit':
-        projects = this.store.snapshotCloned(state => state.quoteEdit.data.projects);
+      case 'quoteShow':
+        projects = this.store.snapshotCloned((state: any) => state[this.assetType].data.projects);
+        break;
+      case 'order':
+        projects = this.store.snapshotCloned((state: any) => state[this.assetType].activeOrder.projects);
         break;
       default: return;
     }
@@ -258,15 +274,14 @@ export class AssetComponent implements OnInit, OnDestroy {
       .filter(project => project.lineItems)
       .reduce((lineItems, project) => lineItems.concat(project.lineItems), [])
       .find(lineItem => lineItem.id === this.asset.uuid);
-
     if (!lineItem) return;  // Could happen during initialization.
 
-    this.cartAsset = lineItem.asset ? enhanceAsset(lineItem.asset, this.assetType) : null;
-    this.cartAssetPriceAttributes = lineItem.attributes || [];
+    this.parentLineItem = lineItem;
+    this.parentAsset = lineItem.asset ? enhanceAsset(lineItem.asset, this.assetType) : null;
   }
 
   private get subclipMarkersMatchCartAsset(): boolean {
-    return SubclipMarkersInterface.matches(this.cartAsset.timeStart, this.cartAsset.timeEnd, this.subclipMarkers);
+    return SubclipMarkersInterface.matches(this.parentAsset.timeStart, this.parentAsset.timeEnd, this.subclipMarkers);
   }
 
   private commentParentObjectFromRoute(routeParams: any): CommentParentObject {

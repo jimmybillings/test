@@ -78,8 +78,9 @@ export class LineItemsComponent {
     return lineItem.transcodeTargets && lineItem.transcodeTargets.length > 0;
   }
 
-  public get shouldDisplayPricing(): boolean {
-    return !quotesWithoutPricing.includes(this.quoteType) && this.rmAssetsHaveAttributes;
+  public shouldDisplayPricing(lineItem: AssetLineItem): boolean {
+    return !quotesWithoutPricing.includes(this.quoteType) &&
+      (this.rmAssetHasAttributes(lineItem) || lineItem.rightsManaged === 'Royalty Free');
   }
 
   public onOpenCostMultiplierForm(lineItem: AssetLineItem): void {
@@ -123,5 +124,9 @@ export class LineItemsComponent {
 
   public removeNotesFrom(lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({ type: 'REMOVE_NOTE', payload: lineItem });
+  }
+
+  private rmAssetHasAttributes(lineItem: AssetLineItem): boolean {
+    return lineItem.rightsManaged === 'Rights Managed' && !!lineItem.attributes;
   }
 }
