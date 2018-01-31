@@ -177,6 +177,22 @@ export function main() {
       });
     });
 
+    describe('showTotal()', () => {
+      it('should return true the cart total is above 0', () => {
+        mockAppStore.createStateSection('cart', {
+          data: { total: 100 }
+        });
+        expect(componentUnderTest.showTotal).toBe(true);
+      });
+
+      it('should return false if the cart total is 0', () => {
+        mockAppStore.createStateSection('cart', {
+          data: { total: 0 }
+        });
+        expect(componentUnderTest.showTotal).toBe(false);
+      });
+    });
+
 
     describe('showUsageWarning()', () => {
       it('should return false if the cart is empty', () => {

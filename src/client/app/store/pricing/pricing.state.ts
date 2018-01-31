@@ -24,6 +24,10 @@ export function reducer(state: State = initialState, action: PricingActions.Any)
 
   switch (action.type) {
 
+    case PricingActions.ResetPricing.Type: {
+      return Common.clone(initialState);
+    }
+
     case PricingActions.CalculatePrice.Type: {
       return { ...Common.clone(state), selectedAttributes: action.selectedAttributes };
     }

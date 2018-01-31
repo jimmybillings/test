@@ -609,24 +609,24 @@ export function main() {
 
     describe('showDiscount()', () => {
       describe('returns false', () => {
-        it('when the quote does not have the property', () => {
+        it('when the quote does not have the discount property', () => {
           mockStore.createStateSection('quoteEdit', { data: {} });
           expect(componentUnderTest.showDiscount).toBe(false);
         });
 
-        it('when the quoteType is "Trial" and the quote DOES NOT have the property', () => {
+        it('when the quoteType is "Trial" and the quote DOES NOT have the discount property', () => {
           mockStore.createStateSection('quoteEdit', { data: { purchaseType: 'Trial' } });
           expect(componentUnderTest.showDiscount).toBe(false);
         });
 
-        it('when the quoteType is "Trial" and the quote DOES have the property', () => {
+        it('when the quoteType is "Trial" and the quote DOES have the discount property', () => {
           mockStore.createStateSection('quoteEdit', { data: { discount: '100', purchaseType: 'Trial' } });
           expect(componentUnderTest.showDiscount).toBe(false);
         });
       });
 
       describe('returns true', () => {
-        it('when the quote does have the property AND the quoteType is NOT Trial', () => {
+        it('when the quote does have the discount property AND the quoteType is NOT Trial', () => {
           mockStore.createStateSection('quoteEdit', { data: { discount: '100', purchaseType: 'NotTrial' } });
           expect(componentUnderTest.showDiscount).toBe(true);
         });

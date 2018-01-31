@@ -195,14 +195,12 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
 
   public get showTotal(): boolean {
     return this.store.snapshot(factory => factory.quoteEdit.data.total > 0) &&
-      !quotesWithoutPricing.includes(this.quoteType) &&
-      this.rmAssetsHaveRightsPackage;
+      !quotesWithoutPricing.includes(this.quoteType);
   }
 
   public get showDiscount(): boolean {
     return this.store.snapshot(factory => factory.quoteEdit.data.discount > 0) &&
-      !quotesWithoutPricing.includes(this.quoteType) &&
-      this.rmAssetsHaveRightsPackage;
+      !quotesWithoutPricing.includes(this.quoteType);
   }
 
   public get shouldShowCloneButton(): Observable<boolean> {

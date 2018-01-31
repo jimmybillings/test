@@ -57,7 +57,7 @@
           </line-item-actions-component>
           <div *ngIf="!readOnly" flex="100" layout="row" layout-xs="column" class="divider"></div>
           <line-item-price-component
-            *ngIf="shouldDisplayPricing"
+            *ngIf="shouldDisplayPricing(lineItem)"
             [price]="lineItem.price"
             [itemPrice]="lineItem.itemPrice"
             [grossAssetPrice]="lineItem.grossAssetPrice"

@@ -10,7 +10,7 @@ import { FormFields } from '../../../shared/interfaces/forms.interface';
   template: `
     <asset-component
       [commentFormConfig]="commentFormConfig"
-      [assetType]="'orderAsset'">
+      [assetType]="'order'">
     </asset-component>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

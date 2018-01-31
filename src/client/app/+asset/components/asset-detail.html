@@ -208,14 +208,13 @@
               {{ 'PRICING.CALCULATE_HEADING' | translate }}
             </button>
           </section>
-          <section *ngIf="canShowPricingAndCartActions" layout="column" layout-align="center center">
-            <div *ngIf="hasPrice" class="list-price">
-              <span  *ngIf="!priceIsRmStartingPrice" class="price">
+          <section layout="column" layout-align="center center">
+            <div *ngIf="canShowPrice" class="list-price">
+              <span class="price">
                 {{ price | currency:'USD':true:'1.2-2' }}
               </span>
             </div>
-
-            <div *ngIf="hasNoPrice" class="contact-us-pricing">
+            <div *ngIf="canShowNoPricingAvailableNotice" class="contact-us-pricing">
               {{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}
             </div>
           </section>

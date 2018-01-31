@@ -174,6 +174,10 @@ export class CartTabComponent extends Tab implements OnDestroy, OnInit {
     return validAssets.indexOf(false) === -1;
   }
 
+  public get showTotal(): boolean {
+    return this.store.snapshot(factory => factory.cart.data.total > 0);
+  }
+
   public get cartContainsNoAssets(): boolean {
     return (this.cartService.state.data.itemCount === 0) ? true : false;
   }

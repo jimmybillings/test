@@ -3,7 +3,7 @@
     <wz-playback-toggle-button [playerState]="playerState" (request)="forward($event)"></wz-playback-toggle-button>
     <wz-fast-playback-button [playerState]="playerState" [direction]="'forward'" (request)="forward($event)">
     </wz-fast-playback-button>
-    <wz-time-display [playerState]="playerState"></wz-time-display>
+    <wz-time-display [playerState]="playerState" (request)="forward($event)"></wz-time-display>
     <wz-timecode-format-button [playerState]="playerState" (request)="forward($event)"></wz-timecode-format-button>
   </nav>
   <nav class="step-playback" flex layout="row" layout-align="center center">

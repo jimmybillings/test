@@ -7,6 +7,10 @@ import { DefaultComponentOptions } from '../../shared/modules/wz-dialog/interfac
 import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 
 export class ActionFactory {
+  public resetPricing(): ResetPricing {
+    return new ResetPricing();
+  }
+
   public setPriceForDetails(price: number): SetPriceForDetails {
     return new SetPriceForDetails(price);
   }
@@ -87,6 +91,12 @@ export class GetAttributesFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
+
+export class ResetPricing implements Action {
+  public static readonly Type = '[Pricing] Reset Pricing';
+  public readonly type = ResetPricing.Type;
+}
+
 export class SetPriceForDetails implements Action {
   public static readonly Type = '[Pricing] Set Price For Details';
   public readonly type = SetPriceForDetails.Type;
@@ -139,5 +149,5 @@ export class OpenDialog implements Action {
   constructor(public readonly dialogOptions: DefaultComponentOptions) { }
 }
 
-export type Any = GetAttributes | GetAttributesSuccess | GetAttributesFailure | SetPriceForDetails | OpenDialog |
+export type Any = GetAttributes | GetAttributesSuccess | GetAttributesFailure | ResetPricing | SetPriceForDetails | OpenDialog |
   SetPriceForDialog | SetAppliedAttributes | CalculatePrice | CalculatePriceSuccess | CalculatePriceFailure | InitializePricing;
