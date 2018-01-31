@@ -231,6 +231,23 @@ export function main() {
       });
     });
 
+    describe('nothingToDownload()', () => {
+      describe('returns true', () => {
+        it('when the asset on the lineItem does not have a downloadUrl and transcodeStatus is  \'Completed\'', () => {
+          expect(componentUnderTest.nothingToDownload({ transcodeStatus: 'Completed' })).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the asset on the lineItem does not have a downloadUrl and the transcodeStatus is any but \'Completed\'', () => {
+          expect(componentUnderTest.nothingToDownload({ transcodeStatus: 'Failed', downloadUrl: null })).toBe(false);
+        });
+        it('when the asset on the lineItem has a downloadUrl and the transcodeStatus is \'Completed\'', () => {
+          expect(componentUnderTest.nothingToDownload({ transcodeStatus: 'Completed', downloadUrl: 'some-url.mov' })).toBe(false);
+        });
+      });
+    });
+
     describe('showAsperaButtonFor()', () => {
       describe('returns true', () => {
         it('when the transcode status on the lineItem is \'Completed\' and there is an asperaSpec', () => {

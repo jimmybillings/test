@@ -85,6 +85,10 @@ export class OrderShowComponent {
     return !!lineItem.downloadUrl;
   }
 
+  public nothingToDownload(lineItem: AssetLineItem): boolean {
+    return !lineItem.downloadUrl && lineItem.transcodeStatus === 'Completed';
+  }
+
   public showAsperaButtonFor(lineItem: AssetLineItem): boolean {
     return lineItem.transcodeStatus === 'Completed' && !!lineItem.asperaSpec;
   }
