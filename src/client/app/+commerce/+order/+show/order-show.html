@@ -181,7 +181,7 @@
                       <div class="tools" flex="100" layout-padding>
                         <button
                           *ngIf="showDownloadButtonFor(lineItem); else noDownloadAvailable"
-                          [disabled]="!lineItem.downloadUrl"
+                          [disabled]="!lineItem.tomCompleteTimestamp"
                           (click)="download(lineItem.downloadUrl)"
                           mat-button
                           color="primary"
@@ -193,14 +193,15 @@
                         </button>
                         <ng-template #noDownloadAvailable>
                           <button
+                            *ngIf="!nothingToDownload(lineItem)" 
                             disabled="true"
                             mat-button
                             color="primary"
                             class="is-outlined download">
-                            <mat-icon class="transcode-icon spinner">
-                              {{ 'ORDER.SHOW.TRANSCODE_ICON.Submitted' | translate }}
+                            <mat-icon class="transcode-icon" [ngClass]="{'spinner': lineItem.transcodeStatus === 'Submitted'}">
+                              {{ 'ORDER.SHOW.TRANSCODE_ICON.' + lineItem.transcodeStatus | translate }}
                             </mat-icon>
-                            <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.Submitted' | translate }}</span>
+                            <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.' +  lineItem.transcodeStatus | translate }}</span>
                           </button>
                         </ng-template>
                         <button 
