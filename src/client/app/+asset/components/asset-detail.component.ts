@@ -277,6 +277,10 @@ export class AssetDetailComponent implements OnInit {
     return this.assetTypeIsOneOf('cart', 'quoteEdit');
   }
 
+  public get canUpdateCollectionAsset(): boolean {
+    return this.assetTypeIsOneOf('collection');
+  }
+
   public get updateCartAssetButtonLabelKey(): string {
     const subclipOrAsset: string = this.markersAreDefined ? 'SUBCLIP' : 'ASSET';
     const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';

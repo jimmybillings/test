@@ -228,7 +228,7 @@
         flex="noshrink" 
         layout="column" 
         layout-gt-xs="row"
-        layout-align="end end">
+        layout-align="space-between end">
         <button *ngIf="canUpdateCartAsset"
           [disabled]="assetMatchesCartAsset"
           mat-raised-button
@@ -237,8 +237,8 @@
           color="primary">
           {{ updateCartAssetButtonLabelKey | translate }}
         </button>
-        <button *ngIf="canUpdateInActiveCollection"
-          [disabled]="!(userCanEditCollection | async)"
+        <button *ngIf="canUpdateCollectionAsset && userCanEditCollection | async"
+          [disabled]="!canUpdateInActiveCollection"
           title="{{ 'COLLECTION.UPDATE_IN_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
           mat-raised-button
           (click)="updateAssetInActiveCollection()"
