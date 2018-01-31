@@ -52,7 +52,7 @@ export class WzFormBase implements OnInit, OnChanges {
     formFields.forEach((field: any) => {
       for (let control in this.form.controls) {
         if (control === field.name) {
-          (<FormControl>this.form.controls[control]).patchValue(field.value);
+          (<FormControl>this.form.controls[control]).patchValue(field.value, { emitEvent: false });
         }
       }
       if (this.autosize) this.autosize.resizeToFitContent();
@@ -80,7 +80,7 @@ export class WzFormBase implements OnInit, OnChanges {
   }
 
   public setValueForField(field: string, value: string): void {
-    (<FormControl>this.form.controls[field]).patchValue(value);
+    (<FormControl>this.form.controls[field]).patchValue(value, { emitEvent: false });
   }
 
   public activateForm(): void {

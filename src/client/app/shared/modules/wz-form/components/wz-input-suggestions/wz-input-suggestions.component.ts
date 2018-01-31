@@ -86,7 +86,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   public selectSuggestion(suggestion: string) {
     const tempSuggestion: string = this.activeSuggestion;
     this.closeSuggestions();
-    this.fControl.setValue(suggestion);
+    this.fControl.patchValue(suggestion, { emitEvent: false });
     if (!!this.matchOnProperty) {
       // A timeout here to help fix animation lag when
       // other external processing may be happening. Without it
@@ -184,16 +184,11 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
 
   private setActiveSuggestion(suggestion: string) {
     this.activeSuggestion = suggestion;
-    this.fControl.setValue(suggestion);
+    this.fControl.patchValue(suggestion, { emitEvent: false });
     this.detector.markForCheck();
   }
 
   private normalizeSuggestions(suggestions: Array<string>) {
-    if (!this.isCollection()) {
-      var index = suggestions.indexOf(this.fControl.value);
-      if (index > -1) suggestions.splice(index, 1);
-    }
-
     suggestions.unshift(this.fControl.value);
     return suggestions;
   }
