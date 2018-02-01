@@ -13,9 +13,6 @@ export function currentUser(state = {}, action: LegacyAction) {
         ...action.payload
       };
     case 'SET_ACCOUNT_ON_USER':
-      console.log({
-        ...state, account: action.payload
-      });
       return {
         ...state, account: action.payload
       };
