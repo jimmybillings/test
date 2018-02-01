@@ -26,8 +26,9 @@ export function main() {
       it('represents the store\'s active order', () => {
         mockAppStore.createStateElement('order', 'activeOrder', { some: 'order', projects: [] });
         componentUnderTest = new OrderShowComponent(mockWindow, mockAppStore);
-
-        expect(componentUnderTest.orderObservable).toEqual(Observable.of({ some: 'order', projects: [] }));
+        let currentOrder;
+        componentUnderTest.orderObservable.subscribe(order => currentOrder = order);
+        expect(currentOrder).toEqual({ some: 'order', projects: [] });
       });
 
       it('contains enhanced assets', () => {

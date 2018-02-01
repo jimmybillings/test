@@ -19,22 +19,20 @@ export class OrderShowComponent {
   public noteVisibilityMap: { [index: string]: boolean } = {};
 
   constructor(private window: WindowRef, private store: AppStore) {
-    this.orderObservable = this.store.select(state => {
-      const order: Order = Common.clone(state.order.activeOrder);
-
-      order.projects.forEach((project: Project) => {
-        if (!project.lineItems) return;
-
-        project.lineItems.forEach((lineItem: AssetLineItem) => {
-          lineItem.asset = enhanceAsset(
-            Object.assign(lineItem.asset, { uuid: lineItem.id }),
-            'order', order.id
-          );
+    this.orderObservable = this.store.select(state => state.order.activeOrder)
+      .map((currentOrder) => {
+        const order: Order = Common.clone(currentOrder);
+        order.projects = order.projects.map((project: Project) => {
+          if (project.lineItems) {
+            project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
+              lineItem.asset = enhanceAsset(Object.assign(lineItem.asset, { uuid: lineItem.id }), 'order', order.id);
+              return lineItem;
+            });
+          }
+          return project;
         });
+        return order;
       });
-
-      return order;
-    });
   }
 
   public download(url: string): void {

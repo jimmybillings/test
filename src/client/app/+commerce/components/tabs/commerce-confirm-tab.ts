@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
-import { CartState, QuoteState, PaymentOption } from '../../../shared/interfaces/commerce.interface';
+import { CartState, QuoteState, PaymentOption, Project } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { Common } from '../../../shared/utilities/common.functions';
@@ -37,6 +37,10 @@ export class CommerceConfirmTab extends Tab {
 
   public get data(): Observable<any> {
     return this.commerceService.data.map((state: QuoteState | CartState) => state.data);
+  }
+
+  public get projects(): Observable<Project[]> {
+    return this.commerceService.projects;
   }
 
   public get paymentType(): Observable<PaymentOption> {
