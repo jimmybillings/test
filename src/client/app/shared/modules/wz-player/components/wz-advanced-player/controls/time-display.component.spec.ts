@@ -7,7 +7,7 @@ export function main() {
   describe('Time Display Component', () => {
     let componentUnderTest: TimeDisplayComponent;
     let focused: boolean = false;
-    let mockKeyboardEvent: any
+    let mockKeyboardEvent: any;
 
     beforeEach(() => {
       componentUnderTest = new TimeDisplayComponent();
@@ -234,7 +234,7 @@ export function main() {
           it(`passes '${key}' through`, () => {
             expectKeyDownToPassThroughFor(key);
           });
-        })
+        });
 
         it(`suppresses 'Enter' and does not apply the input when it is empty`, () => {
           componentUnderTest.timeInput.nativeElement.value = '';
