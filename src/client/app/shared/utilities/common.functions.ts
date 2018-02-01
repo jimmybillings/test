@@ -87,6 +87,14 @@ export class Common {
     return new Date(utcDate.getTime() + offsetInMilliseconds + fudgeFactor);
   }
 
+  public static isNullOrUndefined(value: any): boolean {
+    return typeof value === 'undefined' || value === null;
+  }
+
+  public static isNotNullOrUndefined(value: any): boolean {
+    return !Common.isNullOrUndefined(value);
+  }
+
   private static isObject(item: any): boolean {
     return Common.isDefined(item) && typeof item === 'object' && !Array.isArray(item);
   }
