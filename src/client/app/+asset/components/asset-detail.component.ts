@@ -11,7 +11,7 @@ import { AppStore, ActionFactoryMapper, PricingState } from '../../app.store';
 import { EnhancedAsset, AssetType } from '../../shared/interfaces/enhanced-asset';
 import { CommentParentObject } from '../../shared/interfaces/comment.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
-import { SearchState } from '../../shared/services/search-context.service';
+import { SearchParams } from '../../shared/interfaces/search.interface';
 import { AssetShareDialogOptions } from '../../shared/interfaces/asset.interface';
 
 @Component({
@@ -37,7 +37,7 @@ export class AssetDetailComponent implements OnInit {
   @Input() public userCan: Capabilities;
   @Input() public usagePrice: number;
   @Input() public window: Window;
-  @Input() public searchContext: SearchState;
+  @Input() public searchContext: SearchParams;
   @Input() public assetMatchesCartAsset: boolean;
   @Input() public commentParentObject: CommentParentObject;
   @Input() public commentFormConfig: FormFields;

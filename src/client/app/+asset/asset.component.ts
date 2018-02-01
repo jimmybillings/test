@@ -18,9 +18,10 @@ import * as SubclipMarkersInterface from '../shared/interfaces/subclip-markers';
 import { AppStore, StateMapper, PricingState } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { CommentParentObject, ObjectType } from '../shared/interfaces/comment.interface';
+import { SearchParams } from '../shared/interfaces/search.interface';
 import { FormFields } from '../shared/interfaces/forms.interface';
 import { Common } from '../shared/utilities/common.functions';
-import { SearchContext, SearchState } from '../shared/services/search-context.service';
+import { SearchContext } from '../shared/services/search-context.service';
 import { AssetShareComponent } from './components/asset-share.component';
 import { AssetShareDialogOptions } from '../shared/interfaces/asset.interface';
 
@@ -96,7 +97,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     return this.store.select(state => state.pricing.priceForDetails);
   }
 
-  public get searchContextState(): SearchState {
+  public get searchContextState(): SearchParams {
     return this.searchContext.state;
   }
 

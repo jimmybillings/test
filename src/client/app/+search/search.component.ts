@@ -1,5 +1,4 @@
 import { Component, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { SearchService } from '../shared/services/search.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { SearchContext } from '../shared/services/search-context.service';
@@ -14,7 +13,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
 import { AppStore } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
-import { EnhancedAsset } from '../shared/interfaces/enhanced-asset';
+import { EnhancedAsset, enhanceAsset } from '../shared/interfaces/enhanced-asset';
+import { Asset } from '../shared/interfaces/common.interface';
+import { SearchResults } from '../shared/interfaces/search.interface';
 /**
  * Asset search page component - renders search page results
  */
@@ -29,11 +30,11 @@ export class SearchComponent implements OnDestroy {
   public screenWidth: number;
   public path: any;
   public userPreferences: UserPreferenceService;
-  public search: SearchService;
   public sortDefinition: SortDefinitionsService;
   public enhancedAssets: EnhancedAsset[];
   public enhancedAssetsSubScription: Subscription;
   public filtersAreAvailable: Observable<boolean>;
+  public results: Observable<SearchResults>;
   @ViewChild(WzSpeedviewComponent) public wzSpeedview: WzSpeedviewComponent;
 
   constructor(
@@ -42,7 +43,6 @@ export class SearchComponent implements OnDestroy {
     private cart: CartService,
     private sortDefinitionService: SortDefinitionsService,
     private searchContext: SearchContext,
-    private searchService: SearchService,
     private userPreferencesService: UserPreferenceService,
     private window: WindowRef,
     private route: ActivatedRoute,
@@ -50,12 +50,13 @@ export class SearchComponent implements OnDestroy {
     private detector: ChangeDetectorRef,
     private store: AppStore
   ) {
+    this.results = this.store.select(state => state.search.results);
     this.screenWidth = this.window.nativeWindow.innerWidth;
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
     this.userPreferences = userPreferencesService;
-    this.search = searchService;
-    this.enhancedAssetsSubScription = this.search.enhancedAssets
-      .subscribe(enhancedAssets => this.enhancedAssets = enhancedAssets);
+    this.enhancedAssetsSubScription = this.store.selectCloned(state => state.search.results.items).subscribe(assets => {
+      this.enhancedAssets = assets.map(asset => enhanceAsset(asset, 'search'));
+    });
     this.sortDefinition = sortDefinitionService;
     this.router.events.subscribe(route => {
       this.path = (this.route.snapshot.params['gq']) ? JSON.parse(this.route.snapshot.params['gq']) : '';
@@ -65,7 +66,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.search.clearAssets();
+    this.store.dispatch(factory => factory.search.reset());
     this.enhancedAssetsSubScription.unsubscribe();
   }
 
@@ -74,8 +75,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   public countToggle(): void {
-    this.filter.load(this.searchContext.state, !this.userPreferences.state.displayFilterCounts)
-      .subscribe((_) => { return _; });
+    this.filter.load(this.searchContext.state, !this.userPreferences.state.displayFilterCounts).subscribe();
     this.userPreferences.toggleFilterCount();
   }
 

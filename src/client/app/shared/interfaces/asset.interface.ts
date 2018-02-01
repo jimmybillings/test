@@ -3,10 +3,6 @@ import { EnhancedAsset } from './enhanced-asset';
 import { SubclipMarkers } from './subclip-markers';
 import { FormFields } from './forms.interface';
 
-export interface SearchResult extends Pagination {
-  items?: Array<Asset>;
-}
-
 export interface SpeedviewEvent {
   asset: Asset;
   position: Coords;
