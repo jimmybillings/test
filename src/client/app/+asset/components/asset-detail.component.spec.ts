@@ -151,65 +151,6 @@ export function main() {
       });
     });
 
-    describe('removeAssetFromCartOrQuote()', () => {
-      describe('for cart', () => {
-        beforeEach(() => {
-          asset.type = 'cart';
-          componentUnderTest.asset = asset;
-        });
-
-        it('dispatches the confirmation prompt', () => {
-          const spy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
-          componentUnderTest.removeAssetFromCartOrQuote();
-          mockStore.expectDispatchFor(spy, {
-            title: 'CART.REMOVE_ASSET.TITLE',
-            message: 'CART.REMOVE_ASSET.MESSAGE',
-            accept: 'CART.REMOVE_ASSET.ACCEPT',
-            decline: 'CART.REMOVE_ASSET.DECLINE'
-          }, jasmine.any(Function));
-        });
-
-        it('dispatches the correct action via the onAccept callback', () => {
-          const dialogSpy: any = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
-          const removeSpy: any = mockStore.createActionFactoryMethod('cart', 'removeAsset');
-          dialogSpy.and.callFake((_: any, onAcceptCallback: Function) => {
-            dialogSpy.onAcceptCallback = onAcceptCallback;
-          });
-          componentUnderTest.removeAssetFromCartOrQuote();
-          dialogSpy.onAcceptCallback();
-          mockStore.expectDispatchFor(removeSpy, componentUnderTest.asset);
-        });
-      });
-
-      describe('for quote', () => {
-        beforeEach(() => {
-          asset.type = 'quoteEdit';
-          componentUnderTest.asset = asset;
-        });
-        it('dispatches the confirmation prompt', () => {
-          const spy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
-          componentUnderTest.removeAssetFromCartOrQuote();
-          mockStore.expectDispatchFor(spy, {
-            title: 'QUOTE.REMOVE_ASSET.TITLE',
-            message: 'QUOTE.REMOVE_ASSET.MESSAGE',
-            accept: 'QUOTE.REMOVE_ASSET.ACCEPT',
-            decline: 'QUOTE.REMOVE_ASSET.DECLINE'
-          }, jasmine.any(Function));
-        });
-
-        it('dispatches the correct action via the onAccept callback', () => {
-          const dialogSpy: any = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
-          const removeSpy: any = mockStore.createActionFactoryMethod('quoteEdit', 'removeAsset');
-          dialogSpy.and.callFake((_: any, onAcceptCallback: Function) => {
-            dialogSpy.onAcceptCallback = onAcceptCallback;
-          });
-          componentUnderTest.removeAssetFromCartOrQuote();
-          dialogSpy.onAcceptCallback();
-          mockStore.expectDispatchFor(removeSpy, componentUnderTest.asset);
-        });
-      });
-    });
-
     describe('previousPage()', () => {
       it('Should emit an event to go back to the previous page', () => {
         spyOn(componentUnderTest.onPreviousPage, 'emit');
@@ -522,7 +463,7 @@ export function main() {
       });
 
       it('returns true for a rights managed asset and calculatePrice capability', () => {
-        expect(componentUnderTest.canCalculatePrice).toBe(true);
+        expect(componentUnderTest.canEditOrApplyRights).toBe(true);
       });
 
       it('returns false for a non-rights managed asset', () => {
@@ -531,7 +472,7 @@ export function main() {
           'search'
         );
 
-        expect(componentUnderTest.canCalculatePrice).toBe(false);
+        expect(componentUnderTest.canEditOrApplyRights).toBe(false);
       });
 
       it('returns false without calculatePrice capability', () => {
@@ -556,6 +497,96 @@ export function main() {
           componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
 
           expect(componentUnderTest.canUpdateCartAsset).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('canUpdateCollectionAsset getter', () => {
+      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
+        { assetType: 'cart', expectedResult: false },
+        { assetType: 'collection', expectedResult: true },
+        { assetType: 'order', expectedResult: false },
+        { assetType: 'quoteEdit', expectedResult: false },
+        { assetType: 'quoteShow', expectedResult: false },
+        { assetType: 'search', expectedResult: false },
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
+
+          expect(componentUnderTest.canUpdateCollectionAsset).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('canEditCollectionSubclipMarkers getter', () => {
+      const tests: { markers: boolean, assetType: AssetType, expectedResult: boolean }[] = [
+        { markers: true, assetType: 'cart', expectedResult: false },
+        { markers: true, assetType: 'collection', expectedResult: true },
+        { markers: false, assetType: 'collection', expectedResult: false },
+        { markers: true, assetType: 'order', expectedResult: false },
+        { markers: true, assetType: 'quoteEdit', expectedResult: false },
+        { markers: true, assetType: 'quoteShow', expectedResult: false },
+        { markers: true, assetType: 'search', expectedResult: false },
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'` +
+          ` and subclip markers are ${test.markers ? '' : 'not '}defined `, () => {
+            componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
+            if (test.markers) componentUnderTest.subclipMarkers = { in: { some: 'frame' }, out: { some: 'frame' } } as any;
+
+            expect(componentUnderTest.canEditCollectionSubclipMarkers).toBe(test.expectedResult);
+          });
+      });
+    });
+
+    describe('collectionSubclipButtonHoverTxt getter', () => {
+      const tests: { active: boolean, isSubclipped: boolean, expectedKey: string }[] = [
+        { active: true, isSubclipped: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.ACTIVE' },
+        { active: true, isSubclipped: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.ACTIVE' },
+        { active: false, isSubclipped: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.DISABLED' },
+        { active: false, isSubclipped: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.DISABLED' }
+      ];
+
+      tests.forEach(test => {
+        const description: string = `returns ${test.expectedKey}` +
+          ` for a collection asset with existing subclipping ${test.isSubclipped ? '' : 'not '}defined` +
+          ` and update button is ${test.active ? 'active' : 'disabled'}`;
+
+        it(description, () => {
+          componentUnderTest.activeCollection = collection;
+          componentUnderTest.subclipMarkers = test.active ? {
+            in: new Frame(25).setFromFrameNumber(1),
+            out: test.active ? new Frame(25).setFromFrameNumber(2) : new Frame(25).setFromFrameNumber(3)
+          } : null;
+          componentUnderTest.asset = enhanceAsset({
+            ...asset,
+            uuid: test.active ? 'MNOP' : 'NOPE',
+            timeStart: test.isSubclipped ? 103 : null,
+            timeEnd: test.isSubclipped ? 1000 : null,
+          }, 'collection');
+          componentUnderTest.showAssetSaveSubclip = test.active;
+
+          expect(componentUnderTest.collectionSubclipButtonHoverTxt).toBe(test.expectedKey);
+        });
+      });
+    });
+
+    describe('collectionSubclipButtonLabel getter', () => {
+      const tests: { isSubclipped: boolean, expectedKey: string }[] = [
+        { isSubclipped: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.COLLECTION' },
+        { isSubclipped: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.COLLECTION' }
+      ];
+
+      tests.forEach(test => {
+        const description: string = `returns ${test.expectedKey}` +
+          ` for a collection asset with subclipping ${test.isSubclipped ? '' : 'not '}defined`;
+
+        it(description, () => {
+          if (test.isSubclipped) componentUnderTest.asset = enhanceAsset({ timeStart: 103, timeEnd: 1000 } as any, 'collection');
+          expect(componentUnderTest.collectionSubclipButtonLabel).toBe(test.expectedKey);
         });
       });
     });
@@ -672,28 +703,6 @@ export function main() {
         });
       });
     });
-
-    describe('removeFromCartOrQuoteButtonLabelKey getter', () => {
-      const tests: { quoteUser: boolean, markers: boolean, expectedKey: string }[] = [
-        { quoteUser: true, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.REMOVE.ASSET.QUOTE' },
-        { quoteUser: false, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.REMOVE.ASSET.CART' },
-        { quoteUser: true, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.REMOVE.SUBCLIP.QUOTE' },
-        { quoteUser: false, markers: true, expectedKey: 'ASSET.DETAIL.BUTTON.REMOVE.SUBCLIP.CART' },
-      ];
-
-      tests.forEach(test => {
-        const description: string = `returns ${test.expectedKey}` +
-          ` for a user ${test.quoteUser ? 'with' : 'without'} quote administrator capabililty and` +
-          ` an asset with markers ${test.markers ? '' : 'not '}defined`;
-
-        it(description, () => {
-          componentUnderTest.userCan = { administerQuotes: () => test.quoteUser } as any;
-          if (test.markers) componentUnderTest.asset = { isSubclipped: () => test.markers } as any;
-          expect(componentUnderTest.removeFromCartOrQuoteButtonLabelKey).toBe(test.expectedKey);
-        });
-      });
-    });
-
 
     describe('canGoToSearchDetails getter', () => {
       const tests: { assetType: AssetType, accessPath?: string, expectedResult: boolean }[] = [

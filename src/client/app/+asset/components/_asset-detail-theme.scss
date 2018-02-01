@@ -102,4 +102,14 @@
       color:mat-color($background, background, .72);
     }
   }
+  .subclip-update-button {
+    [mat-button].is-outlined.mat-primary {
+      color: mat-color($primary, lighter, .8);
+      border-color: mat-color($primary, lighter, .5);
+    }
+    [mat-button].is-outlined.mat-primary[disabled] {
+      color: mat-color($primary, lighter, .25);
+      border-color: mat-color($primary, lighter, .2);
+    }
+  }
 }

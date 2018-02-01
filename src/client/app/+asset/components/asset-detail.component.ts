@@ -250,7 +250,8 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canShowNoPricingAvailableNotice(): boolean {
-    return (this.isRoyaltyFree || this.isRightsManaged) && !this._asset.hasOwnProperty('price');
+    return (this.assetTypeIsOneOf('order', 'quoteShow')) ? false :
+      (this.isRoyaltyFree || this.isRightsManaged) && !this._asset.hasOwnProperty('price');
   }
 
   public get price(): number {
@@ -267,12 +268,32 @@ export class AssetDetailComponent implements OnInit {
     return this.isRoyaltyFree && this.userCan.addToCart() && !!this._asset.transcodeTargets;
   }
 
-  public get canCalculatePrice(): boolean {
-    return this.isRightsManaged && this.userCan.calculatePrice();
+  public get canEditOrApplyRights(): boolean {
+    return (this.asset.type !== 'order' && this.asset.type !== 'quoteShow')
+      && this.isRightsManaged && this.userCan.calculatePrice();
   }
 
   public get canUpdateCartAsset(): boolean {
     return this.assetTypeIsOneOf('cart', 'quoteEdit');
+  }
+
+  public get canUpdateCollectionAsset(): boolean {
+    return this.assetTypeIsOneOf('collection');
+  }
+
+  public get canEditCollectionSubclipMarkers(): boolean {
+    return this.canUpdateCollectionAsset && this.markersAreDefined;
+  }
+  public get collectionSubclipButtonHoverTxt(): string {
+    const active: string = this.canUpdateInActiveCollection ? 'ACTIVE' : 'DISABLED';
+    const markers: string = this._asset.isSubclipped ? 'UPDATE' : 'ADD_NEW';
+
+    return `ASSET.DETAIL.BUTTON.${markers}.SUBCLIP.${active}`;
+  }
+  public get collectionSubclipButtonLabel(): string {
+    const markers: string = this._asset.isSubclipped ? 'UPDATE' : 'ADD_NEW';
+
+    return `ASSET.DETAIL.BUTTON.${markers}.SUBCLIP.COLLECTION`;
   }
 
   public get updateCartAssetButtonLabelKey(): string {
@@ -287,7 +308,8 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canAddToCart(): boolean {
-    return this.userCan.addToCart() && this.canBePurchased(this.asset);
+    return this.userCan.addToCart() && this.canBePurchased(this.asset)
+      && this.assetTypeIsOneOf('search', 'collection');
   }
 
   public get primaryAssetFields(): Metadatum | { value: string }[] {
@@ -305,13 +327,6 @@ export class AssetDetailComponent implements OnInit {
     const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
 
     return `ASSET.DETAIL.BUTTON.${operation}.${subclipOrAsset}.${quoteOrCart}`;
-  }
-
-  public get removeFromCartOrQuoteButtonLabelKey(): string {
-    const subclipOrAsset: string = this._asset.isSubclipped ? 'SUBCLIP' : 'ASSET';
-    const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';
-
-    return `ASSET.DETAIL.BUTTON.REMOVE.${subclipOrAsset}.${quoteOrCart}`;
   }
 
   public get canGoToSearchAssetDetails(): boolean {
@@ -338,19 +353,6 @@ export class AssetDetailComponent implements OnInit {
 
   public get commentCount(): Observable<number> {
     return this.store.select(state => state.comment[state.comment.activeObjectType].pagination.totalCount);
-  }
-
-  public removeAssetFromCartOrQuote(): void {
-    const type: string = this._asset.type === 'quoteEdit' ? 'QUOTE' : 'CART';
-    this.store.dispatch(factory => factory.dialog.showConfirmation({
-      title: `${type}.REMOVE_ASSET.TITLE`,
-      message: `${type}.REMOVE_ASSET.MESSAGE`,
-      accept: `${type}.REMOVE_ASSET.ACCEPT`,
-      decline: `${type}.REMOVE_ASSET.DECLINE`
-    }, () => this.store.dispatch(factory => this._asset.type === 'quoteEdit'
-      ? factory.quoteEdit.removeAsset(this._asset)
-      : factory.cart.removeAsset(this._asset))
-    ));
   }
 
   public get showDownloadButton(): boolean {
