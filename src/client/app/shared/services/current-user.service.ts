@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-
+import { Account } from '../interfaces/account.interface';
 import { LegacyAction } from '../interfaces/common.interface';
 import { User } from '../interfaces/user.interface';
 
@@ -9,8 +9,13 @@ export function currentUser(state = {}, action: LegacyAction) {
 
   switch (action.type) {
     case 'SET_USER':
-      return Object.assign({}, action.payload);
-
+      return {
+        ...action.payload
+      };
+    case 'SET_ACCOUNT_ON_USER':
+      return {
+        ...state, account: action.payload
+      };
     default:
       return state;
   }
@@ -44,7 +49,15 @@ export class CurrentUserService {
   public destroy(): void {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
+    localStorage.removeItem('account');
     this.set();
+  }
+
+  public addAccountToUser(account: Account) {
+    const cachedUser: User = JSON.parse(localStorage.getItem('currentUser'));
+    cachedUser.account = account;
+    localStorage.setItem('currentUser', JSON.stringify(cachedUser));
+    this.store.dispatch({ type: 'SET_ACCOUNT_ON_USER', payload: account });
   }
 
   public loggedInState(): Observable<boolean> {
@@ -101,7 +114,8 @@ export class CurrentUserService {
       focusedCollection: null,
       ownedCollections: null,
       editableCollections: null,
-      accessibleCollections: null
+      accessibleCollections: null,
+      account: null
     };
   }
 }

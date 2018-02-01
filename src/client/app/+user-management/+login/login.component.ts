@@ -5,6 +5,7 @@ import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UserService } from '../../shared/services/user.service';
 import { PendoService } from '../../shared/services/pendo.service';
 import { Session, Credentials } from '../../shared/interfaces/session.interface';
+import { Account } from '../../shared/interfaces/account.interface';
 import { Observable } from 'rxjs/Observable';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
 import { FeatureStore } from '../../shared/stores/feature.store';
@@ -41,17 +42,24 @@ export class LoginComponent implements OnInit {
   }
 
   public onSubmit(user: Credentials): void {
-    this.authentication.create(user).subscribe((session: Session) => {
+    this.authentication.create(user)
+      .do((session: Session) => {
+        this.currentUser.set(session.user, session.token.token);
+        this.pendo.initialize(session.user);
+        if (session.siteFeatures) this.feature.set(session.siteFeatures);
 
-      this.currentUser.set(session.user, session.token.token);
-      this.pendo.initialize(session.user);
-      if (session.siteFeatures) this.feature.set(session.siteFeatures);
-
-      if (session.documentsRequiringAgreement &&
-        session.documentsRequiringAgreement.indexOf('TOS') > -1) {
-        this.showTerms();
-      } else { this.redirectUserAppropriately(); }
-    });
+        if (session.documentsRequiringAgreement &&
+          session.documentsRequiringAgreement.indexOf('TOS') > -1) {
+          this.showTerms();
+        } else { this.redirectUserAppropriately(); }
+      })
+      .switchMap((session) => {
+        return (session.user && session.user.accountId) ?
+          this.user.getAccount(session.user.accountId) : Observable.empty();
+      })
+      .do((account: Account) => {
+        if (account) this.currentUser.addAccountToUser(account);
+      }).subscribe();
   }
 
   private showTerms(): void {

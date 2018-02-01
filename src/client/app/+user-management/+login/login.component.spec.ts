@@ -18,7 +18,7 @@ export function main() {
     beforeEach(() => {
       mockAuthentication = {
         create: jasmine.createSpy('create').and.returnValue(Observable.of({
-          user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 },
+          user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10, accountId: 1 },
           token: { token: 'loginToken' },
           userPreferences: { pref: 1 },
           siteFeatures: {
@@ -39,11 +39,16 @@ export function main() {
         }
       };
 
-      mockCurrentUserService = { set: jasmine.createSpy('set') };
+      mockCurrentUserService = {
+        set: jasmine.createSpy('set'),
+        addAccountToUser: jasmine.createSpy('addAccountToUser')
+      };
 
       mockUserService = {
-        downloadActiveTosDocument: jasmine.createSpy('downloadActiveTosDocument').and.returnValue(Observable.of('SOME TEST TERMS')),
-        agreeUserToTerms: jasmine.createSpy('agreeUserToTerms')
+        downloadActiveTosDocument:
+          jasmine.createSpy('downloadActiveTosDocument').and.returnValue(Observable.of('SOME TEST TERMS')),
+        agreeUserToTerms: jasmine.createSpy('agreeUserToTerms'),
+        getAccount: jasmine.createSpy('getAccount').and.returnValue(Observable.of({ account: 'some account' }))
       };
 
       mockPendo = { initialize: jasmine.createSpy('initialize') };
@@ -103,13 +108,13 @@ export function main() {
       it('Sets a new user and auth token on response', () => {
         componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
         expect(mockCurrentUserService.set).toHaveBeenCalledWith(
-          { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 }, 'loginToken');
+          { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10, accountId: 1 }, 'loginToken');
       });
 
       it('Initializes pendo with the user response', () => {
         componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
         expect(mockPendo.initialize).toHaveBeenCalledWith(
-          { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 });
+          { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10, accountId: 1 });
       });
 
       it('Calls the feature store if the login response has a feature object', () => {
@@ -124,7 +129,7 @@ export function main() {
       it('Does not Call the feature store if the login response has no feature object', () => {
         mockAuthentication = {
           create: jasmine.createSpy('create').and.returnValue(Observable.of({
-            user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 },
+            user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10, accountId: 1 },
             token: { token: 'loginToken' },
             userPreferences: { pref: 1 }
           }))
@@ -137,12 +142,59 @@ export function main() {
         expect(mockFeatureStore.set).not.toHaveBeenCalled();
       });
 
+      describe('addAccountToUser()', () => {
+        it(`user has accountId, and account API returns an account`, () => {
+          componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
+          expect(mockUserService.getAccount).toHaveBeenCalledWith(1);
+          expect(mockCurrentUserService.addAccountToUser).toHaveBeenCalledWith({ account: 'some account' });
+        });
+
+        it(`user has accountId, and account API return an empty response`, () => {
+          mockUserService = {
+            downloadActiveTosDocument:
+              jasmine.createSpy('downloadActiveTosDocument').and.returnValue(Observable.of('SOME TEST TERMS')),
+            agreeUserToTerms: jasmine.createSpy('agreeUserToTerms'),
+            getAccount: jasmine.createSpy('getAccount').and.returnValue(Observable.of(false))
+          };
+          componentUnderTest = new LoginComponent(
+            mockAuthentication, mockRouter, mockCurrentUserService, mockUserService,
+            mockPendo, mockDialog, mockFeatureStore, mockStore
+          );
+          componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
+          expect(mockUserService.getAccount).toHaveBeenCalled();
+          expect(mockCurrentUserService.addAccountToUser).not.toHaveBeenCalled();
+        });
+
+        it(`user has no accountId`, () => {
+          mockAuthentication = {
+            create: jasmine.createSpy('create').and.returnValue(Observable.of({
+              user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 },
+              token: { token: 'loginToken' },
+              userPreferences: { pref: 1 },
+              siteFeatures: {
+                'stripePublicKey': 'pk_test_ETcreKa1BLgjGbx51I7N3cEj',
+                'disableCommerceAgreements': false,
+                'disableCartAccess': false
+              }
+            }))
+          };
+          componentUnderTest = new LoginComponent(
+            mockAuthentication, mockRouter, mockCurrentUserService, mockUserService,
+            mockPendo, mockDialog, mockFeatureStore, mockStore
+          );
+          componentUnderTest.onSubmit({ 'userId': 'james', 'password': 'testPassword' });
+          expect(mockUserService.getAccount).not.toHaveBeenCalled();
+          expect(mockCurrentUserService.addAccountToUser).not.toHaveBeenCalled();
+        });
+
+      });
+
       describe('showTerms()', () => {
         beforeEach(() => {
           mockAuthentication = {
             create: jasmine.createSpy('create').and.returnValue(
               Observable.of({
-                user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 },
+                user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10, accountId: 1 },
                 token: { token: 'loginToken' },
                 userPreferences: { pref: 1 },
                 documentsRequiringAgreement: ['TOS']
