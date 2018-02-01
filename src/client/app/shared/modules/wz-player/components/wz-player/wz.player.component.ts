@@ -1,10 +1,13 @@
 import {
-  Component, ChangeDetectionStrategy, Input, Output, ElementRef, Renderer, EventEmitter, NgZone, OnDestroy
+  Component, ChangeDetectionStrategy, Input, Output, ElementRef, Renderer, Renderer2, EventEmitter, NgZone, OnDestroy, Inject
 } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
 import { EnhancedAsset } from '../../../../interfaces/enhanced-asset';
 import { PlayerMode, PlaybackDirection, PlayerStateChanges } from '../../interfaces/player.interface';
 import { AppStore } from '../../../../../app.store';
 import { Pojo } from '../../../../interfaces/common.interface';
+import { CurrentUserService } from '../../../../services/current-user.service';
+import { User } from '../../../../interfaces/user.interface';
 declare var jwplayer: any;
 
 type AssetType = 'unknown' | 'image' | 'video' | 'html5Video';
@@ -29,6 +32,7 @@ export class WzPlayerComponent implements OnDestroy {
     this.enhancedAsset = Object.assign(new EnhancedAsset(), asset).normalize();
 
     this.enhancedAsset.isImage ? this.setupImage() : this.setupVideo();
+    this.substitutePropertiesInSecurityText();
   }
 
   public get asset(): any {
@@ -48,12 +52,29 @@ export class WzPlayerComponent implements OnDestroy {
   private videoElementListenerRemovers: any;
   private waitingForSeek: boolean = false;
   private pendingSeekRequest: number = null;
+  private container: any;
+  private securityOverlay: any;
+  private securityOverlayEnabled: boolean = false;
+  private securityOverlayId: string;
+  private rawSecurityOverlayText: string;
+  private securityOverlayText: string = 'private';
+  private securityOverlayStyles: Pojo = {};
+  private securityOverlayIntervalId: number;
 
-  constructor(private element: ElementRef, private renderer: Renderer, private zone: NgZone, private store: AppStore) {
+  constructor(
+    private element: ElementRef,
+    private renderer: Renderer,
+    private renderer2: Renderer2,
+    @Inject(DOCUMENT) private document: Document,
+    private zone: NgZone,
+    private store: AppStore,
+    private currentUserService: CurrentUserService
+  ) {
     this.readOverlayConfig();
   }
 
   public ngOnDestroy(): void {
+    this.destroySecurityOverlay();
     this.reset();
   }
 
@@ -190,8 +211,11 @@ export class WzPlayerComponent implements OnDestroy {
   }
 
   private setupVideo(): void {
+    this.container = this.renderer2.createElement('div');
+    this.renderer2.appendChild(this.element.nativeElement, this.container);
+
     this.currentAssetType = 'video';
-    this.jwPlayer = this.window.jwplayer(this.element.nativeElement);
+    this.jwPlayer = this.window.jwplayer(this.container);
     this.setupInMarker();
     this.setupOutMarker();
 
@@ -241,6 +265,7 @@ export class WzPlayerComponent implements OnDestroy {
         // Default control setting is false, so we turn them
         // on here if we're using the simple player.
         this.jwPlayer.setControls(true);
+        if (this.securityOverlayEnabled) this.displaySecurityOverlay();
       }
     });
   }
@@ -435,17 +460,153 @@ export class WzPlayerComponent implements OnDestroy {
     const components: Pojo = this.store.snapshotCloned(state => state.uiConfig.components);
 
     if (!components.hasOwnProperty('playerOverlay') || !components.playerOverlay.hasOwnProperty('config')) {
-      console.log('No playerOverlay configuration found');
+      this.securityOverlayEnabled = false;
       return;
     }
 
+    // Until we get the newer, simpler UI config, get rid of the "value" middlemen.
     const rawConfig: Pojo = components.playerOverlay.config;
-    console.log('playerOverlay configuration:');
-    [
-      'enabled', 'userDisplayText', 'position', 'fontSizeInPixels', 'textColor', 'textOpacity', 'backgroundColor',
-      'backgroundOpacity'
-    ].forEach(key => {
-      console.log(`  ${key}: ${rawConfig[key] ? `"${rawConfig[key].value}"` : undefined}`);
+    Object.keys(rawConfig).forEach(key => rawConfig[key] = rawConfig[key].value);
+
+    if (rawConfig.enabled !== 'true' || !rawConfig.userDisplayText) {
+      this.securityOverlayEnabled = false;
+      return;
+    }
+
+    this.securityOverlayEnabled = true;
+    // TODO: Create a boolean instance variable that tells us whether we need to recalcuate the overlay text when we
+    // get a new asset.  (Which we don't if it has no "asset." variables in it.)  Maybe do that in
+    // substitutePropertiesInSecurityText()?
+    this.rawSecurityOverlayText = rawConfig.userDisplayText;
+
+    this.buildSecurityOverlayStylesFrom(rawConfig);
+  }
+
+  private buildSecurityOverlayStylesFrom(rawConfig: Pojo): void {
+    const fontSize: number = 'fontSizeInPixels' in rawConfig ? parseFloat(rawConfig.fontSizeInPixels) : 20;
+
+    this.securityOverlayStyles = {
+      position: 'absolute',
+      left: '0',
+      width: '100%',
+      'text-align': 'center',
+      'font-size': `${fontSize}px`,
+      'line-height': `${fontSize}px`,
+      padding: `${fontSize / 2}px`,
+      color: this.calculateRgbaFor(rawConfig.textColor, 0xFFFFFF, rawConfig.textOpacity, 0.75),
+      'background-color': this.calculateRgbaFor(rawConfig.backgroundColor, 0, rawConfig.backgroundOpacity, 0.5)
+    };
+
+    switch (rawConfig.position) {
+      case 'bottom':
+        this.securityOverlayStyles.bottom = `${fontSize}px`;
+        break;
+
+      case 'middle':
+        this.securityOverlayStyles.top = '50%';
+        break;
+
+      default: // 'top'
+        this.securityOverlayStyles.top = `${fontSize}px`;
+    }
+  }
+
+  private displaySecurityOverlay(): void {
+    if (this.jwPlayer.getState() === 'playing') {
+      this.jwPlayer.on('time', this.updateSecurityOverlay.bind(this));
+    } else {
+      this.securityOverlayIntervalId = setInterval(this.updateSecurityOverlay.bind(this), 500);
+    }
+
+    this.jwPlayer.on('play', () => {
+      clearInterval(this.securityOverlayIntervalId);
+      this.jwPlayer.on('time', this.updateSecurityOverlay.bind(this));
+    });
+
+    this.jwPlayer.on('pause', () => {
+      this.jwPlayer.off('time');
+      this.securityOverlayIntervalId = setInterval(this.updateSecurityOverlay.bind(this), 500);
+    });
+
+    this.jwPlayer.on('complete', () => {
+      this.jwPlayer.off('time');
+      this.securityOverlayIntervalId = setInterval(this.updateSecurityOverlay.bind(this), 500);
+    });
+  }
+
+  private destroySecurityOverlay(): void {
+    clearInterval(this.securityOverlayIntervalId);
+    this.jwPlayer.off('time');
+  }
+
+  private updateSecurityOverlay(): void {
+    const foundSecurityOverlay = document.getElementById(this.securityOverlayId);
+
+    if (!foundSecurityOverlay || foundSecurityOverlay.innerText !== this.securityOverlayText) {
+      this.createSecurityOverlay();
+    }
+
+    let styles: Pojo = this.securityOverlayStyles;
+
+    if ('bottom' in styles) {
+      const controlBar = this.element.nativeElement.getElementsByClassName('jw-controlbar')[0];
+      const controlBarHeight: number = getComputedStyle(controlBar).visibility === 'hidden' ? 0 : controlBar.offsetHeight;
+
+      styles = {
+        ...this.securityOverlayStyles,
+        bottom: `${parseFloat(this.securityOverlayStyles.bottom) + controlBarHeight}px`
+      };
+    }
+
+    Object.keys(styles).forEach(styleName => this.renderer2.setStyle(this.securityOverlay, styleName, styles[styleName]));
+  }
+
+  private createSecurityOverlay(): any {
+    const playerElement = this.element.nativeElement.getElementsByClassName('jw-overlays')[0];
+
+    if (this.securityOverlay) this.renderer2.removeChild(playerElement, this.securityOverlay);
+
+    this.securityOverlay = this.renderer2.createElement('div');
+    this.securityOverlayId = `username-${Math.floor(Math.random() * 10000000 + 1234567)}`;
+    this.renderer2.setAttribute(this.securityOverlay, 'id', this.securityOverlayId);
+
+    this.renderer2.appendChild(this.securityOverlay, this.renderer2.createText(this.securityOverlayText));
+    this.renderer2.appendChild(playerElement, this.securityOverlay);
+  }
+
+  private calculateRgbaFor(color: string, defaultColor: number, opacity: string, defaultOpacity: number): string {
+    let colorDigits: string = (color || '').replace(/[^0-9a-fA-F]/g, '');
+    if (colorDigits.length === 3) colorDigits = colorDigits.split('').map(digit => `${digit}${digit}`).join('');
+
+    const colorNumber: number = colorDigits.length === 6 ? parseInt(colorDigits, 16) : defaultColor;
+    const rgb: string = `${(colorNumber >> 16) & 255},${(colorNumber >> 8) & 255},${colorNumber & 255}`;
+
+    let alpha: number = parseFloat(opacity) || defaultOpacity;
+    if (alpha > 1) alpha /= 100;
+
+    return `rgba(${rgb},${alpha})`;
+  }
+
+  private substitutePropertiesInSecurityText(): void {
+    if (!this.securityOverlayEnabled) return;
+
+    const user: User = this.currentUserService.state;
+
+    this.securityOverlayText = this.rawSecurityOverlayText.replace(/\{\{\s*(.*?)\s*}}/g, (_, field) => {
+      const badFieldIndicator: string = `{{${field}???}}`;
+
+      if (!field.includes('.')) return badFieldIndicator;
+
+      const [objectName, propertyName]: [string, string] = field.split('.');
+      let object: Pojo;
+
+      switch (objectName) {
+        case 'user': object = user; break;
+        case 'asset': object = this.enhancedAsset; break;
+        default: return badFieldIndicator;
+      }
+
+      return propertyName in object ? String(object[propertyName]) : badFieldIndicator;
     });
   }
 }
