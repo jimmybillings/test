@@ -154,13 +154,28 @@
 
   <div layout="row" flex="" layout-align="center">
     <div flex-gt-xs="95" flex-gt-md="85" flex-lg="80" flex-gt-lg="75" flex="100" layout="row" layout-xs="column">
-      <div *ngIf="hasRendition && showAdvancedPlayer" flex-gt-xs="66" flex="100" class="responsive-video">
+      <div *ngIf="hasRendition && showAdvancedPlayer" flex-gt-xs="66" flex="100" layout="column" class="responsive-video">
         <wz-advanced-player
           [window]="window"
           [asset]="asset"
           (markersInitialization)="onPlayerMarkersInitialization($event)"
           (markerChange)="onPlayerMarkerChange($event)">
         </wz-advanced-player>
+        <div
+          class="subclip-update-button" 
+          layout="column" 
+          layout-align="center center"
+          layout-align-gt-xs="end end">
+          <button *ngIf="canEditCollectionSubclipMarkers && userCanEditCollection | async"
+            [disabled]="!canUpdateInActiveCollection"
+            class="is-outlined"
+            title="{{ collectionSubclipButtonHoverTxt | translate}}"
+            mat-button
+            (click)="updateAssetInActiveCollection()"
+            color="primary">
+            {{ collectionSubclipButtonLabel | translate }}
+          </button>
+        </div>
       </div>
       <div *ngIf="hasRendition && !showAdvancedPlayer" flex-gt-xs="66" flex="100" class="responsive-video">
         <wz-player [window]="window" [asset]="asset"></wz-player>
@@ -170,7 +185,6 @@
           <div class="no-rendition-message">{{'ASSET.DETAIL.NO_RENDITION_AVAILABLE' | translate}}</div>
         </div>
       </div>
-
       <div flex-gt-xs="33" flex="100">
         <div flex="" layout="column" class="primary-info {{ asset.type }}">
           <div class="metadata" layout="column" layout-align="start start">
@@ -181,7 +195,6 @@
               </div>
             </ng-container>
           </div>
-
           <section *ngIf="canPerformCartActions" layout="column" layout-align="center center" class="rights-transcodes">
             <mat-form-field *ngIf="canSelectTranscodeTarget">
               <mat-select
@@ -212,53 +225,32 @@
             </div>
           </section>
         </div>
+        <div class="cart-options" 
+          flex="noshrink" 
+          layout="column" 
+          layout-gt-xs="row"
+          layout-align="end end">
+          <button *ngIf="canUpdateCartAsset"
+            [disabled]="assetMatchesCartAsset"
+            mat-raised-button
+            (click)="updateCartAsset()"
+            flex-order-xs="2"
+            color="primary">
+            {{ updateCartAssetButtonLabelKey | translate }}
+          </button>
+          <button mat-raised-button
+            class="add-to-cart"
+            color="primary"
+            data-pendo='asset-detail_add-to-cart-btn'
+            *ngIf="canAddToCart"
+            flex-order-xs="-1"
+            (click)="addAssetToCart()">
+            {{ addToCartOrQuoteButtonLabelKey | translate }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  <div layout="row" layout-align="center" class="cart-options-container">
-    <div 
-      flex-gt-xs="95" 
-      flex-gt-md="85" 
-      flex-lg="80" 
-      flex-gt-lg="75" 
-      flex="100" 
-      layout-gt-xs="row"
-      layout="column">
-      <div class="cart-options" 
-        flex="noshrink" 
-        layout="column" 
-        layout-gt-xs="row"
-        layout-align="space-between end">
-        <button *ngIf="canUpdateCartAsset"
-          [disabled]="assetMatchesCartAsset"
-          mat-raised-button
-          (click)="updateCartAsset()"
-          flex-order-xs="2"
-          color="primary">
-          {{ updateCartAssetButtonLabelKey | translate }}
-        </button>
-        <button *ngIf="canUpdateCollectionAsset && userCanEditCollection | async"
-          [disabled]="!canUpdateInActiveCollection"
-          title="{{ 'COLLECTION.UPDATE_IN_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}"
-          mat-raised-button
-          (click)="updateAssetInActiveCollection()"
-          flex-order-xs="2"
-          color="primary">
-          {{ 'COLLECTION.UPDATE_IN_COLLECTION_HOVER_TITLE' | translate:{collectionName: activeCollectionName} }}
-        </button>
-        <button mat-raised-button
-          class="add-to-cart"
-          color="primary"
-          data-pendo='asset-detail_add-to-cart-btn'
-          *ngIf="canAddToCart"
-          flex-order-xs="-1"
-          (click)="addAssetToCart()">
-          {{ addToCartOrQuoteButtonLabelKey | translate }}
-        </button>
-      </div>
-    </div>
-  </div>
-
 </section>
 
 <mat-menu x-position="before" #downloadCompMenu="matMenu">

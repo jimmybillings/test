@@ -281,6 +281,21 @@ export class AssetDetailComponent implements OnInit {
     return this.assetTypeIsOneOf('collection');
   }
 
+  public get canEditCollectionSubclipMarkers(): boolean {
+    return this.canUpdateCollectionAsset && this.markersAreDefined;
+  }
+  public get collectionSubclipButtonHoverTxt(): string {
+    const active: string = this.canUpdateInActiveCollection ? 'ACTIVE' : 'DISABLED';
+    const markers: string = this._asset.isSubclipped ? 'UPDATE' : 'ADD_NEW';
+
+    return `ASSET.DETAIL.BUTTON.${markers}.SUBCLIP.${active}`;
+  }
+  public get collectionSubclipButtonLabel(): string {
+    const markers: string = this._asset.isSubclipped ? 'UPDATE' : 'ADD_NEW';
+
+    return `ASSET.DETAIL.BUTTON.${markers}.SUBCLIP.COLLECTION`;
+  }
+
   public get updateCartAssetButtonLabelKey(): string {
     const subclipOrAsset: string = this.markersAreDefined ? 'SUBCLIP' : 'ASSET';
     const quoteOrCart: string = this.isQuoteUser ? 'QUOTE' : 'CART';

@@ -501,6 +501,96 @@ export function main() {
       });
     });
 
+    describe('canUpdateCollectionAsset getter', () => {
+      const tests: { assetType: AssetType, expectedResult: boolean }[] = [
+        { assetType: 'cart', expectedResult: false },
+        { assetType: 'collection', expectedResult: true },
+        { assetType: 'order', expectedResult: false },
+        { assetType: 'quoteEdit', expectedResult: false },
+        { assetType: 'quoteShow', expectedResult: false },
+        { assetType: 'search', expectedResult: false },
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'`, () => {
+          componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
+
+          expect(componentUnderTest.canUpdateCollectionAsset).toBe(test.expectedResult);
+        });
+      });
+    });
+
+    describe('canEditCollectionSubclipMarkers getter', () => {
+      const tests: { markers: boolean, assetType: AssetType, expectedResult: boolean }[] = [
+        { markers: true, assetType: 'cart', expectedResult: false },
+        { markers: true, assetType: 'collection', expectedResult: true },
+        { markers: false, assetType: 'collection', expectedResult: false },
+        { markers: true, assetType: 'order', expectedResult: false },
+        { markers: true, assetType: 'quoteEdit', expectedResult: false },
+        { markers: true, assetType: 'quoteShow', expectedResult: false },
+        { markers: true, assetType: 'search', expectedResult: false },
+      ];
+
+      tests.forEach(test => {
+        it(`returns ${test.expectedResult} for asset type '${test.assetType}'` +
+          ` and subclip markers are ${test.markers ? '' : 'not '}defined `, () => {
+            componentUnderTest.asset = enhanceAsset({} as any, test.assetType);
+            if (test.markers) componentUnderTest.subclipMarkers = { in: { some: 'frame' }, out: { some: 'frame' } } as any;
+
+            expect(componentUnderTest.canEditCollectionSubclipMarkers).toBe(test.expectedResult);
+          });
+      });
+    });
+
+    describe('collectionSubclipButtonHoverTxt getter', () => {
+      const tests: { active: boolean, isSubclipped: boolean, expectedKey: string }[] = [
+        { active: true, isSubclipped: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.ACTIVE' },
+        { active: true, isSubclipped: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.ACTIVE' },
+        { active: false, isSubclipped: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.DISABLED' },
+        { active: false, isSubclipped: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.DISABLED' }
+      ];
+
+      tests.forEach(test => {
+        const description: string = `returns ${test.expectedKey}` +
+          ` for a collection asset with existing subclipping ${test.isSubclipped ? '' : 'not '}defined` +
+          ` and update button is ${test.active ? 'active' : 'disabled'}`;
+
+        it(description, () => {
+          componentUnderTest.activeCollection = collection;
+          componentUnderTest.subclipMarkers = test.active ? {
+            in: new Frame(25).setFromFrameNumber(1),
+            out: test.active ? new Frame(25).setFromFrameNumber(2) : new Frame(25).setFromFrameNumber(3)
+          } : null;
+          componentUnderTest.asset = enhanceAsset({
+            ...asset,
+            uuid: test.active ? 'MNOP' : 'NOPE',
+            timeStart: test.isSubclipped ? 103 : null,
+            timeEnd: test.isSubclipped ? 1000 : null,
+          }, 'collection');
+          componentUnderTest.showAssetSaveSubclip = test.active;
+
+          expect(componentUnderTest.collectionSubclipButtonHoverTxt).toBe(test.expectedKey);
+        });
+      });
+    });
+
+    describe('collectionSubclipButtonLabel getter', () => {
+      const tests: { isSubclipped: boolean, expectedKey: string }[] = [
+        { isSubclipped: false, expectedKey: 'ASSET.DETAIL.BUTTON.ADD_NEW.SUBCLIP.COLLECTION' },
+        { isSubclipped: true, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.SUBCLIP.COLLECTION' }
+      ];
+
+      tests.forEach(test => {
+        const description: string = `returns ${test.expectedKey}` +
+          ` for a collection asset with subclipping ${test.isSubclipped ? '' : 'not '}defined`;
+
+        it(description, () => {
+          if (test.isSubclipped) componentUnderTest.asset = enhanceAsset({ timeStart: 103, timeEnd: 1000 } as any, 'collection');
+          expect(componentUnderTest.collectionSubclipButtonLabel).toBe(test.expectedKey);
+        });
+      });
+    });
+
     describe('updateCartButtonLabelKey getter', () => {
       const tests: { quoteUser: boolean, markers: boolean, expectedKey: string }[] = [
         { quoteUser: false, markers: false, expectedKey: 'ASSET.DETAIL.BUTTON.UPDATE.ASSET.CART' },

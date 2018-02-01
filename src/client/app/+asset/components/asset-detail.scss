@@ -143,20 +143,30 @@ section.preview-bk {
       }
     }
   }
+  .subclip-update-button {
+    margin: 0 0 0 0;
+    min-height: 58px;
+    button {
+      margin: 10px 0;
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        margin: 6px 0;
+      }
+    }
+  }
   .cart-options {
-    padding: 10px 26px 0 0;
+    padding: 10px 30px 0 0;
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       padding: 12px 25px 0 25px;
     }
     button{
-      margin-left: 4px;
+      // margin-left: 4px;
+      min-width: calc(100% - 30px);
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         margin-bottom: 6px;
         min-width: 100%;
       }
     }
     button.add-to-cart  {
-      min-width: calc(33% - 39px);
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         min-width: 100%;
       }
@@ -180,7 +190,7 @@ section.preview-bk {
   div.primary-info {
     box-shadow: none;
     position: relative;
-    height: 100%;
+    height: calc(100% - 58px);
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       padding: 0;
       background-color: transparent;
@@ -206,7 +216,10 @@ section.preview-bk {
 .responsive-video {
   background-color:  transparent;
   position: relative;
-	height: auto;
+  height: auto;
+  @media screen and (max-width: $layout-breakpoint-xs)  {
+    margin-bottom: 15px;
+  }
   & > div.jw-error, & > div.no-rendition {
     @media screen and (min-width: $layout-breakpoint-lg)  {
       min-height: 540px;
