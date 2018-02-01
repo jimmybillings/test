@@ -138,12 +138,22 @@ export function main() {
 
       it('should set a object for a logged in user', () => {
         serviceUnderTest.set(loggedInUser);
+
         serviceUnderTest.data.subscribe((user: User) => {
           expect(user).toEqual(loggedInUser);
         });
 
         localStorage.clear();
       });
+
+      it('should add the account to the logged in user', () => {
+        serviceUnderTest.set(loggedInUser);
+        serviceUnderTest.addAccountToUser({ name: 'some account' })
+
+        expect(localStorage.getItem('currentUser'))
+          .toEqual(JSON.stringify({ ...loggedInUser, account: { name: 'some account' } }));
+        localStorage.clear();
+      })
 
       it('should return the logged in state for a user', () => {
         serviceUnderTest.loggedInState().subscribe((isLoggedIn: boolean) => {

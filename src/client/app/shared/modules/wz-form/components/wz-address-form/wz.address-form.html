@@ -7,7 +7,13 @@
   </div>
   <div layout="column" layout-align="center center">
     <mat-form-field class="autocomplete">
-      <input matInput id="autocomplete" placeholder="Enter your full address" (focus)="geolocate()" type="text" />
+      <input
+        matInput
+        id="autocomplete"
+        placeholder="{{ 'ADDRESS_FORM.AUTOCOMPLETE_INPUT' | translate }}"
+        (focus)="geolocate()"
+        type="text"
+      />
     </mat-form-field>
     <form [formGroup]="addressForm" (ngSubmit)="saveAddress()">
       <div class="address-form" layout="column" layout-align="center center">
@@ -18,7 +24,7 @@
                 matInput
                 type={{field.type}}
                 formControlName={{field.name}}
-                placeholder={{field.label}}
+                placeholder="{{field.label | translate}}"
               />
             </mat-form-field>
           </div>

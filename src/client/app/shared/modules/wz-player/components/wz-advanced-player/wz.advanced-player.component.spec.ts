@@ -2,12 +2,30 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { WzAdvancedPlayerComponent } from './wz.advanced-player.component';
-import { Frame } from '../../../wazee-frame-formatter/index';
+import { Frame, TimecodeFormat, TimecodeBase } from '../../../wazee-frame-formatter/index';
 import { PlayerStateChanges } from '../../interfaces/player.interface';
 import { PlayerStateService } from '../../services/player-state.service';
 
 export function main() {
   describe('Wazee Advanced Player Component', () => {
+    const initialPlayerState: any = {
+      ready: false,
+      canSupportCustomControls: true,
+      playing: false,
+      playingMarkers: false,
+      playbackSpeed: 1,
+      framesPerSecond: 29.97,
+      currentFrame: undefined,
+      durationFrame: undefined,
+      inMarkerFrame: undefined,
+      outMarkerFrame: undefined,
+      volume: 100,
+      sourceBasedOffset: '00:00:00:00',
+      timecodeFormat: TimecodeFormat.SIMPLE_TIME_CONVERSION,
+      timecodeBase: TimecodeBase.STREAM_BASED,
+      changeDetectionEnabler: 0
+    };
+
     let componentUnderTest: WzAdvancedPlayerComponent;
     let mockPlayerStateService: any;
     let mockAsset: any;
@@ -15,7 +33,8 @@ export function main() {
     let simulatedStateObservable: Observable<any>;
 
     beforeEach(() => {
-      simulatedStateSubject = new BehaviorSubject({});
+      simulatedStateSubject = new BehaviorSubject(initialPlayerState);
+
       simulatedStateObservable = simulatedStateSubject.asObservable();
 
       mockPlayerStateService = {
@@ -37,6 +56,7 @@ export function main() {
       componentUnderTest.player = {
         clearMarkers: jasmine.createSpy('clearMarkers'),
         playAtSpeed: jasmine.createSpy('playAtSpeed'),
+        pause: jasmine.createSpy('pause'),
         seekTo: jasmine.createSpy('seekTo'),
         seekToInMarker: jasmine.createSpy('seekToInMarker'),
         seekToOutMarker: jasmine.createSpy('seekToOutMarker'),
@@ -322,6 +342,14 @@ export function main() {
         });
       });
 
+      describe('PAUSE', () => {
+        it('tells the player to pause', () => {
+          componentUnderTest.handle({ type: 'PAUSE' });
+
+          expect(componentUnderTest.player.pause).toHaveBeenCalledWith();
+        });
+      });
+
       describe('SEEK_TO_FRAME', () => {
         it('tells the player to seek to the requested frame', () => {
           componentUnderTest.handle({ type: 'SEEK_TO_FRAME', frame: new Frame(30).setFromSeconds(42) });
@@ -331,6 +359,53 @@ export function main() {
 
         it('does nothing if the requested frame is undefined', () => {
           componentUnderTest.handle({ type: 'SEEK_TO_FRAME', frame: undefined });
+
+          expect(componentUnderTest.player.seekTo).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('SEEK_TO_TIME_STRING', () => {
+        it('tells the player to seek to the requested time string (timecode, stream-based)', () => {
+          componentUnderTest.handle({ type: 'SEEK_TO_TIME_STRING', time: '00:00:42;00' });
+
+          expect(componentUnderTest.player.seekTo).toHaveBeenCalledWith(42.009);
+        });
+
+        it('tells the player to seek to the requested time string (seconds, stream-based)', () => {
+          simulatedStateSubject.next({ ...initialPlayerState, timecodeFormat: TimecodeFormat.SECONDS });
+
+          componentUnderTest.handle({ type: 'SEEK_TO_TIME_STRING', time: '42.345' });
+
+          expect(componentUnderTest.player.seekTo).toHaveBeenCalledWith(42.342);
+        });
+
+        it('tells the player to seek to the requested time string (timecode, source-based)', () => {
+          simulatedStateSubject.next({
+            ...initialPlayerState,
+            timecodeBase: TimecodeBase.SOURCE_BASED,
+            sourceBasedOffset: '00:00:03;00'
+          });
+
+          componentUnderTest.handle({ type: 'SEEK_TO_TIME_STRING', time: '00:00:45;00' });
+
+          expect(componentUnderTest.player.seekTo).toHaveBeenCalledWith(42.009);
+        });
+
+        it('tells the player to seek to the requested time string (seconds, source-based)', () => {
+          simulatedStateSubject.next({
+            ...initialPlayerState,
+            timecodeFormat: TimecodeFormat.SECONDS,
+            timecodeBase: TimecodeBase.SOURCE_BASED,
+            sourceBasedOffset: '00:00:03;00'
+          });
+
+          componentUnderTest.handle({ type: 'SEEK_TO_TIME_STRING', time: '42.345' });
+
+          expect(componentUnderTest.player.seekTo).toHaveBeenCalledWith(39.339);
+        });
+
+        it('does nothing if the requested frame is undefined', () => {
+          componentUnderTest.handle({ type: 'SEEK_TO_TIME_STRING', time: undefined });
 
           expect(componentUnderTest.player.seekTo).not.toHaveBeenCalled();
         });

@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import { PlayerState } from '../interfaces/player.interface';
 import { Frame, TimecodeFormat, TimecodeBase } from '../../wazee-frame-formatter/index';
+import { Common } from '../../../utilities/common.functions';
 
 @Pipe({ name: 'playerTimecode' })
 export class PlayerTimecodePipe implements PipeTransform {
@@ -9,12 +10,12 @@ export class PlayerTimecodePipe implements PipeTransform {
     if (!frame) return '';
 
     const chosenFormat: TimecodeFormat =
-      format == null // Very deliberate '==' here to check that enum value (which could be 0) is defined and not null!
+      Common.isNullOrUndefined(format)
         ? (state ? state.timecodeFormat : TimecodeFormat.SIMPLE_TIME_CONVERSION)
         : format;
 
     const chosenBase: TimecodeBase =
-      base == null // Very deliberate '==' here to check that enum value (which could be 0) is defined and not null!
+      Common.isNullOrUndefined(base)
         ? (state ? state.timecodeBase : TimecodeBase.STREAM_BASED)
         : base;
 

@@ -73,8 +73,14 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
       case 'PLAY_AT_SPEED':
         this.player.playAtSpeed(request.speed, request.direction);
         break;
+      case 'PAUSE':
+        this.player.pause();
+        break;
       case 'SEEK_TO_FRAME':
         if (request.frame) this.player.seekTo(request.frame.asSeconds());
+        break;
+      case 'SEEK_TO_TIME_STRING':
+        if (request.time) this.player.seekTo(this.toSeconds(request.time));
         break;
       case 'SEEK_TO_MARKER':
         request.markerType === 'in' ? this.player.seekToInMarker() : this.player.seekToOutMarker();
@@ -124,5 +130,11 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
     if (!frame1 && !frame2) return true;
 
     return frame1.frameNumber === frame2.frameNumber;
+  }
+
+  private toSeconds(time: string): number {
+    return new Frame(this.currentState.framesPerSecond, this.currentState.sourceBasedOffset)
+      .setFromString(time, this.currentState.timecodeFormat, this.currentState.timecodeBase)
+      .asSeconds(3);
   }
 }

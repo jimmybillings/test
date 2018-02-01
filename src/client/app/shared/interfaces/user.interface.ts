@@ -1,4 +1,5 @@
 import { Common } from './common.interface';
+import { Account } from './account.interface';
 
 export interface User extends Common {
   password: string;
@@ -38,6 +39,7 @@ export interface User extends Common {
   root?: boolean;
   billingInfo?: { address: Address };
   [index: string]: any;
+  account: Account;
 }
 
 export interface UserBasicInfo {

@@ -98,16 +98,13 @@ export class WzAddressFormComponent {
     this.google.loadPlacesLibrary(this.fillInAddress);
   }
 
-  // ------------------------------------------------------- //
-  // UI Config to support rows in wz-form - to be removed
-  // ------------------------------------------------------- //
   private get items(): RowFormFields {
     return [
       {
         fields: [
           {
             name: 'address',
-            label: 'Address Line 1',
+            label: 'ADDRESS_FORM.LINE_ONE',
             type: 'text',
             value: '',
             validation: 'REQUIRED',
@@ -120,7 +117,7 @@ export class WzAddressFormComponent {
         fields: [
           {
             name: 'address2',
-            label: 'Address Line 2',
+            label: 'ADDRESS_FORM.LINE_TWO',
             type: 'text',
             value: '',
             validation: 'OPTIONAL',
@@ -133,7 +130,7 @@ export class WzAddressFormComponent {
         fields: [
           {
             name: 'city',
-            label: 'City',
+            label: 'ADDRESS_FORM.CITY',
             type: 'text',
             value: '',
             validation: 'REQUIRED',
@@ -142,7 +139,7 @@ export class WzAddressFormComponent {
           },
           {
             name: 'state',
-            label: 'State',
+            label: 'ADDRESS_FORM.STATE/PROVINCE',
             type: 'text',
             value: '',
             validation: 'REQUIRED',
@@ -155,7 +152,7 @@ export class WzAddressFormComponent {
         fields: [
           {
             name: 'zipcode',
-            label: 'Zipcode/Postal Code',
+            label: 'ADDRESS_FORM.POSTAL_CODE',
             type: 'text',
             value: '',
             validation: 'REQUIRED',
@@ -164,7 +161,7 @@ export class WzAddressFormComponent {
           },
           {
             name: 'country',
-            label: 'Country',
+            label: 'ADDRESS_FORM.COUNTRY',
             type: 'text',
             value: '',
             validation: 'REQUIRED',
@@ -177,7 +174,7 @@ export class WzAddressFormComponent {
         fields: [
           {
             name: 'phone',
-            label: 'Phone Number',
+            label: 'ADDRESS_FORM.PHONE_NUMBER',
             type: 'text',
             value: '',
             validation: 'REQUIRED',

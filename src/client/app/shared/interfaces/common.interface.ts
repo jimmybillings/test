@@ -185,6 +185,7 @@ export interface UiConfigComponents {
   'cartComment': UiConfigSegment;
   'collectionComment': UiConfigSegment;
   'quoteComment': UiConfigSegment;
+  'playerOverlay': UiConfigSegment;
   [index: string]: UiConfigSegment;
 };
 

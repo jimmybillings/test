@@ -65,9 +65,18 @@ export type PlayAtSpeedRequest = {
   direction: PlaybackDirection
 };
 
+export type PauseRequest = {
+  type: 'PAUSE';
+};
+
 export type SeekToFrameRequest = {
   type: 'SEEK_TO_FRAME',
   frame: Frame
+};
+
+export type SeekToTimeStringRequest = {
+  type: 'SEEK_TO_TIME_STRING',
+  time: string
 };
 
 export type SeekToMarkerRequest = {
@@ -108,9 +117,11 @@ export type PlayerVolumeRequest = SetVolumeRequest | ToggleMuteRequest;
 
 export type PlayerRequest =
   PlayerSeekRequest |
+  SeekToTimeStringRequest |
   PlayerVolumeRequest |
   ClearMarkersRequest |
   PlayAtSpeedRequest |
+  PauseRequest |
   SetMarkerToCurrentFrameRequest |
   ToggleMarkersPlaybackRequest |
   TogglePlaybackRequest |

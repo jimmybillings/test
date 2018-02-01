@@ -3,6 +3,8 @@ import {
 } from '@angular/core';
 import { EnhancedAsset } from '../../../../interfaces/enhanced-asset';
 import { PlayerMode, PlaybackDirection, PlayerStateChanges } from '../../interfaces/player.interface';
+import { AppStore } from '../../../../../app.store';
+import { Pojo } from '../../../../interfaces/common.interface';
 declare var jwplayer: any;
 
 type AssetType = 'unknown' | 'image' | 'video' | 'html5Video';
@@ -47,7 +49,9 @@ export class WzPlayerComponent implements OnDestroy {
   private waitingForSeek: boolean = false;
   private pendingSeekRequest: number = null;
 
-  constructor(private element: ElementRef, private renderer: Renderer, private zone: NgZone) { }
+  constructor(private element: ElementRef, private renderer: Renderer, private zone: NgZone, private store: AppStore) {
+    this.readOverlayConfig();
+  }
 
   public ngOnDestroy(): void {
     this.reset();
@@ -68,6 +72,12 @@ export class WzPlayerComponent implements OnDestroy {
     this.setPlaybackRateTo(speed);
 
     if (this.videoElement.paused) this.videoElement.play();
+  }
+
+  public pause(): void {
+    this.verifyCustomControlsSupport();
+
+    if (!this.videoElement.paused) this.videoElement.pause();
   }
 
   public seekTo(timeInSeconds: number): void {
@@ -409,9 +419,33 @@ export class WzPlayerComponent implements OnDestroy {
       // just the most recent request (throwing away all others), and seek there as soon as the current
       // seek is done.  This lets us repeatedly seek just as fast as the browser can handle it.
       this.pendingSeekRequest = timeInSeconds;
+
+    } else if (this.videoElement.currentTime === timeInSeconds) {
+      // We're already where we want to be, so we don't need to actually seek.  But let's send a state update
+      // in case consumers of this component need to be updated with the current time.
+      this.emitStateChangeRequestWith({ currentTime: timeInSeconds });
+
     } else {
       this.waitingForSeek = true;
       this.videoElement.currentTime = timeInSeconds;
     }
+  }
+
+  private readOverlayConfig(): void {
+    const components: Pojo = this.store.snapshotCloned(state => state.uiConfig.components);
+
+    if (!components.hasOwnProperty('playerOverlay') || !components.playerOverlay.hasOwnProperty('config')) {
+      console.log('No playerOverlay configuration found');
+      return;
+    }
+
+    const rawConfig: Pojo = components.playerOverlay.config;
+    console.log('playerOverlay configuration:');
+    [
+      'enabled', 'userDisplayText', 'position', 'fontSizeInPixels', 'textColor', 'textOpacity', 'backgroundColor',
+      'backgroundOpacity'
+    ].forEach(key => {
+      console.log(`  ${key}: ${rawConfig[key] ? `"${rawConfig[key].value}"` : undefined}`);
+    });
   }
 }
