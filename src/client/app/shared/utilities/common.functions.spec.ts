@@ -249,6 +249,31 @@ export function main() {
         });
       });
     });
+
+    [
+      { value: null, description: 'null', expected: true },
+      { value: undefined, description: 'an undefined value', expected: true },
+      { value: [], description: 'an empty array', expected: false },
+      { value: [1], description: 'a non-empty array', expected: false },
+      { value: {}, description: 'an empty object', expected: false },
+      { value: { a: 1 }, description: 'a non-empty object', expected: false },
+      { value: '', description: 'an empty string', expected: false },
+      { value: 'x', description: 'a non-empty-string', expected: false },
+      { value: 0, description: '0', expected: false },
+      { value: 1, description: '1', expected: false }
+    ].forEach(test => {
+      describe('isNullOrUndefined()', () => {
+        it(`returns ${test.expected} for ${test.description}`, () => {
+          expect(Common.isNullOrUndefined(test.value)).toBe(test.expected);
+        });
+      });
+
+      describe('isNotNullOrUndefined()', () => {
+        it(`returns ${!test.expected} for ${test.description}`, () => {
+          expect(Common.isNotNullOrUndefined(test.value)).toBe(!test.expected);
+        });
+      });
+    });
   });
 }
 
