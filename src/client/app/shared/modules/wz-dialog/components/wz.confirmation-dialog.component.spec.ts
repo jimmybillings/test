@@ -23,5 +23,15 @@ export function main() {
         expect(componentUnderTest.decline.emit).toHaveBeenCalled();
       });
     });
+
+    describe('stringHasValues()', () => {
+      it('returns false when the input is just a string', () => {
+        expect(componentUnderTest.stringHasValues('ross')).toBe(false);
+      });
+
+      it('returns true when the input is a TranslationString object', () => {
+        expect(componentUnderTest.stringHasValues({ key: 'SOME_KEY', values: { some: 'values' } })).toBe(true);
+      });
+    });
   });
 }

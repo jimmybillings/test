@@ -1,5 +1,12 @@
 import { MatDialogConfig } from '@angular/material';
 
+export interface TrString {
+  key: string;
+  values: {
+    [key: string]: string;
+  };
+}
+
 export interface DialogConfig {
   mergedDialogConfig: MatDialogConfig;
   mergedOptions: DialogOptions;
@@ -24,8 +31,8 @@ export interface NotificationDialogOptions extends BaseDialogConfig {
 }
 
 export interface ConfirmationDialogOptions extends BaseDialogConfig {
-  title?: string;
-  message?: string;
+  title?: string | TrString;
+  message?: string | TrString;
   accept?: string;
   decline?: string;
 }
@@ -37,8 +44,8 @@ export interface NotificationDialogStrings {
 }
 
 export interface ConfirmationDialogStrings {
-  title?: string;
-  message?: string;
+  title?: string | TrString;
+  message?: string | TrString;
   accept?: string;
   decline?: string;
 }

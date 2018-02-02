@@ -1,13 +1,23 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ConfirmationDialogStrings } from '../interfaces/wz.dialog.interface';
+import { ConfirmationDialogStrings, TrString } from '../interfaces/wz.dialog.interface';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-confirmation-dialog',
   template: `
-    <h1 mat-dialog-title>{{ strings.title | translate }}</h1>
+    <ng-container *ngIf="stringHasValues(strings.title); else staticTitle">
+      <h1 mat-dialog-title>{{ strings.title.key | translate:strings.message.values }}</h1>
+    </ng-container>
+    <ng-template #staticTitle>
+      <h1 mat-dialog-title>{{ strings.title | translate }}</h1>
+    </ng-template>
     <mat-dialog-content layout="row">
-      <div flex>{{ strings.message | translate }}</div>
+      <ng-container *ngIf="stringHasValues(strings.message); else staticMessage">
+        <div flex>{{ strings.message.key | translate:strings.message.values }}</div>
+      </ng-container>
+      <ng-template #staticMessage>
+        <div flex>{{ strings.message | translate }}</div>
+      </ng-template>
     </mat-dialog-content>
     <mat-dialog-actions layout="row" layout-align="end end">
       <button (click)="onClickDecline()" mat-button mat-dialog-close color="primary">
@@ -30,5 +40,9 @@ export class WzConfirmationDialogComponent {
 
   public onClickDecline(): void {
     this.decline.emit();
+  }
+
+  public stringHasValues(s: string | TrString) {
+    return s.hasOwnProperty('key') && s.hasOwnProperty('values');
   }
 }
