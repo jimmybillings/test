@@ -387,8 +387,17 @@
                 <span class="total-amount">{{ invoice.order.paymentBalance | currency:'USD':true:'1.2-2' }}</span>
               </div>
             </ng-container>  
-
           </div>
+        </div>
+        <div flex="100" layout="column" layout-align="center end">
+          <button
+            *ngIf="shouldShowLicenseDetailsBtn(invoice.licenseDocuments)"
+            mat-button
+            class="is-outlined"
+            color="primary"
+            (click)="showLicenseAgreements(invoice.licenseDocuments)">
+              {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
+          </button>
         </div>
       </section>
 
