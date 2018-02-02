@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Invoice, Project, AssetLineItem, quotesWithoutPricing, LicenseAgreements, LicenseAgreement } from '../../../shared/interfaces/commerce.interface';
+import { Invoice, Project, AssetLineItem, quotesWithoutPricing, LicenseAgreements } from '../../../shared/interfaces/commerce.interface';
 import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 
 import { AppStore } from '../../../app.store';
