@@ -8,7 +8,7 @@ import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-marker
 import { ActiveCollectionService } from './active-collection.service';
 import { AppStore, AppState, InternalActionFactoryMapper } from '../../app.store';
 import { Collection, CollectionItems } from '../../shared/interfaces/collection.interface';
-import { Asset } from '../../shared/interfaces/common.interface';
+import { Asset, Pagination } from '../../shared/interfaces/common.interface';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
 @Injectable()
@@ -51,8 +51,8 @@ export class ActiveCollectionEffects {
   // TODO: After user preference service has been replaced, this will map to a user preference action instead of calling do().
   @Effect({ dispatch: false })
   public openTrayOnAddOrRemove: Observable<Action> =
-  this.actions.ofType(ActiveCollectionActions.AddAsset.Type, ActiveCollectionActions.RemoveAsset.Type)
-    .do(() => this.userPreferenceService.openCollectionTray());
+    this.actions.ofType(ActiveCollectionActions.AddAsset.Type, ActiveCollectionActions.RemoveAsset.Type)
+      .do(() => this.userPreferenceService.openCollectionTray());
 
   @Effect()
   public addAsset: Observable<Action> = this.actions.ofType(ActiveCollectionActions.AddAsset.Type)
@@ -93,11 +93,11 @@ export class ActiveCollectionEffects {
 
   @Effect()
   public changeRouteOnRemoveAssetSuccess: Observable<Action> =
-  this.actions.ofType(ActiveCollectionActions.RemoveAssetSuccess.Type)
-    .withLatestFrom(this.store.select(state => state.activeCollection.collection.id))
-    .map(([action, collectionId]: [ActiveCollectionActions.RemoveAssetSuccess, number]) => {
-      return this.store.create(factory => factory.router.goToCollection(collectionId));
-    });
+    this.actions.ofType(ActiveCollectionActions.RemoveAssetSuccess.Type)
+      .withLatestFrom(this.store.select(state => state.activeCollection.collection.id))
+      .map(([action, collectionId]: [ActiveCollectionActions.RemoveAssetSuccess, number]) => {
+        return this.store.create(factory => factory.router.goToCollection(collectionId));
+      });
 
 
   @Effect()
@@ -112,12 +112,29 @@ export class ActiveCollectionEffects {
 
   @Effect()
   public showSnackbarOnUpdateAssetMarkersSuccess: Observable<Action> =
-  this.actions.ofType(ActiveCollectionActions.UpdateAssetMarkersSuccess.Type)
-    .withLatestFrom(this.store.select(state => state.activeCollection.collection.name))
-    .map(([action, name]: [ActiveCollectionActions.UpdateAssetMarkersSuccess, string]) =>
-      this.store.create(factory => factory.snackbar.display('COLLECTION.UPDATE_IN_COLLECTION_TOAST', { collectionName: name }))
+    this.actions.ofType(ActiveCollectionActions.UpdateAssetMarkersSuccess.Type)
+      .withLatestFrom(this.store.select(state => state.activeCollection.collection.name))
+      .map(([action, name]: [ActiveCollectionActions.UpdateAssetMarkersSuccess, string]) =>
+        this.store.create(factory => factory.snackbar.display('COLLECTION.UPDATE_IN_COLLECTION_TOAST', { collectionName: name }))
+      );
+
+  @Effect()
+  public addPageOfSearchAssets: Observable<Action> = this.actions.ofType(ActiveCollectionActions.AddPageOfSearchAssets.Type)
+    .withLatestFrom(this.store.select(state => state.search.results.items))
+    .withLatestFrom(this.store.select(state => state.activeCollection.collection.assets.pagination))
+    .switchMap(([[action, items], pagination]: [[ActiveCollectionActions.AddPageOfSearchAssets, Asset[]], Pagination]) =>
+      this.service.addAssetsToFocusedCollection(items, pagination)
+        .map(items => this.store.create(factory => factory.activeCollection.addPageOfSearchAssetsSuccess(items)))
+        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
     );
 
+  @Effect()
+  public showToastOnAddPageSuccess: Observable<Action> =
+    this.actions.ofType(ActiveCollectionActions.AddPageOfSearchAssetsSuccess.Type)
+      .withLatestFrom(this.store.select(state => state.activeCollection.collection.name))
+      .map(([action, collectionName]: [ActiveCollectionActions.AddPageOfSearchAssetsSuccess, string]) =>
+        this.store.create(factory => factory.snackbar.display('COLLECTION.ADD_ASSETS_SUCCESS_TOAST', { collectionName }))
+      );
 
   constructor(
     private actions: Actions,

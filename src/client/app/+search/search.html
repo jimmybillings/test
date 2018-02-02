@@ -26,9 +26,12 @@
 		[sortDefinitionItems]="(sortDefinition.data | async).sorts"
 		[currentSort]="(sortDefinition.data | async).currentSort"
 		[assetView]="(userPreferences.data | async).assetView"
+		[collectionName]="(activeCollection | async).name"
+		[canEditCollection]="canEditCollection | async"
 		[path]="path"
 		(onClickBreadcrumb)="onClickBreadcrumb($event)"
 		(onChangeAssetView)="changeAssetView($event)"
+		(clickAddAllBtn)="onClickAddAllBtn()"
 		(onSortResults)="sortResults($event)">
 	</search-header>
 

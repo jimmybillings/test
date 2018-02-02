@@ -135,6 +135,26 @@ export class SearchComponent implements OnDestroy {
     this.router.navigate(route);
   }
 
+  public get canEditCollection(): Observable<boolean> {
+    let activeCollection: Collection;
+    this.activeCollection.take(1).subscribe(collection => activeCollection = collection);
+    return this.userCan.editCollection(activeCollection);
+  }
+
+  public onClickAddAllBtn(): void {
+    let collectionName: string;
+    this.activeCollection.take(1).subscribe(collection => collectionName = collection.name);
+
+    this.store.dispatch(factory =>
+      factory.dialog.showConfirmation({
+        title: { key: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.TITLE', values: { collectionName } },
+        message: { key: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.MESSAGE', values: { collectionName } },
+        accept: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.ACCEPT',
+        decline: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.DECLINE'
+      }, () => this.store.dispatch(factory => factory.activeCollection.addPageOfSearchAssets()))
+    );
+  }
+
   private _filtersAreAvailable(): Observable<boolean> {
     return this.store.select(state => state.headerDisplayOptions.filtersAreAvailable);
   }

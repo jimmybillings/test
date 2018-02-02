@@ -20,9 +20,14 @@ export function main() {
     let mockRefDetector: any;
     let mockStore: MockAppStore;
     let searchResetDispatchSpy: jasmine.Spy;
+    let canEditCollection: boolean;
+    let confirmationDialogDispatchSpy: jasmine.Spy;
 
     beforeEach(() => {
-      mockUserCan = { administerQuotes: () => false };
+      mockUserCan = {
+        administerQuotes: () => false,
+        editCollection: () => Observable.of(canEditCollection)
+      };
 
       mockSearchContext = {
         update: null,
@@ -92,7 +97,10 @@ export function main() {
       };
 
       mockStore = new MockAppStore();
+
       searchResetDispatchSpy = mockStore.createActionFactoryMethod('search', 'reset');
+      confirmationDialogDispatchSpy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
+
       componentUnderTest = new SearchComponent(
         mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext,
         mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector, mockStore
@@ -320,6 +328,40 @@ export function main() {
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.go).toHaveBeenCalled();
+      });
+    });
+
+    describe('canEditCollection()', () => {
+      beforeEach(() => {
+        mockStore.createStateSection('activeCollection', { collection: { some: 'collection' } });
+      });
+
+      it('returns true if userCan.editCollection() returns true', () => {
+        canEditCollection = true;
+        let result: boolean;
+        componentUnderTest.canEditCollection.take(1).subscribe(res => result = res);
+        expect(result).toBe(true);
+      });
+
+      it('returns false if userCan.editCollection() returns false', () => {
+        canEditCollection = false;
+        let result: boolean;
+        componentUnderTest.canEditCollection.take(1).subscribe(res => result = res);
+        expect(result).toBe(false);
+      });
+    });
+
+    describe('onClickAddAllBtn()', () => {
+      it('dispatches the proper action', () => {
+        mockStore.createStateSection('activeCollection', { collection: { name: 'some collection' } });
+        componentUnderTest.onClickAddAllBtn();
+
+        mockStore.expectDispatchFor(confirmationDialogDispatchSpy, {
+          title: { key: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.TITLE', values: { collectionName: 'some collection' } },
+          message: { key: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.MESSAGE', values: { collectionName: 'some collection' } },
+          accept: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.ACCEPT',
+          decline: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.DECLINE'
+        }, jasmine.any(Function));
       });
     });
   });

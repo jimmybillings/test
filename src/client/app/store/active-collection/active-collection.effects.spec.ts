@@ -343,5 +343,63 @@ export function main() {
         }
       }
     });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'addPageOfSearchAssets',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: ActiveCollectionActions.AddPageOfSearchAssets.Type
+      },
+      state: [
+        {
+          storeSectionName: 'search',
+          propertyName: 'results',
+          value: { items: [{ some: 'items' }] }
+        },
+        {
+          storeSectionName: 'activeCollection',
+          propertyName: 'collection',
+          value: { assets: { pagination: { some: 'pagination' } } }
+        }
+      ],
+      serviceMethod: {
+        name: 'addAssetsToFocusedCollection',
+        expectedArguments: [[{ some: 'items' }], { some: 'pagination' }],
+        returnsObservableOf: [{ some: 'new items' }]
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'activeCollection',
+          methodName: 'addPageOfSearchAssetsSuccess',
+          expectedArguments: [[{ some: 'new items' }]]
+        },
+        failure: {
+          sectionName: 'error',
+          methodName: 'handle'
+        }
+      }
+    });
+
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'showToastOnAddPageSuccess',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: ActiveCollectionActions.AddPageOfSearchAssetsSuccess.Type,
+        currentPageItems: { some: 'assets' }
+      },
+      state: {
+        storeSectionName: 'activeCollection',
+        propertyName: 'collection',
+        value: { name: 'someCollectionName' }
+      },
+      outputActionFactories: {
+        success: {
+          sectionName: 'snackbar',
+          methodName: 'display',
+          expectedArguments: ['COLLECTION.ADD_ASSETS_SUCCESS_TOAST', { collectionName: 'someCollectionName' }]
+        }
+      }
+    });
   });
 }
