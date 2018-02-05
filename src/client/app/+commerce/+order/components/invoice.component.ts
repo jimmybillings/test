@@ -26,21 +26,22 @@ export class InvoiceComponent {
     private route: ActivatedRoute,
     private dialogService: WzDialogService) {
     this.isShared = this.route.params.map(params => !!params['share_key']);
-    this.invoiceObservable = this.store.select(state => {
-      const invoice: Invoice = Common.clone(state.invoice.invoice);
-      invoice.order.projects = invoice.order.projects.map((project: Project) => {
-        if (project.lineItems) {
-          project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
-            lineItem.asset = enhanceAsset(
-              Object.assign(lineItem.asset, { uuid: lineItem.id }), 'order', invoice.order.id
-            );
-            return lineItem;
-          });
-        }
-        return project;
+    this.invoiceObservable = this.store.select(state => state.invoice.invoice)
+      .map((currentInvoice) => {
+        const invoice: Invoice = Common.clone(currentInvoice);
+        invoice.order.projects = invoice.order.projects.map((project: Project) => {
+          if (project.lineItems) {
+            project.lineItems = project.lineItems.map((lineItem: AssetLineItem) => {
+              lineItem.asset = enhanceAsset(
+                Object.assign(lineItem.asset, { uuid: lineItem.id }), 'order', invoice.order.id
+              );
+              return lineItem;
+            });
+          }
+          return project;
+        });
+        return invoice;
       });
-      return invoice;
-    });
   }
 
   public hasProp(obj: Pojo, ...props: string[]): boolean {
