@@ -31,8 +31,10 @@ export interface CollectionSummaryItem {
   lastUpdated?: string;
   name: string;
   owner: number;
-  userRole?: string;
+  userRole?: CollectionUserRole;
 }
+
+export type CollectionUserRole = 'owner' | 'editor' | 'viewer';
 
 export type CollectionReloadType = 'activeCollection' | 'collections';
 
@@ -87,6 +89,9 @@ export interface CollectionAssetResponse {
   clipThumbnailUrl?: string;
 }
 
+export interface AddAssetToCollectionResponse {
+  list: [CollectionItemMarkersUpdater];
+}
 export interface CollectionItemMarkersUpdater {
   uuid: string;
   assetId: number;
