@@ -57,6 +57,44 @@ export function main() {
       });
     });
 
+    describe('addToDifferentCollection()', () => {
+      it('emits the onAddtoDifferentCollection event with the asset', () => {
+        spyOn(componentUnderTest.onAddtoDifferentCollection, 'emit');
+        componentUnderTest.addToDifferentCollection({ some: 'asset' } as any);
+        expect(componentUnderTest.onAddtoDifferentCollection.emit).toHaveBeenCalledWith({ some: 'asset' });
+      });
+    });
+
+    describe('canAddToDifferentCollection()', () => {
+      it('Returns true if assetType is collection and user has haveCollections permission', () => {
+        componentUnderTest.assetType = 'collection';
+        let userCan = { haveCollections: () => true };
+        componentUnderTest.userCan = userCan as any;
+        expect(componentUnderTest.canAddToDifferentCollection).toBe(true);
+      });
+
+      it('Returns false if assetType is collection but user has no haveCollections permission', () => {
+        componentUnderTest.assetType = 'collection';
+        let userCan = { haveCollections: () => false };
+        componentUnderTest.userCan = userCan as any;
+        expect(componentUnderTest.canAddToDifferentCollection).toBe(false);
+      });
+
+      it('Returns false if assetType is not collection and user has haveCollections permission', () => {
+        componentUnderTest.assetType = 'search';
+        let userCan = { haveCollections: () => true };
+        componentUnderTest.userCan = userCan as any;
+        expect(componentUnderTest.canAddToDifferentCollection).toBe(false);
+      });
+
+      it('Returns true if assetType is not collection and user has no haveCollections permission', () => {
+        componentUnderTest.assetType = 'search';
+        let userCan = { haveCollections: () => false };
+        componentUnderTest.userCan = userCan as any;
+        expect(componentUnderTest.canAddToDifferentCollection).toBe(false);
+      });
+    });
+
     describe('removeFromActiveCollection()', () => {
       it('dispatches the expected action', () => {
         const mockAsset: any = { some: 'asset' };

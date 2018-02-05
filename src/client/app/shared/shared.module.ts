@@ -66,6 +66,7 @@ import { ActiveCollectionService } from '../store/active-collection/active-colle
 import { ActivityService } from '../store/activity/activity.service';
 import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
 import { CommentService } from '../store/comment/comment.service';
+import { FutureCollectionsService } from '../store/collections/collections.service';
 import { DeliveryOptionsService } from '../store/delivery-options/delivery-options.service';
 import { FeeConfigService } from '../store/fee-config/fee-config.service';
 import { FutureApiService } from '../store/api/api.service';
@@ -132,6 +133,7 @@ import { ActivityEffects } from '../store/activity/activity.effects';
 import { AssetEffects } from '../store/asset/asset.effects';
 import { CartEffects } from '../store/cart/cart.effects';
 import { CommentEffects } from '../store/comment/comment.effects';
+import { CollectionsEffects } from '../store/collections/collections.effects';
 import { DeliveryOptionsEffects } from '../store/delivery-options/delivery-options.effects';
 import { DialogEffects } from '../store/dialog/dialog.effects';
 import { ErrorEffects } from '../store/error/error.effects';
@@ -161,6 +163,7 @@ const WAZEE_SERVICES = [
   CurrentUserService,
   AssetService,
   CollectionsService,
+  FutureCollectionsService,
   ActiveCollectionService,
   SearchContext,
   UserPreferenceService,
@@ -259,6 +262,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActivityEffects,
   AssetEffects,
   CartEffects,
+  CollectionsEffects,
   CommentEffects,
   DeliveryOptionsEffects,
   DialogEffects,

@@ -349,6 +349,27 @@ export function main() {
       });
     });
 
+    describe('addToDifferentCollection()', () => {
+      it('Should call the dialog service to open the collection list component', () => {
+        componentUnderTest.activeCollection = { id: 123, name: 'Collection name', owner: 123 };
+        componentUnderTest.addToDifferentCollection({ some: 'asset' } as any);
+        expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
+          componentType: jasmine.any(Function),
+          dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
+          inputOptions: {
+            focusedCollection: { id: 123, name: 'Collection name', owner: 123 },
+            roleFilter: ['owner', 'editor'],
+            editMode: true
+          },
+          outputOptions: [{
+            event: 'close',
+            callback: jasmine.any(Function),
+            closeOnEvent: true
+          }]
+        });
+      });
+    });
+
     describe('collectionIsShared()', () => {
       it('should return true when collection has editors or viewers', () => {
         componentUnderTest.activeCollection = mockCollection();
