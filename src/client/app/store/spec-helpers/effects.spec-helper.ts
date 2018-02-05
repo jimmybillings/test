@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { MockAppStore } from './mock-app.store';
 import { Common } from '../../shared/utilities/common.functions';
 import { Pojo } from '../../shared/interfaces/common.interface';
+import { Any } from '../speed-preview/speed-preview.actions';
 
 export interface ParameterizedAction extends Action {
   [parameterName: string]: any;
@@ -40,7 +41,7 @@ export interface SuccessActionFactory {
 export interface FailureActionFactory {
   sectionName: string;
   methodName: string;
-  expectedArgument?: Pojo;
+  expectedArgument?: any;
 }
 
 export interface OutputActionFactories {
