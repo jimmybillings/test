@@ -17,7 +17,7 @@ export class CollectionsEffects {
       this.service.addAssetTo(action.collection, action.asset)
         .map((addAssetToCollectionResponse: AddAssetToCollectionResponse) => {
           return addAssetToCollectionResponse.list
-            ? this.store.create(factory => factory.snackbar.display('COLLECTION.ASSET.ADDED',
+            ? this.store.create(factory => factory.snackbar.display('COLLECTION.SHOW.ASSET_ADDED',
               { collectionName: action.collection.name, assetId: action.asset.assetId })
             )
             : this.store.create(factory =>
