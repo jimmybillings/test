@@ -406,7 +406,7 @@ export interface OrderAddress {
   type: 'User' | 'Account';
 }
 export interface Invoice {
-  documents: Array<Document>;
+  licenseDocuments: LicenseAgreements;
   order: Order;
   payee: Payee;
 }

@@ -9,12 +9,26 @@ export function main() {
     let componentUnderTest: InvoiceComponent;
     let mockStore: MockAppStore;
     let mockActivatedRoute: any;
+    let mockDialogService: any;
 
     beforeEach(() => {
       mockStore = new MockAppStore();
-      mockStore.createStateSection('invoice', { invoice: { some: 'invoice', order: { id: 42, projects: [] } } });
+      mockStore.createStateSection(
+        'invoice', {
+          invoice: {
+            some: 'invoice',
+            order: { id: 42, projects: [] },
+            licenseDocuments: { items: [{ some: 'stuff' }] }
+          }
+        });
       mockActivatedRoute = { params: Observable.of({ share_key: 'abc-123' }) };
-      componentUnderTest = new InvoiceComponent(mockStore, mockActivatedRoute);
+
+      mockDialogService = {
+        openComponentInDialog: jasmine.createSpy('openComponentInDialog'),
+        openConfirmationDialog: jasmine.createSpy('openConfirmationDialog'),
+        openFormDialog: jasmine.createSpy('openFormDialog')
+      };
+      componentUnderTest = new InvoiceComponent(mockStore, mockActivatedRoute, mockDialogService);
     });
 
     describe('constructor()', () => {
@@ -39,7 +53,7 @@ export function main() {
           }
         );
 
-        new InvoiceComponent(mockStore, mockActivatedRoute).invoiceObservable.subscribe(invoice => {
+        new InvoiceComponent(mockStore, mockActivatedRoute, mockDialogService).invoiceObservable.subscribe(invoice => {
           const asset: any = invoice.order.projects[0].lineItems[0].asset;
 
           expect(asset.type).toEqual('order');
@@ -98,6 +112,56 @@ export function main() {
         };
         expect(componentUnderTest.shouldDisplayRights(lineItem, invoice))
           .toBe(false);
+      });
+    });
+
+    describe('shouldShowLicenseDetailsBtn()', () => {
+      it('returns true when invoice contains license documents', () => {
+        let licenseAgreements: any = {
+          items: [{ some: 'licenses' }]
+        };
+        expect(componentUnderTest.shouldShowLicenseDetailsBtn(licenseAgreements))
+          .toBe(true);
+      });
+
+      it('returns false when the License documents do not contain items', () => {
+        let licenseAgreements: any = {
+          notItems: {}
+        };
+        expect(componentUnderTest.shouldShowLicenseDetailsBtn(licenseAgreements))
+          .toBe(false);
+      });
+
+      it('returns false when the LicenseDocuments are empty', () => {
+        let licenseAgreements: any = {};
+        expect(componentUnderTest.shouldShowLicenseDetailsBtn(licenseAgreements))
+          .toBe(false);
+      });
+    });
+
+
+    describe('showLicenseAgreements()', () => {
+      let licenseAgreements: any = {
+        items: [{ some: 'licenses' }]
+      };
+      it('calls openComponentInDialog() on the dialog service (with the right config)', () => {
+        componentUnderTest.showLicenseAgreements(licenseAgreements);
+
+        expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
+          componentType: jasmine.any(Function),
+          dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
+          inputOptions: {
+            assetType: 'order',
+            licenses: { items: [{ some: 'licenses' }] }
+          },
+          outputOptions: [
+            {
+              event: 'close',
+              callback: jasmine.any(Function),
+              closeOnEvent: true
+            }
+          ]
+        });
       });
     });
   });

@@ -1,12 +1,14 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Invoice, Project, AssetLineItem, quotesWithoutPricing } from '../../../shared/interfaces/commerce.interface';
+import { Invoice, Project, AssetLineItem, quotesWithoutPricing, LicenseAgreements } from '../../../shared/interfaces/commerce.interface';
 import { enhanceAsset } from '../../../shared/interfaces/enhanced-asset';
 
 import { AppStore } from '../../../app.store';
 import { Pojo } from '../../../shared/interfaces/common.interface';
 import { Common } from '../../../shared/utilities/common.functions';
+import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { LicenseAgreementComponent } from '../../components/license-agreement/license-agreement.component';
 
 @Component({
   moduleId: module.id,
@@ -19,7 +21,10 @@ export class InvoiceComponent {
   public isShared: Observable<boolean>;
   public invoiceObservable: Observable<Invoice>;
 
-  constructor(private store: AppStore, private route: ActivatedRoute) {
+  constructor(
+    private store: AppStore,
+    private route: ActivatedRoute,
+    private dialogService: WzDialogService) {
     this.isShared = this.route.params.map(params => !!params['share_key']);
     this.invoiceObservable = this.store.select(state => {
       const invoice: Invoice = Common.clone(state.invoice.invoice);
@@ -57,5 +62,29 @@ export class InvoiceComponent {
 
   public shouldDisplayRights(lineItem: AssetLineItem, invoice: Invoice): boolean {
     return lineItem.rightsManaged === 'Rights Managed' && !quotesWithoutPricing.includes(invoice.order.orderType);
+  }
+
+  public shouldShowLicenseDetailsBtn(licenseAgreements: LicenseAgreements): boolean {
+    return !!licenseAgreements.items;
+  }
+
+  public showLicenseAgreements(licenseAgreements: LicenseAgreements): void {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: LicenseAgreementComponent,
+        dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
+        inputOptions: {
+          assetType: 'order',
+          licenses: licenseAgreements
+        },
+        outputOptions: [
+          {
+            event: 'close',
+            callback: () => true,
+            closeOnEvent: true
+          }
+        ]
+      }
+    );
   }
 }
