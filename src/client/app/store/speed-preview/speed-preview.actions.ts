@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 import { SpeedviewData } from '../../shared/interfaces/asset.interface';
+import { Pojo } from '../../shared/interfaces/common.interface';
 
 export class ActionFactory {
   public load(asset: EnhancedAsset): Load {
@@ -9,12 +10,12 @@ export class ActionFactory {
 }
 
 export class InternalActionFactory extends ActionFactory {
-  public loadSuccess(speedViewData: SpeedviewData): LoadSuccess {
-    return new LoadSuccess(speedViewData);
+  public loadSuccess(speedViewData: SpeedviewData, assetId: number): LoadSuccess {
+    return new LoadSuccess(speedViewData, assetId);
   }
 
-  public loadFailure(): LoadFailure {
-    return new LoadFailure();
+  public loadFailure(assetId: number): LoadFailure {
+    return new LoadFailure(assetId);
   }
 }
 
@@ -27,12 +28,14 @@ export class Load implements Action {
 export class LoadSuccess implements Action {
   public static readonly Type = '[SpeedPreview] Load Success';
   public readonly type = LoadSuccess.Type;
-  constructor(public readonly speedViewData: SpeedviewData) { }
+  constructor(public readonly speedViewData: SpeedviewData, public readonly assetId: number) { }
 }
 
 export class LoadFailure implements Action {
   public static readonly Type = '[SpeedPreview] Load Failure';
   public readonly type = LoadFailure.Type;
+  constructor(public readonly assetId: number) { }
+
 }
 
 export type Any = Load | LoadSuccess | LoadFailure;
