@@ -55,18 +55,20 @@
           <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{ options.currentSort.name | translate }}
         </span> 
       </div>
+      
       <mat-list dense>
-        <mat-list-item *ngFor="let collection of (collections.data | async).items" [ngClass]="{active: focusedCollection.id === collection.id}">
+        <mat-list-item *ngFor="let collection of collectionList | async" [ngClass]="{active: focusedCollection.id === collection.id}">
           <button (click)="selectFocusedCollection(collection);">
             <mat-icon class="select-indicator" *ngIf="focusedCollection.id === collection.id">star</mat-icon>
             <mat-icon class="select-indicator" *ngIf="focusedCollection.id !== collection.id">star_border</mat-icon>
             {{collection.name}}
             <mat-icon class="not-owner right-align" title="{{ 'COLLECTION.DD_MENU.SHARED_TITLE' | translate:{role:collection.userRole} }}" *ngIf="collection.userRole !== 'owner'">shared</mat-icon>
             <a mat-icon-button
+              *ngIf="!addToDifferentCollection"
               color="primary"
               class="open-collection-link"
               title="{{ 'COLLECTION.MORE_DD_MENU.OPEN_COLLECTION' | translate }}"
-              [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
+              [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">
               <mat-icon>open_in_browser</mat-icon>
             </a>
           </button>
