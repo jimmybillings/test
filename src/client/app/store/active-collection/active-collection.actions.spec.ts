@@ -301,5 +301,28 @@ export function main() {
         error: { some: 'error' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: ActionFactory,
+        name: 'addPageOfSearchAssets',
+        parameters: []
+      },
+      expectedAction: {
+        type: '[Active Collection] Add Page Of Search Assets'
+      }
+    });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'addPageOfSearchAssetsSuccess',
+        parameters: [{ some: 'items' }]
+      },
+      expectedAction: {
+        type: '[Active Collection] Add Page Of Search Assets Success',
+        currentPageItems: { some: 'items' }
+      }
+    });
   });
 }

@@ -24,6 +24,8 @@ export function main() {
     let mockCartService: any;
     let mockDocumentService: any;
     let mockUserPreferenceService: any;
+    let showConfirmationDialogDispatchSpy: jasmine.Spy;
+
 
     beforeEach(() => {
       mockWindow = { nativeWindow: { location: { href: {} }, innerWidth: 200 } };
@@ -70,9 +72,11 @@ export function main() {
       };
 
       mockStore = new MockAppStore();
+      showConfirmationDialogDispatchSpy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
 
       mockStore.createStateSection('activeCollection', {
         collection: {
+          name: 'test collection',
           id: 123, assets: {
             items: [
               {
@@ -205,8 +209,14 @@ export function main() {
 
     describe('setCollectionForDelete()', () => {
       it('Should open the dialog to confirm delete of collection', () => {
+        componentUnderTest.ngOnInit();
         componentUnderTest.setCollectionForDelete();
-        expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
+        mockStore.expectDispatchFor(showConfirmationDialogDispatchSpy, {
+          title: { key: 'COLLECTION.INDEX.CONFIRMATION_TITLE', values: { collectionName: 'test collection' } },
+          message: { key: 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE', values: { collectionName: 'test collection' } },
+          decline: 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE',
+          accept: 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE'
+        }, jasmine.any(Function));
       });
     });
 

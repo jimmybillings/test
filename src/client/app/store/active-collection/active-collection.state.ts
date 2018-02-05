@@ -50,6 +50,7 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     case ActiveCollectionActions.LoadPage.Type:
     case ActiveCollectionActions.AddAsset.Type:
     case ActiveCollectionActions.RemoveAsset.Type:
+    case ActiveCollectionActions.AddPageOfSearchAssets.Type:
     case ActiveCollectionActions.UpdateAssetMarkers.Type: {
       return {
         ...Common.clone(state),
@@ -116,6 +117,20 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
     case ActiveCollectionActions.UpdateAssetMarkersFailure.Type: {
       return {
         ...Common.clone(state),
+        loading: false
+      };
+    }
+
+    case ActiveCollectionActions.AddPageOfSearchAssetsSuccess.Type: {
+      const clonedState: State = Common.clone(state);
+
+      return {
+        ...clonedState,
+        collection: {
+          ...clonedState.collection,
+          assets: action.currentPageItems,
+          assetsCount: clonedState.collection.assetsCount + action.currentPageItems.items.length
+        },
         loading: false
       };
     }

@@ -13,7 +13,6 @@ import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
-import { CollectionDeleteComponent } from '../components/collection-delete.component';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { CollectionShareMembersComponent } from '../components/collection-share-members.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
@@ -100,20 +99,12 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public setCollectionForDelete(): void {
-    this.dialogService.openComponentInDialog(
-      {
-        componentType: CollectionDeleteComponent,
-        dialogConfig: { position: { top: '14%' } },
-        inputOptions: {
-          collection: Common.clone(this.activeCollection),
-        },
-        outputOptions: [{
-          event: 'deleteEvent',
-          callback: (event: WzEvent) => this.deleteCollection(event.payload),
-          closeOnEvent: true
-        }]
-      }
-    );
+    this.store.dispatch(factory => factory.dialog.showConfirmation({
+      title: { key: 'COLLECTION.INDEX.CONFIRMATION_TITLE', values: { collectionName: this.activeCollection.name } },
+      message: { key: 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE', values: { collectionName: this.activeCollection.name } },
+      decline: 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE',
+      accept: 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE'
+    }, () => this.deleteCollection(this.activeCollection.id)));
   }
 
   public deleteCollection(id: number) {
