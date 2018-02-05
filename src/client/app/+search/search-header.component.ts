@@ -1,5 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
+export type ResultsView = 'grid' | 'list';
+
 @Component({
   moduleId: module.id,
   selector: 'search-header',
@@ -7,7 +9,11 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
     	<section class="search-header" layout="row" layout-align="center center">
         <header flex-gt-lg="95" flex-lg="95" flex="100">
           <div layout="row" layout-align="space-between end">
-            <wz-gallery-breadcrumb *ngIf="path" [path]="path" (clickBreadcrumb)="onClickBreadcrumb.emit($event)"></wz-gallery-breadcrumb>
+            <wz-gallery-breadcrumb
+              *ngIf="path"
+              [path]="path"
+              (clickBreadcrumb)="onClickBreadcrumb.emit($event)">
+            </wz-gallery-breadcrumb>
             <h2 *ngIf="!hasResults" flex="100" class="mat-display-1 alert"> 
               {{ 'SEARCH.NO_RESULTS.PG_HEADING' | translate }}
             </h2>
@@ -25,10 +31,20 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
                   (sort)="onSortResults.emit($event)">
                 </wz-sort-component>
               </mat-menu>
-              <button mat-icon-button color="primary" title="{{ (assetView == 'grid' ? 
-                'SEARCH.ASSET_VIEW_LIST_BTN_TITLE' : 'SEARCH.ASSET_VIEW_GRID_BTN_TITLE') | translate }}" 
-                (click)="onChangeAssetView.emit((assetView == 'grid') ? 'list' : 'grid')">
-                <mat-icon>{{ assetView == 'grid' ? 'view_list' : 'view_comfy' }}</mat-icon>
+              <button
+                mat-icon-button
+                color="primary"
+                title="titleForAssetViewBtn" 
+                (click)="onClickAssetViewBtn()">
+                <mat-icon>{{ iconForAssetViewBtn }}</mat-icon>
+              </button>
+              <button
+                [disabled]="!canEditCollection"
+                mat-icon-button
+                color="primary"
+                title="{{ 'SEARCH.ADD_ALL_TO_COLLECTION.BTN_TITLE' | translate:{ collectionName:collectionName } }}"
+                (click)="onClickAddAllBtn()">
+                <mat-icon>library_add</mat-icon>  
               </button>
             </div>
           </div>
@@ -42,9 +58,31 @@ export class SearchHeaderComponent {
   @Input() hasResults: boolean = true;
   @Input() sortDefinitionItems: any;
   @Input() currentSort: any;
-  @Input() assetView: string = 'grid';
+  @Input() assetView: ResultsView = 'grid';
   @Input() path: any;
-  @Output() onChangeAssetView = new EventEmitter();
-  @Output() onSortResults = new EventEmitter();
-  @Output() onClickBreadcrumb = new EventEmitter();
+  @Input() collectionName: string;
+  @Input() canEditCollection: boolean;
+  @Output() onChangeAssetView: EventEmitter<ResultsView> = new EventEmitter();
+  @Output() onSortResults: EventEmitter<any> = new EventEmitter();
+  @Output() onClickBreadcrumb: EventEmitter<any> = new EventEmitter();
+  @Output() clickAddAllBtn: EventEmitter<null> = new EventEmitter();
+
+  public get titleForAssetViewBtn(): string {
+    return this.assetView === 'grid' ?
+      'SEARCH.ASSET_VIEW_LIST_BTN_TITLE' :
+      'SEARCH.ASSET_VIEW_GRID_BTN_TITLE';
+  }
+
+  public get iconForAssetViewBtn(): string {
+    return this.assetView === 'grid' ? 'view_list' : 'view_comfy';
+  }
+
+  public onClickAssetViewBtn(): void {
+    const newViewValue: ResultsView = this.assetView === 'grid' ? 'list' : 'grid';
+    this.onChangeAssetView.emit(newViewValue);
+  }
+
+  public onClickAddAllBtn(): void {
+    this.clickAddAllBtn.emit();
+  }
 }

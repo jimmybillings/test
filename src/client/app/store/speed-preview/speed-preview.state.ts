@@ -4,7 +4,6 @@ import { SpeedviewData } from '../../shared/interfaces/asset.interface';
 
 export interface State {
   readonly [index: number]: SpeedviewData;
-  readonly loadingAssetId?: number;
 };
 
 export const initialState: State = {};
@@ -13,16 +12,12 @@ export function reducer(state: State = initialState, action: SpeedPreviewActions
   if (state === null) state = initialState;
   switch (action.type) {
 
-    case SpeedPreviewActions.Load.Type: {
-      return Object.assign({}, state, { loadingAssetId: action.asset.assetId });
-    }
-
     case SpeedPreviewActions.LoadSuccess.Type: {
-      return Object.assign({}, state, { [state.loadingAssetId]: action.speedViewData, loadingAssetId: undefined });
+      return Object.assign({}, state, { [action.assetId]: action.speedViewData });
     }
 
     case SpeedPreviewActions.LoadFailure.Type: {
-      return Object.assign({}, state, { [state.loadingAssetId]: { noData: true }, loadingAssetId: undefined });
+      return Object.assign({}, state, { [action.assetId]: { noData: true } });
     }
 
     default: {

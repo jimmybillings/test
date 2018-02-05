@@ -87,6 +87,10 @@ export class OrderShowComponent {
     return !lineItem.downloadUrl && lineItem.transcodeStatus === 'Completed';
   }
 
+  public showSpinnerIcon(lineItem: AssetLineItem): boolean {
+    return lineItem.transcodeStatus === 'Submitted';
+  }
+
   public showAsperaButtonFor(lineItem: AssetLineItem): boolean {
     return lineItem.transcodeStatus === 'Completed' && !!lineItem.asperaSpec;
   }

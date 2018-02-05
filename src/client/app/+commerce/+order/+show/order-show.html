@@ -186,11 +186,14 @@
                           mat-button
                           color="primary"
                           class="is-outlined download">
-                          <mat-icon class="transcode-icon" [ngClass]="{'spinner': lineItem.transcodeStatus === 'Submitted'}">
+                          <mat-icon class="transcode-icon" [ngClass]="{'spinner': showSpinnerIcon(lineItem)}">
                             {{ 'ORDER.SHOW.TRANSCODE_ICON.' + lineItem.transcodeStatus | translate }}
                           </mat-icon>
                           <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.' +  lineItem.transcodeStatus | translate }}</span>
                         </button>
+                        <!-- this is sort of a catch all, if there is NOT download URL display processing  -->
+                        <!-- if there is nothing to download and the trancode is 'Complete' don't anything. -->
+                        <!-- This is the case revenue only, prepay access, and no delivery options -->
                         <ng-template #noDownloadAvailable>
                           <button
                             *ngIf="!nothingToDownload(lineItem)" 
@@ -198,10 +201,10 @@
                             mat-button
                             color="primary"
                             class="is-outlined download">
-                            <mat-icon class="transcode-icon" [ngClass]="{'spinner': lineItem.transcodeStatus === 'Submitted'}">
-                              {{ 'ORDER.SHOW.TRANSCODE_ICON.' + lineItem.transcodeStatus | translate }}
+                            <mat-icon class="transcode-icon spinner">
+                              {{ 'ORDER.SHOW.TRANSCODE_ICON.Submitted' | translate }}
                             </mat-icon>
-                            <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.' +  lineItem.transcodeStatus | translate }}</span>
+                            <span>{{ 'ORDER.SHOW.TRANSCODE_STATUS.Submitted' | translate }}</span>
                           </button>
                         </ng-template>
                         <button 

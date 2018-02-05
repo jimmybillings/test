@@ -25,10 +25,20 @@ export class ActiveCollectionService {
       .flatMap((summaryResponse: Collection) => this.combineAssetsWith(summaryResponse, parameters));
   }
 
+  // Deprecated! please use loadFocusedPage() for loading focused collection assets
   public loadPage(collectionId: number, parameters: CollectionPaginationParameters): Observable<CollectionItems> {
     return this.apiService.get(
       Api.Assets,
       `collectionSummary/assets/${collectionId}`,
+      { parameters: this.convertToApiParameters(parameters), loadingIndicator: true }
+    ).map(this.convertToCollectionItems);
+  }
+
+  // Replaces loadPage()
+  public loadFocusedPage(parameters: CollectionPaginationParameters): Observable<CollectionItems> {
+    return this.apiService.get(
+      Api.Assets,
+      'collectionSummary/assets/focused',
       { parameters: this.convertToApiParameters(parameters), loadingIndicator: true }
     ).map(this.convertToCollectionItems);
   }
@@ -83,6 +93,20 @@ export class ActiveCollectionService {
       .flatMap(response =>
         this.loadPage(activeCollection.id, { currentPage: pagination.currentPage, pageSize: pagination.pageSize })
       );
+  }
+
+  public addAssetsToFocusedCollection(assets: Asset[], pagination: Pagination): Observable<CollectionItems> {
+    const formattedAssets: { assetId: number }[] = assets.map(a => { return { assetId: a.assetId }; });
+
+    return this.apiService.post(
+      Api.Identities,
+      'collection/focused/addAssets',
+      { body: { list: formattedAssets }, loadingIndicator: true }
+    ).flatMap((res) => {
+      return this.loadFocusedPage(
+        { currentPage: pagination.currentPage, pageSize: pagination.pageSize }
+      );
+    });
   }
 
   private combineAssetsWith(collectionSummary: Collection, parameters: CollectionPaginationParameters): Observable<Collection> {

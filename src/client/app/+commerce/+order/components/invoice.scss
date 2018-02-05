@@ -53,9 +53,11 @@ invoice-component {
   }
   .invoice {
     margin-top: 32px;
+    margin-bottom: 75px;
     padding: 34px;
     @media screen and (max-width: $layout-breakpoint-xs)  {
       padding: 14px;
+      margin-bottom: 25px;
     }
     header .invoice-label {
       margin: -8px 0 6px 0;

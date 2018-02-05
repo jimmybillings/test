@@ -9,11 +9,11 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'load',
-        parameters: [{ asset: 'test asset' }]
+        parameters: [{ asset: { assetId: 1 } }]
       },
       expectedAction: {
         type: '[SpeedPreview] Load',
-        asset: { asset: 'test asset' }
+        asset: { asset: { assetId: 1 } }
       }
     });
 
@@ -21,11 +21,12 @@ export function main() {
       factoryMethod: {
         class: InternalActionFactory,
         name: 'loadSuccess',
-        parameters: [{ 'speedViewData': 'test speed view data' }]
+        parameters: [{ 'speedViewData': 'test speed view data' }, 1]
       },
       expectedAction: {
         type: '[SpeedPreview] Load Success',
-        speedViewData: { 'speedViewData': 'test speed view data' }
+        speedViewData: { 'speedViewData': 'test speed view data' },
+        assetId: 1
       }
     });
 
@@ -33,10 +34,11 @@ export function main() {
       factoryMethod: {
         class: InternalActionFactory,
         name: 'loadFailure',
-        parameters: []
+        parameters: [1]
       },
       expectedAction: {
-        type: '[SpeedPreview] Load Failure'
+        type: '[SpeedPreview] Load Failure',
+        assetId: 1
       }
     });
   });

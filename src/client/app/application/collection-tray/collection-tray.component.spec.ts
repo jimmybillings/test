@@ -21,7 +21,6 @@ export function main() {
       mockAppStore = new MockAppStore();
       mockAppStore.createStateSection('uiConfig', {
         components: {
-          global: { config: { pageSize: { value: 10 } } },
           collection: { config: { some: 'config' } }
         }
       });
@@ -110,7 +109,6 @@ export function main() {
             dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
             inputOptions: {
               focusedCollection: componentUnderTest.collection,
-              config: componentUnderTest.collectionFormConfig,
             },
             outputOptions: [{
               event: 'close',
