@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 import { EnhancedAsset } from '../../shared/interfaces/enhanced-asset';
 import { SpeedviewData } from '../../shared/interfaces/asset.interface';
-import { Pojo } from '../../shared/interfaces/common.interface';
 
 export class ActionFactory {
   public load(asset: EnhancedAsset): Load {
