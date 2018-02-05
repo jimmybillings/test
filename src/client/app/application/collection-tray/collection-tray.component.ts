@@ -20,7 +20,6 @@ import { CollectionListDdComponent } from './components/collections-list-dd.comp
 export class CollectionTrayComponent implements OnInit, OnDestroy {
   @Input() userPreference: any;
   @Input() urlPath: string;
-  public pageSize: string;
   public collection: Collection;
   public collectionFormConfig: any;
   private enhancedAssets: { [uuid: string]: EnhancedAsset } = {};
@@ -34,7 +33,6 @@ export class CollectionTrayComponent implements OnInit, OnDestroy {
     this.store.dispatch(factory => factory.activeCollection.loadIfNeeded());
     this.collectionSubscription = this.setCollection();
     const config: UiConfigComponents = this.store.snapshotCloned(state => state.uiConfig.components);
-    this.pageSize = config.global.config.pageSize.value;
     this.collectionFormConfig = config.collection.config;
   }
 
@@ -75,8 +73,7 @@ export class CollectionTrayComponent implements OnInit, OnDestroy {
       componentType: CollectionListDdComponent,
       dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
       inputOptions: {
-        focusedCollection: this.collection,
-        config: this.collectionFormConfig
+        focusedCollection: this.collection
       },
       outputOptions: [{
         event: 'close',
