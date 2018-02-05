@@ -59,6 +59,15 @@
             title="{{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_IN_CORE' | translate }}">
             <mat-icon>domain</mat-icon>
           </a>
+          <!-- ADD TO ANOTHER COLLECTION -->
+          <button
+            data-pendo="asset-result_add-to-cart-btn"
+            *ngIf="canAddToDifferentCollection"
+            mat-icon-button
+            title="{{ 'COLLECTION.SHOW.ADD_TO_DIFFERENT_COLLECTION' | translate}}"
+            (click)="addToDifferentCollection(asset);">
+              <mat-icon>content_copy</mat-icon>
+          </button>
           <!-- ADD TO CART -->
           <button
             data-pendo="asset-result_add-to-cart-btn"

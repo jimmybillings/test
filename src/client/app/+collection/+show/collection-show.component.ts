@@ -27,6 +27,7 @@ import { AppStore } from '../../app.store';
 import { EnhancedAsset, enhanceAsset } from '../../shared/interfaces/enhanced-asset';
 import { Common } from '../../shared/utilities/common.functions';
 import { CollectionShareComponent } from '../components/collection-share.component';
+import { CollectionListDdComponent } from '../../application/collection-tray/components/collections-list-dd.component';
 
 @Component({
   moduleId: module.id,
@@ -137,6 +138,30 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         { assetId: asset.name }
       )
     );
+  }
+
+  public addToDifferentCollection(asset: EnhancedAsset): void {
+    let focusedCollection: Collection;
+    this.dialogService.openComponentInDialog({
+      componentType: CollectionListDdComponent,
+      dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
+      inputOptions: {
+        focusedCollection: this.activeCollection,
+        roleFilter: ['owner', 'editor'],
+        editMode: true
+      },
+      outputOptions: [{
+        event: 'close',
+        callback: (collection: Collection) => {
+          if (collection) {
+            this.store.dispatch(factory =>
+              factory.collections.addAssetToCollection(collection, asset)
+            );
+          }
+        },
+        closeOnEvent: true
+      }]
+    });
   }
 
   public getAssetsForLink(): void {

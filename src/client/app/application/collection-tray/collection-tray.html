@@ -25,7 +25,7 @@
       <a
         mat-button
         data-pendo="collection-tray_collection-name"
-        [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
+        [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">
         <mat-icon>folder_special</mat-icon>
           {{collection.name}}
         <span class="asset-count" *ngIf="collection.assets">
@@ -73,7 +73,7 @@
         mat-menu-item
         *ngIf="collection.id"
         data-pendo="collection-tray-menu_view-focused-link"
-        [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
+        [routerLink]="['/collections/', collection.id, {i: 1, n: 100}]">
         <mat-icon>open_in_browser</mat-icon>{{ 'COLLECTION.MORE_DD_MENU.OPEN_SELECTED' | translate }}
       </a>
       <a mat-menu-item [routerLink]="['/collections/']">

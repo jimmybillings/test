@@ -23,6 +23,8 @@ import * as CheckoutActions from './store/checkout/checkout.actions';
 import * as CheckoutState from './store/checkout/checkout.state';
 export type CheckoutState = CheckoutState.State;
 
+import * as CollectionsActions from './store/collections/collections.actions';
+
 import * as CommentActions from './store/comment/comment.actions';
 import * as CommentState from './store/comment/comment.state';
 export type CommentState = CommentState.State;
@@ -109,6 +111,7 @@ export interface ActionFactory {
   readonly asset: AssetActions.ActionFactory;
   readonly cart: CartActions.ActionFactory;
   readonly checkout: CheckoutActions.ActionFactory;
+  readonly collections: CollectionsActions.ActionFactory;
   readonly comment: CommentActions.ActionFactory;
   readonly deliveryOptions: DeliveryOptionsActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
@@ -140,6 +143,7 @@ export interface InternalActionFactory {
   readonly asset: AssetActions.InternalActionFactory;
   readonly cart: CartActions.InternalActionFactory;
   readonly checkout: CheckoutActions.InternalActionFactory;
+  readonly collections: CollectionsActions.InternalActionFactory;
   readonly comment: CommentActions.InternalActionFactory;
   readonly deliveryOptions: DeliveryOptionsActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
@@ -233,6 +237,7 @@ export class AppStore {
     asset: new AssetActions.ActionFactory(),
     cart: new CartActions.ActionFactory(),
     checkout: new CheckoutActions.ActionFactory(),
+    collections: new CollectionsActions.ActionFactory(),
     comment: new CommentActions.ActionFactory(),
     deliveryOptions: new DeliveryOptionsActions.ActionFactory(),
     dialog: new DialogActions.ActionFactory(),
@@ -264,6 +269,7 @@ export class AppStore {
     asset: new AssetActions.InternalActionFactory(),
     cart: new CartActions.InternalActionFactory(),
     checkout: new CheckoutActions.InternalActionFactory(),
+    collections: new CollectionsActions.InternalActionFactory(),
     comment: new CommentActions.InternalActionFactory(),
     deliveryOptions: new DeliveryOptionsActions.InternalActionFactory(),
     dialog: new DialogActions.InternalActionFactory(),
