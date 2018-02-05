@@ -30,7 +30,7 @@ export function main() {
         success: {
           sectionName: 'snackbar',
           methodName: 'display',
-          expectedArguments: ['COLLECTION.ASSET.ADDED',
+          expectedArguments: ['COLLECTION.SHOW.ASSET_ADDED',
             { collectionName: 'collection', assetId: 'asset' }]
         }
       }
