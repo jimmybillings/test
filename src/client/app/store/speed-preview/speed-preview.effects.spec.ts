@@ -38,12 +38,12 @@ export function main() {
         success: {
           sectionName: 'speedPreview',
           methodName: 'loadSuccess',
-          expectedArguments: [{ 111111: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' } }]
+          expectedArguments: [{ 111111: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' } }, 111111]
         },
         failure: {
           sectionName: 'speedPreview',
           methodName: 'loadFailure',
-          expectedArgument: null
+          expectedArgument: 111111
         }
       }
     });

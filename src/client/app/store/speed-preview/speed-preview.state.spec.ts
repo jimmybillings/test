@@ -12,33 +12,12 @@ export function main() {
     });
 
     stateSpecHelper.generateTestsFor({
-      actionClassName: 'Load',
-      mutationTestData: {
-        actionParameters: { asset: { assetId: 444444 } }
-      },
-      customTests: [
-        {
-          it: 'returns previous state but with loadingAssetId: ${asset.assetId}',
-          previousState: {
-            222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-            333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-            loadingAssetId: undefined
-          },
-          actionParameters: { asset: { assetId: 444444 } },
-
-          expectedNextState: {
-            222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-            333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-            loadingAssetId: 444444
-          }
-        }
-      ]
-    });
-
-    stateSpecHelper.generateTestsFor({
       actionClassName: 'LoadSuccess',
       mutationTestData: {
-        actionParameters: { speedViewData: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' } }
+        actionParameters: {
+          speedViewData: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
+          assetId: 444444
+        }
       },
       customTests: [
         {
@@ -47,16 +26,17 @@ export function main() {
           previousState: {
             222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
             333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-            loadingAssetId: 444444
           },
 
-          actionParameters: { speedViewData: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' } },
+          actionParameters: {
+            speedViewData: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
+            assetId: 444444
+          },
 
           expectedNextState: {
             222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
             333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
             444444: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-            loadingAssetId: undefined
           }
         }
       ]
@@ -65,7 +45,10 @@ export function main() {
     stateSpecHelper.generateTestsFor({
       actionClassName: 'LoadFailure',
       mutationTestData: {
-        actionParameters: { speedViewData: {} }
+        actionParameters: {
+          speedViewData: {},
+          assetId: 444444
+        }
       },
       customTests: [
         {
@@ -74,16 +57,17 @@ export function main() {
           previousState: {
             222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
             333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
-            loadingAssetId: 444444
           },
 
-          actionParameters: { speedViewData: {} },
+          actionParameters: {
+            speedViewData: {},
+            assetId: 444444
+          },
 
           expectedNextState: {
             222222: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
             333333: { 'price': 159.0, 'imageQuickView': false, 'posterUrl': 'someposterurl' },
             444444: { noData: true },
-            loadingAssetId: undefined
           }
         }
       ]
