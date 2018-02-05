@@ -102,6 +102,14 @@
 
           <ng-container *ngIf="userCan.haveCollections()">
             <button
+              data-pendo='asset-detail_add-to-different-collection-btn'
+              *ngIf="canAddToDifferentCollection"
+              mat-icon-button
+              title="{{ 'COLLECTION.SHOW.ADD_TO_DIFFERENT_COLLECTION' | translate}}"
+              (click)="addToDifferentCollection();">
+                <mat-icon>content_copy</mat-icon>
+            </button>
+            <button
               data-pendo='asset-detail_add-to-collection-btn'
               mat-icon-button 
               *ngIf="canAddToActiveCollection"

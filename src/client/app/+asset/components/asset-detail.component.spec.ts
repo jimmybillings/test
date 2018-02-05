@@ -1113,6 +1113,52 @@ export function main() {
       });
     });
 
+    describe('canAddToDifferentCollection getter', () => {
+      it('return true if user can have collections and asset type is collection', () => {
+        componentUnderTest.asset = enhanceAsset(
+          { primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
+          'collection'
+        );
+        componentUnderTest.userCan = { haveCollections: () => true } as any;
+        expect(componentUnderTest.canAddToDifferentCollection).toBe(true);
+      });
+
+      it('return false if user can not have collections and asset type is collection', () => {
+        componentUnderTest.asset = enhanceAsset(
+          { primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
+          'collection'
+        );
+        componentUnderTest.userCan = { haveCollections: () => false } as any;
+        expect(componentUnderTest.canAddToDifferentCollection).toBe(false);
+      });
+
+      it('return false if user can have collections and asset type is not collection', () => {
+        componentUnderTest.asset = enhanceAsset(
+          { primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
+          'search'
+        );
+        componentUnderTest.userCan = { haveCollections: () => true } as any;
+        expect(componentUnderTest.canAddToDifferentCollection).toBe(false);
+      });
+
+      it('return false if user can not have collections and asset type is not collection', () => {
+        componentUnderTest.asset = enhanceAsset(
+          { primary: [{ name: 'Rights.Reproduction', value: 'Rights Managed' }] } as any,
+          'search'
+        );
+        componentUnderTest.userCan = { haveCollections: () => false } as any;
+        expect(componentUnderTest.canAddToDifferentCollection).toBe(false);
+      });
+    });
+
+    describe('addToDifferentCollection()', () => {
+      it('should emit the onAddtoDifferentCollection event', () => {
+        spyOn(componentUnderTest.onAddtoDifferentCollection, 'emit');
+        componentUnderTest.addToDifferentCollection();
+        expect(componentUnderTest.onAddtoDifferentCollection.emit).toHaveBeenCalled();
+      });
+    });
+
     describe('onCreateShareDialog()', () => {
       it('emits the right event', () => {
         spyOn(componentUnderTest.createShareDialog, 'emit');

@@ -46,6 +46,8 @@ export class AssetDetailComponent implements OnInit {
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onPreviousPage = new EventEmitter();
   @Output() createShareDialog: EventEmitter<AssetShareDialogOptions> = new EventEmitter();
+  @Output() onAddtoDifferentCollection: EventEmitter<null> = new EventEmitter();
+
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   public shareFormFields: FormFields[];
   public selectedTarget: string;
@@ -269,7 +271,7 @@ export class AssetDetailComponent implements OnInit {
   }
 
   public get canEditOrApplyRights(): boolean {
-    return (this.asset.type !== 'order' && this.asset.type !== 'quoteShow')
+    return (this._asset.type !== 'order' && this._asset.type !== 'quoteShow')
       && this.isRightsManaged && this.userCan.calculatePrice();
   }
 
@@ -362,6 +364,14 @@ export class AssetDetailComponent implements OnInit {
 
   public get assetName(): string {
     return this._asset.common[5].value;
+  }
+
+  public get canAddToDifferentCollection(): boolean {
+    return this.userCan.haveCollections() && this.assetTypeIsOneOf('collection');
+  }
+
+  public addToDifferentCollection(): void {
+    this.onAddtoDifferentCollection.emit();
   }
 
   private canBePurchased(asset: EnhancedAsset): boolean {

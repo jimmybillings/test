@@ -23,6 +23,7 @@ import { Common } from '../shared/utilities/common.functions';
 import { SearchContext, SearchState } from '../shared/services/search-context.service';
 import { AssetShareComponent } from './components/asset-share.component';
 import { AssetShareDialogOptions } from '../shared/interfaces/asset.interface';
+import { CollectionListDdComponent } from '../application/collection-tray/components/collections-list-dd.component';
 
 @Component({
   moduleId: module.id,
@@ -180,6 +181,33 @@ export class AssetComponent implements OnInit, OnDestroy {
         }]
       }
     );
+  }
+
+  public addToDifferentCollection(): void {
+    let focusedCollection: Collection;
+    this.activeCollection
+      .take(1)
+      .subscribe(collection => focusedCollection = collection);
+    this.dialogService.openComponentInDialog({
+      componentType: CollectionListDdComponent,
+      dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
+      inputOptions: {
+        focusedCollection: focusedCollection,
+        roleFilter: ['owner', 'editor'],
+        editMode: true
+      },
+      outputOptions: [{
+        event: 'close',
+        callback: (collection: Collection) => {
+          if (collection) {
+            this.store.dispatch(factory =>
+              factory.collections.addAssetToCollection(collection, this.asset)
+            );
+          }
+        },
+        closeOnEvent: true
+      }]
+    });
   }
 
   private get pricingDialogOptions(): DefaultComponentOptions {
