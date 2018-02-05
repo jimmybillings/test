@@ -24,13 +24,31 @@ export function main() {
       });
     });
 
-    describe('stringHasValues()', () => {
-      it('returns false when the input is just a string', () => {
-        expect(componentUnderTest.stringHasValues('ross')).toBe(false);
-      });
+    describe('get title()', () => {
+      describe('returns the Translation object', () => {
+        it('when the input string is just a translation key', () => {
+          componentUnderTest.strings = { title: 'SOME.KEY' };
+          expect(componentUnderTest.title).toEqual({ key: 'SOME.KEY', values: {} });
+        });
 
-      it('returns true when the input is a TranslationString object', () => {
-        expect(componentUnderTest.stringHasValues({ key: 'SOME_KEY', values: { some: 'values' } })).toBe(true);
+        it('when the input string is a TranslationKeyValuesObject', () => {
+          componentUnderTest.strings = { title: { key: 'SOME.KEY', values: { collectionName: 'Some Collection' } } };
+          expect(componentUnderTest.title).toEqual({ key: 'SOME.KEY', values: { collectionName: 'Some Collection' } });
+        });
+      });
+    });
+
+    describe('get message()', () => {
+      describe('returns the Translation object', () => {
+        it('when the input string is just a translation key', () => {
+          componentUnderTest.strings = { message: 'SOME.KEY' };
+          expect(componentUnderTest.message).toEqual({ key: 'SOME.KEY', values: {} });
+        });
+
+        it('when the input string is a TranslationKeyAndValues Object', () => {
+          componentUnderTest.strings = { message: { key: 'SOME.KEY', values: { collectionName: 'Some Collection' } } };
+          expect(componentUnderTest.message).toEqual({ key: 'SOME.KEY', values: { collectionName: 'Some Collection' } });
+        });
       });
     });
   });

@@ -48,14 +48,7 @@ export function reducer(state: State = initialState, action: SearchActions.Any):
     }
 
     case SearchActions.Reset.Type: {
-      // could probably just `return initialState;` here, but it doesn't pass Ed's mutation specs
-      return {
-        ...initialState,
-        results: {
-          items: [...initialState.results.items],
-          pagination: { ...initialState.results.pagination }
-        }
-      };
+      return Common.clone(initialState);
     }
 
     default: {
