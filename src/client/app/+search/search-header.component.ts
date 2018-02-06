@@ -34,7 +34,7 @@ export type ResultsView = 'grid' | 'list';
               <button
                 mat-icon-button
                 color="primary"
-                title="titleForAssetViewBtn" 
+                title="{{ titleForAssetViewBtn | translate }}" 
                 (click)="onClickAssetViewBtn()">
                 <mat-icon>{{ iconForAssetViewBtn }}</mat-icon>
               </button>
