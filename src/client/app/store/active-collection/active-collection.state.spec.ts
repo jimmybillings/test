@@ -164,5 +164,27 @@ export function main() {
         }
       ]
     });
+
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'AddPageOfSearchAssetsSuccess',
+      mutationTestData: {
+        actionParameters: { currentPageItems: { items: [0, 1, 2, 3, 4] } }
+      },
+      customTests: [
+        {
+          it: 'returns previous state but with new assets and loading: false',
+          previousState: {
+            collection: { assets: 'previous', assetsCount: 0 },
+            loading: true
+          },
+          actionParameters: { currentPageItems: { items: [0, 1, 2, 3, 4] } },
+          expectedNextState: {
+            collection: { assets: { items: [0, 1, 2, 3, 4] }, assetsCount: 5 },
+            loading: false
+          }
+        }
+      ]
+    });
   });
 }

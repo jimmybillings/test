@@ -19,15 +19,15 @@ export function main() {
     let mockActivatedRoute: any;
     let mockRefDetector: any;
     let mockStore: MockAppStore;
+    let searchResetDispatchSpy: jasmine.Spy;
+    let canEditCollection: boolean;
+    let confirmationDialogDispatchSpy: jasmine.Spy;
 
     beforeEach(() => {
-      mockSearchService = {
-        clearAssets: jasmine.createSpy('clearAssets'),
-        data: Observable.of([{ asset: 'mockAsset1' }, { asset: 'mockAsset2' }]),
-        enhancedAssets: Observable.of([])
+      mockUserCan = {
+        administerQuotes: () => false,
+        editCollection: () => Observable.of(canEditCollection)
       };
-
-      mockUserCan = { administerQuotes: () => false };
 
       mockSearchContext = {
         update: null,
@@ -97,8 +97,12 @@ export function main() {
       };
 
       mockStore = new MockAppStore();
+
+      searchResetDispatchSpy = mockStore.createActionFactoryMethod('search', 'reset');
+      confirmationDialogDispatchSpy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
+
       componentUnderTest = new SearchComponent(
-        mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+        mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext,
         mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector, mockStore
       );
     });
@@ -107,7 +111,7 @@ export function main() {
       it('should not set the path if the "gq" parameter doesn\'t exist', () => {
         mockActivatedRoute = { snapshot: { params: { i: 1, n: 100 } } };
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector, mockStore
         );
 
@@ -124,7 +128,7 @@ export function main() {
       it('returns observable of true when the \'filtersAreAvailable\'in the store is true', () => {
         mockStore.createStateSection('headerDisplayOptions', { filtersAreAvailable: true });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector, mockStore
         );
         let areAvailable: boolean;
@@ -156,9 +160,9 @@ export function main() {
     });
 
     describe('ngOnDestroy()', () => {
-      it('Should show reset the asset store when the component is destroyed', () => {
+      it('dispatch the search reset action', () => {
         componentUnderTest.ngOnDestroy();
-        expect(mockSearchService.clearAssets).toHaveBeenCalled();
+        mockStore.expectDispatchFor(searchResetDispatchSpy);
       });
     });
 
@@ -263,7 +267,7 @@ export function main() {
       it('Should reset the page number to page 1', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector,
           mockStore
         );
@@ -274,7 +278,7 @@ export function main() {
       it('Should update the search context with the filter ids', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [1, 2, 3], values: [] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector,
           mockStore
         );
@@ -285,7 +289,7 @@ export function main() {
       it('Should remove the filterIds from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector,
           mockStore
         );
@@ -296,7 +300,7 @@ export function main() {
       it('Should update the search context with the filter values', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector,
           mockStore
         );
@@ -307,7 +311,7 @@ export function main() {
       it('Should remove the filterValues from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector,
           mockStore
         );
@@ -318,12 +322,46 @@ export function main() {
       it('Should call go on search context when it has filtered the assets', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(
-          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext, mockSearchService,
+          mockUserCan, mockFilter, mockCart, mockSortDefinition, mockSearchContext,
           mockUserPreferences, mockWindow, mockActivatedRoute, mockRouter, mockRefDetector,
           mockStore
         );
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.go).toHaveBeenCalled();
+      });
+    });
+
+    describe('canEditCollection()', () => {
+      beforeEach(() => {
+        mockStore.createStateSection('activeCollection', { collection: { some: 'collection' } });
+      });
+
+      it('returns true if userCan.editCollection() returns true', () => {
+        canEditCollection = true;
+        let result: boolean;
+        componentUnderTest.canEditCollection.take(1).subscribe(res => result = res);
+        expect(result).toBe(true);
+      });
+
+      it('returns false if userCan.editCollection() returns false', () => {
+        canEditCollection = false;
+        let result: boolean;
+        componentUnderTest.canEditCollection.take(1).subscribe(res => result = res);
+        expect(result).toBe(false);
+      });
+    });
+
+    describe('onClickAddAllBtn()', () => {
+      it('dispatches the proper action', () => {
+        mockStore.createStateSection('activeCollection', { collection: { name: 'some collection' } });
+        componentUnderTest.onClickAddAllBtn();
+
+        mockStore.expectDispatchFor(confirmationDialogDispatchSpy, {
+          title: { key: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.TITLE', values: { collectionName: 'some collection' } },
+          message: { key: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.MESSAGE', values: { collectionName: 'some collection' } },
+          accept: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.ACCEPT',
+          decline: 'SEARCH.ADD_ALL_TO_COLLECTION.CONFIRM.DECLINE'
+        }, jasmine.any(Function));
       });
     });
   });

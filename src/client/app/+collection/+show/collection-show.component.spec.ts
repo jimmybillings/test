@@ -24,6 +24,8 @@ export function main() {
     let mockCartService: any;
     let mockDocumentService: any;
     let mockUserPreferenceService: any;
+    let showConfirmationDialogDispatchSpy: jasmine.Spy;
+
 
     beforeEach(() => {
       mockWindow = { nativeWindow: { location: { href: {} }, innerWidth: 200 } };
@@ -70,9 +72,11 @@ export function main() {
       };
 
       mockStore = new MockAppStore();
+      showConfirmationDialogDispatchSpy = mockStore.createActionFactoryMethod('dialog', 'showConfirmation');
 
       mockStore.createStateSection('activeCollection', {
         collection: {
+          name: 'test collection',
           id: 123, assets: {
             items: [
               {
@@ -205,8 +209,14 @@ export function main() {
 
     describe('setCollectionForDelete()', () => {
       it('Should open the dialog to confirm delete of collection', () => {
+        componentUnderTest.ngOnInit();
         componentUnderTest.setCollectionForDelete();
-        expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
+        mockStore.expectDispatchFor(showConfirmationDialogDispatchSpy, {
+          title: { key: 'COLLECTION.INDEX.CONFIRMATION_TITLE', values: { collectionName: 'test collection' } },
+          message: { key: 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE', values: { collectionName: 'test collection' } },
+          decline: 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE',
+          accept: 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE'
+        }, jasmine.any(Function));
       });
     });
 
@@ -332,6 +342,27 @@ export function main() {
           },
           outputOptions: [{
             event: 'closeRequest',
+            callback: jasmine.any(Function),
+            closeOnEvent: true
+          }]
+        });
+      });
+    });
+
+    describe('addToDifferentCollection()', () => {
+      it('Should call the dialog service to open the collection list component', () => {
+        componentUnderTest.activeCollection = { id: 123, name: 'Collection name', owner: 123 };
+        componentUnderTest.addToDifferentCollection({ some: 'asset' } as any);
+        expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
+          componentType: jasmine.any(Function),
+          dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
+          inputOptions: {
+            focusedCollection: { id: 123, name: 'Collection name', owner: 123 },
+            roleFilter: ['owner', 'editor'],
+            editMode: true
+          },
+          outputOptions: [{
+            event: 'close',
             callback: jasmine.any(Function),
             closeOnEvent: true
           }]

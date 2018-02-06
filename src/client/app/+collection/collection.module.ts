@@ -9,7 +9,6 @@ import { CollectionAssetResolver } from '../+collection/services/collection-asse
 import { CollectionsResolver } from '../+collection/services/collections.resolver';
 import { CollectionGuard } from './services/collection-guard';
 import { WzCollectionItemListComponent } from './components/wz.collection-item-list.component';
-import { CollectionDeleteComponent } from './components/collection-delete.component';
 import { CollectionComponent } from './collection.component';
 import { CollectionAssetComponent } from './components/collection-asset.component';
 import { CollectionShareComponent } from './components/collection-share.component';
@@ -23,14 +22,13 @@ import { AssetModule } from '../+asset/asset.module';
     CollectionsComponent,
     CollectionShowComponent,
     WzCollectionItemListComponent,
-    CollectionDeleteComponent,
     CollectionAssetComponent,
     CollectionShareComponent,
     CollectionShareMembersComponent
   ],
   exports: [CollectionComponent, CollectionsComponent, CollectionShowComponent],
   providers: [CollectionShowResolver, CollectionGuard, CollectionAssetResolver, CollectionsResolver],
-  entryComponents: [CollectionDeleteComponent, CollectionShareMembersComponent, CollectionShareComponent]
+  entryComponents: [CollectionShareMembersComponent, CollectionShareComponent]
 })
 
 export class CollectionModule { }

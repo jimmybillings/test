@@ -18,11 +18,13 @@ import * as SubclipMarkersInterface from '../shared/interfaces/subclip-markers';
 import { AppStore, StateMapper, PricingState } from '../app.store';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { CommentParentObject, ObjectType } from '../shared/interfaces/comment.interface';
+import { SearchParams } from '../shared/interfaces/search.interface';
 import { FormFields } from '../shared/interfaces/forms.interface';
 import { Common } from '../shared/utilities/common.functions';
-import { SearchContext, SearchState } from '../shared/services/search-context.service';
+import { SearchContext } from '../shared/services/search-context.service';
 import { AssetShareComponent } from './components/asset-share.component';
 import { AssetShareDialogOptions } from '../shared/interfaces/asset.interface';
+import { CollectionListDdComponent } from '../application/collection-tray/components/collections-list-dd.component';
 
 @Component({
   moduleId: module.id,
@@ -96,7 +98,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     return this.store.select(state => state.pricing.priceForDetails);
   }
 
-  public get searchContextState(): SearchState {
+  public get searchContextState(): SearchParams {
     return this.searchContext.state;
   }
 
@@ -180,6 +182,33 @@ export class AssetComponent implements OnInit, OnDestroy {
         }]
       }
     );
+  }
+
+  public addToDifferentCollection(): void {
+    let focusedCollection: Collection;
+    this.activeCollection
+      .take(1)
+      .subscribe(collection => focusedCollection = collection);
+    this.dialogService.openComponentInDialog({
+      componentType: CollectionListDdComponent,
+      dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
+      inputOptions: {
+        focusedCollection: focusedCollection,
+        roleFilter: ['owner', 'editor'],
+        editMode: true
+      },
+      outputOptions: [{
+        event: 'close',
+        callback: (collection: Collection) => {
+          if (collection) {
+            this.store.dispatch(factory =>
+              factory.collections.addAssetToCollection(collection, this.asset)
+            );
+          }
+        },
+        closeOnEvent: true
+      }]
+    });
   }
 
   private get pricingDialogOptions(): DefaultComponentOptions {

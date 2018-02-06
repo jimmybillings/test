@@ -23,6 +23,8 @@ import * as CheckoutActions from './store/checkout/checkout.actions';
 import * as CheckoutState from './store/checkout/checkout.state';
 export type CheckoutState = CheckoutState.State;
 
+import * as CollectionsActions from './store/collections/collections.actions';
+
 import * as CommentActions from './store/comment/comment.actions';
 import * as CommentState from './store/comment/comment.state';
 export type CommentState = CommentState.State;
@@ -81,6 +83,10 @@ export type QuoteShowState = QuoteShowState.State;
 
 import * as RouterActions from './store/router/router.actions';
 
+import * as SearchActions from './store/search/search.actions';
+import * as SearchState from './store/search/search.state';
+export type SearchState = SearchState.State;
+
 import * as SharingActions from './store/sharing/sharing.actions';
 import * as SharingState from './store/sharing/sharing.state';
 export type SharingState = SharingState.State;
@@ -109,6 +115,7 @@ export interface ActionFactory {
   readonly asset: AssetActions.ActionFactory;
   readonly cart: CartActions.ActionFactory;
   readonly checkout: CheckoutActions.ActionFactory;
+  readonly collections: CollectionsActions.ActionFactory;
   readonly comment: CommentActions.ActionFactory;
   readonly deliveryOptions: DeliveryOptionsActions.ActionFactory;
   readonly dialog: DialogActions.ActionFactory;
@@ -126,6 +133,7 @@ export interface ActionFactory {
   readonly quoteEdit: QuoteEditActions.ActionFactory;
   readonly quoteShow: QuoteShowActions.ActionFactory;
   readonly router: RouterActions.ActionFactory;
+  readonly search: SearchActions.ActionFactory;
   readonly sharing: SharingActions.ActionFactory;
   readonly snackbar: SnackbarActions.ActionFactory;
   readonly speedPreview: SpeedPreviewActions.ActionFactory;
@@ -140,6 +148,7 @@ export interface InternalActionFactory {
   readonly asset: AssetActions.InternalActionFactory;
   readonly cart: CartActions.InternalActionFactory;
   readonly checkout: CheckoutActions.InternalActionFactory;
+  readonly collections: CollectionsActions.InternalActionFactory;
   readonly comment: CommentActions.InternalActionFactory;
   readonly deliveryOptions: DeliveryOptionsActions.InternalActionFactory;
   readonly dialog: DialogActions.InternalActionFactory;
@@ -157,6 +166,7 @@ export interface InternalActionFactory {
   readonly quoteEdit: QuoteEditActions.InternalActionFactory;
   readonly quoteShow: QuoteShowActions.InternalActionFactory;
   readonly router: RouterActions.InternalActionFactory;
+  readonly search: SearchActions.InternalActionFactory;
   readonly sharing: SharingActions.InternalActionFactory;
   readonly snackbar: SnackbarActions.InternalActionFactory;
   readonly speedPreview: SpeedPreviewActions.InternalActionFactory;
@@ -181,6 +191,7 @@ export interface AppState {
   readonly privacyPolicy: PrivacyPolicyState;
   readonly quoteEdit: QuoteEditState;
   readonly quoteShow: QuoteShowState;
+  readonly search: SearchState;
   readonly sharing: SharingState;
   readonly snackbar: SnackbarState;
   readonly speedPreview: SpeedPreviewState;
@@ -213,6 +224,7 @@ export const reducers: AppReducers = {
   multiLingual: MultiLingualState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteShow: QuoteShowState.reducer,
+  search: SearchState.reducer,
   sharing: SharingState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
@@ -233,6 +245,7 @@ export class AppStore {
     asset: new AssetActions.ActionFactory(),
     cart: new CartActions.ActionFactory(),
     checkout: new CheckoutActions.ActionFactory(),
+    collections: new CollectionsActions.ActionFactory(),
     comment: new CommentActions.ActionFactory(),
     deliveryOptions: new DeliveryOptionsActions.ActionFactory(),
     dialog: new DialogActions.ActionFactory(),
@@ -250,6 +263,7 @@ export class AppStore {
     quoteEdit: new QuoteEditActions.ActionFactory(),
     quoteShow: new QuoteShowActions.ActionFactory(),
     router: new RouterActions.ActionFactory(),
+    search: new SearchActions.ActionFactory(),
     sharing: new SharingActions.ActionFactory(),
     snackbar: new SnackbarActions.ActionFactory(),
     speedPreview: new SpeedPreviewActions.ActionFactory(),
@@ -264,6 +278,7 @@ export class AppStore {
     asset: new AssetActions.InternalActionFactory(),
     cart: new CartActions.InternalActionFactory(),
     checkout: new CheckoutActions.InternalActionFactory(),
+    collections: new CollectionsActions.InternalActionFactory(),
     comment: new CommentActions.InternalActionFactory(),
     deliveryOptions: new DeliveryOptionsActions.InternalActionFactory(),
     dialog: new DialogActions.InternalActionFactory(),
@@ -281,6 +296,7 @@ export class AppStore {
     quoteEdit: new QuoteEditActions.InternalActionFactory(),
     quoteShow: new QuoteShowActions.InternalActionFactory(),
     router: new RouterActions.InternalActionFactory(),
+    search: new SearchActions.InternalActionFactory(),
     sharing: new SharingActions.InternalActionFactory(),
     snackbar: new SnackbarActions.InternalActionFactory(),
     speedPreview: new SpeedPreviewActions.InternalActionFactory(),

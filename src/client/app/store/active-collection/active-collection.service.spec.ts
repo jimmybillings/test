@@ -177,6 +177,49 @@ export function main() {
       });
     });
 
+    describe('loadFocusedPage()', () => {
+      it('calls the API correctly', () => {
+        serviceUnderTest.loadFocusedPage({ currentPage: 3, pageSize: 10 });
+
+        expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApiService.get).toHaveBeenCalledWithEndpoint('collectionSummary/assets/focused');
+        expect(mockApiService.get).toHaveBeenCalledWithLoading(true);
+        expect(mockApiService.get).toHaveBeenCalledWithParameters({ i: '2', n: '10' });
+      });
+
+      it('returns the expected observable', () => {
+        mockApiService.getResponse = {
+          items: [
+            { id: 123, other: 'stuff', timeStart: '123', timeEnd: '456' },
+            { id: 456, other: 'stuff', timeStart: '-1', timeEnd: '-2' }
+          ],
+          totalCount: 2,
+          currentPage: 2,
+          pageSize: 10,
+          hasNextPage: false,
+          hasPreviousPage: false,
+          numberOfPages: 1
+        };
+
+        serviceUnderTest.loadFocusedPage({ currentPage: 3, pageSize: 10 }).take(1).subscribe(response => {
+          expect(response).toEqual({
+            items: [
+              { id: 123, other: 'stuff', timeStart: 123, timeEnd: 456 },
+              { id: 456, other: 'stuff', timeStart: -1, timeEnd: -2 }
+            ],
+            pagination: {
+              totalCount: 2,
+              currentPage: 3,
+              pageSize: 10,
+              hasNextPage: false,
+              hasPreviousPage: false,
+              numberOfPages: 1
+            }
+          });
+        });
+      });
+    });
+
     describe('addAssetTo()', () => {
       it('calls the API correctly', () => {
         serviceUnderTest.addAssetTo(
@@ -431,6 +474,17 @@ export function main() {
             }
           });
         });
+      });
+    });
+
+    describe('addAssetsToFocusedCollection()', () => {
+      it('calls the apiService correctly', () => {
+        serviceUnderTest.addAssetsToFocusedCollection([{ assetId: 1, name: 'something' }], { pageSize: 100, currentPage: 1 });
+
+        expect(mockApiService.post).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApiService.post).toHaveBeenCalledWithEndpoint('collection/focused/addAssets');
+        expect(mockApiService.post).toHaveBeenCalledWithBody({ list: [{ assetId: 1 }] });
+        expect(mockApiService.post).toHaveBeenCalledWithLoading(true);
       });
     });
   });

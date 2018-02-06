@@ -14,10 +14,7 @@ export class WzAsset implements OnInit {
   @Output() onShowSpeedview = new EventEmitter();
   @Output() onHideSpeedview = new EventEmitter();
   @Output() onEditAsset = new EventEmitter();
-
-  @Input() public set assets(assets: EnhancedAsset[]) {
-    this._assets = assets;
-  }
+  @Output() onAddtoDifferentCollection: EventEmitter<EnhancedAsset> = new EventEmitter();
 
   @Input() public userCan: Capabilities;
   @Input() public assetType: string = 'search';
@@ -25,6 +22,9 @@ export class WzAsset implements OnInit {
     this._activeCollection = value;
     this.assetIdsInActiveCollection = value.assets.items.map((x) => x.assetId);
   };
+  @Input() public set assets(assets: EnhancedAsset[]) {
+    this._assets = assets;
+  }
 
   public get activeCollection(): Collection {
     return this._activeCollection;
@@ -53,12 +53,20 @@ export class WzAsset implements OnInit {
     return this._assets;
   }
 
+  public get canAddToDifferentCollection(): boolean {
+    return this.userCan.haveCollections() && this.assetType === 'collection';
+  }
+
   public addToActiveCollection(asset: EnhancedAsset) {
     this.store.dispatch(factory => factory.activeCollection.addAsset(asset));
   }
 
   public removeFromActiveCollection(asset: EnhancedAsset) {
     this.store.dispatch(factory => factory.activeCollection.removeAsset(asset));
+  }
+
+  public addToDifferentCollection(asset: EnhancedAsset) {
+    this.onAddtoDifferentCollection.emit(asset);
   }
 
   public addAssetToCart(asset: EnhancedAsset) {
