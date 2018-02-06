@@ -31,10 +31,15 @@ export class CollectionCapabilities {
 
   public editCollection(collection: Collection): Observable<boolean> {
     return this.currentUser.data.map((user: User) => {
-      return (user.id === collection.owner) ||
+      // A mayfly user has an id of 0 and the collection initialState has an owner id of 0,
+      // so we need to check that they are both truthy values before proceeding to the other logic,
+      // otherwise the first condition would be met, and it would return a false "true"
+      return (user.id !== 0 && collection.owner !== 0) && (
+        (user.id === collection.owner) ||
         (user.editableCollections && user.editableCollections.includes(collection.id)) ||
         (collection.editors && collection.editors.map(editor => editor.id).includes(user.id)) ||
-        (collection.userRole === 'editor' || collection.userRole === 'owner');
+        (collection.userRole === 'editor' || collection.userRole === 'owner')
+      );
     });
   }
 

@@ -68,6 +68,15 @@ export function main() {
           capabilitiesUnderTest.editCollection({ userRole: 'notEditorOrOwner' } as any).subscribe(d => canEdit = d);
           expect(canEdit).toBe(false);
         });
+
+        it('when the user id and collection owner id are both 0', () => {
+          mockCurrentUserService = { data: Observable.of({ id: 0 }) };
+          capabilitiesUnderTest = new CollectionCapabilities(mockCurrentUserService, null, null);
+
+          let canEdit: boolean;
+          capabilitiesUnderTest.editCollection({ owner: 0 } as any).subscribe(d => canEdit = d);
+          expect(canEdit).toBe(false);
+        });
       });
     });
   });
