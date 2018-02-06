@@ -41,12 +41,16 @@ export function main() {
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
+
       mockStore = new MockAppStore();
       initPricingSpy = mockStore.createActionFactoryMethod('pricing', 'initializePricing');
       mockStore.createActionFactoryMethod('pricing', 'calculatePrice');
       setPriceForDetailsSpy = mockStore.createActionFactoryMethod('pricing', 'setPriceForDetails');
       resetPricingSpy = mockStore.createActionFactoryMethod('pricing', 'resetPricing');
       setAppliedAttributesSpy = mockStore.createActionFactoryMethod('pricing', 'setAppliedAttributes');
+      mockStore.createStateSection('activeCollection', {
+        collection: { some: 'collection' }
+      });
       data = {
         id: 1,
         projects: [
@@ -394,6 +398,26 @@ export function main() {
           },
           outputOptions: [{
             event: 'closeRequest',
+            callback: jasmine.any(Function),
+            closeOnEvent: true
+          }]
+        });
+      });
+    });
+
+    describe('addToDifferentCollection()', () => {
+      it('Should call the dialog service to open the collection list component', () => {
+        componentUnderTest.addToDifferentCollection();
+        expect(mockDialogService.openComponentInDialog).toHaveBeenCalledWith({
+          componentType: jasmine.any(Function),
+          dialogConfig: { position: { top: '3%' }, panelClass: 'collection-list-dd-component' },
+          inputOptions: {
+            focusedCollection: { some: 'collection' },
+            roleFilter: ['owner', 'editor'],
+            editMode: true
+          },
+          outputOptions: [{
+            event: 'close',
             callback: jasmine.any(Function),
             closeOnEvent: true
           }]
