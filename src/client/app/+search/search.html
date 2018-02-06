@@ -22,7 +22,7 @@
 	</mat-sidenav>
 
 	<search-header
-		[hasResults]="(results | async).items"
+		[hasResults]="!!(results | async).items.length"
 		[sortDefinitionItems]="(sortDefinition.data | async).sorts"
 		[currentSort]="(sortDefinition.data | async).currentSort"
 		[assetView]="(userPreferences.data | async).assetView"
@@ -56,7 +56,7 @@
 					</wz-pagination>
 				</div>
 
-				<no-results *ngIf="!(results | async).items"></no-results>
+				<no-results *ngIf="!(results | async).items.length"></no-results>
 
 				<content *ngIf="(results | async).items">
 					<wz-asset-grid *ngIf="(userPreferences.data | async).assetView =='grid'" class="grid" 

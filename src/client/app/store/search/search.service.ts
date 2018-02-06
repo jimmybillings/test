@@ -30,7 +30,7 @@ export class SearchService {
 
   private normalize(results: ApiSearchResults): SearchResults {
     return {
-      items: results.items,
+      items: results.items || [],
       pagination: {
         totalCount: results.totalCount,
         pageSize: results.pageSize,
