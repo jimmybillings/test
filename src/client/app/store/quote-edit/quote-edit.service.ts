@@ -81,15 +81,13 @@ export class FutureQuoteEditService {
   public addCustomPriceToLineItem(quoteId: number, lineItem: AssetLineItem, customPrice: number, override: boolean): Observable<Quote> {
     const multiplier: number = Math.round((customPrice / lineItem.itemPrice) * Math.pow(10, 6)) / Math.pow(10, 6);
 
-    if (override) {
-      delete lineItem.multiplier;
-      lineItem.overrideGrossAssetPrice = customPrice;
-    } else {
-      delete lineItem.overrideGrossAssetPrice;
-      lineItem.multiplier = multiplier;
-    }
+    const newLineItem: AssetLineItem = {
+      ...lineItem,
+      multiplier: (override) ? null : multiplier,
+      overrideGrossAssetPrice: (override) ? customPrice : null
+    };
 
-    return this.makeEditLineItemRequest(quoteId, lineItem);
+    return this.makeEditLineItemRequest(quoteId, newLineItem);
   }
 
   public createQuote(): Observable<Quote> {

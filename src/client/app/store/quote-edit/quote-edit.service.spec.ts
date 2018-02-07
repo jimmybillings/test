@@ -139,7 +139,8 @@ export function main() {
         expect(mockApiService.put).toHaveBeenCalledWithBody({
           id: 'abc-123',
           itemPrice: 100,
-          multiplier: 10
+          multiplier: 10,
+          overrideGrossAssetPrice: null
         });
         expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
         expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
@@ -153,6 +154,7 @@ export function main() {
         expect(mockApiService.put).toHaveBeenCalledWithBody({
           id: 'abc-123',
           itemPrice: 100,
+          multiplier: null,
           overrideGrossAssetPrice: 1000
         });
         expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
