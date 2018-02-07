@@ -82,7 +82,11 @@ export class QuoteEditEffects {
   public sendQuote: Observable<Action> = this.actions.ofType(QuoteEditActions.SendQuote.Type)
     .withLatestFrom(this.store.select(state => state.quoteEdit))
     .switchMap(([action, quoteEdit]: [QuoteEditActions.SendQuote, QuoteEdit]) => {
-      let invoiceContactType: string = quoteEdit.sendDetails.invoiceContact.id ? 'User' : undefined;
+      let invoiceContactType: string, invoiceContactId: number;
+      if (quoteEdit.sendDetails.invoiceContact.id > 0) {
+        invoiceContactType = 'User';
+        invoiceContactId = quoteEdit.sendDetails.invoiceContact.id;
+      }
       let details = {
         expirationDate: new Date(quoteEdit.sendDetails.salesManager.expirationDate),
         agreementId: quoteEdit.sendDetails.salesManager.offlineAgreement || undefined,
@@ -91,7 +95,7 @@ export class QuoteEditEffects {
         paymentTermsDays: quoteEdit.sendDetails.billingAccount.paymentTermsDays,
         billingAccountId: quoteEdit.sendDetails.billingAccount.id,
         invoiceContactType: invoiceContactType,
-        invoiceContactId: quoteEdit.sendDetails.invoiceContact.id
+        invoiceContactId: invoiceContactId
       };
       return this.service.sendQuote(quoteEdit.data.id, quoteEdit.sendDetails.user.email, details)
         .map(() =>

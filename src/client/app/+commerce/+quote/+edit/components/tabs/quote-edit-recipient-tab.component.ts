@@ -188,7 +188,10 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
 
     if (state.invoiceContact.contacts) {
       const contact = state.invoiceContact.contacts.find(c => {
-        return state.invoiceContact.id ? c.id === state.invoiceContact.id : c.id === state.billingAccount.invoiceContactId;
+        // cannot check truthyness of state.invoiceContact.id because it could be 0 (which is valid)
+        return Common.isNotNullOrUndefined(state.invoiceContact.id) ?
+          c.id === state.invoiceContact.id :
+          c.id === state.billingAccount.invoiceContactId;
       });
       this.config.invoiceContact[0].value = contact || '';
       this.config.invoiceContact[0].options = state.invoiceContact.contacts;
