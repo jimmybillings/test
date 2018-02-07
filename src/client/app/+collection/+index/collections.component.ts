@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
-import { CollectionDeleteComponent } from '../components/collection-delete.component';
 import { CollectionShareMembersComponent } from '../components/collection-share-members.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { AppStore } from '../../app.store';
@@ -138,20 +137,12 @@ export class CollectionsComponent {
   }
 
   public setCollectionForDelete(collection: CollectionSummaryItem): void {
-    this.dialogService.openComponentInDialog(
-      {
-        componentType: CollectionDeleteComponent,
-        dialogConfig: { position: { top: '14%' } },
-        inputOptions: {
-          collection: Common.clone(collection),
-        },
-        outputOptions: [{
-          event: 'deleteEvent',
-          callback: (event: WzEvent) => this.deleteCollection(event.payload),
-          closeOnEvent: true
-        }]
-      }
-    );
+    this.store.dispatch(factory => factory.dialog.showConfirmation({
+      title: { key: 'COLLECTION.INDEX.CONFIRMATION_TITLE', values: { collectionName: collection.name } },
+      message: { key: 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE', values: { collectionName: collection.name } },
+      decline: 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE',
+      accept: 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE',
+    }, () => this.deleteCollection(collection.id)));
   }
 
   public deleteCollection(id: number, ): void {

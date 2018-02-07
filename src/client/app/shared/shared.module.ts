@@ -53,7 +53,6 @@ import { FilterService } from './services/filter.service';
 import { Authentication } from './services/authentication.data.service';
 import { PendoService } from './services/pendo.service';
 import { CartService } from './services/cart.service';
-import { SearchService } from './services/search.service';
 import { OrdersService } from './services/orders.service';
 import { CollectionContextService } from './services/collection-context.service';
 import { GalleryViewService } from './services/gallery-view.service';
@@ -67,6 +66,7 @@ import { ActiveCollectionService } from '../store/active-collection/active-colle
 import { ActivityService } from '../store/activity/activity.service';
 import { AssetService, LegacyAssetService } from '../store/asset/asset.service';
 import { CommentService } from '../store/comment/comment.service';
+import { FutureCollectionsService } from '../store/collections/collections.service';
 import { DeliveryOptionsService } from '../store/delivery-options/delivery-options.service';
 import { FeeConfigService } from '../store/fee-config/fee-config.service';
 import { FutureApiService } from '../store/api/api.service';
@@ -79,6 +79,7 @@ import { InvoiceService } from '../store/invoice/invoice.service';
 import { PageDataService } from '../store/page-data/page-data.service';
 import { PricingService } from '../store/pricing/pricing.service';
 import { PrivacyPolicyService } from '../store/privacy-policy/privacy-policy.service';
+import { SearchService } from '../store/search/search.service';
 import { SharingService } from '../store/sharing/sharing.service';
 import { SnackbarService } from '../store/snackbar/snackbar.service';
 import { SpeedPreviewService } from '../store/speed-preview/speed-preview.service';
@@ -106,12 +107,12 @@ import * as PricingState from '../store/pricing/pricing.state';
 import * as PrivacyPolicyState from '../store/privacy-policy/privacy-policy.state';
 import * as QuoteEditState from '../store/quote-edit/quote-edit.state';
 import * as QuoteShowState from '../store/quote-show/quote-show.state';
+import * as SearchState from '../store/search/search.state';
 import * as SharingState from '../store/sharing/sharing.state';
 import * as SnackbarState from '../store/snackbar/snackbar.state';
 import * as SpeedPreviewState from '../store/speed-preview/speed-preview.state';
 import * as UiConfigState from '../store/ui-config/ui-config.state';
 
-import { searchStore, SearchStore } from './stores/search.store';
 import { collections, CollectionsStore } from './stores/collections.store';
 import { orders, OrdersStore } from './stores/orders.store';
 import { features, FeatureStore } from './stores/feature.store';
@@ -132,6 +133,7 @@ import { ActivityEffects } from '../store/activity/activity.effects';
 import { AssetEffects } from '../store/asset/asset.effects';
 import { CartEffects } from '../store/cart/cart.effects';
 import { CommentEffects } from '../store/comment/comment.effects';
+import { CollectionsEffects } from '../store/collections/collections.effects';
 import { DeliveryOptionsEffects } from '../store/delivery-options/delivery-options.effects';
 import { DialogEffects } from '../store/dialog/dialog.effects';
 import { ErrorEffects } from '../store/error/error.effects';
@@ -147,6 +149,7 @@ import { PrivacyPolicyEffects } from '../store/privacy-policy/privacy-policy.eff
 import { QuoteEditEffects } from '../store/quote-edit/quote-edit.effects';
 import { QuoteShowEffects } from '../store/quote-show/quote-show.effects';
 import { RouterEffects } from '../store/router/router.effects';
+import { SearchEffects } from '../store/search/search.effects';
 import { SharingEffects } from '../store/sharing/sharing.effects';
 import { SnackbarEffects } from '../store/snackbar/snackbar.effects';
 import { SpeedPreviewEffects } from '../store/speed-preview/speed-preview.effects';
@@ -160,6 +163,7 @@ const WAZEE_SERVICES = [
   CurrentUserService,
   AssetService,
   CollectionsService,
+  FutureCollectionsService,
   ActiveCollectionService,
   SearchContext,
   UserPreferenceService,
@@ -172,7 +176,6 @@ const WAZEE_SERVICES = [
   Authentication,
   PendoService,
   CartService,
-  SearchService,
   UserService,
   OrderService,
   InvoiceService,
@@ -184,6 +187,7 @@ const WAZEE_SERVICES = [
   FutureQuoteShowService,
   QuoteService,
   QuotesService,
+  SearchService,
   SharingService,
   SnackbarService,
   CommentService,
@@ -204,7 +208,6 @@ const WAZEE_SERVICES = [
 const WAZEE_STORE_INTERFACES = [
   CollectionsStore,
   FeatureStore,
-  SearchStore,
   OrdersStore,
   GalleryViewStore,
   QuotesStore
@@ -218,7 +221,6 @@ const WAZEE_PROVIDERS: any = [
 
 
 const WAZEE_STORES: any = {
-  searchStore: searchStore,
   currentUser: currentUser,
   searchContext: searchContext,
   collections: collections,
@@ -246,6 +248,7 @@ const WAZEE_STORES: any = {
   privacyPolicy: PrivacyPolicyState.reducer,
   quoteEdit: QuoteEditState.reducer,
   quoteShow: QuoteShowState.reducer,
+  search: SearchState.reducer,
   sharing: SharingState.reducer,
   snackbar: SnackbarState.reducer,
   speedPreview: SpeedPreviewState.reducer,
@@ -259,6 +262,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   ActivityEffects,
   AssetEffects,
   CartEffects,
+  CollectionsEffects,
   CommentEffects,
   DeliveryOptionsEffects,
   DialogEffects,
@@ -275,6 +279,7 @@ const WAZEE_EFFECTS = EffectsModule.forRoot([
   QuoteEditEffects,
   QuoteShowEffects,
   RouterEffects,
+  SearchEffects,
   SharingEffects,
   SnackbarEffects,
   SpeedPreviewEffects,

@@ -132,6 +132,7 @@ export function main() {
                 name: 'test2',
                 id: null,
                 contacts: [
+                  ...QuoteState.initialState.sendDetails.invoiceContact.contacts,
                   { id: 1, user: 'test', name: 'test', emailAddress: 'email1@test.com' },
                   { id: 2, user: 'test 2', name: 'test2', emailAddress: 'email2@test.com' },
                   { id: 3, user: 'test 3', name: 'test3', emailAddress: 'email3@test.com' }

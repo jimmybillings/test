@@ -23,5 +23,33 @@ export function main() {
         expect(componentUnderTest.decline.emit).toHaveBeenCalled();
       });
     });
+
+    describe('get title()', () => {
+      describe('returns the Translation object', () => {
+        it('when the input string is just a translation key', () => {
+          componentUnderTest.strings = { title: 'SOME.KEY' };
+          expect(componentUnderTest.title).toEqual({ key: 'SOME.KEY', values: {} });
+        });
+
+        it('when the input string is a TranslationKeyValuesObject', () => {
+          componentUnderTest.strings = { title: { key: 'SOME.KEY', values: { collectionName: 'Some Collection' } } };
+          expect(componentUnderTest.title).toEqual({ key: 'SOME.KEY', values: { collectionName: 'Some Collection' } });
+        });
+      });
+    });
+
+    describe('get message()', () => {
+      describe('returns the Translation object', () => {
+        it('when the input string is just a translation key', () => {
+          componentUnderTest.strings = { message: 'SOME.KEY' };
+          expect(componentUnderTest.message).toEqual({ key: 'SOME.KEY', values: {} });
+        });
+
+        it('when the input string is a TranslationKeyAndValues Object', () => {
+          componentUnderTest.strings = { message: { key: 'SOME.KEY', values: { collectionName: 'Some Collection' } } };
+          expect(componentUnderTest.message).toEqual({ key: 'SOME.KEY', values: { collectionName: 'Some Collection' } });
+        });
+      });
+    });
   });
 }

@@ -22,13 +22,16 @@
 	</mat-sidenav>
 
 	<search-header
-		[hasResults]="(search.data | async).items"
+		[hasResults]="!!(results | async).items.length"
 		[sortDefinitionItems]="(sortDefinition.data | async).sorts"
 		[currentSort]="(sortDefinition.data | async).currentSort"
 		[assetView]="(userPreferences.data | async).assetView"
+		[collectionName]="(activeCollection | async).name"
+		[canEditCollection]="canEditCollection | async"
 		[path]="path"
 		(onClickBreadcrumb)="onClickBreadcrumb($event)"
 		(onChangeAssetView)="changeAssetView($event)"
+		(clickAddAllBtn)="onClickAddAllBtn()"
 		(onSortResults)="sortResults($event)">
 	</search-header>
 
@@ -47,15 +50,15 @@
 
 					<wz-pagination
 						flex="noshrink"
-						*ngIf="(search.data | async).pagination.totalCount > 0"
-						[pagination]="(search.data | async).pagination"
+						*ngIf="(results | async).pagination.totalCount > 0"
+						[pagination]="(results | async).pagination"
 						(getPage)="changePage($event)">
 					</wz-pagination>
 				</div>
 
-				<no-results *ngIf="!(search.data | async).items"></no-results>
+				<no-results *ngIf="!(results | async).items.length"></no-results>
 
-				<content *ngIf="(search.data | async).items">
+				<content *ngIf="(results | async).items">
 					<wz-asset-grid *ngIf="(userPreferences.data | async).assetView =='grid'" class="grid" 
 						[assets]="enhancedAssets" 
 						[userCan]="userCan" 
@@ -75,8 +78,8 @@
 
 				<wz-pagination
 					flex="noshrink"
-					*ngIf="(search.data | async).pagination.totalCount > 0"
-					[pagination]="(search.data | async).pagination"
+					*ngIf="(results | async).pagination.totalCount > 0"
+					[pagination]="(results | async).pagination"
 					(getPage)="changePage($event)">
 				</wz-pagination>
 			</div>

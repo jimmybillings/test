@@ -38,6 +38,13 @@ quote-show-component section.header {
 .quote-summary .details {
   .cart-total {
     padding: 0 0 5px 10px;
+    .subtotal {
+      max-height: 20px;
+      margin-top: 26px;
+    }
+    .discount {
+      max-height: 20px;
+    }
   }
   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) {
     padding: 0 10px;

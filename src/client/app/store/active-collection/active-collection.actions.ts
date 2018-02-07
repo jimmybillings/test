@@ -38,6 +38,10 @@ export class ActionFactory {
     return new UpdateAssetMarkers(asset, markers);
   }
 
+  public addPageOfSearchAssets(): AddPageOfSearchAssets {
+    return new AddPageOfSearchAssets();
+  }
+
   public reset(): Reset {
     return new Reset();
   }
@@ -90,6 +94,10 @@ export class InternalActionFactory extends ActionFactory {
 
   public updateAssetMarkersFailure(error: ApiErrorResponse): UpdateAssetMarkersFailure {
     return new UpdateAssetMarkersFailure(error);
+  }
+
+  public addPageOfSearchAssetsSuccess(currentPageItems: CollectionItems): AddPageOfSearchAssetsSuccess {
+    return new AddPageOfSearchAssetsSuccess(currentPageItems);
   }
 };
 
@@ -207,10 +215,22 @@ export class UpdateAssetMarkersFailure implements Action {
   constructor(public readonly error: ApiErrorResponse) { }
 }
 
+export class AddPageOfSearchAssets {
+  public static readonly Type = '[Active Collection] Add Page Of Search Assets';
+  public readonly type = AddPageOfSearchAssets.Type;
+}
+
+export class AddPageOfSearchAssetsSuccess {
+  public static readonly Type = '[Active Collection] Add Page Of Search Assets Success';
+  public readonly type = AddPageOfSearchAssetsSuccess.Type;
+  constructor(public readonly currentPageItems: CollectionItems) { }
+}
+
 export class Reset implements Action {
   public static readonly Type = '[Active Collection] Reset';
   public readonly type = Reset.Type;
 }
+
 
 export type Any =
   Load | LoadSuccess | LoadFailure |
@@ -219,4 +239,5 @@ export type Any =
   AddAsset | AddAssetSuccess | AddAssetFailure |
   RemoveAsset | RemoveAssetSuccess | RemoveAssetFailure |
   UpdateAssetMarkers | UpdateAssetMarkersSuccess | UpdateAssetMarkersFailure |
+  AddPageOfSearchAssets | AddPageOfSearchAssetsSuccess |
   Reset;

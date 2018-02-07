@@ -4,23 +4,16 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Common } from '../utilities/common.functions';
 import { LegacyAction } from '../interfaces/common.interface';
+import { SearchParams } from '../interfaces/search.interface';
 
-export interface SearchState {
-  q: string;
-  i: number;
-  n: number;
-  sortId: number;
-  [index: string]: string | number;
-}
-
-const initSearchContext: SearchState = {
+const initSearchContext: SearchParams = {
   q: '',
   i: 1,
   n: 100,
   sortId: 0
 };
 
-export function searchContext(state: SearchState = initSearchContext, action: LegacyAction) {
+export function searchContext(state: SearchParams = initSearchContext, action: LegacyAction) {
   switch (action.type) {
     case 'SEARCHCONTEXT.CREATE':
       return Object.assign({}, action.payload);
@@ -40,7 +33,7 @@ export function searchContext(state: SearchState = initSearchContext, action: Le
 
 @Injectable()
 export class SearchContext {
-  public data: Observable<SearchState>;
+  public data: Observable<SearchParams>;
   constructor(public router: Router, public store: Store<any>) {
     this.data = this.store.select('searchContext');
   }
@@ -50,7 +43,7 @@ export class SearchContext {
     this.go();
   }
 
-  public get state(): SearchState {
+  public get state(): SearchParams {
     let s: any;
     this.data.take(1).subscribe(state => s = state);
     return s;

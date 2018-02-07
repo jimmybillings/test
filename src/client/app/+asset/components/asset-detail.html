@@ -60,11 +60,11 @@
           <!-- OPEN METADATA IN CORE -->
           <a mat-icon-button
             class="core-link"
-            *ngIf="userCan.editClips()" 
+            *ngIf="userCan.editClips() && asset.type != 'collection'" 
             href="https://core.wazeedigital.com/video/edit/{{ assetName }}.do" 
             target="_blank"
             title="{{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_IN_CORE' | translate }}">
-            <mat-icon>domain</mat-icon>
+            <mat-icon>tune</mat-icon>
           </a>
           <button
             *ngIf="showDownloadButton"
@@ -78,7 +78,7 @@
 
           <button
             title="{{ 'ASSET.DETAIL.BUTTON.GO_TO_SEARCH_ASSET_DETAILS' | translate }}"
-            *ngIf="canGoToSearchAssetDetails"
+            *ngIf="canGoToSearchAssetDetails && asset.type != 'collection'"
             mat-icon-button
             (click)="goToSearchAssetDetails()">
             <mat-icon>find_in_page</mat-icon>
@@ -125,6 +125,40 @@
               <mat-icon>remove_circle</mat-icon>
             </button>
           </ng-container>
+
+          <button mat-icon-button 
+            *ngIf="canAddToDifferentCollection"
+            title="{{'COLLECTION.SHOW.ASSET_MORE_BTN_TITLE' | translate}}"
+            [mat-menu-trigger-for]="moreOptionsAssetMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu x-position="before" y-position="below" #moreOptionsAssetMenu="matMenu">
+
+            <button
+              *ngIf="canAddToDifferentCollection"
+              mat-menu-item
+              (click)="addToDifferentCollection()">
+                <mat-icon>content_copy</mat-icon>
+              <span>{{ 'COLLECTION.SHOW.ADD_TO_DIFFERENT_COLLECTION' | translate}}</span>
+            </button>
+
+            <button
+              *ngIf="canGoToSearchAssetDetails"
+              mat-menu-item
+              (click)="goToSearchAssetDetails()">
+              <mat-icon>find_in_page</mat-icon>
+              <span>{{ 'ASSET.DETAIL.BUTTON.GO_TO_SEARCH_ASSET_DETAILS' | translate }}</span>
+            </button>
+
+            <a mat-menu-item 
+              class="core-link"
+              *ngIf="userCan.editClips()" 
+              href="https://core.wazeedigital.com/video/edit/{{ assetName }}.do" 
+              target="_blank">
+              <mat-icon>tune</mat-icon>
+              <span>{{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_IN_CORE' | translate }}</span>
+            </a>
+          </mat-menu> 
         </nav>
       </div>
     </div>

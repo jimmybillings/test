@@ -77,12 +77,12 @@
         flex-order-xs="-1"
         layout="column"
         layout-align="space-between end">
-        <div flex="60">
+        <div flex="auto">
           <h3 class="mat-subhead status {{ (quote | async).quoteStatus.toLowerCase() }}">
             {{ (quote | async).quoteStatus }}
           </h3>
           <ng-container *ngIf="(quote | async).orderId as orderId">
-            <span class="mat-body">
+            <span class="mat-caption">
               <strong>{{ 'ORDER.SHOW.ORDER_NUMBER_LABEL' | translate }}</strong>
               <a [routerLink]="['/orders', orderId]">{{ orderId }}</a>
             </span>
@@ -104,7 +104,6 @@
               </span>
               <span class="total-amount" flex="nogrow">{{ (quote | async).discount }}</span>
             </div> 
-            <mat-divider></mat-divider>
           </ng-container>
           <div class="total mat-headline" flex="auto" layout="row" layout-align="end end">
             <span class="total-label">

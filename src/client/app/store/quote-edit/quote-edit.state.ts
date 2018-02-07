@@ -37,7 +37,9 @@ export const initialState: State = {
       contactEmail: null,
       name: null,
       id: null,
-      contacts: []
+      contacts: [
+        { id: 0, name: 'QUOTE.EDIT.FORMS.NO_INVOICE_CONTACT', emailAddress: '' }
+      ]
     },
     salesManager: {
       expirationDate: null,
@@ -153,6 +155,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
 
     case UserActions.GetAllUsersByAccountIdSuccess.Type: {
       const clonedState = Common.clone(state);
+      const clonedInitialState = Common.clone(initialState);
       const selectedUser: SendDetailsBillingAccount = action.users.find((user) => {
         return user.id === clonedState.sendDetails.billingAccount.invoiceContactId;
       });
@@ -162,7 +165,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
           ...clonedState.sendDetails,
           invoiceContact: {
             ...clonedState.sendDetails.invoiceContact,
-            contacts: action.users,
+            contacts: [...clonedInitialState.sendDetails.invoiceContact.contacts, ...action.users],
             contactEmail: (selectedUser) ? selectedUser.emailAddress : null,
             name: (selectedUser) ? selectedUser.name : null
           }

@@ -80,11 +80,15 @@ export class OrderShowComponent {
   }
 
   public showDownloadButtonFor(lineItem: AssetLineItem): boolean {
-    return !!lineItem.downloadUrl;
+    return !!lineItem.downloadUrl && lineItem.transcodeStatus != 'Failed';
   }
 
   public nothingToDownload(lineItem: AssetLineItem): boolean {
     return !lineItem.downloadUrl && lineItem.transcodeStatus === 'Completed';
+  }
+
+  public showSpinnerIcon(lineItem: AssetLineItem): boolean {
+    return lineItem.transcodeStatus === 'Submitted';
   }
 
   public showAsperaButtonFor(lineItem: AssetLineItem): boolean {

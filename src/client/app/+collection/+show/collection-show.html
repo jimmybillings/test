@@ -168,7 +168,8 @@
         [assetType]="'collection'"
         [activeCollection]="activeCollection"
         (onAddToCart)="addAssetToCartOrQuote($event)" 
-        (onEditAsset)="editAsset($event)">
+        (onEditAsset)="editAsset($event)"
+        (onAddtoDifferentCollection)="addToDifferentCollection($event)">
       </wz-asset-grid>
 
       <wz-asset-list *ngIf="(userPreference.data | async).assetView =='list'" class="list" 
@@ -177,7 +178,8 @@
         [assetType]="'collection'"
         [activeCollection]="activeCollection"
         (onAddToCart)="addAssetToCartOrQuote($event)" 
-        (onEditAsset)="editAsset($event)">
+        (onEditAsset)="editAsset($event)"
+        (onAddtoDifferentCollection)="addToDifferentCollection($event)">
       </wz-asset-list>
 
       <wz-pagination *ngIf="activeCollection.assets.pagination.totalCount > 0" [pagination]="activeCollection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>

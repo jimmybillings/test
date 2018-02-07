@@ -57,8 +57,9 @@
             href="https://core.wazeedigital.com/video/edit/{{ nameOf(asset) }}.do" 
             target="_blank"
             title="{{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_IN_CORE' | translate }}">
-            <mat-icon>domain</mat-icon>
+            <mat-icon>tune</mat-icon>
           </a>
+
           <!-- ADD TO CART -->
           <button
             data-pendo="asset-result_add-to-cart-btn"
@@ -126,7 +127,7 @@
                     : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
               </span>
             </button>
-            <button [disabled]="true" mat-menu-item>
+            <!-- <button [disabled]="true" mat-menu-item>
               <mat-icon>mode_comment</mat-icon>
               <span>
                 {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_COMMENTS' | translate }}
@@ -137,6 +138,14 @@
               <span>
               {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.ASSET_SHARING' | translate }}
               </span>
+            </button> -->
+            <!-- ADD TO ANOTHER COLLECTION -->
+            <button
+              *ngIf="canAddToDifferentCollection"
+              mat-menu-item
+              (click)="addToDifferentCollection(asset)">
+                <mat-icon>content_copy</mat-icon>
+              <span>{{ 'COLLECTION.SHOW.ADD_TO_DIFFERENT_COLLECTION' | translate}}</span>
             </button>
             <a mat-menu-item [routerLink]="routerLinkFor(asset)">
               <mat-icon>details</mat-icon>

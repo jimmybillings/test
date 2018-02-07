@@ -229,6 +229,27 @@ export function main() {
         it('when the asset on the lineItem does not have a downloadUrl', () => {
           expect(componentUnderTest.showDownloadButtonFor({ downloadUrl: null })).toBe(false);
         });
+
+        it('when the asset on the lineItem has a transcode status of \'Failed\'', () => {
+          expect(componentUnderTest.showDownloadButtonFor({ downloadUrl: 'some-url', transcodeStatus: 'Failed' })).toBe(false);
+        });
+      });
+    });
+
+    describe('showSpinnerIcon()', () => {
+      describe('returns true', () => {
+        it('when the asset on the lineItem has a transcode status of \'Submitted\'', () => {
+          expect(componentUnderTest.showSpinnerIcon({ transcodeStatus: 'Submitted' })).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the asset on the lineItem has a transcode status of something other than \'Submitted\'', () => {
+          expect(componentUnderTest.showSpinnerIcon({ transcodeStatus: 'Failed' })).toBe(false);
+        });
+        it('when the asset on the lineItem has a transcode status is undefined', () => {
+          expect(componentUnderTest.showSpinnerIcon({ transcodeStatus: undefined })).toBe(false);
+        });
       });
     });
 
