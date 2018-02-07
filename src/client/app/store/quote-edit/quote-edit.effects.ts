@@ -73,7 +73,7 @@ export class QuoteEditEffects {
   public addCustomPriceToLineItem: Observable<Action> = this.actions.ofType(QuoteEditActions.AddCustomPriceToLineItem.Type)
     .withLatestFrom(this.store.select(state => state.quoteEdit.data.id))
     .switchMap(([action, quoteId]: [QuoteEditActions.AddCustomPriceToLineItem, number]) => {
-      return this.service.addCustomPriceToLineItem(quoteId, action.lineItem, action.price)
+      return this.service.addCustomPriceToLineItem(quoteId, action.lineItem, action.price, action.override)
         .map(quote => this.store.create(factory => factory.quoteEdit.addCustomPriceToLineItemSuccess(quote)))
         .catch(error => Observable.of(this.store.create(factory => factory.quoteEdit.addCustomPriceToLineItemFailure(error))));
     });

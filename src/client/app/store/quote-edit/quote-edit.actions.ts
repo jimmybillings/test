@@ -35,8 +35,8 @@ export class ActionFactory {
     return new RemoveAsset(asset);
   }
 
-  public addCustomPriceToLineItem(lineItem: AssetLineItem, price: number): AddCustomPriceToLineItem {
-    return new AddCustomPriceToLineItem(lineItem, price);
+  public addCustomPriceToLineItem(lineItem: AssetLineItem, price: number, override: boolean): AddCustomPriceToLineItem {
+    return new AddCustomPriceToLineItem(lineItem, price, override);
   }
 
   public sendQuote(): SendQuote {
@@ -283,7 +283,7 @@ export class RemoveAssetFailure implements Action {
 export class AddCustomPriceToLineItem implements Action {
   public static readonly Type = '[Quote Edit] Add Custom Price To LineItem';
   public readonly type = AddCustomPriceToLineItem.Type;
-  constructor(public readonly lineItem: AssetLineItem, public readonly price: number) { }
+  constructor(public readonly lineItem: AssetLineItem, public readonly price: number, public readonly override: boolean) { }
 }
 
 export class AddCustomPriceToLineItemSuccess implements Action {

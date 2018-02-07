@@ -46,12 +46,13 @@ export function main() {
       factoryMethod: {
         class: ActionFactory,
         name: 'addCustomPriceToLineItem',
-        parameters: [{ some: 'lineItem' }, 1000]
+        parameters: [{ some: 'lineItem' }, 1000, true]
       },
       expectedAction: {
         type: '[Quote Edit] Add Custom Price To LineItem',
         lineItem: { some: 'lineItem' },
-        price: 1000
+        price: 1000,
+        override: true
       }
     });
 

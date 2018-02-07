@@ -246,31 +246,19 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
         label: 'Price',
         type: 'number',
         min: '0',
-        validation: 'GREATER_THAN'
+        validation: 'GREATER_THAN',
+        value: (lineItem.price > 0) ? lineItem.price : null
       }, {
         name: 'priceLock',
         label: 'Price Lock',
         type: 'slideToggle',
-        value: ''
+        value: (!!lineItem.overrideGrossAssetPrice) ? 'true' : ''
       }];
-    if (lineItem.overridePreDiscountPrice && !lineItem.systemPreDiscountPrice) {
-      formFields[1].value = 'true';
-      formFields[0].value = String(lineItem.overridePreDiscountPrice);
-    }
-    if (!lineItem.overridePreDiscountPrice && lineItem.systemPreDiscountPrice) {
-      formFields[1].value = '';
-      formFields[0].value = String(lineItem.systemPreDiscountPrice);
-    }
-    if ((!lineItem.overridePreDiscountPrice && !lineItem.systemPreDiscountPrice)) {
-      formFields[1].value = 'true';
-      formFields[0].value = '';
-    }
     this.dialogService.openFormDialog(
       formFields,
       { title: 'QUOTE.ADD_CUSTOM_PRICE_TITLE', submitLabel: 'QUOTE.ADD_CUSTOM_PRICE_SUBMIT', autocomplete: 'off' },
-      (form: { price: number }) => {
-        console.log(form);
-        // this.store.dispatch(factory => factory.quoteEdit.addCustomPriceToLineItem(lineItem, form.price));
+      (form: { price: number, priceLock: string }) => {
+        this.store.dispatch(factory => factory.quoteEdit.addCustomPriceToLineItem(lineItem, form.price, Boolean(form.priceLock)));
       });
   }
 

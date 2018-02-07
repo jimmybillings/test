@@ -88,8 +88,7 @@ export interface AssetLineItem {
   grossAssetPrice?: number;
   rightsManaged?: string;
   externalAgreementIds?: string[];
-  systemPreDiscountPrice?: number;
-  overridePreDiscountPrice?: number;
+  overrideGrossAssetPrice?: number;
 }
 
 export interface FeeLineItem {

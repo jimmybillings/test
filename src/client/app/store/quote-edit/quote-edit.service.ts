@@ -78,15 +78,18 @@ export class FutureQuoteEditService {
     return this.apiService.delete(Api.Orders, `quote/${quoteId}/asset/${asset.uuid}`, { loadingIndicator: true });
   }
 
-  public addCustomPriceToLineItem(quoteId: number, lineItem: AssetLineItem, customPrice: number): Observable<Quote> {
+  public addCustomPriceToLineItem(quoteId: number, lineItem: AssetLineItem, customPrice: number, override: boolean): Observable<Quote> {
     const multiplier: number = Math.round((customPrice / lineItem.itemPrice) * Math.pow(10, 6)) / Math.pow(10, 6);
 
-    const newLineItem: AssetLineItem = {
-      ...lineItem,
-      multiplier: multiplier
-    };
+    if (override) {
+      delete lineItem.multiplier;
+      lineItem.overrideGrossAssetPrice = customPrice;
+    } else {
+      delete lineItem.overrideGrossAssetPrice;
+      lineItem.multiplier = multiplier;
+    }
 
-    return this.makeEditLineItemRequest(quoteId, newLineItem);
+    return this.makeEditLineItemRequest(quoteId, lineItem);
   }
 
   public createQuote(): Observable<Quote> {

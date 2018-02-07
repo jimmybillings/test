@@ -85,16 +85,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     case QuoteEditActions.BulkImportSuccess.Type:
     case QuoteEditActions.AddAssetToProjectInQuoteSuccess.Type:
     case QuoteEditActions.RefreshAndNotify.Type: {
-      // if (action.quote && action.quote.projects) {
-      //   action.quote.projects.forEach(project => {
-      //     if (project.lineItems) {
-      //       project.lineItems.forEach(lineItem => {
-      //         lineItem.overridePreDiscountPrice = lineItem.grossAssetPrice;
-      //       });
-      //     }
-      //   });
-      // }
-      console.log(action.quote.projects);
+
       return {
         loading: false,
         data: {
