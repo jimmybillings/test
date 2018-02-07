@@ -46,6 +46,7 @@ export interface CollectionsStoreI {
 }
 
 export interface CollectionItems {
+  totalAssetsAdded?: number;
   items?: Asset[];
   pagination?: Pagination;
 }

@@ -5,11 +5,12 @@ import { FutureApiService } from '../api/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import {
   Collection, CollectionPaginationParameters, CollectionItems, CollectionItemMarkersUpdater,
-  CollectionItemsResponse, CollectionAssetResponse
+  CollectionItemsResponse, CollectionAssetResponse, AddAssetToCollectionResponse
 } from '../../shared/interfaces/collection.interface';
 import { Asset, Pagination } from '../../shared/interfaces/common.interface';
 import * as SubclipMarkersInterface from '../../shared/interfaces/subclip-markers';
 import { Frame } from '../../shared/modules/wazee-frame-formatter/index';
+import { Common } from '../../shared/utilities/common.functions';
 
 @Injectable()
 export class ActiveCollectionService {
@@ -31,16 +32,16 @@ export class ActiveCollectionService {
       Api.Assets,
       `collectionSummary/assets/${collectionId}`,
       { parameters: this.convertToApiParameters(parameters), loadingIndicator: true }
-    ).map(this.convertToCollectionItems);
+    ).map((res) => this.convertToCollectionItems(res));
   }
 
   // Replaces loadPage()
-  public loadFocusedPage(parameters: CollectionPaginationParameters): Observable<CollectionItems> {
+  public loadFocusedPage(parameters: CollectionPaginationParameters, totalAssetsAdded: number): Observable<CollectionItems> {
     return this.apiService.get(
       Api.Assets,
       'collectionSummary/assets/focused',
       { parameters: this.convertToApiParameters(parameters), loadingIndicator: true }
-    ).map(this.convertToCollectionItems);
+    ).map((res) => this.convertToCollectionItems(res, totalAssetsAdded));
   }
 
   public addAssetTo(
@@ -60,7 +61,7 @@ export class ActiveCollectionService {
     ).flatMap(res => res.list
       ? this.loadPage(activeCollection.id, { currentPage: 1, pageSize: activeCollection.assets.pagination.pageSize })
       : Observable.of({ items: [] as Asset[], pagination: {} as Pagination })
-      );
+    );
   }
 
   public removeAssetFrom(activeCollection: Collection, asset: Asset): Observable<CollectionItems> {
@@ -74,7 +75,7 @@ export class ActiveCollectionService {
       Api.Identities, `collection/focused/removeAssets`, { body: { list: [asset.uuid] }, loadingIndicator: true }
     ).flatMap(() =>
       this.loadPage(activeCollection.id, { currentPage: pagination.currentPage, pageSize: pagination.pageSize })
-      );
+    );
   }
 
   public updateAssetMarkers(
@@ -102,9 +103,10 @@ export class ActiveCollectionService {
       Api.Identities,
       'collection/focused/addAssets',
       { body: { list: formattedAssets }, loadingIndicator: true }
-    ).flatMap((res) => {
+    ).flatMap((res: AddAssetToCollectionResponse) => {
       return this.loadFocusedPage(
-        { currentPage: pagination.currentPage, pageSize: pagination.pageSize }
+        { currentPage: pagination.currentPage, pageSize: pagination.pageSize },
+        res.list ? res.list.length : 0
       );
     });
   }
@@ -121,11 +123,11 @@ export class ActiveCollectionService {
     };
   }
 
-  private convertToCollectionItems(response: CollectionItemsResponse): CollectionItems {
+  private convertToCollectionItems(response: CollectionItemsResponse, totalAssetsAdded?: number): CollectionItems {
     const convertedItems: Asset[] =
       (response.items || []).map(item => ({ ...item, timeStart: parseInt(item.timeStart), timeEnd: parseInt(item.timeEnd) }));
 
-    return {
+    let collectionItems: CollectionItems = {
       items: convertedItems,
       pagination: {
         totalCount: response.totalCount || 0,
@@ -136,5 +138,9 @@ export class ActiveCollectionService {
         numberOfPages: response.numberOfPages || 0
       }
     };
+
+    if (Common.isNotNullOrUndefined(totalAssetsAdded)) collectionItems = { ...collectionItems, totalAssetsAdded };
+
+    return collectionItems;
   }
 }

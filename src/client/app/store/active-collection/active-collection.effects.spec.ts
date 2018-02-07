@@ -386,7 +386,7 @@ export function main() {
       effectsInstantiator: instantiator,
       inputAction: {
         type: ActiveCollectionActions.AddPageOfSearchAssetsSuccess.Type,
-        currentPageItems: { some: 'assets' }
+        currentPageItems: { totalAssetsAdded: 5, some: 'assets' }
       },
       state: {
         storeSectionName: 'activeCollection',
@@ -397,7 +397,10 @@ export function main() {
         success: {
           sectionName: 'snackbar',
           methodName: 'display',
-          expectedArguments: ['COLLECTION.ADD_ASSETS_SUCCESS_TOAST', { collectionName: 'someCollectionName' }]
+          expectedArguments: [
+            'COLLECTION.ADD_ASSETS_SUCCESS_TOAST',
+            { collectionName: 'someCollectionName', totalAssetsAdded: 5 }
+          ]
         }
       }
     });

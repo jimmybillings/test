@@ -179,7 +179,7 @@ export function main() {
 
     describe('loadFocusedPage()', () => {
       it('calls the API correctly', () => {
-        serviceUnderTest.loadFocusedPage({ currentPage: 3, pageSize: 10 });
+        serviceUnderTest.loadFocusedPage({ currentPage: 3, pageSize: 10 }, null);
 
         expect(mockApiService.get).toHaveBeenCalledWithApi(Api.Assets);
         expect(mockApiService.get).toHaveBeenCalledWithEndpoint('collectionSummary/assets/focused');
@@ -201,8 +201,9 @@ export function main() {
           numberOfPages: 1
         };
 
-        serviceUnderTest.loadFocusedPage({ currentPage: 3, pageSize: 10 }).take(1).subscribe(response => {
+        serviceUnderTest.loadFocusedPage({ currentPage: 3, pageSize: 10 }, 10).take(1).subscribe(response => {
           expect(response).toEqual({
+            totalAssetsAdded: 10,
             items: [
               { id: 123, other: 'stuff', timeStart: 123, timeEnd: 456 },
               { id: 456, other: 'stuff', timeStart: -1, timeEnd: -2 }
