@@ -32,7 +32,7 @@ export class ActiveCollectionService {
       Api.Assets,
       `collectionSummary/assets/${collectionId}`,
       { parameters: this.convertToApiParameters(parameters), loadingIndicator: true }
-    ).map((res) => this.convertToCollectionItems(res, null));
+    ).map((res) => this.convertToCollectionItems(res));
   }
 
   // Replaces loadPage()
@@ -61,7 +61,7 @@ export class ActiveCollectionService {
     ).flatMap(res => res.list
       ? this.loadPage(activeCollection.id, { currentPage: 1, pageSize: activeCollection.assets.pagination.pageSize })
       : Observable.of({ items: [] as Asset[], pagination: {} as Pagination })
-      );
+    );
   }
 
   public removeAssetFrom(activeCollection: Collection, asset: Asset): Observable<CollectionItems> {
@@ -75,7 +75,7 @@ export class ActiveCollectionService {
       Api.Identities, `collection/focused/removeAssets`, { body: { list: [asset.uuid] }, loadingIndicator: true }
     ).flatMap(() =>
       this.loadPage(activeCollection.id, { currentPage: pagination.currentPage, pageSize: pagination.pageSize })
-      );
+    );
   }
 
   public updateAssetMarkers(
@@ -123,7 +123,7 @@ export class ActiveCollectionService {
     };
   }
 
-  private convertToCollectionItems(response: CollectionItemsResponse, totalAssetsAdded: number): CollectionItems {
+  private convertToCollectionItems(response: CollectionItemsResponse, totalAssetsAdded?: number): CollectionItems {
     const convertedItems: Asset[] =
       (response.items || []).map(item => ({ ...item, timeStart: parseInt(item.timeStart), timeEnd: parseInt(item.timeEnd) }));
 
