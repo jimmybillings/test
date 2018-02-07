@@ -178,9 +178,9 @@ export function main() {
             collection: { assets: 'previous', assetsCount: 0 },
             loading: true
           },
-          actionParameters: { currentPageItems: { items: [0, 1, 2, 3, 4] } },
+          actionParameters: { currentPageItems: { totalAssetsAdded: 5, items: [0, 1, 2, 3, 4], pagination: {} } },
           expectedNextState: {
-            collection: { assets: { items: [0, 1, 2, 3, 4] }, assetsCount: 5 },
+            collection: { assets: { items: [0, 1, 2, 3, 4], pagination: {} }, assetsCount: 5 },
             loading: false
           }
         }

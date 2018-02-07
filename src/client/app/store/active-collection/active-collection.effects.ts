@@ -133,7 +133,10 @@ export class ActiveCollectionEffects {
     this.actions.ofType(ActiveCollectionActions.AddPageOfSearchAssetsSuccess.Type)
       .withLatestFrom(this.store.select(state => state.activeCollection.collection.name))
       .map(([action, collectionName]: [ActiveCollectionActions.AddPageOfSearchAssetsSuccess, string]) =>
-        this.store.create(factory => factory.snackbar.display('COLLECTION.ADD_ASSETS_SUCCESS_TOAST', { collectionName }))
+        this.store.create(factory => factory.snackbar.display(
+          'COLLECTION.ADD_ASSETS_SUCCESS_TOAST',
+          { totalAssetsAdded: action.currentPageItems.totalAssetsAdded, collectionName })
+        )
       );
 
   constructor(

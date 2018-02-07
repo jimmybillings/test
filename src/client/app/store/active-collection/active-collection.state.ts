@@ -128,8 +128,11 @@ export function reducer(state: State = initialState, action: ActiveCollectionAct
         ...clonedState,
         collection: {
           ...clonedState.collection,
-          assets: action.currentPageItems,
-          assetsCount: clonedState.collection.assetsCount + action.currentPageItems.items.length
+          assets: {
+            items: action.currentPageItems.items,
+            pagination: action.currentPageItems.pagination
+          },
+          assetsCount: clonedState.collection.assetsCount + action.currentPageItems.totalAssetsAdded
         },
         loading: false
       };
