@@ -16,22 +16,24 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
         <div class="label" flex="100">{{ 'QUOTE.BASE_PRICE_LABEL' | translate }}</div>
         <div class="multiplier-base-price" flex="no-grow">{{ itemPrice | currency:'USD':true:'1.2-2' }}</div>
       </div>  
-      <div *ngIf="shouldShowMultiplier" 
-        class="multiplier-base"
-        layout="row"
-        layout-align="end center">
-        <div class="label" flex="100">{{ 'QUOTE.MULTIPLIER_BASE_PRICE_LABEL' | translate }}</div>
-        <div class="multiplier-base-price" flex="no-grow">{{ itemPrice | currency:'USD':true:'1.2-2' }}</div>
-      </div>
-      <div *ngIf="shouldShowMultiplier" 
-        class="multiplier"
-        layout="row"
-        layout-align="end center">
-        <div class="label" flex="100">{{ 'QUOTE.MULTIPLIER_LABEL' | translate }}</div>
-        <div class="multiplier-value" flex="no-grow">
-          {{ 'QUOTE.MULTIPLIER_VALUE' | translate:{multiplier: formattedMultiplier} }}
+      <ng-container *ngIf="shouldShowMultiplier">
+        <div
+          class="multiplier-base"
+          layout="row"
+          layout-align="end center">
+          <div class="label" flex="100">{{ 'QUOTE.MULTIPLIER_BASE_PRICE_LABEL' | translate }}</div>
+          <div class="multiplier-base-price" flex="no-grow">{{ itemPrice | currency:'USD':true:'1.2-2' }}</div>
         </div>
-      </div>
+        <div 
+          class="multiplier"
+          layout="row"
+          layout-align="end center">
+          <div class="label" flex="100">{{ 'QUOTE.MULTIPLIER_LABEL' | translate }}</div>
+          <div class="multiplier-value" flex="no-grow">
+            {{ 'QUOTE.MULTIPLIER_VALUE' | translate:{multiplier: formattedMultiplier} }}
+          </div>
+        </div>
+      </ng-container>
       <div *ngIf="showPreDiscountPrice" 
         class="pre-discount"
         layout="row"

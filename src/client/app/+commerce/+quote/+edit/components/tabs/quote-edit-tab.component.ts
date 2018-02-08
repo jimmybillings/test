@@ -243,14 +243,14 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
     let formFields: any = [
       {
         name: 'price',
-        label: 'Price',
+        label: 'QUOTE.PRICE_LABEL',
         type: 'number',
         min: '0',
         validation: 'GREATER_THAN',
         value: (lineItem.price > 0) ? lineItem.price : null
       }, {
         name: 'priceLock',
-        label: 'Price Lock',
+        label: 'QUOTE.PRICE_LOCK_LABEL',
         type: 'slideToggle',
         value: (!!lineItem.overrideGrossAssetPrice) ? 'true' : ''
       }];

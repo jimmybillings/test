@@ -210,14 +210,14 @@ export function main() {
           expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
             [{
               name: 'price',
-              label: 'Price',
+              label: 'QUOTE.PRICE_LABEL',
               type: 'number',
               min: '0',
               validation: 'GREATER_THAN',
               value: 200
             }, {
               name: 'priceLock',
-              label: 'Price Lock',
+              label: 'QUOTE.PRICE_LOCK_LABEL',
               type: 'slideToggle',
               value: 'true'
             }],
