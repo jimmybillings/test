@@ -14,7 +14,13 @@ export class SearchEffects {
     .switchMap((action: SearchActions.LoadResults) =>
       this.service.loadResults(action.params)
         .map((results) => this.store.create(factory => factory.search.loadResultsSuccess(results)))
-        .catch(error => Observable.of(this.store.create(factory => factory.error.handle(error))))
+        .catch(error => Observable.of(this.store.create(factory => factory.search.loadResultsFailure(error))))
+    );
+
+  @Effect()
+  public loadResultsFailure: Observable<Action> = this.actions.ofType(SearchActions.LoadResultsFailure.Type)
+    .map((action: SearchActions.LoadResultsFailure) =>
+      this.store.create(factory => factory.error.handle(action.error))
     );
 
   constructor(private actions: Actions, private store: AppStore, private service: SearchService) { }

@@ -47,6 +47,14 @@ export function reducer(state: State = initialState, action: SearchActions.Any):
       };
     }
 
+    case SearchActions.LoadResultsFailure.Type: {
+      const clonedState: State = Common.clone(state);
+      return {
+        ...clonedState,
+        loading: false
+      };
+    }
+
     case SearchActions.Reset.Type: {
       return Common.clone(initialState);
     }

@@ -31,8 +31,25 @@ export function main() {
           expectedArguments: [{ some: 'results' }]
         },
         failure: {
+          sectionName: 'search',
+          methodName: 'loadResultsFailure'
+        }
+      }
+    });
+
+    effectsSpecHelper.generateTestsFor({
+      effectName: 'loadResultsFailure',
+      comment: 'With a status of 400',
+      effectsInstantiator: instantiator,
+      inputAction: {
+        type: SearchActions.LoadResultsFailure.Type,
+        error: { status: 400 },
+      },
+      outputActionFactories: {
+        success: {
           sectionName: 'error',
-          methodName: 'handle'
+          methodName: 'handle',
+          expectedArguments: [{ status: 400 }]
         }
       }
     });

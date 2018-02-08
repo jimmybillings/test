@@ -158,5 +158,4 @@ export class ErrorEffects {
   private createServerErrorAction(): Action {
     return this.store.create(factory => factory.router.goToServerError());
   }
-
 }
