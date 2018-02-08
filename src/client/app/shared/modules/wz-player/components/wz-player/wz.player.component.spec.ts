@@ -175,7 +175,7 @@ export function main() {
 
       mockOverlayHelper = {
         displayWith: jasmine.createSpy('displayWith').and.callFake((parameters: any) => {
-          specifiedOverlayParameters = parameters
+          specifiedOverlayParameters = parameters;
         }),
         destroy: jasmine.createSpy('destroy')
       };

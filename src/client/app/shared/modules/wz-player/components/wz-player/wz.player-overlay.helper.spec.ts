@@ -69,7 +69,7 @@ export function main() {
           return 10836;
         }),
         clearInterval: jasmine.createSpy('clearInterval')
-      }
+      };
 
       mockRenderer = {
         createElement: jasmine.createSpy('createElement').and.returnValue(mockOverlayDivElement),
@@ -435,7 +435,7 @@ export function main() {
               });
             });
           });
-        })
+        });
       });
 
       [
@@ -474,7 +474,7 @@ export function main() {
               });
             });
           });
-        })
+        });
       });
 
       [
