@@ -3,7 +3,6 @@ import { Injectable, Renderer2 } from '@angular/core';
 import { Pojo } from '../../../../interfaces/common.interface';
 import { AppStore } from '../../../../../app.store';
 import { CurrentUserService } from '../../../../services/current-user.service';
-import { User } from '../../../../interfaces/user.interface';
 import { EnhancedAsset } from '../../../../interfaces/enhanced-asset';
 
 export interface WzPlayerOverlayHelperParameters {

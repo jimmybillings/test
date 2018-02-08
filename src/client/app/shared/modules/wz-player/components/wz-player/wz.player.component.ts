@@ -5,9 +5,6 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { EnhancedAsset } from '../../../../interfaces/enhanced-asset';
 import { PlayerMode, PlaybackDirection, PlayerStateChanges } from '../../interfaces/player.interface';
 import { AppStore } from '../../../../../app.store';
-import { Pojo } from '../../../../interfaces/common.interface';
-import { CurrentUserService } from '../../../../services/current-user.service';
-import { User } from '../../../../interfaces/user.interface';
 import { WzPlayerOverlayHelper } from './wz.player-overlay.helper';
 declare var jwplayer: any;
 
