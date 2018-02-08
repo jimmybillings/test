@@ -54,5 +54,19 @@ export function main() {
         }
       ]
     });
+
+    stateSpecHelper.generateTestsFor({
+      actionClassName: 'LoadResultsFailure',
+      mutationTestData: {
+        previousState: { results: { items: [{ some: 'results' }], pagination: { some: 'pagination' } }, loading: true }
+      },
+      customTests: [
+        {
+          it: 'returns the previous state with loading set to false',
+          previousState: { results: { items: [{ some: 'results' }], pagination: { some: 'pagination' } }, loading: true },
+          expectedNextState: { results: { items: [{ some: 'results' }], pagination: { some: 'pagination' } }, loading: false }
+        }
+      ]
+    });
   });
 }

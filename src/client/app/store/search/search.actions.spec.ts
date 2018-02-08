@@ -39,5 +39,17 @@ export function main() {
         results: { some: 'results' }
       }
     });
+
+    actionsSpecHelper.generateTestFor({
+      factoryMethod: {
+        class: InternalActionFactory,
+        name: 'loadResultsFailure',
+        parameters: [{ some: 'error' }]
+      },
+      expectedAction: {
+        type: '[Search] Load Results Failure',
+        error: { some: 'error' }
+      }
+    });
   });
 }

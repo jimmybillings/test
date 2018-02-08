@@ -80,7 +80,7 @@ export class OrderShowComponent {
   }
 
   public showDownloadButtonFor(lineItem: AssetLineItem): boolean {
-    return !!lineItem.downloadUrl && lineItem.transcodeStatus != 'Failed';
+    return !!lineItem.downloadUrl && lineItem.transcodeStatus !== 'Failed';
   }
 
   public nothingToDownload(lineItem: AssetLineItem): boolean {
