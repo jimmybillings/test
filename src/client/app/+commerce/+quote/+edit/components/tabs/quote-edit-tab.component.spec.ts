@@ -200,21 +200,36 @@ export function main() {
 
       describe('ADD_CUSTOM_PRICE', () => {
         beforeEach(() => {
-          componentUnderTest.onNotification({ type: 'ADD_CUSTOM_PRICE', payload: { some: 'lineItem', grossAssetPrice: 100 } });
+          componentUnderTest.onNotification({
+            type: 'ADD_CUSTOM_PRICE',
+            payload: { some: 'lineItem', price: 200, overrideGrossAssetPrice: 200 }
+          });
         });
 
         it('should open up a form dialog with the right config', () => {
           expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
-            [{ name: 'price', label: 'Price', value: '100', type: 'number', min: '0', validation: 'GREATER_THAN' }],
+            [{
+              name: 'price',
+              label: 'QUOTE.PRICE_LABEL',
+              type: 'number',
+              min: '0',
+              validation: 'GREATER_THAN',
+              value: 200
+            }, {
+              name: 'priceLock',
+              label: 'QUOTE.PRICE_LOCK_LABEL',
+              type: 'slideToggle',
+              value: 'true'
+            }],
             { title: 'QUOTE.ADD_CUSTOM_PRICE_TITLE', submitLabel: 'QUOTE.ADD_CUSTOM_PRICE_SUBMIT', autocomplete: 'off' },
             jasmine.any(Function)
           );
         });
 
         it('should dispatch the proper action on form submit', () => {
-          mockDialogService.onSubmitCallback({ price: 10 });
+          mockDialogService.onSubmitCallback({ price: 10, priceLock: 'true' });
 
-          mockStore.expectDispatchFor(addCustomPriceDispatchSpy, { some: 'lineItem', grossAssetPrice: 100 }, 10);
+          mockStore.expectDispatchFor(addCustomPriceDispatchSpy, { some: 'lineItem', price: 200, overrideGrossAssetPrice: 200 }, 10, true);
         });
       });
 

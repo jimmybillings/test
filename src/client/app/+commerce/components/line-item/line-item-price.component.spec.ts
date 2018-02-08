@@ -126,9 +126,9 @@ export function main() {
       describe('returns true', () => {
         it('when the user can administer quotes and the grossAssetPrice is different from the price', () => {
           componentUnderTest.userCanAdministerQuotes = true;
-          componentUnderTest.grossAssetPrice = 200.89;
+          componentUnderTest.itemPrice = 200.89;
           componentUnderTest.price = 200.99;
-
+          componentUnderTest.overrideGrossAssetPrice = null;
           expect(componentUnderTest.showPreDiscountPrice).toBe(true);
         });
       });
@@ -142,10 +142,80 @@ export function main() {
 
         it('when the user can administer quotes and the grossAssetPrice is the same as the price', () => {
           componentUnderTest.userCanAdministerQuotes = true;
-          componentUnderTest.grossAssetPrice = 200.89;
+          componentUnderTest.itemPrice = 200.89;
           componentUnderTest.price = 200.89;
-
+          componentUnderTest.overrideGrossAssetPrice = 1000;
           expect(componentUnderTest.showPreDiscountPrice).toBe(false);
+        });
+      });
+    });
+
+    describe('showAdminOveridePrice getter', () => {
+      describe('returns true', () => {
+        it('when user can administer quotes, its not readonly and the lineItem has an overrideGrossAsset price', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.readonly = false;
+          componentUnderTest.overrideGrossAssetPrice = 200;
+          expect(componentUnderTest.showAdminOveridePrice).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the user cannot administer quotes', () => {
+          componentUnderTest.userCanAdministerQuotes = false;
+          expect(componentUnderTest.showAdminOveridePrice).toBe(false);
+        });
+
+        it('when its not readonly', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.readonly = true;
+          componentUnderTest.overrideGrossAssetPrice = 200;
+          expect(componentUnderTest.showAdminOveridePrice).toBe(false);
+        });
+
+        it('when there is no override price', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.readonly = false;
+          componentUnderTest.overrideGrossAssetPrice = null;
+          expect(componentUnderTest.showAdminOveridePrice).toBe(false);
+        });
+      });
+    });
+
+    describe('shouldShowBasePrice getter', () => {
+      describe('returns true', () => {
+        it('when user can administer quotes and it has a override price and the base price does not equal the price property', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.price = 200;
+          componentUnderTest.itemPrice = 100;
+          componentUnderTest.overrideGrossAssetPrice = 200;
+          expect(componentUnderTest.shouldShowBasePrice).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the user cannot administer quotes', () => {
+          componentUnderTest.userCanAdministerQuotes = false;
+          componentUnderTest.price = 200;
+          componentUnderTest.itemPrice = 100;
+          componentUnderTest.overrideGrossAssetPrice = 200;
+          expect(componentUnderTest.shouldShowBasePrice).toBe(false);
+        });
+
+        it('when there is no override price', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.price = 200;
+          componentUnderTest.itemPrice = 100;
+          componentUnderTest.overrideGrossAssetPrice = null;
+          expect(componentUnderTest.shouldShowBasePrice).toBe(false);
+        });
+
+        it('when the base price equals the price property', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.price = 200;
+          componentUnderTest.itemPrice = 200;
+          componentUnderTest.overrideGrossAssetPrice = 300;
+          expect(componentUnderTest.shouldShowBasePrice).toBe(false);
         });
       });
     });

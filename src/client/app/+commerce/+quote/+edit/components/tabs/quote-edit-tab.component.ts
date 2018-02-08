@@ -240,18 +240,25 @@ export class QuoteEditTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   private onAddCustomPriceTo(lineItem: AssetLineItem): void {
-    this.dialogService.openFormDialog(
-      [{
+    let formFields: any = [
+      {
         name: 'price',
-        label: 'Price',
-        value: String(lineItem.grossAssetPrice),
+        label: 'QUOTE.PRICE_LABEL',
         type: 'number',
         min: '0',
-        validation: 'GREATER_THAN'
-      }],
+        validation: 'GREATER_THAN',
+        value: (lineItem.price > 0) ? lineItem.price : null
+      }, {
+        name: 'priceLock',
+        label: 'QUOTE.PRICE_LOCK_LABEL',
+        type: 'slideToggle',
+        value: (!!lineItem.overrideGrossAssetPrice) ? 'true' : ''
+      }];
+    this.dialogService.openFormDialog(
+      formFields,
       { title: 'QUOTE.ADD_CUSTOM_PRICE_TITLE', submitLabel: 'QUOTE.ADD_CUSTOM_PRICE_SUBMIT', autocomplete: 'off' },
-      (form: { price: number }) => {
-        this.store.dispatch(factory => factory.quoteEdit.addCustomPriceToLineItem(lineItem, form.price));
+      (form: { price: number, priceLock: string }) => {
+        this.store.dispatch(factory => factory.quoteEdit.addCustomPriceToLineItem(lineItem, form.price, Boolean(form.priceLock)));
       });
   }
 

@@ -80,7 +80,7 @@ export class LineItemsComponent {
 
   public shouldDisplayPricing(lineItem: AssetLineItem): boolean {
     return !quotesWithoutPricing.includes(this.quoteType) &&
-      (this.rmAssetHasAttributes(lineItem) || lineItem.rightsManaged === 'Royalty Free');
+      (this.rmAssetHasAttributes(lineItem) || lineItem.rightsManaged === 'Royalty Free') || !!lineItem.overrideGrossAssetPrice;
   }
 
   public onOpenCostMultiplierForm(lineItem: AssetLineItem): void {

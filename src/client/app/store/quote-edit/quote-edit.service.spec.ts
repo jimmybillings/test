@@ -131,15 +131,31 @@ export function main() {
     });
 
     describe('addCustomPriceToLineItem', () => {
-      it('calls the apiService correctly', () => {
-        serviceUnderTest.addCustomPriceToLineItem(10, { id: 'abc-123', itemPrice: 100 } as any, 1000);
+      it('calls the apiService correctly if override is false', () => {
+        serviceUnderTest.addCustomPriceToLineItem(10, { id: 'abc-123', itemPrice: 100 } as any, 1000, false);
 
         expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/10/update/lineItem/abc-123');
         expect(mockApiService.put).toHaveBeenCalledWithBody({
           id: 'abc-123',
           itemPrice: 100,
-          multiplier: 10
+          multiplier: 10,
+          overrideGrossAssetPrice: null
+        });
+        expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
+        expect(mockApiService.put).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('calls the apiService correctly if override is true', () => {
+        serviceUnderTest.addCustomPriceToLineItem(10, { id: 'abc-123', itemPrice: 100 } as any, 1000, true);
+
+        expect(mockApiService.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApiService.put).toHaveBeenCalledWithEndpoint('quote/10/update/lineItem/abc-123');
+        expect(mockApiService.put).toHaveBeenCalledWithBody({
+          id: 'abc-123',
+          itemPrice: 100,
+          multiplier: null,
+          overrideGrossAssetPrice: 1000
         });
         expect(mockApiService.put).toHaveBeenCalledWithParameters({ region: 'AAA' });
         expect(mockApiService.put).toHaveBeenCalledWithLoading(true);

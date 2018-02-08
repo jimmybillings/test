@@ -88,6 +88,7 @@ export interface AssetLineItem {
   grossAssetPrice?: number;
   rightsManaged?: string;
   externalAgreementIds?: string[];
+  overrideGrossAssetPrice?: number;
 }
 
 export interface FeeLineItem {

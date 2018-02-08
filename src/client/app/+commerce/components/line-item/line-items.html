@@ -64,6 +64,7 @@
             [multiplier]="lineItem.multiplier"
             [rightsManaged]="lineItem.rightsManaged"
             [hasAttributes]="!!lineItem.attributes"
+            [overrideGrossAssetPrice]="lineItem.overrideGrossAssetPrice"
             [userCanAdministerQuotes]="userCan.administerQuotes()"
             [readonly]="readOnly"
             (addCustomPrice)="onAddCustomPrice(lineItem)">

@@ -191,7 +191,8 @@ export function main() {
       inputAction: {
         type: QuoteEditActions.AddCustomPriceToLineItem.Type,
         lineItem: { some: 'lineItem' },
-        price: 10000
+        price: 10000,
+        override: true
       },
       state: {
         storeSectionName: 'quoteEdit',
@@ -199,7 +200,7 @@ export function main() {
       },
       serviceMethod: {
         name: 'addCustomPriceToLineItem',
-        expectedArguments: [10, { some: 'lineItem' }, 10000],
+        expectedArguments: [10, { some: 'lineItem' }, 10000, true],
         returnsObservableOf: { some: 'quote' }
       },
       outputActionFactories: {

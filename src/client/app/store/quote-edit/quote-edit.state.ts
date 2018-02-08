@@ -87,6 +87,7 @@ export function reducer(state: State = initialState, action: AllowedActions): St
     case QuoteEditActions.BulkImportSuccess.Type:
     case QuoteEditActions.AddAssetToProjectInQuoteSuccess.Type:
     case QuoteEditActions.RefreshAndNotify.Type: {
+
       return {
         loading: false,
         data: {

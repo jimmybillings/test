@@ -162,6 +162,25 @@ export function main() {
           })).toBe(true);
       });
 
+      it('returns true when quote is NOT a Trial and it is a royalty free clip', () => {
+        classUnderTest.quoteType = 'NoTrial' as any;
+        classUnderTest.rmAssetsHaveAttributes = true;
+        expect(classUnderTest.shouldDisplayPricing(
+          {
+            rightsManaged: 'Royalty Free'
+          })).toBe(true);
+      });
+
+      it('returns true when quote is NOT a Trial and it has a overrideGrossAssetPrice property', () => {
+        classUnderTest.quoteType = 'NoTrial' as any;
+        classUnderTest.rmAssetsHaveAttributes = true;
+        expect(classUnderTest.shouldDisplayPricing(
+          {
+            rightsManaged: 'Rights Managed',
+            overrideGrossAssetPrice: 200
+          })).toBe(true);
+      });
+
       it('returns false when the quote is a Trial', () => {
         classUnderTest.quoteType = 'Trial';
         expect(classUnderTest.shouldDisplayPricing({ rightsManaged: 'Royalty Free' })).toBe(false);

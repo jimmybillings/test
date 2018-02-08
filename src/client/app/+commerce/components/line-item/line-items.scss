@@ -112,6 +112,10 @@ li.cart-asset {
             opacity: .4;
           }
         }
+        mat-icon {
+          padding-right: 10px;
+          vertical-align: bottom;
+        }
       }
       .admin-price, .non-admin-price {
         padding: 6px 0 4px 6px;
