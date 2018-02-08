@@ -4,6 +4,7 @@ import { WzPlayerComponent } from './wz.player.component';
 import { MockJwPlayer } from '../../mocks/mockJwPlayer';
 import { MockVideoEventName, MockVideoElement } from '../../mocks/mockVideoElement';
 import { MockAppStore } from '../../../../../store/spec-helpers/mock-app.store';
+import { Frame } from '../../../wazee-frame-formatter/index';
 
 export function main() {
   describe('Wz Player Component', () => {
@@ -11,10 +12,15 @@ export function main() {
     let stateChangeRequestEmitter: jasmine.Spy;
     let mockElementRef: any;
     let mockRenderer: any;
+    let mockRenderer2: any;
     let mockZone: any;
+    let mockOverlayHelper: any;
     let mockJwPlayer: MockJwPlayer;
     let mockVideoElement: MockVideoElement;
-    let mockStore: MockAppStore;
+    let mockJwPlayerOverlaysDiv: any;
+    let mockJwPlayerControlBar: any;
+    let mockGetComputedStyleResponse: any;
+    let specifiedOverlayParameters: any;
 
     const expectResetFor = (assetType: string) => {
       if (assetType === 'video' || assetType === 'html5Video') {
@@ -30,8 +36,125 @@ export function main() {
       expect(mockElementRef.nativeElement.innerHtml).toEqual('');
     };
 
+    const securityOverlayTestsForJwPlayer = () => {
+      describe('window property', () => {
+        it('gets the current window', () => {
+          expect(specifiedOverlayParameters.window).toEqual(componentUnderTest.window);
+        });
+      });
+
+      describe('enhancedAsset property', () => {
+        it('gets the current asset', () => {
+          expect(specifiedOverlayParameters.enhancedAsset).toEqual(componentUnderTest.asset);
+        });
+      });
+
+      describe('containerElement property', () => {
+        it('is JW Player\'s overlays div', () => {
+          expect(specifiedOverlayParameters.containerElement).toEqual(mockJwPlayerOverlaysDiv);
+        });
+      });
+
+      describe('currentlyPlaying property', () => {
+        it('returns true when JW Player is playing', () => {
+          mockJwPlayer.play(true);
+
+          expect(specifiedOverlayParameters.currentlyPlaying()).toBe(true);
+        });
+
+        it('returns false when JW Player is paused', () => {
+          mockJwPlayer.pause(true);
+
+          expect(specifiedOverlayParameters.currentlyPlaying()).toBe(false);
+        });
+      });
+
+      describe('getCurrentControlsHeight property', () => {
+        it('returns the height of the JW Player controls when it is visible', () => {
+          mockGetComputedStyleResponse = { visibility: 'visible' };
+
+          expect(specifiedOverlayParameters.getCurrentControlsHeight()).toBe(4747);
+        });
+
+        it('returns 0 when it is hidden', () => {
+          mockGetComputedStyleResponse = { visibility: 'hidden' };
+
+          expect(specifiedOverlayParameters.getCurrentControlsHeight()).toBe(0);
+        });
+      });
+
+      describe('onTimeUpdate property', () => {
+        it('calls the specified callback when JW Player reports a time update', () => {
+          const callback = jasmine.createSpy('callback');
+          specifiedOverlayParameters.onTimeUpdate(callback);
+
+          mockJwPlayer.trigger('time', 1234);
+
+          expect(callback).toHaveBeenCalledWith(1234);
+        });
+      });
+
+      describe('offTimeUpdate property', () => {
+        it('cancels the previously specified time handler', () => {
+          const callback = jasmine.createSpy('callback');
+          specifiedOverlayParameters.onTimeUpdate(callback);
+          specifiedOverlayParameters.offTimeUpdate();
+
+          mockJwPlayer.trigger('time', 1234);
+
+          expect(callback).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('onPlay property', () => {
+        it('calls the specified callback when JW Player reports it is playing', () => {
+          const callback = jasmine.createSpy('callback');
+          specifiedOverlayParameters.onPlay(callback);
+
+          mockJwPlayer.trigger('play');
+
+          expect(callback).toHaveBeenCalledWith();
+        });
+      });
+
+      describe('onPause property', () => {
+        it('calls the specified callback when JW Player reports it is paused', () => {
+          const callback = jasmine.createSpy('callback');
+          specifiedOverlayParameters.onPause(callback);
+
+          mockJwPlayer.trigger('pause');
+
+          expect(callback).toHaveBeenCalledWith();
+        });
+      });
+
+      describe('onComplete property', () => {
+        it('calls the specified callback when JW Player reports it is complete', () => {
+          const callback = jasmine.createSpy('callback');
+          specifiedOverlayParameters.onComplete(callback);
+
+          mockJwPlayer.trigger('complete');
+
+          expect(callback).toHaveBeenCalledWith();
+        });
+      });
+    };
+
     beforeEach(() => {
-      mockElementRef = { nativeElement: { innerHtml: '', appendChild: jasmine.createSpy('appendChild') } };
+      mockElementRef = {
+        nativeElement: {
+          innerHtml: '',
+          appendChild: jasmine.createSpy('appendChild'),
+          getElementsByClassName: (className: string) => {
+            switch (className) {
+              case 'jw-overlays': return [mockJwPlayerOverlaysDiv];
+              case 'jw-controlbar': return [mockJwPlayerControlBar];
+            }
+
+            return null;
+          }
+        }
+      };
 
       mockRenderer = {
         listen: (videoElement: MockVideoElement, eventName: MockVideoEventName, callback: Function) => {
@@ -40,14 +163,24 @@ export function main() {
         }
       };
 
+      mockJwPlayerOverlaysDiv = {};
+      mockJwPlayerControlBar = { offsetHeight: 4747 };
+
+      mockRenderer2 = {
+        createElement: jasmine.createSpy('createElement'),
+        appendChild: jasmine.createSpy('appendChild'),
+      };
+
       mockZone = { run: jasmine.createSpy('zone').and.callFake((wrappedFunction: Function) => wrappedFunction()) };
 
-      mockStore = new MockAppStore();
-      mockStore.createStateElement('uiConfig', 'components', {});
+      mockOverlayHelper = {
+        displayWith: jasmine.createSpy('displayWith').and.callFake((parameters: any) => {
+          specifiedOverlayParameters = parameters
+        }),
+        destroy: jasmine.createSpy('destroy')
+      };
 
-      spyOn(console, 'log');  // Suppress temporary console.log messages in test output.
-
-      componentUnderTest = new WzPlayerComponent(mockElementRef, mockRenderer, mockZone, mockStore);
+      componentUnderTest = new WzPlayerComponent(mockElementRef, mockRenderer, mockRenderer2, null, mockZone, mockOverlayHelper);
 
       componentUnderTest.window = {
         jwplayer: jasmine.createSpy('jwplayer creator').and.returnValue(mockJwPlayer = new MockJwPlayer()),
@@ -55,6 +188,9 @@ export function main() {
           querySelector: (selector: string) => {
             return selector === 'video' ? (mockVideoElement = new MockVideoElement(mockJwPlayer.autoplay)) : null;
           }
+        },
+        getComputedStyle: (htmlElement: any) => {
+          return mockGetComputedStyleResponse;
         }
       };
 
@@ -68,17 +204,21 @@ export function main() {
     });
 
     describe('For an Image', () => {
-      const mockAsset = { resourceClass: 'Image' };
+      const mockAsset = { isImage: true };
 
-      beforeEach(() => componentUnderTest.asset = mockAsset);
+      beforeEach(() => componentUnderTest.asset = mockAsset as any);
 
       describe('asset setter', () => {
         it('doesn\'t set up the player', () => {
           expect(mockJwPlayer.setup).not.toHaveBeenCalled();
         });
 
+        it('does not tell the security overlay to display', () => {
+          expect(mockOverlayHelper.displayWith).not.toHaveBeenCalled();
+        });
+
         it('resets the asset if an asset was present', () => {
-          componentUnderTest.asset = { resourceClass: 'Image', some: 'otherProperty' };
+          componentUnderTest.asset = { isImage: true, some: 'otherProperty' } as any;
 
           expectResetFor('image');
         });
@@ -91,6 +231,12 @@ export function main() {
       });
 
       describe('ngOnDestroy()', () => {
+        it('tells the player overlay to destroy itself', () => {
+          componentUnderTest.ngOnDestroy();
+
+          expect(mockOverlayHelper.destroy).toHaveBeenCalled();
+        });
+
         it('resets the player', () => {
           componentUnderTest.ngOnDestroy();
 
@@ -177,19 +323,16 @@ export function main() {
         beforeEach(() => {
           componentUnderTest.mode = 'basic';
           componentUnderTest.asset = {
-            resourceClass: 'NotImage',
-            clipThumbnailUrl: 'clipThumbnailUrl',
+            isImage: false,
+            thumbnailUrl: 'thumbnailUrl',
             clipUrl: 'clipUrl',
-            someMetadata: {
-              name: 'Format.FrameRate',
-              value: '30'
-            }
-          };
+            framesPerSecond: 30
+          } as any;
         });
 
         it('sets up the player', () => {
           expect(mockJwPlayer.setup).toHaveBeenCalledWith({
-            image: 'clipThumbnailUrl',
+            image: 'thumbnailUrl',
             file: 'clipUrl',
             autostart: true,
             controls: false
@@ -198,19 +341,22 @@ export function main() {
 
         it('resets the player if it already exists when a new asset is set', () => {
           componentUnderTest.asset = {
-            resourceClass: 'AnotherNotImage',
-            clipThumbnailUrl: 'anotherClipThumbnailUrl',
+            isImage: false,
+            thumbnailUrl: 'anotherThumbnailUrl',
             clipUrl: 'anotherClipUrl',
-            someMetadata: {
-              name: 'Format.FrameRate',
-              value: '30'
-            }
-          };
+            framesPerSecond: 30
+          } as any;
 
           expectResetFor('video');
         });
 
         describe('ngOnDestroy()', () => {
+          it('tells the player overlay to destroy itself', () => {
+            componentUnderTest.ngOnDestroy();
+
+            expect(mockOverlayHelper.destroy).toHaveBeenCalled();
+          });
+
           it('resets the player', () => {
             componentUnderTest.ngOnDestroy();
 
@@ -297,6 +443,7 @@ export function main() {
             expect(mockJwPlayer.getControls()).toBe(true);
           });
 
+          describe('the security overlay', securityOverlayTestsForJwPlayer);
         });
       });
 
@@ -304,28 +451,40 @@ export function main() {
         [
           {
             state: 'no markers',
-            markers: {},
+            inMarker: undefined,
+            inMarkerFrameNumber: undefined,
+            outMarker: undefined,
+            outMarkerFrameNumber: undefined,
             expectedInSeconds: undefined,
             expectedOutSeconds: undefined,
             expectedAutoStart: true
           },
           {
-            state: 'only timeStart',
-            markers: { timeStart: '3000' },
+            state: 'only an in marker',
+            inMarker: new Frame(30).setFromSeconds(3),
+            inMarkerFrameNumber: 90,
+            outMarker: undefined,
+            outMarkerFrameNumber: undefined,
             expectedInSeconds: 3,
             expectedOutSeconds: undefined,
             expectedAutoStart: true
           },
           {
-            state: 'only timeEnd',
-            markers: { timeEnd: '6000' },
+            state: 'only an out marker',
+            inMarker: undefined,
+            inMarkerFrameNumber: undefined,
+            outMarker: new Frame(30).setFromSeconds(6),
+            outMarkerFrameNumber: 180,
             expectedInSeconds: undefined,
             expectedOutSeconds: 6,
             expectedAutoStart: true
           },
           {
-            state: 'timeStart and timeEnd',
-            markers: { timeStart: '3000', timeEnd: '6000' },
+            state: 'both markers',
+            inMarker: new Frame(30).setFromSeconds(3),
+            inMarkerFrameNumber: 90,
+            outMarker: new Frame(30).setFromSeconds(6),
+            outMarkerFrameNumber: 180,
             expectedInSeconds: 3,
             expectedOutSeconds: 6,
             expectedAutoStart: false
@@ -334,16 +493,16 @@ export function main() {
           describe(`when asset has ${assetTest.state}`, () => {
             beforeEach(() => {
               componentUnderTest.mode = 'advanced';
-              componentUnderTest.asset =
-                Object.assign({
-                  resourceClass: 'NotImage',
-                  clipThumbnailUrl: undefined,
-                  clipUrl: 'clipUrl',
-                  someMetadata: {
-                    name: 'Format.FrameRate',
-                    value: '30'
-                  }
-                }, assetTest.markers);
+              componentUnderTest.asset = {
+                isImage: false,
+                thumbnailUrl: undefined,
+                clipUrl: 'clipUrl',
+                framesPerSecond: 30,
+                inMarkerFrame: assetTest.inMarker,
+                inMarkerFrameNumber: assetTest.inMarkerFrameNumber,
+                outMarkerFrame: assetTest.outMarker,
+                outMarkerFrameNumber: assetTest.outMarkerFrameNumber,
+              } as any;
             });
 
             describe('asset setter', () => {
@@ -358,14 +517,11 @@ export function main() {
 
               it('resets the player if an asset was already present', () => {
                 componentUnderTest.asset = {
-                  resourceClass: 'AnotherNotImage',
-                  clipThumbnailUrl: 'anotherClipThumbnailUrl',
+                  isImage: false,
+                  thumbnailUrl: 'anotherThumbnailUrl',
                   clipUrl: 'anotherClipUrl',
-                  someMetadata: {
-                    name: 'Format.FrameRate',
-                    value: '30'
-                  }
-                };
+                  framesPerSecond: 30
+                } as any;
 
                 expectResetFor('video');
               });
@@ -388,11 +544,19 @@ export function main() {
                   expect(mockJwPlayer.getControls()).toBe(true);
                 });
 
+                describe('the security overlay', securityOverlayTestsForJwPlayer);
+
                 it('reports canSupportCustomControls: false, ready: true', () => {
                   expect(stateChangeRequestEmitter).toHaveBeenCalledWith({ canSupportCustomControls: false, ready: true });
                 });
 
                 describe('ngOnDestroy()', () => {
+                  it('tells the player overlay to destroy itself', () => {
+                    componentUnderTest.ngOnDestroy();
+
+                    expect(mockOverlayHelper.destroy).toHaveBeenCalled();
+                  });
+
                   it('resets the player', () => {
                     // Don't want initialization calls to affect future verifications.
                     (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
@@ -494,6 +658,10 @@ export function main() {
                   expect(mockJwPlayer.getControls()).toBe(false);
                 });
 
+                it('does not tell the security overlay to display', () => {
+                  expect(mockOverlayHelper.displayWith).not.toHaveBeenCalled();
+                });
+
                 it('reports ready: true, canSupportCustomControls: true, framesPerSecond, in/out markers, volume', () => {
                   expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
                   expect(stateChangeRequestEmitter.calls.allArgs()).toEqual([[{
@@ -516,14 +684,14 @@ export function main() {
                     // Don't want initialization calls to affect future verifications.
                     (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
 
-                    if (assetTest.markers.hasOwnProperty('timeStart') && assetTest.markers.hasOwnProperty('timeEnd')) {
+                    if (assetTest.inMarker && assetTest.outMarker) {
                       // Complete the seek caused by toggleMarkersPlayback(), which was
                       // called because we were initialized with both markers.
                       mockVideoElement.simulateSeekCompletion();
                     }
                   });
 
-                  if (assetTest.markers.hasOwnProperty('timeStart') && assetTest.markers.hasOwnProperty('timeEnd')) {
+                  if (assetTest.inMarker && assetTest.outMarker) {
                     it('reports playingMarkers: true, playing: true, current time', () => {
                       expect(stateChangeRequestEmitter.calls.allArgs())
                         .toEqual([
@@ -535,7 +703,7 @@ export function main() {
                   }
 
                   describe('after initialization is complete', () => {
-                    if (assetTest.markers.hasOwnProperty('timeStart') && assetTest.markers.hasOwnProperty('timeEnd')) {
+                    if (assetTest.inMarker && assetTest.outMarker) {
                       beforeEach(() => {
                         // Kill initial autoplay between markers.
                         componentUnderTest.seekTo(99);
@@ -555,6 +723,12 @@ export function main() {
                     });
 
                     describe('ngOnDestroy()', () => {
+                      it('tells the player overlay to destroy itself', () => {
+                        componentUnderTest.ngOnDestroy();
+
+                        expect(mockOverlayHelper.destroy).toHaveBeenCalled();
+                      });
+
                       it('resets the player', () => {
                         componentUnderTest.ngOnDestroy();
 
@@ -910,7 +1084,7 @@ export function main() {
                     });
 
                     describe('seekToInMarker()', () => {
-                      if (assetTest.markers.hasOwnProperty('timeStart')) {
+                      if (assetTest.inMarker) {
                         it('reports currentTime updated to in marker', () => {
                           componentUnderTest.seekToInMarker();
                           mockVideoElement.simulateSeekCompletion();
@@ -927,7 +1101,7 @@ export function main() {
                     });
 
                     describe('seekToOutMarker()', () => {
-                      if (assetTest.markers.hasOwnProperty('timeEnd')) {
+                      if (assetTest.outMarker) {
                         it('reports currentTime updated to out marker', () => {
                           componentUnderTest.seekToOutMarker();
                           mockVideoElement.simulateSeekCompletion();
@@ -952,7 +1126,7 @@ export function main() {
                         expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ inMarker: 0.123 }]);
                       });
 
-                      if (assetTest.markers.hasOwnProperty('timeEnd')) {
+                      if (assetTest.outMarker) {
                         describe('if current time is greater than out marker', () => {
                           it('moves out marker, and reports inMarker and outMarker updates', () => {
                             mockVideoElement.simulateTimeChangeTo(9.876);
@@ -975,7 +1149,7 @@ export function main() {
                         expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ outMarker: 5.678 }]);
                       });
 
-                      if (assetTest.markers.hasOwnProperty('timeStart')) {
+                      if (assetTest.inMarker) {
                         describe('if current time is less than in marker', () => {
                           it('moves in marker, and reports inMarker and outMarker updates', () => {
                             mockVideoElement.simulateTimeChangeTo(0.999);
@@ -1001,7 +1175,7 @@ export function main() {
 
                     describe('toggleMarkersPlayback()', () => {
                       // Icky negative if statement, so as not to bury the else case many, many lines below.
-                      if (!assetTest.markers.hasOwnProperty('timeStart') || !assetTest.markers.hasOwnProperty('timeEnd')) {
+                      if (!assetTest.inMarker || !assetTest.outMarker) {
                         it('throws an error', () => {
                           expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
                         });

@@ -1,10 +1,14 @@
 import {
-  Component, ChangeDetectionStrategy, Input, Output, ElementRef, Renderer, EventEmitter, NgZone, OnDestroy
+  Component, ChangeDetectionStrategy, Input, Output, ElementRef, Renderer, Renderer2, EventEmitter, NgZone, OnDestroy, Inject
 } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
 import { EnhancedAsset } from '../../../../interfaces/enhanced-asset';
 import { PlayerMode, PlaybackDirection, PlayerStateChanges } from '../../interfaces/player.interface';
 import { AppStore } from '../../../../../app.store';
 import { Pojo } from '../../../../interfaces/common.interface';
+import { CurrentUserService } from '../../../../services/current-user.service';
+import { User } from '../../../../interfaces/user.interface';
+import { WzPlayerOverlayHelper } from './wz.player-overlay.helper';
 declare var jwplayer: any;
 
 type AssetType = 'unknown' | 'image' | 'video' | 'html5Video';
@@ -14,8 +18,10 @@ type MarkersPlaybackMode = 'off' | 'initializing' | 'on';
   moduleId: module.id,
   selector: 'wz-player',
   template: ' ',
-  // styles: ['img { width:100%; height:100%; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    WzPlayerOverlayHelper
+  ]
 })
 
 export class WzPlayerComponent implements OnDestroy {
@@ -23,16 +29,14 @@ export class WzPlayerComponent implements OnDestroy {
   @Input() window: any;
 
   @Input()
-  public set asset(asset: any) {
+  public set asset(asset: EnhancedAsset) {
     this.reset();
-    this.currentAsset = asset;
-    this.enhancedAsset = Object.assign(new EnhancedAsset(), asset).normalize();
-
+    this.enhancedAsset = asset;
     this.enhancedAsset.isImage ? this.setupImage() : this.setupVideo();
   }
 
-  public get asset(): any {
-    return this.currentAsset;
+  public get asset(): EnhancedAsset {
+    return this.enhancedAsset;
   }
 
   @Output() stateChangeRequest: EventEmitter<PlayerStateChanges> = new EventEmitter<PlayerStateChanges>();
@@ -48,12 +52,19 @@ export class WzPlayerComponent implements OnDestroy {
   private videoElementListenerRemovers: any;
   private waitingForSeek: boolean = false;
   private pendingSeekRequest: number = null;
+  private container: any;
 
-  constructor(private element: ElementRef, private renderer: Renderer, private zone: NgZone, private store: AppStore) {
-    this.readOverlayConfig();
-  }
+  constructor(
+    private element: ElementRef,
+    private renderer: Renderer,
+    private renderer2: Renderer2,
+    @Inject(DOCUMENT) private document: Document,
+    private zone: NgZone,
+    private overlayHelper: WzPlayerOverlayHelper
+  ) { }
 
   public ngOnDestroy(): void {
+    this.overlayHelper.destroy();
     this.reset();
   }
 
@@ -190,8 +201,11 @@ export class WzPlayerComponent implements OnDestroy {
   }
 
   private setupVideo(): void {
+    this.container = this.renderer2.createElement('div');
+    this.renderer2.appendChild(this.element.nativeElement, this.container);
+
     this.currentAssetType = 'video';
-    this.jwPlayer = this.window.jwplayer(this.element.nativeElement);
+    this.jwPlayer = this.window.jwplayer(this.container);
     this.setupInMarker();
     this.setupOutMarker();
 
@@ -235,12 +249,14 @@ export class WzPlayerComponent implements OnDestroy {
         } else {
           if (!autostartInAdvancedMode) this.jwPlayer.play(true);
           this.jwPlayer.setControls(true);
+          this.displaySecurityOverlayForJwPlayer();
           this.emitStateChangeRequestWith({ ready: true, canSupportCustomControls: false });
         }
       } else {
         // Default control setting is false, so we turn them
         // on here if we're using the simple player.
         this.jwPlayer.setControls(true);
+        this.displaySecurityOverlayForJwPlayer();
       }
     });
   }
@@ -431,21 +447,21 @@ export class WzPlayerComponent implements OnDestroy {
     }
   }
 
-  private readOverlayConfig(): void {
-    const components: Pojo = this.store.snapshotCloned(state => state.uiConfig.components);
-
-    if (!components.hasOwnProperty('playerOverlay') || !components.playerOverlay.hasOwnProperty('config')) {
-      console.log('No playerOverlay configuration found');
-      return;
-    }
-
-    const rawConfig: Pojo = components.playerOverlay.config;
-    console.log('playerOverlay configuration:');
-    [
-      'enabled', 'userDisplayText', 'position', 'fontSizeInPixels', 'textColor', 'textOpacity', 'backgroundColor',
-      'backgroundOpacity'
-    ].forEach(key => {
-      console.log(`  ${key}: ${rawConfig[key] ? `"${rawConfig[key].value}"` : undefined}`);
+  private displaySecurityOverlayForJwPlayer(): void {
+    this.overlayHelper.displayWith({
+      window: this.window,
+      enhancedAsset: this.enhancedAsset,
+      containerElement: this.element.nativeElement.getElementsByClassName('jw-overlays')[0],
+      currentlyPlaying: () => this.jwPlayer.getState() === 'playing',
+      getCurrentControlsHeight: () => {
+        const controlBar: HTMLElement = this.element.nativeElement.getElementsByClassName('jw-controlbar')[0];
+        return this.window.getComputedStyle(controlBar).visibility === 'hidden' ? 0 : controlBar.offsetHeight;
+      },
+      onTimeUpdate: (callback: () => void) => this.jwPlayer.on('time', callback),
+      offTimeUpdate: () => this.jwPlayer.off('time'),
+      onPlay: (callback: () => void) => this.jwPlayer.on('play', callback),
+      onPause: (callback: () => void) => this.jwPlayer.on('pause', callback),
+      onComplete: (callback: () => void) => this.jwPlayer.on('complete', callback)
     });
-  }
+  };
 }

@@ -124,9 +124,9 @@ export class MockJwPlayer {
   }
 
   public trigger(eventName: string, args?: any): MockJwPlayer {
-    this.onceCallbacks[eventName].forEach((callback: Function) => callback(args));
+    this.onceCallbacks[eventName].forEach((callback: Function) => args ? callback(args) : callback());
     this.onceCallbacks[eventName] = [];
-    this.onCallbacks[eventName].forEach((callback: Function) => callback(args));
+    this.onCallbacks[eventName].forEach((callback: Function) => args ? callback(args) : callback());
 
     return this;
   }
