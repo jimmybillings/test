@@ -83,7 +83,7 @@ export class QuoteEditEffects {
     .withLatestFrom(this.store.select(state => state.quoteEdit))
     .switchMap(([action, quoteEdit]: [QuoteEditActions.SendQuote, QuoteEdit]) => {
       let invoiceContactType: string, invoiceContactId: number;
-      if (quoteEdit.sendDetails.invoiceContact.id > 0) {
+      if (quoteEdit.sendDetails.invoiceContact.hasOwnProperty('id')) {
         invoiceContactType = 'User';
         invoiceContactId = quoteEdit.sendDetails.invoiceContact.id;
       }

@@ -19,7 +19,8 @@
           [required]="isRequiredField(field)"
           id="{{field.name}}"
           (change)="onSelectChange($event, field)">
-          <mat-option *ngFor="let option of field.options" [value]="option.id">{{ option.name | translate }}</mat-option>
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let option of field.options" [value]="option.id">{{ option.name }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

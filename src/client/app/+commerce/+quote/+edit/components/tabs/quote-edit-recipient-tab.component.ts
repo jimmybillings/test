@@ -1,13 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-
-import { WzFormComponent } from '../../../../../shared/modules/wz-form/wz.form.component';
-import { Common } from '../../../../../shared/utilities/common.functions';
-import { User } from '../../../../../shared/interfaces/user.interface';
-import { Account } from '../../../../../shared/interfaces/account.interface';
-import { Tab } from '../../../../components/tabs/tab';
-import { CurrentUserService } from '../../../../../shared/services/current-user.service';
 import {
   QuoteOptions,
   SendDetails,
@@ -16,6 +9,11 @@ import {
   SendDetailsUser,
   SendDetailsSalesManager,
 } from '../../../../../shared/interfaces/commerce.interface';
+import { WzFormComponent } from '../../../../../shared/modules/wz-form/wz.form.component';
+import { User } from '../../../../../shared/interfaces/user.interface';
+import { Account } from '../../../../../shared/interfaces/account.interface';
+import { Tab } from '../../../../components/tabs/tab';
+import { CurrentUserService } from '../../../../../shared/services/current-user.service';
 import { AppStore } from '../../../../../app.store';
 import { Pojo } from '../../../../../shared/interfaces/common.interface';
 import { FormFields } from '../../../../../shared/interfaces/forms.interface';
@@ -29,13 +27,13 @@ interface SendDetailsConfig {
   invoiceContact: Pojo[];
   salesManager: FormFields[];
 };
-
 @Component({
   moduleId: module.id,
   selector: 'quote-edit-recipient-tab-component',
   templateUrl: 'quote-edit-recipient-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
   @ViewChild('invoiceContactform') public invoiceContactform: WzFormPicklistComponent;
   @ViewChild('billingAccountForm') public billingAccountForm: WzFormAutoCompleteViewComponent;
@@ -44,12 +42,14 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
 
   public config: SendDetailsConfig;
 
-  constructor(private store: AppStore, private currentUserService: CurrentUserService) {
+  constructor(
+    private store: AppStore,
+    private currentUserService: CurrentUserService) {
     super();
-    this.config = this.sendConfig();
   }
 
   ngOnInit() {
+    this.config = this.sendConfig();
     this.initializeSalesManagerInState();
     this.listenToStateChanges();
   }
@@ -87,10 +87,11 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
   }
 
   public get allBillingSelectionComplete(): Observable<boolean> {
-    return this.store.select(state => {
-      return this.userAccountMatchesBillingAccount(state.quoteEdit.sendDetails) ||
-        this.allBillingFieldsSelected(state.quoteEdit.sendDetails);
-    });
+    return this.store.select(state => state.quoteEdit.sendDetails)
+      .map((sendDetails: SendDetails) => (
+        this.userAccountMatchesBillingAccount(sendDetails) ||
+        this.allBillingFieldsSelected(sendDetails)
+      ));
   }
 
   public onEditableFieldChange(change: Pojo): void {
@@ -157,14 +158,22 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
   }
 
   private updateFormValidity(state: SendDetails): void {
-    if (!this.invoiceContactform || !this.billingAccountForm) return;
 
-    if ((state.billingAccount.name === state.user.accountName) && !state.invoiceContact.hasOwnProperty('id')) {
+    if (!this.invoiceContactform || !this.billingAccountForm) return;
+    if ((state.billingAccount.name === state.user.accountName) && !state.invoiceContact.id) {
+      this.config.invoiceContact = this.config.invoiceContact.map(item => {
+        item.validation = 'OPTIONAL';
+        return item;
+      });
       this.billingAccountForm.resetForm();
       this.invoiceContactform.resetForm();
     }
 
-    if ((state.billingAccount.name !== state.user.accountName) && !state.invoiceContact.hasOwnProperty('id')) {
+    if ((state.billingAccount.name !== state.user.accountName) && !state.invoiceContact.id) {
+      this.config.invoiceContact = this.config.invoiceContact.map(item => {
+        item.validation = 'REQUIRED';
+        return item;
+      });
       this.billingAccountForm.markFieldsAsTouched();
       this.invoiceContactform.markFieldsAsTouched();
     }
@@ -188,8 +197,7 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
 
     if (state.invoiceContact.contacts) {
       const contact = state.invoiceContact.contacts.find(c => {
-        // cannot check truthyness of state.invoiceContact.id because it could be 0 (which is valid)
-        return Common.isNotNullOrUndefined(state.invoiceContact.id) ?
+        return state.invoiceContact.id ?
           c.id === state.invoiceContact.id :
           c.id === state.billingAccount.invoiceContactId;
       });

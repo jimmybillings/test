@@ -37,9 +37,7 @@ export const initialState: State = {
       contactEmail: null,
       name: null,
       id: null,
-      contacts: [
-        { id: 0, name: 'QUOTE.EDIT.FORMS.NO_INVOICE_CONTACT', emailAddress: '' }
-      ]
+      contacts: []
     },
     salesManager: {
       expirationDate: null,
