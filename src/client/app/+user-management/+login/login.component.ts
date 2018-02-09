@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
         } else { this.redirectUserAppropriately(); }
       })
       .switchMap((session) => {
-        return (session.user && session.user.accountId) ?
+        return (session.user && session.user.accountId && this.currentUser.hasPermission('ViewAccounts')) ?
           this.user.getAccount(session.user.accountId) : Observable.empty();
       })
       .do((account: Account) => {

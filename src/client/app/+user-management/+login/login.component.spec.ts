@@ -41,7 +41,8 @@ export function main() {
 
       mockCurrentUserService = {
         set: jasmine.createSpy('set'),
-        addAccountToUser: jasmine.createSpy('addAccountToUser')
+        addAccountToUser: jasmine.createSpy('addAccountToUser'),
+        hasPermission: (perm: string) => jasmine.createSpy('hasPermission').and.returnValue(perm === 'ViewAccounts')
       };
 
       mockUserService = {

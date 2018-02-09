@@ -82,6 +82,10 @@ export class ProfileComponent implements OnDestroy, OnInit {
     }
   }
 
+  public get userAccount() {
+    return (this.user.account) ? this.user.account.name : '';
+  }
+
   private addBillingAddress = (form: Address) => {
     this.userService.addBillingAddress(form).subscribe();
   }
