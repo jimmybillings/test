@@ -186,11 +186,15 @@ section.preview-bk {
       }
     }
   }
-
+  div > div > div.primary-info {
+    height: 100%;
+  }
+  div.advplayer > div > div.primary-info {
+    height: calc(100% - 58px);
+  }
   div.primary-info {
     box-shadow: none;
     position: relative;
-    height: calc(100% - 58px);
     @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       padding: 0;
       background-color: transparent;

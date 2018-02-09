@@ -89,6 +89,10 @@ export class AssetDetailComponent implements OnInit {
     return !!this._asset.clipUrl;
   }
 
+  public get isPhoto(): boolean {
+    return this._asset.resourceClass === 'Image';
+  }
+
   public get routerLinkForAssetParent(): any[] {
     switch (this._asset.type) {
       case 'collection': {

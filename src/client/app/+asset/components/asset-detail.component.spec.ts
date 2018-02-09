@@ -909,6 +909,38 @@ export function main() {
       });
     });
 
+    describe('isPhoto getter', () => {
+      it('returns true when the resourceClass for an enhanced asset is \'Image\'', () => {
+        componentUnderTest.asset = enhanceAsset(
+          {
+            resourceClass: 'Image'
+          } as any,
+          'search'
+        );
+
+        expect(componentUnderTest.isPhoto).toBe(true);
+      });
+      it('returns false when the resourceClass for an enhanced asset is not \'Image\'', () => {
+        componentUnderTest.asset = enhanceAsset(
+          {
+            resourceClass: 'not image'
+          } as any,
+          'search'
+        );
+
+        expect(componentUnderTest.isPhoto).toBe(false);
+      });
+      it('returns false when the resourceClass for an enhanced asset does even exist', () => {
+        componentUnderTest.asset = enhanceAsset(
+          {
+            noResourceClass: 'not image'
+          } as any,
+          'search'
+        );
+
+        expect(componentUnderTest.isPhoto).toBe(false);
+      });
+    });
 
     describe('routerLinkForAssetParent()', () => {
       describe('returns the correct routerLink', () => {

@@ -173,11 +173,11 @@
                 <div [ngClass]="{hd: asset.primary[2].value == 'High Definition', sd: asset.primary[2].value == 'Standard Definition'}" class="sd-hd"
                   *ngIf='asset.primary[2].value != null'>
                 </div>
-                <div [ngClass]="{image: asset.primary[0].value == 'Image'}" class="photo"
-                  *ngIf="asset.primary[0].value != null && asset.primary[0].value == 'Image'">
+                <div [ngClass]="{image: isPhoto}" class="photo"
+                  *ngIf="asset.primary[0].value != null && isPhoto">
                 </div>
                 <div flex="none" class="rights mat-caption">{{rights}}</div>
-                <div flex="none" class="restriction-banner" *ngIf="asset.primary[4].value != null && asset.primary[4].value != 'Needs calculation'">{{asset.primary[4].value}}</div>
+                <div flex="none" class="restriction-banner" *ngIf="false">banner labels coming soon</div>
               </div>
             </div>
           </div>
@@ -187,7 +187,15 @@
   </div>
 
   <div layout="row" flex="" layout-align="center">
-    <div flex-gt-xs="95" flex-gt-md="85" flex-lg="80" flex-gt-lg="75" flex="100" layout="row" layout-xs="column">
+    <div 
+      [ngClass]="{ image: isPhoto, advplayer: showAdvancedPlayer }"
+      flex-gt-xs="95" 
+      flex-gt-md="85" 
+      flex-lg="80" 
+      flex-gt-lg="75" 
+      flex="100" 
+      layout="row" 
+      layout-xs="column">
       <div *ngIf="hasRendition && showAdvancedPlayer" flex-gt-xs="66" flex="100" layout="column" class="responsive-video">
         <wz-advanced-player
           [window]="window"
