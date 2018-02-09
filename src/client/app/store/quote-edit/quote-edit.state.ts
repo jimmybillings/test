@@ -37,9 +37,7 @@ export const initialState: State = {
       contactEmail: null,
       name: null,
       id: null,
-      contacts: [
-
-      ]
+      contacts: []
     },
     salesManager: {
       expirationDate: null,

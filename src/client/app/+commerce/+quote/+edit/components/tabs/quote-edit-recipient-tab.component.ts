@@ -10,7 +10,6 @@ import {
   SendDetailsSalesManager,
 } from '../../../../../shared/interfaces/commerce.interface';
 import { WzFormComponent } from '../../../../../shared/modules/wz-form/wz.form.component';
-import { Common } from '../../../../../shared/utilities/common.functions';
 import { User } from '../../../../../shared/interfaces/user.interface';
 import { Account } from '../../../../../shared/interfaces/account.interface';
 import { Tab } from '../../../../components/tabs/tab';
@@ -198,8 +197,7 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
 
     if (state.invoiceContact.contacts) {
       const contact = state.invoiceContact.contacts.find(c => {
-        // cannot check truthyness of state.invoiceContact.id because it could be 0 (which is valid)
-        return Common.isNotNullOrUndefined(state.invoiceContact.id) ?
+        return state.invoiceContact.id ?
           c.id === state.invoiceContact.id :
           c.id === state.billingAccount.invoiceContactId;
       });
