@@ -124,6 +124,7 @@ export function main() {
           expect(componentUnderTest.invoiceContactform.markFieldsAsTouched).not.toHaveBeenCalled();
           expect(componentUnderTest.billingAccountForm.resetForm).toHaveBeenCalled();
           expect(componentUnderTest.billingAccountForm.markFieldsAsTouched).not.toHaveBeenCalled();
+          expect(componentUnderTest.config.invoiceContact[0].validation).toEqual('OPTIONAL');
         });
 
         it(`marks the forms as touched if the user account name does not match the billing account`, () => {
@@ -145,6 +146,7 @@ export function main() {
           expect(componentUnderTest.invoiceContactform.markFieldsAsTouched).toHaveBeenCalled();
           expect(componentUnderTest.billingAccountForm.resetForm).not.toHaveBeenCalled();
           expect(componentUnderTest.billingAccountForm.markFieldsAsTouched).toHaveBeenCalled();
+          expect(componentUnderTest.config.invoiceContact[0].validation).toEqual('REQUIRED');
         });
       });
 
