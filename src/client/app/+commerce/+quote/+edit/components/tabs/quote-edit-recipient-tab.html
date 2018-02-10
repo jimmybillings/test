@@ -24,7 +24,6 @@
       [title]="'QUOTE.EDIT.BILLING_ACCOUNT_TITLE'"
       [matchOnProperty]="'name'"
       [displayProperties]="billingAccount"
-      (keyUp)="onEditableFieldChange($event)"
       (valueChange)="onEditableFieldChange($event)"
       (formSubmit)="accountSelect($event)">
     </wz-form-autocomplete-view>
