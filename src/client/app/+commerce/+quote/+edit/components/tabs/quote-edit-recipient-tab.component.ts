@@ -257,7 +257,7 @@ export class QuoteEditRecipientTabComponent extends Tab implements OnInit {
           label: 'QUOTE.EDIT.FORMS.INVOICE_CONTACT_LABEL',
           type: 'select',
           value: '',
-          validation: 'REQUIRED'
+          validation: 'OPTIONAL'
         }
       ],
       salesManager: [
